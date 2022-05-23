@@ -1,0 +1,25 @@
+.nav {
+	height: 64px;
+	display: flex;
+	align-items: center;
+}
+
+.personal_icon {
+	margin-right: auto;
+	cursor: pointer;
+}
+
+.image_container {
+	border-radius: 50%;
+	height: 64px;
+	width: 64px;
+}
+
+.personal_icon:hover {
+	opacity: 0.8;
+}
+
+.nav_divider {
+	height: 2px;
+	background-color: white;
+}
