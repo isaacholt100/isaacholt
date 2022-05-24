@@ -2,6 +2,8 @@
 	height: 64px;
 	display: flex;
 	align-items: center;
+	margin: 0 auto;
+	max-width: 1280px;
 }
 
 .personal_icon {

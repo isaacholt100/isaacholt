@@ -12,6 +12,7 @@ body {
 
 .btn {
 	border-radius: 6px !important;
+	border-width: 2px !important;
 }
 
 a {
@@ -22,3 +23,22 @@ a {
 * {
 	box-sizing: border-box;
 }
+
+$primary: #2E79FF;
+
+::selection {
+	background: $primary; /* WebKit/Blink Browsers */
+}
+::-moz-selection {
+	background: $primary; /* Gecko Browsers */
+}
+
+h1 {
+	font-size: 40px;
+}
+
+@import "../../node_modules/bootstrap/scss/functions";
+@import "../../node_modules/bootstrap/scss/variables";
+@import "../../node_modules/bootstrap/scss/mixins";
+
+@import "../../node_modules/bootstrap/scss/buttons";

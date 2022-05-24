@@ -3,7 +3,16 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import styles from "../styles/menubar.module.css";
 
-const LINKS = ["Home", "About", "Projects"];
+const LINKS = [{
+	name: "Home",
+	path: "/",
+}, {
+	name: "About",
+	path: "/about",
+}, {
+	name: "Projects",
+	path: "/projects"
+}];
 
 export default function MenuBar() {
 	const router = useRouter();
@@ -13,15 +22,22 @@ export default function MenuBar() {
 			<nav className={styles.nav}>
 				<Link href="/">
 					<div className={styles.image_container}>
-						<Image src="/images/personal_icon.jpg" alt="" width={64} height={64} layout="fixed" className={styles.personal_icon} />
+						<Image
+							src="/images/personal_icon.jpg"
+							alt=""
+							width={64}
+							height={64}
+							layout="fixed"
+							className={styles.personal_icon}
+						/>
 					</div>
 				</Link>
 				<div style={{marginLeft: "auto", overflow: "auto", whiteSpace: "nowrap", paddingRight: "12px", height: "100%", display: "flex", alignItems: "center"}}>
 					{LINKS.map(link => (
-						<Link href={"/" + link.toLowerCase()} key={link}>
-							<button className={"btn " + (router.asPath === ("/" + link.toLowerCase()) ? "btn-info" : "btn-outline-light")} style={{marginLeft: 12}}>
-								{link}
-							</button>
+						<Link href={link.path} key={link.path}>
+							<a className={"btn " + (router.asPath === (link.path) ? "btn-primary" : "btn-outline-light")} style={{marginLeft: 12}}>
+								{link.name}
+							</a>
 						</Link>
 					))}
 				</div>
