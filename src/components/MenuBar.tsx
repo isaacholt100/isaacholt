@@ -11,7 +11,10 @@ const LINKS = [{
 	path: "/about",
 }, {
 	name: "Projects",
-	path: "/projects"
+	path: "/projects",
+}, {
+	name: "Contact",
+	path: "/contact",
 }];
 
 export default function MenuBar() {
@@ -32,7 +35,7 @@ export default function MenuBar() {
 						/>
 					</div>
 				</Link>
-				<div style={{marginLeft: "auto", overflow: "auto", whiteSpace: "nowrap", paddingRight: "12px", height: "100%", display: "flex", alignItems: "center"}}>
+				<div style={{marginLeft: "auto", overflow: "auto", whiteSpace: "nowrap", marginRight: "12px", height: "100%", display: "flex", alignItems: "center", }}>
 					{LINKS.map(link => (
 						<Link href={link.path} key={link.path}>
 							<a className={"btn " + (router.asPath === (link.path) ? "btn-primary" : "btn-outline-light")} style={{marginLeft: 12}}>

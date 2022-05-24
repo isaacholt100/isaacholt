@@ -24,7 +24,16 @@ a {
 	box-sizing: border-box;
 }
 
+@import "../../node_modules/bootstrap/scss/functions";
+
+// Default Bootstrap variable overrides
 $primary: #2E79FF;
+$body-bg: black;
+$body-color: white;
+$font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
+Bitstream Vera Sans Mono, Courier New, sans-serif;
+$grid-gutter-width: 6px;
+$spacer: 24px;
 
 ::selection {
 	background: $primary; /* WebKit/Blink Browsers */
@@ -33,12 +42,20 @@ $primary: #2E79FF;
 	background: $primary; /* Gecko Browsers */
 }
 
-h1 {
-	font-size: 40px;
+.icon-primary {
+	color: $primary;
 }
 
-@import "../../node_modules/bootstrap/scss/functions";
+h1 {
+	font-size: 40px;
+	margin: 16px 0px;
+}
+
 @import "../../node_modules/bootstrap/scss/variables";
 @import "../../node_modules/bootstrap/scss/mixins";
+@import "../../node_modules/bootstrap/scss/root";
 
 @import "../../node_modules/bootstrap/scss/buttons";
+@import "../../node_modules/bootstrap/scss/bootstrap-grid.scss";
+@import "../../node_modules/bootstrap/scss/utilities";
+//@import "../../node_modules/bootstrap/scss/bootstrap.scss";

@@ -46,6 +46,18 @@
   "resolved" "https://registry.npmjs.org/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz"
   "version" "1.2.1"
 
+"@mdi/js@^6.7.96":
+  "integrity" "sha512-vZvhFrNN9LQx+Awu3nU6ESfXXDpRA/CA4mwikzU5g8uf9NpAocK43ecQvVNntwiXlLKpyplas8d4lsfpqjtXLA=="
+  "resolved" "https://registry.npmjs.org/@mdi/js/-/js-6.7.96.tgz"
+  "version" "6.7.96"
+
+"@mdi/react@^1.6.0":
+  "integrity" "sha512-FdeJ3Ee+m9nbBkZXW0XgSkDvevgOCloLRFrBlF6pRGWgT8v2U1M2aeXi8+uRM5FZ58o3dfVFduAtmCq7quclNA=="
+  "resolved" "https://registry.npmjs.org/@mdi/react/-/react-1.6.0.tgz"
+  "version" "1.6.0"
+  dependencies:
+    "prop-types" "^15.7.2"
+
 "@next/env@12.1.6":
   "integrity" "sha512-Te/OBDXFSodPU6jlXYPAXpmZr/AkG6DCATAxttQxqOWaq6eDFX25Db3dK0120GZrSZmv4QCe9KsZmJKDbWs4OA=="
   "resolved" "https://registry.npmjs.org/@next/env/-/env-12.1.6.tgz"
@@ -1394,7 +1406,7 @@
   "resolved" "https://registry.npmjs.org/prelude-ls/-/prelude-ls-1.2.1.tgz"
   "version" "1.2.1"
 
-"prop-types@^15.8.1":
+"prop-types@^15.7.2", "prop-types@^15.8.1":
   "integrity" "sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg=="
   "resolved" "https://registry.npmjs.org/prop-types/-/prop-types-15.8.1.tgz"
   "version" "15.8.1"
