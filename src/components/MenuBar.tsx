@@ -21,7 +21,7 @@ export default function MenuBar() {
 	const router = useRouter();
 	return (
 		<div className={styles.nav_container + " position-fixed top-0 bg-black w-100"}>
-			<nav className={styles.nav + " px-0 ps-md-2 container-xxl"} >
+			<nav className={styles.nav + " ps-md-3 ps-2 pe-md-2 pe-0 container-xxl"} >
 				<div className={styles.image_container}>
 					<Image
 						src="/images/personal_icon.jpg"
@@ -32,10 +32,10 @@ export default function MenuBar() {
 						className={styles.personal_icon}
 					/>
 				</div>
-				<div className="ms-auto d-flex align-items-center me-1 ml-auto h-100 overflow-auto">
+				<div className="ms-auto d-flex align-items-center ml-auto h-100 overflow-auto me-1">
 					{LINKS.map(link => (
 						<Link href={link.path} key={link.path}>
-							<a className={"btn mx-1 " + (router.asPath === (link.path) ? "btn-primary" : "btn-outline-light")}>
+							<a className={"btn mx-1 " + (router.asPath === (link.path) ? "btn-primary" : "btn-outline-light")} style={{zIndex: 10000}}>
 								{link.name}
 							</a>
 						</Link>
