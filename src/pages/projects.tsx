@@ -1,5 +1,9 @@
+import PageTitle from "../components/PageTitle";
+
 export default function Projects() {
 	return (
-		<div></div>
+		<div>
+			<PageTitle title="Projects" />
+		</div>
 	);
 }

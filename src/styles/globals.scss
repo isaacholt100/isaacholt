@@ -1,39 +1,15 @@
-html,
-body {
-	padding: 0;
-	margin: 0;
-	/*font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-		Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;*/
-	font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
-    Bitstream Vera Sans Mono, Courier New, monospace !important;
-	background-color: black !important;
-	color: white;
-}
-
-.btn {
-	border-radius: 6px !important;
-	border-width: 2px !important;
-}
-
-a {
-	color: inherit;
-	text-decoration: none;
-}
-
-* {
-	box-sizing: border-box;
-}
-
 @import "../../node_modules/bootstrap/scss/functions";
 
 // Default Bootstrap variable overrides
 $primary: #2E79FF;
 $body-bg: black;
 $body-color: white;
-$font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
-Bitstream Vera Sans Mono, Courier New, sans-serif;
-$grid-gutter-width: 6px;
+//$font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, sans-serif;
 $spacer: 24px;
+$grid-gutter-width: $spacer / 4;
+$border-radius: $spacer / 4;
+$border-radius-lg: $spacer / 4;
+$border-width: 2px;
 
 ::selection {
 	background: $primary; /* WebKit/Blink Browsers */
@@ -42,20 +18,27 @@ $spacer: 24px;
 	background: $primary; /* Gecko Browsers */
 }
 
-.icon-primary {
-	color: $primary;
-}
-
 h1 {
-	font-size: 40px;
-	margin: 16px 0px;
+	font-size: 48px !important;
+	margin: 16px 0px !important;
 }
 
 @import "../../node_modules/bootstrap/scss/variables";
+
+html,
+body {
+	padding: 0;
+	margin: 0;
+	/*font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+		Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;*/
+	//font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace !important;
+}
+
 @import "../../node_modules/bootstrap/scss/mixins";
 @import "../../node_modules/bootstrap/scss/root";
 
 @import "../../node_modules/bootstrap/scss/buttons";
+@import "../../node_modules/bootstrap/scss/reboot";
 @import "../../node_modules/bootstrap/scss/bootstrap-grid.scss";
 @import "../../node_modules/bootstrap/scss/utilities";
 //@import "../../node_modules/bootstrap/scss/bootstrap.scss";

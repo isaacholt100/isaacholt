@@ -19,10 +19,9 @@ const LINKS = [{
 
 export default function MenuBar() {
 	const router = useRouter();
-	console.log(router)
 	return (
 		<div>
-			<nav className={styles.nav}>
+			<nav className={styles.nav + " px-md-2"} >
 				<Link href="/">
 					<div className={styles.image_container}>
 						<Image
@@ -35,10 +34,10 @@ export default function MenuBar() {
 						/>
 					</div>
 				</Link>
-				<div style={{marginLeft: "auto", overflow: "auto", whiteSpace: "nowrap", marginRight: "12px", height: "100%", display: "flex", alignItems: "center", }}>
+				<div className="ms-auto d-flex align-center-items me-1" style={{marginLeft: "auto", overflow: "auto", whiteSpace: "nowrap", height: "100%", display: "flex", alignItems: "center", marginRight: 6, }}>
 					{LINKS.map(link => (
 						<Link href={link.path} key={link.path}>
-							<a className={"btn " + (router.asPath === (link.path) ? "btn-primary" : "btn-outline-light")} style={{marginLeft: 12}}>
+							<a className={"btn mx-1 " + (router.asPath === (link.path) ? "btn-primary" : "btn-outline-light")}>
 								{link.name}
 							</a>
 						</Link>
