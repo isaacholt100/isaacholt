@@ -20,7 +20,7 @@ const LINKS = [{
 export default function MenuBar() {
 	const router = useRouter();
 	return (
-		<div>
+		<div className="position-fixed top-0 bg-black" style={{width: "100%"}}>
 			<nav className={styles.nav + " px-0 px-md-2 container-xxl"} >
 				<Link href="/">
 					<div className={styles.image_container}>
@@ -44,7 +44,7 @@ export default function MenuBar() {
 					))}
 				</div>
 			</nav>
-			<div className={styles.nav_divider} />
+			<hr className="mt-0 mb-2 mb-md-3 opacity-100" />
 		</div>
 	);
 }

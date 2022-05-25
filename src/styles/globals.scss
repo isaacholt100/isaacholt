@@ -20,7 +20,6 @@ $border-width: 2px;
 
 h1 {
 	font-size: 48px !important;
-	margin: 16px 0px !important;
 }
 
 @import "../../node_modules/bootstrap/scss/variables";
@@ -41,4 +40,5 @@ body {
 @import "../../node_modules/bootstrap/scss/reboot";
 @import "../../node_modules/bootstrap/scss/bootstrap-grid.scss";
 @import "../../node_modules/bootstrap/scss/utilities";
+@import "../../node_modules/bootstrap/scss/utilities/api"
 //@import "../../node_modules/bootstrap/scss/bootstrap.scss";

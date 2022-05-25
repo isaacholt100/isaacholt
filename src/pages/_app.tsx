@@ -10,7 +10,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 			<MenuBar />
-			<div className="mx-auto p-2 p-md-3 container-xxl">
+			<div className="mx-auto p-2 p-md-3 container-xxl" style={{marginTop: "66px"}}>
 				<Component {...pageProps} />
 			</div>
 		</div>
