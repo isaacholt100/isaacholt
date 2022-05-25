@@ -2,6 +2,20 @@
   /*padding: 0 2rem;*/
 }
 
+@keyframes fade-up {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+.container {
+	animation-name: fade-up;
+	animation-timing-function: ease-in;
+}
+
 .main {
   min-height: 100vh;
   padding: 4rem 0;

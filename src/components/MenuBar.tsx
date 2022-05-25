@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import styles from "../styles/menubar.module.scss";
+import personalIcon from "../../public/images/personal_icon.jpg";
 
 const LINKS = [{
 	name: "Home",
@@ -21,21 +22,21 @@ export default function MenuBar() {
 	const router = useRouter();
 	return (
 		<div className={styles.nav_container + " position-fixed top-0 bg-black w-100"}>
-			<nav className={styles.nav + " ps-md-3 ps-2 pe-md-2 pe-0 container-xxl"} >
-				<div className={styles.image_container}>
+			<nav className={styles.nav + " px-md-3 px-2"} >
+				<div className={styles.image_container + " me-2"}>
 					<Image
-						src="/images/personal_icon.jpg"
+						src={personalIcon}
 						alt=""
-						width={64}
-						height={64}
+						width={60}
+						height={60}
 						layout="fixed"
-						className={styles.personal_icon}
+						className={styles.personal_icon + " rounded-circle "}
 					/>
 				</div>
-				<div className="ms-auto d-flex align-items-center ml-auto h-100 overflow-auto me-1">
-					{LINKS.map(link => (
+				<div className="ms-auto d-flex align-items-center ml-auto h-100">
+					{LINKS.map((link, i) => (
 						<Link href={link.path} key={link.path}>
-							<a className={"btn mx-1 " + (router.asPath === (link.path) ? "btn-primary" : "btn-outline-light")} style={{zIndex: 10000}}>
+							<a className={"btn " + (router.asPath === (link.path) ? "btn-primary" : "btn-outline-light") + " ms-2"}>
 								{link.name}
 							</a>
 						</Link>
