@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import styles from "../styles/menubar.module.css";
+import styles from "../styles/menubar.module.scss";
 
 const LINKS = [{
 	name: "Home",
@@ -21,7 +21,7 @@ export default function MenuBar() {
 	const router = useRouter();
 	return (
 		<div>
-			<nav className={styles.nav + " px-md-2"} >
+			<nav className={styles.nav + " px-0 px-md-2 container-xxl"} >
 				<Link href="/">
 					<div className={styles.image_container}>
 						<Image
