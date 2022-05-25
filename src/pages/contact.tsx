@@ -46,8 +46,8 @@ export default function Contact() {
 			<div className="row gy-2 g-md-3">
 				{SOCIALS.map(social => (
 					<div className="col-12 col-md-6 col-xl-4" key={social.name}>
-						<a href={social.url} className="btn btn-outline-light btn-lg d-flex flex-row alight-items-center justify-content-center w-100" style={{position: "relative", height: 88 }}>
-							<Icon path={social.icon} color={social.color} size="60px" style={{position: "absolute", left: 12, bottom: 12}} />
+						<a href={social.url} className="btn btn-outline-light btn-lg d-flex flex-row alight-items-center justify-content-center w-100 position-relative" style={{height: 88 }}>
+							<Icon path={social.icon} color={social.color} size="60px" className="position-absolute" style={{left: 12, bottom: 12}} />
 							<span className="ms-3 d-flex align-items-center">{social.name}</span>
 						</a>
 					</div>

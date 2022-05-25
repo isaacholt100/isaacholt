@@ -20,7 +20,7 @@ const LINKS = [{
 export default function MenuBar() {
 	const router = useRouter();
 	return (
-		<div className="position-fixed top-0 bg-black" style={{width: "100%"}}>
+		<div className={styles.nav_container + " position-fixed top-0 bg-black w-100"}>
 			<nav className={styles.nav + " px-0 px-md-2 container-xxl"} >
 				<Link href="/">
 					<div className={styles.image_container}>
@@ -34,7 +34,7 @@ export default function MenuBar() {
 						/>
 					</div>
 				</Link>
-				<div className="ms-auto d-flex align-center-items me-1" style={{marginLeft: "auto", overflow: "auto", whiteSpace: "nowrap", height: "100%", display: "flex", alignItems: "center", marginRight: 6, }}>
+				<div className="ms-auto d-flex align-items-center me-2 ml-auto h-100 overflow-auto">
 					{LINKS.map(link => (
 						<Link href={link.path} key={link.path}>
 							<a className={"btn mx-1 " + (router.asPath === (link.path) ? "btn-primary" : "btn-outline-light")}>

@@ -1,15 +1,7 @@
 @import "../../node_modules/bootstrap/scss/functions";
 
 // Default Bootstrap variable overrides
-$primary: #2E79FF;
-$body-bg: black;
-$body-color: white;
-//$font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, sans-serif;
-$spacer: 24px;
-$grid-gutter-width: $spacer / 4;
-$border-radius: $spacer / 4;
-$border-radius-lg: $spacer / 4;
-$border-width: 2px;
+@import "./custom_vars.scss";
 
 ::selection {
 	background: $primary; /* WebKit/Blink Browsers */
@@ -26,8 +18,7 @@ h1 {
 
 html,
 body {
-	padding: 0;
-	margin: 0;
+	height: calc(100% - 68px);
 	/*font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
 		Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;*/
 	//font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace !important;
