@@ -21,20 +21,18 @@ export default function MenuBar() {
 	const router = useRouter();
 	return (
 		<div className={styles.nav_container + " position-fixed top-0 bg-black w-100"}>
-			<nav className={styles.nav + " px-0 px-md-2 container-xxl"} >
-				<Link href="/">
-					<div className={styles.image_container}>
-						<Image
-							src="/images/personal_icon.jpg"
-							alt=""
-							width={64}
-							height={64}
-							layout="fixed"
-							className={styles.personal_icon}
-						/>
-					</div>
-				</Link>
-				<div className="ms-auto d-flex align-items-center me-2 ml-auto h-100 overflow-auto">
+			<nav className={styles.nav + " px-0 ps-md-2 container-xxl"} >
+				<div className={styles.image_container}>
+					<Image
+						src="/images/personal_icon.jpg"
+						alt=""
+						width={64}
+						height={64}
+						layout="fixed"
+						className={styles.personal_icon}
+					/>
+				</div>
+				<div className="ms-auto d-flex align-items-center me-1 ml-auto h-100 overflow-auto">
 					{LINKS.map(link => (
 						<Link href={link.path} key={link.path}>
 							<a className={"btn mx-1 " + (router.asPath === (link.path) ? "btn-primary" : "btn-outline-light")}>
