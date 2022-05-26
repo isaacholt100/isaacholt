@@ -1,6 +1,7 @@
 import type { AppProps } from "next/app"
 import Head from "next/head";
 import MenuBar from "../components/MenuBar";
+//import "bootstrap/scss/bootstrap.scss";
 import "../styles/globals.scss";
 
 export default function MyApp({ Component, pageProps }: AppProps) {
