@@ -47,7 +47,7 @@ export default function Projects() {
 						<Card border="light" bg="transparent" className="h-100">
 							{/*<img src="..." className="card-img-top" alt="" />*/}
 							<Card.Body className="d-flex flex-column">
-								<Card.Title>
+								<Card.Title as="h3" className="text-primary">
 									{project.name}
 								</Card.Title>
 								<Card.Text>
@@ -56,14 +56,14 @@ export default function Projects() {
 								<Row className="g-2 mt-auto">
 									{project.url && (
 										<Col>
-											<Button variant="info" href={project.url} className="w-100">
+											<Button variant="primary" href={project.url} className="w-100">
 												Visit
 											</Button>
 										</Col>
 									)}
 									{project.source && (
 										<Col>
-											<Button variant="outline-info" href={project.source} className="w-100">
+											<Button variant="outline-primary" href={project.source} className="w-100">
 												Source
 											</Button>
 										</Col>

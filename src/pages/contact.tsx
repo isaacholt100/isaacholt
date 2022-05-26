@@ -65,7 +65,7 @@ export default function Contact() {
 			<p>To get in touch, email me at <a href={"mailto:" + EMAIL}>{EMAIL}</a> or connect with me on these platforms:</p>
 			<Row className="g-2 g-md-3">
 				{SOCIALS.map(social => (
-					<Col xs={12} md={6} xl={4} key={social.name}>
+					<Col xs={12} sm={6} xl={4} key={social.name}>
 						<Button
 							href={social.url}
 							as="a"

@@ -1,7 +1,7 @@
 @import "../../node_modules/bootstrap/scss/functions";
 
 // Default Bootstrap variable overrides
-@import "./custom_vars.scss";
+@import "./vars.scss";
 
 ::selection {
 	background: $primary; /* WebKit/Blink Browsers */
@@ -12,6 +12,10 @@
 
 h1 {
 	font-size: 48px !important;
+}
+
+h3 {
+	font-size: 24px !important;
 }
 
 @import "../../node_modules/bootstrap/scss/variables";

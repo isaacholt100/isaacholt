@@ -34,24 +34,29 @@ export default function MenuBar() {
 		<>
 			<Navbar bg="black" expand="sm" variant="dark" className="px-md-3 px-2 py-0" fixed="top" collapseOnSelect expanded={expanded}>
 				<div className={styles.image_container + " me-2"}>
-					<Image
-						src={personalIcon}
-						alt=""
-						width={60}
-						height={60}
-						layout="fixed"
-						className={styles.personal_icon + " rounded-circle "}
-					/>
+					<Link href="/">
+						<a className="d-block h-100">
+							<Image
+								src={personalIcon}
+								alt=""
+								width={"100%"}
+								height={"100%"}
+								layout="intrinsic"
+								className={styles.personal_icon + " rounded-circle "}
+							/>
+						</a>
+					</Link>
 				</div>
-				<Navbar.Toggle className="border-primary text-white p-0"  style={{height: 40, width: 40,}} onClick={() => setExpanded(!expanded)}>
+				<Button variant="outline-light" aria-controls="basic-navbar-nav active" className={"p-0 d-sm-none " + styles.nav_toggle} onClick={() => setExpanded(!expanded)}>
 					<Icon path={mdiDotsVertical} size={"36px"} />
-				</Navbar.Toggle>
+				</Button>
 				<Navbar.Collapse id="basic-navbar-nav">
 					<Nav className="ms-auto my-sm-2 my-md-3 mt-0 mb-2">
 						{LINKS.map((link, i) => (
 							<Link href={link.path} key={link.path}>
 								<Button
 									as="a"
+									href={link.path}
 									variant={(router.asPath === (link.path) ? "primary" : "outline-light")}
 									className="ms-md-3 ms-sm-2 ms-0 mt-2 mt-sm-0"
 								>
