@@ -3,6 +3,12 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import styles from "../styles/menubar.module.scss";
 import personalIcon from "../../public/images/personal_icon.jpg";
+import Button from "react-bootstrap/Button";
+import Navbar from "react-bootstrap/Navbar";
+import Nav from "react-bootstrap/Nav";
+import { useEffect, useState } from "react";
+import Icon from "@mdi/react";
+import { mdiDotsVertical, mdiDotsVerticalCircle, mdiMenu } from "@mdi/js";
 
 const LINKS = [{
 	name: "Home",
@@ -20,9 +26,13 @@ const LINKS = [{
 
 export default function MenuBar() {
 	const router = useRouter();
+	const [expanded, setExpanded] = useState(false);
+	useEffect(() => {
+		setExpanded(false);
+	}, [router.asPath]);
 	return (
-		<div className={styles.nav_container + " position-fixed top-0 bg-black w-100"}>
-			<nav className={styles.nav + " px-md-3 px-2"} >
+		<>
+			<Navbar bg="black" expand="sm" variant="dark" className="px-md-3 px-2 py-0" fixed="top" collapseOnSelect expanded={expanded}>
 				<div className={styles.image_container + " me-2"}>
 					<Image
 						src={personalIcon}
@@ -33,17 +43,26 @@ export default function MenuBar() {
 						className={styles.personal_icon + " rounded-circle "}
 					/>
 				</div>
-				<div className="ms-auto d-flex align-items-center ml-auto h-100">
-					{LINKS.map((link, i) => (
-						<Link href={link.path} key={link.path}>
-							<a className={"btn " + (router.asPath === (link.path) ? "btn-primary" : "btn-outline-light") + " ms-2"}>
-								{link.name}
-							</a>
-						</Link>
-					))}
-				</div>
-			</nav>
-			<hr className="mt-0 mb-2 mb-md-3 opacity-100" />
-		</div>
+				<Navbar.Toggle className="border-primary text-white p-0"  style={{height: 40, width: 40,}} onClick={() => setExpanded(!expanded)}>
+					<Icon path={mdiDotsVertical} size={"36px"} />
+				</Navbar.Toggle>
+				<Navbar.Collapse id="basic-navbar-nav">
+					<Nav className="ms-auto my-sm-2 my-md-3 mt-0 mb-2">
+						{LINKS.map((link, i) => (
+							<Link href={link.path} key={link.path}>
+								<Button
+									as="a"
+									variant={(router.asPath === (link.path) ? "primary" : "outline-light")}
+									className="ms-md-3 ms-sm-2 ms-0 mt-2 mt-sm-0"
+								>
+									{link.name}
+								</Button>
+							</Link>
+						))}
+					</Nav>
+				</Navbar.Collapse>
+			</Navbar>
+			<hr className="my-0 opacity-100" />
+		</>
 	);
 }

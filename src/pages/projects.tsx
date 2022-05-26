@@ -1,6 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
+import Row from "react-bootstrap/Row";
+import Card from "react-bootstrap/Card";
+import Col from "react-bootstrap/Col";
 import PageTitle from "../components/PageTitle";
+import Button from "react-bootstrap/Button";
 
 interface Project {
 	name: string;
@@ -35,39 +39,41 @@ const PROJECTS: Project[] = [
 
 export default function Projects() {
 	return (
-		<div>
+		<>
 			<PageTitle title="Projects" />
-			<div className="row g-2 g-md-3">
+			<Row className="g-2 g-md-3">
 				{PROJECTS.map(project => (
-					<div className="col-12 col-sm-6 col-sm-4 col-xl-3" key={project.name}>
-						<div className="card h-100 border-light bg-transparent">
+					<Col xs={12} sm={6} lg={4} xl={3} key={project.name}>
+						<Card border="light" bg="transparent" className="h-100">
 							{/*<img src="..." className="card-img-top" alt="" />*/}
-							<div className="card-body d-flex flex-column">
-								<h5 className="card-title">{project.name}</h5>
-								<div className="flex-1">
-									<p className="card-text">{project.description}</p>
-								</div>
-								<div className="row g-2 mt-auto">
+							<Card.Body className="d-flex flex-column">
+								<Card.Title>
+									{project.name}
+								</Card.Title>
+								<Card.Text>
+									{project.description}
+								</Card.Text>
+								<Row className="g-2 mt-auto">
 									{project.url && (
-										<div className="col">
-											<Link href={project.url}>
-												<a className="btn btn-info w-100 col">Visit</a>
-											</Link>
-										</div>
+										<Col>
+											<Button variant="info" href={project.url} className="w-100">
+												Visit
+											</Button>
+										</Col>
 									)}
 									{project.source && (
-										<div className="col">
-											<Link href={project.source}>
-												<a className="btn btn-outline-info w-100">Source</a>
-											</Link>
-										</div>
+										<Col>
+											<Button variant="outline-info" href={project.source} className="w-100">
+												Source
+											</Button>
+										</Col>
 									)}
-								</div>
-							</div>
-						</div>
-					</div>
+								</Row>
+							</Card.Body>
+						</Card>
+					</Col>
 				))}
-			</div>
-		</div>
+			</Row>
+		</>
 	);
 }

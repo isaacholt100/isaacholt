@@ -13,11 +13,12 @@
 	width: 60px;
 }
 
-.nav_divider {
-	height: 2px;
-	background-color: white;
+.nav_toggle:hover {
+	color: initial;
+	background-color: initial;
 }
 
-.nav_container {
-	z-index: 1000;
+.nav_toggle:hover svg {
+	color: initial;
+	background-color: initial;
 }
