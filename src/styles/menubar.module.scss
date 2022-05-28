@@ -1,3 +1,5 @@
+@import "./vars.scss";
+
 .nav {
 	height: 64px;
 	display: flex;
@@ -8,16 +10,25 @@
 }
 
 .image_container {
-	border-radius: 50%;
-	height: 60px;
-	width: 60px;
+	width: 52px;
+	height: 52px;
 }
 
-.nav_divider {
-	height: 2px;
-	background-color: white;
+.nav_toggle:hover {
+	background-color: transparent !important;
+	color: $light !important;
 }
 
-.nav_container {
-	z-index: 1000;
+.nav_toggle:hover * {
+	color: $light !important;
+}
+@import "../../node_modules/bootstrap/scss/functions";
+@import "../../node_modules/bootstrap/scss/variables";
+@import "../../node_modules/bootstrap/scss/mixins/breakpoints";
+
+@include media-breakpoint-up(md) {
+	.image_container {
+		width: 60px;
+		height: 60px;
+	}
 }

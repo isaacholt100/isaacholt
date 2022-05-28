@@ -4,7 +4,7 @@ import { LINKEDIN_URL } from "./contact";
 
 export default function About() {
 	return (
-		<div>
+		<>
 			<PageTitle title="About Me" />
 			<p>
 				I am currently a mathematics student at Durham University. What I love about maths is that it is used in just about everything. I find it beautiful that merely starting from a set of axioms can lead us to discover many fascinating and often useful results. Being an avid coder, one of my biggest interests in maths is areas which have a direct application in computer science. I really enjoy seeing the link between these two: mathematics allows us to formulate ideas and theories, while computing provides a means to use these ideas into real world applications.
@@ -21,11 +21,9 @@ export default function About() {
 			</p>
 			<p>
 				Feel free to take a look at my{" "}
-				<Link href={LINKEDIN_URL}>
-					<a className="link-primary">LinkedIn page</a>
-				</Link>
+				<a href={LINKEDIN_URL}>LinkedIn page</a>
 				{" "} for more about my experience, education, etc.
 			</p>
-		</div>
+		</>
 	);
 }
