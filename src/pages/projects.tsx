@@ -16,6 +16,13 @@ interface Project {
 
 const PROJECTS: Project[] = [
 	{
+		name: "bnum",
+		url: "https://docs.rs/bnum/latest/bnum",
+		source: "https://github.com/isaacholt100/bnum",
+		description: "A Rust library that provides arbitrary, fixed size signed and unsigned integer types that extend the functionality of Rust's primitive integers, using const generics. It is the first library that I have published, and my biggest coding project so far.",
+		image: ""
+	},
+	{
 		name: "My Year Book",
 		url: "https://myyearbook.vercel.app",
 		source: "https://github.com/isaacholt100/MYB",
@@ -27,12 +34,6 @@ const PROJECTS: Project[] = [
 		url: "https://latingrammartest.vercel.app",
 		source: "https://github.com/isaacholt100/latin-grammar-test",
 		description: "A simple single page application which tests knowledge of Latin grammar. It features a \"Live\" mode where users from the same school can challenge each other to a timed test. I created this while I was taking Latin A Level to help with my revision.",
-		image: ""
-	},
-	{
-		name: "Test",
-		url: "https://example.com",
-		description: "some description of my project",
 		image: ""
 	}
 ];

@@ -20,8 +20,9 @@ h3 {
 
 @import "../../node_modules/bootstrap/scss/variables";
 
-html {
+html, body {
 	background-color: $body-bg;
+	height: 100vh;
 }
 
 @import "../../node_modules/bootstrap/scss/mixins";

@@ -2,11 +2,25 @@ import type { NextPage } from "next"
 import Head from "next/head"
 import Image from "next/image";
 import Link from "next/link";
-import { Button, Container, Nav, Navbar } from "react-bootstrap";
+import { Button, Col, Row } from "react-bootstrap";
 import pageTitle from "../lib/title";
 import styles from "../styles/Home.module.scss";
 
-const LINKS = ["a", "b", "c", "d"];
+interface MainLink {
+	name: string;
+	path: string;
+}
+
+const MAIN_LINKS: MainLink[] = [{
+	name: "About Me",
+	path: "/about"
+}, {
+	name: "My Projects",
+	path: "/projects",
+}, {
+	name: "Contact Me",
+	path: "/contact"
+}];
 
 export default function Home() {
 	return (
@@ -17,6 +31,18 @@ export default function Home() {
 			</Head>
 			<div className={styles.container}>
 				<h1>{"Hi, I'm Isaac"}</h1>
+				<h4>Mathematics student at Durham University</h4>
+				<Row className="g-2 g-md-3 mt-auto">
+					{MAIN_LINKS.map(link => (
+						<Col key={link.path} xs="12" md="4">
+							<Link href={link.path}>
+								<Button as="a" size="lg" variant="outline-primary" className="w-100" href={link.path}>
+									{link.name}
+								</Button>
+							</Link>
+						</Col>
+					))}
+				</Row>
 			</div>
 		</>
 	)
