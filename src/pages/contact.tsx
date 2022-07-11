@@ -44,7 +44,7 @@ const SOCIALS: Social[] = [
 	},
 	{
 		name: "Facebook",
-		url: "https://www.facebook.com/profile.php?id=100073407960215/",
+		url: "https://www.facebook.com/profile.php?id=100073407960215",
 		icon: mdiFacebook,
 		color: "rgb(48, 94, 222)",
 	},
