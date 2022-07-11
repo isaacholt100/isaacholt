@@ -13,6 +13,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 				<link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png" />
 				<link rel="mask-icon" href="/favicons/safari-pinned-tab.svg" color="#2E79FF" />
 				<meta name="msapplication-TileColor" content="#2E79FF" />
+				<meta name="theme-color" content="#000000" />
 				<link rel="manifest" href="/favicons/site.webmanifest" />
 			</Head>
 			<MenuBar />
