@@ -26,14 +26,14 @@ const PROJECTS: Project[] = [
 		name: "My Year Book",
 		url: "https://myyearbook.vercel.app",
 		source: "https://github.com/isaacholt100/MYB",
-		description: "A progressive web app that allows students from a school to upload photos and a quote. Prizes can also be created/suggested by students which are then voted for. The results are used to create a downloabable yearbook in PDF format.",
+		description: "A progressive web app that allows students from a school to upload photos and a quote. Prizes can also be created/suggested by students which are then voted for. The results are used to create a downloadable yearbook in PDF format.",
 		image: ""
 	},
 	{
 		name: "Latin Grammar Test",
 		url: "https://latingrammartest.vercel.app",
 		source: "https://github.com/isaacholt100/latin-grammar-test",
-		description: "A simple single page application which tests knowledge of Latin grammar. It features a \"Live\" mode where users from the same school can challenge each other to a timed test. I created this while I was taking Latin A Level to help with my revision.",
+		description: "A simple single page application which tests knowledge of Latin grammar. It features a \"Live\" mode where users from the same school can challenge each other to a timed test. I created this while I was studying Latin A Level to help with my revision.",
 		image: ""
 	}
 ];
