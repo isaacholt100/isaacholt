@@ -35,7 +35,7 @@ export default function Home() {
 				<Row className="g-2 g-md-3 mt-auto">
 					{MAIN_LINKS.map(link => (
 						<Col key={link.path} xs="12" md="4">
-							<Link href={link.path}>
+							<Link href={link.path} legacyBehavior>
 								<Button as="a" size="lg" variant="outline-primary" className="w-100" href={link.path}>
 									{link.name}
 								</Button>

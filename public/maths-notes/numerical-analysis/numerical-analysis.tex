@@ -1,0 +1,407 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[a4paper, total={6in, 10in}]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[subsection]
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{corollary}[definition]{Corollary}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{example}[definition]{Example}
+\newtheorem*{remark}{Remark}
+
+\title{Numerical Analysis Course Notes}
+\author{Isaac Holt}
+
+\begin{document}
+
+\maketitle
+
+\section{Chebyshev Polynomials}
+
+\begin{theorem}
+let $w_n(x) = (x - x_0) \dots (x - x_n)$ with distinct nodes ${x_0, \dots, x_n}$, $x_j \subset [-1, 1]$. Then the maximum of $|w_n(x)|$ on $[-1, 1]$ attains its smallest value ($2^{-n}$) iff ${x_j}$ are the zeros of $T_{n + 1}(x)$.
+\end{theorem}
+
+\begin{proof}
+	"$\Longleftarrow$": By construction $2^{-n} T_{n+1}(x)$ is a monic polynomial (highest power of $x$ is 1) with $n + 1$ roots in $[-1, 1]$. Suppose $S_{n+1}(x) = (x - z_0)\dots(x - z_n)$ is another monic polynomial such that $\max |S_{n+1}(x)| < 2^{-n} = \max |2^{-n} T_{n+1}(x)|$. Let $q_n(x) := 2^{-n} T_{n+1}(x) - S_{n+1}(x)$. Then $q_n(x) \in P_n$ since the coefficient of $x^{n+1}$ in $T_{n+1}(x)$ and $S_{n+1}(x)$ are both $1$ and so cancel out.
+
+	Then $q_n(y_j) = 2^{-n} T_{n+1}(y_j) - S_{n+1}(y_j)$ ($y_j$ are the extrema of $T_n(x)$). $|S_{n+1}(y_j)| < 1$ by hypothesis. Therefore $q_n(y_j) > 0$ if $j$ is odd and $< 0$ otherwise.
+
+	Since we have $n+2$ of $y_j$, $q_n$ has at least $n+1$ zeros. But since $q_n \in P_n$, we must have $q_n(x)=0$. Therefore $S_{n+1}(x) = 2^{-n} T_{n+1}(x)$. 
+\end{proof}
+
+\begin{remark}
+	To use this in $[a, b]$ instead of $[-1, 1]$, one simply maps $x_j \rightarrow a + (x_j + 1) \frac{b - a}{2}$.
+\end{remark}
+
+\begin{remark}
+	Putting the above into Cauchy's error formula,
+	we have \[\sup |f(x)-p(x)| \le 2^{-n} {(\frac{b - a}{2})}^{n + 1} \frac{1}{(n + 1)!}\]
+\end{remark}
+
+\begin{remark}
+	We have by the above theorem, $\max |w_n(x)| = \max |(x - x_0)\dots(x - x_n) \ge 2^{-n}$ for any choice of ${x_1, \dots, x_n}$, $x_j \subset [-1, 1]$. So $2^{-n}$ is a lower bound for $|w_n(x)|$.
+
+	The upper bound is given by $\max |w_n(x)| \le \epsilon |b-a|^n$. 
+\end{remark}
+
+\maketitle
+\section{Root Finding}
+
+\subsection{Bracketing: Bisection}
+
+Given $f \in C^0 ([a, b])$ with $f(a) f(b) < 0$, repeat:
+\begin{itemize}
+	\item let $(a_0, b_0) = (a, b)$
+	\item let $m_n = \frac{1}{2} (a_n + b_n)$
+	\item if $f(m_n)f(a_n) \ge 0$, set $(a_{n + 1}, b_{n + 1}) = (m_n, b_n)$
+	\item otherwise, set $(a_{n + 1}, b_{n + 1}) = (a_n, m_n)$
+\end{itemize}
+
+$b_{n + 1} - a_{n + 1} = \frac{1}{2} (b_n - a_n)$. By the Intermediate Value Theorem, if $f(m_n) \ne 0$, for some $p \in (a_n, b_n)$, $f(p) = 0$.
+
+$|p - m_n| \le 2^{-(n + 1)} (b - a)$
+
+\begin{remark}
+	Each time, the width of the interval halves. In principle, we could get an approximation to any desired accuracy, but there are some caveats (e.g. with floating points).
+\end{remark}
+
+\subsection{Bracketing: False Position}
+
+Suppose we have $|f(b)| \ll |f(a)|$, then we would expect $p$ to be closer to $b$ than to $a$. Instead of $m_n = \frac{1}{2} (a_n + b_n)$, set
+
+\[m_n = b_n - f(b_n) \frac{b_n - a_n}{f(b_n) - f(a_n)}\]
+
+i.e. $m_n$ is the x-intercept of the line from $(a_n, f(a_n))$ to $(b_n, f(b_n))$. This should sometimes give much faster approximation than bisection, but not always.
+
+\subsection{Aside: Continuity and Convergence}
+
+\begin{definition}
+	$f: I \rightarrow \mathbb{R}$ is continuous at $x \in I$ if for every $\epsilon > 0$, for some $\delta(x, \epsilon)$, $|y - x| < \delta \Rightarrow |f(x) - f(y)| < \epsilon$ for every $y \in B(x)$ ($B(x)$ is an open interval containing $x$).
+\end{definition}
+
+\begin{remark}
+	In general, $\delta$ depends on $\epsilon$ and $x$. When $\delta$ is independent of $x$, $f$ is uniformly continuous.
+\end{remark}
+
+\begin{definition}
+	$f: I \rightarrow \mathbb{R}$ is Lipschitz continuous in $I$ if for some $L > 0$, $|f(y) - f(x)| \le L|y - x|$ for every $x \in I, y \in I$. In this case, $\delta = \epsilon / L$.
+\end{definition}
+
+\begin{remark}
+	$L$ (like $\delta$ above) is not unique. The smallest such $L$ is called the Lipschitz constant of $f$ in $I$.
+\end{remark}
+
+\begin{lemma}
+	\hfill
+	\begin{enumerate}
+		\item If $f$ is differentiable and $I$ is compact, $f$ is Lipschitz in $I$.
+		\item If $f$ is Lipschitz, $f$ is continuous.
+	\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+	\[f(y) - f(x) = \int_x^y f'(x) ds\]
+	\[|f(y) - f(x)| = |\int_x^y f'(x) ds| \le \int_x^y |f'(x)| ds\]
+	\[\le \max_{s \in I} |f'(s)| \int_x^y ds = \max_{s \in I} |f'(s)| |y - x|\]
+	We can take $L = \max_{s \in I} |f'(s)|$
+\end{proof}
+
+\begin{remark}
+	The converses of 1. and 2. are false.
+\end{remark}
+
+\begin{remark}
+	\begin{itemize}
+		\item When $f$ is continuous in $I$, we write $f \in C^0 (I)$.
+		\item When $f$ is differentiable in $I$, we write $f \in C^1 (I)$.
+		\item When $f$ is Lipschitz in $I$, we write $f \in C^{0, 1} (I)$.
+		\item We can then write $C^1 (I) \subsetneq C^{0, 1} (I) \subsetneq C^0 (I)$.
+	\end{itemize}
+\end{remark}
+
+\begin{definition}
+	A sequence $(x_n)$ in $\mathbb{R}^d$ converges to $x$ if for every $\epsilon > 0$, for some $N(\epsilon)$, for every $n \ge N(\epsilon)$, $|x_n - x| < \epsilon$.
+
+	This relies on us knowing $x$ in the first place.
+\end{definition}
+
+\begin{definition}
+	A sequence $(x_n)$ is a Cauchy sequence if for every $\epsilon > 0$, for some $N(\epsilon)$, for every $m \ge N, n \ge N$, $|x_n - x_m| < \epsilon$.
+\end{definition}
+
+
+\begin{theorem}
+	Let $(x_n)$ be a Cauchy sequence in $\mathbb{R}^d$. Then $(x_n)$ converges.
+\end{theorem}
+
+This is useful as it allows us to prove convergence without knowing $x$.
+
+\subsection{Fixed Point Iterations}
+
+We seek $x$ such that $f(x) = 0$ for a function $f$. We rewrite this as \[x = g(x)\]
+
+We then seek to solve this equation by iterations:
+
+\begin{enumerate}
+	\item pick some $x_0$
+	\item set $x_{n + 1} = g(x_n)$
+\end{enumerate}
+
+\begin{theorem}
+	(1d local convergence theorem): Let $g \in C'([a, b])$ have a fixed point $x_{\star} \in [a, b]$ ($g(x_{\star}) = x_{\star}$) with $|g'(x_{\star}) < 1$. Then for $x_0$ sufficiently close to $x_{\star}$, the iteeration $x_{n + 1} = g(x_n)$ converges to $x_{\star}$.
+\end{theorem}
+
+\begin{proof}
+	Let $g'(x_{\star}) = L \in (0, 1)$ ($g'(x_{\star}) < 0$ is analogous). Since $g'$ is continuous at $x_{\star}$, for every $L' \in (L, 1)$, for some $\delta(L') > 0$, $g'(x) \le L' < 1$ for every $x \in (x_{\star} - \delta, x_{\star} + \delta) = B_{\delta}$, therefore for every $x \in B_{\delta}$, $y \in B_{\delta}$, $|g(x) - g(y)| \le \sup_{s \in B_{\delta}} |g'(s)| |x - y| = L' |x - y|$ with $L' < 1$.
+
+	Let $x_{\star} \in B_{\delta}$, then $|g(x) - x_{\star}| = |g(x) - g(x_{\star})| \le L' |x - x_{\star}|$ since $x_{\star} = g(x_{\star})$. So $x - x_{\star} \delta$ as $x \in B_{\delta}$, so $|g(x) - x_{\star}| \le L'\delta \le \delta$, therefore $g(B_\delta) \subseteq B_{\delta}$.
+\end{proof}
+
+\begin{remark}
+	We do not need to know $x_{\star}$ to apply the 1d local convergence theorem, we just need to know that $|g'(x)| < 1$ for every $x \in I$ for some interval $I$.
+\end{remark}
+
+\subsection{Order of convergence}
+
+Order of convergence is a rough measure of how quickly $x_n \rightarrow x$. We mainly look at sequences arising from iterations with a nice RHS (so not bisection).
+
+\begin{definition}
+	Let $x_n \rightarrow x_*$ and assume that $x_n \ne x_*$ for every $n \ge 0$. $x_n \rightarrow x_*$ with order at least $\alpha > 1$ if
+
+	\[\lim_{n \rightarrow \infty} \frac{|x_{n + 1} - x_*|}{|x_n - x_*|^{\alpha}} = \lambda < todo\]
+
+	and with order $\alpha = 1$ if also $\lambda < 1$.
+\end{definition}
+
+\begin{example}
+	$x_n = n^{-\beta}$, $\beta > 0$
+
+	\[\frac{|x_{n + 1} - x_*|}{|x_n - x_*|} = (\frac{n}{n + 1})^{\beta} \rightarrow 1\]
+\end{example}
+
+\begin{example}
+	$x_n = e^{-n}$
+
+	\[\frac{|x_{n + 1} - x_*|}{|x_n - x_*|} = 1/e < 1\]
+\end{example}
+
+\begin{example}
+	$x_n = \frac{1}{n!}$
+
+	\[\frac{|x_{n + 1} - x_*|}{|x_n - x_*|} = 1/(n + 1) \rightarrow 0\]
+\end{example}
+
+The order of convergence of $x_n \rightarrow x_*$ is
+
+\[\alpha = \sup \{\beta: \lim_{n \rightarrow \infty} \frac{|x_{n + 1} - x_*|}{|x_n - x_*|^{\beta}} < todo\}\]
+
+for $\alpha > 1$.
+
+For $\alpha = 1$, we also require that the limit $< 1$.
+
+The convergence is linear if $\alpha = 1$, superlinear if $\alpha > 1$ and sublinear otherwise.
+
+\begin{remark}
+	Order of convergence need not be an integer.
+\end{remark}
+
+\begin{remark}
+	We need to know $x_*$ in order to determine order of convergence.
+\end{remark}
+
+\begin{remark}
+	Our definition is not comprehensive for general sequences.
+\end{remark}
+
+Applying this to iterations:
+
+$x_{n + 1} - x_* = g(x_n) - g(x_*) = (x_n - x_*) g'(c_n)$ for some $c \in \text{conv}\{x_n, x_*\}$ by the Mean Value Theorem.
+
+Therefore
+
+\[{|x_{n + 1} - x_*|}{|x_n - x_*|} = |g'(c_n)| \rightarrow g'(x_*)\]
+
+We conclude that for $g \in C^2 (I)$, the iteration $x_{n + 1} = g(x_n)$ converges linearly if $g'(x_*) \ne 0$ and $|g'(x_*)| < 1$, and superlinearly otherwise.
+
+\begin{proposition}
+	Let $g \in C^{N + 1} (D)$ for some $D \subseteq \mathbb{R}$ and let $g(x_*) = x_*$, with $x_*$ in the interior of $D$.
+
+	Then the iteration $x_{n + 1} = g(x_n)$ converges to $x_*$ for $x_0$ sufficiently close to $x_*$ with order $N + 1$ iff $g'(x_*) = g''(x_*) = \dots = g^{(N)} (x_*) = 0$ and $g^{(N + 1)}(x_*) \ne 0$.
+\end{proposition}
+
+\begin{proof}
+	$x_{n + 1} - x_* = g(x_n) - g(x_*) = g(x_*) + (x_n - x_*)g'(x_*) + \dots + \frac{(x_n - x_*)^N}{N!} g^{(N)}(x_*) + \frac{(x_n - x_*)^{N + 1}}{(N + 1)!} g^{(N + 1)}(c_n) - g(x_*) = \frac{(x_n - x_*)^{N + 1}}{(N + 1)!} g^{(N + 1)}(c_n)$. Thus
+
+	\[{|x_{n + 1} - x_*|}{|x_n - x_*|^{N + 1}} = \frac{|g^{(N + 1)}(c_n)|}{(N + 1)!} \rightarrow \frac{|g^{(N + 1)}(x_*)|}{(N + 1)!} < todo\]
+\end{proof}
+
+\subsection{Higher order iterative methods}
+
+We want to rearrange $f(x) = 0$ to get faster convergence.
+
+$x_{n + 1} = g(x_n) = x_n + \phi (x_n) f(x_n)$ for some $\phi$.
+
+Using the above proposition, we need $g'(x_*) = 0$.
+
+$g'(x_*) = 1 + \phi'(x_*)f(x_*) + \phi(x_*)f'(x_*) = 0$
+
+So if $f'(x_*) \ne 0$, we take $\phi(x) = -\frac{1}{f'(x)}$.
+
+This is the Newton-Raphson method:
+
+$x_{n + 1} = x_n - \frac{f(x_n)}{f'(x_n)}$.
+
+Multiplication of a computer is parallelisable while division is not. So we can use Newton-Raphson to divide numbers with multiplication.
+
+To compute $x_* = 1 / b$ so $f(x_*) = \frac{1}{x_*} - b = 0$, so using Newton-Raphson, $x_{n + 1} = x_n - \frac{{x_n}^{-1} - b}{-{x_n}^{-2}} = x_n (2 - b x_n)$ which involes only multiplication and subtraction. When taking out the exponent, $x_0 \in \left[ \frac{1}{2}, 1 \right)$, and this converges quickly.
+
+\begin{remark}
+	This only works with floating points, not integers. Floating point division is 5 times faster than integer division.
+\end{remark}
+
+\begin{remark}
+	It can be difficult in practice to determine the interval/domain of convergence for Newton-Raphson. We should always perform a ``sanity check" when using it.
+\end{remark}
+
+\begin{example}
+	One advantage of iterative methods is that they also work (in principle) in higher dimensions.
+
+	Suppose $f: \mathbb{R}^2 \rightarrow \mathbb{R}^2$ has a root at $\underline{p} = (p_1, p_2)$. Using Taylor expansion at the current point $\underline{x_n}$, derive Newton-Raphson (2D):
+
+	\[\underline{x_{n + 1}} = \underline{x_n} - (Df)^{-1} \underline{f}(\underline{x_n})\]
+
+	We week $\underline{x_*} = \underline{p}$ such that $f_1(p_1, p_2) = f_2(p_1, p_2) = 0$. Taylor-expanding at $\underline{x}$:
+
+	\[0 = f_1(p_1, p_2) = f_1(x_1, x_2) + (p_1 - x_1) \frac{\partial f_1}{\partial x_1} (x_1, x_2) + (p_2 - x_2) \frac{\partial f_1}{\partial x_2} (x_1, x_2) + O(|\underline{p} - \underline{x}|^2)\]
+
+	\[0 = f_2(p_1, p_2) = f_2(x_1, x_2) + (p_1 - x_1) \frac{\partial f_2}{\partial x_1} (x_1, x_2) + (p_2 - x_2) \frac{\partial f_2}{\partial x_2} (x_1, x_2) + O(|\underline{p} - \underline{x}|^2)\]
+
+	In matrix form:
+
+	\[(0, 0) = (f_1(\underline{x}), f_2(\underline{x})) = (Df)(x_1, x_2) \cdot (x_1 - p_1, x_2 - p_2) + O(|\underline{p} - \underline{x}|^2)\]
+
+	Assuming that $Df$ is invertible (equivalently, $f'(\underline{x}) \ne 0$), we can multiply the equation by $(Df)^{-1}$ to get
+
+	\[ (p_1, p_2) = (x_1, x_2) - (((Df)^{-1})(x_1, x_2)) \cdot (f_1(\underline{x}), f_2(\underline{x})) + O(|\underline{p} - \underline{x}|^2)\] So
+	
+	\[\underline{p} = \underline{x} - (((Df)^{-1})(x_1, x_2)) \underline{f}(\underline{x}) + O(|\underline{p} - \underline{x}|^2) \] We can use this to construct our iteration by replacing $\underline{x}$ with $\underline{x_n}$ and $\underline{p}$ with $\underline{x_{n + 1}}$, and removing the $O(|\underline{p} - \underline{x}|^2)$.
+\end{example}
+
+\subsection{Secant method}
+
+One disadvantage of Newton-Raphson is that we need the derivative, $f'$. If $f$ is complicated or is itself computed numerically, we need to approximate $f'$. An alternative method is the secant method.
+
+The secant method approximates $f'$ with:
+
+\[ f'(x_n) \approx \frac{f(x_n) - f(x_{n - 1})}{x_n - x_{n - 1}} \]
+so the iteration becomes
+
+\[ x_{n + 1} = x_n - \frac{x_n - x_{n - 1}}{f(x_n) - f(x_{n - 1})} f(x_n) \]
+
+\begin{remark}
+	This is a (scalar) two-step method: $x_{n + 1} = g(x_n, x_{n - 1})$, where $x_n$ and $x_{n - 1}$ are needed to calculate $x_{n + 1}$.
+\end{remark}
+
+\begin{theorem}
+	Let $f \in C^2$ with $f(x_*) = 0$ and $f'(x_*) \ne 0$. Then the secant method is convergent with order $\alpha = \frac{1 + \sqrt{5}}{2}$ for every $x_0 \ne x_1$ sufficiently close to $x_*$.
+\end{theorem}
+
+\begin{proof}
+	TODO: See video on Panopto
+\end{proof}
+
+\begin{remark}
+	\hfill
+	\begin{enumerate}
+		\item When implementing the secant method, one must be careful with floating point effects:
+
+		\[ \frac{x_n - x_{n - 1}}{f(x_n) - f(x_{n - 1})} \]
+		becomes very inaccurate as $x_n - x_{n - 1} \rightarrow 0$.
+		\item $e_n := x_n - x_*$ alternates in sign if $g'(x_k) < 0$ and has the same sign if $g'(x_*) > 0$. From the proof of the method,
+		
+		\[ e_{n + 1} = e_n e_{n - 1} \frac{f''(\theta_n)}{f'(\phi_n)} \]
+		where $\theta_n, \phi_n \in \text{conv} \{x_{n - 1}, x_n, x_{n + 1} \}$.
+
+		For $e_0 e_1 < 0$ and $n$ sufficiently large, the error $e_n$ follows the pattern $+,+,-$ or $-,-,+$.
+	\end{enumerate}
+\end{remark}
+
+\clearpage
+\section{Numerical differentiation}
+
+\subsection{Forward/backward difference}
+
+$f'(x) = \lim_{h \rightarrow 0} \frac{f(x + h) - f(x)}{h} \approx \frac{f(x + h) - f(x)}{h}$ for some small $h \ne 0$.
+
+More rigorously, we can use Taylor series:
+
+\[ f(x + h) = f(x) + h f'(x) + \frac{h^2}{2} f''(\xi) \]
+where $\xi \in \text{conv} \{x, x + h \}$. So
+
+\[ f'(x) = \frac{f(x + h) - f(x)}{h} - \frac{h}{2} f''(\xi) \]
+The error $\frac{h}{2} f''(\xi)$ is of order $O(h)$.
+
+For $h > 0$ this is called forward difference.
+
+For $h < 0$, this is called backward difference.
+
+\subsection{Centred difference}
+
+\[ f(x \pm h) = f(x) \pm h f'(x) + \frac{h^2}{2} f''(x) \pm \frac{h^3}{6} f'''(\xi_{\pm}) \]
+Then
+
+\[ f'(x) = \frac{f(x + h) - f(x - h)}{2h} + \frac{h^2}{12} \left( f'''(\xi_+) + f'''(\xi_-) \right) \]
+The error $\frac{h^2}{12} \left( f'''(\xi_+) + f'''(\xi_-) \right)$ is of order $O(h^2)$.
+
+\begin{remark}
+	It is important to \textbf{not take $h$ too small} when computing numerically. There is always a tradeoff between formal analytical accuracy and floating point errors. Formal analytical accuracy is better for smaller $|h|$, floating point errors are worse for smaller $|h|$.
+\end{remark}
+
+\begin{remark}
+	Sometimes, we can only take $h < 0$ or $h > 0$ (not both), e.g. when solving differential equations numerically. If we have an ODE
+
+	\[ \frac{du}{dt} = F(u) \]
+	Given $u(0)$ we want to solve for $u(t), t \ge 0$. We approximate $u(t)$ by a $u(t_n)$ with $t_n = n \delta t, n \in \mathbb{N}$, with $\delta t > 0$ small. Then
+
+	\[ \frac{du}{dt} \approx \frac{u(t_n + \delta t) - u(t_n)}{\delta t} \approx F(u(t_n)) \]
+\end{remark}
+
+\subsection{Richardson extrapolation}
+
+Let $f'(x) - \frac{f(x + h) - f(x)}{h} = f'(x) - R_h^{(1)} (x) = c_1(x) h + c_2(x) h^2 + c_3(x) h^3 + \cdots$ but suppose we cannot compute the $c_k$.
+
+$R_{h / 2}^{(1)} (x) = f'(x) - c_1 \frac{h}{2} - c_2 \frac{h^2}{4} - c_3 \frac{h^3}{6} - \cdots$. We can use this to eleminate $c_1$:
+
+\[ 2 R_{h / 2}^{(1)} (x) - R_h^{(1)} (x) = f'(x) - c_2' h^2 - c_3' h^3 - \cdots \]
+So the error is of order $O(h^2)$. Then
+
+\[ f'(x) = R_h^{(2)} (x) + O(h^2) \]
+where $R_h^{(2)} = 2 R_{h / 2}^{(1)} (x) - R_h^{(1)} (x)$.
+
+Now, $R_{h / 2}^{(2)} (x) = f'(x) - c_2' \frac{h^2}{4} - c_3' \frac{h^3}{8}$ and we use this to eliminate $c_2'$:
+
+\[ 4 R_{h / 2}^{(2)} (x) - R_h^{(2)} (x) = 3 f'(x) + O(h^3) \]
+
+So we set
+
+\[ R_h^{(3)} := \frac{2^2 R_{h / 2}^{(2)} (x) - R_h^{(2)}(x)}{2^2 - 1} = f'(x) + O(h^3) \]
+
+\begin{remark}
+	\hfill
+	\begin{enumerate}
+		\item We only need to specify the powers of $h$, not the coefficients $c_k$ as long as they are \textbf{non-zero}. So when using centred difference to calculate $R_h^{(1)}$ then $R_h^{(2)}$, $R_h^{(3)}$ will be different.
+		\item Richardson extrapolation works with many other approximation methods involving a small parameter (not just differentiation).
+		\item There is no standard notation for this method.
+		\item Some series expansions have irregular/non-integer powers, e.g. the Airy function $\text{Ai}(x)$ which is a solution of $\frac{d^2 f}{dx^2} = x f(x)$.
+	\end{enumerate}
+\end{remark}
+
+\end{document}

@@ -1,0 +1,649 @@
+\documentclass[12pt,a4paper]{article}
+\AddToHook{cmd/section/before}{\clearpage}
+
+\usepackage[a4paper, total={6in, 10in}]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{amsfonts, amsmath, amssymb}
+\usepackage{amsthm}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[subsection]
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{corollary}[definition]{Corollary}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{example}[definition]{Example}
+\newtheorem*{remark}{Remark}
+
+\title{Complex Analysis II Course Notes}
+\author{Isaac Holt}
+
+\begin{document}
+
+\maketitle
+
+\section{Mobius Transformations}
+
+\begin{corollary}
+	Any Mobius transformation is a bijection from $\hat{\mathbb{C}}$ to $\hat{\mathbb{C}}$.
+\end{corollary}
+
+Let $T \in GL_2(\mathbb{C})$ and $M_T$ be a Mobius transformation, then a point $z$ is a fixed point of $M_T$ if $M_T(z) = z$.
+
+\begin{lemma}
+	Let $T \in GL_2(\mathbb{C})$. If $M_T: \mathbb{C} \rightarrow \mathbb{C}$ is not the identity map, then $M_T$ has at most two fixed points in $\mathbb{C}$. If a Mobius transformation has three fixed points then it is the identity map.
+\end{lemma}
+
+\begin{proof}
+	Case 1: Suppose $M_T(\infty) = \infty$. From the definition, $M_T(z) = \frac{az + b}{cz + d}$, therefore $c = 0$. So $M_T(z) = \frac{a}{d}z + \frac{b}{d}$, with $a \ne 0, d \ne 0$ (since $\det T \ne 0$).
+
+	Such an affine linear map has at most one fixed point because:
+	\begin{itemize}
+		\item If $a \ne d$ then $\frac{a}{d}z + \frac{b}{d} = z \Longleftrightarrow z = \frac{b}{d - a}$ so $M_T$ has a unique fixed point.
+		\item If $a = d$ then $b \ne 0$ (since we assume $M_T$ is not the identity). So $M_T(z) = z + \frac{b}{a}$ is a translation which has no fixed points.
+	\end{itemize}
+
+	Case 2: Suppose $M_T(\infty) \ne \infty$. Suppose $z_0 \in \mathbb{C}$ is such that $M_T(z_0) = z_0$. We have $M_T(z_0) = z_0 \Longleftrightarrow \frac{a z_0 + b}{c z_0 + d} = z_0 \Longleftrightarrow c z_0 ^ 2 + (d - a)z_0 - b = 0$. This quadratic equation has at most two roots so there are at most two fixed points of $M_T$.
+\end{proof}
+
+\begin{definition}
+	Given four distinct points $z_0, z_1, z_2, z_3 \in \mathbb{C}$, the cross-ratio of these points denoted $(z_0, z_1; z_2, z_3)$ is defined by
+	\[\frac{(z_0 - z_2)(z_1 - z_3)}{(z_0 - z_3)(z_1 - z_2)}\]
+
+	We extend the definition to the case where one of the points is $\infty$ by removing all differences involving that point e.g. $(\infty, z_0; z_2, z_3) = \frac{z_1 - z_3}{z_1 - z_2}$.
+\end{definition}
+
+\begin{theorem}
+	(Three points theorem)
+	Let ${z_1, z_2, z_3}$ and ${w_1, w_2, w_3}$ be two sets of three ordered points in $\hat{\mathbb{C}}$. Then there exists a unique Mobius transformation $f$ such that $f(z_i) = w_i$ for every $i \in \{1, 2, 3\}$.
+\end{theorem}
+
+\begin{proof}
+	Existence:
+
+	We consider the functions $F(z) = (z, w_1; w_2, w_3) = \frac{(z - w_2)(w_1 - w_3)}{(z - z_3)(w_1 - w_2)}$ and $G(z) = \frac{(z - z_2)(z - z_3)}{(z - z_3)(z_1 - z_2)}$. These are Mobius transformations with the properties that $F(w_1) = 1$, $F(w_2) = 0$, $F(w_3) = \infty$ and similarly, $G(z_1) = 1$, $G(z_2) = 0$, $G(z_3) = \infty$. Therefore $F^{-1} \circ G$ maps each $z_i$ to $w_i$.
+
+	Uniqueness:
+
+	Assume that there are two such maps, say $f_1$ and $f_2$. Then the Mobius transformation $H = f_1 ^ {-1} \circ f_2$ satisfies $H(z_i) = z_i$.
+
+	This shows that $H$ has three fixed points so, by Three Point Theorem, it must be the identity. Thus $f_1 = f_2$.
+\end{proof}
+
+\begin{proposition}
+	Mobius transformations preserve the cross ratio. That is, if $z_0, z_1, z_2, z_3$ are four distinct points in $\hat{\mathbb{C}}$ and $f$ is a Mobius transformation, then $(f(z_0), f(z_1); f(z_2), f(z_3)) = (z_0, z_1; z_2, z_3)$.
+\end{proposition}
+
+\begin{proof}
+	Let $w_i = f(z_i)$ for every $i \in \{1, 2, 3\}$. Let $F(z) = (z, w_1; w_2, w_3)$ and $G(z) = (z, z_1; z_2, z_3)$. Recall $F^{-1} \circ G$ maps $z_i$ to $w_i$ like $f$ does. Since there is a unique Mobius transformation with this property, we have \[f = F^{-1} \circ G\] and \[F \circ f = G\]
+
+	That is, $(f(z_0), w_1; w_2, w_3) = F \circ f (z_0) = G(z_0) = (z_0, z_1; z_2, z_3)$.
+\end{proof}
+
+\begin{remark}
+	General strategy: to find Mobius transformation, find image of 3 points and use the fact that cross ratio is preserved. Plug known points into (*) and rearrange for $f(z_0)$.
+\end{remark}
+
+\subsection{The Riemann Sphere Revisited}
+
+Circles in $\hat{\mathbb{C}}$ correspond to circles in $S^2$ that don't pass through $N$ (the North pole).
+\\
+Lines in $\hat{\mathbb{C}}$ correspond to circle in $S^2$ that pass through $N$.
+
+\begin{remark}
+	Mobius transformations give all biholomorphic maps from $S^2$ to $S^2$.
+\end{remark}
+
+\begin{remark}
+	Stereographic projections are conformal.
+\end{remark}
+
+\subsection{Mobius transformations preserving the upper half plane and the unit disc}
+
+Notation: for a domain $D \subset \mathbb{C}$, let $Mob(D)$ be the set of Mobius transformations $f$ such that $f(D) = D$.
+
+\begin{proposition}
+	(H2H) Every Mobius transformation mapping $\mathbb{H}$ to $\mathbb{H}$ ($\mathbb{H} = \{ z \in \mathbb{C}: Im(z) > 0\}$) is of the form $M_T$ with $T \in SL_2 (\mathbb{R}) := \{T = \begin{matrix}
+		()
+	\end{matrix}: a, b, c, d \in \mathbb{R}, \det T = 1\}$
+	
+	Conversely, every such Mobius transformation maps $\mathbb{H}$ to $\mathbb{H}$ and hence a biholomorphism from $\mathbb{H}$ to $\mathbb{H}$.
+
+	i.e. H2H: $f \in \text{Mob}(\mathbb{H}) \Leftrightarrow f = M_T$ with $T \in SL_2 (\mathbb{R})$.
+\end{proposition}
+
+\begin{remark}
+	$T \rightarrow M_T$ gives a group homomorphism $SL_2 (\mathbb{R}) \rightarrow Aut(\mathbb{H})$
+\end{remark}
+
+\begin{proof}
+	Any Mobius transformation $f: \mathbb{H} \rightarrow \mathbb{H}$ must map $\partial \mathbb{H}$ to $\partial \mathbb{H}$. As $\partial \mathbb{H}$ is the real line, $f: \mathbb{R} \cup \infty \rightarrow \mathbb{R} \cup \infty$. So $f$ must map the ordered set $\{1, 0, \infty \}$ to $\{x_1, x_2, x_3\}$ for some $x_i \in \mathbb{R} \cup \infty$.
+
+	We know that the cross ratio is preserved under a Mobius transformation:
+	\[(f(z), x_1; x_2, x_3) = \frac{(f(z) - x_2)(x_1 - x_3)}{(f(z) - x_3)(x_1 - x_2)} = \frac{z - 0}{1 - 0} = (z, 1; 0, \infty)\]
+	\[\Leftrightarrow (f(z) - x_2)(x_1 - x_3) = z (f(z) - x_3)(x_1 - x_2)\]
+	\[\Leftrightarrow f(z) = \frac{x_3 (x_1 - x_2) z + x_2 (x_3 - x_1)}{(x_1 - x_2)z + x_3 - x_1}\]
+
+	We see that the coefficients of $T$ are real.
+	
+	If $T \in GL_2 (\mathbb{R})$ and $z = x + iy$ then
+	\[Im(M_T(z)) = Im(\frac{az + b}{cz + d}) = Im(\frac{(az + b)(c \bar{z} + d)}{|cz + d|^2})\]
+	\[= Im(\frac{bc \bar{z} + adz}{(cz + d)}) = \frac{y \det T}{|cz+d|}\]
+
+	We have $z \in \mathbb{H} \Leftrightarrow y > 0$ so $M_T(z) \in H \Leftrightarrow T \in GL_2(\mathbb{R})$, $\det T > 0$. We can therefore replace $T$ by a real matrix of determinant 1 by scaling $T$ by a real number.
+\end{proof}
+
+\begin{proposition}
+	(D2D): Every Mobius transformation from the unit disc $\mathbb{D} = \{z \in \mathbb{C}: |z| < 1\}$ to $\mathbb{D}$ is of the form $T \in SU(1, 1)$
+
+	Conversely, every such Mobius transformation maps $\mathbb{D}$ to $\mathbb{D}$ and hence gives a h
+	biholopmorhpic automorphism of $\mathbb{D}$.
+
+	i.e. $f \in Mob(\mathbb{D}) \Leftrightarrow f = M_T$, $T \in SU(1, 1)$.
+\end{proposition}
+
+\begin{proof}
+	($\Rightarrow$): Let $M_T: \mathbb{D} \rightarrow \mathbb{D}$ be a Mobius transformation. The Cayley map $H_C$ maps $\mathbb{H}$ to $\mathbb{D}$. We have that $f = M_C^{-1} \circ M_T \circ M_C$ is a Mobius transformation from $\mathbb{H}$ to $\mathbb{H}$. By proposition 4.20, we have $f = M_S$ where $S \in SL_2(\mathbb{R})$.
+
+	Hence $C^{-1} T C = S \in SL_2(\mathbb{R})$ by Lemma 4.4.
+
+	Let $S \in \mathbb{M}_2(\mathbb{R})$, $\det S = 1$. Then $T = CSC^{-1}$. Evalutating this shows $T \in SU(1, 1)$.
+
+	($\Leftarrow$): If $T \in SU(1, 1)$, then the same calculation in reverse shows that the matrix $S = C^{-1} T C \in SL_2(\mathbb{R})$. Then $M_S: \mathbb{H} \rightarrow \mathbb{H}$ is a Mobius transformation by proposition 4.20 (H2H), and the map $M_T := M_C \circ M_S \circ M_C^{-1}$ is a Mobius transformation from $\mathbb{D}$ to $\mathbb{D}$
+\end{proof}
+
+\begin{remark}
+	$T \rightarrow M_T$ gives a group homomorphism from $SU(1, 1)$ to $Aut(\mathbb{D})$.
+\end{remark}
+
+\begin{corollary}
+	(D2D*):
+	\begin{enumerate}
+		\item Every Mobius transformation $f$ from $\mathbb{D}$ to $\mathbb{D}$ can be written as
+		\[f(z) = e^{i\theta} \frac{z - z_0}{\bar{z_0}z - 1}\]
+		for some angle $\theta$ and $z_0 \in \mathbb{D}$ where $z_0$ is the unique point in $\mathbb{D}$ such that $f(z_0) = 0$.
+		\item Every Mobius transformation of the unit disc $\mathbb{D}$ to $\mathbb{D}$ for which $f(0) = 0$ are rotations about $0$.
+	\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+	\begin{enumerate}
+		\item By proposition D2D, we have
+		\[f(z) = \frac{az + b}{\bar{b}z + \bar{a}} = \frac{a(z + b / a)}{-\bar{a}((-\bar{b} / \bar{a}) z - 1)} = -\frac{a}{\bar{a}} \frac{z - (-b / a)}{(-\bar{b} / \bar{a}) z - 1}\]
+
+		So $z_0 = -\frac{b}{a}$. Since $|-\frac{a}{\hat{a}} = 1$, $-\frac{a}{\hat{a}} = e^{i\theta}$ for some $\theta \in (-\pi, \pi]$.
+
+		$|z_0|^2 - 1 = |-\frac{b}{a}|^2 - 1 = \frac{|b|^2}{|a|^2} - 1$. Now $1 = |a|^2 - |b|^2$ so $|z_0|^2 - 1 = \frac{-1}{|a|^2} < 0$ so $|z_0|^2 < 1$ and so $|z_0| < 1$.
+		\item $f(0) = 0 \Leftrightarrow e^{i\theta} \frac{0 - z_0}{\bar{z_0}\cdot 0 - 1} = 0 \Leftrightarrow z_0 = 0 \Leftrightarrow f(z) = e^{i\theta}\frac{z - 0}{0 - 1} = e^{-i\theta}z$.
+		
+		So $f$ is a rotation.
+	\end{enumerate}
+\end{proof}
+
+\begin{remark}
+	The map $g(z) = \frac{z - z_0}{\bar{z_0}z - 1}$ swaps $z_0$ and $0$ and is an involution ($g \circ g = Id$). Also, $z \rightarrow e^{i\theta}z$ is a rotation.
+
+	So every Mobius transformation from $\mathbb{D}$ to $\mathbb{D}$ is given by an involution followed by a rotation.
+\end{remark}
+
+\subsection{Finding biholomorphic maps between domains}
+
+To find a biholomorphism $f$ between domains, we build $f$ in various stages using simpler known maps.
+
+\begin{example}
+	Find biholomorphism from $D = \{z \in \mathbb{D}: Im(z) < 0\}$ to $\mathbb{H}$.
+
+	The Cayley Map $M_C$ is a map from $\mathbb{H}$ to $\mathbb{D}$, so $M_C^{-1}: \mathbb{D} \rightarrow \mathbb{H}$, $M_C^{-1}(z) = \frac{iz + i}{-z + 1}$.
+
+	To find the image of $D$ under $M_C^{-1}$, consider how it acts on two segments of $\delta D$:
+
+	\begin{itemize}
+		\item Under $M_C^{-1}$, $-1 \rightarrow 0$, $0 \rightarrow i$ and $1 \rightarrow \infty$. Therefore the line segment from $-1$ to $1$ through $0$ is mapped to the positive imaginary axis.
+		\item Under $M_C^{-1}$, $-i \rightarrow 1$, so the circular arc from $-1$ to $1$ through $-i$ is mapped to the positive real axis.
+	\end{itemize}
+
+	Now $-\frac{i}{2} \in D$ and $M_C^{-1}(-\frac{i}{2}) = \frac{4 + 3i}{5}$. The image of $D$ under $M_C^{-1}$ is $\Omega = \{w \in \mathbb{C}: 0 < Arg(w) < \frac{\pi}{2}\}$.
+
+	Now we find a biholomorphic map from $\Omega$ to $\mathbb{H}$. $g(z) = z^2$ satisfies this, as it doubles the argument of $z$.
+
+	So the map is $f = g \circ M_C^{-1}$, $f: D \rightarrow \mathbb{H}$.
+\end{example}
+
+\section{Notions of convergence in complex analysis and power series}
+
+\subsection{Pointwise and uniform convergence}
+
+\begin{definition}
+	Let $(X, d_X)$ and $(Y, d_Y)$ be two metric spaces. A sequence of functions ${\{f_n\}}_{n \in \mathbb{N}}: X \rightarrow Y$ converges pointwise (on $X$) to $f$ if for every $x \in X$, the limit function $f(x) := \lim_{n \rightarrow \infty} f_n(x)$ exists in $Y$.
+
+	In other words, we have for every $x \in X$ and for every $\epsilon > 0$, for some $N \in \mathbb{N}$, for every $n > N$, $d_Y(f_n(x), f_n(x)) < \epsilon$. (Not that $N$ depends on $x$).
+\end{definition}
+
+\begin{remark}
+	For every $x \in X$, $f_n(x)$ is just a sequence of points in $Y$. The above definition is what we get by applying definition 2.11 (in notes) to the sequence $f_n(z)$.
+\end{remark}
+
+\begin{example}
+	Let $f_n(z) = z^n$, $f_n: \mathbb{C} \rightarrow \mathbb{C}$. There are the following cases:
+
+	\begin{enumerate}
+		\item $z \in \mathbb{D}$. Let $\epsilon > 0$. Then $|z|^N < \epsilon$ for every $N > \frac{\log \epsilon}{\log |z|}$. So for every $n > N$ we have $f_n(z) - 0 = |z|^n < |z|^N \epsilon$, hence $\lim_{n \rightarrow \infty} f_n(z) = 0 \in \mathbb{D}$.
+		\item $|z| = 1$. The point $z$ rotates around the unit circle $\delta \mathbb{D}$ by $Arg(z)$ anticlockwise every iteration. For $z \ne 1$, this sequence doesn't converge. But for $z = 1$, $\lim_{n \rightarrow \infty} f_n(z) = \lim_{n \rightarrow \infty} 1 = 1$.
+		\item $|z| > 1$. The value of $|z|^n$ is unbounded so doesn't converge.
+	\end{enumerate}
+
+	The sequence $f_n$ doesn't converge pointwise on $\mathbb{C}$. But it is pointwise convergent on $\mathbb{D} \cup {1}$ with limit function:
+
+	\begin{equation}
+		f(z) =
+		\begin{cases}
+			0 & \text{if } z \in \mathbb{D}\\
+			1 & \text{if } z = 1
+		\end{cases}
+	\end{equation}
+\end{example}
+
+\begin{definition}
+	Let $(X, d_X)$ and $(Y, d_Y)$ be two metric spaces. A sequence of functions ${\{f_n\}}_{n \in \mathbb{N}}: X \rightarrow Y$ converges uniformly (on $X$) to the limit function $f$ if for every $\epsilon > 0$ for some $N \in \mathbb{N}$, for every $n > N$, $d_Y(f_n(x), f(x)) < \epsilon$ for every $x \in X$.
+\end{definition}
+
+\begin{theorem}
+	Let $(X, d_X)$ and $(Y, d_Y)$ be two metric spaces and let ${\{f_n\}}_{n \in \mathbb{N}}: X \rightarrow Y$ be a sequence of functions that converges uniformly to $f$ on $X$.
+
+	Then $f$ is continuous on $X$.
+\end{theorem}
+
+\begin{proof}
+	Same as in Analysis I.
+\end{proof}
+
+\begin{lemma}
+	let ${\{f_n\}}_{n \in \mathbb{N}}: X \rightarrow \mathbb{C}$ be a sequence of functions converging pointwise to a limit function $f$.
+
+	\begin{enumerate}
+		\item If $|f_n(x) - f(x)| \le s_n$ for every $x \in X$ where ${\{s_n\}}_{n \in \mathbb{N}}$ is some sequence in $\mathbb{R} > 0$ (independent of $x$) with $\lim_{n \rightarrow \infty} s_n = 0$ then $f_n$ converge uniformly to $f$ on $X$.
+		\item If for some sequence $x_n \in X$, $|f_n(x_n) - f(x_n)| \ge c$ for some positive constant $c$ then $f_n$ does not converge uniformly to $f$ on $X$.
+	\end{enumerate}
+\end{lemma}
+
+\begin{theorem}
+	(Weierstrass M-test): Let $f_n: X \rightarrow \mathbb{C}$ be a sequence of fucntions such that $|f_n(x)| \le M_n$ for every $x \in X$ and $\sum_{n = 1}^{\infty} M_n < \infty$.
+
+	Then $\sum_{n = 1}^{\infty} f_n$ converges uniformly on $X$ to some limit function $f: X \rightarrow \mathbb{C}$.
+\end{theorem}
+
+\begin{proof}
+	Similar to Analysis I.
+\end{proof}
+
+\begin{theorem}
+	Let a sequence of functions $f_n: [a, b] \rightarrow \mathbb{R}$ converge uniformly on an interval $[a, b]$ to some function $f$, such that $\{f_n\}$ are all continuous. Then
+
+	\[\lim_{n \rightarrow \infty} \int_a^c f_n(x) dx = \int_a^c f(x) dx \text{ for every } c \in [a, b]\]
+\end{theorem}
+
+\begin{definition}
+	Let ${\{f_n\}}_{n \in \mathbb{N}}$ be a sequence of functions in a metric space $X$. $f_n$ converges locally uniformly (on $X$) to the limit function $f$ if for every $x \in X$, for some open set $U \subset X$ containing $x$, $f_n$ converges uniformly to $f$ on $U$.
+\end{definition}
+
+\begin{theorem}
+	Let ${\{f_n\}}_{n \in \mathbb{N}}$ be a sequence of continuous functions which converges locally uniformly on $X$ to a limit function $f$. Then $f$ is continuous on $X$.
+\end{theorem}
+
+\begin{proof}
+	For every $x \in X$, $f_n$ converges uniformly on some open set $U$ containing $x$. Hence $f$ is continuous on $U$ by theorem 5.5 (in notes). So $f$ is continuous at $x$ for every $x \in X$.
+\end{proof}
+
+\begin{remark}
+	The limit of a locally uniform convergent sequence of holomorphic functions is again holomorphic.
+\end{remark}
+
+\begin{example}
+	For every $w \in \mathbb{D}$, for some $r < 1$, $w \in B_r(0)$ and $B_r(0)$ is open. Then for every $z \in B_r(0)$, $|z|^n < r^n$ and $\lim_{n \rightarrow \infty} r_n = 0$. So by lemma 5.6 (in notes), with $s_n = r^n$, $f_n$ converges uniformly to $f$ in $B_r(0)$.
+\end{example}
+
+\begin{remark}
+	To prove that the limit function is conitnuous on all of $\mathbb{D}$, it is enough to prove locally uniform convergence on every ball $B_r(0)$, $0 < r < 1$, in $\mathbb{D}$.
+\end{remark}
+
+\begin{theorem}
+	Let $X$ be a metric space and let $f_n: X \rightarrow \mathbb{C}$ be a sequence of continuous functions such that for any $y \in X$, there is an open $U \subset X$ containing $y$ and constants $M_n > 0$ with $\sum_{n = 1}^{\infty} M_n < \infty$ and $|f_n(x)| \le M_n$ for every $x \in U$. Then $\sum_{n = 1}^{\infty} f_n$ converges locally uniformly to a continuous function on $X$.
+\end{theorem}
+
+\begin{proof}
+	Given $y \in X$, the hypotheses of the theorem imply that for some constants $M_n > 0$, $|f_n(y)| \le M_n$ and $\sum_{n = 1}^{\infty} M_n < \infty$.
+
+	\[|F_k(y)| = |\sum_{n = 1}^k f_n(y)| \le \sum_{n = 1}^{\infty} |f_n(y)| \le \sum_{n = 1}^k M_n\]
+
+	As $k \rightarrow \infty$, the RHS $\sum_{n = 1}^k M_n$ converges so it must be bounded, and let the upper bound by $L$. Thus for every $k$, $|F_k(y)| \le L$. So the sequence ${(F_k(y))}_k$ is bounded, hence it lies in some boundedd, closed ball in $\mathbb{C}$, which is compact by Heine-Borel.
+
+	Therefore there is a subsequence ${(F_{k_j}(y))}_{k_j}$ that converges to $F(y)$.
+
+	Now, for $k_j > k$,
+
+	\[|F_{k_j}(y) - F_k(y)| = |\sum_{n = k + 1}^{k_j} f_n(y)| \le \sum_{n = k + 1}^{k_j} |f_n(y)| \le \sum_{n = k + 1}^{k_j} M_n\]
+
+	Taking the limit as $j \rightarrow \infty$, both the LHS and RHS converge, and we get
+
+	\[|F(y) - F_k(y)| \le \sum_{n = k + 1}^{\infty} M_n\]
+
+	Now taking the limit as $k \rightarrow \infty$, we get
+
+	\[\lim_{k \rightarrow \infty} |F(y) - F_k(y)| = 0\]
+
+	since the RHS tends to zero.
+
+	Repeating this for every $y$, $F_k \rightarrow F$ pointwise on $X$.
+
+	From the hypotheses of the theorem, we have that for every $y \in X$, for some open $U \subset X$ containing $y$ and constants $M_n > 0$ with $\sum_{n = 1}^{\infty} < \infty$ and $|f_n(x)| \le M_n$ for every $x \in U$.
+
+	Then, for every $x \in U$ and for every $L > k$,
+
+	\[|F_L(x) - F_k(x)| = |\sum_{n = k + 1}^L f_n(x)| = \sum_{n = k + 1}^L |f_n(x)| \le \sum_{n = k + 1}^L M_n\]
+
+	Taking the limit as $l \rightarrow \infty$:
+
+	\[|F(x) - F_k(x)| \le \sum_{n = k + 1}^{\infty} M_n\]
+
+	for every $x \in U$.
+
+	$\lim_{k \rightarrow \infty} \sum_{n = k + 1}^{\infty} M_n = 0$. So by lemma 5.6 (in notes), $F_k \rightarrow F$ uniformly on $U$.
+\end{proof}
+
+\subsection{Complex power series}
+
+\begin{theorem}
+	A complex power series is an expression of the form $\sum_{n = 0}^{\infty} a_n (z - c)^n$, $a_n, c \in \mathbb{C}$. There are three cases:
+
+	\begin{enumerate}
+		\item $\sum_{n = 0}^{\infty} a_n (z - c)^n$ converges only for $z = c$ ($R = 0$).
+		\item There exists $R > 0$ (radius of convergence) such that
+		\begin{itemize}
+			\item $\sum_{n = 0}^{\infty} a_n (z - c)^n$ converges absolutely for $|z - c| < R$ (We call $B_R(c)$ the disc of convergence).
+			\item $\sum_{n = 0}^{\infty} a_n (z - c)^n$ diverges for $|z - c| > R$ (anything can happen on the circle $|z - c| = R$).
+		\end{itemize}
+		\item $\sum_{n = 0}^{\infty} a_n (z - c)^n$ converges absolutely for every $z \in \mathbb{C}$ ($R = \infty$).
+	\end{enumerate}
+\end{theorem}
+
+\begin{remark}
+	Radius of convergence is usually determined via ratio test or root test.
+\end{remark}
+
+\begin{theorem}
+	A power series $\sum_{n = 0}^{\infty} a_n (z - c)^n$ with radius of convergence $0 < R < \infty$ converges uniformly on every ball $B_r(c)$ with $0 < r < R$. This implies that the power series is locally uniformly convergent on its disc of convergence.
+\end{theorem}
+
+\begin{proof}
+	Follows via the M-test.
+\end{proof}
+
+\begin{remark}
+	The power series do not converge uniformly in the entire disc of conergence $B_R(c)$.
+\end{remark}
+
+\begin{proposition}
+	Let $\sum_{n = 0}^{\infty} a_n (z - c)^n$ be a power series with radius of convergence $0 < R < \infty$. Then the formal derivatives and antiderivatives
+
+	\[\sum_{n = 0}^{\infty} n a_n (z - c)^{n - 1}\] and
+
+	\[\sum_{n = 0}^{\infty} \frac{a_n}{n + 1} (z - c)^{n + 1}\]
+
+	have the same radius of convergence $R$.
+\end{proposition}
+
+\begin{theorem}
+	Let $\sum_{n = 0}^{\infty} a_n (z - c)^n$ be a power series with radius of convergence $0 < R < \infty$ and let $f: B_R(c) \rightarrow \mathbb{C}$ be the resulting limit function. Then $f$ is holomorphic on $B_R(c)$ with
+
+	\[f'(z) = \sum_{n = 0}^{\infty} n a_n (z - c)^{n - 1}\] for $z \in B_R(c)$.
+\end{theorem}
+
+\begin{proof}
+	Assume $c = 0$ (the general case for $c$ is analogous).
+
+	\[f(z) - f(w) = \sum_{n = 1}^{\infty} a_n (z^n - w^n) = \sum_{n = 1}^{\infty} (z - w) q_n(z)\]
+	
+	where $q_n(z) = \sum_{k = 0}^{n - 1} w^k z^{n - 1 - k}$.
+
+	So for $z \ne w$, let $h(z) := \frac{f(z) - f(w)}{z - w} = \sum_{n = 1}^{\infty} a_n q_n(z)$
+
+	Given $z_0 \in B_R(0)$, let $r < R$ such that $w, z_0 \in B_r(0)$. To apply the local M-test, we need constants $M_n$ for this set $B_r(0)$ that bound the terms $a_n q_n(z)$ defining $h$.
+
+	For $z \in B_r(0)$,
+
+	\[|a_n q_n(z)| = |a_n \sum_{k = 0}^{n - 1} w^k z^{n - 1 - k}| \le |a_n| \sum_{k = 0}^{n - 1} |w|^k |z|^{n - 1 - k} < |a_n| \sum_{k = 0}^{n - 1} r^{n - 1} = n |a_n| r^{n - 1}\]
+
+	So let $M_n = n|a_n| r^{n - 1}$, then $\sum_{n = 1}^{\infty} M_n = \sum_{n = 1}^{\infty} n|a_n| r^{n - 1}$ which converges by proposition 5.19 (in lecture notes).
+
+	The formal derivative $\sum_{n = 1}^{\infty} n a_n r^{n - 1}$ has radius of convergence $R$ so converges absolutely on its disc of convergence $B_R(0)$. In particular, it converges at $z = R$. By the local M-test, the series defining $h$ converges locally uniformly to a continuous function on $B_R(0)$. Hence
+	
+	\[\lim_{z \rightarrow w} \frac{f(z) - f(w)}{z - w} = \lim_{h \rightarrow w} h(z) = h(w) = \sum_{n = 1}^{\infty} a_n q_n(w) = \sum_{n = 1}^{\infty} n a_n w^{n - 1}\]
+\end{proof}
+
+\begin{corollary}
+	A power series $f$ as theorem 5.21 (in lecture notes) with positive radius of convergence $R$ can be differentiated infinitely many times and
+	
+	\[f^{(k)} := \sum_{n = k}^{\infty} k! {n \choose k} a_n {(z - c)}^{n - k}\] for $z \in B_R(c)$
+\end{corollary}
+
+\begin{corollary}
+	A power series $f$ as in theorem 5.21 (in lecture notes) with positive radius of convergence $R$ has a holomorphic antiderivative $F: B_R(c) \rightarrow \mathbb{C}$, with $F'(z) = f(z)$, defined by
+
+	\[F(z) := \sum_{n = 0}^{\infty} \frac{a_n}{n + 1} {(z - c)}^{n + 1}\]
+\end{corollary}
+
+\hfill
+
+\section{Complex integration over contours}
+
+\subsection{Definition of contour integrals}
+
+\begin{definition}
+	For a continuous function $f: [a, b] \rightarrow \mathbb{C}$, with $f(z) = u(z) + i v(z)$,
+
+	\[\int_a^b f(t) dt := \int_a^b u(t) dt + i \int_a^b v(t) dt \in \mathbb{C}\]
+\end{definition}
+
+\begin{lemma}
+	\hfill
+	\begin{enumerate}
+		\item Let $f_1$ and $f_2$ be continuous functions from $[a, b]$ to $\mathbb{C}$. Then $\int_a^b (f_1(t) + f_2(t)) dt = \int_a^b f_1(t) dt + \int_a^b f_2(t) dt$.
+		\item For any complex number $c \in \mathbb{C}$ and continuous function $f: [a, b] \rightarrow \mathbb{C}$,
+		
+		\[ \int_a^b c f(t) dt = c \int_a^b f(t) dt \]
+	\end{enumerate}
+\end{lemma}
+
+\begin{definition}
+	A smooth curve in $\mathbb{C}$ is a continuously differentiable function $\gamma: [0, 1] \rightarrow \mathbb{C}$ (i.e. differentiable with continuous derivative). More generally we can consider continuously differentiable curves $\gamma: [a, b] \rightarrow \mathbb{C}$. We say that such curves are $C^1$.
+
+\end{definition}
+
+\begin{remark}
+	We write $\gamma(t) = u(t) + i v(t)$ with $u, v: [a, b] \rightarrow \mathbb{R}$. Then the derivative $\gamma'$ is defined as
+
+	\[ \gamma'(t) := u'(t) + i v'(t) \]
+
+	At the endpoints, we demand that the one-sided derivative exists and is continuous from the one side:
+
+	\[ \gamma'(b) := \lim_{h \rightarrow 0^-} \frac{u(b + h) - u(b)}{h} + i \lim_{h \rightarrow 0^-} \frac{v(b + h) - v(b)}{h} \] exists and
+
+	\[ \lim_{t \rightarrow b^-} \gamma'(t) = \gamma'(b) \]
+\end{remark}
+
+\begin{definition}
+	Let $U \subset \mathbb{C}$ be an open set, and $f: U \rightarrow \mathbb{C}$ be a continuous function. Let $\gamma: [a, b] \rightarrow U$ be a $C^1$ curve. The integral of $f$ along the curve $\gamma$ is defined as
+
+	\[ \int_{\gamma} f(z) dz = \int_a^b f(\gamma(t)) \gamma'(t) dt \]
+\end{definition}
+
+\begin{corollary}
+	Properties of the integral along a curve:
+	\begin{enumerate}
+		\item $\int_{\gamma} (f_1(z) + f_2(z)) dz = \int_{\gamma} f_1(z) dz + \int_{\gamma} f_2(z) dz$
+		\item For $c \in \mathbb{C}$, $\int_{\gamma} c f(z) dz = c \int_{\gamma} f(z) dz$
+	\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+	Easy
+\end{proof}
+
+\begin{definition}
+	Given $\gamma: [a, b] \rightarrow \mathbb{C}$, the curve $(-\gamma): [-b, -a] \rightarrow \mathbb{C}$ is defined as
+	
+	\[ (-\gamma)(t) := \gamma(-t) \] Then we have
+	
+	\[ \int_{-\gamma} f(z) dz = -\int_{\gamma} f(z) dz \]
+\end{definition}
+
+\begin{lemma}
+	Let $U \subset \mathbb{C}$ be an open set, $f: U \rightarrow \mathbb{C}$ be continuous and $\gamma: [a, b] \rightarrow \mathbb{C}$ be a $C^1$ curve. If $\phi: [a', b'] \rightarrow [a, b]$ with $\phi(a') = a$ and $\phi(b') = b$ is continuously differentiable and we define $\delta: [a', b'] \rightarrow \mathbb{C}$, $\delta := \gamma \circ \phi$, then
+
+	\[ \int_{\gamma} f(z) dz = \int_{\delta} f(z) dz \]
+\end{lemma}
+
+\begin{proof}
+	\[\int_{\delta} f(z) dz = \int_{a'}^{b'} f(\delta(t)) \delta'(t) dt = \int_{a'}^{b'} f(\gamma(\phi(t))) (\gamma(\phi(t)))' dt\]
+	
+	\[ = \int_{a'}^{b'} f(\gamma(\phi(t))) \gamma'(\phi(t)) \phi'(t) dt\]
+	With a change of variables $s = \phi(t)$, $ds = \phi'(t) dt$:
+
+	\[ \int_{a'}^{b'} f(\gamma(\phi(t))) \gamma'(\phi(t)) \phi'(t) dt = \int_a^b f(\gamma(s)) \gamma'(s) ds = \int_{\gamma} f(z) dz \]
+\end{proof}
+
+\begin{definition}
+	Let $\gamma: [a, b] \rightarrow \mathbb{C}$ be a curve and suppose there exist $a = a_0 < a_1 < \cdots < a_n = b$ such that the curves $\gamma_i: [a_{i - 1}, a_i] \rightarrow \mathbb{C}$, defined by $\gamma_i(t) = \gamma(t)$ for $t \in [a_{i - 1}, a_i]$ are $C^1$ curves. Then $\gamma$ is a piecewise $C^1$ curve or contour.
+
+	For a contour $\gamma$ above, a contour integral is defined as
+
+	\[ \int_{\gamma} f(z) dz = \sum_{n = 1}^n \int_{\gamma_i} f(z) dz \]
+\end{definition}
+
+\begin{definition}
+	If $\gamma: [a, b] \rightarrow \mathbb{C}$ and $\delta: [c, d] \rightarrow \mathbb{C}$ are two contours with $\gamma(b) = \delta(c)$ the contour $\gamma \cup \delta: [a, b + d - c] \rightarrow \mathbb{C}$ is defined as
+
+	\[ (\gamma \cup \delta)(t) := \begin{cases}
+		\gamma(t) & \text{ if } a \le t \le b \\
+		\delta(t) & \text{ if } c \le t \le d
+	\end{cases} \]
+
+	Then
+
+	\[ \int_{\gamma \cup \delta} f(z) dz = \int_{\gamma} f(z) dz + \int_{\delta} f(z) dz \]
+\end{definition}
+
+\subsection{The fundamental theorem of calculus}
+
+\begin{theorem}
+	Let $U \in \mathbb{C}$ be an open set and let $F: U \rightarrow \mathbb{C}$ be holomorphic with continuous derivative $f$. Then for every contour $\gamma: [a, b] \rightarrow U$,
+
+	\[ \int_{\gamma} f(z) dz = F(\gamma(b)) - F(\gamma(a)) \]
+	In particular, if $\gamma$ is closed, so $\gamma(a) = \gamma(b)$, then
+
+	\[ \int_{\gamma} f(z) dz = 0 \]
+\end{theorem}
+
+\begin{proof}
+	First consider the case where $\gamma$ is a $C^1$ curve. Let $F = u + iv$. Then
+
+	\[ \int_{\gamma} f(z) dz = \int_{\gamma} F'(z) dz = \int_a^b F'(\gamma(t)) \gamma'(t) dt = \int_a^b (F(\gamma(t)))' dt\]
+
+	\[ = \int_a^b (u(\gamma(t)))' dt + i \int_a^b (v(\gamma(t)))' dt = [u(\gamma(t))]_a^b + i [v(\gamma(t))]_a^b \]
+
+	\[ = u(\gamma(b)) - u(\gamma(b)) + i(v(\gamma(b)) - v(\gamma(b))) = F(\gamma(b)) - F(\gamma(a)) \]
+	Now extend this proof to any contour.
+
+	Let $\gamma: [a, b] \rightarrow \mathbb{C}$ be a contour, then for some $a = a_0 < a_1 < \cdots < a_n = b$, the curves $\gamma_i: [a_{i - 1}, a_i] \rightarrow \mathbb{C}$, $i = 1, \cdots, n$, defined by $\gamma_i(t) = \gamma(t)$ for $t \in [a_{i - 1}, a_i]$ are $C^1$ curves. Then
+
+	\[ \int_{\gamma} f(z) dz = \int_{\gamma} F'(z) dz = \sum_{i = 1}^n \int_{\gamma_i} F'(z) dz \]
+
+	\[ = \sum_{i = 1}^n (F(\gamma(a_i)) - F(\gamma(a_{i - 1}))) = F(\gamma(a_n)) - F(\gamma(a_0)) = F(\gamma(b)) - F(\gamma(a)) \]
+\end{proof}
+
+\begin{remark}
+	Under the hypotheses on $F$, the integral only depends on the endpoints of the curve.
+\end{remark}
+
+\begin{theorem}
+	If $f: [a, b] \rightarrow \mathbb{R}$ is continuous,
+	
+	\[\int_a^b f(t) dt \le \int_a^b \max_{t \in [a, b]} f(t) dt \le (b - a) \max_{t \in [a, b]}\]
+\end{theorem}
+
+\begin{proof}
+	From Analysis I.
+\end{proof}
+
+\begin{definition}
+	Let $\gamma: [a, b] \rightarrow \mathbb{C}$ be a contour. The \textbf{length} of $\gamma$ is defined as
+
+	\[L(\gamma) = \int_a^b |\gamma'(t)| dt\]
+\end{definition}
+
+\begin{lemma}
+	(\textbf{The Estimation Lemma}) Let $f: U \rightarrow \mathbb{C}$ be continuous and $\gamma: [a, b] \rightarrow U$ be a contour. Then
+
+	\[ \left | \int_{\gamma} f(z) dz \right | \le L(\gamma) \sup_{\gamma} |f| \]
+	where $\sup_{\gamma} |f| := \sup \{ |f(z)|: z \in \gamma \}$.
+\end{lemma}
+
+\begin{proof}
+	First prove that for a continuous function $g: [a, b] \rightarrow \mathbb{C}$,
+
+	\[ \left | \int_a^b g(t) dt \right | \le \int_a^b |g(t)| dt \]
+	If we write $\int_a^b g(t) dt = r e^{i \theta}$ with $r \ge 0$, then
+
+	\[ \left | \int_a^b g(t) dt \right | = |r e^{i \theta}| = r = \text{Re} \left( e^{-i \theta} \int_a^b g(t) dt \right ) \]
+
+	\[ = \text{Re}\left( \int_a^b g(t) e^{-i \theta} dt \right) = \int_a^b \text{Re}( g(t) e^{-i \theta}) dt \le \int_a^b \left |e^{-i \theta} g(t) \right | dt = \int_a^b |g(t)| dt \]
+
+	Let $g(t) = f(\gamma(t)) \gamma'(t)$, then
+
+	\[ \left | \int_{\gamma} g(z) dz \right | = \left | \int_a^b f(\gamma(t)) \gamma'(t) dt \right | \le \int_a^b \left | f(\gamma(t)) \gamma'(t) \right | dt \]
+	Then
+
+	\[ \int_a^b \left | f(\gamma(t)) \gamma'(t) \right | dt \le \sup_{\gamma} |f| \int_a^b |\gamma'(t)| dt = L(\gamma) \sup_{\gamma} |f| \]
+\end{proof}
+
+\begin{theorem}
+	(Converse to FTC) Let $f: D \rightarrow \mathbb{C}$ be continuous on a domain $D$. If $\int_{\gamma} f(z) dz = 0$ for every closed contour $\gamma \in D$, for some $F: D \rightarrow \mathbb{C}$, $F'(z) = f(z)$.
+\end{theorem}
+
+\begin{proof}
+	Let $a_0 \in D$. For every $a_0 \ne w \in D$, let $\gamma(w)$ be a contour connecting $a_0$ to $w$ and is contained in $D$.
+
+	Since $D$ is a domain, it is path-connected, i.e. there is a smooth path $\gamma_w$ connecting $a_0$ to $w$, therefore the collection of contours contained in $D$ and connecting $a_0$ and $W$ is non-empty. Let
+
+	\[ F(w) := \int_{\gamma(w)} f(z) dz \]
+
+	Let $\tilde{\gamma} (w)$ be another contour that connects $a_0$ to $w$ and is contained in $D$. Then let $c(w) = \gamma(w) \cup (-\tilde{\gamma}(w))$ that is obtained by moving through $\gamma$ then through $\tilde{\gamma}$ in the opposite direction. Since $c$ is a closed contour in $D$, $\int_C f(z) dz = 0$.
+
+	Then $0 = \int_C f(z) dz = \int_{\gamma(w) \cup (-\tilde{\gamma}(w))} f(z) dz = \int_{\gamma(w)} f(z) dz + \int_{-\tilde{\gamma}(w)} f(z) dz = \int_{\gamma(w)} f(z) dz - \int_{\tilde{\gamma}(w)} f(z) dz$. Hence
+
+	\[ \int_{\gamma(w)} f(z) dz = \int_{\tilde{\gamma}(w)} f(z) dz \]
+	Therefore $F$ does not depend on the contour chosen to join $a_0$ to $w$.
+
+	Now we claim $F$ is holomorphic and we claim that $F$ is holomorphic and $\forall z \in D, F'(z) = f(z) \Rightarrow \lim_{h \rightarrow 0} \frac{F(w + h) - F(w)}{h} = f(w)$.
+
+	To evaluate $F(w + h)$ we need a contour joining $a_0$ to $w + h$ contained in $D$. For every $w \in D$, let $r > 0$ such that $B_r(w) \subset D$. This ball must exist since $D$ is open. Then for every $h \in \mathbb{C}$ with $|h| < r$ consider the striaght line $\delta_h$ that connects $w$ to $w + h$.
+
+	A parameterisation of this line is given by
+	
+	\[ \delta_h: [0, 1] \rightarrow D, \delta_h(t) = w + t h \]
+	The contour $\gamma_w \cup \delta_h$ is contained in $D$. So
+
+	\[ F(w + h) = \int_{\gamma_w \cup \delta_h} f(z) dz = \int_{\gamma_w} f(z) dz + \int_{\delta_h} f(z) dz = F(w) + \int_{\delta_h} f(z) dz \]
+
+	\[ \int_{\delta_h} f(w) dz = f(w) \int_{\delta_h} dz = f(w) \int_0^1 h dt = h f(w) \]
+
+	We can rewrite the previous equation as
+
+	\[ F(w + h) = F(w) + h f(w) + \int_{\delta_h} (f(z) - f(w)) dz \]
+
+	For $h \ne 0$,
+
+	\[ \left| \frac{F(w + h) - F(w)}{h} - f(w) \right| = \frac{1}{|h|} \left| \int_{\delta_h} (f(z) - f(w)) dz \right| \]
+\end{proof}
+
+\end{document}

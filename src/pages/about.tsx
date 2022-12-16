@@ -11,8 +11,8 @@ export default function About() {
 			</p>
 			<p>
 				I love programming in my spare time, a hobby which started in 2017 when I took an online course in web development, which remains a key interest of mine. Having developed profiency in CSS, JavaScript and TypeScript, I then learnt Rust as I wanted to be able to use and understand a more low-level programming language. While learning these languages, I have built a number of projects - you can find my completed ones on my {" "}
-				<Link href="/projects">
-					<a className="link-primary">projects</a>
+				<Link href="/projects" className="link-primary">
+					projects
 				</Link>
 				{" "} page.
 			</p>
@@ -21,7 +21,7 @@ export default function About() {
 			</p>
 			<p>
 				Feel free to take a look at my{" "}
-				<a href={LINKEDIN_URL}>LinkedIn page</a>
+				<Link className="link-primary" href={LINKEDIN_URL}>LinkedIn page</Link>
 				{" "} for more about my experience, education, etc.
 			</p>
 		</>

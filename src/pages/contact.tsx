@@ -7,6 +7,7 @@ import Link from "next/link";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
+import styles from "../styles/contact.module.scss";
 
 interface Social {
 	name: string;
@@ -58,15 +59,17 @@ export default function Contact() {
 							as="a"
 							size="lg"
 							variant="outline-light"
-							className="w-100 position-relative d-flex justify-content-center align-items-center" style={{height: 72 }}
+							className={"w-100 position-relative d-flex justify-content-center align-items-center " + styles["social-button"]}
 						>
 							<Icon
 								path={social.icon}
-								color={social.color}
+								//color={social.color}
 								size="48px" className="position-absolute"
 								style={{left: 12, bottom: 9}}
 							/>
-							{social.name}
+							<span>
+								{social.name}
+							</span>
 						</Button>
 					</Col>
 				))}

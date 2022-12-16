@@ -1,14 +1,8 @@
+@use "sass:map";
 @import "../../node_modules/bootstrap/scss/functions";
 
 // Default Bootstrap variable overrides
 @import "./vars.scss";
-
-::selection {
-	background: $primary; /* WebKit/Blink Browsers */
-}
-::-moz-selection {
-	background: $primary; /* Gecko Browsers */
-}
 
 h1 {
 	font-size: 48px !important;
@@ -20,12 +14,20 @@ h3 {
 
 @import "../../node_modules/bootstrap/scss/variables";
 
-body {
-	background-color: $body-bg;
+$container-max-widths: map.set($container-max-widths, "xxl", map.get($grid-breakpoints, "xxl"));
+
+::selection {
+	background: $primary; /* WebKit/Blink Browsers */
+	color: color-contrast($primary);
+}
+::-moz-selection {
+	background: $primary; /* WebKit/Blink Browsers */
+	color: color-contrast($primary);
+	text-decoration-color: color-contrast($primary);
 }
 
 @import "../../node_modules/bootstrap/scss/mixins";
-@import "../../node_modules/bootstrap/scss/root";
+//@import "../../node_modules/bootstrap/scss/root";
 
 @import "../../node_modules/bootstrap/scss/transitions";
 @import "../../node_modules/bootstrap/scss/buttons";

@@ -1,0 +1,15 @@
+@import "./vars.scss";
+
+.viewer_container {
+	height: calc(100vh - (2px + 40px * 2 + $spacer / 4 * 2 * 5));
+}
+
+@import "../../node_modules/bootstrap/scss/functions";
+@import "../../node_modules/bootstrap/scss/variables";
+@import "../../node_modules/bootstrap/scss/mixins/breakpoints";
+
+@include media-breakpoint-up(md) {
+	.viewer_container {
+		height: calc(100vh - (2px + 40px * 2 + $spacer / 4 * 4 * 5));
+	}
+}

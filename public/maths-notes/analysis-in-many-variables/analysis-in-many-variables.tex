@@ -1,0 +1,374 @@
+\documentclass[12pt,a4paper]{article}
+\AddToHook{cmd/section/before}{\clearpage}
+
+\usepackage[a4paper, total={6in, 10in}]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{amsfonts, amsmath, amssymb}
+\usepackage{amsthm}
+\usepackage{esint}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[subsection]
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{corollary}[definition]{Corollary}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{example}[definition]{Example}
+\newtheorem*{remark}{Remark}
+
+\title{Analysis in Many Variables Course Notes}
+\author{Isaac Holt}
+
+\begin{document}
+
+\begin{theorem}
+	If $f(x): U \rightarrow \mathbb{R}$ is differentiable with U an open subset of $\mathbb{R}^n$ and if $x$ is a function of $u_1, \dots, u_m$, such that the partial derivatives $\frac{\partial x_i}{\partial u_j}$ exist for all $1 \le i \le n$ and all $1 \le j \le m$, and if $F(u_1, \dots, u_m) = f(x(u_1, \dots, u_m))$ then $\frac{\partial F}{\partial u_b} = \frac{\partial x_i}{\partial u_b} \frac{\partial f}{\partial x_i}$
+\end{theorem}
+
+\begin{proof}
+	We have $f: U \subset \mathbb{R}^n \rightarrow \mathbb{R}$, $x: \mathbb{R}^m \rightarrow \mathbb{R}^n$, $F: \mathbb{R}^m \rightarrow \mathbb{R}$ with $F = f(x(u))$.
+
+	let $a = x(u_1, \dots, u_b, \dots, u_m)$, $a + h(k) = x(u_1, \dots, u_b + k, \dots, u_m)$. then
+	\[\frac{\partial F}{\partial u_b} = \lim{k \rightarrow 0}{\frac{F(u_1, \dots, u_b + k, \dots, u_m) - F(u_1, \dots, u_b, \dots, u_m)}{k}} = \lim{k \rightarrow 0}{\frac{f(x(u_1, \dots, u_b + k, \dots, u_m)) - f(x(u_1, \dots, u_b, \dots, u_m))}{k}} = \lim{k \rightarrow 0}{\frac{f(a + h(k)) - f(a)}{k}}\]
+\end{proof}
+
+\subsection{The implicit function theorem}
+
+$y = g(x)$ gives $y$ as an explicit function of $x$. $f(x, y) = 0$ gives $y$ as an implicit function of $x$.
+
+To go from an explicit function to an implicit function, set \[f(x, y) = y - g(x) = 0\]
+
+Suppose the level curve $f(x, y) = c$ can be written as $y = g(x)$. Then $f(x, g(x)) = c$. Differentiating this using the chain rule:
+
+\[\frac{d}{dx}f(x, g(x)) = \frac{\partial f}{\partial x} + \frac{dg}{dx}\frac{\partial f}{\partial y} = \frac{d}{dx}c = 0\]
+
+Hence $\frac{dg}{dx} = \frac{- \partial f / \partial x}{\partial f / \partial y}$
+
+\begin{theorem}
+	(Implicit Function Theorem or IFT): If $f(x, y): U \rightarrow \mathbb{R}$ with $U \subseteq \mathbb{R}^2$ open is differentiable on the level curve $f(x, y) = c$, at which $\frac{\partial f}{\partial y} \ne 0$, then a differentiable function $g(x)$ exists in a neighbourhood of $x_0$, satisfying $g(x_0) = y_0$.
+\end{theorem}
+
+\begin{remark}
+	At points when $\frac{\partial f}{\partial y} = 0$, if $\frac{\partial f}{\partial x} = 0$, we can use the IFT to find $h(y)$ such that $x = h(y)$.
+\end{remark}
+
+\begin{remark}
+	If there is a point $Q$ on a level curve $f(x, y) = c$ at which $\underline{\nabla} f = 0$ (this is a critical point), then the value of $c$ is called a critical value (otherwise it is a regular value) and the level curve cannot be written either as $y = g(x)$ or as $x = h(y)$ ($g$ and $h$ are differentiable) in a neighbourhood of $Q$.
+\end{remark}
+
+\subsection{The implicit function theorem for surfaces}
+
+The level sets of scalar fields on $\mathbb{R}^3$ generally define surfaces, and we therefore have the IFTfor surfaces.
+
+\begin{theorem}
+	Let $f(x, y, z): U \rightarrow \mathbb{R}$ for $U \subseteq \mathbb{R}^3$ open be differentiable. Let $(x_0, y_0, z_0) \in U$ be a point of the level set $f(x, y, z) = c$ so $f(x_0, y_0, z_0) = c$.
+
+	If $\frac{\partial f}{\partial z} (x_0, y_0, z_0) \ne 0$ then the equation $f(x, y, z) = c$ implicitly defines a surfaces $z = g(x, y)$ in a neighbourhood of $(x_0, y_0, z_0)$ if the following hold:
+	\begin{enumerate}
+		\item $f(x, y, g(x, y)) = c$ with $g(x_0, y_0) = z_0$
+		\item $\frac{\partial g}{\partial x} = \frac{-\frac{\partial f}{\partial x} (x_0, y_0, z_0)}{\frac{\partial f}{\partial z} (x_0, y_0, z_0)}$
+		\item $\frac{\partial g}{\partial y} = \frac{-\frac{\partial f}{\partial y} (x_0, y_0, z_0)}{\frac{\partial f}{\partial z} (x_0, y_0, z_0)}$
+	\end{enumerate}
+\end{theorem}
+
+As in the IFT for curves, 2. and 3. must hold for $g(x, y)$ if it exists, since $f(x, y, g(x, y)) = c$ for all $(x, y)$ in some neighbourhood of $(x_0, y_0)$. If we partially differentiate with respect to $x$ and use the chain rule:
+
+\[0 = \frac{\partial f}{\partial x} (x_0, y_0, z_0) = \frac{\partial x}{\partial x} \frac{\partial f}{\partial x} + \frac{\partial y}{\partial x}\frac{\partial f}{\partial y} + \frac{\partial g}{\partial x}\frac{\partial f}{\partial z}\]
+
+\[= \frac{\partial f}{\partial x} + \frac{\partial g}{\partial x}\frac{\partial f}{\partial z}\]
+
+Recall: $\underline{\nabla} f$ at $(x_0, y_0, z_0)$ is normal to the tangent plane of the surface $z = g(x, y)$ at $(x_0, y_0)$, so the normal line is given in parametric form as $\underline{x}(t) = x_0 + t \underline{\nabla} f$ and the tangent plane is given by $(\underline{x} - x_0) . \underline{\nabla} f = 0$.
+
+\section{Differentiability of Vector Fields}
+
+\subsection{Diffentiable maps from $\mathbb{R}^n$ to $\mathbb{R}^n$}
+
+\begin{definition}
+	For a vector field $\underline{F}(\underline{x}): U \rightarrow \mathbb{R}^n$, with $U \subseteq \mathbb{R}^n$ open, $F$ is differentiable at $\underline{a} \in U$ if there is a linear function $\underline{L}: \mathbb{R}^n \rightarrow \mathbb{R}^n$ such that $\underline{F}(\underline{a} + \underline{h}) - \underline{F}(\underline{a}) = \underline{L}(\underline{h}) + \underline{R}(\underline{h})$ with $\lim_{\underline{h} \rightarrow \underline{0}} \frac{\underline{R}(\underline{h})}{|\underline{h}|} = \underline{0}$.
+
+	Now linear maps $\mathbb{R}^n \rightarrow \mathbb{R}^n$ are given by matrices. To see what matrix, use standard basis $\underline{F}(\underline{x}) = F_1(\underline{x}) \underline{e_1} + \cdots + F_n(\underline{x}) \underline{e_n}$, $\underline{L}(\underline{\underline{h}}) = L_1(h) \underline{e_1} + \cdots + L_n(\underline{h}) \underline{e_n}$, $\underline{R}(\underline{\underline{h}}) = R_1(\underline{h}) \underline{e_1} + \cdots + R_n(\underline{h}) \underline{e_n}$
+
+	So the $j$th component of A and B is $F_j(\underline{a + h}) - F_j(\underline{a}) = L_j(\underline{h}) + R_j(\underline{h})$ with $\lim_{\underline{h} \rightarrow \underline{0}} \frac{\underline{R}(\underline{h})}{|\underline{h}|} = \underline{0}$
+
+	So $L_j(\underline{h}) = \underline{h} \cdot \underline{\nabla} F_j(\underline{a}) = h_1 \frac{\partial F_j}{\partial x_1} + \cdots + h_n \frac{\partial F_j}{\partial x_n}$
+
+	So $L$ as a column vector is the matrix product $J \underline{h}$ where $J_{i, j} = \frac{\partial F_i}{\partial x_j}$. $J$ is the Jacobian matrix or the differential of $\underline{F}(\underline{x})$ at $\underline{x} = \underline{a}$. It is written as $D\underline{F}(\underline{a})$.
+\end{definition}
+
+\begin{definition}
+	The determinant of the differential $\det (D\underline{V}) = |D\underline{V}|$ is called the Jacobian of $\underline{V}$, $J(\underline{V})$
+\end{definition}
+
+\subsection{Diffeomorphisms and the inverse function theorem}
+
+We can think of a vector field $\underline{V}(\underline{x}): \mathbb{R}^n \rightarrow \mathbb{R}^n$ as a coordinate transformation on $\mathbb{R}^n$.
+
+If we think of the components of $\underline{h}$ as coordinates of $\underline{x} = \underline{a} + \underline{h}$ relative to an origin $\underline{a}$, the components of $\underline{V}(\underline{a} + \underline{h}) - \underline{V}(\underline{a})$ are the transformed coordinates of $\underline{x}$ relative to the transformed origin $\underline{V}(\underline{a})$.
+
+\begin{theorem}
+	(Inverse function theorem) Let $\underline{v}: U \rightarrow \mathbb{R}^n$, $U \subseteq \mathbb{R}^n$ open, be differentiable with continuous partial derivatives, and let $\underline{a} \in U$. Then if $J(\underline{v}(\underline{a})) \ne 0$, for some open set $\tilde{u=U} \subseteq U$ containing $\underline{a}$:
+
+	\begin{enumerate}
+		\item $\underline{v}(\tilde{U})$ is open.
+		\item the mapping $\underline{v}$ from $\tilde{U}$ to $\underline{v}(\tilde{U})$ has a differentiable inverse, i.e. there exists a differentiable $\underline{w}: \underline{v}(\tilde{u}) \rightarrow \mathbb{R}^n$ such that $\underline{w}(\underline(v)(\underline{x})) = \underline{x}$ and $\underline{v}(\underline{w}(\underline{y})) = y$.
+	\end{enumerate}
+\end{theorem}
+
+\begin{definition}
+	A mapping $\underline{v}: \tilde{U} \rightarrow V \subset \mathbb{R}^n$ satisfying 1. and 2. is called a diffeomorphism of $\tilde{u}$ onto $\tilde{v} = \underline{v}(\tilde{U})$. We say $\tilde{U}$ and $\tilde{V}$ are diffeomorphic.
+
+	More generally, a mapping $\underline{v}: U \rightarrow V$ is a \textbf{local diffeomorphism} if for every point $\underline{a} \in U$, there is an open set $\tilde{U} \subseteq U$ containing $\underline{a}$ such that $\underline{v}: \tilde{U} \rightarrow \underline{v}(\tilde{U})$ is a diffeomorphism.
+\end{definition}
+
+\begin{proof}
+	Let $\underline{v}: U \rightarrow V \subseteq \mathbb{R}^n$, $\underline{w}: V \rightarrow W \subseteq \mathbb{R}^n$, $u, v, w$ open in $\mathbb{R}^n$ and $\underline{v}, \underline{w}$ differentiable.
+
+	Then $\underline{w}(\underline{v}(\underline{x}))$ is a map $U \rightarrow W \subseteq \mathbb{R}^n$ and its differential can be calculated using the chain rule: $D \underline{w}(\underline{v}(\underline{x})) = D \underline{w}(\underline(v)) D \underline{v}(\underline{x})$.
+
+	In the particular case when $\underline{v}$ is a local diffeomorphism and $\underline{w}$ is its inverse $\underline{w}(\underline{v}(\underline{x})) = \underline{x}$, $D \underline{w} D \underline{v} = D \underline{w}(\underline{v}(\underline{x})) = D \underline{x}(\underline{x}) = I_n$.
+
+	Similarly, $\underline{v}(\underline{w}(\underline{y})) = \underline{y}$ so $D \underline{v} D \underline{w} = D \underline{v}(\underline{w}(\underline{y})) = I_n$.
+
+	So $D \underline{v}$ is invertible with inverse ${(D \underline{v})}^{-1} = D \underline{w}$ and by taking determinants, $J(\underline{w}) = 1 / J(\underline{v})$ and $J(\underline{v}) \ne 0$.
+\end{proof}
+
+\begin{definition}
+	Such a $\underline{v}$ is \textbf{orientation-preserving} if $J(\underline{v}) > 0$ and \textbf{orientation-reversing} if $J(\underline{v}) < 0$.
+\end{definition}
+
+\section{Volume, Line and Surface Integrals}
+
+\subsection{Fubini's theorem}
+
+Given a scalar field on $\mathbb{R}^2$, $f(x, y): \mathbb{R}^2 \rightarrow \mathbb{R}$ which is continuous on $R \subset \mathbb{R}^2$, then the double integral $\int_R f(x, y) dA$ (or equivalently $\int \int_R f(x, y) dA$) is defined by partitioning $R$ into smaller areas $\Delta A_k$ and then defining the integral as the limit of the Riemann sum (which should be independent of the partition):
+
+\[\int_R f(x, y) dA = \lim_{N \rightarrow \infty} \sum_{k = 1}^N f(x_k^*, y_k^*) \Delta A_k\] where $(x_k^*, y_k^*)$ lies in the base of the $k$th region.
+
+If we choose the small areas $\Delta A_k$ to be rectangles on a rectangular grid, then $\Delta A_k = \Delta x_i \Delta y_j$ where $\Delta x_i = x_{i + 1} - x_i$ and $\Delta y_i = y_{i + 1} - y_i$ and $x$ and $y$ are partitioned as $x_0 < x_1 < \cdots < x_n$ and $x_0 < x_1 < \cdots < x_n$.
+
+We then get
+
+\[\int_R f(x, y) dA = \lim_{n \rightarrow \infty, m \rightarrow \infty} \sum_{i = 0}^n \sum_{j = 0}^m f(x_i^*, y_j^*) \Delta x_i \Delta y_j\]
+
+where $x_i^* \in [x_i, x_{i + 1}]$ and $y_i^* \in [y_i, y_{i + 1}]$.
+
+If we assume we can take the limit as $m \rightarrow \infty$ first and the limit as $n \rightarrow \infty$ afterwards, we get
+
+\[\lim_{n \rightarrow \infty, m \rightarrow \infty} \sum_{i = 0}^n \sum_{j = 0}^m f(x_i^*, y_j^*) \Delta x_i \Delta y_j = \lim_{n \rightarrow \infty} \sum_{i = 0}^n (\lim_{m \rightarrow \infty} \sum_{j = 0}^m f(x_i^*, y_j^*) \Delta y_j) \Delta y_j\]
+
+\[= \lim_{n \rightarrow \infty} \sum_{i = 0}^n (\int_y f(x_i^*, y) dy) \Delta x_i = \int_x \int_y f(x, y) dy dx\]
+
+If we take $n \rightarrow \infty$ first, we exchange the order of integration:
+
+\[\int_R f(x, y) dA = \int_y \int_x f(x, y) dx dy\]
+
+\begin{theorem}
+	(Fubini's theorem): If $f(x, y)$ is continuous on a closed and bounded region of $\mathbb{R}^2$ (a region of integration $R$), then the double integral $\int_R f(x, y) dA$ can be written as an iterated integral, with the integrals in either order:
+
+	\[\int_R f(x, y) dA = \int_y \int_x f(x, y) dx dy = \int_x \int_y f(x, y) dy dx\]
+\end{theorem}
+
+\begin{remark}
+	If the region and/or function is unbounded, Fubini's theorem still holds if the double integral is absolutely convergent, i.e. if the integral of the $|f(x, y)|$ is finite. If this is not the case, Fubini's theorem doesn't necessarily hold.
+\end{remark}
+
+\begin{remark}
+	If the region $R$ is not rectangular, it is more complicated.
+	
+	e.g. if $R = \{(x, y) \in \mathbb{R}^2: a \le x \le b, y_0(x) \le y \le y_1(x)\}$, then
+	
+	\[\int_R f(x, y) dA = \int_a^b \int_{y_0(x)}^{y_1(x)} f(x, y) dy dx\]
+
+	If $f(x, y)$ is continuous then by Fubini's theorem we can change the order of integration. To calculate the integral over $x$ first in this case, we need to split $R$ into sub-regions where I can write the $x$-limits as functions of $y$.
+\end{remark}
+
+\subsection{Line integrals}
+
+\begin{definition}
+	A \textbf{regular arc} $C \subset \mathbb{R}^n$ is a parameterised curve $\underline{x}(t)$ whose cartesian components $x_a(t)$, $a \in \{1, \dots, n\}$ are continuous with continuous first derivative, where $t$ lies in some (possibly infinite) interval.	
+\end{definition}
+
+\begin{definition}
+	A \textbf{regular curve} consists of a finite number of regular arcs joined end-to-end.
+\end{definition}
+
+Given $\underline{v}(\underline{x}): \mathbb{R}^n \rightarrow \mathbb{R}^n$ its restriction to a regular arc $\underline{v}(\underline{x}(t))$ is a vector function of $t$ and its scalar product with the tangent vector $\frac{d\underline{x}(t)}{dt}$ is a scalar function of $t$.
+
+We can therefore integrate it along the arc to get a real number, this is called the \textbf{line integral} of $\underline{v}$ along the arc $C: t \rightarrow \underline{x}(t)$ between $t = \alpha$ and $t = \beta$.
+
+\[\int_C \underline{v} d\underline{x} = \int_{\alpha}^{\beta} \underline{v}(\underline{x}(t)) \cdot \frac{d\underline{x}}{dt} dt\]
+
+This is independent of the choice of parameterisation. This can be proven using the chain rule:
+
+let $t = t(u)$, then $dt = \frac{dt}{du} du$.
+
+\[\int_{t^{-1}(\alpha)}^{t^{-1}(\beta)} \underline{v}(\underline{x}(t(u))) \cdot \frac{d\underline{x(t(u))}}{du} du = \int_{t^{-1}(\alpha)}^{t^{-1}(\beta)} \underline{v}(\underline{x}(t(u))) \cdot \frac{d\underline{x}}{dt} \frac{dt}{du} du = \int_{\alpha}^{\beta} \underline{v}(\underline{x}(t)) \cdot \frac{d\underline{x}}{dt} dt\]
+
+If $C$ is a regular curve, made up of regular arcs, the line integral $\int_C \underline{v} d\underline{x}$ is the sum of the line integral over the arcs.
+
+If the integral is calculated over a regular closed curve (the endpoints join), then it is often written as
+
+\[\oint_C \underline{v} d\underline{x}\]
+
+\subsection{Surface integrals I: defining a surface}
+
+
+Given a 2D surface $S \subset \mathbb{R}^3$, a 3D vector field can be integrated over the surface $S$ to give a double integral analogue of the line integral.
+
+There are two methods for specifying the surface:
+
+\begin{enumerate}
+	\item Give the surface in parametric form $\underline{x}(u, v)$ where the real parameters $u, v$ lie in some region $U \subseteq \mathbb{R}^2$ called the parameter domain.
+	
+	In general, $\frac{\partial \underline{x}}{\partial u} \times \frac{\partial \underline{x}}{\partial v}$ is a normal vector to $S$ at $\underline{x}(u, v)$, and so
+	
+	\[ \hat{\underline{n}} = \left( \frac{\partial \underline{x}}{\partial u} \times \frac{\partial \underline{x}}{\partial v} \right) / \left| \frac{\partial \underline{x}}{\partial u} \times \frac{\partial \underline{x}}{\partial v} \right| \] is a unit normal at $\underline{x}(u, v)$.
+
+	Note: if $u$ and $v$ are swapped we get a unit normal to $S$, but one pointing in the opposite direction.
+	\item Express the surface as (part of) a level surface of a scalar field $f$, i.e. given implicity as $f(x, y, z) = c$. Then $\underline{\nabla}f$ is normal to the level surface $S$, and $\hat{\underline{n}} = \frac{\underline{\nabla}f}{|\underline{\nabla}f|}$ is a unit normal.
+	
+	Note: as with method 1, the negative of the unit normal found is also a valid unit normal.
+\end{enumerate}
+
+\subsection{Surface integrals II: evaluating the integral}
+
+\begin{definition}
+	We define the surface integral as a Riemann sum. Let $\underline{F}(\underline{x}): \mathbb{R}^3 \rightarrow \mathbb{R}^3$ be a vector field. Let $S \subset \mathbb{R}^3$ be a surface with parameterised position vector $\underline{x}(u, v)$ with $u, v \in U$, $U$ is the parameter domain.
+
+	Assume that the partial derivatives of $\underline{x}$ exist and are continuous and the unit normal $\hat{\underline{n}}(u, v)$ is continuous (so $S$ is orientable).
+
+	The surface integral is defined as
+
+	\[ \int_S \underline{F} d\underline{A} = \lim_{\Delta A_k \rightarrow 0} \sum_k \underline{F} (\underline{x}_{k}^*) \cdot \underline{\hat{n}}_k \Delta A_k \]
+	Methods for computing:
+
+	\begin{enumerate}
+		\item The surface $S$ given parametrically as $\underline{x}(u, v)$, construct $\Delta A_k$ by approximating as parallelograms, by partioning $S$ using lines of constant $u$ and $v$.
+		
+		Let $A_k$ be the area element with vertices $\underline(u_i, v_j), \underline{x}(u_i + \Delta u_i, v_j), \underline{x}(u_i, v_j + \Delta v_j), \underline{x}(u_i + \Delta u_i, v_j + \Delta v_j)$. Then $\underline{\hat{n}}_k \Delta A_k = (\underline{x}(u_i + \Delta u_i, v_j)) - \underline{x}(u_i, v_j)) \times (\underline{x}(u_i, v_j + \Delta v_j) - \underline{x}(u_i, v_j) \approx \Delta u_i \frac{\partial \underline{x}}{\partial u} \times \Delta v_j \frac{\partial \underline{x}}{\partial v}$.
+
+		Substituting this into the surface integral,
+
+		\[ \int_S \underline{F} d\underline{A} = \lim_{\Delta u_i, \Delta v_j \rightarrow 0} \sum_{i, j} \underline{F}(\underline{x}_{i, j}^*) \cdot \left( \frac{\partial \underline{x}}{\partial u} \times \frac{\partial \underline{x}}{\partial v} \right) \Delta u_i \Delta v_j \]
+		Taking the limit, this becomes
+
+		\[ \int_S \underline{F} d\underline{A} = \int_u \underline{F}(\underline{x}(u, v)) \cdot \left( \frac{\partial \underline{x}}{\partial u} \times \frac{\partial \underline{x}}{\partial v} \right) du dv \]
+
+		\item Let $S$ be given as (part of) a level set of a scalar field $f(x, y, z)$ and assume $\frac{\partial f}{\partial z} \ne 0$ on $S$. Then by the implicit function theorem, the points of $S$ can be written as $(x, y, g(x, y))$ for some differentiable function $g$, where $(x, y)$ range over some region $A$ of the $x, y$ plane ($A$ is the projection of $S$ onto the $x, y$ plane).
+		
+		We can then apply method 1, with $u = x$ and $v = y$. So $\underline{x}(x, y) = x \underline{e_1} + y \underline{e_2} + g(x, y) \underline{e_3}$, and $\frac{\partial \underline{x}}{\partial x} = \underline{e_1} + \frac{\partial g}{\partial x} \underline{e_3}$, $\frac{\partial \underline{x}}{\partial y} = \underline{e_2} + \frac{\partial g}{\partial y} \underline{e_3}$.
+
+		Using the implicit function theorem, noting that $f(x, y, g(x, y))$ is constant, $0 = \frac{\partial F}{\partial x} = \frac{\partial f}{\partial x} + \frac{\partial f}{\partial z} \frac{\partial g}{\partial x} \Rightarrow \frac{\partial g}{\partial x} = \frac{-\partial f / \partial x}{\partial f / \partial z}$ and similarly, $\frac{\partial g}{\partial y} = \frac{-\partial f / \partial y}{\partial f / \partial z}$.
+
+		So $\frac{\partial \underline{x}}{\partial x} \times \frac{\partial \underline{x}}{\partial y} = \frac{\underline{\nabla}f}{\underline{e_3} \cdot \underline{\nabla}f}$. Then
+
+		\[ \int_S \underline{F} d\underline{A} = \int_A \frac{\underline{F} \cdot \underline{\nabla}f}{\underline{e_3} \cdot \underline{\nabla}f} dx dy \]
+	\end{enumerate}
+\end{definition}
+
+\begin{remark}
+	In the formula above, the $z$ component of the normal $= 1$ so this corresponds to the upwards (positive $z$ component) choice of normal. If we wanted the downward direction instead, we simply negate the formula.
+
+	If $\frac{\partial f}{\partial x} \ne 0$ we can project onto the $y, z$ plane. Similarly, if $\frac{\partial f}{\partial y} \ne 0$ we can project onto the $x, y$ plane.
+\end{remark}
+
+\section{Green's, Stokes' and divergence theorems}
+
+\subsection{The Big 3 theorems}
+
+\begin{theorem}
+	(\textbf{Green's theorem}) Let $P(x, y): \mathbb{R}^2 \rightarrow \mathbb{R}$ and $Q(x, y): \mathbb{R}^2 \rightarrow \mathbb{R}$ be continuously differentiable scalar fields on $\mathbb{R}^2$, and let $c$ be a simple closed curve traversed in anti-clockwise direction (the positive direction) which is the boundary of a region $A$. Then
+	
+	\[\oint_C (P(x, y) dx + Q(x, y) dy) = \int_A \left( \frac{\partial Q}{\partial x} - \frac{\partial P}{\partial y} \right) dx dy \]
+	We can also write this in vector form by embedding the $xy$-plane into $\mathbb{R}^3$ as the $z = 0$ plane and setting
+
+	\[ \underline{F}(x, y, z) = (P(x, y), Q(x, y), R) \]
+	the Green's theorem can be written as
+
+	\[ \oint_C \underline{F} \cdot d\underline{x} = \int_A \left( \underline{\nabla} \times \underline{F} \right) \cdot \underline{e}_3 dA \]
+\end{theorem}
+
+\begin{proof}
+	Not examinable
+\end{proof}
+
+\begin{theorem}
+	(\textbf{Stokes' theorem} - this generalises the vector form of Green's theorem to arbitrary surfaces in $\mathbb{R}^3$) Let $\underline{F}(x, y, z): \mathbb{R}^3 \rightarrow \mathbb{R}^3$ and let $S$ be a surface in $\mathbb{R}^3$ with area elements $d\underline{A} = \underline{\hat{n}} dA$ and let $C = \delta S$ be the boundary of $S$. Then
+
+	\[ \oint_C \underline{F} \cdot d\underline{x} = \int_S \left( \underline{\nabla} \times \underline{F} \right) \cdot dA \]
+	We need to ensure that the orientations of $S$ and of $C = \delta S$ match, which we can do with the \textbf{right-hand rule}:
+
+	Curl the fingers of your right hand and extend your thumb. If you placed your hand on the surface near the boundary with your thumb pointing in the direction of the surface normal, then your fingers curl in the direction of the orientation of the boundary.
+\end{theorem}
+
+\begin{proof}
+	Not examinable
+\end{proof}
+
+\begin{theorem}
+	(\textbf{The divergence theorem}) Let $V \subset \mathbb{R}^3$ be a volume bounded by $S$ and $\underline{F}: V \rightarrow \mathbb{R}^3$ be continuously differentiable. Then
+
+	\[ \int_S \underline{F} \cdot d\underline{A} = \int_V \left( \underline{\nabla} \cdot \underline{F} \right) dV \]
+	where $d\underline{A} = \underline{\hat{n}} dA$ where $\underline{\hat{n}}$ is the outward unit normal
+\end{theorem}
+
+\begin{proof}
+	Not examinable
+\end{proof}
+
+\begin{remark}
+	These three theorems can be seen as higher dimensional analogues of the fundamental theorem of calculus:
+
+	\[ \int_a^b \frac{df}{dx} dx = f(b) - f(a) \]
+\end{remark}
+
+\subsection{Path independence of line integrals}
+
+In general, line integrals depend on the path between the end points. However, there is a type of vector field for which the line integral is \textbf{path independent}, known as a \textbf{conservative} vector field.
+
+\begin{example}
+	Calculate the integral $\int_C \underline{F} \cdot d\underline{x}$ for $\underline{F} = (y \cos x, \sin x)$ between $(0, 0)$ and $(1, 1)$ on the paths $C_1$, the straight line from $(0, 0)$ to $(1, 1)$ and $C_2$, the stragiht line from $(0, 0)$ to $(1, 0)$ and then to $(1, 1)$.
+
+	$C_1$ is parameterised as $\underline{x}(t) = (t, t)$ for $0 \le t \le 1$ so $\frac{d \underline{x}}{dt} = (1, 1)$. $\underline{F}(\underline{x}(t)) = (t \cos t, \sin t)$ so
+
+	\[ \int_{C_1} \underline{F} \cdot d \underline{x} = \int_0^1 \underline{F}(\underline{x}(t)) \cdot \frac{d \underline{x}}{dt} dt = \sin(1) \]
+	To calculate $\int_{C_2} \underline{F} \cdot d \underline{x}$, split $C_2$ into 2 arcs $C_{21}$ and $C_{22}$. $C_{21}$ is parameterised by $\underline{x}(t) = (t, 0)$ for $0 \le t \le 1$ and $C_{22}$ is parameterised by $\underline{x}(t) = (1, t)$ $0 \le t \le 1$. So
+
+	\[ \int_{C_2} \underline{F} \cdot d \underline{x} = \int_{C_{21}} \underline{F} \cdot d \underline{x} + \int_{C_{22}} \underline{F} \cdot d \underline{x} = \int_0^1 \sin(t) dt = \sin(1) \]
+	Which is the same result as for the integral along $C_1$. But we have only checked this for two paths, not infinitely many.
+\end{example}
+
+\begin{theorem}
+	Let $\underline{F}$ be continuously differentiable on an open $D \subseteq \mathbb{R}^3$ and let $C_1$ and $C_2$ be any two paths from $\underline{a}$ to $\underline{b}$ in $D$. If $\underline{\nabla} \times \underline{F} = \underline{0}$ then
+	
+	\[ \int_{C_1} \underline{F} \cdot d\underline{x} = \int_{C_2} \underline{F} \cdot d\underline{x} \]
+	and the line integral only depends on the end points: it is \textbf{path independent} and $F$ is \textbf{conservative}.
+\end{theorem}
+	
+\begin{proof}
+	Let
+
+	\[ \Delta I := \int_{C_1} \underline{F} \cdot d\underline{x} - \int_{C_2} \underline{F} \cdot dx \]
+	For path independence, we need $\Delta I = 0$.
+
+	Let $C_2$ be parameterised in $t$ for $ta \le t \le tb$ and let $\overline{C_2}$ be the path along $C_2$ taken in the opposite direction.
+
+	\[ \int_{\overline{C_2}} \underline{F} \cdot d\underline{x} = \int_{t_a}^{t_b} \underline{F}(\underline{x}(t)) \cdot \frac{d\underline{x}}{dt} dt = \int_{t_b}^{t_a} \underline{F}(\underline{x}(t)) \cdot \frac{d\underline{x}}{dt} dt = -\int_{C_2} \underline{F} \cdot d\underline{x} \]
+	Then
+	
+	\[ \Delta I = \int_{C_1} \underline{F} \cdot d\underline{x} - \int_{C_2} \underline{F} \cdot dx = \int_{C_1} \underline{F} \cdot dx + \int_{\overline{C_2}} \underline{F} \cdot d\underline{x} = \oint_C \underline{F} \cdot d\underline{x} \]
+	where $C$ is the closed path consisting of $C_1$ followed by $\overline{C_2}$. If $C$ is the boundary of a surface $S$ in $D$ then by Stoke's theorem
+
+	\[ \Delta I = \oint_C \underline{F} \cdot d\underline{x} = \int_S (\underline{\nabla} \times \underline{F}) d\underline{A} \]
+	so $\Delta I = 0$ if $\underline{\nabla} \times \underline{F} = \underline{0}$ throughout $D$, which implies path independence.
+
+	For this to work, we need that every closed curve $C$ is the boundary of a surface in $D$, which is true if $D$ is \textbf{simply connected}, which means that any closed curve in $D$ can be continuously shrunk to a point.
+
+	e.g. a sphere is simply connected, a torus is not simply connected.
+\end{proof}
+
+\begin{corollary}
+	In a simply connected region $D$, $\underline{\nabla} \times \underline{F} = \underline{0} \Leftrightarrow \text{path independence of } \int_C \underline{F} \cdot d\underline{x} \Leftarrow \text{for some scalar field } \phi, \underline{F} = \underline{\nabla} \phi$.
+\end{corollary}
+
+\end{document}

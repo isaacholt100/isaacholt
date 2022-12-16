@@ -35,6 +35,20 @@ const PROJECTS: Project[] = [
 		source: "https://github.com/isaacholt100/latin-grammar-test",
 		description: "A simple single page application which tests knowledge of Latin grammar. It features a \"Live\" mode where users from the same school can challenge each other to a timed test. I created this while I was studying Latin A Level to help with my revision.",
 		image: ""
+	},
+	{
+		name: "AoC 2022",
+		url: "https://replit.com/@isaacholt1/aoc2022",
+		source: "https://github.com/isaacholt100/aoc2022",
+		description: "Solutions written in Python for Advent of Code 2022.",
+		image: ""
+	},
+	{
+		name: "My Personal Website",
+		url: "/",
+		source: "https://github.com/isaacholt100/isaacholt",
+		description: "The website you're on right now! Built with TypeScript, React.js, Next.js and Sass.",
+		image: ""
 	}
 ];
 
@@ -57,14 +71,19 @@ export default function Projects() {
 								<Row className="g-2 mt-auto">
 									{project.url && (
 										<Col>
-											<Button variant="primary" href={project.url} className="w-100">
-												Visit
-											</Button>
+											<Link href={project.url} legacyBehavior>
+												<Button
+													as="a"
+													href={project.url} variant="light"
+													className="w-100">
+													Visit
+												</Button>
+											</Link>
 										</Col>
 									)}
 									{project.source && (
 										<Col>
-											<Button variant="outline-primary" href={project.source} className="w-100">
+											<Button variant="outline-light" href={project.source} className="w-100">
 												Source
 											</Button>
 										</Col>
