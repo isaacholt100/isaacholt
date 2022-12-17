@@ -5,6 +5,8 @@ import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
 import PageTitle from "../components/PageTitle";
 import Button from "react-bootstrap/Button";
+import Icon from "@mdi/react";
+import { mdiCodeBracesBox, mdiEye, mdiOpenInNew } from "@mdi/js";
 
 interface Project {
 	name: string;
@@ -71,12 +73,17 @@ export default function Projects() {
 								<Row className="g-2 mt-auto">
 									{project.url && (
 										<Col>
-											<Link href={project.url} legacyBehavior>
+											<Link href={project.url} passHref legacyBehavior>
 												<Button
 													as="a"
 													href={project.url} variant="light"
-													className="w-100">
-													Visit
+													className="w-100"
+													target="_blank"
+												>
+													<span className="d-flex align-items-center justify-content-center">
+														<Icon path={mdiOpenInNew} size="24px" className="me-1" />
+														Visit
+													</span>
 												</Button>
 											</Link>
 										</Col>
@@ -84,7 +91,10 @@ export default function Projects() {
 									{project.source && (
 										<Col>
 											<Button variant="outline-light" href={project.source} className="w-100">
-												Source
+													<span className="d-flex align-items-center justify-content-center">
+														<Icon path={mdiCodeBracesBox} size="24px" className="me-1" />
+														Source
+													</span>
 											</Button>
 										</Col>
 									)}

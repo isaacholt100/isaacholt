@@ -1,4 +1,4 @@
-import { mdiDownload, mdiDownloadCircle } from "@mdi/js";
+import { mdiDownload, mdiDownloadCircle, mdiFile } from "@mdi/js";
 import Icon from "@mdi/react";
 import { GetStaticProps } from "next";
 import Link from "next/link";
@@ -41,7 +41,10 @@ export default function Maths(props: { mathsNotes: MathsNoteFile[] }) {
 												as="a"
 												variant="light"
 												className="w-100">
-												View
+													<span className="d-flex align-items-center justify-content-center">
+														<Icon path={mdiFile} size="24px" className="me-1" />
+														View
+													</span>
 											</Button>
 										</Link>
 									</Col>
