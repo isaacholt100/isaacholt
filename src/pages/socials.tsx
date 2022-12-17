@@ -1,7 +1,7 @@
 import Head from "next/head";
 import pageTitle from "../lib/title";
 import Icon from "@mdi/react";
-import { mdiEmail, mdiFacebook, mdiGithub, mdiGitlab, mdiInstagram, mdiLinkedin, mdiTwitter } from "@mdi/js";
+import { mdiChessPawn, mdiDiscord, mdiEmail, mdiFacebook, mdiGithub, mdiGitlab, mdiInstagram, mdiLinkedin, mdiReddit, mdiStackExchange, mdiStackOverflow, mdiTwitter } from "@mdi/js";
 import PageTitle from "../components/PageTitle";
 import Link from "next/link";
 import Row from "react-bootstrap/Row";
@@ -13,7 +13,7 @@ interface Social {
 	name: string;
 	url: string;
 	icon: string;
-	color: string | undefined;
+	size?: number;
 }
 
 export const LINKEDIN_URL = "https://www.linkedin.com/in/isaacholt100/";
@@ -25,32 +25,58 @@ const SOCIALS: Social[] = [
 		name: "Email",
 		url: "mailto:" + EMAIL,
 		icon: mdiEmail,
-		color: "rgb(188, 74, 56)",
 	},
 	{
 		name: "LinkedIn",
 		url: LINKEDIN_URL,
 		icon: mdiLinkedin,
-		color: "rgb(42, 103, 169)",
+	},
+	{
+		name: "Discord",
+		url: "https://discordapp.com/users/652929649747296266",
+		icon: mdiDiscord,
+	},
+	{
+		name: "Instagram",
+		url: "https://www.instagram.com/isaacholt100/",
+		icon: mdiInstagram,
+	},
+	{
+		name: "Reddit",
+		url: "https://www.reddit.com/user/isaacholt100",
+		icon: mdiReddit,
 	},
 	{
 		name: "GitHub",
 		url: "https://www.github.com/isaacholt100/",
 		icon: mdiGithub,
-		color: undefined,
 	},
 	{
 		name: "GitLab",
 		url: "https://www.gitlab.com/isaacholt100/",
 		icon: mdiGitlab,
-		color: "rgb(224, 103, 42)",
+	},
+	{
+		name: "Stack Overflow",
+		url: "https://stackoverflow.com/users/14087924/isaacholt100",
+		icon: mdiStackOverflow,
+	},
+	{
+		name: "Math SE",
+		url: "https://math.stackexchange.com/users/815840/isaacholt100",
+		icon: mdiStackExchange,
+	},
+	{
+		name: "Chess.com",
+		url: "https://www.chess.com/member/isaacholt100",
+		icon: mdiChessPawn,
 	}
 ];
 
-export default function Contact() {
+export default function Socials() {
 	return (
 		<>
-			<PageTitle title="Contact" />
+			<PageTitle title="Socials" />
 			<Row className="g-2 g-md-3">
 				{SOCIALS.map(social => (
 					<Col xs={12} sm={6} xl={4} key={social.name}>
@@ -60,12 +86,13 @@ export default function Contact() {
 							size="lg"
 							variant="outline-light"
 							className={"w-100 position-relative d-flex justify-content-center align-items-center " + styles["social-button"]}
+							target="_blank"
 						>
 							<Icon
 								path={social.icon}
 								//color={social.color}
-								size="48px" className="position-absolute"
-								style={{left: 12, bottom: 9}}
+								size={social.size ? social.size.toString() + "px" : "40px"}className="position-absolute"
+								style={{left: 12, bottom: 13}}
 							/>
 							<span>
 								{social.name}

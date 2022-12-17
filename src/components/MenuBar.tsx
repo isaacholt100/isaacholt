@@ -28,8 +28,8 @@ const LINKS = [
 		path: "/maths",
 	},
 	{
-		name: "Contact",
-		path: "/contact",
+		name: "Socials",
+		path: "/socials",
 	},
 ];
 
