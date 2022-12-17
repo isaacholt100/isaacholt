@@ -9,6 +9,7 @@ import Nav from "react-bootstrap/Nav";
 import { useEffect, useState } from "react";
 import Icon from "@mdi/react";
 import { mdiClose, mdiDotsVertical, mdiDotsVerticalCircle, mdiMenu } from "@mdi/js";
+import { Offcanvas } from "react-bootstrap";
 
 const LINKS = [
 	{
@@ -41,7 +42,7 @@ export default function MenuBar() {
 	}, [router.asPath]);
 	return (
 		<>
-			<Navbar bg="black" expand="sm" variant="dark" className="py-0" fixed="top" collapseOnSelect expanded={expanded}>
+			<Navbar bg="black" expand="sm" variant="dark" className="py-0" fixed="top" expanded={expanded} onSelect={() => setExpanded(false)} onToggle={e => setExpanded(e)}>
 				<div className="mx-auto px-2 px-md-3 container-xxl">
 					<div className={styles.image_container + " me-2"}>
 						<Link href="/" className="d-block h-100 btn btn-primary rounded-circle border-0 position-relative p-0" style={{ backgroundColor: "transparent" }}>
@@ -56,25 +57,33 @@ export default function MenuBar() {
 						</Link>
 					</div>
 					<div className="ms-auto my-2 my-md-3 d-flex align-items-center">
-						<Button variant="outline-light" aria-controls="basic-navbar-nav active" className={"p-0 d-sm-none " + styles.nav_toggle} onClick={() => setExpanded(!expanded)}>
-							<Icon path={expanded ? mdiClose : mdiDotsVertical} size={"36px"} />
+						<Button variant="outline-light" aria-controls="basic-navbar-nav active" className={"p-0 d-sm-none " + styles.nav_toggle} onClick={() => setExpanded(true)}>
+							<Icon path={mdiDotsVertical} size={"36px"} />
 						</Button>
 					</div>
-					<Navbar.Collapse id="basic-navbar-nav">
-						<Nav className="ms-auto my-sm-2 my-md-3 mt-0 mb-2">
-							{LINKS.map((link, i) => (
-								<Link href={link.path} key={link.path} legacyBehavior passHref>
-									<Button
-										as="a"
-										variant={(router.asPath === (link.path) ? "primary" : "outline-light")}
-										className={"ms-md-3 ms-sm-2 ms-0 mt-sm-0" + (i !== 0 ? " mt-2" : "")}
-									>
-										{link.name}
-									</Button>
-								</Link>
-							))}
-						</Nav>
-					</Navbar.Collapse>
+					<Navbar.Offcanvas id="basic-navbar-nav" placement="start">
+						<div className="d-flex">
+							<Button variant="outline-light" aria-controls="basic-navbar-nav active" className={"p-0 d-sm-none ms-auto me-2 mt-2 " + styles.nav_toggle} onClick={() => setExpanded(false)}>
+								<Icon path={mdiClose} size={"36px"} />
+							</Button>
+						</div>
+						<hr className="mt-2 mb-0 opacity-100 d-sm-none" />
+						<Offcanvas.Body className="p-2 p-sm-0">
+							<Nav className="ms-auto my-sm-2 my-md-3 mt-0 mb-2">
+								{LINKS.map((link, i) => (
+									<Link href={link.path} key={link.path} legacyBehavior passHref>
+										<Button
+											as="a"
+											variant={(router.asPath === (link.path) ? "primary" : "outline-light")}
+											className={"ms-md-3 ms-sm-2 ms-0 mt-sm-0" + (i !== 0 ? " mt-2" : "")}
+										>
+											{link.name}
+										</Button>
+									</Link>
+								))}
+							</Nav>
+						</Offcanvas.Body>
+					</Navbar.Offcanvas>
 				</div>
 			</Navbar>
 			<hr className="my-0 opacity-100" />

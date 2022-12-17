@@ -19,7 +19,7 @@ export default function About() {
 			<p>
 				When {"I'm"} not battling with numbers or writing code, I am a musical person so I like playing piano and composing songs on GarageBand. I also enjoy playing tennis, table tennis and badminton, and {"I'm"} a big fan of online chess.
 			</p>
-			<p>
+			<p style={{marginBottom: 0}}>
 				Feel free to take a look at my{" "}
 				<Link className="link-primary" href={LINKEDIN_URL}>LinkedIn page</Link>
 				{" "} for more about my experience, education, etc.
