@@ -36,7 +36,7 @@ const LINKS = [
 
 function ImageHomeLink(props: { className?: string }) {
 	return (
-		<div className={styles.image_container + " me-2" + (props.className ? " " + props.className : "")}>
+		<div className={styles.image_container + " me-2" + (props.className ? " " + props.className : "")} style={{marginLeft: -4}}>
 			<Link href="/" className="d-block h-100 btn btn-primary rounded-circle border-0 position-relative p-0" style={{ backgroundColor: "transparent" }}>
 				<Image
 					src={personalIcon}
