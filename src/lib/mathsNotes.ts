@@ -21,15 +21,19 @@ async function getMathsNotesFolders() {
 
 export async function getMathsNotes(): Promise<MathsNoteFile[]> {
 	const folders = await getMathsNotesFolders();
-	return await Promise.all(folders.map(async f => {
-		const stats = await fs.stat(path.join(notesDirectory, f.name, f.name + ".tex"));
-		return {
-			name: f.name,
-			displayName: capitalizeName(f.name),
-			dateModified: stats.ctime.toJSON(),
-			dateCreated: stats.birthtime ? stats.birthtime.toJSON() : null,
-		}
-	}));
+	return await Promise.all(
+		folders
+			.filter(f => !f.name.startsWith("."))
+			.map(async f => {
+				const stats = await fs.stat(path.join(notesDirectory, f.name, f.name + ".tex"));
+				return {
+					name: f.name,
+					displayName: capitalizeName(f.name),
+					dateModified: stats.ctime.toJSON(),
+					dateCreated: stats.birthtime ? stats.birthtime.toJSON() : null,
+				}
+			})
+	);
 }
 
 export async function getMathsNotesPaths() {
