@@ -6,6 +6,7 @@
 \usepackage{amsthm}
 \usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage{diffcoeff}
 
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}[subsection]
@@ -278,11 +279,11 @@ To compute $x_* = 1 / b$ so $f(x_*) = \frac{1}{x_*} - b = 0$, so using Newton-Ra
 
 	\[\underline{x_{n + 1}} = \underline{x_n} - (Df)^{-1} \underline{f}(\underline{x_n})\]
 
-	We week $\underline{x_*} = \underline{p}$ such that $f_1(p_1, p_2) = f_2(p_1, p_2) = 0$. Taylor-expanding at $\underline{x}$:
+	We write $\underline{x_*} = \underline{p}$ such that $f_1(p_1, p_2) = f_2(p_1, p_2) = 0$. Taylor-expanding at $\underline{x}$:
 
-	\[0 = f_1(p_1, p_2) = f_1(x_1, x_2) + (p_1 - x_1) \frac{\partial f_1}{\partial x_1} (x_1, x_2) + (p_2 - x_2) \frac{\partial f_1}{\partial x_2} (x_1, x_2) + O(|\underline{p} - \underline{x}|^2)\]
+	\[0 = f_1(p_1, p_2) = f_1(x_1, x_2) + (p_1 - x_1) \diffp{f_1}{x_1} (x_1, x_2) + (p_2 - x_2) \diffp{f_1}{x_2} (x_1, x_2) + O(|\underline{p} - \underline{x}|^2)\]
 
-	\[0 = f_2(p_1, p_2) = f_2(x_1, x_2) + (p_1 - x_1) \frac{\partial f_2}{\partial x_1} (x_1, x_2) + (p_2 - x_2) \frac{\partial f_2}{\partial x_2} (x_1, x_2) + O(|\underline{p} - \underline{x}|^2)\]
+	\[0 = f_2(p_1, p_2) = f_2(x_1, x_2) + (p_1 - x_1) \diffp{f_2}{x_1} (x_1, x_2) + (p_2 - x_2) \diffp{f_2}{x_2} (x_1, x_2) + O(|\underline{p} - \underline{x}|^2)\]
 
 	In matrix form:
 
@@ -368,10 +369,10 @@ The error $\frac{h^2}{12} \left( f'''(\xi_+) + f'''(\xi_-) \right)$ is of order 
 \begin{remark}
 	Sometimes, we can only take $h < 0$ or $h > 0$ (not both), e.g. when solving differential equations numerically. If we have an ODE
 
-	\[ \frac{du}{dt} = F(u) \]
+	\[ \diff{u}{t} = F(u) \]
 	Given $u(0)$ we want to solve for $u(t), t \ge 0$. We approximate $u(t)$ by a $u(t_n)$ with $t_n = n \delta t, n \in \mathbb{N}$, with $\delta t > 0$ small. Then
 
-	\[ \frac{du}{dt} \approx \frac{u(t_n + \delta t) - u(t_n)}{\delta t} \approx F(u(t_n)) \]
+	\[ \diff{u}{t} \approx \frac{u(t_n + \delta t) - u(t_n)}{\delta t} \approx F(u(t_n)) \]
 \end{remark}
 
 \subsection{Richardson extrapolation}
@@ -400,7 +401,7 @@ So we set
 		\item We only need to specify the powers of $h$, not the coefficients $c_k$ as long as they are \textbf{non-zero}. So when using centred difference to calculate $R_h^{(1)}$ then $R_h^{(2)}$, $R_h^{(3)}$ will be different.
 		\item Richardson extrapolation works with many other approximation methods involving a small parameter (not just differentiation).
 		\item There is no standard notation for this method.
-		\item Some series expansions have irregular/non-integer powers, e.g. the Airy function $\text{Ai}(x)$ which is a solution of $\frac{d^2 f}{dx^2} = x f(x)$.
+		\item Some series expansions have irregular/non-integer powers, e.g. the Airy function $\text{Ai}(x)$ which is a solution of $\diff[2]{f}{x} = x f(x)$.
 	\end{enumerate}
 \end{remark}
 

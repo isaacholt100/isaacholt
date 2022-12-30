@@ -3,8 +3,8 @@
 
 \usepackage[a4paper, total={6in, 10in}]{geometry}
 \usepackage[utf8]{inputenc}
-\usepackage{amsfonts}
-\usepackage{amsthm}
+\usepackage{amsfonts, amsmath, amssymb, amsthm}
+\usepackage{diffcoeff}
 
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}[subsection]
@@ -15,10 +15,215 @@
 \newtheorem{example}[definition]{Example}
 \newtheorem*{remark}{Remark}
 
-\title{<module> Course Notes}
+\let\oldforall\forall
+\renewcommand{\forall}{\ \oldforall}
+
+\let\oldexist\exists
+\renewcommand{\exists}{\ \oldexist}
+
+\newcommand\existu{\ \oldexist!}
+
+\title{Mathematical Physics Course Notes}
 \author{Isaac Holt}
 
 \begin{document}
+\maketitle
+
+\section{The action principle}
+
+\subsection{Calculus of variatons}
+
+\begin{definition}
+	A \textbf{functional} is a map from a set of functions to $\mathbb{R}$, e.g. $f: (\mathbb{R} \rightarrow \mathbb{R}) \rightarrow \mathbb{R}$.
+\end{definition}
+
+\begin{definition}
+	Let $y(t)$ be a function with fixed values at endpoints $a$ and $b$. $y$ is \textbf{stationary} for a functional $S$ if
+
+	\[ \diff{S (y(t) + \epsilon z(t))}{\epsilon}\Big|_{\epsilon = 0} = 0 \]
+	for every smooth (continuous derivative to every order) $z(t)$ such that $z(a) = z(b) = 0$.
+\end{definition}
+
+\begin{remark}
+	Functions $y(t)$ may be referred to as \textbf{paths} and so functions that satisfy the above definition are referred to as \textbf{stationary paths}.
+\end{remark}
+
+\begin{definition}
+	Let $S$ be an \textbf{action functional} (or just \textbf{action}). \textbf{The action principle} states that the paths described by particles are stationary paths of $S$.
+
+	Mathematically, given a particle moving in one dimension with position given by $x(t)$, for arbitrary smooth small deformations $\delta x(t)$ around the true path $x(t)$ (the path the particle follows):
+
+	\[ \delta S := S(x + \delta x) - S(x) = O((\delta x)^2) \]
+\end{definition}
+
+\begin{lemma}
+	(Fundamental lemma of the calculus of variations) Let $f(x)$ be a continuous function in the interval $[a, b]$ such that
+
+	\[ \int_a^b f(x) g(x) dx = 0 \]
+	for every smooth function $g(x)$ in $[a, b]$ such that $g(a) = g(b) = 0$. Then $f(x) = 0 \forall x \in [a, b]$.
+\end{lemma}
+
+\begin{definition}
+	Let $L(r, s)$ be a function of two real variables. If a functional $S$ can be expressed as the time integral of $L$, i.e. if
+
+	\[ S(x) = \int_{t_0}^{t_1} L(x(t), \dot{x}(t)) dt \]
+	then $L$ is called a \textbf{Lagrangian}.
+\end{definition}
+
+\begin{definition}
+	For a Lagrangian $L$, the \textbf{Euler-Lagrange equation} is given by
+
+	\[ \diffp{L}{x} - \diff{}{t} \left( \diffp{L}{\dot{x}} \right) = 0 \]
+	where
+
+	\[ \diffp{L}{x} = \diffp{L(r, s)}{r} \Big|_{(r, s) = (x(t), \dot{x}(t))} \text{ \ and \ } \diffp{L}{\dot{x}} = \diffp{L(r, s)}{s} \Big|_{(r, s) = (x(t), \dot{x}(t))} \]
+\end{definition}
+
+\begin{remark}
+	$\dot{x}$ does not depend on $x$:
+
+	\[ \diffp{x}{\dot{x}} = \diffp{\dot{x}}{x} = 0 \]
+\end{remark}
+
+\begin{remark}
+	The Euler-Lagrange equation only applies to one-dimensional cases.
+\end{remark}
+
+\subsection{Configuration space and generalised coordinates}
+
+\begin{definition}
+	\textbf{Configuration space}, denoted $C$, is the set of all possible (in principle) instantaneous configurations for a given a physical system.
+\end{definition}
+
+\begin{remark}
+	This definition includes positions, but does not include velocities.
+\end{remark}
+
+\begin{remark}
+	A configuration space must be constructed before a Lagrangian is constructed. The Lagrangian describes the dynamics of this configuration space.
+\end{remark}
+
+\begin{example}
+	A particle moving in $\mathbb{R}^d$ has configuration space $\mathbb{R}^d$.
+\end{example}
+
+\begin{example}
+	$N$ distinct particles moving in $\mathbb{R}^d$ have configuration space ${(\mathbb{R}^d)}^N = \mathbb{R}^{dN}$. The configuration space would still be $\mathbb{R}^{dN}$ if the particles were electrically charged, as the charge of the particles does not affect their positions, at least initially.
+\end{example}
+
+\begin{example}
+	Two distinct particles joined by a rigid rod have configuration space $\mathbb{R}^{2d - 1}$. One particle has configuration space $\mathbb{R}^d$ and there are $d - 1$ angles that must specified to choose the position of the second particle relative to the other.
+\end{example}
+
+\begin{definition}
+	Let $S$ be a physical system with configuration space $C$. Then $S$ has $\dim(C)$ \textbf{degrees of freedom}.
+\end{definition}
+
+\begin{remark}
+	For every configuration space, any choice of coordinate system is valid, and the Lagrangian formalism holds regardless of this choice.
+\end{remark}
+
+\begin{definition}
+	For a configuration space $C$, a set of coordinates in this space is called a set of \textbf{generalised coordinates}. Often generalized coordinates are represented with $q_i$, $i \in \{ 1, \dots, \dim(C) \}$ where $\underline{q}$ is the coordinate vector with components $q_i$.
+\end{definition}
+
+\begin{example}
+	A particle moving in $\mathbb{R}^2$, with configuration space $\mathbb{R}^2$. We could use Cartesian or polar coordinates to describe the position of the particle in this space (both are equally valid).
+\end{example}
+
+\begin{definition}
+	Let $C$ be a configuration space and let $\underline{q}(t) \in C$ be a path. For a Lagrangian function $L(\underline{q}, \underline{\dot{q}})$, the \textbf{Euler-Lagrange equations} state that
+
+	\[ \diffp{L}{q_i} - \diff{}{t} \left( \diffp{L}{\dot{q}_i} \right) = 0 \quad \forall i \in \{ 1, \dots, \dim(C) \} \]
+\end{definition}
+
+\begin{remark}
+	The Euler-Lagrange equations are valid in any coordinate system.
+\end{remark}
+
+\begin{remark}
+	Similarly to the one-dimensional case:
+
+	\[ \diffp{q_i}{\dot{q}_j} = \diffp{\dot{q}_i}{q_j} = 0 \]
+	and
+
+	\[ \diffp{q_i}{q_j} = \diffp{\dot{q}_i}{\dot{q}_j} = \delta_{ij} \]
+\end{remark}
+
+\subsection{Lagrangians for classical mechanics}
+
+\begin{definition}
+	In a system with kinetic energy $T(\underline{q}, \underline{\dot{q}})$ and potential energy $V(\underline{q})$, the Lagrangian that describes the equations of motion in that system is given by
+
+	\[ L(\underline{q}, \underline{\dot{q}}) = T(\underline{q}, \underline{\dot{q}}) - V(\underline{q}) \]
+\end{definition}
+
+\subsection{Ignorable coordinates and conservation of generalised momenta}
+
+\begin{definition}
+	Let $\{ q_1, \dots, q_N \}$ be a set of generalised coordinates. A specific coordinates $q_i$ is \textbf{ignorable} if the Lagrangian function expressed in these generalised coordinates does not depend on $q_i$, i.e. if
+
+	\[ \diffp{L}{q_i} = 0 \]
+\end{definition}
+
+\begin{definition}
+	The \textbf{generalised momentum} $p_i$ associated with a generalised coordinate $q_i$ is given by
+
+	\[ p_i := \diffp{L}{\dot{q_i}} \]
+\end{definition}
+
+\begin{proposition}
+	The generalised momentum associated to an ignorable coordinate is conserved.
+\end{proposition}
+
+\begin{proof}
+	From the Euler-Lagrange equation for $q_i$,
+
+	\[ 0 = \diff{}{t} \left( \diffp{L}{\dot{q_i}} \right) - \diffp{L}{q_i} = \diff{p_i}{t} - 0 = \diff{p_i}{t} \]
+\end{proof}
+
+\begin{example}
+	For a free particle moving in $d$ dimensions, in Cartesian coordinates we have
+
+	\[ L = T - V = \frac{1}{2} m \sum_{i = 1}^d \dot{x}_i^2 \]
+	so every coordinate is ignorable. The generalised momenta are
+
+	\[ p_i = \diffp{L}{\dot{x}_i} = m \dot{x}_i \]
+	So here the conservation of generalised momenta is the conservation of the linear momenta.
+\end{example}
+
+\section{Symmetries, Noether's theorem and conservation laws}
+
+\subsection{Ordinary symmetries}
+
+\begin{definition}
+	For a uniparametric family of smooth maps $\phi(\epsilon): C \rightarrow C$ from configuration space to itself, with $\phi(0)$ the identity map, this family of maps is called a \textbf{transformation depending on $\epsilon$}. In any coordinates system this transformation can be written as
+
+	\[ q_i \rightarrow \phi_i(q_1, \dots, q_N, \epsilon) \]
+	where the $\phi_i$'s are a set of $N := \dim(C)$ functions representing the transformation in the coordinate system. The change in velocities is defined as
+
+	\[ \dot{q}_i \rightarrow \diff{}{t} \phi_i \]
+\end{definition}
+
+\begin{remark}
+	$q_i'$ is used to denote $\phi(q_i, \epsilon)$, so often we write $q_i \rightarrow q_i' = \dots$, where $\dots$ is a function of $q_i$ and $\epsilon$.
+\end{remark}
+
+\begin{definition}
+	The \textbf{generator} of $\phi$ is
+
+	\[ \diff{\phi(\epsilon)}{\epsilon} \Big|_{\epsilon = 0} := \lim_{\epsilon \rightarrow 0} \frac{\phi(\epsilon) - \phi(0)}{\epsilon} \]
+	In any coordinate system,
+
+	\[ q_i \rightarrow \phi_i(\underline{q}, \epsilon) = q_i + \epsilon a_i(\underline{q}) + O(\epsilon^2) \]
+	where
+
+	\[ a_i = \diffp{\phi_i(\underline{q}, \epsilon)}{\epsilon} \Big|_{\epsilon = 0} \]
+	is a function of the generalised coordinates. Hence the transformation generator is $a_i$. For the velocities the transformation is
+
+	\[ \dot{q}_i \rightarrow \dot{q}_i + \epsilon a_i(q_1, \dots, q_N, \dot{q}_1, \dots, \dot{q}_N) + O(\epsilon^2) \]
+	where the generator is $\dot{a}_i$.
+\end{definition}
 
 \section{Hamiltonian Formalism}
 
@@ -39,13 +244,13 @@
 \end{example}
 
 \begin{definition}
-	The \textbf{Hamiltonian formalism} studies dynamics in a phase space, parameterised by $\underline{q}(t)$ and $\underline{p}(t)$, where $p_i = \frac{\partial L}{\partial \dot{\underline{q_i}}}$, the momentum.
+	The \textbf{Hamiltonian formalism} studies dynamics in a phase space, parameterised by $\underline{q}(t)$ and $\underline{p}(t)$, where $p_i = \diffp{L}{\dot{\underline{q_i}}}$, the momentum.
 \end{definition}
 
 \begin{example}
 	A particle moving in $\mathbb{R}$, with $L(x, \dot{x}) = \frac{1}{2} m \dot{x}^2$.
 
-	Then $p_x = \frac{\partial L}{\partial \dot{x}} = m \dot{x}$ so $\dot{x}(x, p_x) = \frac{p_x}{m}$.
+	Then $p_x = \diffp{L}{\dot{x}} = m \dot{x}$ so $\dot{x}(x, p_x) = \frac{p_x}{m}$.
 
 	In the Hamltonian formalism, $L(x, p_x) = \frac{p_x^2}{2m}$.
 \end{example}
@@ -63,13 +268,13 @@
 \begin{definition}
 	Given two functions $f(\underline{q}, \underline{p}, t)$ and $g(\underline{q}, \underline{p}, t)$ in phase space their \textbf{Poisson bracket} is:
 
-	\[ \{f, g\} := \sum_{i = 1}^n \left( \frac{\partial f}{\partial q_i} \frac{\partial g}{\partial p_i} - \frac{\partial f}{\partial p_i} \frac{\partial g}{\partial q_i} \right)\] where $n$ is the dimension of the configuration space.
+	\[ \{f, g\} := \sum_{i = 1}^n \left( \diffp{f}{q_i} \diffp{g}{p_i} - \diffp{f}{p_i} \diffp{g}{q_i} \right)\] where $n$ is the dimension of the configuration space.
 \end{definition}
 
 \begin{remark}
-	In the Hamiltonian formalism, $\frac{\partial q_i}{\partial p_j} = \frac{\partial p_j}{\partial q_i} = 0$.
+	In the Hamiltonian formalism, $\diffp{q_i}{p_j} = \diffp{p_j}{q_i} = 0$.
 
-	Similarly, $\frac{\partial q_i}{\partial q_j} = \frac{\partial p_i}{\partial p_j} = \delta_{i, j}$
+	Similarly, $\diffp{q_i}{q_j} = \diffp{p_i}{p_j} = \delta_{i, j}$
 \end{remark}
 
 \begin{example}
@@ -97,7 +302,7 @@ TODO: properties on poisson bracket
 \begin{example}
 	(Rotation in $\mathbb{R}^2$ in Cartesian coordinates) As a guess, choose $f = q_1 \dot{q_2} - \dot{q_1} q_2$, the angular momentum.
 
-	$L = \frac{1}{2} (\dot{q_1}^2 + \dot{q_2}^2) - V(q_1, q_2)$ so $p_1 = \frac{\partial L}{\partial \dot{q_1}} = \dot{q_1}$ and $p_2 = \frac{\partial L}{\partial \dot{q_2}} = \dot{q_2} \Rightarrow f = q_1 p_2 - q_2 p_1$.
+	$L = \frac{1}{2} (\dot{q_1}^2 + \dot{q_2}^2) - V(q_1, q_2)$ so $p_1 = \diffp{L}{\dot{q_1}} = \dot{q_1}$ and $p_2 = \diffp{L}{\dot{q_2}} = \dot{q_2} \Rightarrow f = q_1 p_2 - q_2 p_1$.
 
 	Then $q_1 \rightarrow q_1 + \epsilon \{ q_1, f \} + O(\epsilon^2) = q_1 + \epsilon \{ q_1, q_1 p_2 - q_2 p_1 \} = q_1 + \epsilon \{ q_1, q_1 p_2 \} - \epsilon \{ q_1, q_2 p_1 \} = q_1 + \epsilon \{q_1, q_1\} p_2 + \epsilon \{q_1, p_2\} q_1 - \epsilon \{q_1, q_2\} p_1 - \epsilon \{q_1, p_1\} q_2 = q_1 - \epsilon q_2$
 
@@ -120,26 +325,26 @@ TODO: properties on poisson bracket
 	The time evolution of the phase space coordinates $\underline{q}, \underline{p}$ is generated by Hamiltonian flow $\Phi_H$:
 
 	\[ q_i(t + a) = \Phi_H^{(a)} q_i(t), p_i(t + a) = \Phi_H^{(a)} p_i(t) \]
-	Infinitesimally, $q_i(t) + \epsilon \dot{q_i}(t) + O(\epsilon^2) = q_i(t + \epsilon) = q_i(t) + \epsilon \{ q_i, H \} + O(\epsilon^2) \Leftrightarrow \dot{q_i} = \{q_i, H \} = \frac{\partial H}{\partial p_i}$ and similarly, $\dot{p_i} = \{ p_i, H \} = -\frac{\partial H}{\partial q_i}$.
+	Infinitesimally, $q_i(t) + \epsilon \dot{q_i}(t) + O(\epsilon^2) = q_i(t + \epsilon) = q_i(t) + \epsilon \{ q_i, H \} + O(\epsilon^2) \Leftrightarrow \dot{q_i} = \{q_i, H \} = \diffp{H}{p_i}$ and similarly, $\dot{p_i} = \{ p_i, H \} = -\diffp{H}{q_i}$.
 	
 	These equations are called \textbf{Hamilton's equations}.
 \end{theorem}
 
 \begin{proof}
-	$\frac{\partial H}{\partial q_i}$. TODO: complete this proof, finish rest of notes from lecture.
+	$\diffp{H}{q_i}$. TODO: complete this proof, finish rest of notes from lecture.
 \end{proof}
 
 \begin{corollary}
 	The time evolution of any function $f(\underline{q}, \underline{p})$ in phase space is generated by $\Phi_H$:
 
-	\[ \frac{df}{dt} = \{ f, H \} \]
+	\[ \diff{f}{t} = \{ f, H \} \]
 	If $f(\underline{q}, \underline{p}, t)$ depends explicitly on time then
 
-	\[ \frac{df}{dt} = \{ f, h \} + \frac{\partial f}{\partial t} \]
+	\[ \diff{f}{t} = \{ f, h \} + \diffp{f}{t} \]
 \end{corollary}
 
 \begin{proof}
-	$\frac{df}{dt} = \sum_{i = 1}^n \left( \frac{\partial f}{\partial q_i} \dot{q_i} + \frac{\partial f}{\partial p_i} \dot{p_i} \right) + \frac{\partial f}{\partial t} = \sum_{i = 1}^n \left( \frac{\partial f}{\partial q_i} \frac{\partial H}{\partial p_i} - \frac{\partial f}{\partial p_i} \frac{\partial H}{\partial q_i} \right) + \frac{\partial f}{\partial t} = \{ f, H \} + \frac{\partial f}{\partial t}$.
+	$\diff{f}{t} = \sum_{i = 1}^n \left( \diffp{f}{q_i} \dot{q_i} + \diffp{f}{p_i} \dot{p_i} \right) + \diffp{f}{t} = \sum_{i = 1}^n \left( \diffp{f}{q_i} \diffp{H}{p_i} - \diffp{f}{p_i} \diffp{H}{q_i} \right) + \diffp{f}{t} = \{ f, H \} + \diffp{f}{t}$.
 \end{proof}
 
 \end{document}

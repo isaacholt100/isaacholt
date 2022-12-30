@@ -5,6 +5,36 @@
 \usepackage[utf8]{inputenc}
 \usepackage{amsfonts, amssymb, amsmath}
 \usepackage{amsthm}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{bbm}
+
+\definecolor{commentcolor}{rgb}{0.43,0.47,0.51}
+\definecolor{numbercolor}{rgb}{0.07,0.39,0.16}
+\definecolor{stringcolor}{rgb}{0.04,0.19,0.41}
+\definecolor{backgroundcolor}{rgb}{1,1,1}
+\definecolor{keywordcolor}{rgb}{0.81,0.13,0.18}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backgroundcolor},   
+    commentstyle=\color{commentcolor},
+    keywordstyle=\color{keywordcolor},
+    numberstyle=\color{numbercolor},
+    stringstyle=\color{stringcolor},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=16pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=4
+}
+
+\lstset{style=mystyle}
 
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}[subsection]
@@ -21,6 +51,156 @@
 \begin{document}
 
 \maketitle
+
+\section{Introduction}
+
+\subsection{Standard errors}
+
+\begin{theorem}
+	(Central Limit Theorem) If we have a sample of data $(x_1, \dots, x_n)$ where each $X_i \sim UK(\mu, \sigma^2)$ ($UK$ is an unknown population distribution), then
+
+	\[ \bar{X} \sim N\left(\mu, \frac{\sigma^2}{n}\right) \]
+	as $n \rightarrow \infty$. This means that the distribution of the sample mean tends to a Normal distribution with standard deviation $\frac{\sigma}{\sqrt{n}}$. This is independent of $UK$.
+\end{theorem}
+
+\begin{definition}
+	The unbiased estimate of the population standard deviation is given by
+
+	\[ \sqrt{\frac{1}{n - 1} \sum_{i = 1}^n {\left(x_i - \bar{x}\right)}^2} \]
+	Then the \textbf{standard error of the sample mean} is $\frac{s}{\sqrt{n}}$, which is an estimate of the standard deviation of the sample mean.
+\end{definition}
+
+\begin{remark}
+	If $n$ is not sufficiently large, then $s$ is a poor estimator and the distribution of the sample mean might not be normally distributed.
+
+	If the population distribution is normal and $n$ is small, then
+
+	\[ \frac{\bar{X} - \mu}{s / \sqrt{n}} \sim t_{n - 1} \]
+\end{remark}
+
+\begin{definition}
+	The equation above is called a \textbf{pivotal quantity}, because after transformation, the distribution no longer depends on the parameters ($\mu$ and $\sigma$) of the distribution of $X$.
+\end{definition}
+
+\subsection{Hypothesis tests}
+
+\begin{definition}
+	Given data $\underline{x} = (x_1, \dots, x_n)$, we define a \textbf{null hypothesis}, $H_0$, to identify the distribution we believe generated each $x_i$.
+
+	Then we select a \textbf{test statistic}, $t = h(x_1, \dots, x_n)$ which is a function of data which produces an extreme value when $H_0$ is false, and a value which is not extreme otherwise.
+
+	The \textbf{observed test statistic} for the data $\underline{x}$ is $t = h(x_1, \dots, x_n)$. A hypothesis test compares the observed test statistic to the distribution of test statistic values that would occur assuming $H_0$ was true. This helps us decide whether the observed test statistic is extreme.
+
+	So we need to know the distribution of the random variable $T = h(X_1, \dots, X_n)$, then we see how extreme $t$ is as a realisation of $T$.
+\end{definition}
+
+\begin{definition}
+	Given data $\underline{x} = (x_1, \dots, x_n)$, let $H_0$ be a null hypopthesis that specifies a proposed distribution for the random variables $X_i$ and let $h$ be a test statistic.
+
+	Let $t = h(x_1, \dots, x_n)$ be the observed test statistic. If the distribution of $T = h(X_1, \dots, X_n)$ is known, then the one-sided $p$-value is either
+
+	\[ \mathbb{P}(T \ge t \mid H_0 \text{ true}) \text{ \ or \ } \mathbb{P}(T \le t \mid H_0 \text{ true}) \]
+	If $t$ is extreme when larger or smaller than $T$, the two-sided $p$-value is
+
+	\[ \mathbb{P}(T \le -|t| \cup T \ge |t| \mid H_0 \text{ true} ) = \mathbb{P}(|T| \ge |t| \mid H_0 \text{ true}) \]
+\end{definition}
+
+\section{Monte Carlo testing}
+
+\subsection{Motivation for Monte Carlo testing}
+
+When conducting a hypothesis test, we have data $(x_1, \dots, x_n)$ which follows a distribution $F(x | \theta)$ with parameter $\theta$. We want to test
+
+\[ H_0: \theta = \theta_0, \quad H_1: \theta > \theta_0 \]
+We define the test statistic as $T = h(X_1, \dots, X_n)$ with an observed value of $t = h(x_1, \dots, x_n)$. To calculate the $p$-value, we use
+
+\[ \mathbb{P}(T \ge t \mid H_0 \text{ true}) = \mathbb{P}(T \ge t \mid X_i \sim F(\cdot, \theta_0)) \]
+This probability is often difficult or impossible to compute analytically.
+
+But because $f(x \mid \theta)$ (the pdf of the distribution $F$) and $h$ are known, we can estimate this probability using \textbf{simulation}.
+
+\subsection{Monte Carlo testing}
+
+\begin{definition}
+	Let $\underline{x}$ be observed data, $t = h(\underline{x})$ be an observed test statistic, $F(x \mid \theta)$ be a data-generating distribution. With hypotheses
+
+	\[ H_0: \theta = \theta_0, \quad H_1: \theta > \theta_0 \]
+	we can perform a \textbf{Monte Carlo hypothesis test} with the following algorithm:\\
+
+	For each $i \in \{1, \dots, N\}$ ($N$ is some large constant):
+	\begin{enumerate}
+		\item Simulate $n$ observations $\underline{z} = (z_1, \dots, z_n)$ from $Z_i \sim F(\cdot \mid \theta_0)$.
+		\item Compute $t_i = h(\underline{z})$.
+	\end{enumerate}
+	Compute the estimated $p$-value with:
+
+	\[ \mathbb{P}(T \ge t \mid H_0 \text{ true}) \approx \frac{1}{N} \sum_{i = 1}^N \mathbbm{1}\{ t_i \ge t \} \]
+	where
+	
+	\[ \mathbbm{1} \{ A \} = \begin{cases}
+		1 \text{ if } A \text{ true}\\
+		0 \text{ if } A \text{ false}
+	\end{cases} \]
+	is the indicator function.
+\end{definition}
+
+\begin{remark}
+	This makes hypothesis testing much easier and allows it to be generalised to any distributions and test statistics.
+
+	\begin{enumerate}
+		\item We assume $H_0$ is true and simulate $N$ sets of data ($\underline{z}$) for each of which we compute the test statistic $h$.
+		\item We then count the number of times the test statistic of a simulated set of data was at least as extreme as the observed statistic $t$, then divide this total by the total number of simulated data sets, $N$.
+	\end{enumerate}
+\end{remark}
+
+\begin{remark}
+	Monte Carlo testing can only be performed when we know the true value of other parameters of $F$ that are not being tested. For example, it can be done for Normal/t testing only when $\sigma$ is known.
+\end{remark}
+
+\begin{example}
+	Below is some R code which performs a Monte Carlo hypothesis test given some data, a test statistic function and a function that simulates random numbers from a distribution.
+
+	\begin{lstlisting}[language=R]
+monte_carlo_p_value = function(sims, data, test_stat, rand) {
+	# sims = N
+	# data = x
+	# test_stat = h
+	# X = rand(...) <=> X ~ F(_, theta)
+	obs_stat <- test_stat(data)
+	sim_stats <- rep(0, sims)
+	for (i in 1:N) {
+		sim_data = rand(length(data))
+		# obs = z
+		sim_stat = test_stat(sim_data)
+		# obs_stat = t_i
+		sim_stats[i] <- sim_stat
+	}
+	
+	return(sum(sim_stats > obs_stat) / sims);
+}
+
+# hypothesis test on mean candle lifetimes
+# lifetimes are normally distributed
+# H_0: mu = 9.2
+# H_1: mu != 9.2
+candle_lifetimes = c(8.1, 8.7, 9.2, 7.8, 8.4, 9.4)
+mu0 = 9.2
+N = 50000
+lifetimes_stat = function(lifetimes) {
+	return(abs(mean(lifetimes) - mu0))
+}
+gen_rand_lifetimes = function(sims) {
+	return(rnorm(sims, mean = mu0, sd = sqrt(0.4)))
+}
+
+p_value = monte_carlo_p_value(N, candle_lifetimes, lifetimes_stat, gen_rand_lifetimes)
+print(paste("p-value:", p_value))
+	\end{lstlisting}
+\end{example}
+
+\section{The Bootstrap}
+
+
 
 \section{Monte Carlo Integration}
 
