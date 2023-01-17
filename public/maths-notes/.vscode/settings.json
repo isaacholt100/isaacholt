@@ -5,6 +5,7 @@
 		"**/*.fls": true,
 		"**/*.synctex.gz": true,
 		"**/*.synctex(busy)": true,
-		"**/*.log": true
+		"**/*.log": true,
+		"**/*.out": true
 	}
 }

@@ -5,6 +5,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage{amsfonts, amsmath, amssymb, amsthm}
 \usepackage{diffcoeff}
+\usepackage{hyperref}
 
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}[subsection]
@@ -79,8 +80,10 @@
 	\[ \diffp{L}{x} = \diffp{L(r, s)}{r} \Big|_{(r, s) = (x(t), \dot{x}(t))} \text{ \ and \ } \diffp{L}{\dot{x}} = \diffp{L(r, s)}{s} \Big|_{(r, s) = (x(t), \dot{x}(t))} \]
 \end{definition}
 
-\begin{remark}
-	$\dot{x}$ does not depend on $x$:
+\begin{remark}\label{rem:lagrangianParametersIndependent}
+	The Lagrangian $L$ is just an ordinary function of (here) two independent parameters $(r, s)$t. When constructing the action, $L$ is evaluated at $(r, s) = (x(t), \dot{x}(t))$, but $r$ and $s$ as parameters in the definition of the Lagrangian are independent.
+
+	So $\dot{x}$ is treated as a variable which does not depend on $x$:
 
 	\[ \diffp{x}{\dot{x}} = \diffp{\dot{x}}{x} = 0 \]
 \end{remark}
@@ -172,7 +175,7 @@
 	\[ p_i := \diffp{L}{\dot{q_i}} \]
 \end{definition}
 
-\begin{proposition}
+\begin{proposition}\label{prop:generalisedIgnorableMomentumConserved}
 	The generalised momentum associated to an ignorable coordinate is conserved.
 \end{proposition}
 
@@ -223,6 +226,269 @@
 
 	\[ \dot{q}_i \rightarrow \dot{q}_i + \epsilon a_i(q_1, \dots, q_N, \dot{q}_1, \dots, \dot{q}_N) + O(\epsilon^2) \]
 	where the generator is $\dot{a}_i$.
+\end{definition}
+
+\begin{example}
+	For a particle moving in two dimensions, the finite transformations given by rotations around the origin, in Cartesian coordinates, are
+	\[
+		\begin{aligned}
+			& x \rightarrow x \cos(\epsilon) - y \sin(\epsilon) \\
+			& y \rightarrow x \sin(\epsilon) + y \cos(\epsilon)
+		\end{aligned}
+	\]
+	The associated infinitesimal transformations can be derived using the expansions $\sin(\epsilon) = \epsilon + O(\epsilon^3)$ and $\cos(\epsilon) = 1 + O(\epsilon^2)$. Then
+	\[
+		\begin{aligned}
+			& x \rightarrow x - y \epsilon + O(\epsilon^2) \\
+			& y \rightarrow y + x \epsilon + O(\epsilon^2)
+		\end{aligned}
+	\]
+	Then the generators of the transformation are
+	\[
+		a_x = -y, \quad a_y = x, \quad \dot{a}_x = -\dot{y}, \quad \dot{a}_y = \dot{x}
+	\]
+\end{example}
+
+\begin{lemma}
+	Equations of motion do not change if the Lagrangian is modified by adding the total derivative of a function of coordinates and time, i.e.
+	\[
+		L \rightarrow L + \diff{F(q_1, \dots, q_N, t)}{t}
+	\]
+	results in the same equations of motion.
+\end{lemma}
+
+\begin{proof}
+	The effect on the action is
+	\[
+		S = \int_{t_0}^{t_1} L dt \rightarrow S' = S + F(q_1(t_1), \dots, q_N(t_1), t_1) - F(q_1(t_0), \dots, q_N(t_0), t_0)
+	\]
+	From the action principle, we must have that $\delta S$ vanishes to first order in $\delta q_i(t)$, with the $q_i$'s fixed at the path's endpoints. Therefore $F(q_1(t_1), \dots, q_N(t_1), t_1)$ and $F(q_1(t_0), \dots, q_N(t_0), t_0)$ are fixed. Hence
+	\[
+		\begin{aligned}
+			\delta S' & = S'(\underline{q} + \delta \underline{q}) - S'(\underline{q}) \\
+			& = (S(\underline{q} + \delta \underline{q}) + F(q_1(t_1), \dots, q_N(t_1), t_1) - F(q_1(t_0), \dots, q_N(t_0), t_0)) \\
+			& \quad - (S(\underline{q}) + F(q_1(t_1), \dots, q_N(t_1), t_1) - F(q_1(t_0), \dots, q_N(t_0), t_0)) \\
+			& = S(\underline{q} + \delta\underline{q}) - S(\underline{q}) = \delta S
+		\end{aligned}
+	\]
+	So the variation of the action is not affected, therefore the equations of motion cannot be affected.
+\end{proof}
+
+\begin{definition}
+	A transformation $\phi(\epsilon)$ is a \textbf{symmetry} if, to first order in $\epsilon$, for some function $F(\underline{q}, t)$, the change in the Lagrangian is a total time derivative of $F(\underline{q}, t)$, i.e.
+
+	\[
+		L \rightarrow L + \epsilon \diff{F(\underline{q}, t)}{t} + O(\epsilon^2)
+	\]
+\end{definition}
+
+\begin{remark}
+	$F(\underline{q}, t)$ is only defined up to a constant. If some $F(\underline{q}, t)$ satisfies the above equation, then $G(\underline{q}, t) = F(\underline{q}, t) + c$ will also satisfy the equation.
+\end{remark}
+
+\begin{example}
+	If $q_i$ is an ignorable coordinate, the transformation $q_i \rightarrow q_i + c_i$, where $c_i$ is a constant, is a symmetry, because $q_i$ does not appear in the Lagrangian by definition so here $F(\underline{q}, t) = 0$.
+\end{example}
+
+\begin{theorem}
+	(Noether's theorem) In a given set of generalised coordinates, let $a_i(\underline{q})$ be the generator of a transformation such that
+	\[
+		L \rightarrow L + \epsilon \diff{F(\underline{q}, t)}{t} + O(\epsilon^2)
+	\]
+	so that it is a symmetry. Let
+	\[
+		Q := \left( \sum_{i = 1}^N a_i \diffp{L}{\dot{q}_i} \right) - F
+	\]
+	Then $\diff{Q}{t} = 0$, so $Q$ is conserved. $Q$ is called the \textbf{Noether charge}.
+\end{theorem}
+
+\begin{proof}
+	Consider the variation of the action under the transformation $q_i \rightarrow q_i + \epsilon a_i$. Using the chain rule and then the Euler-Lagrange equations,
+	\[
+		\begin{aligned}
+			\delta S
+				& = \int_{t_0}^{t_1} \sum{i = 1}^N \left( \epsilon a_i \diffp{L}{q_i} + \epsilon \dot{a}_i \diffp{L}{\dot{q}_i} \right) dt + O(\epsilon^2) \\
+				& = \int_{t_0}^{t_1} \sum_{i = 1}^N \left( \epsilon a_i \diff{}{t} \left( \diffp{L}{\dot{q}_i} \right) + \epsilon \dot{a}_i \diffp{L}{\dot{q}_i} \right) + O(\epsilon^2) \\
+				& = \int_{t_0}^{t_1} \epsilon \diff{}{t} \left( \sum_{i = 1}^N a_i \diffp{L}{\dot{q}_i} \right) + O(\epsilon^2) \\
+				& = \epsilon {\left[ \sum_{i = 1}^N a_i \diffp{L}{\dot{q}_i} \right]}_{t_0}^{t_1} + O(\epsilon^2)
+		\end{aligned}
+	\]
+	Note that having used the Euler-Lagrange equations in the second line, the result is only valid along the path satisfying the equations of motion.
+
+	Now since the transformation is a symmetry,
+	\[
+		\begin{aligned}
+			\delta S
+				& = S(\underline{q} + \delta \underline{q}) - S(\underline{q}) \\
+				& = \int_{t_0}^{t_1} \left( \left( L + \epsilon \diff{F}{t} + O(\epsilon^2) \right) - L \right) \\
+				& = \epsilon {[F]}_{t_0}^{t_1} + O(\epsilon^2)
+		\end{aligned}
+	\]
+	Equating these two expressions for $\delta S$, we see that $Q(t_1) = Q(t_0)$. We didn't specify what $t_0$ and $t_1$ were so this equality holds for every $t_0$ and $t_1$. So let $t_1 = t_0 + \epsilon$, then
+	\[
+		Q(t_1) - Q(t_0) = Q(t_0 + \epsilon) - Q(t_0) = \epsilon \diff{Q}{t} + O(\epsilon^2) = 0
+	\]
+	hence $\diff{Q}{t} = 0$.
+\end{proof}
+
+\begin{example}
+	If a coordinate $q_i$ is ignorable, there is a symmetry generated by $q_i \rightarrow q_i + \epsilon$ and leaving the other coordinates constant. So
+	\[
+		a_k = \delta_{ik} := \begin{cases}
+			1 & \quad \text{if } i = k \\
+			0 & \quad \text{otherwise}
+		\end{cases}
+	\]
+	The Noether charge is
+	\[
+		Q = \sum_{k = 1}^{N} a_k \diffp{L}{\dot{q}_k} = \sum_{k = 1}^{N} \delta_{ik} \diffp{L}{\dot{q}_k} = \diffp{L}{\dot{q}_i}
+	\]
+	which agrees with Proposition \ref{prop:generalisedIgnorableMomentumConserved}.
+\end{example}
+
+\subsection{Energy conservation}
+
+\begin{definition}
+	Given a Lagrangian that explicitly depends on time, $L(\underline{q}, \underline{\dot{q}}, t)$, the \textbf{energy}, $E$, is defined as
+	\[
+		E := \left( \sum_{i = 1}^{N} \dot{q}_i \diffp{L}{\dot{q}_i} \right) - L
+	\]
+\end{definition}
+
+\begin{theorem}
+	Along a path $\underline{q}(t)$ which satisfies the equations of motion,
+	\[
+		\diff{E}{t} = -\diffp{L}{t}
+	\]
+\end{theorem}
+
+\begin{proof}
+	\[
+		\begin{aligned}
+			\diff{E}{t}
+				& = \diff{}{t} \left( \left( \sum_{i = 1}^{N} \dot{q}_i \diffp{L}{\dot{q}_i} \right) - L \right) \\
+				& = \sum_{i = 1}^{N} \left( \ddot{q}_i \diffp{L}{\dot{q}_i} + \dot{q}_i \diff{}{t} \left( \diffp{L}{\dot{q}_i} \right) \right) - \diff{L}{t} \\
+				& = \sum_{i = 1}^{N} \left( \diffp{L}{\dot{q}_i} \ddot{q}_i + \dot{q}_i \diffp{L}{q_i} \right) - \diff{L}{t}
+		\end{aligned}
+	\]
+	using the Euler-Lagrange equations. By the chain rule,
+	\[
+		\diff{L}{t} = \sum_{i = 1}^{N} \left( \diffp{L}{\dot{q}_i} + \diffp{L}{q_i} \dot{q}_i \right) + \diffp{L}{t}
+	\]
+	and so substituting this into the expression for $\diff{E}{t}$, we get
+	\[
+		\diff{E}{t} = -\diffp{L}{t}
+	\]
+\end{proof}
+
+\begin{remark}
+	Note that $\diffp{L}{t}$ means the partial derivative of $L$ with respect to $t$, \textbf{keeping $\underline{q}$ and $\underline{\dot{q}}$ fixed}. This is because the Lagrangian is (here) just an ordinary function of three parameters which are unrelated, so $t$ is independent of $\underline{q}$ and $\underline{\dot{q}}$. The parameters only become related when the Lagrangian is used to build the action. (See \hyperref[rem:lagrangianParametersIndependent]{this remark}).
+\end{remark}
+
+\begin{corollary}
+	Energy is conserved iff the Lagrangian does not depend explicitly on time.
+\end{corollary}
+
+\begin{proof}
+	Energy is conserved iff $\diff{E}{t} = 0$, and $\diffp{L}{t} = 0$ iff the Lagrangian does not depend explicitly on time.
+\end{proof}
+
+\section{Normal modes}
+
+\subsection{Canonical kinetic terms}
+
+\begin{definition}
+	Given a Lagrangian $L = T - V$, $T$ is a \textbf{canonical} kinetic term if it is of the form
+	\[
+		T = \frac{1}{2} \sum_{i = 1}^{n} \dot{q}_i^2
+	\]
+\end{definition}
+
+Given a Lagrangian with a canonical kinetic term, assume $\underline{q} = \underline{0}$ is a stationary point of $V(\underline{q})$, so
+\[
+	\diffp{V}{q_i} \Big|_{\underline{q} = 0} = 0 \quad \forall i \in \{ 1, \dots, n \}
+\]
+
+If $\underline{q} = \underline{0}$ is not a stationary point but $\underline{q} = \underline{a}$ for some $\underline{a}$ is, then the new variables defined as $q_i' = q_i - a_i$ are such that the stationary point is at $\underline{q}' = \underline{0}$. This preserves the form of the Lagrangian, so we can assume $\underline{q} = 0$ is a stationary point.
+
+To determine the motion around this extremum, expand $V(\underline{q})$ to second order in $\underline{q}$ to define an approximate Lagrangian:
+\[
+	L_{\text{approx}} = \frac{1}{2} \sum_{i = 1}^{n} \dot{q}_i^2 - \frac{1}{2} \sum_{i, j} A_{i, j} q_i q_j
+\]
+where
+\[
+	A_{i, j} = \diffp[1, 1]V{q_i, q_j} \Big|_{\underline{q} = 0}
+\]
+The Euler-Lagrange equations for $L_{\text{approx}}$ are given in matrix notation by
+\[
+	\underline{\ddot{q}} + A \underline{q} = D_A \underline{q} = \left( \diff[2]{}{t} + A \right) \underline{q} = 0
+\]
+where $D_A$ is defined as $D_A := \diff[2]{}{t} + A$, which is a linear operator ($D_A (\underline{a} + \underline{b}) = D_A \underline{a} + D_A \underline{b}$ and $D_A (c \underline{a}) = c D_A \underline{a}$ for any vectors $a$ and $b$ and any $c \in \mathbb{R}$).
+
+$A$ is an $n \times n$ matrix which is real and symmetric, due to symmetry of second partial derivatives (we assume $V$ has continuous second partial derivatives). So $A$ has $n$ real eigenvaules and eigenvectors. Let the eigenvalues be $\lambda^{(i)}$ and the corresponding eigenvectors be $\underline{v}^{(i)}$, then
+\[
+	A \underline{v}^{(i)} = \lambda^{(i)} \underline{v}^{(i)}
+\]
+Define the ansatz (an assumed solution)
+\[
+	\underline{q}^{(i)} (t) = f^{(i)} (t) \underline{v}^{(i)}
+\]
+for some function $f^{(i)} (t)$ to be determined. Then
+\[
+	\begin{aligned}
+		\left( \diff[2]{}{t} + A \right) \underline{q}^{(i)} (t)
+			& = \left( \diff[2]{}{t} + A \right) f^{(i)} (t) \underline{v}^{(i)}
+			& = \underline{v}^{(i)} \left( \diff[2]{}{t} + \lambda^{(i)} \right) f^{(i)} (t)
+			& = 0
+	\end{aligned}
+\]
+and so since $\underline{v}^{(i)} \ne 0$,
+\[
+	\left( \diff[2]{}{t} + \lambda^{(i)} \right) f^{(i)} (t) = 0
+\]
+The solution to this equation is
+\[
+	f^{(i)} (t) = \begin{cases}
+		\alpha^{(i)} \cos(\sqrt{\lambda^{(i)}} t) + \beta^{(i)} \sin(\sqrt{\lambda^{(i)}} t) & \quad \text{if } \lambda^{(i)} > 0 \\
+		C^{(i)} t + D^{(i)} & \quad \text{if } \lambda^{(i)} = 0 \\
+		\alpha^{(i)} \cosh(\sqrt{-\lambda^{(i)}} t) + \beta^{(i)} \sinh(\sqrt{-\lambda^{(i)}} t) & \quad \text{if } \lambda^{(i)} < 0 \\
+	\end{cases}
+\]
+where $\alpha^{(i)}, \beta^{(i)}, C^{(i)}, D^{(i)}$ are constants determined by initial conditions.
+
+The behaviour this solution describes depends on the sign of the $\lambda^{(i)}$. If every $\lambda^{(i)}$ is positive, there is a local minimum and there are oscillations around this minimum. If there is a negative eigenvalue, there is exponential behaviour away from the stationary point, which matches with the intuitioin that small perturbations at a maximum will quickly grow. Zero eignvaleues correspond with motion with constant velocity, with no oscillations.
+
+The general solution is
+\[
+	\underline{q}(t) = \sum_{i = 1}^{N} \underline{v}^{(i)} f^{(i)} (t)
+\]
+
+\begin{definition}
+	Given an eigenvalue $\lambda^{(i)} > 0$, a \textbf{normal mode} is a solution to
+	\[
+		\underline{q}(t) = \underline{v}^{(i)} \left( \alpha^{(i)} \cos(\sqrt{\lambda^{(i)}} t) + \beta^{(i)} \sin(\sqrt{\lambda^{(i)}} t) \right)
+	\]
+\end{definition}
+
+\begin{definition}
+	Given an eigenvalue $\lambda^{(i)} = 0$, a \textbf{zero mode} is a solution to
+	\[
+		\underline{q}(t) = \underline{v}^{(i)} \left( C^{(i)} t + D^{(i)} \right)
+	\]
+\end{definition}
+
+\begin{definition}
+	Given an eigenvalue $\lambda^{(i)} < 0$, an \textbf{instability} is a solution to
+	\[
+		\underline{q}(t) = \underline{v}^{(i)} \left( \alpha^{(i)} \cosh(\sqrt{-\lambda^{(i)}} t) + \beta^{(i)} \sinh(\sqrt{-\lambda^{(i)}} t) \right)
+	\]
+\end{definition}
+
+\begin{definition}
+	When there are no instabilities, the general solution is the superposition of normal modes for non-zero eigenvalues and zero modes:
+	\[
+		\underline{q}(t) = \sum_{i = 1, \ \lambda^{(i)} \ne 0}^{n} \underline{v}^{(i)} \left( \alpha^{(i)} \cos(\sqrt{\lambda^{(i)}} t) + \beta^{(i)} \sin(\sqrt{\lambda^{(i)}} t) \right) + \sum_{i = 1, \ \lambda^{(i)} = 0}^{n} \underline{v}^{(i)} \left( C^{(i)} t + D^{(i)} \right)
+	\]
 \end{definition}
 
 \section{Hamiltonian Formalism}
@@ -346,5 +612,27 @@ TODO: properties on poisson bracket
 \begin{proof}
 	$\diff{f}{t} = \sum_{i = 1}^n \left( \diffp{f}{q_i} \dot{q_i} + \diffp{f}{p_i} \dot{p_i} \right) + \diffp{f}{t} = \sum_{i = 1}^n \left( \diffp{f}{q_i} \diffp{H}{p_i} - \diffp{f}{p_i} \diffp{H}{q_i} \right) + \diffp{f}{t} = \{ f, H \} + \diffp{f}{t}$.
 \end{proof}
+
+\section{Quantum mechanics introduction}
+
+\begin{definition}
+	The \textbf{photo-electric effect} is the phenomena where, when a light source is shone on a metal, electrons are released from the surface of the metal.
+\end{definition}
+
+\begin{definition}
+	The \textbf{classical} description of light would lead to these results:
+	\begin{itemize}
+		\item The energy of the released electrons depends on the intensity of light $I$ but is independent of the angular frequency of the light, $\omega$.
+		\item Electrons are released for any value of $I$
+	\end{itemize}
+\end{definition}
+
+\begin{definition}
+	The quantum mechanics prediction of the photoelectric effect is that the energy of the electrons $E$ is independent of $I$, and not released at all below some value of angular frequency.
+
+	This led to the discovery that light consists of packets (photons).
+\end{definition}
+
+
 
 \end{document}

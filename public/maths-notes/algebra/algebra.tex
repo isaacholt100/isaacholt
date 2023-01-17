@@ -26,6 +26,27 @@
 
 \maketitle
 
+\section{Rings and fields}
+
+\subsection{Rings, subrings and fields}
+
+\begin{definition}
+	A \textbf{ring} $(R, +, \cdot)$ is a set $R$ with two binary opertaions: addition ($+$) and multiplication ($\cdot$), such that $(R, +)$ is an abelian group and these conditions hold:
+	\begin{enumerate}
+		\item (\textbf{Identity}) for some element $1 \in R$, $\forall x \in R, \ 1 \cdot x = x \cdot 1 = x$.
+		\item (\textbf{Associativity}) $\forall (x, y, z) \in R^3, \ x \cdot (y \cdot z) = (x \cdot y) \cdot z$.
+		\item (\textbf{Distributivity}) $\forall (x, y, z) \in R^3, \ x \cdot (y + z) = x \cdot y + x \cdot z \text{ and } (y + z) \cdot x = y \cdot x + z \cdot x$. 
+	\end{enumerate}
+\end{definition}
+
+\begin{remark}
+	Often we write $R$ to mean the entire ring instead of just the set of the ring.
+\end{remark}
+
+\begin{definition}
+	A ring $R$ is \textbf{commutative} if $\forall x, y \in R^2, \ x \cdot y = y \cdot x$ and is \textbf{non-commutative} otherwise.
+\end{definition}
+
 \section{Homomorphisms between Rings}
 
 Let $R$ and $S$ be two rings. A map $f: R \rightarrow S$ is called a (ring)-homomorphism if:
@@ -100,6 +121,7 @@ Let $R$ and $S$ be two rings. A map $f: R \rightarrow S$ is called a (ring)-homo
 \end{lemma}
 
 \begin{proof}
+	\hfill
 	\begin{enumerate}
 		\item If $x, y \in \ker f$ then $f(x + y) = f(x) + f(y) = 0 + 0 = 0$. That is $x + y \in \ker f$.
 		\item For every $r \in R$ and $x \ker f$, $f(r \cdot x) = f(r) \cdot f(x) = f(r) \cdot 0 = 0$. Thus $r \cdot x \in \ker f$. Similarly for $x \cdot r$.
@@ -442,5 +464,168 @@ Hence, given a ring $R$ and an ideal $I \subseteq R$, there exists a ring homomo
 	$\ker \psi = \{ r \in R: r \in (a_i), i = 1, \dots, k \} = \{ r \in R: a_i | r, i = 1, \dots, k \} = \{ r \in R: a_1 \dots a_k | r \}$ since $a_i$ and $a_j$ are coprime.
 	$\ker \psi = (a_1 a_2 \dots a_k)$. Then by the FIT, $R / \ker \psi \cong R / (a_1) \times \cdots \times R / (a_k)$.
 \end{proof}
+
+\section{Group Theory}
+
+\begin{definition}
+	A \textbf{group} is a pair $(G, \circ)$ where $G$ is a set and $\circ$ is a map
+	\[
+		\circ: G \times G \rightarrow G, \quad \circ (g, h) = g \circ h
+	\]
+	Satisfying these properties:
+	\begin{enumerate}
+		\item \textbf{Closure}: $g, h \in G \Rightarrow g \circ h \in G$.
+		\item \textbf{Associativity}: $x, y, z \in G \Rightarrow (x \circ y) \circ z = x \circ (y \circ z)$.
+		\item \textbf{Identity element}: $\exists e \in G, \ \forall g \in G, \ e \circ g = g \circ e = g$.
+		\item \textbf{Existence of inverse}: $\forall g \in G, \ \exists h \in G, \ g \circ h = h \circ g = e$. $h$ is called the \textbf{inverse} of $g$ and is written as $g^{-1}$.
+	\end{enumerate}
+\end{definition}
+
+\begin{definition}
+	A group $(G, \circ)$ is an \textbf{Abelian group} if $\forall g, h \in G, \ g \circ h = h \circ g$. Otherwise, it is called \textbf{non-Abelian}.
+\end{definition}
+
+\begin{remark}
+	Often, $G$ is written to refer to a group, not just the set of a group.
+\end{remark}
+
+\begin{lemma}
+	Let $(R, +, \cdot)$ be a ring. Then $(G, \circ) = (R, +)$ is a group.
+\end{lemma}
+
+\begin{proof}
+	Properties 1 and 2 of a group are automatically satisfied. The identity element is $0 \in R$. The inverse element for any element will be the same inverse element in the ring.
+\end{proof}
+
+\begin{lemma}
+	Let $(F, +, \cdot)$ be a field. Then $(G, \circ) = (R, \cdot)$ is a group.
+\end{lemma}
+
+\begin{proof}
+	Again, group properties 1 and 2 are automatic. The identity element is $1 \in F$. The inverse element for any element will be the same inverse element in the field.
+\end{proof}
+
+\begin{example}
+	(\textbf{Symmetries of a square}): The following are all symmetries of a square:
+	\begin{itemize}
+		\item Rotation by $\frac{\pi}{2}$.
+		\item Reflection about the $y$-axis, $x$-axis, $y = x$ axis, $y = -x$ axis.
+		\item Any of the above symmetries can be combined to form a new symmetry.
+	\end{itemize}
+	Define the group $G(, \circ)$ where $G$ is the symmetries of the square and $\circ$ is composition of the symmetries. The identity $e$ is the map which does nothing to the square. The inverse of a rotation is rotation in the opposite direction, and the inverse of a reflection is the same reflection.
+\end{example}
+
+\begin{definition}
+	The group in the above example is the \textbf{dihedral group}.
+\end{definition}
+
+\begin{definition}
+	The \textbf{general linear group} is defined as the set $GL_2 (\mathbb{R}) := \{ A \in M_2 (\mathbb{R}) : \det A \ne 0 \}$ together with $\circ$ being matrix multiplication.
+\end{definition}
+
+\begin{lemma}
+	The general linear group is a group.
+\end{lemma}
+
+\begin{proof}
+	\hfill
+	\begin{enumerate}
+		\item $\det (A B) = \det A \det B \ne 0$ so $A, B \in GL_2(\mathbb{R}) \Rightarrow AB \in GL_2(\mathbb{R})$.
+		\item Matrix multiplication is associative.
+		\item The identity is $I_2$.
+		\item The inverse of $A \in GL_2(\mathbb{R})$ is $A^{-1}$, which exists since $\det A \ne 0$.
+	\end{enumerate}
+\end{proof}
+
+\begin{remark}
+	$GL_2(\mathbb{R})$ is non-abelian.
+\end{remark}
+
+\subsection{Subgroups}
+
+\begin{definition}
+	A subset $H \subseteq G$ is a \textbf{subgroup} of $(G, \circ)$ if $(H, \circ)$ is also a group. We write $H \le G$.
+\end{definition}
+
+\begin{remark}
+	$H = G$ is a subgroup of a group $G$.
+\end{remark}
+
+\begin{definition}
+	Every group $(G, \circ)$ has a \textbf{trivial subgroup}, $H = \{ e \}$, where $e \in G$ is the identity element.
+\end{definition}
+
+\begin{definition}
+	A subgroup $H$ of $G$ is \textbf{proper} if $H \ne \{ e \}$ and $H \ne G$. We write $H < G$.
+\end{definition}
+
+\begin{proposition}
+	(\textbf{Subgroup criteria}) Let $(G, \circ)$ be a group. Then $H \subseteq G$ is a subgroup iff all these conditions hold:
+	\begin{enumerate}
+		\item $H \ne \emptyset$
+		\item $h_1, h_2 \in H \Rightarrow h_1 \circ h_2 \in H$.
+		\item $h \in H \Rightarrow h^{-1} \in H$.
+	\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+	We only need to show that $H$ contains an identity: $h \in H \Rightarrow h^{-1} \in H \Rightarrow e = h \circ h^{-1} \in H$.
+\end{proof}
+
+\begin{example}
+	If $(S, +, \cdot)$ is a subring, then $(S, +)$ is a subgroup.
+\end{example}
+
+\begin{proposition}
+	Let $I \subseteq R$ be a non-empty ideal of a ring $(R, +, \cdot)$. Then $(I, +)$ is a subgroup of $(R, +)$.
+\end{proposition}
+
+\begin{proof}
+	Criteria 1 and 2 are satisfied by definition. Now we must show that $x \in I \Rightarrow -x \in I$: if $x \in I$, then $(-1_R) x = -x \in I$ where $-1_R + 1_R = 0_R$.
+\end{proof}
+
+\begin{definition}
+	The \textbf{special linear group} is defined as $SL_2(\mathbb{R}) = \{ A \in M_2(\mathbb{R}): \det A = 1 \}$, which satisfies $(SL_2(\mathbb{R}), \cdot) \le (Gl_2(\mathbb{R}), \cdot)$.
+\end{definition}
+
+\begin{example}
+	Let $q \in \mathbb{N}$, then $q \mathbb{Z} = \{ m q: m \in \mathbb{Z} \}$ is an ideal in $\mathbb{Z}$. For example, the even numbers, $2 \mathbb{Z}$, is a subgroup.
+
+	However, the odd numbers are not subgroup, as they do not contain $0$, nor is $\bar{a} = \{ a + mq: m \in \mathbb{Z} \}$ for $1 \le a \le q - 1$.
+\end{example}
+
+\subsection{Cosets}
+
+\begin{definition}
+	Let $(G, \circ)$ be a group and $H \le G$. A \textbf{left coset} of $H$ is a set of the form
+	\[
+		g \circ H := \{ g \circ h: h \in H \} \quad \text{for } g \in G
+	\]
+	A \textbf{right coset} of $H$ is a set of the form
+	\[
+		H \circ g := \{ h \circ g: h \in H \} \quad \text{for } g \in G
+	\]
+\end{definition}
+
+\begin{remark}
+	$x \in g \circ H \Longleftrightarrow g^{-1} \circ x \in H$.
+\end{remark}
+
+\begin{remark}
+	If $G$ is Abelian, then $g \circ H = H \circ g$, but this isn't true in general for non-Abelian groups.
+\end{remark}
+
+\begin{proposition}
+	Let $(G, \circ)$ be a group and $H \le G$. Then:
+	\begin{enumerate}
+		\item For every $g \in G$, $g \circ H$ and $H$ are in bijection. (So $|H| < \infty \Rightarrow |g \circ H| = |H|$).
+		\item If $g \in G$, then $g \in H \Longleftrightarrow g \circ H = H$.
+		\item If $g_1, g_2 \in G$, then either $g_1 \circ H = g_2 \circ H$ or $(g_1 \circ H) \cap (g_2 \circ H) = \emptyset$.
+	\end{enumerate}
+\end{proposition}
+
+\begin{theorem}
+	If $G$ is a \textbf{finite} group and $H \le G$, then $|H|$ divides $|G|$. So if $|H| \nmid |G|$ then $H \not\le G$.
+\end{theorem}
 
 \end{document}

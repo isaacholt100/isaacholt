@@ -5,6 +5,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage{amsfonts, amsmath, amssymb}
 \usepackage{amsthm}
+\usepackage{hyperref}
 
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}[subsection]
@@ -630,20 +631,324 @@ To find a biholomorphism $f$ between domains, we build $f$ in various stages usi
 
 	A parameterisation of this line is given by
 	
-	\[ \delta_h: [0, 1] \rightarrow D, \delta_h(t) = w + t h \]
+	\[ \delta_h: [0, 1] \rightarrow D, \quad \delta_h(t) = w + t h \]
 	The contour $\gamma_w \cup \delta_h$ is contained in $D$. So
 
 	\[ F(w + h) = \int_{\gamma_w \cup \delta_h} f(z) dz = \int_{\gamma_w} f(z) dz + \int_{\delta_h} f(z) dz = F(w) + \int_{\delta_h} f(z) dz \]
 
 	\[ \int_{\delta_h} f(w) dz = f(w) \int_{\delta_h} dz = f(w) \int_0^1 h dt = h f(w) \]
-
 	We can rewrite the previous equation as
-
 	\[ F(w + h) = F(w) + h f(w) + \int_{\delta_h} (f(z) - f(w)) dz \]
-
 	For $h \ne 0$,
 
 	\[ \left| \frac{F(w + h) - F(w)}{h} - f(w) \right| = \frac{1}{|h|} \left| \int_{\delta_h} (f(z) - f(w)) dz \right| \]
+\end{proof}
+
+\subsection{First Version of Cauchy's Theorem}
+
+\begin{definition}
+	A domain $D$ is \textbf{starlike} if for some point $a_0 \in D$, for every $b \ne a_0 \in D$, the straight line connecting $a_0$ and $b$ is contained in $D$.
+\end{definition}
+
+\begin{example}
+	\hfill
+	\begin{enumerate}
+		\item $\mathbb{C}$ is starlike.
+		\item The ball $B_r(a)$ is starlike.
+		\item Any convex set is starlike.
+	\end{enumerate}
+\end{example}
+
+\begin{example}
+	\hfill
+	\begin{enumerate}
+		\item $\mathbb{C}^{\star}$ is not starlike, because a straight line between two points could through $0$, and $0 \notin \mathbb{C}^{\star}$.
+		\item Similarly, $B_r^{\star}(a) = B_r(a) - \{ a \}$ is not starlike.
+	\end{enumerate}
+\end{example}
+
+\begin{lemma}\label{lem:ctLem1}
+	Let $U$ be an open set and let $f: U \rightarrow \mathbb{C}$ be holomorphic. Then
+	\[
+		\int_{\partial \Delta} f(z) dz = 0
+	\]
+	for every \textbf{triangle} $\Delta$ in $U$.
+\end{lemma}
+
+\begin{remark}
+	Here $\partial \Delta$ is the boundary of $\Delta$, traversed anticlockwise.
+\end{remark}
+
+\begin{remark}
+	Given any closed contour without a parameterisation given, we will assume that it is traversed anticlockwise.
+\end{remark}
+
+\begin{proof}
+	First, split $\Delta$ into four triangles, $\Delta^{(1)}, \Delta^{(2)}, \Delta^{(3)}, \Delta^{(4)}$, using the midpoints of each side. Then
+	\[
+		\int_{\partial \Delta} f(z) dz = \sum_{i = 1}^{4} \int_{\partial \Delta^{(i)}} f(z) dz
+	\]
+	Let $\Delta_1$ be one of these four triangles which has the largest integral, then
+	\[
+		\left| \int_{\partial \Delta} f(z) dz \right| \le 4 \left| \int_{\partial \Delta_1} f(z) dz \right|
+	\]
+	We then continue this procedure to produce a sequence of triangles
+	\[
+		\Delta > \Delta_1 > \cdots > \Delta_n > \cdots
+	\]
+	The length of $\Delta_1$, $L(\Delta_1)$ satisfies $L(\Delta_1) = \frac{1}{2} L(\Delta)$, therefore
+	\[
+		L(\Delta_n) = \frac{1}{2} n L(\Delta) \Longrightarrow L(\Delta_n) \rightarrow \text{ as } n \rightarrow \infty
+	\]
+	Also,
+	\[
+		\bigcap_{n \in \mathbb{N}} \Delta_n = \{ w \}
+	\] is a single point in $D$. Now, notice that
+	\[
+		\int_{\partial \Delta_n} 1 dz = 0 = \int_{\partial \Delta_n} z dz
+	\]
+	and that $w, f(w), f'(w)$ are constants. Then sneakily,
+	\[
+		\int_{\partial \Delta_n} f(z) dz = \int_{\partial \Delta_n} \left( f(z) - f(w) - (z - w) f'(w) \right)
+	\]
+	Define the auxiliary function
+	\[
+		g(z) = \begin{cases}
+			\frac{f(z) - f(w)}{z - w} - f'(w) & \text{ if } z \in D \ \backslash \ \{ w \} \\
+			0 & \text{ if } z = w
+		\end{cases}
+	\]
+	which is continuous at $z = w$, so is continuous on $D$. So
+	\[
+		\int_{\partial \Delta_n} f(z) dz = \int_{\partial \Delta_n} (z - w) g(z) dz
+	\]
+	Now,
+	\[
+		\left| \int_{\partial \Delta} f(z) dz \right| \le 4^n \left| \int_{\partial \Delta_n} f(z) dz \right| = 4^n \left| \int_{\partial \Delta_n} (z - w) g(z) dz \right|
+	\]
+	Note
+	\[
+		\sup_{z \in \partial \Delta_n} |z - w| \le L(\partial \Delta_n)
+	\]
+	so by the Estimation Lemma,
+	\[
+		\begin{aligned}
+			\left| \int_{\partial \Delta} f(z) dz \right| & \le 4^n L(\partial \Delta_n) \sup_{z \in \partial \Delta_n} | (z - w) g(z) | \\
+			& \le 4^n L(\partial \Delta_n) \sup_{z \in \partial \Delta_n} | (z - w) | \sup_{z \in \partial \Delta_n} | g(z) | \\
+			& \le 4^n {(L(\partial \Delta_n))}^2 \sup_{z \in \partial \Delta_n} | g(z) | \\
+			& = {L(\Delta)}^2 \sup_{z \in \partial \Delta_n} | g(z) |
+		\end{aligned}
+	\]
+	As $n \rightarrow \infty$, $\sup_{z \in \partial \Delta_n} | g(z) | \rightarrow g(w) = 0$. This completes the proof.
+\end{proof}
+
+\begin{lemma}\label{lem:ctLem2}
+	Let $D$ be a starlike domain and $f: D \rightarrow \mathbb{C}$ be continuous. Then, if
+	\[
+		\int_{\partial \Delta} f(z) dz = 0
+	\]
+	for every $\Delta \subset D$, then for some $F: D \rightarrow \mathbb{C}$,
+	\[
+		F'(z) = f(z) \quad \forall z \in D
+	\]
+\end{lemma}
+
+\begin{proof}
+	Similar to the proof of converse of FTC.
+\end{proof}
+
+\begin{theorem}
+	(\textbf{Cauchy's Theorem for Starlike Domains - CTSD}) Let $D$ be a starlike domain and let $f: D \rightarrow \mathbb{C}$ be holomorphic. Then for every closed contour $\gamma \in D$,
+	\[
+		\int_{\gamma} f(z) dz = 0
+	\]
+\end{theorem}
+
+\begin{proof}
+	By Lemma \ref{lem:ctLem1},
+	\[
+		\int_{\partial \Delta} f(z) dz = 0 \quad \forall \Delta \in D
+	\]
+	By Lemma \ref{lem:ctLem2}, $f$ has a holomorphic antiderivative $F$. Then, by FTC,
+	\[
+		\int_{\gamma} f(z) dz = 0 \quad \forall \text{ closed } \gamma \in D
+	\]
+\end{proof}
+
+\begin{remark}
+	The same result holds if $f$ is holomorphic on $D - S$, where $S$ is a finite set of points and $f$ is continuous on $D$. We will need this in proofs but is not used much elsewhere.
+\end{remark}
+
+\begin{example}
+	Consider
+	\[
+		\int_{|z| = \frac{1}{2}} \frac{e^z {(\sin z)}^2}{e^{z^2}} dz
+	\]
+	Because the function in the integral is holomorphic and $|z| = \frac{1}{2}$ is a closed contour, by CTSD, this integral is equal to $0$.
+\end{example}
+
+\subsection{Cauchy's integral formula}
+
+\begin{theorem}
+	(\textbf{Cauchy's integral formula - CIF}) Let $B_r(a)$ be a ball in $\mathbb{C}$ and $f: B_r(a) \rightarrow \mathbb{C}$ be holomorphic. Then for every $w \in B_r(a)$,
+	\[
+		f(w) = \frac{1}{2 \pi i} \int_{|z - a| = \rho} \frac{f(z)}{z - w} dz
+	\]
+	where $\rho$ is any real number with $|w - a| < \rho < r$.
+\end{theorem}
+
+\begin{proof}
+	Define an auxiliary function $g$ by
+	\[
+		g(z) = \begin{cases}
+			\frac{f(z) - f(w)}{z - w} & \text{ if } z \ne w \\
+			f'(w) & \text{ if } z = w
+		\end{cases}
+	\]
+	Note that $g$ is continuous at $z = w$, and holomorphic elsewhere. By CTSD,
+	\[
+		\int_{|z - a| = \rho} g(z) dz = 0
+	\]
+	Therefore
+	\[
+		\int_{|z - a| = \rho} \frac{f(z)}{z - w} dz = \int_{|z - a| = \rho} \frac{f(w)}{z - w} dz
+	\]
+	Now,
+	\[
+		\begin{aligned}
+			\frac{1}{z - w}
+				& = \frac{1}{z - a + a - w} \\
+				& = \frac{1}{(z - a)(1 - \frac{w - a}{z - a})} \\
+				& = \frac{1}{z - a} \sum_{n = 0}^{\infty} {\left( \frac{w - a}{z - a} \right)}^n
+		\end{aligned}
+	\]
+	which converges uniformly, since $|\frac{w - a}{z - a}| = |\frac{w - a}{\rho} < 1|$.
+	So we have
+	\[
+		\begin{aligned}
+			\int_{|z - a| = \rho} \frac{f(z)}{z - w} dz
+				& = f(w) \int_{|z - a| = \rho} \sum_{n = 0}^{\infty} \frac{{(w - a)}^n}{{(z - a)}^{n + 1}} dz \\
+				& = \sum_{n = 0}^{\infty} \left( f(w) {(w - a)}^n \int_{|z - a| = \rho} \frac{1}{{(z - a)}^{n + 1}} dz \right)
+		\end{aligned}
+	\]
+	The inner integral is equal to $0$ except when $n = 0$, when it's value is $2 \pi i$. So
+	\[
+		\int_{|z - a| = \rho} \frac{f(z)}{z - w} dz = f(w) {(w - a)}^0 \cdot 2 \pi i = 2 \pi i \cdot f(w)
+	\]
+\end{proof}
+
+\section{Features of holomorphic functions}
+
+\begin{theorem}
+	(\textbf{Cauchy-Taylor theorem}) Let $U$ be an open set and $f: U \rightarrow \mathbb{C}$ be holomorphic on $U$. Then for every $r > 0$ such that $B_r(a) \subset U$, $f$ has a power series converging on $B_r(a)$ given by
+	\[
+		f(z) = \sum_{n = 0}^{\infty} c_n {(z - a)}^n
+	\]
+	where
+	\[
+		c_n = \frac{1}{2 \pi i} \int_{|z - a| = \rho} \frac{f(z)}{{(z - a)}^{n + 1}} dz
+	\]
+	is a constant for every $0 < \rho < r$. This is the \textbf{Taylor series} of $f$ about $a$.
+\end{theorem}
+
+\begin{proof}
+	By the CIF, for every $w$ with $|w - a| < \rho$,
+	\[
+		\begin{aligned}
+			f(w)
+				& = \frac{1}{2 \pi i} \int_{|z - a| = \rho} \frac{f(z)}{z - w} dz \\
+				& = \frac{1}{2 \pi i} \int_{|z - a| = \rho} f(z) \sum_{n = 0}^{\infty} \frac{{(w - a)}^n}{{(z - a)}^{n + 1}} dz \\
+				& = \sum_{n = 0}^{\infty} \left( \frac{1}{2 \pi i} \int_{|z - a| = \rho} \frac{f(z)}{{(z - a)}^{n + 1}} dz \right) {(w - a)}^n \\
+				& = \sum_{n = 0}^{\infty} c_n {(w - a)}^n
+		\end{aligned}
+	\]
+\end{proof}
+
+\begin{theorem}
+	(\textbf{CIF for derivatives}) Let $f: B_r(a) \rightarrow \mathbb{C}$ be holomorphic. Then for every $0 < \rho < r$,
+	\[
+		\int_{|z - a| = \rho} \frac{f(z)}{{(z - a)}^{n + 1}} dz = \frac{2 \pi i}{n!} f^{(n)} (a)
+	\]
+\end{theorem}
+
+\begin{proof}
+	By Cauchy-Taylor, we have a convergent power series such that
+	\[
+		f(z) = \sum_{n = 0}^{\infty} c_n {(z - a)}^n
+	\]
+	where
+	\[
+		c_n = \frac{1}{2 \pi i} \int_{|z - a| = \rho} \frac{f(z)}{{(z - a)}^{n + 1}} dz
+	\]
+	But we also have (corollary 5.22 in lecture notes),
+	\[
+		c_n = \frac{f^{(n)} (a)}{n!}
+	\]
+	Equating these two expressions for $c_n$ completes the proof.
+\end{proof}
+
+\begin{remark}
+	Combining theorem 7.1 (lecture notes) and theorem 7.2 (lecture notes), every holomorphic function $f$ has power series
+	\[
+		f(z) = \sum_{n = 0}^{\infty} \frac{f^{(n)} (a)}{n!} {(z - a)}^n
+	\]
+\end{remark}
+
+\begin{remark}
+	Cauchy-Taylor does not hold in real analysis. Let $f: \mathbb{R} \rightarrow \mathbb{R}$ be defined as
+	\[
+		f(x) = \begin{cases}
+			e^{-1 / x} & \text{ if } x > 0 \\
+			0 & \text{ if } x \le 0
+		\end{cases}
+	\]
+	$f$ is differentiable for $x \ne 0$. For $x = 0$,
+	\[
+		f'(x) = \lim_{x \rightarrow 0} \frac{f(x) - f(0)}{x - 0} = \lim_{x \rightarrow 0} \frac{f(x)}{x}
+	\]
+	\[
+		\lim_{x \rightarrow 0^-} \frac{f(x)}{x} = \lim_{n \rightarrow 0^-} \frac{0}{x} = 0
+	\]
+	and
+	\[
+		\lim_{x \rightarrow 0^+} \frac{f(x)}{x} = \lim_{x \rightarrow 0^+} \frac{e^{-1 / x}}{x} = \lim_{x \rightarrow 0^+} \frac{1 / x}{e^{1 / x}} = \lim_{y \rightarrow \infty} \frac{y}{e^y} = 0
+	\]
+	so $f'(0) = 0$, hence $f$ is differentiable on $\mathbb{R}$. But if $f$ had a Taylor series at $x = 0$, then
+	\[
+		f(x) = \sum_{n = 0}^{\infty} \frac{f^{(n)} (0)}{n!} z^n = 0
+	\]
+	around $x = 0$.
+\end{remark}
+
+\begin{corollary}
+	(Holomorphic functions have infinitely many derivatives) If $f: U \rightarrow \mathbb{C}$ is holomorphic on an open set $U$ then $f$ has derivatives of all orders and each derivative is also holomorphic.
+\end{corollary}
+
+\begin{proof}
+	Since $U$ is open, $\exists B_r(a) \subset U$ around a point $z = a$. But then by Cauchy-Taylor, $f$ has a power series. By theorem 5.21 (lecture notes), this power series is holomorphic. By corollary 5.22 (lecture notes) we can term-by-term differentiate to get a power series for $f'(z)$. By theorem 5.21 (lecture notes), $f'(z)$ is holomorphic. This can be repeated indefinitely.
+\end{proof}
+
+\begin{remark}
+	This is a huge difference between real and complex analysis. Let $f: \mathbb{R} \rightarrow \mathbb{R}$ by defined as
+	\[
+		f_n(x) = |x| x^n
+	\]
+	\[
+		f_n'(0) = \lim_{x \rightarrow 0} \frac{f_n(x) - f_n(0)}{x - 0} = \lim_{x \rightarrow 0} |x| x^{n - 1} = 0
+	\]
+	$f_n'(x) = (n + 1) |x| x^{n - 1}$ and $f^{(n)} (x) = c|x|$ which is not differentiable.
+\end{remark}
+
+\begin{theorem}
+	(\textbf{Morera's Theorem}) Let $f: D \rightarrow \mathbb{C}$ be continuous on a domain $D$. If
+	\[
+		\int_{\gamma} f(z) dz = 0 \quad \forall \text{ closed } \gamma \subset D
+	\]
+	then $f$ is holomorphic.
+\end{theorem}
+
+\begin{proof}
+	By the converse FTC, $f$ has a holomorphic antiderivative $F: D \rightarrow \mathbb{C}$ such that $F'(z) = f(z) \quad \forall z \in D$. By corollary 7.6 (lecture notes), if $F$ is holomorphic, its derivative $f$ must be.
 \end{proof}
 
 \end{document}

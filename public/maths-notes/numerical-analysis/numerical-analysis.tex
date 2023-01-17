@@ -405,4 +405,216 @@ So we set
 	\end{enumerate}
 \end{remark}
 
+\section{Linear systems}
+
+Given $A \in M_n(\mathbb{R})$ and $\underline{x} \in \mathbb{R}^n$, we want to solve for $\underline{x}$:
+\[
+	A \underline{x} = \underline{b}
+\]
+We want to minimise the error when computing this with floating points, and minimise the amount of computation for: large $n$, for different $\underline{b}$ (with the same $A$) and when $A$ has particular forms.
+
+\begin{definition}
+	The \textbf{transpose} of a square matrix $A$, $A^T$ is defined as
+	\[
+		{(A^T)}_{i, j} = A_{j, i}
+	\]
+\end{definition}
+
+\begin{definition}
+	$A$ is \textbf{symmetric} if $A = A^T$.
+\end{definition}
+
+\begin{definition}
+	$A$ is \textbf{skew-symmetric} if $A = -A^T$.
+\end{definition}
+
+\begin{definition}
+	$A$ is \textbf{non-singular} if for every $\underline{b}$, for some $\underline{x}$, $A\underline{x} = \underline{b}$.
+\end{definition}
+
+\begin{definition}
+	$A$ is \textbf{positive definite} if $(A \underline{x}) \cdot \underline{x} > 0 \quad \underline{x} \ne \underline{0}$.
+\end{definition}
+
+\begin{definition}
+	$A$ is \textbf{positive semi-definite} if $(A \underline{x}) \cdot \underline{x} \ge 0 \quad \forall x$.
+\end{definition}
+
+\begin{lemma}
+	If $A$ is positive definite, then $A$ is non-singular.
+\end{lemma}
+
+\begin{proof}
+	Omitted.
+\end{proof}
+
+\begin{lemma}
+	The converse of the above lemma is false.
+\end{lemma}
+
+\begin{proof}
+	$A$ is non-singular $\Rightarrow$ $-A$ is non-singular, but $A$ is positive-definite $\Rightarrow$ $-A$ is negative definite.
+\end{proof}
+
+\begin{definition}
+	A matrix $A$ is \textbf{lower triangular} if $A_{i, j} = 0 \quad \forall j > i$.
+\end{definition}
+
+\begin{definition}
+	$A$ is \textbf{upper triangular} if $A_{i, j} = 0 \quad \forall j < i$.
+\end{definition}
+
+\begin{remark}
+	We often write $U$ for an upper triangular matrix and $L$ for a lower triangular matrix.
+\end{remark}
+
+\begin{definition}
+	To solve $Ux = b$, we can use \textbf{backward substitution}. Starting from the last equation,
+	\[
+		\begin{aligned}
+			x_n & = \frac{1}{U_{n, n}} b_n \\
+			x_{n - 1} & = \frac{1}{U_{n - 1, n - 1}} (b_{n - 1} - U_{n - 1, n} x_n) \\
+			\vdots & \\
+			x_j & = \frac{1}{U_j} \left( b_j - \sum_{i = j + 1}^{n} U_{j, i} x_i \right)
+		\end{aligned}
+	\]
+\end{definition}
+
+\begin{definition}
+	Similarly, we can solve $L \underline{x} = \underline{b}$ for a lower triangular matrix $L$ with forward substitution. Starting from the first equation,
+	\[
+		\begin{aligned}
+			x_1 & = \frac{b_1}{L_{1, 1}} \\
+			\vdots & \\
+			x_j & = \frac{1}{L_{j, j}} \left( b_j - \sum_{i = 1}^{j - 1} L_{j, i} x_k \right)
+		\end{aligned}
+	\]
+\end{definition}
+
+\begin{remark}
+	If $U_{j, j} = 0$ or $L_{j, j} = 0$ for some $j$, then this method doesn't work. This is expected, because in this case $\det U = 0$ (or $\det L = 0$).
+\end{remark}
+
+\begin{definition}
+	If $A$ is neither upper nor lower triangular, then we can transform $A$ into a (usually) upper triangular matrix, by \textbf{Gaussian elimination}.
+
+	The following operations leave the solution $\underline{x}$ unchanged:
+	\begin{enumerate}
+		\item Swapping two rows
+		\item Adding a scalar multiple of a row to another row.
+	\end{enumerate}
+\end{definition}
+
+\subsection{Computational complexity}
+
+\begin{definition}
+	For simplicity, we assume that each elementary floating point operation takes 1 unit of time, called 1 \textbf{flop}.
+\end{definition}
+
+\begin{remark}
+	In practice, binary64 multiplication takes roughly 3 times as long as addition or multiplication, and binary64 division takes roughly 10 times as long as addition or subtraction.
+\end{remark}
+
+\begin{definition}
+	Let $f(n) > 0$ and $g(n) > 0$ for large $n$. We write
+	\[
+		f(n) \sim o(g(n)) \quad \text{ if } \lim_{n \rightarrow \infty} \frac{f(n)}{g(n)} = 0
+	\]
+\end{definition}
+
+\begin{definition}
+	Let $f(n) > 0$ and $g(n) > 0$ for large $n$. We write
+	\[
+		f(n) \sim O(g(n)) \quad \text{ if } \limsup_{n \rightarrow \infty} \frac{f(n)}{g(n)} < \infty
+	\]
+	Equivalently,
+	\[
+		f(n) \sim O(g(n)) \quad \text{ if } \exists C, \exists N, \forall n \le N, f(n) \le C g(n)
+	\]
+\end{definition}
+
+\begin{remark}
+	From these definitions, we have
+	\[
+		f(n) \sim o(g(n)) \Longrightarrow f(n) \sim O(g(n))
+	\]
+\end{remark}
+
+\begin{example}
+	\hfill
+	\begin{itemize}
+		\item $100n^3 + 10^6 n^2 \sim O(n^3)$
+		\item $n! + 10^{100} n^{100} \sim O(n!)$
+		\item $n! \sim O(n^{n + \frac{1}{2}} e^{-n})$
+	\end{itemize}
+\end{example}
+
+\begin{remark}
+	In this module, we will be calculate the computational complexity to \textbf{leading order}, e.g. we distinguish $3n^2 + 5n$ form $30n^2$ but not from $3n^2 - 2n$.
+\end{remark}
+
+\begin{proposition}
+	Backwards substitution on $U$ where $U$ is an $n \times n$ matrix is an $O(n^2)$ operation.
+\end{proposition}
+
+\begin{proof}
+	\hfill
+	\begin{itemize}
+		\item Computing $x_n = b_n / U_{n, n}$ takes 1 flop.
+		\item Computing $x_{n - 1} = \frac{(b_{n - 1} - U_{n - 1, n} x_n)}{U_{n - 1, n - 1}}$ takes 3 flops.
+		\item $\vdots$
+		\item Computing $x_1 = \frac{1}{U_1} \left( b_1 - \sum_{i = j + 2}^{n} U_{1, i} x_i \right)$ takes $2n - 1$ flops.
+	\end{itemize}
+	So in total, backward substitution takes $1 + 3 + \cdots + 2n - 1 = n^2$ flops.
+\end{proof}
+
+\begin{proposition}
+	The number of flops needed for solving $Ax = b$ where $A$ is an $n \times n$ matrix is
+	\[
+		\frac{2}{3} n^3	+ \frac{3}{2} n^2 - \frac{7}{6} n
+	\]
+\end{proposition}
+
+\begin{proof}
+	To zero the first column for rows $i \in \{ 2, \dots, n \}$:
+	\begin{itemize}
+		\item $\alpha_{i, 1} = -A_{i, 1} / A_{1, 1}$ ($1$ flop).
+		\item $A_{i, j} \rightarrow A_{i, j} + \alpha_{i, 1} A_{1, j}$ for $j \in \{ 2, \dots, n \}$ and $A_{i, 1} = 0$ ($2(n - 1)$ flops).
+		\item $b_i \rightarrow b_i + \alpha{i, 1} b_1$ ($2$ flops).
+	\end{itemize}
+	This is $2n + 1$ flops in total for each row, and this is done for $n - 1$ rows, so in total there are $(2n + 1)(n - 1)$ flops. For row $2$, there are $(2n - 1)(n - 2)$ flops.
+
+	In general, to zero column $k$ for rows $i \in \{ k + 1, \dots, n \}$:
+	\begin{itemize}
+		\item $\alpha_{i, k} = -A_{i, k} / A_{k, k}$ ($1$ flop).
+		\item $A_{i, j} \rightarrow A_{i, j} + \alpha_{i, k} A_{k, j}$ for $j \in \{ k + 1, \dots, n \}$ ($2(n - k)$ flops).
+		\item $b_i \rightarrow b_i + \alpha_{i, k} b_k$ ($2$ flops).
+	\end{itemize}
+	This is $2n - 2k + 3$ flops in total for each row, so for the $n - k$ rows, in total there are $(2n - 2k + 3)(n - k)$ flops.
+
+	So the total number of flops for Gaussian elimination is
+	\[
+		\begin{aligned}
+			\sum_{k = 1}^{n - 1} (2n - 2k + 3)(n - k)
+				& = \sum_{k = 1}^{n - 1} 2n^2 - 2kn + 3n - 2nk + 2k^2 - 3k \\
+				& = (n - 1)(2n^2 + 3n) - (4n + 3) \sum_{k = 1}^{n - 1} k + 2 \sum_{k = 1}^{n - 1} k^2 \\
+				& = (n - 1)(2n^2 + 3n) - (4n + 3) \frac{n(n - 1)}{2} \\
+				&\quad + \frac{1}{3} (n - 1) n (2n - 1) \\
+				& = \frac{2}{3} n^3 + \frac{1}{2} n^2 - \frac{7}{6} n
+		\end{aligned}
+	\]
+	Adding the $n^2$ flops from back substitution, in total to solve $Ax = b$, the number of flops needed is
+	\[
+		\frac{2}{3} n^3	+ \frac{3}{2} n^2 - \frac{7}{6} n
+	\]
+\end{proof}
+
+\begin{remark}
+	Gaussian elimination with (row) pivotting can transfomr every non-singular matrix into an upper-triangular matrix.
+\end{remark}
+
+\subsection{Pivoting and roundoffs}
+
+
+
 \end{document}

@@ -372,4 +372,202 @@ In general, line integrals depend on the path between the end points. However, t
 	In a simply connected region $D$, $\underline{\nabla} \times \underline{F} = \underline{0} \Leftrightarrow \text{path independence of } \int_C \underline{F} \cdot d\underline{x} \Leftarrow \text{for some scalar field } \phi, \underline{F} = \underline{\nabla} \phi$.
 \end{corollary}
 
+\section{Non-cartesian systems}
+
+\begin{definition}
+	For a non-cartesian coordinate system in three dimensions, we use the letters $u, v, w$ to describe the coordinates.
+\end{definition}
+
+\begin{definition}
+	A change of variable (change of coordinate system) is denoted by
+	\[
+		\begin{aligned}
+			x & = g(u, v, w) \\
+			y & = h(u, v, w) \\
+			z & = k(u, v, w)
+		\end{aligned}
+	\]
+	where $g, h, k$ are smooth and invertible functions, and
+	\[
+		\begin{aligned}
+			u & = \tilde{g}(x, y, z) \\
+			v & = \tilde{h}(x, y, z) \\
+			w & = \tilde{k}(x, y, z)
+		\end{aligned}
+	\]
+	where $\tilde{g}, \tilde{h}, \tilde{k}$ are smooth and invertible functions.
+\end{definition}
+
+\subsection{Change of variables in surface and volume integrals}
+
+\subsection{Differential operators in polar and spehrical polar coordinates}
+
+\begin{definition}
+	In two dimensions, $P: (x, y)$ denotes a point $P$ of coordinates $(x, y) \in \mathbb{R}^2$. The \textbf{position vector} of $P$ is
+	\[
+		\underline{r} = \underline{OP} = x \underline{e_1} + y \underline{e_2}
+	\]
+	where $\{ \underline{e_1}, \underline{e_2} \}$ is an orthonormal basis and $\underline{e_1}$ and $\underline{e_2}$ do not depend on $x$ or $y$.
+\end{definition}
+
+\begin{definition}
+	The \textbf{gradient operator} is defined as
+	\[
+		\underline{\nabla} = \underline{e_1} \partial_x + \underline{e_2} \partial_y
+	\]
+\end{definition}
+
+\begin{definition}
+	The Laplacian operator is defined as
+	\[
+		\begin{aligned}
+			\underline{\nabla} . \underline{\nabla}
+				& = (\underline{e_1} \partial_x + \underline{e_2} \partial_y) . (\underline{e_1} \partial_x + \underline{e_2} \partial_y) \\
+				& = \partial_x^2 + \partial_y^2
+		\end{aligned}
+	\]
+\end{definition}
+
+\subsection{Polar coordinates}
+
+\begin{definition}
+	A point $P$ in polar coordinates is $P: (r, \theta)$ where $\underline{r} = r \cos (\theta) \underline{e_1} + r \sin (\theta) \underline{e_2}$, $r \in \left[0, \infty\right), \theta \in \left[ 0, 2 \pi \right)$
+
+	$|\underline{r}| = r$ and $\partial_r \underline{r} = \cos(\theta) \underline{e_1} + \sin(\theta) \underline{e_2} =: \tilde{e_r}$, $\partial_{\theta} \underline{r} = - r \sin(\theta) \underline{e_1} + r \cos(\theta) \underline{e_2} =: \tilde{e_{\theta}}$
+\end{definition}
+
+\begin{definition}
+	Let $x = g(u, v)$ and $y = h(u, v)$ be a change of variables. The norms of the partial derivatives of the position vector $\underline{r}$ are caled the \textbf{scale factors} for the mapping $(g, h)$.
+\end{definition}
+
+\begin{definition}
+	$h_u = |\partial_u \underline{r}| = |\underline{e_u}|$, $h_v = |\partial_v \underline{r}| = |\underline{e_v}|$.
+
+	So in polar coordinates, $h_r = 1, h_{\theta} = r$, $J(r, \theta) = h_r h_{\theta}$.
+\end{definition}
+
+\begin{definition}
+	We define $\underline{e_r}$ and $\underline{e_{\theta}}$ to be unit vectors, so $\underline{e_r} = \cos(\theta) \underline{e_1} + \sin(\theta) \underline{e_2}$, $\underline{e_{\theta}} = -\sin(\theta) \underline{e_1} + \cos(\theta) \underline{e_2}$.
+\end{definition}
+
+\begin{definition}
+	Let $f(r, \theta)$ be a scalar function.
+	\[
+		\begin{aligned}
+			df
+				& = \underline{\nabla} f . d \underline{r} \\
+				& = (\partial_r f) dr + (\partial_{\theta} f) d \theta \\
+				& = (\partial_r f) \underline{e_r} . d\underline{r} + (\partial_{\theta} f) \frac{1}{r} (\underline{e_{\theta}} d \underline{r}) \\
+				& = (\underline{e_r} \partial_r + \underline{e_{\theta}} \frac{1}{r} \partial_{\theta} f) . d\underline{r}
+		\end{aligned}
+	\]
+	So $\underline{\nabla} = \underline{e_r} \partial_r + \frac{1}{r} \underline{e_{\theta}} \partial_{\theta}$
+\end{definition}
+
+\begin{definition}
+	(\textbf{Divergence in polar}) Let $\underline{A}(r, \theta) = A_r \underline{e_r} + A_{\theta} \underline{e_{\theta}}$, where $A_r$ and $A_{\theta}$ are functions of $r$ and $\theta$.
+
+	Note that $\partial_r \underline{e_r} = 0, \partial_r \underline{e_{\theta}} = 0, \partial_{\theta} \underline{e_r} = \underline{e_{\theta}}, \partial_{\theta} \underline{e_{\theta}} = -\underline{e_r}$. Using these results, we get
+	\[
+		\underline{\nabla} . \underline{A} = \partial_r A_r + \frac{1}{r} A_r + \frac{1}{r} \partial_{\theta} A_{\theta}
+	\]
+\end{definition}
+
+\begin{definition}
+	The Laplacian for polar coordinates is
+	\[
+		\underline{\nabla} . \underline{\nabla} = \partial_r^2 + \frac{1}{r} \partial_r + \frac{1}{r^2} \partial_{\theta}^2
+	\]
+\end{definition}
+
+\begin{proposition}
+	Let $x = g(u, v)$, $y = h(u, v)$ be a change of variables. The Jacobian matrix $A = [[\partial_u x, \partial_v x], [\partial_u y, \partial_v y]]$ is the inverse of the matrix $B = [[\partial_x u, \partial_y u], [\partial_x v, \partial_y v]]$. TODO: write as matrices.
+\end{proposition}
+
+\begin{proof}
+	$dx = \partial_u x du + \partial_v x dv$, $dv = \partial_x v dx + \partial_y v dy$, $dy = \partial_u y du + \partial_v y dv$, $du = \partial_x u dx + \partial_y u dy$.
+
+	Substituting the second equation into the first:
+	\[
+		dx = \partial_u x du + \partial_v x (\partial_x v dx + \partial_y v dy)
+	\]
+	If $x$ is constant, then $0 = \partial_u x du + \partial_v x \partial_y v dy$ or $0 = \partial_u x du \partial_y u + \partial_v x \partial_y dv$.
+
+	If $y$ is constant, then $dx = \partial_u x du + \partial_v x \partial_x v dx$ or $1 = \partial_u x \partial_x u + \partial_v x \partial_x v$.
+
+	Now substituting the fourth euqation into the third:
+	If $x$ is constant, $1 = \partial_u y \partial_y u + \partial_v y \partial_y v$, if $y$ is constant, $0 = \partial_u y \partial_x u + \partial_v y \partial_x v$.
+
+	Multiplying $A$ and $B$ gives $AB = I$, the identity matrix.
+\end{proof}
+
+\section{Generalised functions}
+
+\subsection{Birth of generalised functions}
+
+\begin{definition}
+	The \textbf{unit step function} is defined as
+	\[
+		\Theta (t - t_0) = \begin{cases}
+			1 & \text{ if } t > t_0 \\
+			0 & \text{ if } t \le t_0
+		\end{cases}
+	\]
+\end{definition}
+
+\begin{definition}
+	The \textbf{delta function} is defined as the derivative of the unit step function:
+	\[
+		\delta(t) = \Theta'(t)
+	\]
+\end{definition}
+
+\subsection{Test functions and distributions}
+
+\begin{definition}
+	A \textbf{topological space} $X$ is a set of points with a set of neighbourhoods obeying certain axioms.
+\end{definition}
+
+\begin{definition}
+	An \textbf{open set} $O \subset X$ is a set which is a neighbourhood of all its points.
+\end{definition}
+
+\begin{definition}
+	A set $B$ is a \textbf{closed set} if $X \backslash B$ is an open set.
+\end{definition}
+
+\begin{definition}
+	For $A \subset X$, $p$ is a \textbf{limit point} of $A$ is every neighbourhood of $p$ contains at least one element of $A - \{ p \}$.
+\end{definition}
+
+\begin{definition}
+	The \textbf{closure} of a set $A$ is the union of $A$ and all its limit points.
+\end{definition}
+
+\begin{example}
+	In $A = \left[0, 1 \right)$, $1$ is a limit point.
+\end{example}
+
+\begin{definition}
+	The \textbf{support} of $\Psi$, denoted $\text{supp} \Psi$, is defined as
+	\[
+		\text{supp} \Psi := \overline{\{ x \in \Omega: \Psi(x) \ne 0 \}}
+	\]
+	is the closure of the set of points $\{ x \in \Omega: \Psi(x) \ne 0 \}$.
+\end{definition}
+
+\begin{definition}
+	Let $\Omega \subset \mathbb{R}^n$ be an open set and $\Psi: \mathbb{R}^n \rightarrow \mathbb{R} (\text{ or } \mathbb{C})$ be a function that satisfies:
+	\begin{enumerate}
+		\item $\Psi \in C^{\infty} (\Omega)$ i.e. $\Psi$ has finite derivatives of all orders on $\Omega$.
+		\item $\text{supp} \Psi$ is compact.
+	\end{enumerate}
+\end{definition}
+
+\begin{proposition}
+	The space of test functions is a vector space denoted $D(\Omega)$ when the test functions are defined on $\Omega$.
+\end{proposition}
+
+
+
 \end{document}

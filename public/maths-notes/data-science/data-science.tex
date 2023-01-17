@@ -8,6 +8,7 @@
 \usepackage{listings}
 \usepackage{xcolor}
 \usepackage{bbm}
+\usepackage{hyperref}
 
 \definecolor{commentcolor}{rgb}{0.43,0.47,0.51}
 \definecolor{numbercolor}{rgb}{0.07,0.39,0.16}
@@ -58,24 +59,38 @@
 
 \begin{theorem}
 	(Central Limit Theorem) If we have a sample of data $(x_1, \dots, x_n)$ where each $X_i \sim UK(\mu, \sigma^2)$ ($UK$ is an unknown population distribution), then
-
-	\[ \bar{X} \sim N\left(\mu, \frac{\sigma^2}{n}\right) \]
+	\[
+		\bar{X} \sim N\left(\mu, \frac{\sigma^2}{n}\right)
+	\]
 	as $n \rightarrow \infty$. This means that the distribution of the sample mean tends to a Normal distribution with standard deviation $\frac{\sigma}{\sqrt{n}}$. This is independent of $UK$.
 \end{theorem}
 
-\begin{definition}
-	The unbiased estimate of the population standard deviation is given by
+\begin{proof}
+	Proven in Probability I.
+\end{proof}
 
-	\[ \sqrt{\frac{1}{n - 1} \sum_{i = 1}^n {\left(x_i - \bar{x}\right)}^2} \]
-	Then the \textbf{standard error of the sample mean} is $\frac{s}{\sqrt{n}}$, which is an estimate of the standard deviation of the sample mean.
+\begin{definition}
+	Let $\underline{x} = (x_1, \dots, x_n)$ be a data set sampled from a population. The \textbf{unbiased estimate} of the \textbf{population standard deviation} is given by
+	\[
+		s = \sqrt{\frac{1}{n - 1} \sum_{i = 1}^n {\left(x_i - \bar{x}\right)}^2}
+	\]
+\end{definition}
+
+\begin{definition}
+	The \textbf{standard error of the sample mean} is an estimate of the standard deviation of the sample mean and is given by
+	\[
+		\widehat{\text{stddev}}(\bar{x}) = \frac{s}{\sqrt{n}}
+	\]
+	where $s$ is the unbiased estiate of the population standard deviation.
 \end{definition}
 
 \begin{remark}
 	If $n$ is not sufficiently large, then $s$ is a poor estimator and the distribution of the sample mean might not be normally distributed.
 
 	If the population distribution is normal and $n$ is small, then
-
-	\[ \frac{\bar{X} - \mu}{s / \sqrt{n}} \sim t_{n - 1} \]
+	\[
+		\frac{\bar{X} - \mu}{s / \sqrt{n}} \sim t_{n - 1}
+	\]
 \end{remark}
 
 \begin{definition}
@@ -87,50 +102,54 @@
 \begin{definition}
 	Given data $\underline{x} = (x_1, \dots, x_n)$, we define a \textbf{null hypothesis}, $H_0$, to identify the distribution we believe generated each $x_i$.
 
-	Then we select a \textbf{test statistic}, $t = h(x_1, \dots, x_n)$ which is a function of data which produces an extreme value when $H_0$ is false, and a value which is not extreme otherwise.
+	Then we select a \textbf{test statistic}, $S(\cdot)$, which is a function of data which produces an extreme value when $H_0$ is false, and a value which is not extreme otherwise.
 
-	The \textbf{observed test statistic} for the data $\underline{x}$ is $t = h(x_1, \dots, x_n)$. A hypothesis test compares the observed test statistic to the distribution of test statistic values that would occur assuming $H_0$ was true. This helps us decide whether the observed test statistic is extreme.
+	The \textbf{observed test statistic} for the data $\underline{x}$ is $t = S(x_1, \dots, x_n)$. A hypothesis test compares the observed test statistic to the distribution of test statistic values that would occur assuming $H_0$ was true. This helps us decide whether the observed test statistic is extreme.
 
-	So we need to know the distribution of the random variable $T = h(X_1, \dots, X_n)$, then we see how extreme $t$ is as a realisation of $T$.
+	So we need to know the distribution of the random variable $T = S(X_1, \dots, X_n)$, then we see how extreme $t$ is as a realisation of $T$.
 \end{definition}
 
 \begin{definition}
-	Given data $\underline{x} = (x_1, \dots, x_n)$, let $H_0$ be a null hypopthesis that specifies a proposed distribution for the random variables $X_i$ and let $h$ be a test statistic.
+	Given data $\underline{x} = (x_1, \dots, x_n)$, let $H_0$ be a null hypopthesis that specifies a proposed distribution for the random variables $X_i$ and let $S(\cdot)$ be a test statistic.
 
-	Let $t = h(x_1, \dots, x_n)$ be the observed test statistic. If the distribution of $T = h(X_1, \dots, X_n)$ is known, then the one-sided $p$-value is either
-
-	\[ \mathbb{P}(T \ge t \mid H_0 \text{ true}) \text{ \ or \ } \mathbb{P}(T \le t \mid H_0 \text{ true}) \]
+	Let $t = S(x_1, \dots, x_n)$ be the observed test statistic. If the distribution of $T = S(X_1, \dots, X_n)$ is known, then the one-sided $p$-value is either
+	\[
+		\mathbb{P}(T \ge t \mid H_0 \text{ true}) \text{ \ or \ } \mathbb{P}(T \le t \mid H_0 \text{ true})
+	\]
 	If $t$ is extreme when larger or smaller than $T$, the two-sided $p$-value is
-
-	\[ \mathbb{P}(T \le -|t| \cup T \ge |t| \mid H_0 \text{ true} ) = \mathbb{P}(|T| \ge |t| \mid H_0 \text{ true}) \]
+	\[
+		\mathbb{P}(T \le -|t| \cup T \ge |t| \mid H_0 \text{ true} ) = \mathbb{P}(|T| \ge |t| \mid H_0 \text{ true})
+	\]
 \end{definition}
 
 \section{Monte Carlo testing}
 
 \subsection{Motivation for Monte Carlo testing}
 
-When conducting a hypothesis test, we have data $(x_1, \dots, x_n)$ which follows a distribution $F(x | \theta)$ with parameter $\theta$. We want to test
-
-\[ H_0: \theta = \theta_0, \quad H_1: \theta > \theta_0 \]
-We define the test statistic as $T = h(X_1, \dots, X_n)$ with an observed value of $t = h(x_1, \dots, x_n)$. To calculate the $p$-value, we use
+When conducting a hypothesis test, we have data $(x_1, \dots, x_n)$ which follows a distribution $F(x \mid \theta)$ with parameter $\theta$. We want to test
+\[
+	H_0: \theta = \theta_0, \quad H_1: \theta > \theta_0 
+\]
+Let $S(\cdot)$ be a test statistic, $T = S(X_1, \dots, X_n)$, $t = S(x_1, \dots, x_n)$ be the observed test statistic. To calculate the $p$-value, we use
 
 \[ \mathbb{P}(T \ge t \mid H_0 \text{ true}) = \mathbb{P}(T \ge t \mid X_i \sim F(\cdot, \theta_0)) \]
 This probability is often difficult or impossible to compute analytically.
 
-But because $f(x \mid \theta)$ (the pdf of the distribution $F$) and $h$ are known, we can estimate this probability using \textbf{simulation}.
+But because $f(x \mid \theta)$ (the pdf of the distribution $F$) and $S$ are known, we can estimate this probability using \textbf{simulation}.
 
 \subsection{Monte Carlo testing}
 
 \begin{definition}
-	Let $\underline{x}$ be observed data, $t = h(\underline{x})$ be an observed test statistic, $F(x \mid \theta)$ be a data-generating distribution. With hypotheses
-
-	\[ H_0: \theta = \theta_0, \quad H_1: \theta > \theta_0 \]
+	Let $\underline{x}$ be observed data, $S(\cdot)$ be a test statistic, $t = S(\underline{x})$ be the observed test statistic, and $F(x \mid \theta)$ be a data-generating distribution. With hypotheses
+	\[
+		H_0: \theta = \theta_0, \quad H_1: \theta > \theta_0
+	\]
 	we can perform a \textbf{Monte Carlo hypothesis test} with the following algorithm:\\
 
 	For each $i \in \{1, \dots, N\}$ ($N$ is some large constant):
 	\begin{enumerate}
 		\item Simulate $n$ observations $\underline{z} = (z_1, \dots, z_n)$ from $Z_i \sim F(\cdot \mid \theta_0)$.
-		\item Compute $t_i = h(\underline{z})$.
+		\item Compute $t_i = S(\underline{z})$.
 	\end{enumerate}
 	Compute the estimated $p$-value with:
 
@@ -138,8 +157,8 @@ But because $f(x \mid \theta)$ (the pdf of the distribution $F$) and $h$ are kno
 	where
 	
 	\[ \mathbbm{1} \{ A \} = \begin{cases}
-		1 \text{ if } A \text{ true}\\
-		0 \text{ if } A \text{ false}
+		1 & \text{ if } A \text{ true}\\
+		0 & \text{ if } A \text{ false}
 	\end{cases} \]
 	is the indicator function.
 \end{definition}
@@ -148,7 +167,7 @@ But because $f(x \mid \theta)$ (the pdf of the distribution $F$) and $h$ are kno
 	This makes hypothesis testing much easier and allows it to be generalised to any distributions and test statistics.
 
 	\begin{enumerate}
-		\item We assume $H_0$ is true and simulate $N$ sets of data ($\underline{z}$) for each of which we compute the test statistic $h$.
+		\item We assume $H_0$ is true and simulate $N$ sets of data (the $\underline{z}$'s) for each of which we compute the test statistic $S$.
 		\item We then count the number of times the test statistic of a simulated set of data was at least as extreme as the observed statistic $t$, then divide this total by the total number of simulated data sets, $N$.
 	\end{enumerate}
 \end{remark}
@@ -176,7 +195,7 @@ monte_carlo_p_value = function(sims, data, test_stat, rand) {
 		sim_stats[i] <- sim_stat
 	}
 	
-	return(sum(sim_stats > obs_stat) / sims);
+	return(sum(sim_stats > obs_stat) / sims)
 }
 
 # hypothesis test on mean candle lifetimes
@@ -200,11 +219,453 @@ print(paste("p-value:", p_value))
 
 \section{The Bootstrap}
 
+\subsection{Introduction}
+
+When doing Monte Carlo testing, we didn't need to know the distribution of the test statistic, but we did need to know the true population distribution in order to simulate data sets from that distribution. There is a method called the Bootstrap which allows us to estimate standard errors and confidence intervals without knowing the true population distribution and without knowing the test statistic distribution.
+
+\subsection{The non-parametric bootstrap}
+
+\begin{definition}
+	Let $\underline{x} = (x_1, \dots, x_n)$ be a data set containing independent samples, let $S(\cdot)$ be a test statistic and let $B$ be some large constant. To compute a \textbf{bootstrap estimate of the standard error} of $S$, draw $B$ new samples \textbf{with replacement} (this is called \textbf{resampling}) of size $n$ from $\underline{x}$ which gives $\underline{x}^{\star 1}, \dots, \underline{x}^{\star B}$. Then calculate
+	\[
+		\widehat{\text{Var}}(S(\underline{x})) = \frac{1}{B - 1} \sum_{i = 1}^B {\left( S(\underline{x}^{\star i}) - \bar{S}^{\star} \right)}^2 
+	\]
+	where
+	\[
+		\bar{S}^{\star} = \frac{1}{B} \sum_{i = 1}^B S \left( \underline{x}^{\star i} \right)
+	\]
+	The \textbf{bootstrap estimate of the statistic} is simply $S(\underline{x})$.
+\end{definition}
+
+\begin{remark}
+	The Bootstrap is very powerful as the statistic $S$ can be any statistic, e.g. mean, median, etc.
+\end{remark}
+
+\begin{example}
+	Below is some R code which computes a Bootstrap estimate of a given statistic on a given data set.
+
+	\begin{lstlisting}[language=R]
+bootstrap_estimate = function(samples, data, test_stat) {
+	# samples = B
+	# data = x
+	# test_stat = S
+	resamples <- rep(0, samples)
+	for (i in 1:samples) {
+		resampled <- sample(data, replace = TRUE)
+		resamples[i] <- test_stat(resampled)
+	}
+	
+	return(sd(resamples))
+}
+		  
+# compute standard error of estimate of mean of data set
+x <- c(94, 197, 16, 37, 99, 141, 23)
+B <- 1000
+S <- mean
+estimate <- bootstrap_estimate(B, x, S)
+print(paste("bootstrap estimate of standard error:", estimate))
+	\end{lstlisting}
+\end{example}
+
+\subsection{Empirical distribution functions}
+
+\begin{definition}
+	For a random variable $X$ that takes value in $\mathbb{R}$, the \textbf{distribution function} $F: \mathbb{R} \rightarrow [0, 1]$ (sometimes written $F_X$ when dealing with multiple random variables) is defined as
+	\[
+		F(x) := \mathbb{P}(X \le x)
+	\]
+\end{definition}
+
+\begin{remark}
+	Defining a distribution function is enough to define the probability distribution of a random variable.
+\end{remark}
+
+\begin{definition}
+	Let $(x_1, \dots, x_n)$ be some data where each sample $x_i$ is an i.i.d. (independent and identically distributed) realisation of a random variable $X$. The \textbf{empirical (cumulative) distribution function} (\textbf{ecdf}) is defined as
+	\[
+		\hat{F}(x) := \frac{1}{n} \sum_{i = 1}^{n} \mathbbm{1} \{ x_i \le x \}
+	\]
+	So the ecdf of $x$ is the proportion of samples $x_i$ which are less than or equal to $x$.
+\end{definition}
+
+\begin{proposition}
+	The ecdf is a valid cdf.
+\end{proposition}
+
+\begin{proof}
+	\hfill
+	\begin{enumerate}
+		\item $\lim_{x \rightarrow -\infty} \hat{F}(x) = 0$ and $\lim_{x \rightarrow \infty} \hat{F}(x) = 1$
+		\item Monotonicity: for every $y < x, \hat{F}(y) \le \hat{F}(x)$
+		\item Right-continuity: for every $x \in \mathbb{R}, \hat{F}(x) = \lim_{a \rightarrow x^+}\hat{F}(a)$, where $\lim_{a \rightarrow x^+}\hat{F}(a)$ is the limit from the right.
+	\end{enumerate}
+\end{proof}
+
+\begin{theorem}
+	(Glivenko-Cantelli) Let $X_1, \dots, X_n$ be a random sample from a distribution with cdf $F(x)$. Then
+	\[
+		\sup_{x \in \mathbb{R}} | \hat{F}(x) - F(x) | \rightarrow 0 \quad \text{as } n \rightarrow \infty
+	\]
+	So as the number of random samples increases, the empirical cdf that they produce tends to the true cdf.
+\end{theorem}
+
+\begin{proof}
+	Too difficult.
+\end{proof}
+
+\begin{example}
+	Below is some R code which demonstrates the Glivenko-Cantelli theorem by plotting a graph containing the cdf of a given distribution and the ecdf generated by random samples from that distribution.
+
+	\begin{lstlisting}[language=R]
+plot_ecdf_and_cdf = function(rand_samples, cdf) {
+	# rand_samples = X_1, ..., X_n
+	e <- ecdf(rand_samples)
+	plot(e)
+	points <- seq(-4, 4, length.out = 200)
+	lines(points, cdf(points), lty = 2)
+}
+	
+# plot ecdf and cdf of standard normal distribution
+# ecdf uses 1000 samples
+plot_ecdf_and_cdf(rnorm(1000), pnorm)
+	\end{lstlisting}
+\end{example}
+
+\subsection{Sampling with replacement and ecdfs}
+
+\begin{lemma}
+	Let $\underline{x} = (x_1, \dots, x_n)$ be a data set. Random uniform sampling from $\underline{x}$ is equivalent to sampling from the distribution that is defined by the ecdf $\hat{F}$ generated from $\underline{x}$.
+\end{lemma}
+
+\begin{proof}
+	We show that the cdf of the resampling distribution is the same function as the ecdf.
+
+	Sampling from replacement from $\underline{x}$ is equivalent to sampling from the discrete random variable $Y$ which can take values in $\{ x_1, \dots, x_n \}$, where
+	\[
+		p_Y(x_i) = \mathbb{P}(Y = x_i) = \frac{1}{n} \quad \forall i \in \{ 1, \dots, n \}
+	\]
+	and if $y \notin \underline{x}$ then $p_Y(y) = 0$.
+
+	From Probability I, the cdf for a probability mass function $p$ is a piecewise constant:
+	\[
+		\begin{aligned}
+			F_Y(x)
+				& = \sum_{t: t \le x} p_Y(t) \\
+				& = \sum_{t: t \le x} \frac{1}{n} \\
+				& = \frac{1}{n} \sum_{t: t \le x} 1 \\
+				& = \frac{1}{n} \sum_{i = 1}^n \mathbbm{1} \{ x_i \le x \} \\
+				& = \hat{F}(x)
+		\end{aligned}
+	\]
+\end{proof}
+
+\begin{remark}
+	The ecdf approximates the true cdf and bootstrap resampling is equivalent to sampling from the ecdf, so is equivalent to fitting an ecdf to the data and then sampling from it as if it was a fitted distribution.
+
+	This is similar to Monte Carlo sampling, where we treat $\hat{F}$ as a known distribution.
+\end{remark}
+
+\begin{proposition}
+	(Expectation and variance of the ecdf) Let $\underline{x} = (x_1, \dots, x_n)$ be a data set and $Y$ be a discrete random variable which can take values in $\{ x_1, \dots, x_n \}$ (so $Y$ is defined by the ecdf generated by $\underline{x}$). Then $\mathbb{E}(Y) = \bar{x}$ and $\text{Var}(Y) = \frac{n - 1}{n} s_x^2$.
+\end{proposition}
+
+\begin{proof}
+	\[
+		\begin{aligned}
+			\mathbb{E}(Y)
+				& = \sum_{y \in \underline{x}} y p_Y(y) \\
+				& = \sum_{i = 1}^n x_i \frac{1}{n} \\
+				& = \bar{x}
+		\end{aligned}
+	\]
+	\[
+		\begin{aligned}
+			\text{Var}(Y) =
+				& = \sum_{y \in \underline{x}} {(y - \mathbb{E}(Y))}^2 p_Y(y) \\
+				& = \sum_{i = 1}^n {(x_i - \bar{x})}^2 \frac{1}{n} \\
+				& = \frac{n - 1}{n} \frac{1}{n - 1} \sum_{i = 1}^n {(x_i - \bar{x})}^2 \\
+				& = \frac{n - 1}{n} s_x^2
+		\end{aligned}
+	\]
+\end{proof}
+
+\begin{corollary}\label{cor:ecdfExpectationAndVariance}
+	Let $\bar{Y}$ be the random variable that is equal to the mean of $m$ independent samples, $Y_1, \dots, Y_m$, from the ecdf generated by $(x_1, \dots, x_n)$.
+
+	Then $\mathbb{E}(\bar{Y}) = \bar{x}$ and $\text{Var}(\bar{Y}) = \frac{n - 1}{n} \frac{s_x^2}{m}$.
+\end{corollary}
+
+\begin{proof}
+	\[
+		\begin{aligned}
+			\mathbb{E}(\bar{Y})
+				& = \mathbb{E} \left( \frac{1}{m} \sum_{i = 1}^m Y_i \right) \\
+				& = \frac{1}{m} \mathbb{E} \left( \sum_{i = 1}^m Y_i \right) \\
+				& = \frac{1}{m} \sum_{i = 1}^m \mathbb{E}(Y_i) \\
+				& = \frac{1}{m} \sum_{i = 1}^m \bar{x} \\
+				& = \bar{x}
+		\end{aligned}
+	\]
+	\[
+		\begin{aligned}
+			\text{Var}(\bar{Y})
+				& = \text{Var} \left( \frac{1}{m} \sum_{i = 1}^m Y_i \right) \\
+				& = \frac{1}{m^2} \text{Var} \left( \sum_{i = 1}^m Y_i \right) \\
+				& = \frac{1}{m^2} \sum_{i = 1}^m \text{Var}(Y_i) \\
+				& = \frac{1}{m^2} \sum_{i = 1}^m \frac{n - 1}{n} s_x^2 \\
+				& = \frac{n - 1}{n} \frac{s_x^2}{m}
+		\end{aligned}
+	\]
+\end{proof}
+
+\begin{remark}
+	The bootstrap standard error of a simple statistic, like the mean, can be calculated without running any simulations. E.g. if $S$ is the mean, by the above corollary,
+	\[
+		\widehat{\text{Var}}(S(\underline{x})) \rightarrow \frac{n - 1}{n} \frac{s^2}{n}
+	\]
+	as the number of bootstrap samples tends to $\infty$, where $s^2$ is the sample variance.
+\end{remark}
+
+\subsection{The bootstrap with finite populations}
+
+\begin{definition}
+	Given a population of size $N$ and a sample of size $n$. The \textbf{sampling fraction}, $f$ is defined as
+	\[
+		f = \frac{n}{N}
+	\]
+\end{definition}
+
+\begin{remark}	
+	So far, we have been studying the \textbf{non-parametric bootstrap} which assumes a hypothetically infinite population size. In many cases, the population is not infinite but we can still assume it is if the population size, $N$, is much larger than the sample size, $n$. But generally if $f$ is greater than roughly $0.1$, we cannot make this assumption.
+	
+	Let $\mu$ be the true population mean and $\sigma^2$ be the true population variance. As in the infinite population case, $\bar{X} = \frac{1}{n} \sum_{i = 1}^{N} X_i$ is an unbiased estimate of $\mu$, but unlike the infinite population case, the variance $\text{Var}(\bar{X})$ is no longer $\frac{\sigma^2}{n}$, so the previous assumptions aren't valid.
+\end{remark}
+	
+
+\begin{theorem}
+	Given a finite population of size $N$, let $\bar{X}$ be the sample mean of a sample of size $n$, where each sample is drawn randomly and uniformly without replacement. Then
+	\[
+		\text{Var}(\bar{X}) = \left( \frac{N - n}{N - 1} \right) \frac{\sigma^2}{n}
+	\]
+\end{theorem}
+
+\begin{proof}
+	Let $c = \text{Cov}(X_i, X_j) \ne 0 \quad \forall i \ne j$ ($c$ does not change depending on $i$ and $j$).
+	\[
+		\begin{aligned}
+			\text{Var}(\bar{X})
+				& = \text{Var} \left( \frac{1}{n} \sum_{i = 1}^{n} X_i \right) \\
+				& = \frac{1}{n^2} \text{Var} \left( \sum_{i = 1}^{n} X_i \right) \\
+				& = \frac{1}{n^2} \left( \sum_{i = 1}^{n} \text{Var}(X_i) + \sum_{i \ne j} \text{Cov}(X_i, X_j) \right) \\
+				& = \frac{1}{n^2} \left( n \sigma^2 + \sum_{i \ne j} c \right) \\
+				& = \frac{1}{n^2} \left( n \sigma^2 + n(n - 1)c \right) \\
+				& = \frac{1}{n} \left( \sigma^2 + (n - 1)c \right)
+		\end{aligned}
+	\]
+	To determine the value of $c$, consider the case where the whole population is sampled (this is possible as it is finite). Then $\bar{X} = \mu$ and $\text{Var}(\bar{X}) = 0$, as there is no uncertainty in the mean. So
+	\[
+		\text{Var}(\bar{X}) = 0 = \frac{1}{N} (\sigma^2 + (N - 1)c) \Longrightarrow c = \frac{-\sigma^2}{N - 1}
+	\]
+	and plugging this value of $c$ into the expression for $\text{Var}(\bar{X})$, we get
+	\[
+		\text{Var}(\bar{X}) = \left( \frac{N - n}{N - 1} \right) \frac{\sigma^2}{n}
+	\]
+\end{proof}
+
+\begin{remark}
+	$\frac{N - n}{N - 1} < 1$ so for a finite population, the standard error of the sample mean is less than in the infinite population case.
+\end{remark}
+
+\begin{remark}
+	If $N$ is large enough, $\frac{N - n}{N - 1} \approx 1 - \frac{n}{N}$, therefore
+	\[
+		\text{Var}(\bar{X}) \approx (1 - f) \frac{\sigma^2}{n}
+	\]
+	so we see that a large sample size relative to the population size makes the difference between the finite and infinite population cases more significant.
+\end{remark}
+
+\begin{remark}
+	$\lim_{N \rightarrow \infty} \text{Var}(\bar{X}) = \frac{\sigma^2}{n}$ which is the standard error of the sample mean in the infinite population case, as expected.
+\end{remark}
+
+\begin{theorem}
+	Given a finite population of size $N$ and a sample of size $n$, where samples are drawn without replacement, let $S^2$ be the sample variance. Then an unbiased estimator of $\text{Var}(\bar{X})$ is given by
+	\[
+		\left( 1 - \frac{n}{N} \right) \frac{S^2}{n}
+	\]
+\end{theorem}
+
+\begin{proof}
+	\[
+		\begin{aligned}
+			\mathbb{E}(S^2)
+				& = \frac{1}{n - 1} \mathbb{E} \left( \sum_{i} {\left( X_i - \bar{X} \right)}^2 \right) \\
+				& = \frac{1}{n - 1} \mathbb{E} \left( \sum_i \left( X_i^2 - 2X_i \bar{X} + \bar{X}^2 \right) \right) \\
+				& = \frac{1}{n - 1} \mathbb{E} \left( \sum_{i} X_i^2 \right) - \mathbb{E} \left( 2 \bar{X} \sum_i X_i \right) + \mathbb{E} \left( \sum_i \bar{X}^2 \right) \\
+				& = \frac{1}{n - 1} \left( \sum_i \mathbb{E} \left( X_i^2 \right) - 2n \mathbb{E} \left( \bar{X}^2 \right) + n \mathbb{E} \left( \bar{X}^2 \right) \right) \\
+				& = \frac{n}{n - 1} \left( \mathbb{E} \left( X_1^2 \right) - \mathbb{E} \left( \bar{X}^2 \right) \right)
+		\end{aligned}
+	\]
+	Hence
+	\[
+		\begin{aligned}
+			\mathbb{E} \left( \left( 1 - \frac{n}{N} \right) \frac{S^2}{n} \right)
+				& = \frac{1}{n} \left( 1 - \frac{n}{N} \right) \mathbb{E} (S^2) \\
+				& = \frac{1}{n - 1} \left( 1 - \frac{n}{N} \right) \left( \mathbb{E} \left( X_1^2 \right) - \mathbb{E} \left( \bar{X}^2 \right) \right)
+		\end{aligned}
+	\]
+	Now, $\text{Var}(X) = \mathbb{E} \left( X^2 \right) - \mathbb{E} {\left( X \right)}^2$, therefore
+	\[
+		\begin{aligned}
+			\mathbb{E} \left( \left( 1 - \frac{n}{N} \right) \frac{S^2}{n} \right)
+				& = \frac{1}{n - 1} \left( 1 - \frac{n}{N} \right) \left( \text{Var}(X_1) + \mathbb{E} {\left( X_1 \right)}^2 - \left( \text{Var} (\bar{X}) + \mathbb{E} {\left( \bar{X} \right)}^2 \right) \right) \\
+				& = \frac{1}{n - 1} \left( 1 - \frac{n}{N} \right) \left( \sigma^2 + \mu^2 - \left( \left( \frac{N - n}{N - 1} \right) \frac{\sigma^2}{n} + \mu^2 \right) \right)
+		\end{aligned}
+	\]
+	which simplifies to
+	\[
+		\mathbb{E} \left( \left( 1 - \frac{n}{N} \right) \frac{S^2}{n} \right) = \left( \frac{N - n}{N - 1} \right) \frac{\sigma^2}{n} = \text{Var}(\bar{X})
+	\]
+	So it is an unbiased estimator.
+\end{proof}
+
+\begin{remark}
+	In the finite population case, the estimated bootstrap standard error of the mean tends to
+	\[
+		\widehat{\text{Var}}(S(\underline{x})) \rightarrow \frac{n - 1}{n} \frac{s^2}{n}
+	\]
+	and the true standard error of the mean is estimated by
+	\[
+		\left( 1 - \frac{n}{N} \right) \frac{s^2}{n}
+	\]
+	So the bootstrap estimate is incorrect (too big), unless $f = \frac{n}{N}$ satisfies $1 - f = \frac{n - 1}{n} \Longleftrightarrow f = \frac{1}{n} \Longleftrightarrow N = n^2$.
+\end{remark}
+
+\begin{remark}
+	A solution to the problem described above is to increase the bootstrap resample size such that the standard error decreases until it equals the estimator of the true standard error.
+
+	By Corollary \ref{cor:ecdfExpectationAndVariance}, if $n'$ is the new sample size, then
+	\[
+		\widehat{\text{Var}}(S(\underline{x})) \rightarrow \frac{n - 1}{n} \frac{s^2}{n'}
+	\]
+	Now setting $n' = \frac{n - 1}{1 - f}$,
+	\[
+		\widehat{\text{Var}}(S(\underline{x})) \rightarrow \frac{n - 1}{n} \frac{s^2}{n'} = (1 - f) \frac{s^2}{n} = \left( 1 - \frac{n}{N} \right) \frac{s^2}{n}
+	\]
+\end{remark}
+
+\begin{remark}
+	The solution described above only works when we choose the test statistic to be the \textbf{mean}. For other choices of test statistic, we can use the method below:
+\end{remark}
+
+\begin{definition}
+	Let $\underline{x} = (x_1, \dots, x_n)$ be a data set containing independent samples taken from a finite population of size $N$. Let $S(\cdot)$ be the test statistic that we want to estimate and let $B$ be a large constant. Assume that $k := \frac{N}{n}$ is an integer.
+
+	To perform the \textbf{population bootstrap}, first build a pseudo data set $\tilde{\underline{x}}$ by repeating $\underline{x}$ $k$ times after itself, so $\tilde{x}$ has size $N$:
+	\[
+		\tilde{\underline{x}} = (x_1, \dots, x_n, x_1, x_n, \dots, x_1, x_n)
+	\]
+	Now perform the standard non-parametric bootstrap by taking $B$ new samples of size $n$ \textbf{without replacement} from $\tilde{\underline{x}}$ to give $\underline{x}^{\star 1}, \dots, \underline{x}^{\star B}$. This is analogous to finite population sampling. Then as for the standard bootstrap,
+	\[
+		\widehat{\text{Var}}(S(\underline{x})) = \frac{1}{B - 1} \sum_{i = 1}^B {\left( S \left( \underline{x}^{\star i} \right) - \bar{S}^{\star} \right)}^2
+	\]
+	where
+	\[
+		\bar{S}^{\star} = \frac{1}{B} \sum_{i = 1}^B S \left( \underline{x}^{\star i} \right)
+	\]
+	More concisely,
+	\[
+		\widehat{\text{Var}}(S(\underline{x})) = \text{Var} \left( \underline{x}^{\star 1}, \dots, \underline{x}^{\star B} \right)
+	\]
+	If $n \nmid N \Longleftrightarrow N = kn + m$ for some $0 < m < n$, then before \textbf{each} bootstrap sample, build $\tilde{\underline{x}}$ by repeating $\underline{x}$ $k$ times and append to $\tilde{\underline{x}}$ a sample of size $m$ without replacement from $\underline{x}$.
+\end{definition}
+
+\subsection{The parametric bootstrap}
+
+If we have a strong belief that data follow a certain probability distribution, we can more accurately estimate the standard error using the \textbf{parametric bootstrap}, which involves estimating the distribution parameters and simulating data sets from it, instead of resampling the observed data.
+
+\begin{definition}
+	Let $\underline{x} = (x_1, \dots, x_n)$ be a data set containing independent samples that follow some distribution with parameter $\theta$, $F(\cdot \mid \theta)$. Let $S(\cdot)$ be the test statistic and let $B$ be a large constant. To construct a \textbf{parametric bootstrap estimate} of $S$ and an estimate of the \textbf{standard error}:
+
+	\begin{enumerate}
+		\item Obtain the maximum likelihood estimator $\hat{\theta}$.
+		\item Take $B$ samples of size $n$ from $\hat{F}(\cdot) = F(\cdot \mid \hat{\theta})$ to give $\underline{x}^{\star 1}, \dots, \underline{x}^{\star B}$. Then
+		\[
+			\widehat{\text{Var}}(S(\underline{x})) = \frac{1}{B - 1} \sum_{i = 1}^{B} {\left( S \left( \underline{x}^{\star i} \right) - \bar{X}^{\star} \right)}^2
+		\]
+		where
+		\[
+			\bar{S}^{\star} = \frac{1}{B} \sum_{i = 1}^{B} S \left( \underline{x}^{\star i} \right)
+		\]
+		This method is the same as the standard non-parametric bootstrap, apart from how samples are taken.
+	\end{enumerate}
+\end{definition}
+
+\subsection{Bias estimation}
+
+\begin{definition}
+	When estimating a parameter $\theta$ of a distribution $F$ using a statistic $S(\cdot)$ and observed data $\underline{x}$, for the estimate $\hat{\theta} = S(\underline{x})$, the \textbf{bias} is defined as
+	\[
+		\text{bias}(\theta, \hat{\theta}) = \mathbb{E}(\hat{\theta}) - \theta = \mathbb{E}(S(\underline{x})) - \theta
+	\]
+\end{definition}
+
+\begin{remark}
+	Sometimes a biased estimator can be preferable to an unbiased estimator if the biased estimator has lower variance and has a small bias.
+\end{remark}
+
+\begin{definition}
+	Let $\underline{x}$ be a data set, $S(\cdot)$ be a test statistic, $B$ be a large constant, $\theta$ be a distribution parameter and $\theta = S(\underline{x})$ be an estimator of $\theta$. To calculate the \textbf{basic bootstrap bias estimate}, bootstrap resample from $\underline{x}$ to give $\underline{x}^{\star 1}, \dots, \underline{x}^{\star B}$ and use
+	\[
+		\widehat{\text{bias}}(\theta, \hat{\theta}) = \bar{S}^{\star} - \hat{\theta} = \left( \frac{1}{B} \sum_{i = 1}^{B} S \left( \underline{x}^{\star i} \right) \right) - S(\underline{x})
+	\]
+\end{definition}
+
+\begin{remark}
+	Notice the similarities with this formula and the definition of bias. Here, $\hat{\theta}$ is treated as the true value $\theta$, and bootstrap resampling approximates $\mathbb{E}(\hat{\theta})$ with $\bar{S}^{\star}$.
+\end{remark}
+
+\begin{remark}
+	\textbf{Important}: to apply a bias corrrection, subtract the bias from the estimate:
+	\[
+		\hat{\theta} - \widehat{\text{bias}}(\theta, \hat{\theta}) = \hat{\theta} - (\bar{S}^{\star} - \hat{\theta}) = 2 \hat{\theta} - \bar{S}^{\star}
+	\]
+	So the bias correct value is $2 \hat{\theta} - \bar{S}^{\star}$, \textbf{not} $\bar{S}^{\star}$ itself.
+\end{remark}
+
+\begin{remark}
+	\textbf{Important}: As explained in the previous remark, our estimate should be either $S(\underline{x})$ or $2 \hat{\theta} - \bar{S}^{\star}$. But often $2 \hat{\theta} - \bar{S}^{\star}$ has higher variance, so is not always preferable to $S(\underline{x})$. But calculating the level of bias is still useful, even if it is not used to adjust the estimate.
+\end{remark}
+
+\subsection{Confidence intervals}
+
+\begin{definition}
+	Statistics that we compute converge to a Normal distribution as the size of the sampled data increases, regardless of the distribution of the data.
+
+	In this case, the $100(1 - \alpha)\%$ \textbf{normal confidence interval} is
+	\[
+		\hat{\theta} \pm z_{\alpha / 2} \sqrt{\widehat{\text{Var}}(S(\underline{x}))}
+	\]
+	where $z_{\alpha / 2}$ is the $100(\alpha / 2)\%$ percentile of the standard Normal distribution.
+\end{definition}
+
+\begin{remark}
+	We should check that the statistic roughly follows a Normal distribution before using this, especially if the sample size is small.
+\end{remark}
+
+\begin{remark}
+	\textbf{Important:} here, we want to check Normality of the \textbf{bootstrap samples}, not the data itself, because the bootstrap samples indicate the sampling distribution of the statistic, and we want normality of the \textbf{statistic}, not the data.
+\end{remark}
+
+\begin{remark}
+	\textbf{Important:} the confidence interval is centred on $\hat{\theta} = S(\underline{x})$, not $\bar{S}^{\star}$.
+\end{remark}
+
 
 
 \section{Monte Carlo Integration}
 
-Assume the integral we want to evaluate can be written as an expectation, with respect to some random variable $Y$, taking values in $\Omega$, with pdf $f_Y(.)$.
+Assume the integral we want to evaluate can be written as an expectation, with respect to some random variable $Y$, taking values in $\Omega$, with pdf $f_Y(\cdot)$.
 
 Then $\mu := \mathbb{E}[Y] = \int_{\Omega} y f_Y(y)dy$
 
@@ -477,6 +938,29 @@ The optimal proposal to minimise $\sigma_{\tilde{f}}^2$ is
 
 \begin{remark}
 	A low $n_e$ is desirable, a high $n_e$ is not desirable.
+\end{remark}
+
+\begin{definition}
+	If we have bootstrap samples $S(\underline{x}^{\star b})$, $b \in \{ 1, \dots, B \}$, then we can \textbf{order statistic notation} to show the $i$th largest value as $S_{(i)}^{\star}$. Then
+	\[
+		S_{(1)}^{\star} \le S_{(2)}^{\star} \le \cdots \le S_{(B)}^{\star}
+	\]
+\end{definition}
+
+\begin{definition}
+	If $\hat{F}(\cdot) = F(\cdot \mid \hat{\theta})$ is close to the true distribution, then the bootstrap samples $S(\underline{x}^{\star b})$, $b \in \{ 1, \dots, B \}$ will hopefully follow the sampling distributino of the statistic (but centred on $\hat{\theta})$ instead). Then $100(1 - \alpha)\%$ confidence interval using the \textbf{percentile CI method} is
+	\[
+		\left[ S_{((\alpha / 2) B)}^{\star}, S_{((1 - \alpha / 2) B)}^{\star} \right]
+	\]
+	$B$ must be chosen so that $(\alpha / 2) B$ and $(1 - \alpha / 2) B$ are integers.
+\end{definition}
+
+\begin{remark}
+	It is important here that $B$ is large. Often $B > 2000$ is required for a reasonable estimate using the percentile CI method.
+\end{remark}
+
+\begin{remark}
+	This method doesn't require us to assume that the statistic is normally distributed, but is inaccurate if there is any bias or non-constant standard error. In the case where there is bias or a non-constant standard error, two advanced methods, BC (bias corrected) and BCa (bias corrected and accelerated) CIs, can be used.
 \end{remark}
 
 \end{document}
