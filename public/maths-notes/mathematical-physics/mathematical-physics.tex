@@ -633,6 +633,172 @@ TODO: properties on poisson bracket
 	This led to the discovery that light consists of packets (photons).
 \end{definition}
 
+\section{The wave function and probabilities}
 
+\begin{definition}
+	The \textbf{wave function} is a complex function of position $x$ and time $t$:
+	\[
+		\psi: \mathbb{R}^2 \rightarrow \mathbb{C}
+	\]
+\end{definition}
+
+\begin{remark}
+	We require that $\psi$ is continuous, and that $\diff{\psi(x)}{x}$ is continuous ($\psi$ must be differentiable), except when the potential energy $V(x)$ is not finite. 
+\end{remark}
+
+\begin{definition}
+	The \textbf{probability density} of finding a particle at position $x$ and time $t$ is defined as
+	\[
+		P(x, t) := |\psi(x, t)|^2
+	\]
+
+	The probability of finding the particle at $x \in [a, b]$ is
+	\[
+		\int_a^b |\psi(x, t)|^2 dx
+	\]
+	The probability of finding the particle anywhere is must be equal to $1$, which means that
+	\[
+		\int_{-\infty}^{\infty} P(x, t) dx = 1 \quad \forall t \in \mathbb{R}
+	\]
+	This puts a constraint on $\psi$.
+\end{definition}
+
+\begin{definition}
+	For a given time $t$, the \textbf{expectation} value of a polynomial function $f(x)$ of position $x$, is defined as
+	\[
+		\langle f(x) \rangle := \int_{-\infty}^{-\infty} P(x, t) f(x) dx
+	\]
+\end{definition}
+
+\begin{definition}
+	The \textbf{uncertainty} of $x$ is defined as
+	\[
+		\Delta x = \sqrt{\langle x^2 \rangle - \langle x \rangle ^2}
+	\]
+\end{definition}
+
+\subsection{Examples of wave functions}
+
+First, we will look at wave functions at a fixed time, $\psi(x)$.
+
+\begin{definition}
+	The \textbf{Gaussian wave function} is defined as
+	\[
+		\psi(x) = C e^{-x^2 / 4 \Delta^2}
+	\]
+	where $\Delta > 0$ and $C$ is a normalisation constant. Since $\int_{-\infty}^{\infty} |\psi(x)|^2 = 1$, $C = e^{i \phi} {(2 \pi \Delta^2)}^{-1/4}$, with $\phi \in \mathbb{R}$.
+\end{definition}
+
+\subsection{Collapse of the wave function}
+
+\begin{definition}
+	If a particle has a wave function $\psi(x, t)$ for $t < t_0$, then at $t = t_0$, the position $x$ is measured to be $x = x_0$. Then another measurement immediately after the first will be $x = x_0$ with probability $1$. This phenomenon is called the \textbf{wave function collapse}.
+\end{definition}
+
+\section{Momentum and Planck's constant}
+
+\begin{definition}
+	The \textbf{momentum operator} $\hat{p}$ is defined as
+	\[
+		\hat{p} (\psi(x)) := -i \hbar \diffp{}{x} (\psi(x))
+	\]
+	so that
+	\[
+		\begin{aligned}
+			\delta_{\epsilon} \psi(x)
+				& = \psi(x - \epsilon) - \psi(x) \\
+				& = -\epsilon \diffp{}{x} \psi(x) + O(\epsilon^2) \\
+				& = -\epsilon \frac{i}{\hbar} \hat{p} (\psi(x))
+		\end{aligned}
+	\]
+	where $\hbar$ is a constant of proportionality.
+\end{definition}
+
+\begin{definition}
+	In the above definition, $\hbar$ is called the \textbf{reduced Planck constant}. \textbf{Planck's constant} is defined as
+	\[
+		h = 2 \pi \hbar
+	\]
+\end{definition}
+
+\begin{definition}
+	We define a \textbf{position operator} $\hat{x}$ which multiplies a wave function by $x$:
+	\[
+		\hat{x} (\psi(x)) = x \psi(x)
+	\]
+\end{definition}
+
+\begin{definition}
+	The \textbf{commutator} of the position and momentum operators $\hat{x}$ and $\hat{p}$ is defined as
+	\[
+		\begin{aligned}
+			\relax [\hat{x}, \hat{p}] (\psi(x))
+				& = \hat{x} (\hat{p} (\psi(x))) - \hat{p} (\hat{x} (\psi(x))) \\
+				& = \hat{x} \left( -i \hbar \diffp{}{x} \psi(x) \right)	+ i \hbar \diffp{}{x} (x \psi(x)) \\
+				& = i \hbar \psi(x)
+		\end{aligned}
+	\]
+	The relation $[\hat{x}, \hat{p}] (\psi(x)) = i \hbar \psi(x)$ is called the \textbf{canonical commutation relation}.
+\end{definition}
+
+\begin{definition}
+	The \textbf{expectation value of momentum}, $\langle p \rangle$ is defined as
+	\[
+		\begin{aligned}
+			\langle p \rangle
+				& = \int_{-\infty}^{\infty} \overline{\psi(x, t)} \hat{p} (\psi(x, t)) dx \\
+				& = -i \hbar \int_{-\infty}^{\infty} \overline{\psi(x, t)} \diffp{}{x} \psi(x, t) dx
+		\end{aligned}
+	\]
+\end{definition}
+
+\begin{remark}
+	Notice the similarity between this definition and the one for the expectation value of position:
+	\[
+		\begin{aligned}
+			\langle x \rangle
+				& = \int_{-\infty}^{\infty} x |\psi(x, t)|^2 dx \\
+				& = \int_{-\infty}^{\infty} \overline{\psi(x, t)} \hat{x} (\psi(x, t)) dx
+		\end{aligned}
+	\]
+	As with $\langle x \rangle$, $\langle p \rangle$ is interpreted as the average of measurements of the momenta of many particles with the same wave function $\psi$.
+\end{remark}
+
+\begin{proposition}
+	$\hbar$ must be a real number (it is not complex).
+\end{proposition}
+
+\begin{proof}
+	The measurement of momentum must be a real number, so $\langle p \rangle \in \mathbb{R}$. Using integration by parts and the fact that $|\psi(x, t)|^2$ vanishes as $x \rightarrow \pm \infty$ if $\psi$ is square normalisalbe, the complex conjuate of $\langle p \rangle$ is
+	\[
+		\begin{aligned}
+			\overline{\langle p \rangle}
+				& = i \bar{\hbar} \int_{-\infty}^{\infty} \psi(x, t) \diffp{}{x} \overline{\psi(x, t)} dx \\
+				& = -i \bar{\hbar} \int_{-\infty}^{\infty} \overline{\psi(x, t)} \diffp{}{x} \psi(x, t) dx + i \hbar {[|\psi(x, t)|^2]}_{-\infty}^{\infty} \\
+				& = -i \bar{\hbar} \int_{-\infty}^{\infty} \overline{\psi(x, t)} \diffp{}{x} \psi(x, t) dx \\
+				& = \frac{\bar{\hbar}}{\hbar} \langle p \rangle
+		\end{aligned}
+	\]
+	Therefore $\langle p \rangle \in \mathbb{R} \Longleftrightarrow \hbar \in \mathbb{R}$, so $\hbar$ must be real.
+\end{proof}
+
+\begin{definition}
+	The \textbf{expectation value} of any polynomial $f$ of $p$ can be calculated as
+	\[
+		\begin{aligned}
+			\langle f(p) \rangle
+				& = \int_{-\infty}^{\infty} \overline{\psi(x, t)} f(\hat{p}) \psi(x, t) dx \\
+				& = \int_{-\infty}^{\infty} \overline{\psi(x, t)} f \left( -i \hbar \diffp{}{x} \right ) \psi(x, t) dx
+		\end{aligned}
+	\]
+\end{definition}
+
+\begin{definition}
+	The \textbf{momentum uncertainty}, $\Delta p$ is defined as
+	\[
+		\Delta p = \sqrt{\langle p^2 \rangle - {\langle p \rangle}^2}
+	\]
+	This quantity describes the spread around $\langle p \rangle$ of measurements of the momenta of many particles with the same wave function $\psi$.
+\end{definition}
 
 \end{document}

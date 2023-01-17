@@ -951,4 +951,80 @@ To find a biholomorphism $f$ between domains, we build $f$ in various stages usi
 	By the converse FTC, $f$ has a holomorphic antiderivative $F: D \rightarrow \mathbb{C}$ such that $F'(z) = f(z) \quad \forall z \in D$. By corollary 7.6 (lecture notes), if $F$ is holomorphic, its derivative $f$ must be.
 \end{proof}
 
+\begin{example}
+	Consider
+	\[
+		\int_{|z| = 3} \frac{e^z}{z^2 (z - 1)} dz
+	\]
+	We use partial fractions:
+	\[
+		\frac{1}{z^2 (z - 1)} = \frac{a}{z} + \frac{b}{z^2} + \frac{c}{z - 1}
+	\]
+	So $1 = (c + a) z^2 + (b - a) z - b$, so $b = -1, a - -1, c = 1$. Using the CIF and CIF for derivatives,
+	\[
+		\begin{aligned}
+			\int_{|z| = 3} \frac{e^z}{z^2 (z - 1)} dz
+				& = -\int_{|z| = 3} \frac{e^z}{z} dz - \int_{|z| = 3} \frac{e^z}{z^2} dz + \int_{|z| = 3} \frac{e^z}{z - 1} dz \\
+				& = -2 \pi i e^0 - 2 \pi i e^0 + 2 \pi i e^1 \\
+				& = 2 \pi i (e - 2)
+		\end{aligned}
+	\]
+\end{example}
+
+\subsection{Liouville's theorem}
+
+\begin{definition}
+	A function $f: \mathbb{C} \rightarrow \mathbb{C}$ is \textbf{entire} if $f$ is holomorphic on $\mathbb{C}$.
+\end{definition}
+
+\begin{definition}
+	A function $f: \mathbb{C} \rightarrow \mathbb{C}$ is \textbf{bounded} if for some $M > 0$, $|f(z)| \le M \ \forall z \in \mathbb{C}$.
+\end{definition}
+
+\begin{theorem}
+	(\textbf{Liouville's theorem}) Every bounded entire function is constant.
+\end{theorem}
+
+\begin{proof}
+	Let $f$ be entire and bounded. We will show that $\forall w \in \mathbb{C}, \ f(w) = f(0)$. By the CIF, for every $\rho > |w|$,
+	\[
+		\begin{aligned}
+			|f(w) - f(0)|
+				& = \left| \frac{1}{2 \pi i} \int_{|z| = \rho} \frac{f(z)}{z - w} dz - \frac{1}{2 \pi i} \int_{|z| = \rho} \frac{f(z)}{z} dz \right| \\
+				& = \frac{|w|}{2 \pi} \left| \int_{|z| = \rho} f(z) \frac{1}{z(z - w)} dz \right| \\
+				& = 
+		\end{aligned}
+	\]
+	Using the Estimation lemma, boundedness of $f$ and the reverse triangle inequality,
+	\[
+		\begin{aligned}
+			|f(w) - f(0)|
+				& \le \frac{|w|}{2 \pi} 2 \pi \rho \cdot \sup_{|z| = \rho} \frac{|f(z)|}{|z| |z - w|} \\
+				& \le |w| \rho \frac{M}{\rho} \sup_{|z| = \rho} \frac{1}{|z - w|} \\
+				& \le |w| M \sup_{|z| = \rho} \frac{1}{| |z| - |w| |} \\
+				& = \frac{|w| M}{\rho - |w|} \\
+				& \rightarrow 0 \quad \text{as } \rho \rightarrow \infty
+		\end{aligned}
+	\]
+	and $\rho$ can be arbitrarily large.
+\end{proof}
+
+\begin{remark}
+	The holomorphicity condition is essential (we can't just say that $f$ is continuous). For example,
+	\[
+		f(z) = f(x + iy) = \sin(x) + i \sin(y)
+	\]
+	is continuous and bounded on $\mathbb{C}$ but is not entire.
+\end{remark}
+
+\begin{theorem}
+	(\textbf{Fundamental theorem of Algebra}) Every non-constant polynomial with complex coefficients $p(z) = a_d z^d + \cdots + a_1 z + a_0$, $a_d \ne 0$ has a complex root: for some $z_0 \in \mathbb{C}, P(z_0) = 0$.
+\end{theorem}
+
+\begin{proof}
+	By assumption, $d \ge 1$, so $|p(z)| \rightarrow \infty$ as $|z| \rightarrow \infty$. In particular, $\exists R > 0, |p(z)| > 1$ if $|z| = R$. Assume the converse, that $p$ has no roots.
+
+	Then $f(z) := \frac{1}{p(z)}$ is holomorphic on $\mathbb{C}$. On the set $|z| > R$, $f$ is bounded, since $|f(z)| = \frac{1}{|p(z)|} < 1$. But $\overline{B_R}(0) = \{ z \in \mathbb{C}: |z| \le R \}$ is compact, so by theorem 2.30 (lecture notes), $|f(z)|$ attains a maximum on $\overline{B_R}(0)$. In particular, $f$ is bounded on $\overline{B_R}(0)$. Thus $f$ is bounded and entire, so by Liouville's theorem, $f$ is constant, which is a contradiction.
+\end{proof}
+
 \end{document}

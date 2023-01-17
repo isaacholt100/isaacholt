@@ -47,6 +47,35 @@
 	A ring $R$ is \textbf{commutative} if $\forall x, y \in R^2, \ x \cdot y = y \cdot x$ and is \textbf{non-commutative} otherwise.
 \end{definition}
 
+\begin{example}
+	Let $V$ be a finite dimensional vector space over $\mathbb{C}$. The set of \textbf{linear endomorphisms} is defined as
+	\[
+		\text{End}(V) = \{ f: V \rightarrow V : f \text{ is a linear map} \}
+	\]
+	For $f \in \text{End}(V)$ and $g \in \text{End}(V)$, addition is defined as
+	\[
+		(f + g)(v) := f(v) + g(v)
+	\]
+	Multiplication is defined as function composition:
+	\[
+		f \cdot g := f \circ g
+	\]
+	where $(f \circ g)(v) := f(g(v))$. $\text{End}(v)$ is an abelian group under addition, and it forms a ring with the addition and multiplication operations defined as above:
+	\begin{enumerate}
+		\item The identity element is defined as the identity map $\text{id}: V \rightarrow V$, $\text{id}(v) := v$.
+		\item Associativity: $f \circ (g \circ h) (v) = f((g \circ h)(v)) = f(g(h(v)))$ and $((f \circ g) \circ h) (v) = (f \circ g) (h(v)) = f(g(h(v))) = f \circ (g \circ h) (v)$.
+		\item Distributivity is similarly easy to check.
+	\end{enumerate}
+\end{example}
+
+\begin{definition}
+	For $n \in \mathbb{N}$, the set of remainders modulo $n$ is
+	\[
+		\mathbb{Z} / n := \{ \bar{0}, \bar{1}, \dots, \overline{n - 1} \}
+	\]
+	The elements of $\mathbb{Z} / n$ are called \textbf{residue classes}.
+\end{definition}
+
 \section{Homomorphisms between Rings}
 
 Let $R$ and $S$ be two rings. A map $f: R \rightarrow S$ is called a (ring)-homomorphism if:
@@ -624,8 +653,57 @@ Hence, given a ring $R$ and an ideal $I \subseteq R$, there exists a ring homomo
 	\end{enumerate}
 \end{proposition}
 
+\begin{proof}
+	\hfill
+	\begin{enumerate}
+		\item Let $g \in G$. Define $\phi_g: H \rightarrow g \circ H$ as
+		\[
+			\phi_g(h) := g \circ h
+		\]
+		$\forall x \in g \circ H, \exists h_x \in H, x = g \circ h_x = \phi_g(h_x)$ so $\phi_g$ is surjective. Let $h_1, h_2 \in H$ such that $\phi_g(h_1) = \phi_g(h_2) \Leftrightarrow g \circ h_1 = g \circ h_2 \Rightarrow h_1 = e \circ h_1 = (g^{-1} \circ g) \circ h_1 = g^{-1} \circ (g \circ h_1)$. Similarly, $h_2 = e \circ h_2 = (g^{-1} \circ g) \circ h_2 = g^{-1} \circ (g \circ h_2)$. Hence $h_1 = h_2$, so $\phi_g$ is injective, and so also bijective.
+		\item ($\Rightarrow$) Let $g \in H$. If $h \in H$, then $g \circ h \in H \Longrightarrow g \circ H \subseteq H$. To show that $H \subseteq g \circ H$, we will show that if $h \in H$, then $\exists h' \in H, h = g \circ h' \in g \circ H \Longleftrightarrow h' = g^{-1} \circ h \in H \Longleftrightarrow h = g \circ (g^{-1} \circ h) \in g \circ H \Longleftrightarrow H \subseteq g \in H$.
+		($\Leftarrow$) If $g \circ H = H$, $g = g \circ e \in g \circ H$ since $e \in H$, hence $g \in H$.
+		\item Let $(g_1, g_2) \in G^2$ and assume that $g_1 \circ H \ne g_2 \circ H$, and that $(g_1 \circ H) \cap (g_2 \circ H) \ne \emptyset$. Let $x \in (g_1 \circ H) \cap (g_2 \circ H)$, then $\exists (h_1, h_2) \in H^2$, $x = g_1 \circ h_1 = g_2 \circ h_2 \Longleftrightarrow g_2^{-1} \circ g_1 = h_2 \circ h_1^{-1} \in H$. By part 2, $(g_2^{-1} \circ g_1) \circ H = H \Longrightarrow g_1 \circ H = g_2 \circ H$, but this is a contradiction, which completes the proof.
+	\end{enumerate}
+\end{proof}
+		
 \begin{theorem}
-	If $G$ is a \textbf{finite} group and $H \le G$, then $|H|$ divides $|G|$. So if $|H| \nmid |G|$ then $H \not\le G$.
+	(Lagrange) If $G$ is a \textbf{finite} group and $H \le G$, then $|H|$ divides $|G|$. So if $|H| \nmid |G|$ then $H \not\le G$.
 \end{theorem}
+
+\begin{proof}
+	Let $G_0 = G$ and let $G_1 = G_0 \backslash H$. If $|G_1| = 0$, we are done, otherwise for some $g_1 \in G$, $H \cap g_1 \circ H = \emptyset$. Then set $G_2 = G_1 \backslash G_1 \backslash (g_1 \circ H)$. If $|G_2| = 0$, we are done, otherwise for some $g_2 \in G$, $(H \cup (g_1 \circ H)) \cap (g_2 \circ H) = \emptyset$, and set $G_3 = G_2 \backslash (g_2 \circ H)$.
+
+	This process must terminate since $|g_i \circ H| = |H| \ge 1$ elements are removed each time. At the end of this process, for some $S \subseteq G$,
+	\[
+		G = \bigcup_{g \in S} (g \circ H)
+	\]
+	and for $g, g' \in S$, $g \circ H \cap g' \circ H = \emptyset$. So
+	\[
+		|G| = \left| \bigcup_{g \in S} (g \circ H) \right| = \sum_{g \in S} | g \circ H |
+	\]
+	Since $|g \circ H| = |H| \forall g \in S$, $|G| = |S| |H| \Longrightarrow |H| \mid |G|$.
+\end{proof}
+
+\subsection{Normal subgroups}
+
+\begin{definition}
+	A subgroup $H \le G$ is \textbf{normal} if $\forall g \in G, \ g \circ H = H \circ g$. Equivalently, $H$ is normal if either:
+	\begin{enumerate}
+		\item $\forall g \in G, \ g \circ H \circ g^{-1} \subseteq H$.
+		\item $\forall g \in G, h \in H, \ g \circ h \circ g^{-1} \in H$.
+	\end{enumerate}
+	We write $H \triangleleft G$.
+\end{definition}
+
+\begin{remark}
+	This means that $\forall h \in H, \ \exists h' \in H, g \circ h = h' \circ g$, but $h \ne h'$ in general.
+\end{remark}
+
+\begin{example}
+	If $G$ is \textbf{abelian}, then every subgroup $H \le G$ is normal, since if $g \in G, h \in H$, then $g \circ h \circ g^{-1} = g \circ (g^{-1} \circ h) = h \in H$.
+\end{example}
+
+
 
 \end{document}
