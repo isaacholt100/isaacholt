@@ -23,6 +23,189 @@
 
 \maketitle
 
+\section{The complex plane and Riemann sphere}
+
+\subsection{Complex numbers}
+
+\begin{definition}
+	A \textbf{complex number} $z$ is a number $z = x + iy$ where $x, y \in \mathbb{R}^2$ and $i$ is the \textbf{imaginary unit}. The set of all complex numbers is written as $\mathbb{C}$.
+\end{definition}
+
+\begin{definition}
+	For $z_1 = x_1 + i y_1$ and $z_2 = x_2 + i y_2$, addition, subtraction and multiplication of complex numbers is defined as
+	\[
+		\begin{aligned}
+			z_1 \pm z_2 & := (x_1 \pm x_2) + i (y_1 \pm y_2) \\
+			z_1 z_2 & := (x_1 x_2 - y_1 y_2) + i (x_1 y_2 + x_2 y_1)
+		\end{aligned}
+	\]
+\end{definition}
+
+\begin{definition}
+	For a complex number $z = x + iy$, the \textbf{real part} of $z$, $\text{Re}(z)$, is $x$ and the \textbf{imaginary part}, $\text{Im}(z)$, is $y$.
+\end{definition}
+
+\begin{definition}
+	For a complex number $z = x + iy$, the \textbf{complex conjugate} of $z$, $\overline{z}$ is defined as $\overline{z} = x - iy$.
+\end{definition}
+
+\begin{definition}
+	Division of complex numbers $z_1 = x_1 + i y_1$ and $z_2 = x_2 + i y_2 \ne 0$ is given by
+	\[
+		\frac{z_1}{z_2} = \frac{x_1 + i y_1}{x_2 + i y_2} = \frac{(x_1 + i y_1) (x_2 - i y_2)}{(x_2 + i y_2) (x_2 - i y_2)} = \frac{x_1 x_2 + y_1 y_2}{x_2^2 + y_2^2} + i \frac{x_2 y_1 - x_1 y_2}{x_2^2 + y_2^2}
+	\]
+	This gives a multiplicative inverse for every $z = x + iy \ne 0$:
+	\[
+		z^{-1} = \frac{1}{z} = \frac{x}{x^2 + y_2} - i \frac{y}{x^2 + y^2}
+	\]
+\end{definition}
+
+\begin{definition}
+	The \textbf{modulus} or \textbf{absolute value} of a complex number $z = x + iy$, $|z|$, is defined as $|z| = \sqrt{x^2 + y^2}$.
+\end{definition}
+
+\begin{lemma}
+	\hfill
+	\begin{enumerate}
+		\item $\forall z_1, z_2 \in \mathbb{C}^2, z_1 z_2 \Longleftrightarrow z_1 = 0 \text{ or } z_2 = 0$.
+		\item $\forall z \in \mathbb{C}, |z| = \sqrt{z \overline{z}}$.
+		\item $\text{Re}(z) = \frac{z + \overline{z}}{2}$ and $\text{Im}(z) = \frac{z - \overline{z}}{2i}$.
+		\item $z^{-1} = \frac{\overline{z}}{|z|^2}$.
+	\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+	Easy.
+\end{proof}
+
+\begin{definition}
+	For a complex number $z = x + iy$ plotted on an Argand diagram (where $z$ is at the point $(x, y)$), the \textbf{argument} of $z$, $\arg(z)$, is the anticlockwise angle $\theta$ from the real axis to $z$.
+\end{definition}
+
+\begin{definition}
+	For a complex number $z$ with $|z| = r$ and $\arg(z) = \theta$, $z$ can be written in polar coordinates:
+	\[
+		z = r(\cos(\theta) + i \sin(\theta)) = r e^{i \theta}
+	\]
+\end{definition}
+
+\begin{definition}
+	$\arg(z)$ is only defined up to multiples of $2 \pi$. The \textbf{principal value} of $\arg(z)$ is the value of $\arg(z)$ in the interval $\left(-\pi, \pi \right]$, written as $\text{Arg}(z)$.
+\end{definition}
+
+\begin{lemma}
+	\hfill
+	\begin{enumerate}
+		\item $\arg(z_1 z_2) = \arg(z_1) + \arg(z_2) \pmod{2 \pi}$.
+		\item $\arg(1 / z) = -\arg(z) \pmod{2 \pi}$.
+		\item $\arg(\overline{z}) = -\arg(z) \pmod{2 \pi}$.
+	\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+	Easy.
+\end{proof}
+
+\begin{lemma}
+	Multiplication in $\mathbb{C}$ can be geometrically described as a dilated rotation: if $z_1 = r_1 e^{i \theta_1}$ and $z_2 = r_2 e^{i \theta_2}$ then
+	\[
+		z_1 z_2 = r_1 r_2 e^{i (\theta_1 + \theta_2)}
+	\]
+\end{lemma}
+
+\begin{proof}
+	\[
+		\begin{aligned}
+			z_1 z_2
+				& = r_1 r_2 (\cos(\theta_1) + i \sin(\theta_1)) (\cos(\theta_2) + i \sin(\theta_2)) \\
+				& = r_1 r_2 ((\cos(\theta_1) \cos(\theta_2) - \sin(\theta_1) \sin(\theta_2)) + i (\cos(\theta_2) \sin(\theta_1) + \sin(\theta_2) \cos(\theta_1))) \\
+				& = r_1 r_2 (\cos(\theta_1 + \theta_2) + i \sin(\theta_1 + \theta_2)) \\
+				& = r_1 r_2 e^{i (\theta_1 + \theta_2)}
+		\end{aligned}
+	\]
+\end{proof}
+
+\begin{remark}
+	\hfill
+	\begin{itemize}
+		\item Multiplying $z_1$ by $z_2$ represents a rotation of $z_1$ by $\theta_2$ anticlockwise, followed by a dilation of factor $r_2$.
+		\item Addition represents to translation.
+		\item Complex represents reflection in the real axis.
+		\item Taking the real part represents projection onto the real axis.
+		\item Taking the imaginary part represents projection onto the imaginary axis.
+	\end{itemize}
+\end{remark}
+
+\begin{corollary}
+	\hfill
+	\begin{enumerate}
+		\item $\forall z_1, z_2 \in \mathbb{C}^2, |z_1 z_2| = |z_1| |z_2|$.
+		\item ${(\cos(\theta) + i \sin(\theta))}^n = \cos(n \theta) + i \sin(n \theta)$ (de Moivre's formula).
+		\item $\forall z_1, z_2, |z_1 + z_2| \le |z_1| + |z_2|$.
+		\item $\forall z \in \mathbb{C}, |z| \ge 0$ and $|z| = 0 \Longleftrightarrow z = 0$.
+		\item $\max \{ |\text{Re}(z)|, |\text{Im}(z)| \} \le |z| \le |\text{Re}(z)| + |\text{Im}(z)|$.
+	\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+	Easy.
+\end{proof}
+
+\begin{definition}
+	The \textbf{upper half} of the complex plane, $\mathbb{H}$, is defined as
+	\[
+		\mathbb{H} = \{ z \in \mathbb{C}: \text{Im}(z) > 0 \}
+	\]
+\end{definition}
+
+\subsection{Exponential and trigonometric functions}
+
+\begin{definition}
+	The \textbf{complex exponential function} $\exp: \mathbb{C} \rightarrow \mathbb{C}$, written as $e^z$, is defined as
+	\[
+		e^z = \exp(z) := e^x (\cos(y) + i \sin(y))
+	\]
+\end{definition}
+
+\begin{proposition}
+	\hfill
+	\begin{enumerate}
+		\item $\forall z \in \mathbb{C}, e^z \ne 0$.
+		\item $\forall z_1, z_2 \in \mathbb{C}^2, e^{z_1 + z_2} = e^{z_1} e^{z_2}$.
+		\item $e^z = 1 \Longleftrightarrow \exists k \in \mathbb{Z}, z = 2 \pi i k$.
+		\item $e^{-z} = 1 \ e^z$.
+		\item $|e^z| = e^{\text{Re}(z)}$.
+	\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+	Easy. For 3, $\exp(z) = 1 \Longleftrightarrow e^x \cos(y) = 1$ and $e^x \sin(y) = 0$. $e^x > 0$ so $\sin(y) = 0$ so $y = n \pi$ for some $n \in \mathbb{Z}$. So $1 = e^x \cos(n \pi) = e^x {(-1)}^n$ so $n$ is even and $x = 0$.
+\end{proof}
+
+\begin{corollary}
+	$\exp(2 \pi i) = 1$ and $\exp(\pi i) = -1$ (Euler's formula).
+\end{corollary}
+
+\begin{corollary}
+	$\forall k \in \mathbb{Z}, \forall z \in \mathbb{C}, \exp(z + 2k \pi i) = \exp(z)$.
+\end{corollary}
+
+\begin{definition}
+	The following functions from $\mathbb{C}$ to $\mathbb{C}$ are defined:
+	\[
+		\begin{aligned}
+			\sin(z) & := \frac{1}{2i} \left( e^{iz} - e^{-iz} \right) \\
+			\cos(z) & := \frac{1}{2} \left( e^{iz} + e^{-iz} \right) \\
+			\sinh(z) & := \frac{1}{2} \left( e^{z} - e^{-z} \right) = -i \sin(iz) \\
+			\cosh(z) & := \frac{1}{2} \left( e^{z} + e^{-z} \right) = \cos(iz)
+		\end{aligned}
+	\]
+\end{definition}
+
+\begin{remark}
+	The usual trigonometric function identities hold, e.g. $\cos(z)^2 + \sin(z)^2 = 1$.
+\end{remark}
+
 \section{Mobius Transformations}
 
 \begin{corollary}
@@ -354,16 +537,20 @@ To find a biholomorphism $f$ between domains, we build $f$ in various stages usi
 \subsection{Complex power series}
 
 \begin{theorem}
-	A complex power series is an expression of the form $\sum_{n = 0}^{\infty} a_n (z - c)^n$, $a_n, c \in \mathbb{C}$. There are three cases:
+	A complex power series is an expression of the form
+	\[
+		\sum_{n = 0}^{\infty} a_n {(z - c)}^n, \quad a_n, c \in \mathbb{C}^2
+	\]
+	There are three cases:
 
 	\begin{enumerate}
-		\item $\sum_{n = 0}^{\infty} a_n (z - c)^n$ converges only for $z = c$ ($R = 0$).
+		\item $\sum_{n = 0}^{\infty} a_n {(z - c)}^n$ converges only for $z = c$ ($R = 0$).
 		\item There exists $R > 0$ (radius of convergence) such that
 		\begin{itemize}
-			\item $\sum_{n = 0}^{\infty} a_n (z - c)^n$ converges absolutely for $|z - c| < R$ (We call $B_R(c)$ the disc of convergence).
-			\item $\sum_{n = 0}^{\infty} a_n (z - c)^n$ diverges for $|z - c| > R$ (anything can happen on the circle $|z - c| = R$).
+			\item $\sum_{n = 0}^{\infty} a_n {(z - c)}^n$ converges absolutely for $|z - c| < R$ (We call $B_R(c)$ the disc of convergence).
+			\item $\sum_{n = 0}^{\infty} a_n {(z - c)}^n$ diverges for $|z - c| > R$ (anything can happen on the circle $|z - c| = R$).
 		\end{itemize}
-		\item $\sum_{n = 0}^{\infty} a_n (z - c)^n$ converges absolutely for every $z \in \mathbb{C}$ ($R = \infty$).
+		\item $\sum_{n = 0}^{\infty} a_n {(z - c)}^n$ converges absolutely for every $z \in \mathbb{C}$ ($R = \infty$).
 	\end{enumerate}
 \end{theorem}
 
@@ -372,7 +559,7 @@ To find a biholomorphism $f$ between domains, we build $f$ in various stages usi
 \end{remark}
 
 \begin{theorem}
-	A power series $\sum_{n = 0}^{\infty} a_n (z - c)^n$ with radius of convergence $0 < R < \infty$ converges uniformly on every ball $B_r(c)$ with $0 < r < R$. This implies that the power series is locally uniformly convergent on its disc of convergence.
+	A power series $\sum_{n = 0}^{\infty} a_n {(z - c)}^n$ with radius of convergence $0 < R < \infty$ converges uniformly on every ball $B_r(c)$ with $0 < r < R$. This implies that the power series is locally uniformly convergent on its disc of convergence.
 \end{theorem}
 
 \begin{proof}
@@ -384,19 +571,19 @@ To find a biholomorphism $f$ between domains, we build $f$ in various stages usi
 \end{remark}
 
 \begin{proposition}
-	Let $\sum_{n = 0}^{\infty} a_n (z - c)^n$ be a power series with radius of convergence $0 < R < \infty$. Then the formal derivatives and antiderivatives
+	Let $\sum_{n = 0}^{\infty} a_n {(z - c)}^n$ be a power series with radius of convergence $0 < R < \infty$. Then the formal derivatives and antiderivatives
 
-	\[\sum_{n = 0}^{\infty} n a_n (z - c)^{n - 1}\] and
+	\[\sum_{n = 0}^{\infty} n a_n {(z - c)}^{n - 1}\] and
 
-	\[\sum_{n = 0}^{\infty} \frac{a_n}{n + 1} (z - c)^{n + 1}\]
+	\[\sum_{n = 0}^{\infty} \frac{a_n}{n + 1} {(z - c)}^{n + 1}\]
 
 	have the same radius of convergence $R$.
 \end{proposition}
 
 \begin{theorem}
-	Let $\sum_{n = 0}^{\infty} a_n (z - c)^n$ be a power series with radius of convergence $0 < R < \infty$ and let $f: B_R(c) \rightarrow \mathbb{C}$ be the resulting limit function. Then $f$ is holomorphic on $B_R(c)$ with
+	Let $\sum_{n = 0}^{\infty} a_n {(z - c)}^n$ be a power series with radius of convergence $0 < R < \infty$ and let $f: B_R(c) \rightarrow \mathbb{C}$ be the resulting limit function. Then $f$ is holomorphic on $B_R(c)$ with
 
-	\[f'(z) = \sum_{n = 0}^{\infty} n a_n (z - c)^{n - 1}\] for $z \in B_R(c)$.
+	\[f'(z) = \sum_{n = 0}^{\infty} n a_n {(z - c)}^{n - 1}\] for $z \in B_R(c)$.
 \end{theorem}
 
 \begin{proof}
@@ -550,12 +737,12 @@ To find a biholomorphism $f$ between domains, we build $f$ in various stages usi
 
 	\[ \int_{\gamma} f(z) dz = \int_{\gamma} F'(z) dz = \int_a^b F'(\gamma(t)) \gamma'(t) dt = \int_a^b (F(\gamma(t)))' dt\]
 
-	\[ = \int_a^b (u(\gamma(t)))' dt + i \int_a^b (v(\gamma(t)))' dt = [u(\gamma(t))]_a^b + i [v(\gamma(t))]_a^b \]
+	\[ = \int_a^b (u(\gamma(t)))' dt + i \int_a^b (v(\gamma(t)))' dt = {[u(\gamma(t))]}_a^b + i {[v(\gamma(t))]}_a^b \]
 
 	\[ = u(\gamma(b)) - u(\gamma(b)) + i(v(\gamma(b)) - v(\gamma(b))) = F(\gamma(b)) - F(\gamma(a)) \]
 	Now extend this proof to any contour.
 
-	Let $\gamma: [a, b] \rightarrow \mathbb{C}$ be a contour, then for some $a = a_0 < a_1 < \cdots < a_n = b$, the curves $\gamma_i: [a_{i - 1}, a_i] \rightarrow \mathbb{C}$, $i = 1, \cdots, n$, defined by $\gamma_i(t) = \gamma(t)$ for $t \in [a_{i - 1}, a_i]$ are $C^1$ curves. Then
+	Let $\gamma: [a, b] \rightarrow \mathbb{C}$ be a contour, then for some $a = a_0 < a_1 < \cdots < a_n = b$, the curves $\gamma_i: [a_{i - 1}, a_i] \rightarrow \mathbb{C}$, $i = 1, \ldots, n$, defined by $\gamma_i(t) = \gamma(t)$ for $t \in [a_{i - 1}, a_i]$ are $C^1$ curves. Then
 
 	\[ \int_{\gamma} f(z) dz = \int_{\gamma} F'(z) dz = \sum_{i = 1}^n \int_{\gamma_i} F'(z) dz \]
 
@@ -662,7 +849,7 @@ To find a biholomorphism $f$ between domains, we build $f$ in various stages usi
 \begin{example}
 	\hfill
 	\begin{enumerate}
-		\item $\mathbb{C}^{\star}$ is not starlike, because a straight line between two points could through $0$, and $0 \notin \mathbb{C}^{\star}$.
+		\item $\mathbb{C}^{\star}$ is not starlike, because a straight line between two points could pass through $0$, and $0 \notin \mathbb{C}^{\star}$.
 		\item Similarly, $B_r^{\star}(a) = B_r(a) - \{ a \}$ is not starlike.
 	\end{enumerate}
 \end{example}
@@ -765,11 +952,11 @@ To find a biholomorphism $f$ between domains, we build $f$ in various stages usi
 \end{theorem}
 
 \begin{proof}
-	By Lemma \ref{lem:ctLem1},
+	By Lemma~\text{Re}f{lem:ctLem1},
 	\[
 		\int_{\partial \Delta} f(z) dz = 0 \quad \forall \Delta \in D
 	\]
-	By Lemma \ref{lem:ctLem2}, $f$ has a holomorphic antiderivative $F$. Then, by FTC,
+	By Lemma~\text{Re}f{lem:ctLem2}, $f$ has a holomorphic antiderivative $F$. Then, by FTC,
 	\[
 		\int_{\gamma} f(z) dz = 0 \quad \forall \text{ closed } \gamma \in D
 	\]
@@ -1025,6 +1212,122 @@ To find a biholomorphism $f$ between domains, we build $f$ in various stages usi
 	By assumption, $d \ge 1$, so $|p(z)| \rightarrow \infty$ as $|z| \rightarrow \infty$. In particular, $\exists R > 0, |p(z)| > 1$ if $|z| = R$. Assume the converse, that $p$ has no roots.
 
 	Then $f(z) := \frac{1}{p(z)}$ is holomorphic on $\mathbb{C}$. On the set $|z| > R$, $f$ is bounded, since $|f(z)| = \frac{1}{|p(z)|} < 1$. But $\overline{B_R}(0) = \{ z \in \mathbb{C}: |z| \le R \}$ is compact, so by theorem 2.30 (lecture notes), $|f(z)|$ attains a maximum on $\overline{B_R}(0)$. In particular, $f$ is bounded on $\overline{B_R}(0)$. Thus $f$ is bounded and entire, so by Liouville's theorem, $f$ is constant, which is a contradiction.
+\end{proof}
+
+\begin{theorem}
+	(\textbf{Local maximum modulus principle}) Let $f: B_r(a) \rightarrow \mathbb{C}$ be holomorphic. If for every $z \in B_r(a)$, $|f(z)| \le |f(a)|$ then $f$ is constant on $B_r(a)$.
+\end{theorem}
+
+\begin{proof}
+	First, we show $|f|$ is constant. Pick any $w \in B_r(a)$. We will show $|f(w)| = |f(a)|$. Let $\rho = |w - a| < r$ so that the contour $\gamma(t) = a + \rho e^{2 \pi i t}, t \in [0, 1]$ passes through $w$. By the CIF,
+	\[
+		\begin{aligned}
+			|f(a)|
+				& = \left| \frac{1}{2 \pi i} \int_{|z - a| = \rho} \frac{f(z)}{z - a} dz \right| \\
+				& = \frac{1}{2 \pi} \left| \int_{\gamma} \frac{f(z)}{z - a} dz \right| \\
+				& = \frac{1}{2 \pi} \left| \int_{0}^{1} \frac{f(\gamma(t))}{\gamma(t) - a} \gamma'(t) dt \right| \\
+				& = \frac{1}{2 \pi} \left| \int_{0}^{1} \frac{f(\gamma(t))}{\rho e^{2 \pi i t}} \rho \cdot 2 \pi i e^{2 \pi i t} dt \right| \\
+				& = \left| \int_{0}^{1} f(\gamma(t)) dt \right| \\
+				& \le \int_{0}^{1} |f(\gamma(t))| dt \\
+				& \le \int_{0}^{1} |f(a)| dt \\
+				& \le |f(a)| \int_{0}^{1} 1 dt \\
+				& = |f(a)|
+		\end{aligned}
+	\]
+	Therefore every inequality above must be an equality. In particular,
+	\[
+		\int_{0}^{1} |f(\gamma(t))| dt = \int_{0}^{1} |f(a)| dt
+	\]
+	So by continuity, $|f(\gamma(t))| = |f(a)|$. So $|f(w)| = |f(a)|$, and $w$ was arbitrary, so $|f(z)| = |f(a)| \ \forall z \in B_r(a)$.
+
+	Now, we show that $f$ is constant. Let $|f(z)| = c \ \forall z \in B_r(a)$. If $c = 0$, the $|f(z)| = 0 \Rightarrow f(z) = 0 \forall z \in B_r(a)$. So assume $c \ne 0$. Now,
+	\[
+		c^2 = |f(z)|^2 = f(z) \cdot \overline{f(z)}
+	\]
+	So $\overline{f(z)} = \frac{c^2}{f(z)}$ is holomorphic (since $f$ is holomorphic). Let $f = u + iv$, then $\overline{f} = u - iv = u + i(-v)$. Then by the Cauchy-Riemann equations, $u_x = v_y$ but also $u_x = {(-v)}_y = -v_y$ so $u_x = v_y = 0$, and $u_y = -v_x$ but also $u_y = {(-v)}_x = v_x$ so $u_y = v_x = 0$. By proposition 3.3 (lecture notes), $f'(z) = u_x + i v_x = 0 + i \cdot 0 = 0$, hence $f$ is constant.
+\end{proof}
+
+\begin{theorem}
+	(\textbf{Maximum modulus theorem}) Let $D$ be a domain and $f: D \rightarrow \mathbb{C}$. If
+	\[
+		\exists a \in D, |f(z)| \le |f(a)| \quad \forall z \in D
+	\]
+	then $f$ is constant on $D$.
+\end{theorem}
+
+
+\begin{proof}
+	Let $U_1 = \{ z \in D: f(z) = f(a) \}$ and let $U_2 = \{ z \in D: f(z) \ne f(a) \}$. Let $U = U_1 \cup U_2$ (TODO: check this last sentence, might not be $U$). $U_1$ is non-empty, because $a \in U_1$. We will show that $U_1$ is open. Pick $z \in U_1$. Then by the openness of $U$, there exists a ball $B_r(z)$ in $U$. Pick $W \in B_r(z)$. We have $|f(w)| \le |f(a)| = |f(z)|$, so by the Local Maximum Modulus Principle, $f$ is constant on $B_r(z)$, so $f(w) = f(z) = f(a) \Longrightarrow w \in U_1 \Longrightarrow B_r(z) \subset U_1$. Hence $U_1$ is open.
+
+	Now $U_2 = D - U_1 = f^{-1} (\mathbb{C} - \{ f(a) \})$, where $f^{-1}$ denotes the preimage. Therefore $U_2$ is open by theorem 2.17 (lecture notes), since $\mathbb{C} - \{ f(a) \}$ is open.
+
+	So $D = U_1 \cup U_2$ where $U_1$ is non-empty and open and $U_2$ is open. By fact 7.14 (lecture notes), $U_2$ is empty hence $D = U_1$, so $f$ is constant on $D$.
+\end{proof}
+
+\begin{example}
+	Find the maximum absolute value of $f(z) = z^2 + 2z - 3$ on $\overline{B_1}(0) = \{ z \in \mathbb{C}: |z| \le 1 \}$.
+	
+	$\overline{B_1}(0)$ is compact so by theorem 2.30 (lecture notes), $|f(z)|$ attains a maximum on it. Also, $B_1(0)$ is a domain, so by the maximum modulus theorem, the function does not attain the maximum in $B_1(0)$. So the maximum must be obtained on the boundary. So $|z| = 1$, so let $z = e^{it}$ for some $t \in [0, 2 \pi]$. Then $|f(z)|^2 = |z^2 + 2z - 3|^2 = (z^2 + 2z - 3) (\overline{z^2 + 2z - 3}) = 14 - 3e^{-2it} - 3e^{2it} - 4^{it} - 4e^{-it} = 14 - 6 \cos(2t) - 8 \cos(t) = -12 {\cos(t)}^2 - 8 \cos(t) + 20 = -12x^2 - 8x + 20$ where $x = \cos(t)$. The maximum is attained when $x = \cos(t) = -\frac{1}{3}$. This gives $|f(z)| = \frac{8}{\sqrt{3}}$.
+\end{example}
+
+\subsection{Analytic continuation and the identity theorem}
+
+Let $f: B_r(a) \rightarrow \mathbb{C}$ be holormorphic. Then by Cauchy-Taylor, $f$ has a convergent Taylor series
+\[
+	f(z) = \sum_{n = 0}^{\infty} c_n {(z - a)}^n
+\]
+for $z \in B_r(a)$. Assume $f \not\equiv 0$ so at least one coefficient is non-zero. Let $m = \min\{ n \ge 0: c_n \ne 0 \}$. Then
+\[
+	f(z) = {(z - a)}^m \sum_{n = m}^{\infty} c_n {(z - a)}^{n - m} = {(z - a)}^m \sum_{k = 0}^{\infty} c_{k + m} {(z - a)}^k
+\]
+where $k = n - m$. Let
+\[
+	h(z) = \sum_{k = 0}^{\infty} c_{k + m} {(z - a)}^k
+\]
+Then $h$ is a convergent power series so is holomorphic by theorem 5.21 (lecture notes) and $h(a) = c_m \ne 0$. Note $f(a) = 0 \Longleftrightarrow m > 0$.
+
+\begin{definition}
+	(\textbf{Orders of zeros}) $f: B_r(a) \rightarrow \mathbb{C}$ has a \textbf{zero of order} $m$ at $a$ if for some holomorphic function $h: B_r(a) \rightarrow \mathbb{C}$ such that $f(z) = {(z - a)}^m h(z)$ and $h(a) \ne 0$.
+\end{definition}
+
+\begin{remark}
+	We can show that $f$ has a zero of order $m$ at $z = a$ iff
+	\[
+		f(a) = f'(a) = \cdots = f^{(m - 1)} (a) = 0
+	\]
+\end{remark}
+
+\begin{example}
+	Let $f(z) = z (e^z - 1)$. Let $z = a = 0$. Then
+	\[
+		\begin{aligned}
+			f(z)
+				& = z \left( \sum_{n=  0}^{\infty} \frac{z^n}{n!} - 1 \right) \\
+				& = z \sum_{n = 1}^{\infty} \frac{z^{n + 1}}{n!} \\
+				& = z^2 \sum_{m = 0}^{\infty} \frac{z^m}{(m + 1)!}
+		\end{aligned}
+	\]
+	so $f$ has a zero of order $2$ at $a = 0$. As a check, $f'(z) = e^z - 1 + ze^z$ and $f''(z) = e^z + e^z + ze^z$ so $f(0) = f'(0) = 0$ but $f''(0) = e^0 + e^0 + 0 = 2$.
+\end{example}
+
+\begin{remark}
+	Because holomorphic functions are continuous, if $f(a) \ne 0$, we can always find $B_{\rho} (a)$ such that $f(z) \ne 0$ on $B_{\rho}(a)$.
+\end{remark}
+
+\begin{theorem}
+	(\textbf{Principle of isolated zeroes}) Let $f: B_r(a) \rightarrow \mathbb{C}$ be holomorphic and $f \not\equiv 0$. Then for some $\rho > 0$,
+	\[
+		f(z) \ne 0 \quad \forall z \in B_r(a) - \{ a \}
+	\]
+	In particular, the zeros are isolated from one another.
+\end{theorem}
+
+\begin{proof}
+	For $f(a) \ne 0$, we are done by continuity. If $f(a) = 0$, for some $m > 0$,
+	\[
+		f(z) = {(z - a)}^m h(z) \quad \forall z \in B_{\rho}(a)
+	\]
+	where $h: B_r(a) \rightarrow \mathbb{C}$ is holomorphic, $\rho > 0$ and $h(a) \ne 0$. Thus $h(z) \ne 0$ on $B_{\rho}(a)$ and ${(z - a)}^m \ne 0$ on $B_{\rho} (a) - \{ a \}$. So $f(z) \ne 0$ on $B_{\rho}(a)$.
 \end{proof}
 
 \end{document}

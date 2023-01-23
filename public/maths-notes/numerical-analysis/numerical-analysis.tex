@@ -31,7 +31,7 @@ let $w_n(x) = (x - x_0) \dots (x - x_n)$ with distinct nodes ${x_0, \dots, x_n}$
 \end{theorem}
 
 \begin{proof}
-	"$\Longleftarrow$": By construction $2^{-n} T_{n+1}(x)$ is a monic polynomial (highest power of $x$ is 1) with $n + 1$ roots in $[-1, 1]$. Suppose $S_{n+1}(x) = (x - z_0)\dots(x - z_n)$ is another monic polynomial such that $\max |S_{n+1}(x)| < 2^{-n} = \max |2^{-n} T_{n+1}(x)|$. Let $q_n(x) := 2^{-n} T_{n+1}(x) - S_{n+1}(x)$. Then $q_n(x) \in P_n$ since the coefficient of $x^{n+1}$ in $T_{n+1}(x)$ and $S_{n+1}(x)$ are both $1$ and so cancel out.
+	($\Longleftarrow$): By construction $2^{-n} T_{n+1}(x)$ is a monic polynomial (highest power of $x$ is 1) with $n + 1$ roots in $[-1, 1]$. Suppose $S_{n+1}(x) = (x - z_0)\dots(x - z_n)$ is another monic polynomial such that $\max |S_{n+1}(x)| < 2^{-n} = \max |2^{-n} T_{n+1}(x)|$. Let $q_n(x) := 2^{-n} T_{n+1}(x) - S_{n+1}(x)$. Then $q_n(x) \in P_n$ since the coefficient of $x^{n+1}$ in $T_{n+1}(x)$ and $S_{n+1}(x)$ are both $1$ and so cancel out.
 
 	Then $q_n(y_j) = 2^{-n} T_{n+1}(y_j) - S_{n+1}(y_j)$ ($y_j$ are the extrema of $T_n(x)$). $|S_{n+1}(y_j)| < 1$ by hypothesis. Therefore $q_n(y_j) > 0$ if $j$ is odd and $< 0$ otherwise.
 
@@ -185,7 +185,7 @@ Order of convergence is a rough measure of how quickly $x_n \rightarrow x$. We m
 \begin{example}
 	$x_n = n^{-\beta}$, $\beta > 0$
 
-	\[\frac{|x_{n + 1} - x_*|}{|x_n - x_*|} = (\frac{n}{n + 1})^{\beta} \rightarrow 1\]
+	\[\frac{|x_{n + 1} - x_*|}{|x_n - x_*|} = {(\frac{n}{n + 1})}^{\beta} \rightarrow 1\]
 \end{example}
 
 \begin{example}
@@ -235,11 +235,11 @@ We conclude that for $g \in C^2 (I)$, the iteration $x_{n + 1} = g(x_n)$ converg
 \begin{proposition}
 	Let $g \in C^{N + 1} (D)$ for some $D \subseteq \mathbb{R}$ and let $g(x_*) = x_*$, with $x_*$ in the interior of $D$.
 
-	Then the iteration $x_{n + 1} = g(x_n)$ converges to $x_*$ for $x_0$ sufficiently close to $x_*$ with order $N + 1$ iff $g'(x_*) = g''(x_*) = \dots = g^{(N)} (x_*) = 0$ and $g^{(N + 1)}(x_*) \ne 0$.
+	Then the iteration $x_{n + 1} = g(x_n)$ converges to $x_*$ for $x_0$ sufficiently close to $x_*$ with order $N + 1$ iff $g'(x_*) = g''(x_*) = \cdots = g^{(N)} (x_*) = 0$ and $g^{(N + 1)}(x_*) \ne 0$.
 \end{proposition}
 
 \begin{proof}
-	$x_{n + 1} - x_* = g(x_n) - g(x_*) = g(x_*) + (x_n - x_*)g'(x_*) + \dots + \frac{(x_n - x_*)^N}{N!} g^{(N)}(x_*) + \frac{(x_n - x_*)^{N + 1}}{(N + 1)!} g^{(N + 1)}(c_n) - g(x_*) = \frac{(x_n - x_*)^{N + 1}}{(N + 1)!} g^{(N + 1)}(c_n)$. Thus
+	$x_{n + 1} - x_* = g(x_n) - g(x_*) = g(x_*) + (x_n - x_*)g'(x_*) + \cdots + \frac{{(x_n - x_*)}^N}{N!} g^{(N)}(x_*) + \frac{{(x_n - x_*)}^{N + 1}}{(N + 1)!} g^{(N + 1)}(c_n) - g(x_*) = \frac{{(x_n - x_*)}^{N + 1}}{(N + 1)!} g^{(N + 1)}(c_n)$. Thus
 
 	\[{|x_{n + 1} - x_*|}{|x_n - x_*|^{N + 1}} = \frac{|g^{(N + 1)}(c_n)|}{(N + 1)!} \rightarrow \frac{|g^{(N + 1)}(x_*)|}{(N + 1)!} < todo\]
 \end{proof}
@@ -269,7 +269,7 @@ To compute $x_* = 1 / b$ so $f(x_*) = \frac{1}{x_*} - b = 0$, so using Newton-Ra
 \end{remark}
 
 \begin{remark}
-	It can be difficult in practice to determine the interval/domain of convergence for Newton-Raphson. We should always perform a ``sanity check" when using it.
+	It can be difficult in practice to determine the interval/domain of convergence for Newton-Raphson. We should always perform a ``sanity check'' when using it.
 \end{remark}
 
 \begin{example}
@@ -277,7 +277,7 @@ To compute $x_* = 1 / b$ so $f(x_*) = \frac{1}{x_*} - b = 0$, so using Newton-Ra
 
 	Suppose $f: \mathbb{R}^2 \rightarrow \mathbb{R}^2$ has a root at $\underline{p} = (p_1, p_2)$. Using Taylor expansion at the current point $\underline{x_n}$, derive Newton-Raphson (2D):
 
-	\[\underline{x_{n + 1}} = \underline{x_n} - (Df)^{-1} \underline{f}(\underline{x_n})\]
+	\[\underline{x_{n + 1}} = \underline{x_n} - {(Df)}^{-1} \underline{f}(\underline{x_n})\]
 
 	We write $\underline{x_*} = \underline{p}$ such that $f_1(p_1, p_2) = f_2(p_1, p_2) = 0$. Taylor-expanding at $\underline{x}$:
 
@@ -289,11 +289,11 @@ To compute $x_* = 1 / b$ so $f(x_*) = \frac{1}{x_*} - b = 0$, so using Newton-Ra
 
 	\[(0, 0) = (f_1(\underline{x}), f_2(\underline{x})) = (Df)(x_1, x_2) \cdot (x_1 - p_1, x_2 - p_2) + O(|\underline{p} - \underline{x}|^2)\]
 
-	Assuming that $Df$ is invertible (equivalently, $f'(\underline{x}) \ne 0$), we can multiply the equation by $(Df)^{-1}$ to get
+	Assuming that $Df$ is invertible (equivalently, $f'(\underline{x}) \ne 0$), we can multiply the equation by ${(Df)}^{-1}$ to get
 
-	\[ (p_1, p_2) = (x_1, x_2) - (((Df)^{-1})(x_1, x_2)) \cdot (f_1(\underline{x}), f_2(\underline{x})) + O(|\underline{p} - \underline{x}|^2)\] So
+	\[ (p_1, p_2) = (x_1, x_2) - (({(Df)}^{-1})(x_1, x_2)) \cdot (f_1(\underline{x}), f_2(\underline{x})) + O(|\underline{p} - \underline{x}|^2)\] So
 	
-	\[\underline{p} = \underline{x} - (((Df)^{-1})(x_1, x_2)) \underline{f}(\underline{x}) + O(|\underline{p} - \underline{x}|^2) \] We can use this to construct our iteration by replacing $\underline{x}$ with $\underline{x_n}$ and $\underline{p}$ with $\underline{x_{n + 1}}$, and removing the $O(|\underline{p} - \underline{x}|^2)$.
+	\[\underline{p} = \underline{x} - (({(Df)}^{-1})(x_1, x_2)) \underline{f}(\underline{x}) + O(|\underline{p} - \underline{x}|^2) \] We can use this to construct our iteration by replacing $\underline{x}$ with $\underline{x_n}$ and $\underline{p}$ with $\underline{x_{n + 1}}$, and removing the $O(|\underline{p} - \underline{x}|^2)$.
 \end{example}
 
 \subsection{Secant method}
@@ -356,11 +356,11 @@ For $h < 0$, this is called backward difference.
 
 \subsection{Centred difference}
 
-\[ f(x \pm h) = f(x) \pm h f'(x) + \frac{h^2}{2} f''(x) \pm \frac{h^3}{6} f'''(\xi_{\pm}) \]
+\[ f(x \pm h) = f(x) \pm h f'(x) + \frac{h^2}{2} f''(x) \pm \frac{h^3}{6} f^{(3)}(\xi_{\pm}) \]
 Then
 
-\[ f'(x) = \frac{f(x + h) - f(x - h)}{2h} + \frac{h^2}{12} \left( f'''(\xi_+) + f'''(\xi_-) \right) \]
-The error $\frac{h^2}{12} \left( f'''(\xi_+) + f'''(\xi_-) \right)$ is of order $O(h^2)$.
+\[ f'(x) = \frac{f(x + h) - f(x - h)}{2h} + \frac{h^2}{12} \left( f^{(3)}(\xi_+) + f^{(3)}(\xi_-) \right) \]
+The error $\frac{h^2}{12} \left( f^{(3)}(\xi_+) + f^{(3)}(\xi_-) \right)$ is of order $O(h^2)$.
 
 \begin{remark}
 	It is important to \textbf{not take $h$ too small} when computing numerically. There is always a tradeoff between formal analytical accuracy and floating point errors. Formal analytical accuracy is better for smaller $|h|$, floating point errors are worse for smaller $|h|$.
@@ -615,6 +615,96 @@ We want to minimise the error when computing this with floating points, and mini
 
 \subsection{Pivoting and roundoffs}
 
+\begin{definition}
+	To reduce round-off errors, we define \textbf{row/partial pivoting}:
+	\begin{itemize}
+		\item When zeroing column $k$, look for $A_{j, k}$ with $j \in \{ k, \dots, n \}$ with the largest absolute value, and swap row $j$ with row $k$.
+	\end{itemize}
+\end{definition}
 
+\begin{remark}
+	Multiplying a pivot row by a large constant does not improve reduction of round-off errors. The \textbf{ratio} of the pivot element to the other elements in the row is more important. 
+\end{remark}
+
+\begin{remark}
+	For better results, we can also perform column/full pivoting (so we swap rows and columns), but this is much more complicated.
+\end{remark}
+
+\subsection{LU decomposition}
+
+\begin{theorem}
+	Suppose that $A$ can be reduced to an upper-triangular matrix $U$ by Gaussian elimination without pivoting. During Gaussian elimination, let $A^{(k)}$ be the matrix during Gaussian elimination which has zeros below the diagonal in the first $k$ columns. Then there is a \textbf{unit} lower triangular matrix $L$ such that
+	\[
+		A = LU
+	\]
+	Also, the subdiagonal elements of $L$ are the coefficients used in the reduction of $A$:
+	\[
+		\forall i > j, L_{i, j} = {A^{(j - 1)}}_{i, j} / {A^{(j - 1)}}_{j, j}
+	\]
+\end{theorem}
+
+\begin{remark}
+	Once we have $L$ and $U$, we can solve $Ax = LUx = b$ with
+	\begin{enumerate}
+		\item Solve $Ly = b$ for $y$ using forward substitution.
+		\item Solve $Ux = y$ for $x$ using backward substitution.
+	\end{enumerate}
+\end{remark}
+
+\begin{example}
+	$A = [[1, 2, 3, 6], [2, 8, 6, 5], [-4, -8, 0, 0], [0, 12, 9, -6]]$. Then $A^{(1)} = [[1, 2, 3, 6], [0, 4, 0, -7], [0, 0, 12, 24], [0, 12, 9, -6]]$, $A^{(2)} = [[1, 2, 3, 6], [0, 4, 0, -7], [0, 0, 12, 24], [0, 0, 9, 15]], A^{(3)} = [[1, 2, 3, 6], [0, 40, 0, -7], [0, 0, 12, 24], [0, 0, 0, -3]]$.
+
+	Then $L = [[1, 0, 0, 0], [L_{2, 1}, 1, 0, 0], [L_{3, 1}, L_{3, 2}, 1, 0], [L_{4, 1}, L_{4, 2}, L_{4, 3}, 1]] = [[1, 0, 0, 0], [2, 1, 0, 0], [-4, 0, 1, 0], [0, 3, \frac{3}{4}, 1]]$.
+
+	Then if $b = [1, 2, 4, 4]$, solving $Ly = b$ with forward substitution gives $y = [1, 0, 8, -2]$.
+
+	Then solving $Ux = y$ for $x$ gives $x = [-\frac{10}{3}, \frac{7}{6}, -\frac{2}{3}, \frac{2}{3}]$.
+\end{example}
+
+\begin{remark}
+	Comparing LU decomposition with Gaussian elimination and back substitution, LU decomposition involves less work when solving for different values of $b$ (same values of $A$). Gaussian elimination and back substitution is $O(n^3)$ for each value of $b$. LU decomposition is $O(n^3)$ for the first value of $b$, but then solving for different values of $b$ afterwards is $O(n^2)$.
+\end{remark}
+
+\begin{remark}
+	LU decomposition is less prone to round off errors than computing $A^{-1}$ and is less computationally expensive for some values of $A$:
+	\begin{itemize}
+		\item When $A$ is tridiagonal, $L$ and $U$ are as well, but $A^{-1}$ generally isn't.
+		\item When $A$ is sparse (most elements are $0$), $L$ and $U$ are also sparse, but $A^{-1}$ generally isn't.
+	\end{itemize}
+\end{remark}
+
+\begin{proposition}
+	If $L$ is an $n \times n$ lower triangular, invertible matrix, then $L^{-1}$ is also lower triangular.
+\end{proposition}
+
+\begin{proof}
+	Let $M = L^{-1}$, then $LM = I$. Since $L^{-1}$ exists, $L_{i, i} \ne 0 \text{ and } M_{i, i} \ne 0 \ \forall 1 \le i \le n$.
+
+	We have $I_{i, j} = \delta_{i, j}$ for every $i, j$. Then $0 = I_{1, j} = \delta_{1, j} = L_{1, 1} M_{1, j} \Rightarrow M_{1, j} = 0 \ \forall j > 1$ (since $L_{1, 1} \ne 0$).
+
+	Now for row 2, $1 = \delta_{2, 2} = L_{2, 1} M_{1, 2} + L_{2, 2} M_{2, 2} + L_{2, 3} M_{3, 2} + \cdots$ but $L_{2, j} = 0 \forall j > 2$ since $L$ is lower triangular so $1 = L_{2, 1} M_{1, 2} + L_{2, 2} M_{2, 2}$. Similarly, $0 = \delta_{2, 3} = L_{2, 1} M_{1, 3} + L_{2, 2} M_{2, 3} + L_{2, 3} M_{3, 3} + \cdots = L_{2, 1} M_{1, 3} + L_{2, 2} M_{2, 3} = L_{2, 2} M_{2, 3} \Rightarrow M_{2, 3} = 0$. Generally,
+	\[
+		\delta_{2, j} = \sum_{k = 1}^{n} L_{2, k} M_{k, j} = L_{2, 1} M_{1, j} + L_{2, 2} M_{2, j} + L_{2, 3} M_{3, j} + \cdots = L_{2, 1} M_{1, j} + L_{2, 2} M_{2, j}
+	\]
+	But for $j > 2$, $M_{1, 2}, \dots, M_{1, n} = 0$. Since $L_{2, 2} \ne 0$, $M_{2, j} = 0 \ \forall j > 2$.
+
+	This process continues for the rest of the rows by induction: assume that $M_{i, j} = 0 \ \forall i \in \{ 1, \dots, s - 1 \}, j > i$. Now we show that this holds for $i \in \{ 1, \dots, s \}$.
+	\[
+		\begin{aligned}
+			\delta_{s, j}
+				& = \sum_{k = 1}^{n} L_{s, k} M_{k, j} \\
+				& = \sum_{k = 1}^{s} L_{s, k} M_{k, j}
+		\end{aligned}
+	\]
+	For $j > s$,
+	\[
+		\begin{aligned}
+			\delta_{s, j}
+				& = \sum_{k = 1}^{s} L_{s, k} M_{k, j} \\
+				& = L_{s, 1} M_{1, j} + \cdots + L_{s, s - 1} M_{s - 1, j} + L_{s, s} M_{s, j}
+		\end{aligned}
+	\]
+	But by assumption, $L_{s, 1} M_{1, j} + \cdots + L_{s, s - 1} M_{s - 1, j} = 0$, so $\delta_{s, j} = L_{s, s} M_{s, j} = 0 \Rightarrow M_{s, j} = 0$ as $L_{s, s} \ne 0$.
+\end{proof}
 
 \end{document}

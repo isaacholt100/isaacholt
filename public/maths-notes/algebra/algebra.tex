@@ -6,6 +6,7 @@
 \usepackage{amsfonts, amssymb, amsmath}
 \usepackage{amsthm}
 \usepackage[dvipsnames]{xcolor}
+\usepackage{hyperref}
 
 \pagecolor{white}
 \color{black}% set the default colour to white
@@ -76,7 +77,376 @@
 	The elements of $\mathbb{Z} / n$ are called \textbf{residue classes}.
 \end{definition}
 
-\section{Homomorphisms between Rings}
+\begin{definition}
+	\hfill
+	\begin{itemize}
+		\item Addition in $\mathbb{Z} / n$ is defined as $\overline{a} + \overline{b} = \overline{a + b}$.
+		\item Subtraction in $\mathbb{Z} / n$ is defined as $\overline{a} - \overline{b} = \overline{a - b}$.
+		\item Multiplication in $\mathbb{Z} / n$ is defined as $\overline{a} \cdot \overline{b} = \overline{a \cdot b}$.
+	\end{itemize}
+\end{definition}
+
+\begin{example}
+	$\mathbb{Z} / n$ is a commutative ring.
+
+	\begin{itemize}
+		\item Commutativity: $\overline{a} \cdot \overline{b} = \overline{ab} = \overline{ba} = \overline{b} \cdot \overline{a} \quad \forall \overline{a}, \overline{b} \in {(\mathbb{Z} / n)}^2$, by commutativity of $\mathbb{Z}$.
+		\item Identity: $\overline{1} \cdot \overline{a} = \overline{1 \cdot a} = \overline{a \cdot 1} = \overline{a} \cdot \overline{1} \quad \forall \overline{a} \in \mathbb{Z} / n$ so $\overline{1}$ is the identity element.
+		\item Associativity: $\overline{a} (\overline{a} \overline{c}) = \overline{a} (\overline{bc}) = \overline{a(bc)} = \overline{(ab)c} = (\overline{ab}) \overline{c} = (\overline{a} \overline{b}) \overline{c} \quad \forall \overline{a}, \overline{b}, \overline{c} \in {(\mathbb{Z} / n)}^3$.
+	\end{itemize}
+\end{example}
+
+\begin{definition}
+	A \textbf{subring} $S$ of a ring $R$ is a set $S \subset R$ that satisfies:
+	\begin{enumerate}
+		\item $0 \in S$ and $1 \in S$.
+		\item $\forall a, b \in S^2, a + b \in S$.
+		\item $\forall a, b \in S^2, a \cdot b \in S$,
+		\item $\forall a \in S, -a \in S$.
+	\end{enumerate}
+	Note that the addition and multiplication operations for $S$ are the same as those for $R$.
+\end{definition}
+
+\begin{example}
+	$\mathbb{Q}$ is a subring of $\mathbb{Q}[x]$. For every $a \in \mathbb{Q}$, $a$ is a constant polynomial in $\mathbb{Q}[x]$. $0 \in \mathbb{Q}$ and $1 \in \mathbb{Q}$. $\forall a, b \in \mathbb{Q}^2, a + b \in \mathbb{Q} \text{ and } -a \in \mathbb{Q} \text{ and } ab \in \mathbb{Q}$.
+\end{example}
+
+\begin{example}
+	$\mathbb{Z}[\sqrt{2}]  \{ a + b \sqrt{2}: a, b \in \mathbb{Z}^2 \}$ is a ring. Instead of proving this using the definition of a ring, we can prove that it is a subring of $\mathbb{R}$, which requires less work.
+\end{example}
+
+\begin{example}
+	A subset of a ring can be a ring without being a subring. For example, $R = \{ \overline{0}, \overline{2}, \overline{4} \} \subset \mathbb{Z} / 6$ but $R$ is not a subring of $\mathbb{Z} / 6$ since $\overline{1} \notin R$. However, $R$ is a ring itself, with identity $\overline{4}$.
+\end{example}
+
+\begin{definition}
+	A ring $R$ is a \textbf{field} if
+	\begin{enumerate}
+		\item $R$ is commutative.
+		\item $0 \in R$ and $1 \in R$, with $0 \ne 1$, so $R$ has at least two elements.
+		\item $\forall a \in R$ with $a \ne 0$, for some $b \in R$, $ab = 1$. $b$ is called the \textbf{inverse} of $a$.
+	\end{enumerate}
+\end{definition}
+
+\begin{remark}
+	For a field $F$, if $a, b \in F^2$ satisfy $ab = 0$, then if $b \ne 0$, $a = ab b^{-1} = 0 b^{-1} = 0$. Similarly, if $a \ne 0$, then $b = 0$. So $ab = 0 \Longleftrightarrow a = 0 \text{ or } b = 0$.
+
+	This is not true in all rings, and if a ring doesn't satisfy this property, then it can't be a field.
+\end{remark}
+
+\begin{definition}
+	Let $R$ be a ring and let $a \in R$ such that for some $b \ne 0$, $ab = 0$. Then $a$ is called a \textbf{zero divisor}.
+\end{definition}
+
+\subsection{Integral domains}
+
+\begin{definition}\label{def:integralDomain}
+	A ring $R$ is called an \textbf{integral domain} if it is commutative, has at least two elements ($0 \ne 1$), and has no zero divisors except for $0$ ($\forall a, b \in R^2, ab = 0 \Longrightarrow a = 0 \text{ or } b = 0$).
+\end{definition}
+
+\begin{remark}
+	Every ring that is a subring of a field is an integral domain.
+\end{remark}
+
+\begin{example}
+	$\mathbb{Z} / 3$ is an integral domain, because $\forall a, b \in {(\mathbb{Z} / 3)}^2, a \ne 0 \text{ and } b \ne 0 \Longrightarrow ab \ne 0$. $\mathbb{Z} / 4$ is not an integral domain, because $\overline{2} \cdot \overline{2} = \overline{0}$ in $\mathbb{Z} / 4$.
+\end{example}
+
+\begin{proposition}
+	If a ring $R$ is an integral domain, then the ring of polynomials $R[x] := \{ a_0 + a_1 x + \cdots + a_n x^n : \underline{a} \in R^n \}$ is an integral domain as well.
+\end{proposition}
+
+\begin{proof}
+	$R[x]$ is obviously commutative, and $0 \in R[x], 1 \in R[x], 0 \ne 1$, as this is true for $R$. To show that the only zero divisor is $0$, assume the opposite, so for some $f(x), g(x) \in {(R[x])}^2, f(x) g(x) = 0$. Let
+	\[
+		\begin{aligned}
+			f(x) & = a_0 + \cdots + a_m x^m, a_m \ne 0 \\
+			g(x) & = b_0 + \cdots + b_n x_n, b_n \ne 0
+		\end{aligned}
+	\]
+	Then
+	\[
+		f(x) g(x) = a_m b_n x^{m + n} + \cdots + a_0 b_0 = 0
+	\]
+	so $a_m b_n = 0$. But $a_m \in R$ and $b_n \in R$ and $R$ is an integral domain, so $a_m = 0$ or $b_n = 0$, so we have a contradiction.
+\end{proof}
+
+\begin{definition}
+	For a ring $R$, $a \in R$ is called a \textbf{unit} if for some $b \in R$, $ab = ba = 1$, so $b = a^{-1}$ is the inverse of $a$.
+\end{definition}
+
+\begin{proposition}
+	The inverse of $a \in R$ is unique.
+\end{proposition}
+
+\begin{proof}
+	Assume that for some $b_1, b_2 \in R^2$, with $b_1 \ne b_2$, $a b_1 = b_1 a = 1$ and $a b_2 = b_2 a = 1$. But then
+	\[
+		b_1 (a b_1) = (b_1 a) b_1 = b_1 = b_1 a b_2 = b_2
+	\]
+	so we have a contradiction.
+\end{proof}
+
+\begin{definition}
+	The \textbf{set of all units} of a ring $R$ is written as $R^{\times}$.
+\end{definition}
+
+\begin{definition}
+	For a ring $R$, $R^{\times}$ is a group under multiplication from $R$.
+\end{definition}
+
+\begin{proof}
+	\hfill
+	\begin{enumerate}
+		\item Closure: if $a, b \in {(R^{\times})}^2$, for some $c, d \in R^2$, $ac = 1$ and $bd = 1$ so $(ab)(dc) = a(bd)c = ac = 1$ so $ab \in R^{\times}$.
+		\item Identity: $1 \cdot 1 = 1$ so $1 \in R^{\times}$ is the identity.
+		\item Associativity: this is automatically satisfied by associativity in $R$.
+		\item Inverse element: every $a \in R^{\times}$ has an inverse by definition.
+	\end{enumerate}
+\end{proof}
+
+\begin{example}
+	For a field $F$, $F^{\times} = F - \{ 0 \}$ since every $a \ne 0 \in F$ is a unit.
+\end{example}
+
+\begin{example}
+	$\mathbb{Z}^{\times} = \{ 1, -1 \}$.
+\end{example}
+
+\begin{example}\label{exa:constantPolynomialUnitInField}
+	For a field $F$, ${F[x]}^{\times} = F^{\times} = F - \{ 0 \}$, since if $f(x), g(x) \in {(F[x])}^2$ and $f(x) g(x) = 1$, then $\deg(f) = \deg(g) = 0$, otherwise $\deg(f g) \ge 1$. Therefore if $f$ is a unit, it is a constant non-zero polynomial, so $f \in F$.
+\end{example}
+
+\begin{example}
+	${M_n(\mathbb{Q})}^{\times} = \{ A \in M_n(\mathbb{Q}): \det(A) \ne 0 \}$.
+\end{example}
+
+\begin{proposition}\label{prop:unitCoPrimeEquivalence}
+	Let $\overline{a} \in \mathbb{Z} / n$. $\overline{a}$ is a unit iff $\gcd(a, n) = 1$.
+\end{proposition}
+
+\begin{proof}
+	Let $d = \gcd(a, n)$, so $d \mid a$ and $d \mid n$. Assume $\overline{a}$ is a unit, so let $\overline{b} = \overline{a}^{-1}$, so $\overline{a} \overline{b} = \overline{1} \Rightarrow ab \equiv 1 \pmod{n} \Rightarrow \exists x \in \mathbb{Z}, ab = xn + 1$. Now $d \mid (ab)$ and $d \mid xn$ so $d \mid (ab + xn)$, hence $d \mid 1 \Rightarrow d = 1$.
+
+	Now assume that $d = 1$, then by the Euclidean algorithm, $\exists x, y \in \mathbb{Z}^2, xa + ny = d = 1$. So $xa \equiv 1 \pmod{n} \Rightarrow \overline{a} \overline{x} = \overline{1}$, so $\overline{a}$ is a unit, with $\overline{a}^{-1} = \overline{x}$.
+\end{proof}
+
+\begin{corollary}
+	${(\mathbb{Z} / n)}^{\times} = \{ \overline{a} \in \mathbb{Z} / n: \gcd(a, n) = 1 \}$.
+\end{corollary}
+
+\begin{proof}
+	It's pretty much already there.
+\end{proof}
+
+\begin{corollary}\label{cor:primeRemaindersField}
+	$\mathbb{Z} / p$ is a field iff $p$ is prime.
+\end{corollary}
+
+\begin{proof}
+	If $p$ is prime, then $\overline{1}, \overline{2}, \dots, \overline{p - 1}$ are all units by Proposition~\ref{prop:unitCoPrimeEquivalence}, so $\mathbb{Z} / p$ is a field.
+
+	If $\mathbb{Z} / p$ is a field, then every $\overline{0} \ne \overline{a} \in \mathbb{Z} / p$ is a unit, hence $\gcd(a, p) = 1 \ \forall 1 \le a \le p - 1$ by Proposition~\ref{prop:unitCoPrimeEquivalence}. This means $p$ must be prime.
+\end{proof}
+
+\begin{proposition}
+	$\mathbb{Z} / p$ is an integral domain iff $p$ is prime (iff $\mathbb{Z} / p$ is a field).
+\end{proposition}
+
+\begin{proposition}
+	If $p$ is prime, $\mathbb{Z} / p$ is a field by Corollary~\ref{cor:primeRemaindersField}, and every field is an integral domain.
+
+	If $p$ is not prime, $\exists a, b \in \mathbb{Z}^2, p = ab$, with $2 \le a, b \le n - 1$. But then $\overline{a} \overline{b} = \overline{p} = \overline{0}$, meaning that $\overline{a}$ and $\overline{b}$ are zero divisors in $\mathbb{Z} / p$, so $\mathbb{Z} / p$ is not an integral domain. The contrapositive of this statement completes the proof.
+\end{proposition}
+
+\subsection{Polynomials over a field}
+
+\begin{definition}\label{def:deg}
+	For a field $F$ and $f(x) = a_0 + \cdots + a_n x_n \in F[x]$, the \textbf{degree} of $f$ is defined as
+	\[
+		\deg(f) = \begin{cases}
+			\max \{ i: a_i \ne 0 \} & \text{ if } f(x) \ne 0 \\
+			-\infty & \text{ if } f(x) = 0
+		\end{cases}
+	\]
+	It satisfies the following properties for every $f(x), g(x) \in {(F[x])}^2$:
+	\begin{itemize}
+		\item $\deg(fg) = \deg(f) + \deg(g)$
+		\item $\deg(f + g) \le \max \{ \deg(f), \deg(g) \}$ with equality if $\deg(f) \ne \deg(g)$.
+	\end{itemize}
+	The degree of the zero polynomial is $-\infty$ for the following reason:
+	\begin{itemize}
+		\item Let $f$ be the zero polynomial and let $g, h \in {(F[x])}^2$, with $\deg(g) \ne \deg(h)$. So $f = f g = f h$.
+		\item By the first property, $\deg(g) + \deg(f) = \deg(g f) = \deg(f) = \deg(h f) = \deg(h) + \deg(f)$, but $\deg(g) \ne \deg(h)$. So for this equality to be true, $\deg(f) = \pm \infty$. But by the second property, $\deg(f + g) = \max \{ \deg(f), \deg(g) \}$ when $\deg(g) \ne 0$, which would not hold if $\deg(f) = \infty$. So $\deg(f) = -\infty$.
+	\end{itemize}
+\end{definition}
+
+\begin{proposition}
+	Let $f(x), g(x) \in {(F[x])}^2$ and $g(x) \ne 0$. Then there are unique polynomials $q(x), r(x) \in {(F[x])}^2$, where $\deg(r) < \deg(g)$, such that
+	\[
+		f(x) = q(x) g(x) + r(x)
+	\]
+\end{proposition}
+
+\begin{proof}
+	First we show the existence of $q(x)$ and $r(x)$. If $\deg(g) > \deg(f)$, $q(x) = 0$ and $r(x) = f(x)$. If $\deg(g) \le \deg(f)$, let
+	\[
+		\begin{aligned}
+			f(x) & = a_0 + \cdots + a_m x^m, \quad a_m \ne 0 \\
+			g(x) & = b_0 + \cdots + b_n x^n, \quad b_n \ne 0
+		\end{aligned}
+	\]
+	Use induction on $d = m - n \ge 0$.
+	\begin{itemize}
+		\item When $d = 0$, $m = n$, then let $q(x) = a_m / b_n$ and let
+		\[
+			r(x) = f(x) - q(x) g(x)
+		\]
+		which satisifes $\deg(r) < m = \deg(g) \le \deg(f)$.
+		\item Assume $q(x)$ and $r(x)$ exist for every $0 \le d < k$ for some $k \ge 1$.
+		\item When $d = k$, $m = n + k$ and let
+		\[
+			f_1(x) = f(x) - \frac{a_m}{b_n} x^{m - n} g(x)
+		\]
+		so $\deg(f_1) < \deg(f)$. By the inductive assumption, for some $q_1(x)$ and $r(x)$,
+		\[
+			f_1(x) = q_1(x) g(x) + r(x)
+		\]
+		which gives
+		\[
+			\begin{aligned}
+				f(x)
+					& = f_1(x) + \frac{a_m}{b_n} x^{m - n} g(x) \\
+					& = \left( q_1(x) + \frac{a_m}{b_n} x^{m - n} \right) g(x) + r(x)
+					& = q(x) g(x) + r(x)
+			\end{aligned}
+		\]
+		where we let $q(x) = q_1(x) + \frac{a_m}{b_n} x^{m - n}$. So the result holds for $d = k$, and this completes the induction.
+	\end{itemize}
+	Now we show the uniqueness of $q(x)$ and $r(x)$. Let $f(x) = q_1(x) g(x) + r_1(x) = q_2(x) g(x) + r_2(x)$, where $\deg(r_1) < \deg(g)$ and $\deg(r_2) < \deg(g)$, so $\deg(R - r) < \deg(g)$. Then
+	\[
+		r_2(x) - r_1(x) = (q_1(x) - q_2(x)) g(x)
+	\]
+	so by the \hyperref[def:deg]{properties of $\deg$},
+	\[
+		\deg(q_1 - q_2) + \deg(g) = \deg(r_2 - r_1) < \deg(g)
+	\]
+	Hence $\deg(q_1 - q_2) < 0$ so $q_1(x) = q_2(x)$, and since $r_2(x) - r_1(x) = (q_1(x) - q_2(x)) g(x)$, $r_1(x) = r_2(x)$.
+\end{proof}
+
+\subsection{Divisibility and greatest common divisor in a ring}
+
+\begin{definition}
+	Let $R$ be a commutative ring and $a, b \in R^2$. $a$ \textbf{divides} $b$ if for some $r \in R$, $b = ra$ and we write $a \mid b$.
+\end{definition}
+
+\begin{definition}\label{def:gcd}
+	Let $R$ be a commutative ring and $a, b \in R^2$. $d \in R$ is a \textbf{greatest common divisor}, written $d = \gcd(a, b)$, if
+	\begin{itemize}
+		\item $d \mid a$ and $d \mid b$.
+		\item For every $e \in R$, if $e \mid a$ and $e \mid b$, $e \mid d$.
+	\end{itemize}
+\end{definition}
+
+\begin{remark}
+	This definition does not require that $\gcd(a, b)$ be unique. For example, by this definition $1$ and $-1$ are greatest common divisors of $4$ and $5$ in $\mathbb{Z}$. $\mathbb{Z}$ has a total ordering so in this case we can define the \textbf{greatest} common divisor to be the larger of the two. But in some rings, a total ordering does not exist, so multiple gcd's exist. Some rings exist where a gcd of two elements does not exist at all.
+\end{remark}
+
+\begin{lemma}
+	For every ring $R$, $\gcd(0, 0) = 0$.
+\end{lemma}
+
+\begin{proof}
+	$\forall x \in R, 0 = 0 \cdot x$ so every element divides $0$, so the first property is satisfied. By the second property, every element that divides $0$ must also divide $\gcd(0, 0)$. But every $x \in R$ divides $0$, so in particular $0 \in R$ divides $0$, so $0$ must divide $\gcd(0, 0)$ hence
+	\[
+		\exists m \in R, \ \gcd(0, 0) = 0 \cdot m = 0
+	\]
+	so $\gcd(0, 0) = 0$, which is unique.
+\end{proof}
+
+\begin{lemma}\label{lem:gcdUniqueUpToUnits}
+	Let $R$ be an integral domain. Let $a, b \in R^2$ and assume $d = \gcd(a, b)$ exists. Then for every unit $u \in R^{\times}$, $ud$ is also a gcd of $a$ and $b$. Also, for any two gcd's $d_1$ and $d_2$ of $a$ and $b$, for some unit $u \in R^{\times}$, $d_1 = d_2 u$. So the gcd is unique up to units.
+\end{lemma}
+
+\begin{proof}
+	We first prove that $ud$ is a gcd of $a$ and $b$. $d \mid a$ so for some $m \in R$, $dm = a$, hence
+	\[
+		du (u^{-1} m) = a \Longrightarrow du \mid a
+	\]
+	Similarly, $du \mid b$.
+
+	For every $e \in R$ such that $e \mid a$ and $e \mid b$, $e \mid d \Longrightarrow \exists k \in R, ek = d$. Then $eku = du \Rightarrow e \mid du$. So by Definition~\ref{def:gcd}, $du$ is a gcd.
+
+	Now we prove that the gcd is unique up to units. Let $d_1$ and $d_2$ be gcd's. Then by Definition~\ref{def:gcd}, $d_1$ and $d_2$ divide $a$ and $b$ and both divide each other. Hence
+	\[
+		\exists u, v \in R^2, \quad d_1 = d_2 u, \quad d_2 = d_1 v
+	\]
+	So $d_1 = d_1 uv$. If $d_1 = 0$ then $d_2 = 0$ so let $u = 1$. If $d_1 \ne 0$, since $R$ is an integral domain, $uv = 1$, hence $u$ and $v$ are units.
+\end{proof}
+
+\begin{definition}
+	Let $F$ be a field. A polynomial
+	\[
+		p(x) = a_0 + \cdots + a_n x^n \in F[x]
+	\]
+	is called \textbf{monic} if its leading coefficient $a_n = 1$.
+\end{definition}
+
+\begin{corollary}
+	Let $F$ be a field. Then for every $p_1(x), p_2(x) \in {(F[x])}^2$, there is a unique monic gcd.
+\end{corollary}
+
+\begin{proof}
+	Let $g(x) = a_0 + \cdots + a_n x^n$ be a gcd of $p_1$ and $p_2$. $a_n$ is a unit in $F[x]$ by Example~\ref{exa:constantPolynomialUnitInField}, so $\frac{1}{a_n} g(x)$ is a gcd and is monic. Now assume
+	\[
+		h(x) = b_0 + \cdots x^m
+	\]
+	is another monic gcd. Then by Lemma~\ref{lem:gcdUniqueUpToUnits}, for some unit $u \in F[x]^{\times} = F^{\times}$,
+	\[
+		u h(x) = u(b_0 + \cdots + x_m) = \frac{1}{a_n} g(x)
+	\]
+	Then $u x^m = x^n$ so $u = 1$ and $m = n$. Hence $h(x) = \frac{1}{a_n} g(x)$.
+\end{proof}
+
+\begin{theorem}
+	Let $R$ be either $\mathbb{Z}$ or $F[x]$, and $a, b \in R^2$. Then
+	\begin{enumerate}
+		\item A $\gcd$ of $a$ and $b$ exists.
+		\item If $a \ne 0$ and $b \ne 0$, a gcd can be computed by the \textbf{Euclidean algorithm} (the algorithm is shown in the proof).
+		\item If $d$ is a $\gcd(a, b)$, then for some $x, y \in R^2$, $ax + by = d$.
+	\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+	The proof is shown for $R = F[x]$. For $R = \mathbb{Z}$, the proof is the same, but $\deg(r_i(x)) < \deg(r_{i - 1}(x))$ is replaced with just $r_i < r_{i - 1}$ and so on.
+
+	Let $r_{-1} (x) = a$ and $r_0(x) = b$. We have
+	\[
+		\begin{aligned}
+			\exists q_1(x), r_1(x) \in {(F[x])}^2, r_{-1}(x) & = q_1(x) r_0(x) + r_1(x), \quad \deg(r_1(x)) < \deg(r_0(x)) \\
+			\vdots \\
+			\exists q_i(x), r_i(x) \in {(F[x])}^2, r_{i - 2}(x) & = q_i(x) r_{i - 1}(x) + r_i(x), \quad \deg(r_i(x)) < \deg(r_{i - 1}(x)) \\
+			\vdots \\
+			\exists q_n(x), r_n(x) \in {(F[x])}^2, r_{n - 2}(x) & = q_n(x) r_{n - 1}(x) + r_n(x), \quad \deg(r_n(x)) < \deg(r_{n - 1}(x)) \\
+			\exists q_{n + 1} \in F[x], r_{n - 1}(x) & = q_{n + 1}r_n(x) + 0
+		\end{aligned}
+	\]
+	This process must terminate after a finite number of iterations, since the degree of $r_i(x)$ is a non-negative integer and it decreases by at least $1$ each time.
+
+	The last non-zero remainder, $r_n(x)$ divides $r{n - 1}(x)$, hence divides $r_{n - 2}(x)$, and so on, so divides $r_{-1}(x)$ and $r_0(x)$. Now for every divisor $d(x)$ of $r_{-1}(x)$ and $r_0(x)$, $d(x)$ must divide $r_1(x)$, so also divides $r_2(x)$, and so on, so divides $r_n(x)$. Therefore $r_n(x)$ satisfies the \hyperref[def:gcd]{properties of a gcd}, so is a gcd of $a$ and $b$.
+
+	To prove part 3 of the theorem, start from $r_n(x) = r_{n - 2}(x) - q_n(x) r_{n - 1}(x)$ and replace $r_{n - 1}(x)$ with $r_{n - 3}(x) - q_{n - 1}(x) r_{n - 2}(x)$ from the equation above. So we have
+	\[
+		r_n(x) = h(x) r_{n - 2}(x) + g(x) r_{n - 3}(x)
+	\]
+	for some $h(x), g(x)$. Continuing this process from bottom to top, we get
+	\[
+		r_n(x) = a(x) r_{-1} (x) + b(x) r_0 (x)
+	\]
+	for some $a(x), b(x) \in {(F[x])}^2$.
+\end{proof}
+
+\section{Homomorphisms between Rings}	
 
 Let $R$ and $S$ be two rings. A map $f: R \rightarrow S$ is called a (ring)-homomorphism if:
 \begin{enumerate}
@@ -191,7 +561,7 @@ Notation: $\bar{x} = \bar{y} \Leftrightarrow x + I = y + I \Leftrightarrow x \eq
 \end{remark}
 
 \begin{definition}
-	\hfill\break
+	\hfill
 	\begin{itemize}
 		\item Addition: $(x + I) + (y + I) = x + y + I$
 		\item Multiplication: $(x + I) \cdot (y + I) = xy + I$
@@ -237,7 +607,7 @@ $R / I$ with the two binary operations of addition and multiplication is a ring:
 Hence, given a ring $R$ and an ideal $I \subseteq R$, there exists a ring homomorphism ($\Pi$) such that $\ker \Pi = I$.
 
 \begin{theorem}
-	(First Isomorphism Theorem - FIT) Let $\phi: R \rightarrow S$ be a ring homomorphism. The map $\bar{\phi}: R / \ker \phi \rightarrow \text{Im } \phi = \bar{x} \rightarrow \phi(x)$ is well-defined and it is a ring isomorphism: $R / \ker \phi \cong \text{Im } \phi$.
+	(First Isomorphism Theorem or FIT) Let $\phi: R \rightarrow S$ be a ring homomorphism. The map $\bar{\phi}: R / \ker \phi \rightarrow \text{Im } \phi = \bar{x} \rightarrow \phi(x)$ is well-defined and it is a ring isomorphism: $R / \ker \phi \cong \text{Im } \phi$.
 \end{theorem}
 
 \begin{proof}
@@ -282,7 +652,7 @@ Hence, given a ring $R$ and an ideal $I \subseteq R$, there exists a ring homomo
 \begin{remark}
 	$x | a \Leftrightarrow a \in (x) \Leftrightarrow (a) \subseteq (x)$.
 
-	This can be described as ``to divide is to contain".
+	This can be described as ``to divide is to contain''.
 \end{remark}
 
 \begin{corollary}
@@ -347,7 +717,7 @@ Hence, given a ring $R$ and an ideal $I \subseteq R$, there exists a ring homomo
 \end{theorem}
 
 \begin{proof}
-	Define the following ``degree" function $d: R \backslash \{0\} \rightarrow \mathbb{N}$ by
+	Define the following ``degree'' function $d: R \backslash \{0\} \rightarrow \mathbb{N}$ by
 	\[
 		d(a) := \begin{cases}
 			|a| & \text{ if } a \in \mathbb{Z} \\
@@ -704,6 +1074,90 @@ Hence, given a ring $R$ and an ideal $I \subseteq R$, there exists a ring homomo
 	If $G$ is \textbf{abelian}, then every subgroup $H \le G$ is normal, since if $g \in G, h \in H$, then $g \circ h \circ g^{-1} = g \circ (g^{-1} \circ h) = h \in H$.
 \end{example}
 
+\begin{definition}
+	For a group $G$ and $g \in G$, $g^k$ for $k \in \mathbb{Z}$ is defined as
+	\[
+		g^k = \begin{cases}
+			g \circ g \circ \cdots \circ g \quad (k \text{ times}) & \text{ if } k \ge 1 \\
+			g^{-1} \circ g^{-1} \circ \cdots \circ g^{-1} \quad (-k \text{ times}) & \text{ if } k < 0 \\
+			e & \text{ if } k = 0
+		\end{cases}
+	\]
+\end{definition}
 
+\begin{definition}
+	For a group $G$ and $g \in G$, the \textbf{group generated by $g$}, $H$, is defined as
+	\[
+		H := \langle g \rangle = \left\{ g^k: k \in \mathbb{Z} \right\}
+	\]
+\end{definition}
 
+\begin{proposition}
+	$H$ is a Abelian group.
+\end{proposition}
+
+\begin{proof}
+	\hfill
+	\begin{enumerate}
+		\item $g^{n + m} = g^n \circ g^m = g^m \circ g^n$.
+		\item $g^{-n} = {\left( g^n \right)}^{-1}$.
+	\end{enumerate}
+\end{proof}
+
+\begin{definition}
+	Let $S \subseteq G$ be finite, so $S = \{ g_1, \dots, g_k \}$. The \textbf{subgroup of $G$ generated by $S$} is defined as
+	\[
+		H := \langle S \rangle = \{ g_1^{a_1} \circ \dots \circ g_k^{a_k} \circ g_1^{b_1} \circ \dots \circ g_k^{b_k}: a_i, b_j \in \mathbb{Z}^2 \}
+	\]
+	$H$ is the set of finite products of $g_i$ and $g_j^{-1}$, for $1 \le i, j \le k$.
+\end{definition}
+
+\begin{example}
+	Let $q \in \mathbb{N}$ be odd, so $\bar{2} \in \mathbb{Z} / q$. Then $\langle \bar{2} \rangle = \mathbb{Z} / q$, since every $\bar{a} \in \mathbb{Z} / q$ is of the form $\bar{2} \cdot x, x \in \mathbb{Z}$.
+\end{example}
+
+\begin{example}
+	Let $q = p^2$ for $p$ prime. Then $\langle \bar{p} \rangle = \{ \bar{p}, \overline{2p}, \dots, \overline{p(p - 1)}, \bar{0} \}$.
+\end{example}
+
+\begin{example}
+	Let $(G, \circ) = (\mathbb{R}^{\times}, \cdot)$ and $S = \{ \sqrt{2}, \pi \}$. Then $\langle S \rangle = \{ \sqrt{2}^a \cdot \pi^b: a, b \in \mathbb{Z}^2 \}$. Since $(\mathbb{R}^{\times}, \cdot)$ is Abelian.
+\end{example}
+
+\begin{definition}
+	Let $G$ be a group, and let $g \in G$. The \textbf{order} of $g$ in $G$, written as $\text{ord}_G (g)$ or $\text{ord}(g)$ is the smallest $d \in \mathbb{N}$ such that $g^d = e$.
+
+	If $d$ does not exist, $\text{ord}_G(g) = \infty$. If $\text{ord}_G(g) < \infty$, $g$ has \textbf{finite order}, otherwise, $g$ has \textbf{infinite order}.
+\end{definition}
+
+\begin{example}
+	For $(G, \circ) = (\mathbb{Z}, +)$, every $x \in \mathbb{Z} - \{ 0 \}$ has infinite order, because $x + \cdots + x = dx = 0$, and since $\mathbb{Z}$ is an integral domain, $d = 0$, but $d \in \mathbb{N}$.
+\end{example}
+
+\begin{example}
+	In $D_4$, the symmetries of a square,
+	\begin{itemize}
+		\item The rotation by $\frac{\pi}{2}$, $r$, has $\text{ord} (r) = 4$.
+		\item Reflection, $s$, has $\text{ord}(s) = 2$.
+	\end{itemize}
+\end{example}
+
+\subsection{Cyclic groups}
+
+\begin{definition}
+	A group $G$ is \textbf{cyclic} if $\exists g \in G, G = \langle g \rangle$.
+\end{definition}
+
+\begin{theorem}
+	Let a group $G$ be finite and let $|G| = p$ for $p$ prime. Then $G$ is cyclic.
+\end{theorem}
+
+\begin{proof}
+	Since $|G| = p > 1$, $\exists g \in G, g \ne e$. Let $H = \langle g \rangle$, so $H \le G$. By Lagrange's theorem, $|H| \mid |G|$. Since $|G|$ is prime, $|H| = 1$ or $|H| = p$. Since $\{ e, g \} \subset H$, $|H| \ge 2$, so $|H| = p$. $H \subseteq G$, so $G = H = \langle g \rangle$.
+\end{proof}
+
+\begin{remark}
+	For every $g \ne e$ in $G$ of prime order, $G = \langle g \rangle$, and $\text{ord}_G(g) = p$.
+\end{remark}
+	
 \end{document}

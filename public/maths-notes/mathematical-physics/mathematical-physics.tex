@@ -54,7 +54,7 @@
 
 	Mathematically, given a particle moving in one dimension with position given by $x(t)$, for arbitrary smooth small deformations $\delta x(t)$ around the true path $x(t)$ (the path the particle follows):
 
-	\[ \delta S := S(x + \delta x) - S(x) = O((\delta x)^2) \]
+	\[ \delta S := S(x + \delta x) - S(x) = O({(\delta x)}^2) \]
 \end{definition}
 
 \begin{lemma}
@@ -636,7 +636,7 @@ TODO: properties on poisson bracket
 \section{The wave function and probabilities}
 
 \begin{definition}
-	The \textbf{wave function} is a complex function of position $x$ and time $t$:
+	The \textbf{wave function} is a function of position $x$ and time $t$:
 	\[
 		\psi: \mathbb{R}^2 \rightarrow \mathbb{C}
 	\]
@@ -652,7 +652,7 @@ TODO: properties on poisson bracket
 		P(x, t) := |\psi(x, t)|^2
 	\]
 
-	The probability of finding the particle at $x \in [a, b]$ is
+	The probability of finding the particle at $x \in [a, b]$ is therefore
 	\[
 		\int_a^b |\psi(x, t)|^2 dx
 	\]
@@ -664,11 +664,30 @@ TODO: properties on poisson bracket
 \end{definition}
 
 \begin{definition}
+	A wave function $\psi$ is \textbf{square-normalisable} if the integral
+	\[
+		\int_{-\infty}^{\infty} P(x, t) dx
+	\]
+	exists.
+\end{definition}
+
+\begin{definition}
+	A wave function $\psi$ is \textbf{normalised} if
+	\[
+		\int_{-\infty}^{\infty} P(x, t) dx = 1 \quad \forall t \in \mathbb{R}	
+	\]
+\end{definition}
+
+\begin{definition}
 	For a given time $t$, the \textbf{expectation} value of a polynomial function $f(x)$ of position $x$, is defined as
 	\[
 		\langle f(x) \rangle := \int_{-\infty}^{-\infty} P(x, t) f(x) dx
 	\]
 \end{definition}
+
+\begin{remark}
+	The expectation of position, $\langle x \rangle$ is the mean of measurements of the positions of many particles with wave function $\psi$.
+\end{remark}
 
 \begin{definition}
 	The \textbf{uncertainty} of $x$ is defined as
@@ -679,20 +698,73 @@ TODO: properties on poisson bracket
 
 \subsection{Examples of wave functions}
 
-First, we will look at wave functions at a fixed time, $\psi(x)$.
+\begin{remark}
+	For now, we will look at wave functions at a fixed time, $\psi(x)$.
+\end{remark}
 
 \begin{definition}
 	The \textbf{Gaussian wave function} is defined as
 	\[
 		\psi(x) = C e^{-x^2 / 4 \Delta^2}
 	\]
-	where $\Delta > 0$ and $C$ is a normalisation constant. Since $\int_{-\infty}^{\infty} |\psi(x)|^2 = 1$, $C = e^{i \phi} {(2 \pi \Delta^2)}^{-1/4}$, with $\phi \in \mathbb{R}$.
+	where $\Delta > 0$ has units of length and $C$ is a normalisation constant.
+	\[
+		\int_{-\infty}^{\infty} |\psi(x)|^2 = 1
+	\]
+	so $C = e^{i \theta} {(2 \pi \Delta^2)}^{-1/4}$, with $\theta \in \mathbb{R}$. $\theta$ is a free parameter here, so is often set to $0$.
+
+	So the normalised probability distribution is
+	\[
+		P(x) = \frac{1}{\sqrt{2 \pi \Delta^2}} e^{-x^2 / (2 \Delta^2)}
+	\]
+	which is a standard Gaussian probability distribution.
 \end{definition}
+
+\begin{remark}
+	For the Gaussian wave function:
+	\begin{itemize}
+		\item $\langle x^{2n + 1} \rangle \ \forall n \in \mathbb{N}_0$ since the integral is an odd function of $x$ over a symmetric interval.
+		\item As $\Delta$ is the only quantity with units of length and $x$ has units of length, $\langle x^{2n} \rangle \propto \Delta^{2n} \ \forall n \in \mathbb{N}_0$.
+		\item $\langle x^2 \rangle = \Delta^2 \Longrightarrow \Delta x = \Delta$.
+	\end{itemize}
+\end{remark}
+
+\begin{definition}
+	If a particle's position $x$ is confined to $0 < x < L$, particle is said to be in an \textbf{infinite potential well}, defined as
+	\[
+		V(x) = \begin{cases}
+			0 & \text{ if } 0 < x < L \\
+			\infty & \text{ otherwise}
+		\end{cases}
+	\]
+	To have position $x \le 0$ or $x \ge L$, the particle would need infinite energy, so the probability of finding it there is $0$, therefore the wave function for the particle should vanish in these regions.
+\end{definition}
+
+\begin{example}
+	A possible wave function for a particle in an infinite potential well is
+	\[
+		\Psi(x) = \begin{cases}
+			C \sqrt{x(L - x)} & \text{ if } 0 < x < L \\
+			0 & \text{ otherwise }
+		\end{cases}
+	\]
+	For some constant $C$. The probability of finding the particle anywhere in $(0, L)$ is $1$, so
+	\[
+		\int_{0}^{L} |\psi(x)|^2 dx = |C|^2 \int_{0}^{L} x(L - x) dx = |C|^2 \frac{L^3}{6} = 1
+	\]
+	which implies $C = \sqrt{6 / L^3} e^{i \theta}$ for any $\theta$. We choose $\theta = 0$ here.
+\end{example}
+
+\begin{remark}
+	\textbf{Important:} multiplying a wave function $\psi(x)$ by $e^{i \theta}$ for any $\theta \in \mathbb{R}$ does not change the probability density function $P$, which means that measuring position cannot distinguish between $\psi(x)$ and $e^{i \theta} \psi(x)$.
+	
+	Measuring momentum can distinguish between these two, unless $\theta(x)$ is constant, in which case they cannot be distinguished by any measurement, and they describe the same physical state.
+\end{remark}
 
 \subsection{Collapse of the wave function}
 
 \begin{definition}
-	If a particle has a wave function $\psi(x, t)$ for $t < t_0$, then at $t = t_0$, the position $x$ is measured to be $x = x_0$. Then another measurement immediately after the first will be $x = x_0$ with probability $1$. This phenomenon is called the \textbf{wave function collapse}.
+	If a particle has a wave function $\psi(x, t)$ for $t < t_0$, then at $t = t_0$, the position $x$ is measured to be $x = x_0$. Then another measurement immediately after the first will be $x = x_0$ with probability $1$. This phenomenon is called the \textbf{wave function collapse}. Measuring $x$ changes the wave function so that it is very localised around $x_0$. This is why $\langle x \rangle$ is the average of measurements of many particles with the same wave function, not repeated measurements of the same wave function.
 \end{definition}
 
 \section{Momentum and Planck's constant}
@@ -706,7 +778,7 @@ First, we will look at wave functions at a fixed time, $\psi(x)$.
 	\[
 		\begin{aligned}
 			\delta_{\epsilon} \psi(x)
-				& = \psi(x - \epsilon) - \psi(x) \\
+				& := \psi(x - \epsilon) - \psi(x) \\
 				& = -\epsilon \diffp{}{x} \psi(x) + O(\epsilon^2) \\
 				& = -\epsilon \frac{i}{\hbar} \hat{p} (\psi(x))
 		\end{aligned}
@@ -715,7 +787,7 @@ First, we will look at wave functions at a fixed time, $\psi(x)$.
 \end{definition}
 
 \begin{definition}
-	In the above definition, $\hbar$ is called the \textbf{reduced Planck constant}. \textbf{Planck's constant} is defined as
+	In the above definition, $\hbar$ is called the \textbf{reduced Planck constant} which has units $\text{energy} \times \text{time}$. \textbf{Planck's constant} is defined as
 	\[
 		h = 2 \pi \hbar
 	\]
@@ -740,6 +812,10 @@ First, we will look at wave functions at a fixed time, $\psi(x)$.
 	\]
 	The relation $[\hat{x}, \hat{p}] (\psi(x)) = i \hbar \psi(x)$ is called the \textbf{canonical commutation relation}.
 \end{definition}
+
+\begin{remark}
+	This commutator is similar to the Poisson bracket, where $\{ x, p \} = 1$ in classical mechanics. So we can transform a classical system into a quantum system by replacing the Poisson bracket $\{ , \}$ with $-\frac{i}{\hbar} [,]$. This replacement is called \textbf{canonical quantisation}.
+\end{remark}
 
 \begin{definition}
 	The \textbf{expectation value of momentum}, $\langle p \rangle$ is defined as
@@ -788,7 +864,7 @@ First, we will look at wave functions at a fixed time, $\psi(x)$.
 		\begin{aligned}
 			\langle f(p) \rangle
 				& = \int_{-\infty}^{\infty} \overline{\psi(x, t)} f(\hat{p}) \psi(x, t) dx \\
-				& = \int_{-\infty}^{\infty} \overline{\psi(x, t)} f \left( -i \hbar \diffp{}{x} \right ) \psi(x, t) dx
+				& = \int_{-\infty}^{\infty} \overline{\psi(x, t)} f \left( -i \hbar \diffp{}{x} \right ) (\psi(x, t)) dx
 		\end{aligned}
 	\]
 \end{definition}
@@ -799,6 +875,55 @@ First, we will look at wave functions at a fixed time, $\psi(x)$.
 		\Delta p = \sqrt{\langle p^2 \rangle - {\langle p \rangle}^2}
 	\]
 	This quantity describes the spread around $\langle p \rangle$ of measurements of the momenta of many particles with the same wave function $\psi$.
+\end{definition}
+
+\begin{example}
+	For the Gaussian wave function, $\langle x \rangle = 0$ and $\langle x^2 \rangle = \Delta^2$ so the uncertainty in position is $\Delta x = \Delta$. The momentum operator applied to $\psi$ gives
+	\[
+		\begin{aligned}
+			\hat{p} (\psi(x)) & = \frac{i \hbar}{2 \Delta^2} x \psi(x) \\
+			\hat{p}^2 (\psi(x))
+				& = -\hbar^2 \diffd[2]{}{x} (\psi(x)) \\
+				& = \frac{\hbar^2}{2 \Delta^2} \psi(x) - \frac{\hbar^2}{4 \Delta^4} x^2 \psi(x)
+		\end{aligned}
+	\]
+	Notice that the momentum operator always gives a polynomial in $x$ multiplied by $\psi(x)$, so we can use the position expectations to calculate the momentum expectations:
+	\[
+		\begin{aligned}
+			\langle p \rangle & = \frac{i \hbar}{2 \Delta^2} \int_{-\infty}^{\infty} x |\psi(x)|^2 dx = \frac{i \hbar}{2 \Delta^2} \langle x \rangle = 0 \\
+			\langle p^2 \rangle
+				& = \frac{\hbar^2}{2 \Delta^2} \int_{-\infty}^{\infty} |\psi(x)|^2 dx - \frac{\hbar^2}{4 \Delta^4} \int_{-\infty}^{\infty} x^2 |\psi(x)|^2 dx \\
+				& = \frac{\hbar^2}{2 \Delta^2} - \frac{\hbar^2}{4 \Delta^4} \langle x^2 \rangle \\
+				& = \frac{\hbar^2}{2 \Delta^2} - \frac{\hbar^2}{4 \Delta^4} \Delta^2 \\
+				& = \frac{\hbar^2}{4 \Delta^2}
+		\end{aligned}
+	\]
+	So the uncertainty in momentum is
+	\[
+		\Delta p = \sqrt{\langle p^2 \rangle - {\langle p \rangle}^2} = \frac{\hbar}{2 \Delta}
+	\]
+	So the product of the uncertainties of position and momentum is a constant, independent of $\Delta$:
+	\[
+		\Delta x \Delta p = \frac{\hbar}{2}
+	\]
+	So as the uncertainty in position or momentum decreases, the other must increase.
+\end{example}
+
+\begin{definition}
+	\textbf{Heisenberg's uncertainty principle} states that for every normalised wave function,
+	\[
+		\Delta x \Delta p \ge \frac{\hbar}{2}
+	\]
+\end{definition}
+
+\begin{remark}
+	Heisenberg's uncertainty principle shows that there is a limit on the how much the uncertainty in both position and momentum can be reduced.
+\end{remark}
+
+\begin{definition}
+	A \textbf{minimal uncertainty wave function} is a wave function that minimises the quantity $\Delta x \Delta p$, i.e. $\Delta x \Delta p = \frac{\hbar}{2}$.
+	
+	The Gaussian wave function is an example of this.
 \end{definition}
 
 \end{document}

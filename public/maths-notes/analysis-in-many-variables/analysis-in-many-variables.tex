@@ -557,17 +557,344 @@ In general, line integrals depend on the path between the end points. However, t
 \end{definition}
 
 \begin{definition}
-	Let $\Omega \subset \mathbb{R}^n$ be an open set and $\Psi: \mathbb{R}^n \rightarrow \mathbb{R} (\text{ or } \mathbb{C})$ be a function that satisfies:
+	Let $\Omega \subset \mathbb{R}^n$ be an open set. $\Psi: \mathbb{R}^n \rightarrow \mathbb{R} (\text{ or } \mathbb{C})$ is a \textbf{test function} if it satisfies:
 	\begin{enumerate}
 		\item $\Psi \in C^{\infty} (\Omega)$ i.e. $\Psi$ has finite derivatives of all orders on $\Omega$.
 		\item $\text{supp} \Psi$ is compact.
 	\end{enumerate}
 \end{definition}
 
+\begin{definition}
+	The \textbf{space of test functions} is a vector space denoted $\mathcal{D}(\Omega)$ when the test functions are defined on $\Omega$. $\mathcal{D}(\Omega)$ is infinite dimensional, its elements are functions.
+\end{definition}
+
 \begin{proposition}
-	The space of test functions is a vector space denoted $D(\Omega)$ when the test functions are defined on $\Omega$.
+	If $\Psi \in \Omega(\mathbb{R}^n)$, then
+	\begin{enumerate}
+		\item $\Psi(\underline{x} + \underline{\xi}) \in \mathcal{D} (\mathbb{R}^n)$ for $\xi \in \mathbb{R}^n$.
+		\item $\Psi(-\underline{x}) \in \mathcal{D}(\mathbb{R}^n)$ and $\Psi(a \underline{x}) \in \mathcal{D}(\mathbb{R}^n)$ for $a \in \mathbb{R} - \{ 0 \}$.
+		\item $g(x) \Psi(x) \in \mathcal{D}(\mathbb{R}^n)$ for $g \in C^{\infty} (\mathbb{R}^n)$.
+	\end{enumerate}
 \end{proposition}
 
+\begin{remark}
+	For a vector space $V$ with norm $|| . ||$, a sequence of functions ${(f_m)}_{m \in \mathbb{N}}$ converges to a limit function $f$ if
+	\[
+		\lim_{m \rightarrow \infty} || f_m - f || = 0
+	\]
+	This is pointwise convergence. This requires $f_n(x)$ and $f(x)$ to be close for all $m > M_x$, but depending on the point $x$.
+\end{remark}
 
+\begin{definition}
+	A sequence of test functions ${(\Psi_m)}_{m \in \mathbb{N}} \subseteq \mathcal{D}(\Omega)$ converges to a test function $\Psi \in \mathcal{D}(\Omega)$ as $m \rightarrow \infty$ if
+	\begin{enumerate}
+		\item For some compact set $K \subset \Omega$, $\text{supp} \Psi_m \subset K \quad \forall m \in \mathbb{N}$.
+		\item ${(\Psi_m)}_{m \in \mathbb{N}} \rightarrow \Psi$ with uniform convergence.
+		\item \[
+			{(D_k \Psi_m)} := \left( \diffp[k_1]{}{x_1} \diffp[k_2]{}{x_2} \cdots \diffp[k_n]{}{x_n} \right) \Psi_m \rightarrow D^k \text{ as } m \rightarrow \infty
+		\]
+		with uniform convergence. We need uniform convergence of $D^k \Psi_m$ because the derivatives of all orders of test functions are also test functions.
+	\end{enumerate}
+	These criteria are called $\mathcal{D}$-convergence.
+\end{definition}
+
+\begin{definition}
+	We can summarise the notion of $\mathcal{D}$-convergence through the use of the \textbf{sup norm}. It is defined as
+	\[
+		||f||_{\infty} := \sup \{ |f(x)|: x \in \Omega \}
+	\]
+	Here, the supremum is the maximum since $K$ is bounded.
+\end{definition}
+
+\begin{definition}
+	The sequence ${(\Psi_m)}$ of test functions in $\mathcal{D}(\Omega)$ converges to $\Psi \in \mathcal{D} (\Omega)$ if
+	\begin{enumerate}
+		\item For some compact $K \subset \Omega$, $\text{supp} \Psi_m \subset K \quad \forall m$.
+		\item For all multi-indices $k = (k_1, \dots, k_n)$,
+		\[
+			|| D^k - \Psi_m - D^k \Psi ||_{\infty} \rightarrow 0 \text{ as } m \rightarrow \infty
+		\]
+	\end{enumerate}
+\end{definition}
+
+\begin{definition}
+	Let $\Omega \subset \mathbb{R}^n$ be an open set. A \textbf{distribution} is linear continuous map $T: \mathcal{D}(\Omega) \rightarrow \mathbb{R}$. It satisfies
+	\begin{enumerate}
+		\item \textbf{Linearity}: $\forall \Psi \in \mathcal{\Omega}, \forall \phi \in \mathcal{D}(\Omega), \forall a, b \in \mathbb{R}^n$,
+		\[
+			T(a \Psi + b \phi) = a T(\Psi) + b T(\phi)
+		\]
+		\item \textbf{Continuity}: $\forall \Psi \in \mathcal{D}(\Omega), \forall {(\Psi_m)}_{m \in \mathbb{N}} \subseteq \mathcal{D}(\Omega)$ with $(\Psi_m) \rightarrow \Psi$,
+		\[
+			T(\Psi_m) \rightarrow T(\Psi) \text{ as } m \rightarrow \infty
+		\]
+	\end{enumerate}
+\end{definition}
+
+\begin{definition}
+	The vector space of distributions defined via test functions is denoted by $\mathcal{D}'(\Omega)$ and is also infinite-dimensional.
+\end{definition}
+
+\begin{example}
+	The Dirac delta function is a distribution
+	\[
+		\delta: \mathcal{D}(\mathbb{R}^n) \rightarrow \mathbb{R}, \delta(\Psi) := \Psi(\underline{0})
+	\]
+\end{example}
+
+\begin{proof}
+	\hfill
+	\begin{enumerate}
+		\item Linearity: $\delta(a \Psi + b \phi) = (a \Psi + b \phi) (\underline{0}) = a \Psi(\underline{0}) + b \phi(\underline{0}) = a \delta (\Psi) + b \delta(\phi)$.
+		\item Continuity: $\forall \Psi \in \mathcal{\Omega}, \forall {(\Psi_m)}_{m \in \mathbb{N}} \subseteq \mathcal{D}(\Omega)$ with $(\Psi_m) \rightarrow \Psi$, but uniform convergence in $\mathcal{D}$-convergence implies pointwise convergence. So $(\Psi_m(\underline{x})) \rightarrow \Psi(\underline{x}) \text{ as } m \rightarrow \infty \quad \forall \underline{x} \in \mathbb{R}^n$. Since $\underline{0} \in \mathbb{R}^n$,
+		\[
+			\delta(\Psi_m) = (\Psi_m (\underline{0})) \rightarrow \Psi (\underline{0}) = \delta (\Psi) \text{ as } m \rightarrow \infty
+		\]
+	\end{enumerate}
+\end{proof}
+
+\begin{example}
+	Continuous functions on $\mathbb{R}^n$ are distributions. Let $f \in C^{0} (\mathbb{R})$. To treat $f$ as a distribution, we must define how this distribution acts on $\mathcal{D}(\Omega)$.
+	
+	Define $T_f: \mathcal{D}(\mathbb{R}^n) \rightarrow \mathbb{R}$,
+	\[
+		T_f (\psi) = \int_{\mathbb{R}^n} f(\underline{x}) \psi(\underline{x}) d \underline{x}
+	\]
+	Then $T_f$ is a distribution.
+	\begin{itemize}
+		\item Linearity:
+		\[
+			\begin{aligned}
+				T_f (a \psi + b \phi)
+					& = \int_{\mathbb{R}^n} f(\underline{x}) (a \psi(\underline{x}) + b \phi (\underline{x})) d \underline{x} \\
+					& = a \int_{\mathbb{R}^n} f(\underline{x}) \psi(\underline{x}) d \underline{x} + b \int_{\mathbb{R}^n} f(\underline{x}) \phi(\underline{x}) d \underline{x} \\
+					& = a T_f(\psi) + b T_f (\phi)
+			\end{aligned}
+		\]
+		\item Continuity: $\forall \psi \in \mathcal{D}(\mathbb{R}^n), \forall {(\psi_m)}_{m \in \mathbb{N}} \subseteq \mathcal{D}(\mathbb{R}^n)$ with $(\psi_m) \rightarrow \psi$, we have in particular uniform convergence. Therefore we can interchange $\lim$ and $\int$, so
+		\[
+			\begin{aligned}
+			\lim_{m \rightarrow \infty} T_f (\psi_m)
+				& = \lim_{m \rightarrow \infty} \int_{\mathbb{R}^n} f(\underline{x}) \psi_m(\underline{x}) d\underline{x} \\
+				& = \int_{\mathbb{R}^n} \lim_{m \rightarrow \infty} f(\underline{x}) \psi_m(\underline{x}) d\underline{x} \\
+				& = \int_{\mathbb{R}^n} f(\underline{x}) \psi(\underline{x}) d\underline{x} \\
+				& = T_f(\psi)
+			\end{aligned}
+		\]
+		So
+		\[
+			T_{f_m} (\psi) = \int_{\mathbb{R}^n} f_m(\underline{x}) \psi(\underline{x}) d\underline{x} \rightarrow \psi(0) \int_{\mathbb{R}^n} f_m(\underline{x}) d\underline{x} = \psi(\underline{0}) \quad \text{as } m \rightarrow \infty
+		\]
+	\end{itemize}
+\end{example}
+
+\subsection{Regular and singular distributions}
+
+\begin{definition}
+	A function $f: \mathbb{R}^n \rightarrow \mathbb{R}$ is called \textbf{locally integrable} if for every compact set $K \subset \mathbb{R}^n$,
+	\[
+		\int_K |f(\underline{x})| d\underline{x} < \infty
+	\]
+\end{definition}
+
+\begin{example}
+	$f(x) = x^2$ is not integrable since
+	\[
+		\int_{\mathbb{R}} f(x) dx
+	\]
+	is not finite but it is locally integrable.
+\end{example}
+
+\begin{definition}
+	The space of locally integrable functions is called $L_{\text{loc}}^1$.
+\end{definition}
+
+\begin{definition}
+	$T \in \mathcal{D}'(\mathbb{R}^n)$ is called a \textbf{regular distribution} if for some locally integrable function $f$,
+	\[
+		T(\psi) = T_f(\psi) = \int_{\mathbb{R}^n} f(\underline{x}) \psi(\underline{x}) d\underline{x}, \quad \psi \in \mathcal{D}(\mathbb{R}^n)
+	\]
+	In general, if two locally integrable functions only differ by a finite amount at isolated points, they define the same distribution.
+\end{definition}
+
+\begin{example}
+	Let $f: \mathbb{R} \rightarrow \mathbb{R}$,
+	\[
+		f(x) = \begin{cases}
+			1 & \text{ if } x = 0 \\
+			0 & \text{ otherwise}
+		\end{cases}
+	\]
+	then $f \in L_{\text{loc}}^1 (\mathbb{R})$, and
+	\[
+		T_f(\psi) = \int_{\mathbb{R}} f(x) \psi(x) dx = 0
+	\]
+\end{example}
+
+\begin{definition}
+	If there is no $f \in L_{\text{loc}}^1 (\mathbb{R}^n)$ such that a distribution $T$ can be written as $T_f$, then this distribution is called \textbf{singular}. We write
+	\[
+		T(\psi) = \int_{\mathbb{R}^n} T(\underline{x}) \psi(\underline{x}) d\underline{x} = \langle T, \psi \rangle
+	\]
+	To specify the distribution $T$, we must define how it acts on test functions.
+\end{definition}
+
+\begin{example}
+	$\delta$ is not a regular distribution: there is no $f \in L_{\text{loc}}^1$ such that
+	\[
+		\delta(\psi) = \int_{\mathbb{R}^n} f(\underline{x}) \psi(\underline{x}) d\underline{x}
+	\]
+	However, we can write symbolically
+	\[
+		\delta(\psi) = \int_{\mathbb{R}^n} \delta(\underline{x}) \psi(\underline{x}) d\underline{x} = \langle \delta, \psi \rangle := \psi(\underline{0})
+	\]
+	This is called the \textbf{sifting property} of the $\delta$ distribution.
+\end{example}
+
+\begin{remark}
+	\textbf{Important:} $\delta(\underline{x})$ is \textbf{not} a function, we just use it as a function in the integral symbolically.
+\end{remark}
+
+\begin{remark}
+	More generally, with $\Omega \subset \mathbb{R}^n$,
+	\[
+		\delta(\psi) = \int_{\mathbb{R}^n} \delta(\underline{x}) \psi(\underline{x}) d\underline{x} = \langle \delta, \psi \rangle = \begin{cases}
+			\psi(\underline{0}) & \text{ if } \underline{0} \in \Omega \\
+			0 & \text{ otherwise}
+		\end{cases}
+	\]
+\end{remark}
+
+\begin{definition}
+	In one dimension, we write $\delta(\underline{x}) = \delta(\underline{x})$. In $n$ dimensions, we write $\delta(x_1, \dots, x_n) = \delta(x_1) \cdots \delta(x_n)$
+\end{definition}
+
+\subsection{Operations on distributions}
+
+
+
+\begin{definition}
+	$\forall \psi \in \mathcal{D}(\mathbb{R}^n), \ \forall T_1, T_2 \in \mathcal{D}'(\mathbb{R}^n)$, we define the following operations:
+	\begin{enumerate}
+		\item \textbf{Addition}: $(T_1 + T_2) (\psi) = T_1(\psi) + T_2(\psi)$.
+		\item \textbf{Multiplication  by a constant}: $(c T) (\psi) = c T(\psi)$ for every constant $c$.
+		\item \textbf{Shifting}: for $\underline{\xi} \in \mathbb{R}^n$,
+		\[
+			\begin{aligned}
+				T_{\underline{\xi}} (\psi(\underline{x}))
+					& := \int_{\mathbb{R}^n} T(\underline{x} - \underline{\xi}) d \underline{x} \\
+					& = \int_{\mathbb{R}^n} T(\underline{y}) \psi(\underline{y} + \underline{\xi}) d \underline{y} \\
+					& = T(\psi(\underline{y} + \underline{\xi}))
+			\end{aligned}
+		\]
+		\item \textbf{Transposition}:
+		\[
+			\begin{aligned}
+				T^t (\psi(\underline{x}))
+					& := \int_{\mathbb{R}^n} T(-\underline{x}) \psi(\underline{x}) d \underline{x} \\
+					& = \int_{\mathbb{R}^n} T(\underline{y}) \psi(-\underline{y}) d \underline{y} \\
+					& = T(\psi(-\underline{x}))
+			\end{aligned}
+		\]
+		\item \textbf{Dilation}:
+		\[
+			\begin{aligned}
+				T_{(\alpha)} (\psi(x))
+					& = \int_{\mathbb{R}^n} T(\alpha \underline{x}) \psi(\underline{x}) d \underline{x} \\
+					& = \frac{1}{|\alpha|^n} \int_{\mathbb{R}^n} T(\underline{y}) \psi \left( \frac{\underline{y}}{\alpha} \right) d \underline{y} \\
+					& = \frac{1}{|\alpha|^n} T \left( \psi \left( \frac{\underline{y}}{\alpha} \right) \right)
+			\end{aligned}
+		\]
+		\item \textbf{Multiplication by a smooth function} $\phi \in C^{\infty} (\mathbb{R}^n)$:
+		\[
+			(\phi T) (\psi) = T(\phi \psi)
+		\]
+	\end{enumerate}
+\end{definition}
+
+\begin{remark}
+	The above rules are natural for regular distributions, since the integrals are meaningful in the classical sense. For singular distributions, we extend the formalism and use the (symbolic) notations
+	\[
+		T(\psi) = \int_{\mathbb{R}^n} T(\underline{x}) \psi(\underline{x}) d \underline{x}
+	\]
+\end{remark}
+
+\begin{remark}
+	\textbf{Important}: If $\Omega \subset \mathbb{R}$, with $\Omega$ open,
+	\[
+		\delta(\xi) (\psi(x)) = \begin{cases}
+			\psi(\xi) & \text{ if } \xi \in \Omega \\
+			0 & \text{ otherwise}
+		\end{cases}
+	\]
+	This is called the \textbf{sifting} property of the delta distribution.
+\end{remark}
+
+\begin{example}
+	Calculating with $\delta \in \mathcal{D}'(\mathbb{R})$:
+	\begin{itemize}
+		\item Shifting:
+		\[
+			\begin{aligned}
+				\delta_{\xi} (\psi(x))
+					& = \int_\mathbb{R} \delta(x - \xi) \psi(x) dx \\
+					& = \int_{\mathbb{R}} \delta(y) \psi(y + \xi) dy \\
+					& = \int_{\mathbb{R}} \delta(x) \psi(x + \xi) dx \\
+					& = \psi(\xi) \\
+					& = \delta(\psi(x + \xi))
+			\end{aligned}
+		\]
+		\item $\phi \delta_{\xi} (\psi)$ for smooth $\phi$:
+		\[
+			\begin{aligned}
+				\phi \delta_{\xi} (\psi)
+					& = \int_{\mathbb{R}} \phi(x) \delta(x - \xi) \psi(x) dx \\
+					& = \int_{\mathbb{R}} \delta(x - \xi) (\phi(x) \psi(x)) dx \\
+					& = \phi(\xi) \psi(\xi) \\
+					& = \phi(\xi) \int_{\mathbb{R}} \delta(x - \xi) \psi(x) dx \\
+					& = \int_{\mathbb{R}} \phi(\xi) \delta(x - \xi) \psi(x) dx
+			\end{aligned}
+		\]
+		\item $\delta_{(\alpha)} (\psi)$:
+		\[
+			\begin{aligned}
+				\delta_{(\alpha)} (\psi)
+					& = \int_{\mathbb{R}} \delta(\alpha x) \psi(x) dx \\
+					& = \frac{1}{\alpha} \int_{\mathbb{R}} \delta(y) \psi \left( \frac{y}{\alpha} \right) dy
+			\end{aligned}
+		\]
+		For $\alpha < 0$, $(-\alpha) > 0$, so $dy = \alpha dx = -|a| dx$ so the limits of integrations swap from $\int_{-\infty}^{\infty}$ to $\int_{\infty}^{-\infty}$ but the minus sign in $-|a| dx$ compensates for this.
+		\item For $x_1, \dots, x_n$ are zeros of $f$.
+		\[
+			\int_{\Omega} \delta(f(x)) \psi(x) dx = \sum_{i = 1}^{n} \delta((x - x_i) f'(x_i)) \psi(x) dx = \sum_{i = 1}^{n} \frac{1}{|f'(x_i)|} \psi(x_i)
+		\]
+		by the sifting property of the delta distribution.
+	\end{itemize}
+\end{example}
+
+\begin{example}
+	For $b > 0$, let $f(x) = x^2 - b^2$, $f: \mathbb{R} \rightarrow \mathbb{R}$, then $f \in C^1(\mathbb{R})$, $f(b) = f(-b) = 0$, with $x_1, x_2 = b-, -b$ as the zeroes. $f'(x) = 2x$ so $f'(b) = 2b$ and $f'(-b) = -2b$. Then
+	\[
+		\int_{\mathbb{R}} \delta(x^2 - b^2) \psi(x) dx = \frac{1}{2|b|} (\psi(b) + \psi(-b))
+	\]
+\end{example}
+
+\begin{definition}
+	$T_1$ and $T_2 \in \mathcal{D}'(\Omega)$ are \textbf{equal} if
+	\[
+		\int_{\Omega} T_1(x) \psi(x) dx = \int_{\Omega} T_2(x) \psi(x) dx \quad \forall \psi \in \mathcal{\Omega}
+	\]
+\end{definition}
+
+\begin{example}
+	For which value of $A \in \mathbb{R}$ are $T_1 = x^2 \delta(x^3)$ and $T_2 = A \delta(x)$ equal?
+	\[
+		\begin{aligned}
+			\int_{\mathbb{R}} x^2 \delta(x^3) \psi(x) dx & = \frac{1}{3} \int_{\mathbb{R}} \delta(y) \psi(y^{1/3}) dy & = \frac{1}{3} \psi(0)
+			\int_{\mathbb{R}} A \delta(x) \psi(x) dx = A \psi(0)
+		\end{aligned}
+	\]
+	so $A = 1/3$.
+\end{example}
 
 \end{document}
