@@ -20,6 +20,7 @@ export default function Maths(props: { mathsNotes: MathsNoteFile[] }) {
 	return (
 		<>
 			<PageTitle title="Maths Notes" />
+			<p>If you notice a mistake in any of these notes, feel free to create an issue or submit a pull request on this website{"'"}s <Link className="link-primary" href="https://github.com/isaacholt100/isaacholt">GitHub repository</Link></p>
 			<Row className="g-2 g-md-3">
 				{props.mathsNotes.map(note => (
 					<Col xs={12} xl={6} key={note.name}>
