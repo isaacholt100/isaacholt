@@ -1,28 +1,11 @@
-\documentclass[12pt,a4paper]{article}
-
-\usepackage[a4paper, total={6in, 10in}]{geometry}
-\usepackage[utf8]{inputenc}
-\usepackage{amsfonts}
-\usepackage{amsthm}
-\usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage{diffcoeff}
-
-\theoremstyle{definition}
-\newtheorem{definition}{Definition}[subsection]
-\newtheorem{theorem}[definition]{Theorem}
-\newtheorem{proposition}[definition]{Proposition}
-\newtheorem{corollary}[definition]{Corollary}
-\newtheorem{lemma}[definition]{Lemma}
-\newtheorem{example}[definition]{Example}
-\newtheorem*{remark}{Remark}
+\input{../header.tex}
 
 \title{Numerical Analysis Course Notes}
 \author{Isaac Holt}
 
 \begin{document}
 
-\maketitle
+\input{../titletoc.tex}
 
 \section{Chebyshev Polynomials}
 
@@ -632,6 +615,94 @@ We want to minimise the error when computing this with floating points, and mini
 
 \subsection{LU decomposition}
 
+\begin{lemma}
+	Steps of the Gaussian elimination process can be written as matrix multiplication. During Gaussian elimination, let $A^{(k)}$ be the matrix during Gaussian elimination which has zeros below the diagonal in the first $k$ columns.
+	\[
+		A^{(s)} = F^{(s)} A^{(s - 1)}
+	\]
+	where
+	\[
+		\begin{aligned}
+			F_{i, j}^(s) & = \delta_{i, j} - f_i^{(s)} e_j^{(s)} \\
+			f_i^{(s)} & = (0, \dots, 0, A_{s+1, s}^{s-1} / A_{s,s}^{(s - 1)}, \dots, A_{n, s}^{(s - 1)} / A_{s, s}^{(s - 1)}) \\
+			e_j^{(s)} = \delta_{s, j}
+		\end{aligned}
+	\]
+\end{lemma}
+
+\begin{proof}
+	To zero column $s$ below the leading diagonal, we do
+	\[
+		A_{i, j}^{(s)} = A_{i, j}^{(s - 1)} - \frac{A_{i, s}^{(s - 1)}}{A_{s, s}^{(s - 1)}} A_{s, j}^{(s - 1)}
+	\]
+	for $i \in \{ s + 1, \dots, n \}$ and $j \in \{ s, \dots, n \}$.
+	\[
+		\begin{aligned}
+			A_{i, j}^{(s)}
+				& = \sum_k \left( \delta_{i, k} A_{k, j}^{(s - 1)} - \frac{A_{i, s}^{(s - 1)}}{A_{s, s}^{(s - 1)}} \delta_{s, k} A_{k, j}^{(s - 1)} \right) \\
+				& = \sum_k \left( \delta_{i, k} - \frac{A_{i, s}^{(s - 1)}}{A_{s, s}^{(s - 1)}} \cdot \delta_{s, k} \right) A_{k, j}^{(s - 1)}
+		\end{aligned}
+	\]
+\end{proof}
+
+\begin{definition}
+	For vectors $u$ and $v$, the \textbf{tensor product} of $u$ and $v$ is a matrix defined by
+	\[
+		{(u \otimes v)}_{i, j} = u_i v_j
+	\]
+\end{definition}
+
+\begin{definition}
+	A \textbf{Frobenius matrix} of index $s$ is a unit lower triangular matrix whose only (possibly) non-zero elements are subdiagonal elements in column $s$ (other than the leading diagonal, which is all $1$s).
+\end{definition}
+
+\begin{lemma}\label{lem:GFinverse}
+	Let $F^{(s)} = I - f^{(s)} \otimes e^{(s)}$. Then its inverse is
+	\[
+		G^{(s)} = I + f^{(s)} \otimes e^{(s)}
+	\]
+\end{lemma}
+
+\begin{proof}
+	\[
+		\begin{aligned}
+			\sum_k F_{i, k}^{(s)} G_{k, j}^{(s)}
+				& = \sum_k \left( \delta_{i, k} - f_i^{(s)} e_k^{(s)} \right) \left( \delta_{k, j} + f_k^{(s)} e_j^{(s)} \right) \\
+				& = \sum_k \left( \delta_{i, k} - f_i^{(s)} \delta_{s, k} \right) \left( \delta_{k, j} + f_k^{(s)} \delta_{s, j} \right) \\
+				& = \sum_k \left( \delta_{i, j} + f_i^{(s)} \delta_{s, j} - f_i^{(s)} \delta_{s, j} - f_i^{(s)} f_k^{(s)} \delta_{s, k} \delta_{s, j} \right) \\
+				& = \delta_{i, j} - f_i^{(s)} f_s^{(s)} \delta_{s, j}
+		\end{aligned}
+	\]
+	But $f_s^{(s)} = 0$ which completes the proof.
+\end{proof}
+
+\begin{lemma}
+	Let $G^{(s)} = I + f^{(s)} \otimes e^{(s)}$ as above. Then for every $s \in \{ 1, \dots, n - 1 \}$,
+	\[
+		G^{(1)} G^{(2)} \cdots G^{(s)} = I + \sum_{r = 1}^{s} f^{(r)} \otimes e^{(r)}
+	\]
+\end{lemma}
+
+\begin{proof}
+	Use induction on $s$.
+	\begin{itemize}
+		\item For $s = 1$, $G^{(1)} = I + f^{(1)} \otimes e^{(1)}$ trivially.
+		\item Assume the statement is true for some $s$.
+		\item For $s + 1$,
+		\[
+			\begin{aligned}
+				{(G^{(1)} \cdots G^{(s)} G^{(s + 1)})}_{i, j}
+					& = \sum_k {(G^{(1)} \cdots G^{(s)})}_{i, k} G_{k, j}^{(s + 1)} \\
+					& = \left( \sum_k \left( \delta_{i, k} \sum_{r = 1}^{s} f_i^{(r)} \delta_{r, k} \right) \right) \left( \delta_{k, j} + f_k^{(s + 1)} \delta_{s + 1, j} \right) \\
+					& = \delta_{i, j} + \sum_{r = 1}^{s} f_i^{(r)} \delta_{r, j} + f_i^{(s + 1)} \delta_{s + 1, j} \\
+					& \quad + \sum_k \left( f_k^{(s + 1)} \delta_{s + 1, j} \sum_{r = 1}^{s} f_i^{(r)} \delta_{r, k} \right) \\
+					& = \delta_{i, j} + \sum_{r = 1}^{s + 1} f_i^{(r)} \delta_{r, j}
+			\end{aligned}
+		\]
+		which completes the induction.
+	\end{itemize}
+\end{proof}
+
 \begin{theorem}
 	Suppose that $A$ can be reduced to an upper-triangular matrix $U$ by Gaussian elimination without pivoting. During Gaussian elimination, let $A^{(k)}$ be the matrix during Gaussian elimination which has zeros below the diagonal in the first $k$ columns. Then there is a \textbf{unit} lower triangular matrix $L$ such that
 	\[
@@ -642,6 +713,35 @@ We want to minimise the error when computing this with floating points, and mini
 		\forall i > j, L_{i, j} = {A^{(j - 1)}}_{i, j} / {A^{(j - 1)}}_{j, j}
 	\]
 \end{theorem}
+
+\begin{proof}
+	We write the Gaussian elimination process as
+	\[
+		\begin{aligned}
+			U
+				& = A^{(n - 1)} = F^{(n - 1)} A^{(n - 2)} \\
+				& = F^{(n - 1)} F^{(n - 2)} A^{(n - 3)} \\
+				& = F^{(n - 1)} F^{(n - 2)} \cdots F^{(1)} A^{(0)}
+		\end{aligned}
+	\]
+	Now left-multiplying by $L = G^{(1)} \cdots G^{(n - 1)}$:
+	\[
+		LU = G^{(1)} \cdots G^{(n - 1)} F^{(n - 1)} F^{(n - 2)} \cdots F^{(1)} A^{(0)}
+	\]
+	But $G^{(k)} F^{(k)} = I$ by Lemma~\ref{lem:GFinverse} so this simplifies to $LU = A$.
+\end{proof}
+
+\begin{theorem}
+	Every non-singular square matrix $A$ can be written as
+	\[
+		PA = LU
+	\]
+	where $L$ and $U$ are lower and upper triangular matrices and $P$ is a permutation matrix (exactly one non-zero element in each row and column).
+\end{theorem}
+
+\begin{proof}
+	Too difficult.batyter
+\end{proof}
 
 \begin{remark}
 	Once we have $L$ and $U$, we can solve $Ax = LUx = b$ with
@@ -706,5 +806,481 @@ We want to minimise the error when computing this with floating points, and mini
 	\]
 	But by assumption, $L_{s, 1} M_{1, j} + \cdots + L_{s, s - 1} M_{s - 1, j} = 0$, so $\delta_{s, j} = L_{s, s} M_{s, j} = 0 \Rightarrow M_{s, j} = 0$ as $L_{s, s} \ne 0$.
 \end{proof}
+
+\subsection{Normed vector spaces}
+
+\begin{definition}
+	Given a vector space $V$, a \textbf{norm} $||.||: V \rightarrow \mathbb{R}_+$ satisfies the following properties:
+	\begin{enumerate}
+		\item $||x + y|| \le ||x|| + ||y|| \quad \forall x, y \in V$.
+		\item $||c \cdot x|| = |c| ||x|| \quad \forall x \in V, c \in \mathbb{C}$.
+		\item $||x|| = 0 \Longleftrightarrow x = 0$ (if this is not satisfied, the norm is called a \textbf{seminorm}).
+	\end{enumerate}
+\end{definition}
+
+\begin{example}
+	Some examples of norms:
+	\begin{enumerate}
+		\item The $L_2$ norm,
+		\[
+			{||x||}_2 := {\left( \sum_{k = 1}^{n} |x_k|^2 \right)}^{1/2}
+		\]
+		\item The $L_1$ norm,
+		\[
+			{||x||}_1 := \sum_{k = 1}^{n} |x_k|
+		\]
+		\item ${||x||}_{\infty} := \max_{k \in \{ 1, \dots, n \}} |x_k|$
+		\item For $p \in [1, \infty)$,
+		\[
+			{||x||}_p := {\left( \sum_{k = 1}^{n} |x_k|^{p} \right)}^{1/p}
+		\]
+	\end{enumerate}
+\end{example}
+
+\begin{definition}
+	Let $\tilde{V}$ be the set of $n \times n$ matrices over $\mathbb{R}$, then
+	\[
+		\begin{aligned}
+			{||A||}_{\text{row}} & := \max_i \sum_{j = 1}^{n} |A_{i, j}| \\
+			{||A||}_{\text{col}} & := \max_j \sum_{i = 1}^{n} |A_{i, j}| \\
+			{||A||}_{\text{Frob}} & := {\left( \sum_{i, j} |A_{i, j}|^2 \right)}^{1/2}
+		\end{aligned}
+	\]
+	are the \textbf{row-sum norm}, the \textbf{column-sum norm}, and the \textbf{Frobenius matrix norm}, respectively.
+\end{definition}
+
+\begin{definition}
+	A matrix norm $||.||$ on $\tilde{V}$ is \textbf{submultiplicative} if
+	\[
+		\forall A, B \in \tilde{V}, \quad ||AB|| \le ||A|| \cdot ||B||
+	\]
+\end{definition}
+
+\begin{definition}
+	Given a vector norm $||.||_{\text{vec}}: V \rightarrow \mathbb{R}_+$, the \textbf{matrix norm} induced by $||.||_{\text{vec}}$ is defined as
+	\[
+		||A||_{\text{mat}} = \sup_{x \ne 0} \frac{||A x||_{\text{vec}}}{||x||_\text{vec}} = \max_{||x||_\text{vec} = 1} ||A x||_{\text{vec}}
+	\]
+\end{definition}
+
+\begin{remark}
+	Often, we omit $\text{vec}$ or $\text{mat}$ when the meaning of the norm is clear from context.
+\end{remark}
+
+\begin{example}	
+	By linearity of vector norms,
+	\[
+		||A x||_{\star} \le ||A||_{\star} ||x||_{\star}
+		\]
+		where $|||A||_{\star}$ is the matrix norm induced by the vector norm $||.||_{\star}$.
+\end{example}
+
+\begin{example}
+	Let $V = \mathbb{R}^2$ and $||.|| = ||.||_2$. Compute $||A||_2$ where
+	\[
+		A = \begin{pmatrix}
+			3 & 1 \\
+			-5 & -1
+		\end{pmatrix}
+	\]
+	By definition,
+	\[
+		\begin{aligned}
+			||A||_2
+				& = \max_{||x||_2 = 1} ||A x||_2 \\
+				& = \max_{\theta \in [0, 2 \pi]} ||A \cdot (\cos(\theta), \sin(\theta))||_2 \\
+				& = \max_{\theta \in [0, 2 \pi]} || (3 \cos(\theta) + \sin(\theta), -5 \cos(\theta) - \sin(\theta)) ||_2
+		\end{aligned}
+	\]
+	Let
+	\[
+		\begin{aligned}
+			f(\theta) 
+				& = {(3 \cos(\theta) + \sin(\theta))}^2 + {(5 \cos(\theta)) + \sin(\theta))}^2 \\
+				& = 34 {\cos(\theta)}^2 + 2 {\sin(\theta)}^2 + 16 \cos(\theta) \sin(\theta) \\
+				& = 16 \cos(2 \theta) + 8 \sin(2 \theta) + 18
+		\end{aligned}
+	\]
+	so $f'(\theta) = -32 \sin(2 \theta) + 16 \cos(2 \theta)$, then $f'(\theta) = 0 \Rightarrow \tan(2 \theta) = 1/2$ which gives
+	\[
+		\max_{\theta} f(\theta) = 18 + \frac{40}{\sqrt{5}}
+	\]
+	which gives
+	\[
+		||A||_2 = \sqrt{18 + \frac{40}{\sqrt{5}}}
+	\]
+\end{example}
+
+\begin{definition}
+	A matrix $A$ is \textbf{normal} if $A A^T = A^T A$.
+\end{definition}
+
+\begin{theorem}
+	If a matrix $A$ is normal, then $A$ is diagonalisable.
+\end{theorem}
+
+\begin{proof}
+	Too long.
+\end{proof}
+
+\begin{theorem}
+	If $A$ is symmetric, then its eigenvalues are real, and
+	\[
+		||A||_2 = \max \{ |\lambda|: \lambda \text{ is an eigenvalue of } A \}
+	\]
+	For non-symmetric $A$,
+	\[
+		||A||_2 = \max \{ |\lambda|: \lambda \text{ is an eigenvalue of } A A^T \}
+	\]
+\end{theorem}
+
+\begin{proof}
+	Too long.
+\end{proof}
+
+\begin{proposition}
+	The vector $1$-norm induces the matrix column-sum norm.
+\end{proposition}
+
+\begin{proof}
+	$||x||_1 = \sum_i |x_i|$ and $||A||_{\text{col}} = \max_j \sum_i |A_{i, j}|$.
+	\[
+		\begin{aligned}
+			||A x||_1
+				& = \sum_i \left| \sum_j A_{i, j} \right| \\
+				& \le \sum_i \sum_j |A_{i, j} x_j| \\
+				& = \sum_i \sum_j |A_{i, j}| |x_j| = \sum_j \left( \sum_i |A_{i, j}| \right) |x_j| \\
+				& \le \left( \max_j \sum_i |A_{i, j}| \right) \sum_j |x_j| = ||A||_{\text{col}} ||x||_1
+		\end{aligned}
+	\]
+	Hence,
+	\[
+		||A||_1 \le ||A||_\text{col}
+	\]
+	and also
+	\[
+		\begin{aligned}
+			||A||_1
+				& = \max_{||x||_1 = 1} ||A x||_1 \\
+				& \ge \max_k ||A e^{(k)} ||
+		\end{aligned}
+	\]
+	where $e_j^{(k)} = \delta_{j, k}$. So
+	\[
+		\begin{aligned}
+			||A||_1
+				& \ge \max_k \sum_i \left| \sum_j A_{i, j} \delta_{j, k} \right| \\
+				& = \max_k \sum_i |A_{i, k}| = ||A||_\text{col}
+		\end{aligned}
+	\]
+	Hence $||A||_1 = ||A||_\text{col}$.
+\end{proof}
+
+\begin{example}
+	Let
+	\[
+		A = \begin{bmatrix}
+			3 & 1 & -4 \\
+			1 & -5 & 9 \\
+			-2 & 6 & 5
+		\end{bmatrix}
+	\]
+	so $||A||_{\text{col}} = \max \{ 3 + 1 + 2, 1 + 5 + 6, 4 + 9 + 5 \} = 18$. The max is attained at column $3$. Let $\underline{x} = (0, 0, 1)$ then $A \underline{x} = (-4, 9, 5)$ and $||A \underline{x}||_1 = 4 + 9 + 5 = 18$.
+\end{example}
+
+\begin{proposition}
+	The vector $\infty$-norm induces the matrix row-sum norm.
+\end{proposition}
+
+\begin{proof}
+	We want to show that
+	\[
+		\max_{||x||_{\infty} = 1} ||Ax||_{\infty} = \max_i \sum_j |A_{i, j}|
+	\]
+	First, we show $||A||_{\infty} \le ||A||_{\text{row}}$ for every $A$ and $x$:
+	\[
+		\begin{aligned}
+			||Ax||_{\infty}
+				& = \max_i \left| \sum_j A_{i, j} x_j \right| \\
+				& \le \max_i \sum_j |A_{i, j}| |x_j| \\
+				& \le \max_i \left\{ \max_k |x_k| \sum_j |A_{i, j}| \right\} \\
+				& = \max_k |x_k| \max_i \sum_j |A_{i, j}| \\
+				& = ||x||_{\infty} ||A||_{\text{row}}
+		\end{aligned}
+	\]
+	Assuming that $x \ne 0$, we divide by $||x||_{\infty}$ and take the maximum:
+	\[
+		||A||_{\infty} = \max_{||x||_{\infty}} \frac{||Ax||_{\infty}}{||x||_{\infty}} \le \max_{||x||_{\infty} \ne 0} ||A||_{\text{row}} = ||A||_{\text{row}}
+	\]
+	To show equality, for every $A$, we need to find an $x$ that gives equality in the inequalities above. By linearity, we can take $||x||_{\infty} = 1$. We want to find an $x$ such that
+	\[
+		\max_k \left| \sum_j A_{k, j} x_j \right| = \max_i \sum_j |A_{i, j}|
+	\]
+	Let $i^*$ be an $i$ that realises the maximum. Then let
+	\[
+		x_j = \text{sgn} (A_{i^*, j})
+	\]
+	Let $k = i^*$, then
+	\[
+		\sum_j A_{i^*, j} x_j = \sum_j A_{i^*, j} \cdot \text{sgn} (A_{i^*, j}) = \sum_j |A_{i^*, j}| = \max_i \sum_j |A_{i, j}|
+	\]
+\end{proof}
+
+\begin{remark}
+	\[
+		||A|| = \sup_{y \ne 0} \frac{||Ay||}{||x||} \quad \forall x \ne 0
+	\]
+	Therefore
+	\[
+		||Ax|| \le ||A|| \cdot ||x|| \quad \forall x
+	\]
+\end{remark}
+
+\begin{example}
+	(Problems class) Show the equivalence of the induced norm definitions.
+	\[
+		\begin{aligned}
+			\sup_{x \ne 0} \frac{||Ax||}{||x||}
+				& = \sup_{x \ne 0} \frac{||Ax|| / ||x||}{||x|| / ||x||} \\
+				& = \sup_{x \ne 0} \frac{||A (x / ||x||)||}{||(x / ||x||)||} \\
+				& = \sup_{x \ne 0} ||A(x / ||x||)|| \\
+				& = \max_{||y|| = 1} ||Ay||
+		\end{aligned}
+	\]
+\end{example}
+
+\begin{example}\label{exa:normOfProductLessThanProductOfNorms}
+	(Problems class) Show that $||AB|| \le ||A|| \cdot ||B||$ for all matrices $A, B$ and every induced norm $||\cdot||$.
+	\[
+		\begin{aligned}
+			\sup_{x \ne 0, Bx \ne 0} \frac{||ABx||}{||x||}
+				& = \sup_{x \ne 0, Bx \ne 0} \frac{||ABx||}{||Bx||} \frac{||Bx||}{||x||} \\
+				& \le \sup_{Bx \ne 0} \frac{||ABx||}{||Bx||} \cdot \sup_{x \ne 0} \frac{||Bx||}{||x||} \\
+				& = ||A|| \cdot ||B||
+		\end{aligned}
+	\]
+	When $Bx = 0$,
+	\[
+		0 = ||ABx|| = ||A|| \cdot ||Bx|| = 0
+	\]
+	so we can remove the condition $Bx \ne 0$ on the $\sup$s in the equation above.
+\end{example}
+
+\subsection{Errors and condition numbers}
+
+In the case where we want to solve $Ax = b$ for $x$, but with some floating po0int error in $b$, we have $b + \delta b$ instead of $b$, where $\delta b$ is unknown but bounded (small). So we have
+\[
+	A (x + \delta x) = b + \delta b
+\]
+It is not always the case that $\delta x$ is also small. We want to find bounds for $\delta x$ in terms of $\delta b$. We have that $A \delta x = \delta b$. Assuming $A^{-1}$ exists, $\delta x = A^{-1} \delta b$. Using any norm $||\cdot||_*$,
+\[
+	||\delta x||_* = ||A^{-1} \delta b||_* \le ||A^{-1}||_* ||\delta b||_*
+\]
+Assuming $x \ne 0$, divide by $||x||_*$:
+\[
+	\frac{||\delta x||_*}{||x||_*} \le ||A^{-1}|| \frac{||\delta b||_*}{||x||_*}
+\]
+Now since $Ax = b$,
+\[
+	||b||_* = ||A x||_* \le ||A||_* ||x||_* \Longrightarrow \frac{1}{||x||_*} \le ||A||_* \frac{1}{||b||_*}
+\]
+Therefore,
+\[
+	\frac{||\delta x||_*}{||x||_*} \le ||A||_* ||A^{-1}||_* \frac{||\delta b||_*}{||b||_*}
+\]
+This means the relative error in $x$ is less than a constant multiplied by the relative error in $b$.
+
+\begin{definition}
+	For any norm $||\cdot||_*$, we define
+	\[
+		\kappa_* (A) := ||A||_* ||A^{-1}||_*
+	\]
+	which is called the \textbf{*-condition} number of the matrix $A$.
+\end{definition}
+
+\begin{example}
+	(Problems class) Prove that $\kappa(A) \ge 1$ for every non-singular matrix $A$ and for every induced matrix norm.
+	\[
+		1 = ||I|| = ||A A^{-1}|| \le ||A|| \cdot ||A^{-1}||
+	\]
+	by Example~\ref{exa:normOfProductLessThanProductOfNorms}.
+\end{example}
+
+\begin{example}
+	(Problems class) Prove that
+	\[
+		||x||_p = {\left( \sum_i |x_i|^p \right)}^{1 / p}
+	\]
+	is a norm for every $p \in [1, \infty)$.
+	\[
+		\begin{aligned}
+			{(||x + y||_p)}^p
+				& = \sum_i |x_i + y_i|^p \\
+				& = \sum_i |x_i + y_i| \cdot |x_i + y_i|^{p - 1} \\
+				& \le \sum_i (|x_i| + |y_i|) |x_i + y_i|^{p - 1} \\
+				& = \sum_i |x_i| \cdot |x_i + y_i|^{p - 1} + \cdots \\
+				& \le {\left( \sum_i |x_i|^r \right)}^{1 / r} {\left( \sum_j |x_j + y_j|^{q (p - 1)} \right)}^{1 / q} + \cdots
+		\end{aligned}
+	\]
+	by the Holder inequality (TODO: define this inequality). Let $r = p, q = 1/(1 - 1/p) = p / (p - 1)$. Then
+	\[
+		\begin{aligned}
+			{(||x + y||_p)}^p
+				& \le {\left( \sum_i |x_i|^p \right)}^{1 / p} {\left( \sum_j |x_j + y_j|^{(p - 1) p / (p - 1)} \right)}^{(p - 1) / p} + \cdots \\
+				& = ||x||_p {(||x + y||)}_p^{p - 1} + ||y||_p {(||x + y||)}_p^{p - 1}
+		\end{aligned}
+	\]
+\end{example}
+
+\subsection{$L^2$ norm, eigenvalues and diagonalisability}
+
+\begin{theorem}\label{thm:smallEigenValuesEquivalentToZeroConvergence}
+	Let $\{ \lambda_j \}$ be the eigenvalues of a matrix $A$. Then
+	\[
+		\max \{ |\lambda_j| \} < 1 \Longleftrightarrow A^k \rightarrow 0 \quad \text{ as } k \rightarrow \infty
+	\]
+\end{theorem}
+
+\begin{example}
+	Let
+	\[
+		A = \begin{bmatrix}
+			0.99 & 10^6 \\
+			0 & 0.99
+		\end{bmatrix}
+		\Longrightarrow
+		A^{128} = \begin{bmatrix}
+			0.2765\dots & 3.751 \cdot 10^6 \\
+			0 & 0.2765\dots
+		\end{bmatrix}
+	\]
+	This does not seem to agree with Theorem~\ref{thm:smallEigenValuesEquivalentToZeroConvergence}, however the theorem is correct, as products and powers of matrices are more complicated than those of complex numbers. For example, for every $z \in \mathbb{C}$, $|z|^k = |z^k|$ but generally $||A^k|| \ne ||A||^k$ for a matrix $A$ and a norm $||\cdot||$. $||A||^k$ could grow before it then tends to zero. This occurs especially when $A$ is not diagonalisable ($A$ is defective, meaning that its eigenvectors do not span $\mathbb{R}^n$).
+
+	In fact, Theorem~\ref{thm:smallEigenValuesEquivalentToZeroConvergence} is easy to prove for diagonalisable $A$, but difficult for defective $A$.
+\end{example}
+
+\begin{definition}
+	The \textbf{spectral radius} of a square matrix $A$ is defined as
+	\[
+		\rho(A) := \max \{ |\lambda_j| \}
+	\]
+	where the $\lambda_j$ are the eigenvalues of $A$.
+\end{definition}
+
+\begin{proposition}\label{prop:symmetricMatrixProperties}
+	If $A$ is symmetric (or hermitian), then
+	\begin{itemize}
+		\item All its eigenvalues are real, so $B v_i = \lambda_i v_i$ where $\lambda_i \in \mathbb{R}$.
+		\item Its eigenvectors $v_i$ form a basis of $\mathbb{R}^n$: every vector $x \in \mathbb{R}^n$ can be written as a linear combination of the eigenvectors of $A$, i.e. $x = \sum_i c_i v_i$ where $v_i$ are the eigenvectors of $A$ and $c_i$ are real numbers.
+		\item Its eigenvectors can be chosen to be orthonormal, i.e. $v_i \cdot v_j = \delta_{ij}$.
+		\item Parseval's identity holds:
+		\[
+			{(||x||_2)}^2 = \left( \sum_i c_i v_i, \sum_j c_j v_j \right) = \sum_{i, j} c_i c_j (v_i, v_j) = \sum_i c_i^2
+		\]
+	\end{itemize}
+\end{proposition}
+
+\begin{definition}
+	A square matrix $A$ is \textbf{normal} if it commutes with its transpose:
+	\[
+		A A^T = A^T A
+	\]
+	($A A^* = A^* A$ for complex matrices).
+\end{definition}
+
+\begin{definition}
+	A matrix $U$ is unitary if
+	\[
+		U^* = U^{-1}
+	\]
+\end{definition}
+
+\begin{definition}
+	A matrix $A$ is unitarily diagonalisable if $A = U D U^*$ for some unitary matrix $U$ and diagonal matrix $D$.
+\end{definition}
+
+\begin{theorem}
+	(\textbf{The spectral theorem}) A matrix $A$ is unitarily diagonalisable if and only if it is normal.
+\end{theorem}
+
+\begin{example}
+	Let $a \ne 1$ and
+	\[
+		A = \begin{bmatrix}
+			1 & a \\
+			0 & 1
+		\end{bmatrix}
+	\]
+	is not normal, as
+	\[
+		A A^T = \begin{bmatrix}
+			1 + a^2 & a \\
+			a & 1
+		\end{bmatrix}
+		\ne
+		A^T A = \begin{bmatrix}
+			1 & a \\
+			a & 1 + a^2
+		\end{bmatrix}
+	\]
+	$\lambda = 1$ is the only eigenvalue, with eigenvector $(1, 0)$. $A$ is not unitarily diagonalisable.
+\end{example}
+
+\begin{theorem}
+	The induced $2$-norm of a matrix $A$ is
+	\[
+		\sqrt{\rho(A^T A)} = \max \{ \sqrt{|\lambda|}: \lambda \text{ is an eigenvalue of } A^T A \}
+	\]
+\end{theorem}
+
+\begin{proof}
+	For every matrix $A$, $A^T A$ is symmetric, so by Proposition~\ref{prop:symmetricMatrixProperties} its eigenvalues are real and its eigenvectors, $\{ v_i \}$ for $i \in \{ 1, \dots, n \}$, are orthonormal and span $\mathbb{R}^n$. So for every $x \in \mathbb{R}^n$,
+	\[
+		x = \sum_i c_i v_i
+	\]
+	for some $c_i \in \mathbb{R}$, $A^T A v_i = c_i v_i$ and $(v_i, v_j) = \delta_{i, j}$.
+	\[
+		\begin{aligned}
+			{(||Ax||_2)}^2
+				& = (Ax, Ax) = (A^T A x, x) = \left( A^T A \sum_i c_i v_i, \sum_j c_j v_j \right) \\
+				& = \left( \sum_i \lambda_i c_i v_i, \sum_k c_j v_j \right) \\
+				& = \sum_{i, j} \lambda_i c_i c_j (v_i, v_j) \\
+				& = \sum_i \lambda_i c_i^2
+		\end{aligned}
+	\]
+	We claim that $\lambda_j \ge 0 \ \forall j$. Indeed, if $\lambda_s < 0$, let $x = v_s$, then
+	\[
+		{(||A v_s||_2)}^2 = \lambda_s < 0
+	\]
+	Write $0 \le \lambda_1 \le \lambda_2 \le \cdots \le \lambda_n$ (counting multiplicities). Then
+	\[
+		{(||Ax||_2)}^2 = \sum_i \lambda_i c_i^2 \le \lambda_n \sum_i c_i^2 = \lambda_n {(||x||_2)}^2
+	\]
+	which gives
+	\[
+		||A||_2 = \sup_{x \ne 0} \frac{||Ax||_2}{||x||_2} \le \sqrt{\lambda_n}
+	\]
+	Taking $x = v_n$ gives ${(||A x_n||_2)}^2 = \lambda_n {(||x_n||_2)}^2$, which gives equality in the above inequality.
+\end{proof}
+
+\begin{remark}
+	$\rho(A^T A) = \rho(A A^T)$.
+\end{remark}
+
+\begin{example}
+	Let
+	\[
+		A = \begin{bmatrix}
+			1 & a \\
+			0 & 1
+		\end{bmatrix}
+		\Longrightarrow
+		A^T A = \begin{bmatrix}
+			1 & 0 \\
+			0 & 1 + a^2
+		\end{bmatrix}
+	\]
+	The eigenvalues of $A^T A$ are given by $0 = (1 - \lambda) (1 + a^2 - \lambda) - a^2$, which gives $\lambda_1 \approx 2$ and $\lambda_2 \approx 2 a^2$ for $|a| >> 1$.
+\end{example}
 
 \end{document}

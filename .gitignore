@@ -41,3 +41,4 @@ yarn-error.log*
 *.log
 *.synctex.gz
 *.out
+*.toc

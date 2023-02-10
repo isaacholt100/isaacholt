@@ -1,26 +1,11 @@
-\documentclass[12pt,a4paper]{article}
-\AddToHook{cmd/section/before}{\clearpage}
-
-\usepackage[a4paper, total={6in, 10in}]{geometry}
-\usepackage[utf8]{inputenc}
-\usepackage{amsfonts, amsmath, amssymb}
-\usepackage{amsthm}
-\usepackage{esint}
-\usepackage{diffcoeff}
-
-\theoremstyle{definition}
-\newtheorem{definition}{Definition}[subsection]
-\newtheorem{theorem}[definition]{Theorem}
-\newtheorem{proposition}[definition]{Proposition}
-\newtheorem{corollary}[definition]{Corollary}
-\newtheorem{lemma}[definition]{Lemma}
-\newtheorem{example}[definition]{Example}
-\newtheorem*{remark}{Remark}
+\input{../header}
 
 \title{Analysis in Many Variables Course Notes}
 \author{Isaac Holt}
 
 \begin{document}
+
+\input{../titletoc.tex}
 
 \begin{theorem}
 	If $f(x): U \rightarrow \mathbb{R}$ is differentiable with U an open subset of $\mathbb{R}^n$ and if $x$ is a function of $u_1, \dots, u_m$, such that the partial derivatives $\diffp{x_i}{u_j}$ exist for all $1 \le i \le n$ and all $1 \le j \le m$, and if $F(u_1, \dots, u_m) = f(x(u_1, \dots, u_m))$ then $\diffp{F}{u_b} = \diffp{x_i}{u_b} \diffp{f}{x_i}$
@@ -620,7 +605,7 @@ In general, line integrals depend on the path between the end points. However, t
 \begin{definition}
 	Let $\Omega \subset \mathbb{R}^n$ be an open set. A \textbf{distribution} is linear continuous map $T: \mathcal{D}(\Omega) \rightarrow \mathbb{R}$. It satisfies
 	\begin{enumerate}
-		\item \textbf{Linearity}: $\forall \Psi \in \mathcal{\Omega}, \forall \phi \in \mathcal{D}(\Omega), \forall a, b \in \mathbb{R}^n$,
+		\item \textbf{Linearity}: $\forall \Psi \in \mathcal{D}(\Omega), \forall \phi \in \mathcal{D}(\Omega), \forall a, b \in \mathbb{R}^n$,
 		\[
 			T(a \Psi + b \phi) = a T(\Psi) + b T(\phi)
 		\]
@@ -782,7 +767,7 @@ In general, line integrals depend on the path between the end points. However, t
 		\[
 			\begin{aligned}
 				T_{\underline{\xi}} (\psi(\underline{x}))
-					& := \int_{\mathbb{R}^n} T(\underline{x} - \underline{\xi}) d \underline{x} \\
+					& := \int_{\mathbb{R}^n} T(\underline{x} - \underline{\xi}) \psi(\underline{x}) d \underline{x} \\
 					& = \int_{\mathbb{R}^n} T(\underline{y}) \psi(\underline{y} + \underline{\xi}) d \underline{y} \\
 					& = T(\psi(\underline{y} + \underline{\xi}))
 			\end{aligned}
@@ -882,7 +867,7 @@ In general, line integrals depend on the path between the end points. However, t
 \begin{definition}
 	$T_1$ and $T_2 \in \mathcal{D}'(\Omega)$ are \textbf{equal} if
 	\[
-		\int_{\Omega} T_1(x) \psi(x) dx = \int_{\Omega} T_2(x) \psi(x) dx \quad \forall \psi \in \mathcal{\Omega}
+		\int_{\Omega} T_1(x) \psi(x) dx = \int_{\Omega} T_2(x) \psi(x) dx \quad \forall \psi \in \mathcal{D}(\Omega)
 	\]
 \end{definition}
 
@@ -896,5 +881,560 @@ In general, line integrals depend on the path between the end points. However, t
 	\]
 	so $A = 1/3$.
 \end{example}
+
+\subsection{The derivative of a distribution}
+
+\begin{definition}
+	For a distribution $T \in \mathcal{D}(\Omega)$, its \textbf{derivative} is defined as
+	\[
+		T'(\psi) = -T(\psi') \quad \forall \psi \in \mathcal{D}(\Omega))
+	\]
+	or symbolically, $\langle T', \psi \rangle = -\langle T, \psi' \rangle$. The \textbf{$n$th derivative} of $T$ is defined as
+	\[
+		T^{(n)} (\psi) = {(-1)}^n T(\psi^{(n)})
+	\]
+	or symbolically, $\langle T^{(n)}, \psi \rangle = {(-1)}^n \langle T, \psi^{(n)} \rangle$.
+\end{definition}
+
+\begin{example}
+	The unit step function $\Theta(t)$ is a locally integrable function, so defined a regular distribution:
+	\[
+		\Theta(\psi) = T_{\Theta} (\psi) = \int_{-\infty}^{\infty} \Theta(t) \psi(t) dt = \int_{0}^{\infty} \psi(t) dt < \infty
+	\]
+	because $\psi$ has compact support. So
+	\[
+		\begin{aligned}
+			\Theta'(t) & = -\Theta(\psi') = -\int_{-\infty}^{\infty} \Theta(t) \psi'(t) dt \\
+			& = -\int_{0}^{\infty} \psi'(t) dt = -\psi(\infty) + \psi(0) = \psi(0) = \delta(\psi)
+		\end{aligned}
+	\]
+	because $\psi$ has compact support. So we have, in the sense of distributions,
+	\[
+		\Theta'(t) = \delta(t)
+	\]
+\end{example}
+
+\begin{example}
+	The derivative of the delta distribution is $\delta'(\psi) = -\delta(\psi') = -\psi'(0)$ and generally, $\delta^{(n)} (\psi) = {(-1)}^n \delta(\psi^{(n)}) = {(-1)}^n \psi^{(n)} (0)$.
+\end{example}
+
+\begin{example}
+	Show that, in the sense of distributions, $\delta'(cx) = \frac{1}{c^2} \delta'(x)$ for a constant $c > 0$.
+	\[
+		\begin{aligned}
+			\int_{-\infty}^{\infty} \delta'(cx) \psi(x) dx & = \frac{1}{c} \int_{-\infty}^{\infty} \delta'(y) \psi(y / c) dy = -\frac{1}{c} \int_{-\infty}^{\infty} \delta(y) \left( \psi(y / c) \right)' dy \\
+			& = -\frac{1}{c^2} \int_{-\infty}^{\infty} \delta(y) \psi'(y / c) dy = \frac{1}{c^2} \psi'(0) = -\frac{1}{c^2} \int_{-\infty}^{\infty} \delta(x) \psi'(x) dx \\
+			& = \frac{1}{c^2} \int_{-\infty}^{\infty} \delta'(x) \psi(x) dx
+		\end{aligned}
+	\]
+\end{example}
+
+\subsection{Leibniz rule for differentiation}
+
+\begin{proposition}
+	For a distribution $T$ and a smooth function $\phi$, the product rule holds:
+	\[
+		(\phi T)' = \phi'T + \phi T'
+	\]
+	and more generally, the Leibniz rule holds:
+	\[
+		{(\phi T)}^{(n)} = \sum_{k = 0}^{n} \binom{n}{k} \phi^{(k)} T^{(n - k)}
+	\]
+\end{proposition}
+
+\begin{example}
+	Let $\psi \in \mathcal{D}(\Omega)$. The symbolic representation of ${(\phi \delta_a)}^{(n)} (\psi)$ is given by
+	\[
+		\begin{aligned}
+			{(\phi \delta_a)}^{(n)} (\psi)
+				& = \int_{\Omega} {(\phi(x) \delta(x - a))}^{(n)} \psi(x) dx \\
+				& = {(-1)}^n \int_{\Omega} (\phi(x) \delta(x - a)) \psi(x)^{(n)} dx = {(-1)}^n \phi(a) \psi^{(n)} (a)
+		\end{aligned}
+	\]
+	We can write this in inner product symbolic notation as
+	\[
+		\langle {(\phi \delta_a)}^{(n)}, \psi \rangle = {(-1)}^n = \langle \phi \delta_a, \psi^{(n)} \rangle = {(-1)}^n \langle \delta_a, \phi \psi^{(n)} \rangle = {(-1)}^n \phi(a) \psi^{(n)} (a)
+	\]
+	Alternatively, by the sifting property of the delta distribution, we can write
+	\[
+		{(\phi \delta_a)}^{(n)} (\psi) = \int_{\Omega} {(\phi(x) \delta(x - a))}^{(n)} \psi(x) dx = \phi(a) \int_{\Omega} \delta^{(n)} (x - a) \psi(x) dx
+	\]
+	before using the definition of the generalised derivative on the $\delta$ distribution. So a smooth factor of the delta function may be replaced by a constant and taken outside the integral.
+\end{example}
+
+TODO: notes up to end of section 2.4.1
+
+\begin{definition}
+	A function $f$ is \textbf{piecewise continuous} for $x \in (a, b)$ if $(a, b)$ can be divided into a finite number of sub intervals and
+	\begin{enumerate}
+		\item $f$ is continuous on each sub interval.
+		\item $f$ tends to a finite limit on the boundaries of each sub interval as approached from the interior of these sub intervals.
+	\end{enumerate}
+\end{definition}
+
+\begin{example}
+	\[
+		f(x) = \begin{cases}
+			\sin(x) & \text{ if } -3 \pi < x \pi \\
+			\frac{1}{2} \cos(x) & \text{ if } \pi \le x < 2 \pi \\
+			\frac{3}{2} & \text { if } 2 \pi \le x < 3 \pi
+		\end{cases}
+	\]
+	on the interval $(a, b) = (-3 \pi, 3 \pi)$. The sub intervals are $(-3 \pi, \pi), (\pi, 2 \pi), (2 \pi 3 \pi)$. $f$ is piecewise continuous.
+\end{example}
+
+\begin{definition}
+	A function $f$ is \textbf{piecewise smooth} if
+	\begin{enumerate}
+		\item $f$ is piecewise continuous.
+		\item $f$ has piecewise continuous derivatives.
+	\end{enumerate}
+\end{definition}
+
+\begin{example}
+	\[
+		f(x) = \begin{cases}
+			x & \text{ if } -\pi < x \le 0 \\
+			\pi & \text{ if } 0 < x < \pi
+		\end{cases}
+	\]
+	on the interval $(-\pi, \pi)$. Then
+	\[
+		f'(x) = \begin{cases}
+			1 & \text{ if } -\pi < x \le 0 \\
+			0 & \text{ if } 0 < x < \pi
+		\end{cases}
+	\]
+	which is piecewise continuous.
+\end{example}
+
+\begin{example}
+	$\tan$ is not a piecewise smooth function.
+\end{example}
+
+\begin{definition}
+	To calculate the derivative of a piecewise smooth function which can be split into $f_1, f_2, \dots$ on sub intervals $(a, x_1), (x_1, x_2), \dots, (x_n, b)$:
+	\begin{enumerate}
+		\item Define $\tilde{f}(x) = f_1(x) + (f_2(x) - f_1(x)) \Theta (x - x_1) + (f_3(x) - f(2)) \Theta (x - x_2) + \cdots$. But $\tilde{f}(x) = f(x)$ on $(a, b)$.
+		\item Compute $f'(x) = \tilde{f}'(x)$.
+	\end{enumerate}
+\end{definition}
+
+\begin{example}
+	\[
+		f(x) = \begin{cases}
+			\sin(x) & \text{ if } -3 \pi < x \pi \\
+			\frac{1}{2} \cos(x) & \text{ if } \pi \le x < 2 \pi \\
+			\frac{3}{2} & \text { if } 2 \pi \le x < 3 \pi
+		\end{cases}
+	\]
+	Then
+	\[
+		f(x) = \tilde{f}(x) = \sin(x) + \left( \frac{1}{2} \cos(x) - \sin(x) \right) \Theta(x - \pi) + \left( \frac{3}{2} - \frac{1}{2} \cos(x) \right) \Theta(x - 2 \pi)
+	\]
+	so
+	\[
+		\begin{aligned}
+			f'(x)
+				& = \cos(x) + \left( -\frac{1}{2} \sin(x) - \cos(x) \right) \Theta(x - \pi) + \left( \frac{1}{2} \cos(x) - \sin(x) \right) \delta(x - \pi) + \frac{1}{2} \sin(x) \Theta(x - 2 \pi) + \left( \frac{3}{2} - \frac{1}{2} \cos(x) \right) \delta(x - 2 \pi) \\
+				& = \cos(x) - \left( \frac{1}{2} \sin(x) + \cos(x) \right) \Theta(x - \pi) + \left( -\frac{1}{2} - 0 \right) \delta(x - \pi) + \frac{1}{2} \sin9x) \Theta(x - 2 \pi) + \left( \frac{3}{2} - \frac{1}{2} \right) \delta(x - 2 \pi) \\
+				& = -\frac{1}{2} \delta(x - \pi) + \delta(x - 2 \pi) + \begin{cases}
+					\cos(x) & \text{ if } 3 \pi < x \le \pi \\
+					-\frac{1}{2} \sin(x) & \text{ if } \pi < x \le 2 \pi \\
+					0 & \text{ if } 2 \pi < x < 3 \pi
+				\end{cases}
+		\end{aligned}
+	\]
+\end{example}
+
+\begin{definition}
+	The \textbf{sign function} is defined as
+	\[
+		\text{sgn}(x) = \Theta(x) - \Theta(-x) = \begin{cases}
+			1 & \text{ if } x > 0 \\
+			0 & \text{ if } x = 0 \\
+			-1 & \text{ if } x < 0
+		\end{cases}
+	\]
+\end{definition}
+
+\begin{example}
+	\[
+		\begin{aligned}
+			\Theta'(-x) (\psi)
+				& = \int_{-\infty}^{\infty} \Theta'(-x) \psi(x) dx \\
+				& = -\int_{-\infty}^{\infty} \Theta(-x) \diff{}{(-x)} \psi(x) dx \\
+				& = \int_{-\infty}^{\infty} \Theta(-x) \diff{}{x} \psi(x) dx \\
+				& = \int_{-\infty}^{\infty} \diff{}{x} \psi(x) dx = \psi(0) - \psi(-\infty) = \psi(0) = \delta(\psi)
+		\end{aligned}
+	\]
+	So the derivative of the sign function is
+	\[
+		\text{sgn}'(x) = \diff{}{x} \Theta(x) - \diff{}{x} \Theta(-x) = \delta(x) - \diff{}{x} \Theta(-x) = 2 \delta(x)
+	\]
+\end{example}
+
+\subsection{The delta distribution in polar/spherical coordinates}
+
+\begin{definition}
+	For a change of coordinates the delta function is defined as
+	\[
+		\delta(\underline{x} - \underline{x_0}) = \frac{1}{|J|} \delta(\underline{\xi} - \underline{\xi_0})
+	\]
+	where $\underline{x} \in \mathbb{R}^n, \underline{\xi} \in \mathbb{R}^n$, $\underline{x}, \underline{\xi}$ are constant vectors of coordinates $(x_1, \dots, x_n), (\xi_1, \dots, \xi_n)$. $J$ is the Jacobian of the change of variable from $\underline{x}$ to $\underline{\xi}$.
+\end{definition}
+
+\begin{example}
+	If the problem at hand does not depend on $\theta$, then
+	\[
+		\delta(\underline{x} - \underline{x_0}) = \frac{1}{2 \pi r} \delta(\underline{r} - \underline{r_0})
+	\]
+\end{example}
+
+\section{Lebesgue Integration}
+
+TODO: notes from lecture
+
+\begin{theorem}
+	Let $f: [a, b] \rightarrow \mathbb{R}$ be bounded. Then $f$ is Riemann integrable iff $f$ is continuous `almost everywhere'' (it is continuous except on sets with zero measure).
+\end{theorem}
+
+\subsection{Hilbert spaces: definitions and examples}
+
+\begin{definition}
+	A \textbf{Hilbert space} $\mathbb{H}$ is a real or complex vector space which satisfies:
+	\begin{enumerate}
+		\item $\mathbb{H}$ has a symmetric (or hermitian for a complex vector space) inner product, $\langle \cdot, \cdot \rangle: \mathbb{H} \times \mathbb{H} \rightarrow \mathbb{C}$, which is a continuous function of two variables. It associates a complex number $\langle u, v \rangle$ to every pair $(u, v)$ in $\mathbb{H} \times \mathbb{H}$. $\langle \cdot, \cdot \rangle$ and satisfies:
+		\begin{enumerate}
+			\item \textbf{Hermiticity or symmetry}: $\langle u, v \rangle = \overline{\langle v, u \rangle}$.
+			\item \textbf{Anti-linearity in the first entry}: $\forall a \in \mathbb{C}, \langle a(u + v), w \rangle = \overline{a} \langle u + v, w \rangle = \overline{a} \langle u, w \rangle + \overline{a} \langle v, w \rangle$.
+			\item \textbf{Positivity}: $\langle u, v \rangle \ge 0$ and $\langle u, u \rangle = 0 \Longleftrightarrow u = 0$.
+		\end{enumerate}
+		\item $\mathbb{H}$ is \textbf{complete} for the norm induced by the inner product, which is defined as $||u|| = \sqrt{\langle u, u \rangle}$. (\textbf{Complete} means that every Cauchy sequence in $\mathbb{H}$ has a limit in $\mathbb{H}$).
+	\end{enumerate}
+\end{definition}
+
+\begin{remark}
+	$\overline{\langle a(u + v), w \rangle} = \langle w, a(u + v) \rangle = a \overline{\langle u, w \rangle} + a \overline{\langle v, w \rangle} = a \langle w, u \rangle + a \langle w, v \rangle$. This is linearity in the second entry, or \textbf{sesquilinearity}.
+\end{remark}
+
+\begin{definition}
+	A vector space with an inner product and induced norm $||\cdot|| = \sqrt{\langle \cdot, \cdot \rangle}$ is called a \textbf{inner product space} (or \textbf{pre-Hilbert space}).
+\end{definition}
+
+\begin{definition}
+	If $V$ is an inner product space, it can be viewed as a \textbf{metric space} with metric $d$, where
+	\[
+		d(u, v) := ||u - v|| = \sqrt{\langle u - v, u - v \rangle}
+	\]
+	Then a sequence ${(v_n)}_{n \in \mathbb{N}} \in (V, d)$ converges to $v$ \textbf{in norm} if
+	\[
+		\lim_{n \rightarrow \infty} ||v_n - v|| = 0
+	\]
+	or equivalently,
+	\[
+		\forall \epsilon > 0, \exists n \in \mathbb{N}, \forall n \ge N, \quad ||v_n - v|| < \epsilon
+	\]
+\end{definition}
+
+\begin{definition}
+	A sequence ${(v_n)}_{n \in \mathbb{N}} \in (V, d)$ is called a \textbf{Cauchy sequence} if
+	\[
+		\forall \epsilon > 0, \exists n \in \mathbb{N}, \forall m \ge N, \forall n \ge N, \quad d(v_m, v_n) < \epsilon
+	\]
+\end{definition}
+
+\begin{remark}
+	Every Cauchy sequence is convergent in $\mathbb{R}$, since $\mathbb{R}$ is complete, but this is not true in all spaces.
+\end{remark}
+
+\begin{definition}
+	A metric space $(V, d)$ is called \textbf{complete} if every Cauchy sequence in $(V, d)$ converges in $V$.
+\end{definition}
+
+\subsection{Inner products defined by integrals}
+
+\begin{definition}
+	Consider the vector space $V$ of complex-valued functions, defined on an interval $[a, b]$ and let $\omega: [a, b] \rightarrow \mathbb{R}^+$ be a non-negative function with finitely many zeroes on $[a, b]$. $\omega$ is called a \textbf{weight} function.
+
+	The inner product with weight $\omega$ for every pair of functions $(u, v) \in V^2$ is defined as
+	\[
+		{\langle u, v \rangle}_{\omega} = \int_{a}^{b} \bar{u}(x) v(x) \omega(x) dx
+	\]
+\end{definition}
+
+\begin{remark}
+	If $\omega = 1$, then ${\langle u, v \rangle}_1$ is just written as $\langle u, v \rangle$.
+\end{remark}
+
+\begin{remark}
+	${\langle u, v \rangle}_{\omega} = {\langle u, v \omega \rangle}_1 = \langle u, v \omega \rangle = \langle u \omega, v \rangle$, since $\omega$ is a real function.
+\end{remark}
+
+\begin{example}
+	The space $C^0 (\omega, [a, b])$ of continuous functions on $[a, b]$ with inner product $*$ and norm
+	\[
+		||u||_{L^2 (w, [a, b])} := \sqrt{\int_{a}^{b} \bar{u}(x) u(x) \omega(x) dx} = \sqrt{\int_{a}^{b} |u(x)|^2 \omega(x) dx}
+	\]
+	is not complete for the norm $L^2$. Its completion is $L^2 (\omega, [a, b])$, the space of square-integrable functions on $[a, b]$ with inner product ${\langle u, v \rangle}_{\omega}$.
+\end{example}
+
+\begin{example}
+	Consider $C^0(1, [0, 1])$, written as $C^0 ([a, b])$. Let
+	\[
+		f_n(x) = \begin{cases}
+			1 & \text{ if } x > \frac{1}{2} \\
+			0 & \text{ if } x \le \frac{1}{2} - \frac{1}{n} \\
+			n(x - \frac{1}{2} - \frac{1}{n}) & \text{ if } \frac{1}{2} - \frac{1}{n} < x < \frac{1}{2}
+		\end{cases}
+	\]
+	${(f_n)}_{n \in \mathbb{N}}$ is a Cauchy sequence, but it does not converge to a function in $C^0([0, 1])$.
+\end{example}
+
+\subsection{Bounded and unbounded linear operators}
+
+\begin{definition}
+	Let $(V, d)$ be a metric space. $W \subset V$ is called \textbf{dense} in $V$ if
+	\[
+		\forall v \in V, \forall \epsilon > 0, \exists w \in W, \quad d(v, w) < \epsilon
+	\]
+	So $W$ is dense in $V$ if every point in $V$ has points in $W$ that are arbitrarily close.
+\end{definition}
+
+\begin{definition}
+	A \textbf{linear Operator} on $\mathbb{H}$ is a pair $(L, D(L))$ which satisfies
+	\begin{enumerate}
+		\item $D(L) \subseteq \mathbb{H}$ and $D(L)$ is dense in $\mathbb{H}$.
+		\item $L: D(L) \rightarrow \mathbb{H}$ is linear, so it satisfies
+		\[
+			L(a u + b v) = a L(u) + b L(v)
+		\]
+		for every $a, b \in \mathbb{C}$, for every $u, v \in D(L)$.
+	\end{enumerate}
+\end{definition}
+
+\begin{example}
+	Let $L = -\diffp[2]{}{x}$.
+	\begin{enumerate}
+		\item The pair $(L, D_N(L))$ with $D_N(L) := \{ u \in C^2([a, b]) \subset L^2 ([a, b]): u'(a) = u'(b) = 0 \}$ is a linear Operator on $L^2 ([a, b])$. $D_N(L)$ is dense in $L^2 ([a, b])$ since $C^{\infty} ([a, b]) \subset C^2 ([a, b])$ is dense in $L^2 ([a, b])$. Here, $D_N$ stands for Neumann boundary conditions.
+		\item The pair $(L, D_D (L)) := \{ u \in C^2 ([a, b]) \subset L^2 ([a, b]): u(a) = u(b) = 0 \}$ is a linear Operator. Here, $D_D$ stands for Dirichlet boundary conditions. This linear Operator is different from $(L, D_N(L))$, since for example, if $\lambda = 0$, then $L(u) = \lambda u$ and $L(u) = -\diffp[2]{u}{x} = 0$, so $u(x) = Ax + B$ for constants $A$ and $B$. But if $u(a) = u(b) = 0$, then $u(x) = 0$ for all $x \in [a, b]$. Whereas if $u'(a) = u'(b) = 0$, then $A = 0$ so $u(x) = B$.
+	\end{enumerate}
+\end{example}
+
+\begin{definition}
+	Let $(\mathbb{H}_1, ||\cdot||_{H_1})$ and $(\mathbb{H}_2, ||\cdot||_{H_2})$ be Hilbert spaces. A linear operator $L: \mathbb{H}_1 \rightarrow \mathbb{H}_2$ is called \textbf{bounded} if for some $M > 0$,
+	\[
+		\forall u \in \mathbb{H}_1, \quad ||L(v)||_{H_2} \le M ||v||_{H_1}
+	\]
+	If no such $M$ exists, then $L$ is called \textbf{unbounded}.
+\end{definition}
+
+\begin{definition}
+	The \textbf{norm} of $L$ is defined as
+	\[
+		||L|| := \inf \{ M: ||L(v)||_{H_2} \le M ||v||_{H_1} \text{ for every } v \in \mathbb{H}_1 \}
+	\]
+\end{definition}
+
+\begin{example}
+	$I: \mathbb{H} \rightarrow \mathbb{H}$ defined as $I(v) = v$ is bounded, since
+	\[
+		||I(v)||_{\mathbb{H}} = ||v||_{\mathbb{H}} \le M ||v||_{\mathbb{H}}
+	\]
+	for every $M \ge 1$. So $||I|| = 1$ as $M = 1$ is the lower bound.
+\end{example}
+
+\begin{example}
+	Differential operators are usually unbounded. For example,
+	\[
+		A: L^2 ([a, b]) \rightarrow L^2 ([a, b]), \quad A(x(t)) = x'(t)
+	\]
+	The domain, $D(A) = \{ x: x \in L^2([-\pi, \pi]), x \in C^1 ([a, b]) \}$. Consider a family of functions $x_n(t)$ in $L^2([-\pi, \pi])$, for example, $x_n(t) = \cos(nt)$ then $A(x_n) = -n \sin(nt)$. Now,
+	\[
+		\begin{aligned}
+			||x_n||_{L^2} & = \sqrt{\int_{\pi}^{\pi} \overline{\cos(nt)} \cos(nt) dt} = \sqrt{\pi} \\
+			||A(x_n)||_{L^2} & = \sqrt{\int_{\pi}^{\pi} \overline{-n \sin(nt)} (-n \sin(nt)) dt} = \sqrt{\pi n^2}
+		\end{aligned}
+	\]
+	Hence
+	\[
+		\frac{||A(x_n)||_{L^2}}{||x_n||_{L^2}} = n
+	\]
+	which is unbounded.
+\end{example}
+
+\begin{definition}
+	Let $\mathbb{H}_1, \mathbb{H}_2$ be Hilbert spaces, with ${\langle \cdot, \cdot \rangle}^{(1)}$ and ${\langle \cdot, \cdot \rangle}^{(2)}$. Let $L: D(L) \subset \mathbb{H}_1 \rightarrow \mathbb{H}_2$ be an unbounded linear Operator on $\mathbb{H}_1$, with $D(L)$ dense in $\mathbb{H}_1$.
+	
+	The \textbf{adjoint} $(L^*, D(L^*))$ of $L$ is defined as the linear Operator with $L*: D(L^*) \subset \mathbb{H}_2 \rightarrow \mathbb{H}_1$ defined by
+	\[
+		{\langle L(v_1), v_2 \rangle}^{(2)} = {\langle v_1, L*(v_2) \rangle}^{(1)}, \quad v_1 \in \mathbb{H}_1
+	\]
+	where
+	\[
+		D(L*) = \{ v_2 \in \mathbb{H}_2: \exists v_2^* \in \mathbb{H}_1, \  {\langle v_1, v_2^* \rangle}^{(1)} = {\langle L(v_1), v_2 \rangle}^{(2)} \ \forall v_1 \in \mathbb{H}_1 \}
+	\]
+	For every $v_2 \in D(L*)$, $v_2^* \in D(L)$ is unique and $v_2^* = L*(v_2)$.
+\end{definition}
+
+\subsection{Sturm-Liouville operators}
+
+\begin{proposition}\label{prop:greensFormula}
+	(\textbf{Green's formula}) Let $(L, D(L))$ be a linear differential Operator  and define
+	\[
+		L* := \overline{p_0} (x) d_x^2 + (2 \overline{p_0}'(x) - \overline{p_1}(x)) d_x + (\overline{p_0}''(x) - \overline{p_1}'(x) + \overline{p_2}(x))
+	\]
+	Then
+	\[
+		\forall u, v \in C^2 ([a, b]), \quad \langle L(u), v \rangle - \langle u, L^*(v) \rangle = {\left[ \overline{p_0} (v \overline{u}' - v' \overline{u}) + (\overline{p_1} - \overline{p_0}') v \overline{u} \right]}_a^b
+	\]
+\end{proposition}
+
+\begin{proof}
+	Omitted.
+\end{proof}
+
+\begin{definition}
+	The operator $L^*$ is called the \textbf{formal adjoint} of $L$ (since $D(L^*)$ has not yet been specified in order to determine the boundary terms in Green's formula).
+\end{definition}
+
+TODO: define BVP or IVP
+
+\begin{definition}
+	Consider a BVP or IVP involving $(L, D(L))$. The adjoint $(L*, D(L*))$ is given by $L*$, defined in \hyperref[prop:greensFormula]{Green's formula} and its domain $D(L*)$ consists of all functions $v$ whose boundary coniditions ensure that the boundary terms in Green's formula vanish, i.e.
+	\[
+		\left[ \overline{p_0} (v \overline{u}' - v' \overline{u}) + (\overline{p_1} - \overline{p_0}') uv \right] = 0
+	\]
+	If this is true, then $\langle L(u), v \rangle - \langle u, L^*(v) \rangle = 0$ by Green's formula and $(L*, D(L*))$ is the adjoint of $(L, D(L))$.
+\end{definition}
+
+\begin{definition}
+	The BVP $L(u) = f$, $B_1(u) = B_2(u) = 0$ is called \textbf{self-adjoint} if $L^* = L$ and $D(L*) = D(L)$.
+\end{definition}
+
+\begin{example}
+	Let $L = \diffp[2]{}{x}$, $L(u) = f$, $a < x < b$, $B_1(u) := u(a) = 0$, $B_2(u) := u(b) = 0$ (Dirichlet boundary conditions). Then
+	\[
+		D(L) = \{ u: u \in C^2 ([a, b]): u(a) = u(b) = 0 \}
+	\]
+	Also,
+	\[
+		L* := \overline{p_0} (x) d_x^2 + (2 \overline{p_0}'(x) - \overline{p_1}(x)) d_x + (\overline{p_0}''(x) - \overline{p_1}'(x) + \overline{p_2}(x))
+	\]
+	Here, $p_0 = 1, p_1 = p_2 = 0, \overline{p_0} = p_0, p_0' = 0$. So
+	\[
+		L* = d_x^2 = L
+	\]
+	so $L$ is formally self-adjoint. By \hyperref[prop:greensFormula]{Green's formula}, the boundary terms are
+	\[
+		\begin{aligned}
+			{\left[ \overline{p_0} (v \overline{u}' - v' \overline{u}) + (\overline{p_1} - \overline{p_0}') v \overline{u} \right]}_a^b 
+				& = {\left[ v \overline{u}' - v' \overline{u} \right]}_a^b \\
+				& = v(b) \overline{u}'(b) - v'(b) \overline{u}(b) - v(a) \overline{u}'(a) + v'(a) \overline{u}(a) \\
+				& = v(b) \overline{u}'(b) - v(a) \overline{u}'(a) \\
+				& = 0 \text{ iff } v(a) = v(b) = 0
+		\end{aligned}
+	\]
+	since $u(a) = 0 \Longrightarrow \overline{u}(a) = 0$ and $u(b) = 0 \Longrightarrow \overline{u}(b) = 0$. So $D(L*) = D(L)$ and the BVP is self-adjoint.
+	\[
+		L = p_0 d_x^2 + p_1 d_x + p_2, \quad L* = \overline{p_0} d_x^2 + (2 \overline{p_0}' - \overline{p_1}) d_x + (\overline{p_0}'' - \overline{p_1}' + \overline{p_2})
+	\]
+	so $L = L*$ if $p_0 = \overline{p_0}$ (so $p_0$ is a real-valued function), $p_1 = 2 \overline{p_0}' - \overline{p_1}$, and $p_2 = \overline{p_0}'' - \overline{p_1}' + \overline{p_2}$. So $p_1 + \overline{p_1} = 2 \text{Re} (p_1) = 2 p_0'$. Also $p_2 - \overline{p_2} = 2 \text{Im}(p_2) = p_0'' - \overline{p_1}'$ so $2 \text{Im}(p_2) = \text{Im}(p_1')$.
+
+	Hence $\{ p_0, \text{Im}(p_0), \text{Re}(p_2) \}$ characterises a formally self-adjoint operator.
+\end{example}
+
+\begin{definition}
+	Let $L$ be a second-order linear operator with real valued coefficients. If $p_0' = p_1$ then
+	\[
+		L^* = p_0 d_x^2 + p_0' d_x + p_2 = \diff{}{x} \left( p_0 \diff{}{x} \right) + p_2 = L
+	\]
+	Operators of this form are called \textbf{Sturm-Liouville} operators.
+\end{definition}
+
+\begin{example}
+	(Problems class) Let
+	\[
+		L = \diff{}{x} \left( r(x) \diff{}{x} \right) + s(x)
+	\]
+	be a differential operator on $[a, b]$, with $r(x) \in C^1 ([a, b])$ and $s \in C^0 ([a, b])$ and $r$ and $s$ real-valued functions. Assume that $r(x) \ge c$ on $[a, b]$ for some constant $c$. Consider the BVP
+	\[
+		L(u(x)) = f(x), \quad x \in (a, b), u \in C^2 ([a, b])
+	\]
+	where $f(x)$ is a source term and sufficiently smooth. The boundary conditions are $B_1(u) := u'(a) - \alpha u(a) = 0$ and $B_2(u) = u'(b) + \beta u(b) = 0$ for some constants $\alpha, \beta \in \mathbb{R}$. Find the adjoint boundary conditions $B_1^*(v) = 0$ and $B_2^*(v) = 0$ and determine whether the BVP is self-adjoint.
+
+	A BVP is self-adjoint if $L = L^*$ ($L$ is formally self-adjoint) and $D(L) = D(L^*)$. $L$ is a Sturm-Liouville operator so $L = L^*$. $D(L) = \{ u \in C^2 ([a, b]): u'(a) - \alpha u(a), u'(b) + \beta u(b) = 0 \}$. Using \hyperref[prop:greensFormula]{Green's formula},
+	\[
+		\begin{aligned}
+			\langle L(u), v \rangle - \langle u, L^*(v) \rangle
+				& = (\langle L(u), v \rangle - \langle u, L(v) \rangle) \\
+				& = {\left[ \overline{p_0} (v \overline{u}' - v' \overline{u}) + (\overline{p_1} - \overline{p_0}') v \overline{u} \right]}_a^b \\
+				& = \left[ r(x) v(x) u'(x) - r(x) v'(x) \overline{u}(x) \right]_a^b \\
+				& = r(b) v(b) \overline{u}'(b) - r(b) v'(b) \overline{u}(b) - r(a) v(a) \overline{u}'(a) + r(a) v'(a) \overline{u}(a)
+		\end{aligned}
+	\]
+	Now, $\overline{u}'(a) = \alpha \overline{u}(a)$ (since $u'(a) = \alpha u(a)$ and $\alpha \in \mathbb{R}$) and $\overline{u}'(b) = -\beta \overline{u}(b)$ (since $u'(b) = -\beta u(b)$ and $\beta \in \mathbb{R}$). So we get the boundary terms
+	\[
+		\begin{aligned}
+			& r(b) v(b) (-\beta \overline{u}(b)) - r(b) v'(b) \overline{u}(b) - r(a) v(a) (\alpha \overline{u}(a)) + r(a) v'(a) \overline{u}(a) \\
+			& = r(b) \overline{u}(b) (-\beta v(b) - v'(b)) + r(a) \overline{u}(a) (v'(a) - \alpha v(a)) \\
+			& = 0 \text{ iff } v'(b) = -\beta v(b) \text{ and } v'(a) = \alpha v(a)
+		\end{aligned}
+	\]
+	Hence the adjoint boundary conditions are
+	\[
+		B_1^*(v) = v'(a) - \alpha v(a) = 0 \text{ and } B_2^*(v) = v'(b) + \beta v(b) = 0
+	\]
+	and
+	\[
+		D(L^*) = D(L) = \{ v \in C^2 ([a, b]): B_1(v) = 0, B_2(v) = 0 \}
+	\]
+	So the BVP is self-adjoint.
+\end{example}
+
+\begin{example}
+	(Problems class) Is the operator
+	\[
+		L = (1 - x^2) \diff[2]{}{x} - 3x \diff{}{x} + v(v + 2)
+	\]
+	where $v$ is a constant and $-1 \le x \le 1$ formally self-adjoint of Sturm-Liouville type? If not, convert $L$ into a formally self-adjoint operator of Sturm-Liouville type.
+
+	$L$ is not a Sturm-Liouville operator since $p_0 = 1 - x^2$, $p_1 = -3x \ne p_0'$. We can convert $L$ into a Sturm-Liouville operator by multiplying $L$ by a factor
+	\[
+		\rho(x) = \frac{1}{p_0(x)} \exp \left( \int \frac{p_1(x)}{p_0(x)} \right) = \frac{1}{1 - x^2} \exp \left( \int \frac{-3x}{1 - x^2} \right) = {(1 - x^2)}^{1 / 2}
+	\]
+	so
+	\[
+		(\rho L) (x) = (1 - x^2)^{3 / 2} \diff[2]{}{x} - 3x (1 - x^2)^{1 / 2} \diff{}{x} + v(v + 2) (1 - x^2)^{1 / 2}
+	\]
+\end{example}
+
+\begin{remark}
+	More generally, for an operator
+	\[
+		L = p_0 \diff[2]{p_1}{x} + p_1 \diff{}{x} + p_2
+	\]
+	we have
+	\[
+		\rho L = \rho p_0 \diff[2]{p_1}{x} + \rho p_1 \diff{}{x} + \rho p_2
+	\]
+	The adjoint of $L$ is
+	\[
+		L^* = \overline{p_0} \diff[2]{}{x} + (2 \overline{p_0}' - \overline{p_1}) \diff{}{x} + \overline{p_0}'' - \overline{p_1}' + \overline{p_2} =  \
+		p_0 \diff[2]{}{x} + (2 p_0' - p_1) \diff{}{x} + p_0'' - p_1' + p_2
+	\]
+	since $p_i$ are real-valued. Hence, with $p_i \rightarrow \rho p_i$,
+	\[
+		{(\rho L)}^* = \rho p_0 \diff[2]{}{x} + (2 (\rho p_0)' - (\rho p_1)) \diff{}{x} + (\rho p_0)'' - (\rho p_1)' + \rho p_2 = \rho L
+	\]
+	So $2 (\rho p_0)' - \rho p_1 = \rho p_1$ so
+	\[
+		\int \frac{\rho'}{\rho} dx = \int \frac{p_1 - p_0'}{p_0} dx
+	\]
+	which gives
+	\[
+		\rho = \frac{1}{p_0} \exp \left( \int \frac{p_1}{p_0} dx \right)
+	\]
+\end{remark}
 
 \end{document}

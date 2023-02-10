@@ -1,20 +1,4 @@
-\documentclass[12pt,a4paper]{article}
-\AddToHook{cmd/section/before}{\clearpage}
-
-\usepackage[a4paper, total={6in, 10in}]{geometry}
-\usepackage[utf8]{inputenc}
-\usepackage{amsfonts, amsmath, amssymb, amsthm}
-\usepackage{diffcoeff}
-\usepackage{hyperref}
-
-\theoremstyle{definition}
-\newtheorem{definition}{Definition}[subsection]
-\newtheorem{theorem}[definition]{Theorem}
-\newtheorem{proposition}[definition]{Proposition}
-\newtheorem{corollary}[definition]{Corollary}
-\newtheorem{lemma}[definition]{Lemma}
-\newtheorem{example}[definition]{Example}
-\newtheorem*{remark}{Remark}
+\input{../header.tex}
 
 \let\oldforall\forall
 \renewcommand{\forall}{\ \oldforall}
@@ -28,7 +12,8 @@
 \author{Isaac Holt}
 
 \begin{document}
-\maketitle
+
+\input{../titletoc.tex}
 
 \section{The action principle}
 
@@ -925,5 +910,573 @@ TODO: properties on poisson bracket
 	
 	The Gaussian wave function is an example of this.
 \end{definition}
+
+\subsection{The Hilbert space}
+
+\begin{definition}
+	A \textbf{Hermitian inner product} on a vector space $V$ is a map $\langle \cdot, \cdot \rangle: V \times V \rightarrow \mathbb{C}$ which satisifes the following properties:
+	\begin{enumerate}
+		\item $\forall v, w \in V, \langle v, w \rangle = \overline{\langle w, v \rangle}$.
+		\item $\forall v, w_1, w_2 \in V, a_1, a_2 \in \mathbb{C}, \langle v, a_1 w_1 + a_2 w_2 \rangle = a_1 \langle v, w_1 \rangle + a_2 \langle v, w_2 \rangle$.
+		\item $\forall v, w_1, w_2 \in V, a_1, a_2 \in \mathbb{C}, \langle a_1 w_1 + a_2 w_2, v \rangle = \overline{a_1} \langle w_1, v \rangle + \overline{a_2} \langle w_2, v \rangle$.
+		\item $\forall v \in V, \langle v, v \rangle \ge 0$ and $\langle v, v \rangle = 0 \Longleftrightarrow v = 0$.
+	\end{enumerate}
+\end{definition}
+
+\begin{remark}
+	A basis $\{ e_j \}$ is an orthonormal basis for an $n$-dimensional vector space $V$ if
+	\[
+		\langle e_i, e_j \rangle = \delta_{i, j}
+	\]
+	This means for every $v \in V$,
+	\[
+		v = \sum_{i = 1}^{n} v_i e_i
+	\]
+	where the $i$th component of the vector is $v_i = \langle v, e_i \rangle$. The Hermitian inner product of $v, w \in V$ is therefore
+	\[
+		\langle v, w \rangle = \sum_{i = 1}^{n} \overline{v_i} w_i
+	\]
+\end{remark}
+
+\begin{definition}
+	The \textbf{norm} of a vector $v \in V$ is defined as
+	\[
+		|v| := \sqrt{\langle v, v \rangle}
+	\]
+\end{definition}
+
+\begin{remark}
+	With an orthonormal basis, the squared norm of $v$ is simply
+	\[
+		|v|^2 := \langle v, v \rangle = \sum_{i = 1}^{n} |v_i|^2
+	\]
+\end{remark}
+
+\begin{definition}
+	At a fixed time $t$, a wave function $\psi: \mathbb{R} \rightarrow \mathbb{C}$ is called \textbf{square normalisable} if
+	\[
+		\int_{-\infty}^{\infty} |\psi(x)|^2 dx < \infty
+	\]
+	which means it has a probabilistic interpretation (as we can multiply it by a constant to make the probability of finding a particle anywhere equal to $1$).
+\end{definition}
+
+\begin{proposition}
+	The set of continuous square-integrable wave functions forms a complex vector space. In particular, for all square-integrable wave functions $\psi_1, \psi_2$ and for every $a_1, a_2 \in \mathbb{C}$, the wave function
+	\[
+		a_1 \psi_1 + a_2 \psi_2
+	\]
+	is also square-integrable.
+\end{proposition}
+
+\begin{proof}
+	Clearly, if $\psi_1$ is square-integrable then for every $a_1 \in \mathbb{C}$, $a_1 \psi_1$ is square-integrable. So now we must prove $\psi_1 + \psi_2$ is square-integrable. For every $x \in \mathbb{R}$,
+	\[
+		\begin{aligned}
+			|\psi_1(x) + \psi_2(x)|^2
+				& = \langle \psi_1(x) + \psi_2(x), \psi_1(x) + \psi_2(x) \rangle \\
+				& = \langle \psi_1(x) + \psi_2(x), \psi_1(x) \rangle + \langle \psi_1(x) + \psi_2(x), \psi_2(x) \rangle \\
+				& = \langle \psi_1(x), \psi_1(x) \rangle + \langle \psi_2(x), \psi_1(x) \rangle + \langle \psi_1(x), \psi_2(x) \rangle + \langle \psi_2(x), \psi_2(x) \rangle \\
+				& = \langle \psi_1(x), \psi_1(x) \rangle + \overline{\langle \psi_1(x), \psi_2(x) \rangle} + \langle \psi_1(x), \psi_2(x) \rangle + \langle \psi_2(x), \psi_2(x) \rangle \\
+				& = |\psi_1(x)|^2 + |\psi_2(x)|^2 + 2 \text{Re}(\overline{\psi_1(x)} \psi_2(x)) \\
+				& \le |\psi_1(x)|^2 + |\psi_2(x)|^2 + 2 |\overline{\psi_1(x)} \psi_2(x)| \\
+				& \le |\psi_1(x)|^2 + |\psi_2(x)|^2 + 2 |\overline{\psi_1(x)}| |\psi_2(x)| \\
+				& = |\psi_1(x)|^2 + |\psi_2(x)|^2 + (|\psi_1(x)|^2 + |\psi_2(x)|^2) - {(|\psi_1(x)| + |\psi_2(x)|)}^2 \\
+				& \le 2 |\psi_1(x)|^2 + 2 |\psi_2(x)|^2
+		\end{aligned}
+	\]
+	Hence,
+	\[
+		\int_{-\infty}^{\infty} |\psi_1(x) + \psi_2(x)|^2 dx \le 2 \int_{-\infty}^{\infty} |\psi_1(x)|^2 + 2 \int_{-\infty}^{\infty} |\psi_2(x)|^2
+	\]
+	Hence $\psi_1 + \psi_2$ is square-integrable.
+\end{proof}
+
+\begin{definition}
+	We define an \textbf{inner product} over the set of \textbf{wave functions} as
+	\[
+		\langle \psi_1, \psi_2 \rangle := \int_{-\infty}^{\infty} \overline{\psi_1(x)} \psi_2(x) dx
+	\]
+\end{definition}
+
+\begin{proposition}
+	The inner product defined above is a Hermitian inner product.
+\end{proposition}
+
+\begin{proof}
+	Properties 1, 2 and 3 are clear from the definition. For property 4,
+	\[
+		\langle \psi, \psi \rangle := \int_{-\infty}^{\infty} |\psi(x)|^2 dx \ge 0
+	\]
+	as the integrand $|\psi(x)|^2$ is non-negative. If $\langle \psi, \psi \rangle = 0$, then $|\psi(x)|^2 = 0$ as $|\psi(x)|^2$ is continuous, hence $\psi(x) = 0$.
+\end{proof}
+
+\begin{definition}
+	The vector space of wave functions with the Hermitian inner product above form a \textbf{Hilbert space}.
+\end{definition}
+
+\begin{definition}
+	We define an \textbf{orthonormal basis for the set of wave functions} to be a set of wave functions $\{ \phi_n(x) \}$ such that
+	\[
+		\langle \phi_m, \phi_n \rangle = \delta_{m, n}
+	\]
+	and every continuous square-integrable wave function $\psi$ can be expressed uniquely as
+	\[
+		\psi(x) = \sum_n c_n \phi_n(x)
+	\]
+	where
+	\[
+		c_n = \langle \phi_n, \psi \rangle = \int_{-\infty}^{\infty} \overline{\phi_n(x)} \psi(x)
+	\]
+	This allows us to express the Hermitian inner product in terms of the $c_n$:
+	\[
+		\langle \psi_1, \psi_2 \rangle := \int_{-\infty}^{\infty} \overline{\psi_1(x)} \psi_2(x) dx = \sum_n \overline{c_{1, n}} c_{2, n}
+	\]
+	which gives the squared norm as
+	\[
+		\langle \psi, \psi \rangle = \int_{-\infty}^{\infty} |\psi(x)|^2 dx = \sum_n |c_n|^2
+	\]
+\end{definition}
+
+\begin{example}\label{exa:infinitePotentialWellBasisFunctions}
+	For an infinite potential well in the region $(0, L)$, we can restrict the square-integrable to ones that vanish outside $(0, L)$. For every $n \in \mathbb{N}$, define a basis
+	\[
+		\phi_n(x) = \sqrt{\frac{2}{L}} \sin \left( \frac{n \pi x}{L} \right)
+	\]
+	The $\phi_n$ are orthogonal with respect to the inner product:
+	\[
+		\begin{aligned}
+			\langle \phi_m, \phi_n \rangle
+				& = \int_{0}^{L} \overline{\phi_m(x)} \phi_n(x) dx \\
+				& = \frac{2}{L} \sin \left( \frac{m \pi x}{L} \right) \sin \left( \frac{n \pi x}{L} \right) dx \\
+				& = \frac{1}{L} \int_{0}^{L} \left( \cos \left( \frac{(m - n) \pi x}{L} \right) - \cos \left( \frac{(m + n) \pi x}{L} \right) \right) dx \\
+				& = \delta_{m, n} - \delta_{m, -n} \\
+				& = \delta_{m, n}
+		\end{aligned}
+	\]
+	So any continuous square-integrable wave function in this region has the unique form
+	\[
+		\phi(x) = \sum_{n =0}^{\infty} c_n \phi_n(x) = \sqrt{\frac{2}{L}} \sum_{n = 1}^{\infty} \sin \left( \frac{n \pi x}{L} \right)
+	\]
+	This is precisely Fourier's theorem, with the Fourier coefficients $c_n$ given by
+	\[
+		c_n = \langle \phi_n, \psi \rangle = \sqrt{\frac{2}{L}} \int_{0}^{L} \sin \left( \frac{n \pi x}{L} \right) \psi(x) dx
+	\]
+	The norm squared of $\psi$ is
+	\[
+		\langle \psi, \psi \rangle = \int_{0}^{L} |\psi(x)|^2 dx = \sum_{n = 1}^{\infty} |c_n|^2
+	\]
+	which is the statement of Parseval's theorem.
+\end{example}
+
+\begin{example}
+	Consider a pyramid wave function in an infinite potential well in $(0, L)$ defined as
+	\[
+		\psi(x) = \sqrt{\frac{12}{L}} \cdot \begin{cases}
+			\frac{x}{L} & \text{ if } 0 \le x \le \frac{L}{2} \\
+			\frac{L - x}{L} & \text{ if } \frac{L}{2} \le x \le L
+		\end{cases}
+	\]
+	Then the Fourier coefficients are given by
+	\[
+		\begin{aligned}
+			c_n
+				& = \sqrt{\frac{2}{L}} \int_{0}^{L} \sin \left( \frac{n \pi x}{L} \right) \psi(x) dx \\
+				& = \sqrt{\frac{24}{L^2}} \left( \int_{0}^{L / 2} \frac{x}{L} \sin \left( \frac{n \pi x}{L} \right) dx + \int_{L / 2}^{L} \left( 1 - \frac{x}{L} \right) \sin \left( \frac{n \pi x}{L} \right) dx \right) \\
+				& = \sqrt{\frac{24}{L^2}} (1 - {(-1)}^n) \int_{0}^{L / 2} \frac{x}{L} \sin \left( \frac{n \pi x}{L} \right) dx \\
+				& = \sqrt{24} (1 - {(-1)}^n) \frac{{(-1)}^{(n + 1)/2}}{n^2 \pi^2} \\
+				& = \begin{cases}
+					\frac{\sqrt{96} {(-1)}^{m + 1}}{{(2m + 1)}^2 \pi^2} & \text{ if } n = 2m + 1 \text{ for some } m \in \mathbb{N} \\
+					0 & \text{ otherwise}
+				\end{cases}
+		\end{aligned}
+	\]
+	We see that
+	\[
+		\langle \psi, \psi \rangle = \sum_{n = 1}^{\infty} |c_n|^2 = \frac{96}{\pi^4} \sum_{m = 0}^{\infty} \frac{1}{{(2m + 1)}^4} = 1
+	\]
+\end{example}
+
+\subsection{Hermitian operators}
+
+\begin{definition}
+	Let $V$ be a finite-dimensional complex vector space with Hermitian inner product $\langle \cdot, \cdot \rangle$ and an orthonormal basis $\{ e_j \}$. A \textbf{linear operator} is a map $A: V \rightarrow V$ which satisifes
+	\[
+		\forall v_1, v_2 \in V, \forall a_1, a_2 \in \mathbb{C}, \quad A (a_1 v_1 + a_2 v_2) = a_1 A(v_1) + a_2 A(v_2)
+	\]
+\end{definition}
+
+\begin{remark}
+	Any linear combination $a_1 A_1 + a_2 A_2$ and composition $A_1 \circ A_2$ of two linear operators $A_1$ and $A_2$ is also a linear operator.
+\end{remark}
+
+\begin{definition}
+	The \textbf{matrix elements} of a linear operator $A$ in an orthonormal basis $\{ e_j \}$ are defined by
+	\[
+		A_{i, j} = \langle e_i, A \cdot e_j \rangle
+	\]
+\end{definition}
+
+\begin{definition}
+	The adjoint $A^{\dagger}$ of a linear operator $A$ is defined by
+	\[
+		\forall v_1, v_2 \in V, \quad \langle v_1, A v_2 \rangle = \langle A^{\dagger} v_1, v_2 \rangle
+	\]
+\end{definition}
+
+\begin{proposition}
+	$A^{\dagger}_{i, j} = \overline{A_{j, i}}$, i.e. $A^{\dagger}$ is the conjugate of the transpose of $A$.
+\end{proposition}
+
+\begin{proof}
+	\[
+		A^{\dagger}_{i, j} = \langle e_i, A^{\dagger} e_j = \langle A e_i, e_j \rangle = \overline{\langle e_j, A e_i} = \overline{A_{i, j}}
+	\]
+\end{proof}
+
+\begin{proposition}
+	The adjoint operation satisfies
+	\begin{itemize}
+		\item ${(a_1 A_1 + a_2 A_2)}^{\dagger} = \overline{a_1} A_1^{\dagger} + \overline{a_2} A_2^{\dagger}$.
+		\item ${(A_1 A_2)}^{\dagger} = A_2^{\dagger} A_1^{\dagger}$.
+	\end{itemize}
+\end{proposition}
+
+\begin{proof}
+	TODO.
+\end{proof}
+
+\begin{corollary}
+	For every $n \in \mathbb{N}$ and for every polynomial function $f$,
+	\[
+		{(A^n)}^{\dagger} = {(A^{\dagger})}^n, \quad {f(A)}^{\dagger} = f(A^{\dagger})
+	\]
+\end{corollary}
+
+\begin{definition}
+	A \textbf{Hermitian operator} $A$ is a linear operator that satisfies
+	\[
+		A = A^{\dagger}
+	\]
+	Equivalently,
+	\[
+		\forall v_1, v_2 \in V, \quad \langle v_1, A v_2 \rangle = \langle A v_1, v_2 \rangle \quad \text{or} \quad \overline{A_{j, i}} = A_{i, j}
+	\]
+	hence the matrix of a Hermitian operator is a Hermitian matrix.
+\end{definition}
+
+\begin{definition}
+	The matrix elements of $A$, where $A$ is the Hermitian operator that acts on the space of wave functions with the Hermitian inner product defined as before, are given by
+	\[
+		A_{m, n} := \langle \phi_m, A (\phi_n) \rangle = \int_{-\infty}^{\infty} \overline{\phi_m(x)} A (\phi_n)
+	\]
+\end{definition}
+
+\begin{definition}
+	The \textbf{adjoint} $A^{\dagger}$ of a \textbf{linear differential operator} $A$ is defined by
+	\[
+		\langle \psi_1, A^{\dagger} (\psi_2) \rangle = \langle A(\psi_1), \psi_2 \rangle
+	\]
+	and has the same properties as the adjoint of a linear operator. Its matrix elements are given by
+	\[
+		A^{\dagger}_{m, n} = \overline{A_{n, m}}
+	\]
+\end{definition}
+
+\begin{theorem}
+	The position and momentum operators are Hermitian operators.
+\end{theorem}
+
+\begin{proof}
+	For the position operator, $\hat{x}$:
+	\[
+		\begin{aligned}
+			\langle \hat{x}(\psi_1), \psi_2 \rangle
+				& = \int_{-\infty}^{\infty} \overline{x \psi_1(x)} \psi_2(x) dx \\
+				& = \int_{-\infty}^{\infty} \overline{\psi_1(x)} x \psi_2(x) dx \\
+				& = \langle \psi_1, \hat{x}(\psi_2)
+		\end{aligned}
+	\]
+	For the momentum operator, $\hat{p}$, by integrating parts:
+	\[
+		\begin{aligned}
+			\langle \hat{p}(\psi_1), \psi_2 \rangle
+				& = \int_{-\infty}^{\infty} \overline{-i \hbar \diffp{\psi_1(x)}{x}} \psi_2(x) dx \\
+				& = \int_{-\infty}^{\infty} i \hbar \diffp{\overline{\psi_1(x)}}{x} \psi_2(x) dx \\
+				& = \int_{-\infty}^{\infty} \overline{\psi_1(x)} \left( -i \hbar \diffp{\psi_2(x)}{x} \right) dx + i \hbar {\left[ \overline{\psi_1(x)} \psi_2(x) \right]}_{\infty}^{\infty} \\
+				& = \langle \psi_1, \hat{p}(\psi_2)
+		\end{aligned}
+	\]
+	Since the wave functions must vanish as $|x| \rightarrow \infty$.
+\end{proof}
+
+\begin{definition}
+	The \textbf{Hamiltonian operator} is defined as
+	\[
+		\hat{H}(\psi(x)) = \frac{\hat{p}^2 (\psi(x))}{2m} + V(x) = -\frac{\hbar^2}{2m} \diffp[2]{}{x} \psi(x) + V(x)
+	\]
+	and is a Hermitian operator. It relates to measurements of energy.
+\end{definition}
+
+\begin{example}
+	For an infinite potential well in $[0, L]$, in Example~\ref{exa:infinitePotentialWellBasisFunctions}, we defined a basis
+	\[
+		\phi_n(x) = \sqrt{\frac{2}{L}} \sin \left( \frac{n \pi x}{L} \right)
+	\]
+	The matrix elements of position are given by
+	\[
+		\begin{aligned}
+			x_{m, n}
+				& := \langle \phi_m, \hat{x}(\phi_n) \rangle \\
+				& = \int_{0}^{L} x \overline{\phi_m(x)} \phi_n(x) dx \\
+				& = \frac{2}{L} \int_{0}^{L} x \sin \left( \frac{m \pi x}{L} \right) \sin \left( \frac{n \pi x}{L} \right) dx \\
+				& = \frac{1}{L} \int_{0}^{L} x \left( \cos \left( \frac{(m - n) \pi x}{L} \right) - \cos \left( \frac{(m + n) \pi x}{L} \right) \right) dx \\
+				& = \begin{cases}
+					L / 2 & \text{ if } m = n \\
+					\frac{4Lmn}{\pi^2 (m^2 - n^2)} ({(-1)}^{m + n} - 1) & \text{ if } m \ne n
+				\end{cases}
+		\end{aligned}
+	\]
+	using the substitution $y = \pi x \ l$ with the fact that for $n \ne 0$,
+	\[
+		\int_{0}^{\pi} y \cos(ny) dy = \frac{{(-1)}^n - 1}{n^2}
+	\]
+	The matrix elements $x_{m, n}$ form a Hermitian matrix.
+\end{example}
+
+\begin{example}
+	For an infinite potential well in $[0, L]$, with the same basis functions as in the last example, the matrix elements of momentum are given by
+	\[
+		\begin{aligned}
+			p_{m, n}
+				& := \langle \phi_m, \hat{p}(\phi_n) \rangle \\
+				& = -i \hbar \int_{0}^{L} \overline{\phi_m(x)} \diffp{\phi_n(x)}{x} dx \\
+				& = -i \hbar \frac{2}{L} \sin \left( \frac{m \pi x}{L} \right) \frac{n \pi}{L} \cos \left( \frac{n \pi x}{L} \right) dx \\
+				& = -\frac{i \hbar n \pi}{L^2} \int_{0}^{L} \left( \sin \left( \frac{(m + n) \pi x}{L} \right) + \sin \left( \frac{(m - n) \pi x}{L} \right) \right) dx \\
+				& = \begin{cases}
+					0 & \text{ if } m = n \\
+					\frac{2i \hbar mn}{L (m^2 - n^2)} ({(-1)}^{m + n} - 1) & \text{ if } m \ne n
+				\end{cases}
+		\end{aligned}
+	\]
+	using the substitution $y = \pi x \ L$ with the fact that for $n \ne 0$,
+	\[
+		\int_{0}^{\pi} \sin(ny) = \frac{1 - {(-1)}^n}{n}
+	\]
+	The matrix elements $p_{m, n}$ form a Hermitian matrix.
+\end{example}
+
+\begin{example}
+	For an infinite potential well in $[0, L]$, with the same basis functions as in the last example, the matrix elements of Hamiltonian operator are given by
+	\[
+		\begin{aligned}
+			H_{m, n}
+				& := \langle \phi_m, H(\phi_n) \rangle \\
+				& = -\frac{\hbar^2}{2m} \int_{0}^{L} \overline{\phi_m(x)} \diffp[2]{\phi_n(x)}{x} dx \\
+				& = E_n \frac{2}{L} \int_{0}^{L} \sin \left( \frac{m \pi x}{L} \right) \sin \left( \frac{n \pi x}{L} \right) dx \\
+				& = E_n \delta_{m, n}
+		\end{aligned}
+	\]
+	where
+	\[
+		E_n = \frac{\hbar^2 \pi^2 n^2}{2m L^2}
+	\]
+	The matrix elements $H_{m, n}$ form a diagonal matrix. The above calculation shows that the $\phi_n$ are eigenfunctions of the Hamiltonian operator, since
+	\[
+		\hat{H}(\phi_n(x)) = E_n \phi_n(x)
+	\]
+\end{example}
+
+\subsection{The spectrum of a Hermitian operator}
+
+\begin{definition}
+	A wave function $\psi_a(x)$ is an \textbf{eigenfunction} of a Hermitian differential operator $A$ with eigenvalue $a$ if it satisfies
+	\[
+		A(\psi_a(x)) = a \psi_a(x)
+	\]
+\end{definition}
+
+\begin{proposition}
+	For a normalised eigenfunction $\psi_a(x)$ of a Hermitian differential operator $A$ with eigenvalue $a$,
+	\begin{itemize}
+		\item The expectation value of $A^n$ is $a^n$ for every $n \in \mathbb{N}$.
+		\item The uncertainty of $A$ is $0$.
+	\end{itemize}
+\end{proposition}
+
+\begin{proof}
+	\hfill
+	\begin{itemize}
+		\item $\langle A^n \rangle = \langle \psi_a, A^n(\psi_a) \rangle = \langle \psi_a, a6n \psi_a \rangle = a^n \langle \psi_a, \psi_a \rangle = a^n$.
+		\item $\Delta A = \sqrt{\langle A^2 \rangle - {\langle A \rangle}^2} = \sqrt{a^2 - a^2} = 0$.
+	\end{itemize}
+\end{proof}
+
+\begin{remark}
+	This means that $\psi_a$ is a wave function such that measurements of $A$ will be $a$ with probability $1$.
+\end{remark}
+
+\begin{theorem}
+	Let $A$ be a Hermitian operator. Then
+	\begin{enumerate}
+		\item The eigenvalues of $A$ are real, and
+		\item If two eigenfunctions $\psi_1(x), \psi_2(x)$ of $A$ have distinct eigenvalues $a_1 \ne a_2$, then $\psi_1(x)$ and $\psi_2(x)$ are orthogonal.
+	\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+	Let $\psi_1(x), \psi_2(x)$ be eigenfunctions of $A$ with eigenvalues $a_1$ and $a_2$, so
+	\[
+		A(\psi_1(x)) = a_1 \psi_1(x), \quad A(\psi_2(x)) = a_2 \psi_2(x)
+	\]
+	Then
+	\[
+		\begin{aligned}
+			\langle \psi_1, A(\psi_2) \rangle & = \langle \psi_1, a_2 \psi_2 \rangle = a_2 \langle \psi_1, \psi_2 \rangle \\
+			\langle A(\psi_2), \psi_1 \rangle & = \langle a_1 \psi_1, \psi_2 \rangle = \overline{a_1} \langle \psi_1, \psi_2 \rangle \\
+			\Longrightarrow 0 & = (\overline{a_1} - a_2) \langle \psi_1, \psi_2 \rangle
+		\end{aligned}
+	\]
+	If $a_1 = a_2$ and 4 then $(\overline{a_1} - a_1) \langle \psi, \psi \rangle = 0$, so if $\psi$ is non-zero, then $\overline{a_1} = a_1$, so $a_1 = a_2 \in \mathbb{R}$. If $a_1 \ne a_2$ then $(a_1 - a_2) \langle \psi_1, \psi_2 \rangle = 0 \Longrightarrow \langle \psi_1, \psi_2 \rangle = 0$
+\end{proof}
+
+\begin{definition}
+	For a Hermitian operator $A$, a discrete spectrum of eigenvalues $\{ a_n \}$ is called \textbf{non-degenerate} if there is one linearly independent eigenfunction $\phi_n$ for each eigenvalue $a_n$.
+\end{definition}
+
+\begin{corollary}
+	We can construct an orthonormal basis with normalised eigenfunctions $\phi_n$, so that
+	\[
+		\langle \phi_m, \phi_n \rangle = \delta_{m, n}
+	\]
+	This means any continuous square-integrable wave function $\psi$ has a unique expansion
+	\[
+		\psi(x) = \sum_n c_n \phi_n(x)
+	\]
+	where
+	\[
+		c_m = \langle \phi_m, \psi \rangle = \sum_n c_n \langle \phi_m, \phi_n \rangle = \sum_n c_n \delta_{m, n}
+	\]
+\end{corollary}
+
+\begin{corollary}
+	The norm of a wave function $\psi$ is
+	\[
+		\langle \psi, \psi \rangle = \sum_{m, n} \overline{c_m} c_n \langle \phi_m, \phi_n \rangle = \sum_n |c_n|^2
+	\]
+	and if $\psi$ is normalised, then
+	\[
+		\langle \psi, \psi \rangle = 1
+	\]
+	So the $|c_n|^2$ can be interpreted as the probability of a measurement of $A$ being $a_n$.
+\end{corollary}
+
+\begin{example}
+	In an infinite potential well in $(0, L)$, the $\phi_n$ defined in Example~\ref{exa:infinitePotentialWellBasisFunctions} eigenfunctions for the Hamiltonian operator $\hat{H}$ with eigenvalues
+	\[
+		E_n = \frac{\hbar^2 \pi^2 n^2}{2m L^2}
+	\]
+	So every wave function $\psi$ can be written as
+	\[
+		\psi(x) = \sum_{n > 0} c_n \phi_n(x)
+	\]
+	and $|c_n|^2$ is the probability that a measurement of energy will be $E_n$. These probabilities summing to $1$ agrees with Parseval's theorem.
+\end{example}
+
+\begin{definition}
+	A Hermitian operator $A$ can have a continuous spectrum of eigenvalues instead a discrete one. Here, we cannot choose eigenfunctions to form a complete orthonormal basis as before. To help with this case, we define the \textbf{Dirac delta function}, $\delta$, (which is not actually a function but a distribution). Roughly speaking,
+	\[
+		\delta(a) = \begin{cases}
+			0 & \text{ if } a \ne 0 \\
+			\infty & \text{ if } a = 0
+		\end{cases}
+	\]
+	$\delta$ also satisfies
+	\[
+		\int_{-\infty}^{\infty} \delta(a) da = 1
+	\]
+	$\delta$ can be more precisely defined as the limit of the Gaussian function
+	\[
+		\delta_{\epsilon} (a) = \frac{1}{\epsilon \sqrt{\pi}} e^{-a^2 / \epsilon^2}
+	\]
+	as $\epsilon \rightarrow 0^+$.
+\end{definition}
+
+\begin{proposition}
+	(\textbf{Properties of the Dirac delta function})
+	\begin{enumerate}
+		\item For every continuous function $f(a)$,
+		\[
+			\int_{-\infty}^{\infty} \delta(a - a') f(a') da = f(a)
+		\]
+		\item The Dirac delta function is the Fourier transform of $1$:
+		\[
+			\delta(a) = \frac{1}{2 \pi} \int_{-\infty}^{\infty} e^{i a a'} da'
+		\]
+		This implies that $\delta(a) = \delta(-a) = \overline{\delta(a)}$.
+	\end{enumerate}
+\end{proposition}
+
+\begin{remark}
+	Property 1 in the above proposition is the continuous version of $\sum_n \delta_{m, n} f_n = f_m$, so $\delta(a - a')$ is the continuous version of the identity matrix $\delta_{m, n}$.
+\end{remark}
+
+\begin{proposition}
+	For a Hermitian operator $A$ with a continuous spectrum, there exists a basis of eigenfunctions $\phi_a(x)$ with eigenvalues $a \in \mathbb{R}$ that satisfy
+	\[
+		\langle \phi_a, \phi_{a'} \rangle = \delta(a - a')
+	\]..
+\end{proposition}
+
+\begin{corollary}
+	Eigenfunctions $\phi_a(x)$ are therefore not square-normalisable since $\langle \phi_a, \phi_a \rangle = \infty$. However, every square-normalisable wave function can be uniquely expanded as
+	\[
+		\psi(x) = \int_{-\infty}^{\infty} c(a) \phi_a(x) da
+	\]
+	where $c(a)$ are complex coefficients that are continuous functions of $a$. $c(a)$ are given by
+	\[
+		\begin{aligned}
+			c(a)
+				& = \int_{-\infty}^{\infty} c(a') \delta(a - a') da' \\
+				& = \int_{-\infty}^{\infty} c(a') \langle \phi_a, \phi_{a'} \rangle da' \\
+				& = \langle \phi_a, \psi \rangle
+		\end{aligned}
+	\]
+	which is the continuous version of $\langle \phi_n, \psi \rangle = c_n$.
+\end{corollary}
+
+\begin{corollary}
+	The norm of a wave function $\psi$ can be written as
+	\[
+		\begin{aligned}
+			\langle \psi, \psi \rangle
+				& = \int_{-\infty}^{\infty} \overline{c(a)} c(a') \langle \phi_a, \phi_{a'} \rangle da da' \\
+				& = \int_{-\infty}^{\infty} \overline{c(a)} c(a') \delta(a - a') da da' \\
+				& = \int_{-\infty}^{\infty} |c(a)|^2 da
+		\end{aligned}
+	\]
+	which is the continuous version of $\langle \psi, \psi \rangle = \sum_n |c_n|^2$.
+
+	Note that for a normalised wave function $\psi$,
+	\[
+		\langle \psi, \psi \rangle = \int_{-\infty}^{\infty} |c(a)|^2 da = 1
+	\]
+	so $|c(a)|^2$ can be interpreted as a probability distribution for measurements of $A$.
+\end{corollary}
+
+\begin{example}
+	The eigenfunctions of the momentum operator $\hat{p} = -i \hbar \diffp{}{x}$ are $e^{ipx / \hbar}$ with eigenvalue $p$. We normalise these eigenfunctions, choosing
+	\[
+		\phi_p(x) = \frac{1}{\sqrt{2 \pi \hbar}} e^{ipx / \hbar}
+	\]
+	which gives
+	\[
+		\langle \psi_p, \psi_{p'} \rangle = \frac{1}{2 \pi \hbar} \int_{-\infty}^{\infty} e^{i(p - p')x / \hbar} dx = \delta(p - p')
+	\]
+	So we can write a wave function $\psi$ as
+	\[
+		\psi(x) = \int_{-\infty}^{\infty} c(p) \phi_p(x) dp = \frac{1}{\sqrt{2 \pi \hbar}} \int_{-\infty}^{\infty} c(p) e^{ipx / \hbar} dp
+	\]
+	which is the result of the Fourier transform.
+\end{example}
 
 \end{document}

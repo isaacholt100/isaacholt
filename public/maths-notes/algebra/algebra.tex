@@ -1,31 +1,11 @@
-\documentclass[12pt,a4paper]{article}
-\AddToHook{cmd/section/before}{\clearpage}
-
-\usepackage[a4paper, total={6in, 10in}]{geometry}
-\usepackage[utf8]{inputenc}
-\usepackage{amsfonts, amssymb, amsmath}
-\usepackage{amsthm}
-\usepackage[dvipsnames]{xcolor}
-\usepackage{hyperref}
-
-\pagecolor{white}
-\color{black}% set the default colour to white
-
-\theoremstyle{definition}
-\newtheorem{definition}{Definition}[subsection]
-\newtheorem{theorem}[definition]{Theorem}
-\newtheorem{proposition}[definition]{Proposition}
-\newtheorem{corollary}[definition]{Corollary}
-\newtheorem{lemma}[definition]{Lemma}
-\newtheorem{example}[definition]{Example}
-\newtheorem*{remark}{Remark}
+\input{../header}
 
 \title{Algebra II Course Notes}
 \author{Isaac Holt}
 
 \begin{document}
 
-\maketitle
+\input{../titletoc.tex}
 
 \section{Rings and fields}
 
@@ -281,7 +261,7 @@
 	\end{itemize}
 \end{definition}
 
-\begin{proposition}
+\begin{proposition}\label{prop:divisionAlgorithm}
 	Let $f(x), g(x) \in {(F[x])}^2$ and $g(x) \ne 0$. Then there are unique polynomials $q(x), r(x) \in {(F[x])}^2$, where $\deg(r) < \deg(g)$, such that
 	\[
 		f(x) = q(x) g(x) + r(x)
@@ -408,7 +388,7 @@
 	Then $u x^m = x^n$ so $u = 1$ and $m = n$. Hence $h(x) = \frac{1}{a_n} g(x)$.
 \end{proof}
 
-\begin{theorem}
+\begin{theorem}\label{thm:gcdExistsAndCanBeComputed}
 	Let $R$ be either $\mathbb{Z}$ or $F[x]$, and $a, b \in R^2$. Then
 	\begin{enumerate}
 		\item A $\gcd$ of $a$ and $b$ exists.
@@ -445,6 +425,266 @@
 	\]
 	for some $a(x), b(x) \in {(F[x])}^2$.
 \end{proof}
+
+\begin{example}
+	Find a gcd of $f(x) = x^2 + 1$ and $g(x) = x^2 + 3x + 1$ in $\mathbb{Q}[x]$. Using the Euclidean algorithm, we obtain
+	\[
+		\begin{aligned}
+			f(x) & = g(x) - 3x \\
+			g(x) = (-\frac{1}{3}x - 1)(-3x) + 1 \\
+			-3x = 1 (-3x) + 0
+		\end{aligned}
+	\]
+	The algorithm terminates as the remainder is now $0$. A gcd is the last non-zero remainder, in this case $1$. Now we write $1$ as a linear combination of $f(x)$ and $g(x)$:
+	\[
+		\begin{aligned}
+			1
+				& = g(x) - \left( -\frac{1}{3}x - 1 \right)(-3x) \\
+				& = g(x) + \left( \frac{1}{3}x + 1 \right) (f(x) - g(x)) \\
+				& = \left( \frac{1}{3}x + 1 \right) f(x) - \frac{1}{3} x g(x)
+		\end{aligned}
+	\]
+\end{example}
+
+\section{Factorisations in rings}
+
+\subsection{Irreducible polynomials over a field}
+
+\begin{definition}
+	Let $R$ be a commutative ring. $0 \ne r \in R$ is called \textbf{irreducible} if:
+	\begin{enumerate}
+		\item $r$ is not a unit and
+		\item if for some $a, b \in R^2, r = ab$, then $a$ is a unit or $b$ is a unit.
+	\end{enumerate}
+\end{definition}
+
+\begin{example}
+	For a field $F$, a non-zero polynomial in $F[x]$ is irreducible if it is not constant and cannot be written as the product of two non-constant polynomials in $F[x]$.
+\end{example}
+
+\begin{example}
+	$x^2 + 1 \in \mathbb{R}$ is irreducible in $\mathbb{R}[x]$, but is not irreducible in $\mathbb{C}$, since $x^2 + 1 = (x - i)(x + i)$.
+\end{example}
+
+\begin{example}
+	The irreducible elements in $\mathbb{Z}$ are the prime numbers.
+\end{example}
+
+\begin{definition}
+	For a field $F$, let $f(x) \in F[x]$. $a \in F$ is called a \textbf{root} (or a \textbf{zero}) of $f$ in $F$ if $f(a) = 0$.
+\end{definition}
+
+\begin{proposition}\label{prop:polynomialDegreesIrreducible}
+	\hfill
+	\begin{itemize}
+		\item If $\deg(f) = 1$, then $f$ is irreducible in $F[x]$.
+		\item If $\deg(f) = 2 \text{ or } 3$, then $f$ is irreducible in $F[x]$ iff $f$ has no roots in $F$.
+		\item If $\deg(f) = 4$, then $f$ is irreducible iff $f$ has no roots in $F$ and $f$ is not the product of two quadratic polynomials.
+	\end{itemize}
+\end{proposition}
+
+\begin{proof}
+	\hfill
+	\begin{itemize}
+		\item If $\deg(f) = 1$, then $f(x) = ax + b$ for some $a, b \in F^2$, $a \ne 0$. By Example~\ref{exa:constantPolynomialUnitInField}, $f$ is not a unit. Now let $f(x) = g(x) h(x)$ for some $g(x), h(x) \in {(F[x])}^2$. But $1 = \deg(f) = \deg(g) + \deg(h)$ so either $\deg(g) = 1$ and $\deg(h) = 0$ or $\deg(g) = 0$ and $\deg(h) = 1$. Therefore one of $g$ and $h$ has degree $0$ so is a constant polynomial, therefore is a unit.
+		\item If $\deg(f) = 2 \text{ or } 3$, let $\alpha \in F$ be a root of $f$, so $f(x) = q(x) (x - \alpha) + r(x)$ for some $q(x), r(x)$ where $\deg(r) \le 0$, by Proposition~\ref{prop:divisionAlgorithm}. Hence $r(x)$ is constant.
+		
+		Now, $0 = f(\alpha) = r(\alpha)$ but since $r(x)$ is constant, $r(x) = 0$ so $f(x) = q(x) (x - \alpha)$. Therefore $f$ is not irreducible as $\deg(q) \ge 1$.
+
+		Conversely, if $f$ is not irreducible, $f(x) = g(x) h(x)$ for some $g(x), h(x)$ where $\deg(g) \ge 1$ and $\deg(h) \ge 1$. $\deg(f) = \deg(g) + \deg(h)$ so either $\deg(g) = 1$ or $\deg(h) = 1$. WLOG, assume $\deg(g) = 1$, then $g(x) = ax + b$ for some $a, b \in F^2$, $a \ne 0$.
+
+		Then $g(-b/a) = 0 = f(-b/a)$ so $f$ has a root.
+		\item The proof when $\deg(f) = 4$ is similar to the proof for $\deg(f) = 2 \text{ or } 3$.
+	\end{itemize}
+\end{proof}
+
+\begin{proposition}
+	Let $f(x) = a_0 + a_1 x + \cdots + a_n x^n \in \mathbb{Z}[x]$, where $\deg(f) \ge 1$. For every $p, q \in \mathbb{Z}^2$, if $f(p / q) = 0$ and $\gcd(p, q) = 1$, then
+	\[
+		p \mid a_0 \quad \text{and} \quad q \mid a_n
+	\]
+\end{proposition}
+
+\begin{proof}
+	\[
+		\begin{aligned}
+			0
+				& = f(p/q) \\
+				& = a_0 + a_1 (p/q) + \cdots + a_n {(p/q)}^n \\
+				& = a_0 q^n + p \left( a_1 q^{n - 1} + a_2 p q^{n - 2} + \cdots + a_n p^{n - 1} \right) = 0 \\
+				& = q(a_0 q^{n - 1} + a_1 p q^{n - 2} + \cdots + a_{n - 1} p^{n - 1}) + a_n p^n = 0
+		\end{aligned}
+	\]
+	So $p \mid a_0 q^n$ and $q \mid a_n p^n$ and since $\gcd(p, q) = 1$, $p \mid a_0$ and $q \mid a_n$.
+\end{proof}
+
+\begin{example}
+	$f(x) = x^3 - 3x + 2$ is irreducible in $\mathbb{Q}[x]$.
+	
+	By Proposition~\ref{prop:polynomialDegreesIrreducible}, it is sufficient to show that $f$ has no roots in $\mathbb{Q}$. Let $p/q \in \mathbb{Q}$, and assume $\gcd(p, q) = 1$ (if $\gcd(p, q) \ne 1$, then the fraction can be cancelled by $\gcd(p, q)$ to leave the same value). If $p/q$ was a root of $f$, then $q \mid 1$ and $p \mid 2$. So the only possible values of $p$ and $q$ are $\{ \pm 1, \pm 2 \}$ but none of these values is a root, so $f$ is irreducible in $\mathbb{Q}[x]$.
+\end{example}
+
+\begin{lemma}\label{lem:GaussLemma}
+	(\textbf{Gauss's lemma}) Let $f(x) = a_0 + a_1 x + \cdots + a_n x^n \in \mathbb{Z}[x]$ be a non-constant polynomial. Then $f(x)$ is irreducible in $\mathbb{Z}[x]$ iff $f(x)$ is irreducible in $\mathbb{Q}[x]$ and $\gcd(a_0, \dots, a_n) = 1$.
+\end{lemma}
+
+\begin{proof}
+	($\Longleftarrow$): Let $f(x)$ be irreducible in $\mathbb{Q}[x]$ and $\gcd(a_0, \dots, a_n) = 1$. Let $f(x) = g(x) h(x)$ for some $g(x), h(x) \in {(\mathbb{Z})}^2$. If $\deg(g) \ge 1$ and $\deg(h) \ge 1$ then $f$ would have a proper factorisation in $\mathbb{Q}[x]$, contradicting the fact that it is irreducible in $\mathbb{Q}[x]$. So $\deg(g) = 0$ or $\deg(h) = 0$. WLOG, assume that $\deg(g) = 0$, hence $g(x) \in \mathbb{Z}$. If $g(x) \ne \pm 1$, for some prime number $p \in \mathbb{Z}$, $p \mid g(x) \Longrightarrow p \mid f(x)$, but $\gcd(a_0, \dots, a_n) = 1$. Hence $g(x) = \pm 1$ which is a unit, so $f(x)$ is irreducible in $\mathbb{Z}[x]$.
+
+	($\Longrightarrow$): Omitted.
+\end{proof}
+
+\begin{corollary}\label{cor:coprimeCoeffsPolynomialIrreducibleInZAndQ}
+	Let $f(x) = a_0 + a_1 x + \cdots + a_n x^n \in \mathbb{Z}[x]$ and $\gcd(a_0, \dots, a_n) = 1$. Then $f(x)$ is irreducible in $\mathbb{Z}[x]$ iff $f(x)$ is irreducible in $\mathbb{Q}[x]$.
+\end{corollary}
+
+\begin{lemma}
+	Let $f(x) = a_0 + a_1 + \cdots + a_n x^n \in \mathbb{Z}[x]$, $a_n = 1$, be a monic polynomial. If $f(x)$ factors in $\mathbb{Q}[x]$, then $f(x)$ factors into integer monic polynomials.
+\end{lemma}
+
+\begin{proof}
+	Clearly $\gcd(a_0, \dots, a_n) = 1$, so by Corollary~\ref{cor:coprimeCoeffsPolynomialIrreducibleInZAndQ}, if $f$ factors in $\mathbb{Q}[x]$, $f$ factors in $\mathbb{Z}[x]$. Hence
+	\[
+		f(x) = g(x) h(x) = (b_0 + \dots + b_m x^m) (c_0 + \dots + c_m x^m)
+	\]
+	where $m + l = n$ and $\forall i, \ b_i, c_i \in \mathbb{Z}^2$. Equating the coefficients of $x^n$ on both sides gives $b_m c_l = 1$ so $b_m = c_l = 1$, or $b_m = c_l = -1$. So either $g$ and $h$ are monic or $-g$ and $-h$ are monic, and $f(x) = (-g(x)) (-h(x))$.
+\end{proof}
+
+\begin{lemma}\label{lem:irreducibleTimesUnitIsIrreducible}
+	Let $R$ be a commutative ring, let $x \in R$ be irreducible and let $u \in R^{\times}$. Then $ux$ is irreducible.
+\end{lemma}
+
+\begin{proof}
+	$x \ne 0$ so $ux \ne 0$. If $ux$ is a unit, then for some $b \in R$, $b (ux) = 1 = (bu) x \Longrightarrow x \in R^{\times}$, which is a contradiction, hence $x$ is not a unit.
+
+	Let $ux = ab$ for some $a, b \in R^2$, then we must show that $a$ or $b$ is a unit. $x = ab u^{-1} = a(b u^{-1})$ and as $x$ is irreducible, $a \in R^{\times}$ or $b u^{-1} \in R^{\times}$. And $b u^{-1} \in R^{\times} \Rightarrow b \in \mathbb{R}^{\times}$, as units form a group under multiplication, hence either $a$ or $b$ is a unit.
+\end{proof}
+
+\begin{proposition}
+	(\textbf{Eisenstein's criterion}) Let $f(x) = a_0 + a_1 x + \cdots + a_n x^n \in \mathbb{Z}[x]$ and let $p$ be a prime with $p \mid a_0, \dots, p \mid a_{n - 1}$, $p \nmid a_n$ and $p^2 \nmid a_0$. Then $f$ is irreducible in $\mathbb{Q}[x]$.
+\end{proposition}
+
+\begin{proof}
+	Let $d = \gcd(a_0, \dots, a_n)$, $b_i = a_i / d$ and
+	\[
+		F(x) = \frac{1}{d} f(x) = b_0 + b_1 x + \cdots + b_n x^n \in \mathbb{Z}[x]
+	\]
+	Then $\gcd(b_0, \dots, b_n) = 1$. Note that $p \nmid a_n$ so $p \nmid d$, so $p \mid b_0, p \mid b_1, \dots, p \mid b_{n - 1}, p \nmid b_n$ and $p^2 \nmid b_0$. By Lemma~\ref{lem:irreducibleTimesUnitIsIrreducible}, if $F$ is irreducible in $\mathbb{Q}[x]$, then $f$ is also irreducible in $\mathbb{Q}[x]$.
+
+	Assume that $F$ is not irreducible in $\mathbb{Q}[x]$. By \hyperref[lem:GaussLemma]{Gauss's lemma}, $F(x) = g(x) h(x)$ for some $g(x), h(x) \in {(\mathbb{Z})}^2$ with $\deg(g) \ge 1$ and $\deg(h) \ge 1$. Reducing this by modulo $p$ gives
+	\[
+		\bar{g}(x) \bar{h}(x) = \bar{F}(x) = \bar{b_0} + \bar{b_1} x + \cdots + \bar{b_n} x^n = \bar{b_n} x^n
+	\]
+	Let
+	\[
+		\begin{aligned}
+			\bar{g}(x) = \bar{\alpha_0} + \bar{\alpha_1} x + \cdots + \bar{\alpha_m} x^m \\
+			\bar{h}(x) = \bar{\beta_0} + \bar{\beta_1} x + \cdots + \bar{\beta_k} x^k
+		\end{aligned}
+	\]
+	$\deg(\bar{g}) = \deg(g)$ and $\deg(\bar{h}) = \deg(h)$, otherwise $p \mid b_n$. This gives
+	\[
+		\overline{\alpha_0} \overline{\beta_0} + \overline{\alpha_0} \overline{\beta_1} x + \cdots + \overline{\alpha_0} \overline{\beta_k} x^k + \overline{\alpha_1} \overline{\beta_0} x + \cdots + \overline{\alpha_m} \overline{\beta_k} x^{m + k} = \overline{b_n} x^n
+	\]
+	hence $\overline{\alpha_0} \overline{\beta_0} = \overline{0}$. $p$ is prime so $\mathbb{Z} / p$ is a field, so this implies $\overline{\alpha_0} = \overline{0}$ or $\overline{\beta_0} = \overline{0}$. WLOG, let $\overline{\alpha_0} = \overline{0}$, then we have $\overline{\beta_0} \overline{\alpha_m} = \overline{0}$ and $\overline{\alpha_m} \ne \overline{0}$ so $\overline{\beta_0} = \overline{0}$.
+
+	So $p \mid \alpha_0$ and $p \mid \beta_0$, thus $p^2 \mid \alpha_0 \beta_0 = b_0$ so $p^2 \mid b_0$ which is a contradiction. Hence $F$ is irreducible, so $f$ is also.
+\end{proof}
+
+\subsection{Unique factorisation in $F[x]$}
+
+\begin{lemma}\label{lem:pDividesProductImpliesPDividesOneFactor}
+	Let $F$ be a field. If $p(x) \in F[x]$ is irreducible and $p(x) \mid a(x) b(x)$ for some $a(x), b(x) \in {(F[x])}^2$, then $p(x) \mid a(x)$ or $p(x) \mid b(x)$.
+\end{lemma}
+
+\begin{proof}
+	If $p(x) \nmid a(x)$, then $\gcd(p(x), a(x)) = 1$ so by Theorem~\ref{thm:gcdExistsAndCanBeComputed} (3.), for some $A(x), B(x) \in {(F[x])}^2$,
+	\[
+		A(x) p(x) + B(x) a(x) = 1 \Longrightarrow A(x) p(x) b(x) + B(x) a(x) b(x) = b(x)
+	\]
+	But $p(x) \mid B(x) a(x) b(x)$ and $p(x) \mid A(x) p(x) b(x)$ hence $p(x) \mid b(x)$. Hence $p(x) \mid a(x)$ or $p(x) \mid b(x)$.
+\end{proof}
+
+\begin{theorem}\label{thm:uniqueFactorisationInPolynomialOverField}
+	Let $F$ be a field and let $f(x) \in F[x]$ with $\deg(f) \ge 1$. Then $f(x)$ can be uniquely factorised into a product of irreducible elements, up to order of the factors and multiplication by units.
+\end{theorem}
+
+\begin{proof}
+	\begin{itemize}
+		\item First we prove the existence of a factorisation. Use induction on $\deg(f)$. If $\deg(f) = 1$, then $f$ is irreducible already. Assume now that we have such a factorisation for $f'(x) \in F[x]$ with $\deg(f') < n$, for some $n \in \mathbb{N}$. Let $\deg(f) = n$. If $f$ is irreducible we are done. If not, then $f(x) = g(x) h(x)$ for some $g(x), h(x) \in {(F[x])}^2$ with $1 \le \deg(f) < n$ and $1 \le \deg(h) < n$. By the induction hypothesis, $g$ and $h$ have factorisations into irreducible elements, hence $f$ also does.
+		\item Now we prove the uniqueness. Let
+		\[
+			f(x) = p_1 (x) \cdots p_m(x) = q_1(x) \cdots q_n(x)
+		\]
+		where for every $i$, $p_i$ and $q_i$ are irreducible. Then $p_1(x) \mid q_1(x) \cdots q_n(x)$ so by Lemma~\ref{lem:pDividesProductImpliesPDividesOneFactor}, $p_1$ must divide one of the $q_i$. WLOG, assume $p_1 \mid q_1$. So $q_1(x) = u_1(x) p_1(x)$ for some $u_1(x) \in F[x]$, but $p_1$ and $q_1$ are irreducible so $u_1$ is a unit. Hence
+		\[
+			\begin{aligned}
+				f(x) = p_1 (x) \cdots p_m(x) & = u_1(x) p_1(x) q_2(x) \cdots q_n(x) \\
+				\Longrightarrow p_2 (x) \cdots p_m(x) & = u_1(x) q_2(x) \cdots q_n(x)
+			\end{aligned}
+		\]
+		Repeat these steps for $p_2, p_3, \dots$ until all factors are cancelled. This gives $m = n$ and $q_i = u_i p_i$ for every $i$ and some unit $u_i$. This completes the proof.
+	\end{itemize}
+\end{proof}
+
+\begin{definition}
+	Let $R$ be a commutative ring. $x \in R$ is called \textbf{prime} if these conditions hold:
+	\begin{enumerate}
+		\item $x \ne 0$ and $x \notin R^{\times}$ and
+		\item $\forall a, b \in R^2, \ x \mid ab \Longrightarrow a \mid a$ or $x \mid b$.
+	\end{enumerate}
+\end{definition}
+
+\begin{example}
+	$p \in \mathbb{Z}$ is prime iff $p$ is irreducible.
+\end{example}
+
+\begin{example}
+	For a field $F$, $f(x) \in F[x]$ is prime iff it is irreducible.
+\end{example}
+
+\begin{lemma}
+	Let $R$ be an integral domain. Let $x \in R$ be prime. Then $x$ is irreducible.
+\end{lemma}
+
+\begin{proof}
+	The ring $\mathbb{Z}[\sqrt{-5}] := \{ a + b \sqrt{-5}: a, b \in \mathbb{Z}^2$ is a subring of $\mathbb{C}$. Define
+	\[
+		N: \mathbb{Z}[\sqrt{-5}] \rightarrow \mathbb{Z}, quad N(a + b \sqrt{-5}) = a^b + 5 b^2
+	\]
+	$N(z) = z \bar{z}$ where $\bar{z}$ is the complex conjugate of $z$. So $N(z) N(w) = z \bar{z} w \bar{w} = z w \bar{z} \bar{w} = N(zw)$. We show that $2$ is irreducible.
+
+	Assume $2 = (x + y \sqrt{-5}) (z + w \sqrt{-5})$ for some $x, y, z, w \in \mathbb{Z}^4$. Then
+	\[
+		N(2) = N(x + y \sqrt{-5}) N(z + w \sqrt{-5})
+	\]
+	So $N(x + y \sqrt{-5}) \mid 4$, so $N(x + y \sqrt{-5}) \in \{ \pm 1, \pm 2, \pm 4 \}$. The only possibilities from these are $1$ and $4$. If $x^2 + 5y^2 = 1$ then $y = 0$ and $x = \pm 1$ so $x + y \sqrt{-5}$ is a unit. If $x^2 + 5y^2 = 4$ then $y = 0$ and $x = \pm 2$ so $2 = \pm 2 (z + w \sqrt{-5})$, hence $(z + w \sqrt{-5})$ is a unit. Hence $2$ is irreducible.
+
+	However, $2$ is not prime, since
+	\[
+		2 \mid (1 - \sqrt{-5}) (1 + \sqrt{-5}) = 6
+	\]
+	but $2 \nmid (1 - \sqrt{-5})$ and $2 \nmid (1 + \sqrt{-5})$, since $2(x + y \sqrt{-5}) = 1 \pm \sqrt{-5}$ for some $x, y \in \mathbb{Z}^2$ then $2x = 1$, a contradiction.
+\end{proof}
+
+\begin{definition}
+	Let $R$ be an integral domain. $R$ is called a \textbf{unique factorization domain} (\textbf{UFD}) if every non-zero non-unit element of $R$ has a unique factorization into a product of irreducible elements, which is unique up to order of factors and multiplication by units.
+\end{definition}
+
+\begin{example}
+	$\mathbb{Z}$ is a UFD.
+\end{example}
+
+\begin{example}
+	For a field $F$, $F[x]$ is a UFD by Theorem~\ref{thm:uniqueFactorisationInPolynomialOverField}.
+\end{example}
+
+\begin{example}
+	$\mathbb{Z}[-\sqrt{5}]$ is not a UFD, as $6$ has two factorisations:
+	\[
+		(1 + \sqrt{-5}) (1 - \sqrt{-5}) = 2 \cdot 3 = 6
+	\]
+\end{example}
 
 \section{Homomorphisms between Rings}	
 
@@ -1159,5 +1399,715 @@ Hence, given a ring $R$ and an ideal $I \subseteq R$, there exists a ring homomo
 \begin{remark}
 	For every $g \ne e$ in $G$ of prime order, $G = \langle g \rangle$, and $\text{ord}_G(g) = p$.
 \end{remark}
+
+\subsection{Permutation groups}
+
+\begin{definition}
+	A \textbf{permutation} of a non-empty set $X$ is a bijection from $X$ to itself. We define $S_X$ to be the set of all bijections from $X$ to itself. For $n \ge 1$, we write
+	\[
+		S_n = S_{\{ 1, \dots, n \}}
+	\]
+\end{definition}
+
+\begin{lemma}
+	$(S_X, \circ)$ is a group where $\circ$ is the composition of bijections.
+\end{lemma}
+
+\begin{proof}
+	Associativity and closure are automatic due to the associativity and closure of composition of functions. The identity element is the identity function on $X$. The inverse of a bijection is given by reversing it: for a permutation $\sigma(x): X \rightarrow X$ where $\sigma(x) = y$ its inverse is given by $\sigma^{-1}$ where
+	\[
+		\sigma^{-1}(y) = x
+	\]
+\end{proof}
+
+\begin{lemma}
+	$\forall n \ge 1, |S_n| = n!$.
+\end{lemma}
+
+\begin{proof}
+	There are $n$ choices to map $1$ to, then $n - 1$ choices to map $2$ to, etc., and $1$ choice to map $n$ to. So there are $n (n - 1) \cdots 1$ choices in total.
+\end{proof}
+
+\begin{definition}
+	$(S_n, \circ)$ is called the \textbf{symmetric group of degree $n$} (or \textbf{symmetric group on $n$ letters}).
+\end{definition}
+
+\begin{definition}
+	For a permutation $\phi: \{ 1, \dots, n \} \rightarrow \{ 1, \dots, n \}$, we can write $\phi$ as
+	\[
+		\begin{pmatrix}
+			1 & 2 & \cdots & n \\
+			\phi(1) & \phi(2) & \cdots & \phi(n)
+		\end{pmatrix}
+	\]
+\end{definition}
+
+\begin{definition}
+	Some permutations in $S_n$ can be subdivided into simpler units called \textbf{cycles}. Let $n \ge 1$ and $1 \le k \le n$. A \textbf{$k$-cycle} is an element $\sigma \in S_n$ which satisfies, with $I = \{ i_1, i_2, \dots, i_k \} \subseteq \{ 1, \dots, n \}$:
+	\begin{enumerate}
+		\item $\sigma(i_1) = i_2, \sigma(i_2) = i_3, \dots, \sigma(i_{k - 1}) = i_k$ and $\sigma(i_k) = i_1$ and
+		\item if $i \notin I$, $\sigma(i) = i$.
+	\end{enumerate}
+	We often denote a $k$-cycle $\sigma \in S_n$ as
+	\[
+		(i_1 \ i_2 \ \dots \ i_k)
+	\]
+	or equivalently,
+	\[
+		(i_2 \ i_3 \ \dots \ i_k \ i_1)
+	\]
+	etc.
+\end{definition}
+
+\begin{definition}
+	A $2$-cycle is called a \textbf{transposition}.
+\end{definition}
+
+\begin{definition}
+	Let $n \ge 1$, and $\sigma, \tau \in {(S_n)}^2$ be cycles. $\sigma$ and $\tau$ are called \textbf{disjoint} if their associated index sets, $\{ i_1, \dots, i_k \} = I$ for $\sigma$ and $\{ j_1, \dots, j_l \} = J$ for $\tau$ are disjoint, so
+	\[
+		I \cap J = \emptyset
+	\]
+\end{definition}
+
+\begin{example}
+	$(1 \ 3 \ 5)$ and $(2 \ 4)$ are disjoint, while $(1 \ 3 \ 5)$ and $(1 \ 2 \ 4)$ are not.
+\end{example}
+
+\begin{remark}
+	$S_n$ is not an abelian group. For example, if $\sigma = (1 \ 2)$ and $\tau = (2 \ 3)$,
+	\[
+		\begin{aligned}
+			(\sigma \circ \tau)(1) & = 2 \quad (\tau \circ \sigma)(1) = 3 \\
+			(\sigma \circ \tau)(2) & = 3 \quad (\tau \circ \sigma)(2) = 1 \\
+			(\sigma \circ \tau)(3) & = 1 \quad (\tau \circ \sigma)(3) = 2
+		\end{aligned}
+	\]
+\end{remark}
+
+\begin{lemma}
+	If $\sigma, \tau \in {(S_n)}^2$ are disjoint cycles then $\sigma \circ \tau = \tau \circ \sigma$.
+\end{lemma}
+
+\begin{proof}
+	Let $1 \le k \le n$. Let $T$ be the set of indices changed by $\tau$ and $S$ be the set of indices changed by $\sigma$.
+	\begin{itemize}
+		\item Let $k \in T$, so $k \notin S$. Then $\tau(k) \notin S$, so $(\sigma \circ \tau)(k) = \tau(k)$ and $(\tau \circ \sigma)(k) = \tau(k)$.
+		\item Similarly, if $k \in S$, then $k \notin T$. So $(\tau \circ \sigma)(k) = \sigma(k)$ and $(\sigma \circ \tau)(k) = \sigma(k)$.
+		\item The remaining case is that $k \notin S \cup T$. Then $\tau(k) = \sigma(k) = k$ so $(\sigma \circ \tau)(k) = \sigma(k) = k$ and $(\tau \circ \sigma)(k) = \tau(k) = k$.
+	\end{itemize}
+\end{proof}
+
+\begin{example}
+	The permutation
+	\[
+		\begin{pmatrix}
+			1 & 2 & 3 & 4 & 5 & 6 & 7 \\
+			6 & 3 & 2 & 1 & 5 & 4 & 7
+		\end{pmatrix}
+	\]
+	can be written as $(2 \ 3) \circ (1 \ 6 \ 4) \circ (5) \circ (7)$.
+\end{example}
+
+\begin{proposition}\label{ref:permutationIsProductOfDisjointCycles}
+	Let $n \ge 1$. Any $\sigma \in S_n$ can be written as a composition of disjoint cycles, which is unique up to rearrangement of cycles and shifts within cycles.
+\end{proposition}
+
+\begin{proof}
+	TODO.
+\end{proof}
+
+\begin{lemma}\label{lem:cycleIsProductOfTranspositions}
+	Let $\sigma = (i_1 \ \dots \ i_k)$ be a $k$-cycle in $S_n$, $1 \le k \le n$. Then $\sigma$ can be written in one of the following forms:
+	\begin{enumerate}
+		\item $\sigma = (i_1 \ \dots \ i_k) = (i_1 \ i_2) \circ (i_2 \ i_3) \circ \dots \circ (i_{k - 1} \ i_k)$
+		\item $\sigma = (i_1 \ \dots \ i_k) = (i_1 \ i_k) \circ (i_1 \ i_{k - 1}) \circ \dots \circ (i_1 \ i_2)$
+	\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+	TODO.
+\end{proof}
+
+\begin{remark}
+	Often, when it is clearly what $n$ is, $1$-cycles are omitted when writing cycles. For example, $(1 \ 3 \ 5)(2)(4)$ in $S_5$ can be written as $(1 \ 3 \ 5)$.
+\end{remark}
+
+\begin{example}
+	Let
+	\[
+		\sigma = \begin{bmatrix}
+			1 & 2 & 3 & 4 & 5 \\
+			4 & 3 & 1 & 5 & 2
+		\end{bmatrix},
+		\quad
+		\tau = \begin{bmatrix}
+			1 & 2 & 3 & 4 & 5 \\
+			2 & 3 & 4 & 1 & 5
+		\end{bmatrix}
+	\]
+	To determine $\sigma \circ \tau$, write $\tau$ on top of $\sigma$, but rearranging the columns of $\sigma$ to line up with the columns of $\tau$:
+	\[
+		\begin{bmatrix}
+			1 & 2 & 3 & 4 & 5 \\
+			2 & 3 & 4 & 1 & 5 \\
+			2 & 3 & 4 & 1 & 5 \\
+			3 & 1 & 5 & 4 & 2
+		\end{bmatrix}
+	\]
+	so
+	\[
+		\sigma \circ \tau = \begin{bmatrix}
+			1 & 2 & 3 & 4 & 5 \\
+			3 & 1 & 5 & 4 & 2
+		\end{bmatrix}
+	\]
+\end{example}
+
+\begin{example}
+	Let $\sigma = (1 \ 2)$ and $\tau = (1 \ 3)$ in $S_3$, then
+	\[
+		\sigma \circ \tau = (1 \ 2) \circ (1 \ 3) = (1 \ 3 \ 2)
+	\]
+\end{example}
+
+\begin{example}
+	$(1 \ 2 \ 3) = (1 \ 2) \circ (2 \ 3) = (1 \ 3) \circ (1 \ 2)$.
+\end{example}
+
+\begin{definition}
+	Let $G$ be a group and $g_1, g_2 \in G^2$. $g_1$ and $g_2$ are called \textbf{conjugate} in $G$ to each other if
+	\[
+		\exists h \in G, \quad h g_1 h^{-1} = g_2
+	\]
+\end{definition}
+
+\begin{lemma}
+	Let $n \ge 2$ and $G = S_n$. Every conjugate of a transposition in $G$ is also a transposition.
+\end{lemma}
+
+\begin{proof}
+	By Proposition~\ref{ref:permutationIsProductOfDisjointCycles}, each permutation can be expressed as a composition of disjoint cycles, and by Lemma~\ref{lem:cycleIsProductOfTranspositions}, each cycle is a product of transpositions. So we just need to show that the conjugate of a transposition $(a \ b)$ by another transposition $(c \ d)$ is also a transposition. There are three cases:
+	\begin{enumerate}
+		\item If $\{ a, b \}$ and $\{ c, d \}$ are disjoint then $(a \ b)$ and $(c \ d)$ commute, hence
+		\[
+			(c \ d) (a \ b) {(c \ d)}^{-1} = (a \ b)
+		\]
+		is a transposition.
+		\item If $\{ a, b \}$ and $\{ c, d \}$ have one common element, then say the common element is $b = c$ WLOG. Then
+		\[
+			(b \ d) (a \ b) {(b \ d)}^{-1} = (a \ d)
+		\]
+		is a transposition.
+		\item If $\{ a, b \} = \{ c, d \}$ then clearly
+		\[
+			(c \ d) (a \ b) {(c \ d)}^{-1} = (a \ b)
+		\]
+		is a transposition.
+	\end{enumerate}
+\end{proof}
+
+\begin{example}
+	(Problems class) Find a normal subgroup of $S_3$.
 	
+	$|S_3| = 3! = 6$ so look for a subgroup of size $3$ (this will be a normal subgroup). Let $\sigma = (1 \ 2 \ 3)$ and let
+	\[
+		H = \langle \sigma \rangle = \{ e, \sigma, \sigma \circ \sigma \}
+	\]
+	$H$ is a group of order $3$ because $\sigma \circ \sigma \circ \sigma = e \ne \sigma \circ \sigma$ (for example, $(\sigma \circ \sigma)(1) = 3 \ne 1 = e(1)$). $|H| = 3$ so $H \triangleleft S_3$.
+\end{example}
+
+\begin{example}
+	(Problems class) Let $G$ be a group and $H, K \le G$. Prove that $H \cap K \le G$.
+
+	Using the criteria for subgroups, we check:
+	\begin{enumerate}
+		\item $H \cap K \ne \emptyset$: since $H$ and $K$ are subgroups, they both contain $e$, so $e \in H \cap K$.
+		\item if $x, y \in {(H \cap K)}^2$ then $x \circ y \in H \cap K$: if $x, y \in H^2$ and $x, y \in K^2$, $x \circ y \in H$ and $x \circ y \in K$ so $x \circ y \in H \cap K$.
+		\item if $x \in H \cap K$, then $x^{-1} \in H \cap K$: if $x \in H$ and $x \in K$, then $x^{-1} \in H$ and $x^{-1} \in K$ so $x^{-1} \in H \cap K$.
+	\end{enumerate}
+\end{example}
+
+\begin{example}
+	Let $G$ be a group, $H \triangleleft G$ and $K \triangleleft G$. Prove that $H \cap K \triangleleft G$.
+
+	$H \cap K$ is normal iff for every $g \in G, x \in H \cap K$, $gx g^{-1} \in H \cap K$. Let $g \in G, x \in H \cap K$. Since $x \in H$ and $H \triangleleft G$, $g x g^{-1} \in H$. Similarly, $g x g^{-1} \in K$. So $g x g^{-1} \in H \cap K$.
+\end{example}
+
+\begin{example}
+	(Problems class) Given a group $G$, define
+	\[
+		\text{Tor}(G) := \{ x \in G: \text{ord}(x) < \infty \}
+	\]
+	so $x \in \text{Tor}(G)$ iff $\exists d \ge 1, x^d = e$. Let $x, y \in {(\text{Tor}(G))}^2$, such that $x \circ y = y \circ x$. Prove that $x \circ y \in \text{Tor}(G)$ and $\text{ord}(x \circ y) \le \text{lcm}(\text{ord}(x), \text{ord}(y))$.
+
+	Let $k \ge 1$. We use induction to show that
+	\[
+		{(x \circ y)}^k = x^k \circ y^k
+	\]
+	For $k = 1$, this is trivial. ${(x \circ y)}^{k + 1} = {(x \circ y)}^k \circ (x \circ y) = x^k \circ y^k \circ x \circ y$. By the induction step, $y^k \circ x = x \circ y^k$. So
+	\[
+		x^k \circ y^k \circ x \circ y = x^k \circ x \circ y^k \circ y = x^{k + 1} \circ y^{k + 1}
+	\]
+	Let $\text{ord}(x) = a$ and $\text{ord}(y) = b$, then let $d = \text{lcm}(a, b)$ ($d$ which $a$ and $b$ divide works). Then
+	\[
+		{(x \circ y)}^d = x^d \circ y^d = {(x^a)}^b \circ {(y^b)}^a = e^b \circ e^a = e
+	\]
+	So $\text{ord}(xy) \le \text{lcm}(\text{ord}(x), \text{ord}(y)) < \infty$.
+\end{example}
+
+TODO: 3.19, 3.20, 3.21, 3.22
+
+\subsection{Even permutations and alternating groups}
+
+\begin{definition}
+	For $n \ge 2$, let $A_n$ be the subgroup of $S_n$ which contains the even permutations. $A_n$ is called the \textbf{alternating group}.
+\end{definition}
+
+\begin{example}
+	For $n = 3$, $(1 \ 2 \ 3) = (1 \ 2) \circ (2 \ 3) \in A_3$. Also, $\text{sgn}(e) = 1$ so $e \in A_3$.
+\end{example}
+
+\begin{lemma}
+	$A_n \le S_n$ for every $n \ge 2$.
+\end{lemma}
+
+\begin{proof}
+	Using the subgroup criteria,
+	\begin{enumerate}
+		\item $e \in A_n$ so $A_n \ne \emptyset$.
+		\item For every $\sigma_1, \sigma_2 \in {(A_n)}^2$,
+		\[
+			\begin{aligned}
+				\sigma_1 & = \tau_1 \circ \tau_2 \circ \cdots \circ \tau_{2r} \\
+				\sigma_2 & = \tau_1' \circ \tau_2' \circ \cdots \circ \tau_{2s}'
+			\end{aligned}
+		\]
+		where $r \ge 0$, $s \ge 0$, and the $\tau_i$ and $\tau_i'$ are transpositions. So
+		\[
+			\sigma_1 \circ \sigma_2 = \tau_1 \circ \tau_2 \circ \cdots \circ \tau_{2r} \circ \tau_1' \circ \tau_2' \circ \cdots \circ \tau_{2s}'
+		\]
+		so $\sigma_1 \circ \sigma_2$ has even parity, so $\text{sgn}(\sigma_1 \circ \sigma_2) = 1 \Longrightarrow \sigma_1 \circ \sigma_2 \in A_n$.
+		\item For every $\sigma \in A_n$,
+		\[
+			\sigma = \tau_1 \circ \tau_2 \circ \cdots \circ \tau_{2r}
+		\]
+		where $r \ge 0$, so
+		\[
+			\sigma^{-1} = {(\tau_1 \circ \tau_2 \circ \cdots \circ \tau_{2r})}^{-1} = \tau_{2r} \circ \cdots \circ \tau_1
+		\]
+		hence $\text{sgn}(\sigma^{-1}) = 1$ so $\sigma^{-1} \in A_n$.
+	\end{enumerate}
+\end{proof}
+
+\begin{example}
+	$\{ \sigma \in S_n: \text{sgn}(\sigma) = -1 \}$ is not a group since it does not contain $e$. But if $\tau \in S_n$ is a transposition,
+	\[
+		\tau A_n = \{ \tau \circ \sigma: \sigma = \tau_1 \circ \tau_2 \circ \cdots \circ \tau_{2r}, r \ge 0 \} = \{ \sigma \in S_n: \text{sgn}(\sigma) = -1 \}
+	\]
+	So $S_n = \tau A_n \cup A_n$, and $\tau A_n \cap A_n = \emptyset$.
+\end{example}
+
+\begin{proposition}
+	\hfill
+	\begin{enumerate}
+		\item $|A_n| = |S_n| / 2 = n! / 2$.
+		\item $A_n \triangleleft S_n$.
+		\item $A_n$ is generated by $3$-cycles, for $n \ge 3$.
+	\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+	\hfill
+	\begin{enumerate}
+		\item By the above example and the properties of cosets, $|S_n| = |\tau A_n| + |A_n| = 2 |A_n|$ for $t \in S_n$ a transposition.
+		\item If $H \le G$ for a finite group $G$, then $|H| = 2 |H| \Longrightarrow H \triangleleft G$. So let $G = S_n$, $H = A_n$, then $A_n \triangleleft S_n$ by 1.
+		\item Given any $\tau_1, \tau_2$ transpositions, $\tau_1 \circ \tau_2$ is either $0$, $1$ or $2$ $3$-cycles composed together. There are three cases:
+		\begin{enumerate}
+			\item $\tau_1 = \tau_2 = (i \ j)$, then $\tau_1 \circ \tau_2 = e$.
+			\item $\tau_1 = (i \ j)$, $\tau_2 = (i \ k)$, where $j \ne k$, then $\tau_1 \circ \tau_2 = (j \ i \ k)$.
+			\item $\tau_1 = (i \ j)$, $\tau_2 = (k \ l)$, where $\{ i, j \{ \cap \{ k, l \} = \emptyset$. Then
+			\[
+				\tau_1 \circ \tau_2 = (i \ j) \circ ((i \ k) \circ (k \ i)) \circ (k \ l) = ((i \ j) \circ (i \ k)) \circ ((k \ i) \circ (k \ l))
+			\]
+			and from case 2, this gives $2$ $3$-cycles.
+		\end{enumerate}
+		Since every $\sigma \in A_n$ can be written as
+		\[
+			\sigma = \alpha_1 \circ \cdots \circ \alpha_k
+		\]
+		where the $\alpha_i$ are pairs of transpositions, $\sigma$ can be written as a composition of $3$-cycles.
+	\end{enumerate}
+\end{proof}
+
+\subsection{Dihedral groups}
+
+TODO: 3.25, 3.26, 3.27, 3.28, 3.29
+
+\begin{definition}
+	The \textbf{dihedral group} of order $2n$, $D_n$, is the group generated by rotations $r$ by $2 \pi / n$ anticlockwise and reflections $s$ about a fixed axis, where $r^n = e$, $s^2 = e$, $s r s = r^{-1}$.
+\end{definition}
+
+\begin{proposition}
+	Every $x \in D_n$ can be uniquely written as
+	\[
+		r^a s^b, \quad 0 \le a \le n - 1, 0 \le b \le 1
+	\]
+	In particular, $|D_n| = 2n$.
+\end{proposition}
+
+\begin{proof}
+	If $x \in D_n$, then
+	\[
+		x = r^{a_1} s^{b_1} r^{a_2} s^{b_2} \cdots r^{a_k} b^{b_k}
+	\]
+	where $a_i \ge 0, b_j \ge 0$ and $\forall i \in \{ 1, \dots, k - 1\}, b_i \ge 1$ and $\forall i \in \{ 2, \dots, k \}, a_i \ge 1$. Suppose $k$ is minimal (so this is the shortest representation). We claim that $k = 1$.
+
+	If $k \ne 1$, we can shorten a representation with $k \ge 2$ factors as
+	\[
+		y = r^{a_1} s^{b_1} r^{a_2} s^{b_2} \cdots r^{a_{k - 2}} b^{b_{k - 2}} \Longrightarrow x = y r^{a_{k - 1}} s^{b_{k - 1}} r^{a_k} s^{b_k}
+	\]
+	Note that we can assume that $0 \le a_i \le n - 1$ and $0 \le b_i \le 1$ for every $i$, since if $a_i > n$, then $r_{a_i} = r^{a_i - n} \circ r^n = r^{a_i - n} \circ e = r^{a_i - n}$, and let $a_i = k_i n + u_i$, for $0 \le u_i < n$, then $r^{a_i} = r^{k_i n + u_i} = {(r^n)}^{k_i} \circ r^{u_i} = r^{u_i}$. Similarly, if $b_i = 2 l_i + v_i$, for $0 \le v_i < 2$, then $s^{b_i} = {(s^2)}^{l_i} \circ s^{v_i} = s^{v_i}$.
+
+	Hence $b_{k - 1} = 1$ and $x = y \circ r^{a_{k - 1}} \circ (s \circ r^{a_k}) \circ s^{b_k}$. Now $s \circ r^{a_k} s = r^{-a_k} \Longrightarrow s \circ r^{a_k} = r^{-a_k} s$, and so
+	\[
+		\begin{aligned}
+			x
+				& = y \circ r^{a_{k - 1}} \circ (r^{-a_k} \circ s) \circ s^{b_k} \\
+				& = y \circ r^{a_{k - 1} - a_k} \circ s^{1 + b_k} \\
+				& = y \circ r^{a_{k - 1}'} \circ s^{b_{k - 1}'}
+		\end{aligned}
+	\]
+	where $a_{k - 1}' = a_{k - 1} - a_k$, $b_{k - 1}' = 1 + b_k$. This representation has $k - 1$ terms $r^{a_i} s^{b_i}$, contradicting the minimality of $k$. Hence $k = 1$.
+
+	To prove the uniqueness, TODO.
+\end{proof}
+
+\subsection{Homomorphisms of Groups}
+
+\begin{definition}
+	Let $(G_1, \circ_1), (G_2, \circ_2)$. A map $\phi: G_1 \rightarrow G_2$ is a \textbf{group homomorphism} if
+	\[
+		\forall g, h \in G^2, \quad \phi(g \circ_1 h) = \phi(g) \circ_2 \phi(h)
+	\]
+\end{definition}
+
+\begin{definition}
+	A group homomorphism $\phi$ is a \textbf{isomorphism} if it is also a bijection.
+\end{definition}
+
+\begin{definition}
+	Groups $G_1$ and $G_2$ are called \textbf{isomorphic} if there exists an isomorphism from $G_1$ to $G_2$. We write $G_1 \cong G_2$.
+\end{definition}
+
+\begin{proposition}
+	Properties of a homomorphism $\phi: G_1 \rightarrow G_2$:
+	\begin{enumerate}
+		\item For $e_{G_1}$ the identity in $G_1$ and $e_{G_2}$ the identity in $G_2$, $\phi(e_{G_1}) = e_{G_2}$.
+		\item $\forall g \in G_1, \phi(g^{-1}) = \phi(g)^{-1}$.
+		\item If $G_1 = \langle \{ g_1, \dots, g_k \} \rangle$ then $\phi$ is determined by $\phi(g_1), \dots, \phi(g_k)$. In particular, if $G_1 = \langle g \rangle = \{ g^k: k \in \mathbb{Z} \}$, then $\phi: G_1 \rightarrow G_2$ gives the image $\{ \phi(g)^k: k \in \mathbb{Z} \}$.
+	\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+	\hfill
+	\begin{enumerate}
+		\item $\forall g \in G_1, \phi(g) = \phi(g \circ_1 e_{G_1}) = \phi(g) \circ_2 \phi(e_{G_1}) \Longrightarrow \phi(e_{G_1}) = \phi(g)^{-1} \circ_2 \phi(g) = e_{G_2}$.
+		\item $e_{G_1} = g \circ_1 g^{-1} \Rightarrow e_{G_2} = \phi(g \circ_1 g^{-1})$. Hence $e_{G_2} = \phi(g) \circ_2 \phi(g^{-1}) \Longrightarrow \phi(g)^{-1} = \phi(g)^{-1} \circ_2 \phi(g) \circ_2 \phi(g^{-1}) = \phi(g^{-1})$.
+		\item TODO.
+	\end{enumerate}
+\end{proof}
+
+\begin{definition}
+	Let $\phi: G_1 \rightarrow G_2$ be a group homomorphism. The \textbf{kernel} of $\phi$ is defined as
+	\[
+		\ker(\phi) := \{ g \in G_1: \phi(g) = e_{G_2} \} \subseteq G_1
+	\]
+\end{definition}
+
+\begin{definition}
+	Let $\phi: G_1 \rightarrow G_2$ be a group homomorphism. The \textbf{image} of $\phi$ is defined as
+	\[
+		\text{im}(\phi) := \{ \phi(g): g \in G_1 \} \subseteq G_2
+	\]
+\end{definition}
+
+\begin{lemma}
+	Let $\phi: G_1 \rightarrow G_2$ be a group homomorphism. Then $\ker{\phi} \le G_1$, $\text{im} \le G_2$ and $\ker(\phi) \triangleleft G_1$.
+\end{lemma}
+
+\begin{example}
+	Let $G$ be a group and $g \in G$. Define the homomorphism $\phi: \mathbb{Z} \rightarrow G$ by
+	\[
+		\phi(k) := g^k
+	\]
+	Then $\phi(k_1 + k_2) = g^{k_1 + k_2} = g^{k_1} \circ g^{k_2} = \phi(k_1) \circ \phi(k_2)$.
+	\[
+		\ker(\phi) = \{ k d: k \in \mathbb{Z} \}
+	\]
+	where $d = \text{ord}(g)$. If $d = \infty$ then $\ker(\phi) = \{ 0 \}$, otherwise $\ker(\phi) = d \mathbb{Z}$.
+	\[
+		\text{im}(\phi) = \langle g \rangle
+	\]
+	So if $G = D_n$ and $g = s$ then $\text{ord}(g) = 2$ so $\ker(\phi) = 2 \mathbb{Z}$ and $\text{im}(\phi) = \{ e, s \}$.
+\end{example}
+
+\begin{example}
+	Consider the sign map $\text{sgn}: S_n \rightarrow \{ 1, -1 \}$. If $\sigma_1, \sigma_2 \in {(S_n)}^2$, $\sigma = \tau_1 \circ \cdots \circ \tau_r$, $\sigma = \tau_1' \circ \cdots \circ \tau_s'$, where the $\tau_i$ and $\tau_i'$ are transpositions. So
+	\[
+		\sigma_1 \circ \sigma_2 = \tau_1 \circ \cdots \circ \tau_r \circ \tau_1' \circ \cdots \circ \tau_s'
+	\]
+	which gives $\text{sgn}(\sigma_1 \circ \sigma_2) = {(-1)}^{r + s} = {(-1)}^r {(-1)}^s = \text{sgn}(\sigma_1) \text{sgn}(\sigma_2)$.
+	Then
+	\[
+		\begin{aligned}
+			\ker(\text{sgn}) & = \{ \sigma \in S_n: \text{sgn}(\sigma) = 1 \} = A_n \\
+			\text{im}(\text{sgn}) = \{ 1, -1 \}
+		\end{aligned}
+	\]
+\end{example}
+
+\begin{example}
+	Let $n \ge 1$ and let the homomorphism $\phi: \mathbb{Z} \rightarrow \mathbb{Z} / n$ be defined by
+	\[
+		\phi(k) = \bar{k} = k \pmod{n}
+	\]
+	Then
+	\[
+		\begin{aligned}
+			\ker(\phi) & = n \mathbb{Z} = \{ n k: k \in \mathbb{Z} \} \\
+			\text{im}(\phi) & = \mathbb{Z} / n
+		\end{aligned}
+	\]
+\end{example}
+
+\begin{proposition}
+	Let $\phi: G_1 \rightarrow G_2$. Then
+	\begin{enumerate}
+		\item $\text{im}(\phi) \le G_2$.
+		\item $\ker(\phi) \le G_1$.
+		\item $\ker(\phi) \triangleleft G_1$.
+	\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+	\hfill
+	\begin{enumerate}
+		\item TODO.
+		\item TODO.
+		\item We must show that $\forall g \in G_1, h \in \ker(\phi)$, $g h g^{-1} \in \ker(\phi)$, i.e. $\phi(g h g^{-1}) = e_{G_2}$.
+		\[
+			\phi(g h g^{-1}) = \phi(g) \phi(h) \phi(g)^{-1} = \phi(g) \circ_2 e_{G_2} \circ_2 \phi(g)^{-1} = \phi(g) \circ_2 \phi(g)^{-1} = e_{G_2}
+		\]
+	\end{enumerate}
+\end{proof}
+
+\subsection{Quotient groups}
+
+\begin{definition}
+	Let $G$ be a group and $H \le G$. The \textbf{quotient group} of $G$ by $H$, $G / H$ is defined as
+	\[
+		G / H := \{ g \circ H: g \in G \}
+	\]
+\end{definition}
+
+\begin{proposition}
+	If $H \triangleleft G$, then
+	\begin{enumerate}
+		\item $(g_1 \circ H) \circ_{G / H} (g_2 \circ H) = (g_1 \circ g_2) \circ_{G / H} H$.
+		\item $(g \circ H) \circ_{G / H} (g^{-1} \circ H) = H$.
+	\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+	\hfill
+	\begin{enumerate}
+		\item The set $(g_1 \circ H) \circ_{G / H} (g_2 \circ H)$ is $\{ g_1 \circ h_1 \circ g_2 \circ h_2: h_1, h_2 \in H^2 \}$. WE claim this is equal to $\{ g_1 \circ g_2 \circ h': h' \in H \}$. As these are both cosets, if they intersect then they are equal.
+		
+		Let $g_1 \circ h_1 \circ g_2 \circ h_2 \in (g_1 \circ H) \circ_{G / H} (g_2 \circ H)$. Note that $h_1 \circ g_2 \in H \circ g_2$. Since $H \triangleleft G$, $H \circ g_2 = g_2 \circ H$. So $\exists h' \in H, h_1 \circ g_2 = g_2 \circ h' \Longrightarrow g_1 \circ (h_1 \circ g_2) \circ h_2 = g_1 \circ (g_2 \circ h') h_2 = g_1 \circ g_2 \circ (h' \circ h_2) \in g_1 \circ g_2 \circ H$. So the cosets intersect and so are equal.
+		\item $(g \circ H) \circ_{G / H} (g^{-1} \circ H) = (g \circ g^{-1}) \circ H = e \circ H = H$.
+	\end{enumerate}
+\end{proof}
+
+\begin{remark}
+	There is a natrual homomorphism $\phi: G \rightarrow G / H$, where $H \triangleleft G$, given by
+	\[
+		\phi(g) = g \circ H
+	\]
+\end{remark}
+
+\begin{remark}
+	The identity in $G / H$ is $H = e \circ H$ since $(g \circ H) \circ_{G / H} H = (g \circ e) \circ H = g \circ H$.
+\end{remark}
+
+\begin{example}\label{exa:quotientGroup1}
+	Let $G = (\mathbb{Z}, +)$ and $H = n \mathbb{Z}$ for some $n \in \mathbb{N}$. Since $G$ is Abelian, $H \triangleleft G$. Then
+	\[
+		G / H = \mathbb{Z} / n
+	\]
+\end{example}
+
+\begin{example}\label{exa:quotientGroup2}
+	Let $G = S_n$, $H = A_n$. $A_n \triangleleft S_n$, so
+	\[
+		G / H = \{ A_n, \tau A_n \}
+	\]
+	where $\tau \in S_n$ is a transposition. The composition rule on $S_n / A_n$ gives
+	\[
+		\begin{aligned}
+			A_n \circ A_n & = A_n \\
+			A_n \circ (\tau \circ A_n) & = (e \circ \tau) \circ A_n = \tau \circ A_n \\
+			(\tau \circ A_n) \circ (\tau \circ A_n) & = (\tau \circ \tau) \circ A_n = e \circ A_n = A_n
+		\end{aligned}
+	\]
+\end{example}
+
+\begin{example}\label{exa:quotientGroup3}
+	Let $G = D_n$, $H = \langle r \rangle$. $H \triangleleft G$, so
+	\[
+		G / H = \{ s \circ \langle r \rangle, \langle r \rangle \}
+	\]
+	since
+	\[
+		\begin{aligned}
+			D_n
+				& = \{ r^i \circ s^j: 0 \le i \le n - 1, 0 \le j \le n - 1 \} \\
+				& = \{ r^i: 0 \le i \le n - 1 \} \cup \{ r^i \circ s: 0 \le i \le n - 1 \} \\
+				& = \{ s \circ r^i: 0 \le i \le n - 1 \}
+		\end{aligned}
+	\]
+	since $s \circ r \circ s = r^{-1}$.
+\end{example}
+
+\begin{theorem}
+	(\textbf{First isomorphism theorem (FIT) for groups}) Let $\phi: G_1 \rightarrow G_2$ be a group homomorphism. Then
+	\[
+		\text{im}(\phi) \cong G_1 / \ker(\phi)
+	\]
+\end{theorem}
+
+\begin{proof}
+	We construct an isomorphism $\tilde{\phi}: G / \ker(\phi) \rightarrow \text{im}(\phi)$ by
+	\[
+		\tilde{\phi}(g \circ \ker(\phi)) = \phi(g)
+	\]
+	We need to show that $\tilde{\phi}$ is an homomorphism. Let $g_1 \circ \ker(\phi), g_2 \circ \ker(\phi) \in {(G / \ker(\phi))}^2$.
+	\[
+		\begin{aligned}
+			\tilde{\phi}((g_1 \circ \ker(\phi)) \circ (g_2 \circ \ker(\phi)))
+				& = \tilde{\phi} (g_1 \circ g_2 \circ \ker(\phi)) \\
+				& = \phi(g_1 \circ g_2) = \phi(g_1) \circ \phi(g_2) \\
+				& = \tilde{\phi}(g_1 \circ \ker(\phi)) \circ \tilde{\phi}(g_2 \circ \ker(\phi))
+		\end{aligned}
+	\]
+	Hence $\tilde{\phi}$ is an homomorphism. We now need to show that $\tilde{\phi}$ is injective, i.e. $\ker(\tilde{\phi}) = \{ \ker(\phi) \}$. Suppose $g \circ \ker(\phi) \in \ker(\phi)$, then
+	\[
+		\begin{aligned}
+			\phi(g) & = \tilde{\phi}(g \circ \ker(\phi)) \\
+			& = e_{G_2} \Longrightarrow g \in \ker(\phi) \\
+			& \Longrightarrow g \circ \ker(\phi) = \ker(\phi) \\
+			& \Longrightarrow \ker(\tilde{\phi}) = \{ \ker(\phi) \}
+		\end{aligned}
+	\]
+	Finally, we need to show that $\tilde{\phi}$ is surjective. Since $x \in \text{im}(\phi) \Longleftrightarrow \exists g \in G_1, \ \phi(g) = x$, $x = \tilde{\phi}(g \circ \ker(\phi))$ hence $\tilde{\phi}$ is surjective.
+\end{proof}
+
+\begin{corollary}
+	Let $G$ be a group and $g \in G$ with $\text{ord}(g) = n < \infty$. Then
+	\[
+		\langle g \rangle \cong (\mathbb{Z} / n, +)
+	\]
+	If $\text{ord}(g) = \infty$, then $\langle g \rangle \cong (\mathbb{Z}, +)$.
+\end{corollary}
+
+\begin{proof}
+	Define a map $\phi: \mathbb{Z} \rightarrow \langle g \rangle$ by
+	\[
+		\phi(k) = g^k
+	\]
+	This is a homomorphism, and if $\text{ord}(g) = n < \infty$ then
+	\[
+		\ker(\phi) = n \mathbb{Z} \Longrightarrow \mathbb{Z} / \ker(\phi) = \mathbb{Z} / n \mathbb{Z} \cong \mathbb{Z} / n
+	\]
+	So by FIT for groups,
+	\[
+		\mathbb{Z} / n = \text{im}(\phi_n) \cong \mathbb{Z} / \ker(\phi_n) = \mathbb{Z} / n \mathbb{Z}
+	\]
+	$\text{im}(\phi) = \langle g \rangle$ by definition, so by FIT for groups, $\mathbb{Z} / n \cong \langle g \rangle$. The case $\text{ord}(g) = \infty$ is similar, except that $\ker(\phi) = \{ 0 \}$.
+\end{proof}
+
+\begin{corollary}
+	Let $G$ be a finite group with $|G| = p$ where $p$ is prime. Then $G \cong (\mathbb{Z} / p, +)$.
+\end{corollary}
+
+\begin{proof}
+	$G$ is a cyclic group since $|G|$ is prime. Thus, $G = \langle g \rangle$ where $\text{ord}(g) = p$. By the previous corollary, $G \cong (\mathbb{Z} / p, +)$.
+\end{proof}
+
+\begin{example}
+	Let $\phi_n: \mathbb{Z} \rightarrow \mathbb{Z} / n$ by defined by
+	\[
+		\phi_n(k) = \bar{k} = \{ k + nm: m \in \mathbb{Z} \}
+	\]
+	Then $\ker(\phi_n) = n \mathbb{Z}$ and $\text{im}(\phi_n) = \mathbb{Z} / n$ since $\forall 0 \le j \le n - 1, \ \phi(j) = j$.
+\end{example}
+
+\begin{example}
+	We have seen that $\ker(\text{sgn}) = A_n$ and $\text{im}(\text{sgn}) = \{ \pm 1 \}$. So by FIT for groups,
+	\[
+		\{ \pm 1 \} \cong S_n / A_n
+	\]
+	Also note that $\{ \pm 1 \} \cong \mathbb{Z} / 2$. So $S_n / A_n \cong \mathbb{Z} / 2$.
+\end{example}
+
+\begin{example}
+	Let $\phi: D_n \rightarrow \mathbb{Z} / 2$ be defined as
+	\[
+		\phi(r^i s^j) = j \pmod{2}
+	\]
+	$\text{im}(\phi) = \mathbb{Z} / 2$ and $\ker(\phi) = \{ r^i: 0 \le i \le n - 1\} = \langle r \rangle$. So by FIT for groups,
+	\[
+		D_n / \langle r \rangle \cong \mathbb{Z} / 2
+	\]
+\end{example}
+
+\subsection{Isomorphisms invariants}
+
+\begin{lemma}
+	Let $\phi: G_1 \rightarrow G_2$ be a group isomorphism. Then
+	\begin{enumerate}
+		\item If $g \in G$ then $\text{ord}_{G_1}(g) = \text{ord}_{G_2}(\phi(g))$. In particular, the sets $\{ \text{ord}_{G_1}(g): g \in G_1 \}$ and $\{ \text{ord}_{G_2}(g): g \in G_2 \}$ are equal.
+		\item $|G_1| = |G_2|$.
+		\item $G_1$ is Abelian iff $G_2$ is also Abelian.
+		\item The sets $|H|: H \le G_1$ and $|H|: H \le G_2$ are equal.
+	\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+	\hfill
+	\begin{enumerate}
+		\item Let $g \in G_1$ and let $d_1 := \text{ord}_{G_1}(g), d_2 := \text{ord}_{G_2}(\phi(g))$. Note that
+		\[
+			e_{G_2} = \phi(e_{G_1}) = \phi(g^{d_1}) = \phi(g)^{d_1} \Longrightarrow d_2 \le d_1
+		\]
+		But also,
+		\[
+			e_{G_2} = \phi(g)^{d_2} = \phi(g^{d_2})
+		\]
+		Since $\phi$ is injective, $g^{d_2} = e_{G_1}$, so $d_1 \le d_2$, hence $d_1 = d_2$.
+		\item TODO.
+		\item TODO.
+		\item TODO.
+	\end{enumerate}
+\end{proof}
+
+\begin{example}
+	Give a reason why each of these pairs of groups are not isomorphic:
+	\begin{enumerate}
+		\item $D_4$ and $\mathbb{Z} / 4$: $|D_4| = 8$ and $|\mathbb{Z} / 4| = 4$.
+		\item $S_3$ and $\mathbb{Z} / 6$: $S_3$ is not Abelian, but $\mathbb{Z} / 6$ is.
+		\item $A_4$ and $D_6$: in $D_6$, $\text{ord}(r) = 6$ but in $A_4$, the permutations have orders of $1, 2$ or $3$.
+	\end{enumerate}
+\end{example}
+
 \end{document}

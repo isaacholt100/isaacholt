@@ -6,6 +6,8 @@
 		"**/*.synctex.gz": true,
 		"**/*.synctex(busy)": true,
 		"**/*.log": true,
-		"**/*.out": true
-	}
+		"**/*.out": true,
+		"**/*.toc": true
+	},
+	"git.openRepositoryInParentFolders": "always"
 }

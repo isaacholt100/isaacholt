@@ -1,14 +1,8 @@
-\documentclass[12pt,a4paper]{article}
-\AddToHook{cmd/section/before}{\clearpage}
+\input{../header.tex}
 
-\usepackage[a4paper, total={6in, 10in}]{geometry}
-\usepackage[utf8]{inputenc}
-\usepackage{amsfonts, amssymb, amsmath}
-\usepackage{amsthm}
 \usepackage{listings}
 \usepackage{xcolor}
 \usepackage{bbm}
-\usepackage{hyperref}
 
 \definecolor{commentcolor}{rgb}{0.43,0.47,0.51}
 \definecolor{numbercolor}{rgb}{0.07,0.39,0.16}
@@ -37,21 +31,12 @@
 
 \lstset{style=mystyle}
 
-\theoremstyle{definition}
-\newtheorem{definition}{Definition}[subsection]
-\newtheorem{theorem}[definition]{Theorem}
-\newtheorem{proposition}[definition]{Proposition}
-\newtheorem{corollary}[definition]{Corollary}
-\newtheorem{lemma}[definition]{Lemma}
-\newtheorem{example}[definition]{Example}
-\newtheorem*{remark}{Remark}
-
 \title{Data Science and Statistical Computing Course Notes}
 \author{Isaac Holt}
 
 \begin{document}
 
-\maketitle
+\input{../titletoc.tex}
 
 \section{Introduction}
 

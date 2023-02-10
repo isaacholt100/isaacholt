@@ -1,27 +1,11 @@
-\documentclass[12pt,a4paper]{article}
-\AddToHook{cmd/section/before}{\clearpage}
-
-\usepackage[a4paper, total={6in, 10in}]{geometry}
-\usepackage[utf8]{inputenc}
-\usepackage{amsfonts, amsmath, amssymb}
-\usepackage{amsthm}
-\usepackage{hyperref}
-
-\theoremstyle{definition}
-\newtheorem{definition}{Definition}[subsection]
-\newtheorem{theorem}[definition]{Theorem}
-\newtheorem{proposition}[definition]{Proposition}
-\newtheorem{corollary}[definition]{Corollary}
-\newtheorem{lemma}[definition]{Lemma}
-\newtheorem{example}[definition]{Example}
-\newtheorem*{remark}{Remark}
+\input{../header}
 
 \title{Complex Analysis II Course Notes}
 \author{Isaac Holt}
 
 \begin{document}
 
-\maketitle
+\input{../titletoc.tex}
 
 \section{The complex plane and Riemann sphere}
 
@@ -167,7 +151,7 @@
 	\]
 \end{definition}
 
-\begin{proposition}
+\begin{proposition}\label{prop:expProperties}
 	\hfill
 	\begin{enumerate}
 		\item $\forall z \in \mathbb{C}, e^z \ne 0$.
@@ -182,7 +166,7 @@
 	Easy. For 3, $\exp(z) = 1 \Longleftrightarrow e^x \cos(y) = 1$ and $e^x \sin(y) = 0$. $e^x > 0$ so $\sin(y) = 0$ so $y = n \pi$ for some $n \in \mathbb{Z}$. So $1 = e^x \cos(n \pi) = e^x {(-1)}^n$ so $n$ is even and $x = 0$.
 \end{proof}
 
-\begin{corollary}
+\begin{corollary}\label{cor:EulersFormula}
 	$\exp(2 \pi i) = 1$ and $\exp(\pi i) = -1$ (Euler's formula).
 \end{corollary}
 
@@ -204,6 +188,378 @@
 
 \begin{remark}
 	The usual trigonometric function identities hold, e.g. $\cos(z)^2 + \sin(z)^2 = 1$.
+\end{remark}
+
+\subsection{Logarithms and complex powers}
+
+\begin{definition}
+	We write the \textbf{set of non-zero complex numbers} as
+	\[
+		\mathbb{C}^* = \mathbb{C} - \{ 0 \}
+	\]
+\end{definition}
+
+\begin{lemma}
+	For every $w \in \mathbb{C}^*$, $e^z = w$ has a solution for $z$. Let $w = |w| e^{i \theta}$, $\theta = \text{Arg}(w)$. Then every solution for $z$ is given by
+	\[
+		z = \log(|w|) + i (\theta + 2 \pi k), \quad k \in \mathbb{Z}
+	\]
+\end{lemma}
+
+\begin{proof}
+	By Proposition~\ref{prop:expProperties} (part 2) and Corollary~\ref{cor:EulersFormula},
+	\[
+		w = |w| e^{i \theta} = e^{\log(|w|)} e^{i \theta} = e^{\log(|w|)} e^{i (\theta + 2 \pi k)} = e^{\log(|w|) + i (\theta + 2 \pi k)} = e^z
+	\]
+	Let $z = x + iy$, then
+	\[
+		e^z = e^x e^{iy} = w = |w| e^{i \theta} \Longrightarrow |e^z| = e^x = |w| \Longrightarrow x = \log(|w|)
+	\]
+	Hence $e^{iy} = e^{i \theta}$ so $e^{i(y - \theta)} = 1$ so $y - \theta = 2 \pi k$ for some $k \in \mathbb{Z}$ by Proposition~\ref{prop:expProperties} (part 3).
+\end{proof}
+
+\begin{definition}
+	Let $\theta_1 < \theta_2$ with $\theta_2 - \theta_1 = 2 \pi$. Let $\arg$ be the argument function with values in $(\theta_1, \theta_2]$. Then
+	\[
+		\log(z) := \log(|z|) + i \arg(z)
+	\]
+	is called a \textbf{branch of logarithm}. It has a jump discontinuity on the ray $R_{\theta_1} = R_{\theta_2}$. This ray is called a \textbf{branch cut}.
+\end{definition}
+
+\begin{definition}
+	Choosing $\theta_1 = -\pi$ and $\theta_2 = \pi$, so that $\arg = \text{Arg}$, gives the \textbf{principal branch of logarithm}
+	\[
+		\text{Log}(z) := \log(|z|) + i \text{Arg}(z)
+	\]
+	which has a jump discontinuity on the ray $\mathbb{R}_{\le 0}$ (the non-positive real axis).
+\end{definition}
+
+\begin{remark}
+	The prinical branch, $\text{Log}$, matches the definition of $\log$ for real numbers, so is the branch that should be used, unless otherwise stated.
+\end{remark}
+
+\begin{lemma}
+	\hfill
+	\begin{enumerate}
+		\item $\forall z \in \mathbb{C}^*, e^{\log(z)} = z$.
+		\item Generally, $\log(zw) \ne \log(z) + \log(w)$.
+		\item Generally, $\log(e^z) \ne z$.
+	\end{enumerate}
+\end{lemma}
+
+\begin{definition}
+	For a fixed $w \in \mathbb{C}^*$, we can choose any branch of log to define a \textbf{complex power function} by
+	\[
+		z^w = \exp(w \log(z))
+	\]
+\end{definition}
+
+\begin{remark}
+	The complex power function depends on the branch of log we choose.
+\end{remark}
+
+\subsection{The Riemann sphere and extended complex plane}
+
+\begin{definition}
+	The \textbf{unit sphere} $S^2$ is defined as
+	\[
+		S^2 := \{ (x, y, s) \in \mathbb{R}^3: x^2 + y^2 + s^2 = 1 \}
+	\]
+\end{definition}
+
+\begin{definition}
+	We define $N = (0, 0, 1) \in S^2$ to be the \textbf{north pole}. For every point $v \in S^2 - \{ N \}$, there is a unique straight line $L_{N, v}$ passing through $N$ and $v$. This is not parallel to the $(x, y)$-plane as $v \ne N$, hence $L_{N, v}$ intersects the $(x, y)$-plane at a unique point $(x, y, 0)$ which corresponds to the point $x + iy \in \mathbb{C}$.
+\end{definition}
+
+\begin{definition}
+	The \textbf{stereographic projection} map $P: S^2 - \{ N \} \rightarrow \mathbb{C}$ is defined as
+	\[
+		P(v) = x + iy
+	\]
+	where $x + iy$ is the complex number corresponding to the point $(x, y, 0)$ where the line passing through $N$ and $v$, $L_{N, v}$ intersects the $(x, y)$-plane.
+	
+	The equation $L_{N, v}$ is
+	\[
+		\gamma(t) = N + ((x, y, s) - N) t = (0, 0, 1) + (x, y, s - 1) t
+	\]
+	which intersects the $(x, y)$-plane at $t = 1 / (1 - s)$. So
+	\[
+		P(x, y, s) = \frac{x}{1 - s} + i \frac{y}{1 - s}
+	\]
+\end{definition}
+
+\begin{definition}
+	The \textbf{inverse stereographic projection}, the inverse of $P$, is
+	\[
+		P^{-1}(z) = \frac{1}{1 + |z|^2} (2 \text{Re}(z), 2 \text{Im} (z), |z|^2 - 1)
+	\]
+\end{definition}
+
+\begin{remark}
+	$P$ is a bijection as it has an inverse.
+\end{remark}
+
+\begin{definition}
+	The \textbf{extended complex plane} is defined as
+	\[
+		\hat{\mathbb{C}} = \mathbb{C} \cup \{ \infty \}
+	\]
+\end{definition}
+
+\begin{remark}
+	$N$ corresponds to $\infty \in \hat{\mathbb{C}}$ under the stereographic projection. So $\hat{\mathbb{C}}$ can be thought of as the entire sphere $S^2$.
+\end{remark}
+
+\begin{remark}
+	The south pole, $(0, 0, -1)$ could also be used to define a different, valid projection.
+\end{remark}
+
+\begin{proposition}
+	The following are correspondences between $S^2$ and $\hat{\mathbb{C}}$:
+	\[
+		\begin{aligned}
+			N & \longleftrightarrow \infty \\
+			S & \longleftrightarrow 0 \\
+			\text{equator} & \longleftrightarrow \text{unit circle: } \{ z \in \mathbb{C}: |z| = 1 \} \\
+			\text{open Southern hemisphere} & \longleftrightarrow \text{unit disc: } \{ z \in \mathbb{C}: |z| < 1 \} \\
+			\text{open Northern hemisphere} & \longleftrightarrow \hat{\mathbb{C}} - \overline{B_1}(0) = \hat{\mathbb{C}} - \{ z \in \mathbb{C}: |z| \le 1 \} \\
+		\end{aligned}
+	\]
+\end{proposition}
+
+\section{Metric Spaces}
+
+\subsection{Metric spaces}
+
+\begin{definition}
+	A \textbf{metric space} is a set $X$ together with a function $d: X \times X \rightarrow \mathbb{R}_{\ge 0}$ that satisfies, for every $x, y, z \in X^3$,
+	\begin{enumerate}
+		\item \textbf{(D1) Positivity}: $d(x, y) \ge 0$ and $d(x, y) = 0 \Longleftrightarrow x = y$.
+		\item \textbf{(D2) Symmetry}: $d(x, y) = d(y, x)$.
+		\item \textbf{(D3) Triangle inequality}: $d(x, z) \le d(x, y) + d(y, z)$.
+	\end{enumerate}
+	$d$ is called a \textbf{metric}. A metric space is written as $(X, d)$.
+\end{definition}
+
+\begin{example}
+	Let $X = \mathbb{C}$ and $d(x, y) = |x - y|$. Then $(X, d)$ is a metric space.
+\end{example}
+
+\begin{example}
+	Let $X = \mathbb{C}^n$ and
+	\[
+		d(\underline{x}, \underline{y}) = ||x - y||_2 = \sqrt{\sum_{i = 1}^n |x_i - y_i|^2}
+	\]
+	Then $(X, d)$ is a metric space.
+\end{example}
+
+\begin{example}
+	Let $V$ be a finite dimensional vector space with an inner product $\langle \cdot, \cdot \rangle$, then
+	\[
+		d(\underline{x}, \underline{y}) = ||x - y|| = \sqrt{\langle x - y, x - y \rangle}
+	\]
+	is a metric.
+\end{example}
+
+\begin{definition}
+	Let $V$ be a real or complex vector space. A function $||\cdot||: V \rightarrow \mathbb{R}_{\ge 0}$ is called a \textbf{norm} if it satisfies, for every $v, w \in V^2$ and $\lambda \in \mathbb{C}$ or $\mathbb{R}$:
+	\begin{enumerate}
+		\item \textbf{(N1) Positivity}: $||v|| \ge 0$ and $||v|| = 0 \Longleftrightarrow v = 0$.
+		\item \textbf{(N2) Linearity in scalar multiplication}: $||\lambda v|| = |\lambda| ||v||$.
+		\item \textbf{(N3) Triangle inequality}: $||v + w|| \le ||v|| + ||w||$.
+	\end{enumerate}
+\end{definition}
+
+\begin{definition}
+	Property N3 implies the \textbf{reverse triangle inequality}:
+	\[
+		||v - w|| \ge | \ ||v|| - ||w|| \ |
+	\]
+\end{definition}
+
+\begin{definition}
+	A vector space equipped with a norm is called a \textbf{normed vector space}.
+\end{definition}
+
+\begin{remark}
+	A normed vector space together with $d(v, w) = ||v - w||$ is always a metric space.
+\end{remark}
+
+\begin{example}
+	For every $p \ge 1$, the \textbf{$l_p$-norm} is defined on vectors in $\mathbb{C}^n$ by
+	\[
+		||\underline{x}||_p := \sqrt[p]{\sum_{i = 1}^{n} |x_i|^p}
+	\]
+	The \textbf{Taxicab norm} is $l_p$ norm when $p = 1$.
+\end{example}
+
+\begin{example}
+	The \textbf{$l_{\infty}$-norm} (or \textbf{sup-norm}) is defined as
+	\[
+		||\underline{x}||_{\infty} := \max_{i = 1, \dots, n} |x_i|
+	\]
+\end{example}
+
+\begin{example}
+	The \textbf{Riemannian metric} (or \textbf{chordal metric}) is defined as
+	\[
+		d(z, w) := ||f(z) - f(w)||_2
+	\]
+	where $z, w \in \hat{\mathbb{C}}$ and $f: \hat{\mathbb{C}} \rightarrow S^2$ is the inverse stereographic projection.
+\end{example}
+
+\begin{definition}
+	Let $X$ be a non-empty finite set. The \textbf{discrete metric} on $X$ is defined as
+	\[
+		d(x, y) := \begin{cases}
+			0 & \text{if } x = y \\
+			1 & \text{if } x \ne y
+		\end{cases}
+	\]
+	$(X, d)$ is called a \textbf{discrete metric space}.
+\end{definition}
+
+\begin{example}
+	Let $X = C([a, b])$ be the space of continuous functions on $[a, b]$. Then
+	\[
+		||f|| := \max_{x \in [a, b]} |f(x)|
+	\]
+	defines a norm, so is a metric.
+\end{example}
+
+\begin{example}
+	Let $(X, d)$ be a metric space. Every non-empty subset $Y \subset X$ also forms a metric space with $(Y, d)$. The metric restricted to $Y$ is called the \textbf{subspace metric}.
+\end{example}
+
+\subsection{Open and closed sets}
+
+\begin{definition}
+	Let $(X, d)$ be a metric space, $x \in X$ and $r > 0$ be a real number. The \textbf{open ball $B_r(x)$ of radius $r$ centred at $x$} is defined as
+	\[
+		B_r(x) := \{y \in X: d(x, y) < r\}
+	\]
+\end{definition}
+
+\begin{definition}
+	Let $(X, d)$ be a metric space, $x \in X$ and $r > 0$ be a real number. The \textbf{closed ball $B_r(x)$ of radius $r$ centred at $x$} is defined as
+	\[
+		\overline{B_r}(x) := \{y \in X: d(x, y) \le r\}
+	\]
+\end{definition}
+
+\begin{example}
+	Let $X = \mathbb{C}$ and $d(z, w) = |z - w|$. Then $B_1(0) = \mathbb{D} = \{ z: |z| < 1 \}$, the unit disc.
+\end{example}
+
+\begin{example}
+	Let $X = \mathbb{R}^2$. For $l_2$-norm, the unit ball $B_1(\underline{0})$ is the inside of the unit circle centred at the origin.
+
+	For the $l_{\infty}$-norm, $B_1(\underline{0})$ is the inside of the square with vertices $(1, 1), (-1, 1), (-1, -1), (1, -1)$, since $\max{ |x|, |y| } < 1$ in this ball.
+
+	For the $l_1$-norm, in $B_1(0)$, we have $|x| + |y| < 1$ so in the 1st quadrant, $y < 1 - x$, in the 2nd quadrant, $y < 1 + $, in the 3rd quadrant, $y > -1 - x$, and in the 4th quadrant, $y > -1 + x$. So the unit ball is the inside of the diamond with vertices $(1, 0), (0, 1), (-1, 0), (0, -1)$.
+\end{example}
+
+\begin{definition}
+	Let $(X, d)$ be a metric space. $U \subset X$ is called \textbf{open} (in $X$) if for every $x \in U$, for some $\epsilon > 0$, $B_{\epsilon}(x) \subset U$.
+\end{definition}
+
+\begin{definition}
+	Let $(X, d)$ be a metric space. $U \subset X$ is called \textbf{closed} (in $X$) its complement in $X$, $X - U$, is open.
+\end{definition}
+
+\begin{definition}
+	Sets in a metric space that are both open and closed are called \textbf{clopen}.
+\end{definition}
+
+\begin{example}
+	$\emptyset$ and $X$ are clopen in any metric space.
+\end{example}
+
+\begin{lemma}\label{lem:openBallsAreOpen}
+	In a metric space, the open ball $B_r(x)$ is open.
+\end{lemma}
+
+\begin{proof}
+	Let $y \in B_r(x)$ and let $s := d(x, y) < r$. Let $\epsilon = r - s > 0$. Then for every $z \in B_{\epsilon}(y)$,
+	\[
+		d(x, z) \le d(x, y) + d(y, z) < s + \epsilon = r
+	\]
+	So $z \in B_r(x)$.
+\end{proof}
+
+\begin{example}
+	$\mathbb{H}, \mathbb{D}, \mathbb{C}^*, \mathbb{C} - \mathbb{R}_{\le 0}$ are all open. The 1st quadrant $\Omega_1 := \{ z \in \mathbb{C}: \text{Re}(z) > 0, \text{Im}(z) > 0 \}$ is open, since for every $z \in \Omega_1$, let $r = \min( \text{Re}(z), \text{Im}(z) ) > 0$, then $B_r(z) \subset \Omega_1$.
+\end{example}
+
+\begin{example}
+	Let $(X, d)$ be a discrete metric space, so
+	\[
+		d(x, y) = \begin{cases}
+			0 & \text{if } x = y \\
+			1 & \text{if } x \ne y
+		\end{cases}
+	\]
+	For every $x \in X$ and $r > 0$,
+	\[
+		B_r(x) = \begin{cases}
+			\{x\} & \text{ if } r \le 1 \\
+			X & \text{ if } r > 1
+		\end{cases}
+	\]
+	So by Lemma~\ref{lem:openBallsAreOpen}, every singleton $\{ x \}$ is an open set with respect to the discrete metric. But also, $X - \{ x \}$ is open, since for every $y \in X - \{ x \}$ and $r < 1$, $y \ne x$ so $B_r(y) = \{ y \} \subset X - \{ x \}$.
+
+	So all balls are clopen with respect to the discrete metric.
+\end{example}
+
+\begin{example}
+	$[0, 1)$ is neither open nor closed in $\mathbb{R}$ with respect to the standard metric $|\cdot|$, since $0 \in [0, 1)$ doesn't have a ball in $[0, 1)$ containing it, but $1 \in \mathbb{R} - [0, 1) = (-\infty, 0) \cup [1, \infty)$ also doesn't have a ball in $\mathbb{R} - [0, 1)$ containing it.
+\end{example}
+
+\begin{lemma}\label{lem:unionsAndIntersectionsOpen}
+	Let $(X, d)$ be a metric space.
+	\begin{enumerate}
+		\item Arbitrary unions of open sets are open, i.e. for every (finite or infinite) collection of open sets $U_i \subseteq X$, the union
+		\[
+			\bigcup_{i} U_i
+		\]
+		is open.
+		\item Finite intersections of open sets are open, i.e. for every finite collection of open sets $U_i \subseteq X$, the intersection
+		\[
+			\bigcap_{i = 1}^n U_i
+		\]
+		is open.
+	\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+	\hfill
+	\begin{enumerate}
+		\item Let $x \in \bigcup_{i} U_i$. Then for some $j$, $x \in U_j$. $U_j$ is open so for some $\epsilon > 0$, $B_{\epsilon} (x) \subseteq U_j \subseteq \bigcup_{i} U_i$.
+		\item Let $x \in \bigcap_{i = 1}^n U_i$. For every $i$, $U_i$ is open so for some $r_i > 0$, $B_{r_i} (x) \subseteq U_i$. Let $\epsilon = \min \{ r_1, \ldots, r_n \} > 0$, so $B_{\epsilon}(x) \subseteq B_{r_i}(x)$ for every $i$. Then
+		\[
+			B_{\epsilon}(x) \subseteq \bigcap_{i = 1}^n B_{r_i}(x) \subseteq \bigcap_{i = 1}^n U_i
+		\]
+	\end{enumerate}
+\end{proof}
+
+\begin{corollary}
+	Let $(X, d)$ be a metric space. Then
+	\begin{enumerate}
+		\item Finite unions of closed sets are closed.
+		\item Arbitrary intersections of closed sets are closed.
+	\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+	Use De Morgan's laws and Lemma~\ref{lem:unionsAndIntersectionsOpen}.
+\end{proof}
+
+\begin{remark}
+	Infinite intersections of open sets are not always open, and infinite unions of closed sets are not always closed. For example,
+	\[
+		\bigcup_{n = 1}^{\infty} \left[ \frac{1}{i}, 1 - \frac{1}{i} \right] = (0, 1)
+	\]
+	is an infinite union of closed sets but $(0, 1)$ is open in $\mathbb{R}$.
 \end{remark}
 
 \section{Mobius Transformations}
@@ -1272,7 +1628,7 @@ To find a biholomorphism $f$ between domains, we build $f$ in various stages usi
 
 \subsection{Analytic continuation and the identity theorem}
 
-Let $f: B_r(a) \rightarrow \mathbb{C}$ be holormorphic. Then by Cauchy-Taylor, $f$ has a convergent Taylor series
+Let $f: B_r(a) \rightarrow \mathbb{C}$ be holomorphic. Then by Cauchy-Taylor, $f$ has a convergent Taylor series
 \[
 	f(z) = \sum_{n = 0}^{\infty} c_n {(z - a)}^n
 \]
@@ -1328,6 +1684,633 @@ Then $h$ is a convergent power series so is holomorphic by theorem 5.21 (lecture
 		f(z) = {(z - a)}^m h(z) \quad \forall z \in B_{\rho}(a)
 	\]
 	where $h: B_r(a) \rightarrow \mathbb{C}$ is holomorphic, $\rho > 0$ and $h(a) \ne 0$. Thus $h(z) \ne 0$ on $B_{\rho}(a)$ and ${(z - a)}^m \ne 0$ on $B_{\rho} (a) - \{ a \}$. So $f(z) \ne 0$ on $B_{\rho}(a)$.
+\end{proof}
+
+\begin{theorem}
+	(\textbf{Uniqueness of analytic continuation}) Let $D' \subset D$ be non-empty domains and $f: D' \rightarrow \mathbb{C}$ be holomorphic. Then there exists \textbf{at most one} holomorphic $g: D \rightarrow \mathbb{C}$ such that
+	\[
+		g(z) = f(z) \quad \forall z \in D'
+	\]
+	If $g$ exists, it is called the \textbf{analytic continuation} of $f$ to $D$.
+\end{theorem}
+
+\begin{proof}
+	Let $g_1, g_2: D' \rightarrow \mathbb{C}$ be analytic continuations. Let $h(z) = g_1(z) - g_2(z)$. We will show that $h(z) = 0$ on $D$. Note $h(z) = 0 \ \forall z \in D'$. Let
+	\[
+		D_0 = \{ w \in D: \exists r > 0, h(z) = 0 \text{ on } B_r(w) \\
+		D_1 = \{ w \in D: \exists n \ge 0, h^{(n)}(w) \ne 0 \}
+	\]
+	We will show $D_0$ is non-empty and open, $D_1$ is open and $D$ is the disjoint union $D = D_0 \cup D_1$, so $D_0 \cap D_1 = \emptyset$.
+
+	First we show $D_0$ is non-empty and open. Since $D' \subset D_0$, $D_0$ is non-empty. We want to show that $\forall w \in D_0, \exists r > 0, B_r(w) \subset D_0$. By the definition of $D_0$, for some $r > 0$, $h(z) = 0$ on $B_r(w)$. Pick $z \in B_r(w)$. $B_r(w)$ is open, so $\exists B_{\rho} (z)$ inside $B_r(w)$, on which $h(z) = 0$. Thus $z \in D_0$. Thus $D_0$ is open.
+
+	Now we show $D_1$ is open.
+	\[
+		\begin{aligned}
+			D_1
+				& = \bigcup_{n = 0}^{\infty} \{ w \in D: h^{(n)}(w) \ne 0 \} \\
+				& = \bigcup_{n = 0}^{\infty} {\left( h^{(n)} \right)}^{-1} (\mathbb{C} - \{ 0 \})
+		\end{aligned}
+	\]
+	By Lemma 2.8 (lecture notes) and Theorem 2.17 (lecture notes), $D_1$ is open.
+
+	Now we show $D = D_0 \cup D_1$. Pick $w \in D$. If $w \notin D_1$, then $h^{(n)}(w) = 0 \ \forall n \ge 0$. But by Cauchy-Taylor (lecture notes), $h$ has a Taylor series about $z = w$ with coefficients $h^{(n)}(w) / n! = 0$. Thus $h = 0$ around $w$. So $w \in D_0$.
+
+	If $w \in D_1$, it must have a non-zero Taylor series expansion (at least coefficient $c_n$ is non-zero). By the Principle of Isolated Zeroes (lecture notes), for some $B_{\rho}(w)$, $h(z) \ne 0$ on $B_{\rho}(w) - \{ w \}$. So $w \notin D_0$. This completes the proof.
+\end{proof}
+
+\begin{corollary}\label{cor:sameOnBallImpliesSameOnDomain}
+	Let $f, g$ be holomorphic on a domain $D$. If $f = g$ on some $B_r(w) \subseteq D$ then $f = g$ on $D$.
+\end{corollary}
+
+\begin{definition}
+	Given a set $S \subset \mathbb{C}$, a point in $S$ is called
+	\begin{itemize}
+		\item \textbf{isolated} in $S$ if $\exists \epsilon > 0$, $B_{\epsilon}(w) \cap S = \{ w \}$.
+		\item \textbf{non-isolated} in $S$ if $\forall \epsilon > 0$, $\exists z \in S$, $z \in B_{\epsilon}(w)$, with $\omega \ne z$.
+	\end{itemize}
+\end{definition}
+
+\begin{theorem}
+	(\textbf{Identity theorem}) Let $f, g: D \rightarrow \mathbb{C}$ be holomorphic on a domain $D$. If $S = \{ z \in D: f(z) = g(z) \}$ contains a non-isolated point, then
+	\[
+		f(z) = g(z) \quad \text{on } D
+	\]
+\end{theorem}
+
+\begin{proof}
+	Let $w \in S$ be non-isolated and let $h(z) = f(z) - g(z)$. Then $h(w) = 0$. By the Principle of Isolated Zeroes (lecture notes), for some $\rho$, $\forall z \in B_{\rho} (w) - \{ w \}$, $h(z) \ne 0$. But this contradicts $w$ being non-isolated. So $h(z) = 0$ on $B_{\rho} (w)$. By Corollary~\ref{cor:sameOnBallImpliesSameOnDomain}, $h(z) = 0$ on $D$.
+\end{proof}
+
+\begin{example}
+	Let $f: \mathbb{C} \rightarrow \mathbb{C}$ and assume $\forall n \in \mathbb{N}, f(1 / n) = \sin(1 / n)$. Then $f(z) = \sin(z)$ on $\mathbb{C}$.
+
+	By continuity (lemma 2.29 (lecture notes)),
+	\[
+		f(0) = f \left( \lim_{n \rightarrow \infty} \frac{1}{n} \right) = \lim_{n \rightarrow \infty} f \left( \frac{1}{n} \right) = \lim_{n \rightarrow \infty} \sin \left( \frac{1}{n} \right) = \sin(0)
+	\]
+	Since $z = 0$ is a non-isolated point in $S = \{ z \in \mathbb{C}: f(z) = \sin(z) \}$, $f(z) = \sin(z)$ on $\mathbb{C}$.
+\end{example}
+
+\begin{example}
+	(Problems class) Evaluate
+	\[
+		I = \int_{|z| = 1} \frac{1}{(z - a)(z - b)} dz
+	\]
+	in the cases:
+	\[
+		|a| > 1, |b| > 1; \quad |a| < 1 < |b|; \quad |a| < 1, |b| < 1
+	\]
+	\begin{itemize}
+		\item $|a| > 1, |b| > 1$: we can find a ball $B_r(0)$ with $1 < r < \min \{ |a|, |b| \}$, on which the integrand is holomorphic, so by CTSD, $I = 0$.
+		\item $|a| < 1 < |b|$: Let $f(z) = 1/(z - b)$, then
+		\[
+			I = \int_{|z| = 1} \frac{f(z)}{z - a} dz = 2 \pi i \frac{1}{a - b}
+		\]
+		by Cauchy's integral formula.
+		\item $|a| < 1, |b| < 1$: if $a = b$ then
+		\[
+			\frac{1}{(z - a)(z - b)} = \frac{1}{{(z - a)}^2} \Longrightarrow I = 2 \pi i \cdot 0 = 0
+		\]
+		by CIF for derivatives. If $a \ne b$, then use partial fractions.
+	\end{itemize}
+\end{example}
+
+\begin{example}
+	(Problems class) Evaluate
+	\[
+		I = \int_{|z| = 2} \frac{{\sin(z)}^2}{z^2} dz
+	\]
+	Let $f(z) = {\sin(z)}^2, a = 0, \rho = 2, n = 1$. Then by CIF for derivatives,
+	\[
+		I = \frac{2 \pi i}{1} {\left[ {\sin(z)}^2 \right]}' \Big|_{z = 0} = 2 \pi i [2 \sin(z) \cos(z)] \Big|_{z = 0} = 0
+	\]
+\end{example}
+
+\begin{example}
+	(Problems class) Let $f(z) = 1/{(1 - z)}^2$. Find a Taylor series of $f$.
+
+	An antiderivative of $f$ is $F(z) = 1/(1 - z)$. $F$ has Taylor series
+	\[
+		F(z) = \sum_{n = 0}^{\infty} z^n \quad (|z| < 1)
+	\]
+	So by theorem 5.21 (lecture notes), $f$ has Taylor series
+	\[
+		f(z) = \sum_{n = 1}^{\infty} n z^{n - 1} = \sum_{m = 0}^{\infty} (m + 1) z^m \quad (|z| < 1)
+	\]
+\end{example}
+
+\begin{example}
+	(Problems class) Using the Taylor series expansion of $f(z) = e^z$ about $z = 0$, prove that $|e^z - 1| \le e^{|z|} - 1 \le |z| e^{|z|}$.
+
+	Using the triangle inequality,
+	\[
+		\begin{aligned}
+			|e^z - 1|
+				& = \left| \sum_{n = 0}^{\infty} \frac{z^n}{n!} - 1 \right| \\
+				& = \left| \sum_{n = 1}^{\infty} \frac{z^n}{n!} \right| \\
+				& \le \sum_{n = 1}^{\infty} \frac{|z|^n}{n!} \\
+				& = \sum_{n = 0}^{\infty} \frac{|z|^n}{n!} - 1 \\
+				& = e^{|z|} - 1
+		\end{aligned}
+	\]
+	Also,
+	\[
+		\begin{aligned}
+			e^{|z|} - 1
+				& = \sum_{n = 1}^{\infty} \frac{|z|^n}{n!} \\
+				& = |z| \sum_{n = 1}^{\infty} \frac{|z|^{n - 1}}{n!} \\
+				& = |z| \sum_{m = 0}^{\infty} \frac{|z|^m}{(m + 1)!} \\
+				& \le |z| \sum_{m = 0}^{\infty} \frac{|z|^m}{m!} \\
+				& = |z| e^{|z|}
+		\end{aligned}
+	\]
+\end{example}
+
+\begin{example}
+	Find the Taylor series about $z_0 \in \mathbb{C}$ of $f(z) = e^z$.
+
+	$\forall n \in \mathbb{N}, f^{(n)} (z) = e^z$. By Corollary 5.22 (lecture notes),
+	\[
+		f(z) = \sum_{n = 0}^{\infty} \frac{f^{(n)}(z_0)}{n!} {(z - z_0)}^n = \sum_{n = 0}^{\infty} \frac{e^{z_0}}{n!} {(z - z_0)}^n
+	\]
+\end{example}
+
+\begin{example}
+	Calculate the Taylor series of $f(z) = \text{Log}(1 + z)$ about $z = 0$.
+	\[
+		f'(z) = \frac{1}{1 + z} = \frac{1}{1 - (-z)} = \sum_{n = 0}^{\infty} {(-z)}^n
+	\]
+	Then by corollary 5.23 (lecture notes),
+	\[
+		f(z) = \sum_{n = 0}^{\infty} \frac{{(-1)}^n}{n + 1} z^{n + 1} + c \quad (|z| < 1)
+	\]
+	for some $c$. $\text{Log}(1 + 0) = 0$, so $c = 0$.
+\end{example}
+
+\subsection{Harmonic functions and the Dirichlet problem}
+
+\begin{definition}
+	A \textbf{harmonic function} is a real valued function $u: D \rightarrow \mathbb{R}$ on a domain $D \subset \mathbb{C}$ that has continuous second-order partial derivatives which satisfy the \textbf{Laplace equation}:
+	\[
+		u_{xx} + u_{yy} = 0
+	\]
+\end{definition}
+
+\begin{proposition}
+	Let $f = u + iv: D \rightarrow \mathbb{C}$ be holomorphic. Then $u$ and $v$ are harmonic.
+\end{proposition}
+
+\begin{proof}
+	By proposition 3.3 (lecture notes) the first-order partial derivatives exist and $f' = u_x - i u_y = v_y + i v_x$. By corollary 7.6 (lecture notes), $f'$ is holomorphic and so continuous, hence $u_x, u_y, v_y, v_x$ are continuous as well. By the same argument with $f'$, the second-order partial derivatives exist and are continuous. By proposition 3.3 (lecture notes), $u_x, u_y, v_x, v_y$ satisfy the Cauchy-Riemann equations:
+	\[
+		\begin{aligned}
+			u_x = v_y & \Longrightarrow u_{xx} = v_{yx} \\
+			u_y = -v_x & \Longrightarrow u_{yy} = -v_{xy}
+		\end{aligned}
+	\]
+	By the Schwartz-Clairault theorem, $v_{yx} = v_{xy}$, hence $u_{xx} + u_{yy} = v_{yx} - v_{yx} = 0$.
+\end{proof}
+
+\begin{example}
+	Let $f(z) = e^z = e^{x + iy} = e^x (\cos(y) + i \sin(y))$. So $u(x, y) = e^x \cos(y)$ and $v(x, y) = e^x \sin(y)$. $u_x (x, y) = e^x \cos(y)$, $u_y = -e^x \sin(y)$, $u_{xx} = e^x \cos(y)$ and $u_{yy} = -e^x \cos(y)$.
+\end{example}
+
+\begin{example}
+	Let $f(x + iy) = x^2 + y^2$. So $u(x, y) = x^2 + y^2$ and $v(x, y) = 0$. $u_x = 2x \Longrightarrow u_{xx} = 2$ but $u_y = 2y \Longrightarrow u_{yy} = 2$ so $u_{xx} + u_{yy} = 4$. Note $f(z) = |z|^2$. So $f$ is not holomorphic.
+\end{example}
+
+\begin{example}
+	Let $u(x, y) = x^2 - y^2 + 3x$, so $u_x = 2x + 3 \Longrightarrow u_{xx} = 2$, $u_y = -2y \Longrightarrow u_{yy} = -2$ so $u$ is harmonic.
+\end{example}
+
+\begin{proposition}
+	Let $f: D \rightarrow \mathbb{C}$ be holomorphic on a starlike domain $D$. Then for some $F: D \rightarrow \mathbb{C}$, $F$ is holomorphic and $F' = f$.
+\end{proposition}
+
+\begin{proof}
+	By Cauchy's Starlike theorem (lecture notes),
+	\[
+		\int_{\gamma} f(z) dz = 0 \quad \forall \text{ closed } \gamma
+	\]
+	By the converse FTC (lecture notes), there exists a holomorphic antiderivative of $f$, $F$.
+\end{proof}
+
+\begin{theorem}
+	(\textbf{The existence of a harmonic conjugate}) If $D$ is a starlike domain and $u: D \rightarrow \mathbb{R}$ is harmonic, then for some harmonic function $v: D \rightarrow \mathbb{R}$,
+	\[
+		f = u + iv
+	\]
+	is holomorphic on $D$. $v$ is called the \textbf{harmonic conjugate} of $u$ and is unique up to a real additive constant.
+\end{theorem}
+
+\begin{proof}
+	If such an $f$ exists, then $f' = u_x - i u_y$ would also be holomorphic. We will first construct $f'$ and then construct $f$.
+
+	Let $g(x, y) = u_x + i (-u_y)$. We want to show $g$ is holomorphic. Using theorem 3.5 (lecture notes), we will show $g$ satisfies the Cauchy-Riemann equations.
+	\[
+		{(u_x)}_x = u_{xx}, \quad {(-u_y)}_y = -u_{yy} = u_{xx}
+	\]
+	as $u$ is harmonic. Similarly,
+	\[
+		{(u_x)}_y = u_{xy}, \quad -{(-u_y)}_x = u_{yx}
+	\]
+	by Schwarz-Clairault. So by theorem 3.5 (lecture notes), $g$ is holomorphic.
+
+	Now we will construct $f$. By proposition 7.28 (lecture notes), $g$ has a holomorphic antiderivative, $F = U + iV$, where $F'(z) = g(z)$ on $D$. $F$ satisfies the Cauchy-Riemann equations and $F' = U_x - U_y i = g = u_x - u_y i$. Hence
+	\[
+		U_x = u_x, \quad U_y = u_y \Longrightarrow {(U - u)}_x = 0 = {(U - u)}_y
+	\]
+	Therefore $U = u + c$ for some constant $c$. So let $f = F - c = (U + iV) - c = u + iV$, and let $v = V$. By proposition 7.26 (lecture notes), $v$ is harmonic.
+
+	Finally, we show $v$ is unique (TODO).
+\end{proof}
+
+\begin{example}
+	We have seen $u(x, y) = x^2 - y^2 + 3x$ is harmonic. Construct its harmonic conjugate $v$.
+
+	We want a holomorphic $f = u + iv$. By the first Cauchy-Riemann equation, $v_y = u_x = 2x + 3$. So $v(x, y) = 2xy + 3y + g(x)$ for some function $g$. By the second Cauchy-Riemann equation,
+	\[
+		2y + g'(x) = v_x = -u_y = 2y
+	\]
+	hence $g'(x) = 0 \Longrightarrow g(x) = c$ for a constant $c \in \mathbb{R}$. So $v(x, y) = 2xy + 2y + c$. Then $f(x + iy) = x^2 - y^2 + 3x + i(2xy + 3y + c)$.
+	\
+	Note that ${(x + iy)}^2 = x^2 - y^2 + 2xyi$, so $f(z) = z^2 + 3z + ic$.
+\end{example}
+
+\begin{definition}
+	The \textbf{Dirichlet boundary problem} states: Let $D \subseteq \mathbb{C}$ be a domain with closure $\bar{D}$ and boundary $\delta D$. Let $g: \delta D \rightarrow \mathbb{R}$ be continuous. Find a continuous function $\mu: \bar{D} \rightarrow \mathbb{R}$ such that $\mu$ is harmonic on $D$ and matches $g$ on $\delta D$.
+\end{definition}
+
+\begin{example}\label{exa:dirichletBoundaryProblemExample1}
+	Let
+	\[
+		D = \{ x + iy \in \mathbb{C}: 2 < y < 5 \}, \quad g(x, y) = \begin{cases}
+			4 & \text{ if } y = 2 \\
+			13 & \text{ if } y = 5
+		\end{cases}
+	\]
+	So $\bar{D} = \{ x + iy \in \mathbb{C}: 2 \le y \le 5 \}$ and $\delta D = \{ x + iy \in \mathbb{C}: y = 2 \text{ or } y = 5 \}$. We want a harmonic $\mu$ such that $\mu = g$ on $\delta D$.
+
+	Note that $g$ doesn't depend on $x$, so it is possible that $\mu = 0$. If this was true, then $\mu_{xx} = 0$ and $\mu$ is harmonic so $\mu_{yy} = -\mu_{xx} = 0$, so
+	\[
+		\mu(x, y) = ay + b
+	\]
+	This guess for this solution is called an \textbf{ansatz}. Check $\mu(x, 2) = 4 = 2a + b$ and $\mu(x, 5) = 13 = 5a + b$, which gives $a = 3$ and $b = -2$. Thus $\mu(x, y) = 3y - 2$ is a solution to the Dirichlet boundary problem.
+\end{example}
+
+\begin{proposition}
+	Let $f: D \rightarrow \mathbb{C}$, $f = u + iv$ be holormorphic on $D$ and $\mu$ is harmonic on $f(D)$. Then
+	\[
+		\tilde{\mu} := \mu \circ f = \mu(u, v)
+	\]
+	is harmonic on $D$.
+\end{proposition}
+
+\begin{example}
+	From Example~\ref{exa:dirichletBoundaryProblemExample1}, $\mu(x, y) = 3y - 2$ was a solution to the Dirichlet boundary problem on $D_1 = \{ x + iy: 2 < y < 5 \}$ with
+	\[
+		g(x, y) = \begin{cases}
+			4 & \text{ if } y = 2 \\
+			13 & \text{ if } y = 5
+		\end{cases}
+	\]
+	Let $D_2$ be $D_1$ rotated anticlockwise by $\pi/4$ about the origin. Solve the Dirichlet boundary problem on $D_2$ when
+	\[
+		g(x, y) = \begin{cases}
+			4 & \text{ if } y = x + 2 \sqrt{2} \\
+			13 & \text{ if } y = x + 5 \sqrt{2}
+		\end{cases}
+	\]
+	Let $f(z) = e^{-\pi i / 4} z$. From Example~\ref{exa:dirichletBoundaryProblemExample1}, we know a solution on $f(D_2) = D_1$. So by proposition 7.31 (lecture notes), $\tilde{\mu} = \mu \circ f$ is a solution on $D_2$. Note that
+	\[
+		f(x, y) = e^{-\pi i / 4} (x + i y) = \frac{1}{\sqrt{2}} (x + y) + i \frac{1}{\sqrt{2}} (y - x)
+	\]
+	Thus $\tilde{\mu} = \mu(\frac{1}{\sqrt{2}} (x + y), \frac{1}{\sqrt{2}} (y - x)) = \frac{3}{\sqrt{2}} (y - x) - 2$.
+\end{example}
+
+\section{General form of the Cauchy-Taylor theorem and Cauchy's integral formula}
+
+\subsection{Winding number and simply connected sets}
+
+\begin{definition}
+	Let $\gamma: [a, b] \rightarrow \mathbb{C}$ be a contour of the form
+	\[
+		\gamma(t) = \omega + r(t) e^{i \theta (t)}
+	\]
+	where $\omega \in \mathbb{C}$, $\theta(t): [a, b] \rightarrow \mathbb{C}$, $r(t): [a, b] \rightarrow \mathbb{R}^+$ are continuous, piecewise-$C^1$. The \textbf{winding number} of $\gamma$ about $\omega$ is defined as
+	\[
+		I(\gamma, \omega) = \frac{\theta(b) - \theta(a)}{2 \pi}
+	\]
+\end{definition}
+
+\begin{example}
+	Let $\gamma_1(t) = e^{2 \pi i t}$ for $t \in [0, 1]$. Then $r(t) = 1$, $\omega = 0$, $\theta(t) = 2 \pi t$. So
+	\[
+		I(\gamma_1, 0) = \frac{2 \pi \cdot 1 - 2 \pi \cdot 0}{2 \pi} = 1
+	\]
+	Let $\gamma_2(t) = e^{2 \pi i t}$ for $t \in [0, 2]$. Then
+	\[
+		I(\gamma_2, 0) = \frac{2 \pi \cdot 2 - 2 \pi \cdot 0}{2 \pi} = 2
+	\]
+\end{example}
+
+\begin{remark}
+	$w \notin \gamma$ since $r(t) > 0$, and $I(\gamma, \omega) \in \mathbb{Z}$ when $\gamma$ is closed, since if $\gamma$ is closed, then
+	\[
+		\begin{aligned}
+			& \gamma(a) = \gamma(b) = \omega + r(a) e^{i \theta(a)} = \omega + r(b) e^{i \theta(b)} \\
+			& \Longleftrightarrow r(b) = r(a) \text{ and } \theta(a) = \theta(b) + 2 \pi n \quad (n \in \mathbb{Z})	
+		\end{aligned}
+	\]
+	Thus
+	\[
+		I(\gamma, \omega) = \frac{\theta(b) - \theta(a)}{2 \pi} \in \mathbb{Z}
+	\]
+\end{remark}
+
+\begin{theorem}
+	Let $\gamma: [a, b] \rightarrow \mathbb{C}$ be a contour. Then for every $\omega \in \mathbb{C}$ with $\omega \notin \gamma$, for some continuous, piecewise $C^1$, $\theta: [a, b] \rightarrow \mathbb{R}$ and $r: [a, b] \rightarrow \mathbb{R}^+$,
+	\[
+		\gamma(t) = \omega + r(t) e^{i \theta(t)}
+	\]
+\end{theorem}
+
+\begin{proof}
+	Omitted.
+\end{proof}
+
+\begin{lemma}\label{lem:formulaForClosedContourWindingNumber}
+	Let $\gamma: [a, b] \rightarrow \mathbb{C}$ be a closed contour and $\omega \notin \gamma$. Then
+	\[
+		I(\gamma, \omega) = \frac{1}{2 \pi i} \int_{\gamma} \frac{1}{z - \omega} dz
+	\]
+\end{lemma}
+
+\begin{proof}
+	By theorem 8.2 (lecture notes),
+	\[
+		\gamma(t) = \omega + r(t) e^{i \theta(t)}
+	\]
+	By definition 6.4 (lecture notes),
+	\[
+		\begin{aligned}
+			\int_{\gamma} \frac{1}{z - w} dz
+				& = \int_{a}^{b} \frac{1}{\gamma(t) - \omega} \gamma'(t) dt \\
+				& = \int_{a}^{b} \frac{1}{r(t) e^{i \theta(t)}} \left( r'(t) e^{i \theta(t)} + r(t) \cdot i \theta'(t) e^{i \theta(t)} \right) dt \\
+				& = \int_{a}^{b} \left( \frac{r'(t)}{r(t)} + i \theta'(t) \right) dt \\
+				& = {[\log(r(t)) + i \theta(t)]}_a^b = i (\theta(b) - \theta(a)) = 2 \pi i \cdot I(\gamma, \omega)
+		\end{aligned}
+	\]
+\end{proof}
+
+\begin{proposition}
+	Let $D$ be a starlike domain. Then for every closed contour $\gamma$ and every $\omega \notin D$,
+	\[
+		I(\gamma, \omega) = 0
+	\]
+\end{proposition}
+
+\begin{proof}
+	By Lemma~\ref{lem:formulaForClosedContourWindingNumber},
+	\[
+		I(\gamma, \omega) = \frac{1}{2 \pi i} \int_{\gamma} \frac{1}{z - \omega} dz
+	\]
+	and $1 / (z - w)$ is holomorphic on $D$. So by CTSD, $I(\gamma, \omega) = 0$.
+\end{proof}
+
+\begin{definition}
+	Let $U$ be an open set. A closed contour $\gamma$ in $U$ is \textbf{homologous to zero} if $I(\gamma, \omega) = 0$ for every $\omega \notin U$.
+\end{definition}
+
+\begin{definition}
+	An open set $U$ is called \textbf{simply connected} if every closed contour in $U$ is homologous to zero.
+\end{definition}
+
+\begin{example}
+	By proposition 8.4 (lecture notes), starlike domains are simply connected.
+\end{example}
+
+\begin{example}
+	Let $A = \{ z \in \mathbb{C}: \alpha < |z| < \beta \}$. Let $\gamma(t) = \rho e^{2 \pi i t}$ for $t \in [0, 1]$ and $\alpha < \rho < \beta$. Pick $\omega = 0$ then $\omega 
+	\notin A$ but
+	\[
+		\frac{1}{2 \pi i} \int_{\gamma} \frac{1}{z} dz = 1
+	\]
+	by CIF. Thus $A$ is not simply connected.
+\end{example}
+
+\begin{definition}
+	A \textbf{cycle} $\Gamma$ defined on an open set $U$ is a finite collection of closed contours in $U$. We write
+	\[
+		\Gamma = \gamma_1 + \gamma_2 + \cdots + \gamma_n
+	\]
+\end{definition}
+
+\begin{definition}
+	Let $\Gamma$ be a cycle. $w \in \mathbb{C}$ is \textbf{not on $\Gamma$} ($\omega \notin \gamma_i$) if $w \notin \gamma_i$ for every $i$. The \textbf{winding number of $\Gamma$ around $\omega$} is defined as
+	\[
+		I(\Gamma, \omega) = \sum_{i = 1}^n I(\gamma_i, \omega)
+	\]
+	and we define
+	\[
+		\int_{\Gamma} f(z) dz = \sum_{i = 1}^n \int_{\gamma_i} f(z) dz
+	\]
+	$\Gamma$ is called \textbf{homologous to zero in $U$} if $I(\Gamma, \omega) = 0$ for every $\omega \notin U$.
+\end{definition}
+
+\begin{example}
+	Let $A_{\alpha, \beta} (\omega) = \{ z \in \mathbb{C}: \alpha < |z - \omega| < \beta$ for $0 \le \alpha < \beta \le \infty \}$. Let $\Gamma$ be a cycle in $A_{\alpha, \beta} (\omega)$.
+
+	Let $\gamma_1(t) = \omega + \rho_1 e^{-2 \pi i t}$ for $t \in [0, 1]$, $\gamma_2(t) = \omega + \rho_2 e^{2 \pi i t}$ for $t \in [0, 1]$ where $\alpha < \rho_1 < \rho_2 < \beta$. Define
+	\[
+		\Gamma = \gamma_1 + \gamma_2
+	\]
+	We claim that $\Gamma$ is homologous to zero in $A_{\alpha, \beta} (\omega)$. Let $\omega' \in A_{\alpha, \beta} (\omega)$. Consider $a \notin A_{\alpha, \beta} (\omega)$. Then
+	\begin{itemize}
+		\item If $|\omega - a| > \beta$ then
+		\[
+			\begin{aligned}
+				I(\Gamma, a)
+					& = I(\gamma_1, a) + I(\gamma_2, a) \\
+					& = \frac{1}{2 \pi i} \int_{\gamma_1} \frac{1}{z - a} dz + \frac{1}{2 \pi i} \int_{\gamma_2} \frac{1}{z - a} dz
+			\end{aligned}
+		\]
+		But then $1 / (z - a)$ is holomorphic. So by Cauchy's theorem both integrals vanish.
+		\item If $|\omega - a| < \alpha$ then by CIF,
+		\[
+			\int_{\gamma_1} \frac{1}{z - a} dz = -1, \quad \int_{\gamma_2} \frac{1}{z - a} dz = 1
+		\]
+		so $I(\Gamma, a) = 0$.
+	\end{itemize}
+\end{example}
+
+\subsection{General form of the Cauchy-Taylor theorem and CIF}
+
+\begin{definition}
+	A closed curve $\gamma: [a, b] \rightarrow \mathbb{C}$ is called \textbf{simple} if for all $t_1 < t_2$
+	\[
+		\gamma(t_1) = \gamma(t_2) \Longrightarrow t_1 = a \text{ and } t_2 = b
+	\]
+	i.e. it cannot cross itself or go back on itself.
+\end{definition}
+
+\begin{theorem}
+	(\textbf{Jordan curve theorem}) Let $\gamma \subset \mathbb{C}$ be a simple closed curve. Then its complement $\mathbb{C} - \gamma$ is a disjoint union of two domains, exactly one of which is bounded.
+\end{theorem}
+
+\begin{proof}
+	Beyond the scope of this course, so omitted.
+\end{proof}
+
+\begin{definition}
+	The bounded domain is called the \textbf{interior} of $\gamma$ and we write $D_{\gamma}^{\text{int}}$. We say $w \in D_{\gamma}^{\text{int}}$ \textbf{lies inside} $\gamma$.
+\end{definition}
+
+\begin{definition}
+	The other, non-bounded, domain is called the \textbf{exterior} of $\gamma$ and we write $D_{\gamma}^{\text{ext}}$. We say $w \in D_{\gamma}^{\text{ext}}$ \textbf{lies outside} $\gamma$.
+\end{definition}
+
+\begin{remark}
+	$\mathbb{C} = D_{\gamma}^{\text{int}} \cup \gamma \cup D_{\gamma}^{\text{ext}}$ as a disjoint union.
+\end{remark}
+
+\begin{remark}
+	Given a simple closed \textbf{contour}, it is always possible to place an orientation on $\gamma$ such that
+	\[
+		\forall w \in \mathbb{C} - \gamma, \quad I(\gamma, w) = \begin{cases}
+			1 & \text{ if } w \in D_{\gamma}^{\text{int}} \\
+			0 & \text{ if } w \in D_{\gamma}^{\text{ext}}
+		\end{cases}
+	\]
+	We call $\gamma$ \textbf{positively oriented} if this equation holds.
+\end{remark}
+
+\begin{definition}
+	$f$ is called \textbf{holomorphic on $D_{\gamma}^{\text{int}} \cup \gamma$} (and \textbf{holomorphic on and inside $\gamma$}) if for some domain $D$ containing $D_{\gamma}^{\text{int}} \cup \gamma$ on which $f$ is holomorphic.
+\end{definition}
+
+\begin{remark}
+	For a simple closed curve, $\gamma$ is homologous to zero in $D$, since if $w \notin D$ then $w \in D_{\gamma}^{\text{ext}}$ so $I(\gamma, w) = 0$.
+\end{remark}
+
+\begin{theorem}
+	Let $f: D \rightarrow \mathbb{C}$ be a holomorphic function on a domain $D$. Then for every cycle $\Gamma \in D$ such that $\Gamma$ is homologous to zero in $D$, for every $\omega \in D - \Gamma$, we have the \textbf{General form of the Cauchy-Taylor theorem}
+	\[
+		\int_{\Gamma} f(z) dz = 0
+	\]
+	and the \textbf{General form of the Cauchy integral formula}
+	\[
+		\int_{\Gamma} \frac{f(z)}{z - w} dz = 2 \pi i \cdot I(\Gamma, \omega) \cdot f(\omega)
+	\]
+\end{theorem}
+
+\begin{example}
+	By definition, if $D$ is simply connected, every cycle in $D$ is homologous to zero, so for every closed contour $\Gamma$,
+	\[
+		\int_{\Gamma} f(z) dz = 0
+	\]
+\end{example}
+
+\begin{example}
+	Let $D = B_r(a)$ and let $\gamma$ be $|z - a| = \rho$. Then for every $\omega \in B_r(a)$ with $|\omega - a| < \rho$,
+	\[
+		I(\gamma, \omega) = 1
+	\]
+	so
+	\[
+		\int_{\gamma} \frac{f(z)}{z - \omega} dz = 2 \pi i \cdot f(\omega)
+	\]
+\end{example}
+
+\begin{theorem}
+	Let $\gamma$ be a simple closed contour, positively oriented, and let $f$ be holomorphic on $D_{\gamma}^{\text{int}} \cup \gamma$. Then we have \textbf{Cauchy's theorem for simple closed curves}
+	\[
+		\int_{\gamma} f(z) dz = 0
+	\]
+	and \textbf{Cauchy's integral formula for simple closed curves}: if $w \in D_{\gamma}^{\text{int}}$ then
+	\[
+		\int_{\gamma} \frac{f(z)}{z - w} dz = 2 \pi i \cdot f(w)
+	\]
+\end{theorem}
+
+\begin{remark}
+	From here onwards, this will be the version of these two theorems which we use most often.
+\end{remark}
+
+\begin{example}
+	Let $\gamma$ be the square with vertices at $1 + i, 1 - i, -1 + i, -1 - i$. Consider
+	\[
+		\int_{\gamma} \frac{\cos(z)}{z (z^2 + 2)} dz
+	\]
+	$f(z) = \cos(z) / (z^2 + 2)$ is holomorphic on $D_{\gamma}^{\text{int}} \cup \gamma$ so by CIF for simple closed curves,
+	\[
+		\int_{\gamma} \frac{f(z)}{z} dz = 2 \pi i \cdot f(0) = \pi i
+	\]
+\end{example}
+
+\section{Holomorphic functions on punctured domains}
+
+\subsection{Laurent series}
+
+\begin{definition}
+	A \textbf{Laurent series} is an infinite series of the form
+	\[
+		\sum_{n = -\infty}^{\infty} c_n {(z - a)}^n
+	\]
+	where $c_n \in \mathbb{C}$ and $a \in \mathbb{C}$. $a$ is called the \textbf{centre}. The sum
+	\[
+		\sum_{n = 0}^{\infty} c_n {(z - a)}^n
+	\]
+	is called the \textbf{analytic part} and the sum
+	\[
+		\sum_{n = -\infty}^{-1} c_n {(z - a)}^n
+	\]
+	is called the \textbf{principal part}.
+\end{definition}
+
+\begin{definition}
+	We say a Laurent series \textbf{converges at $z \in \mathbb{C}$} iff the principal part and analytic part independently converge at $z$.
+\end{definition}
+
+\begin{remark}
+	A Laurent series is a Taylor series if the principal part is $0$, otherwise, it is not defined at $z = a$.
+\end{remark}
+
+\begin{definition}
+	For every $0 \le r < R \le \infty$, and $a \in \mathbb{C}$, the \textbf{annulus} of centre $a$, interior radius $r$ and external radius $R$ is defined as
+	\[
+		A_{r, R}(a) = \{ z \in \mathbb{C}: r < |z - a| < R \}
+	\]
+\end{definition}
+
+\begin{proposition}
+	Given a Laurent series with a non-zero principal part, then either
+	\begin{itemize}
+		\item The Laurent series converges nowhere \textbf{or}
+		\item For some $r, R$, the Laurent series converges absolutely on the annulus $A_{r, R}(a)$ and does not converge for $|z - a| > R$ or $|z - a| < r$. We call $A_{r, R}(a)$ the \textbf{annulus of convergence}.
+	\end{itemize}
+\end{proposition}
+
+\begin{proof}
+	By definition, the Laurent series converges iff
+	\[
+		F_1(z) = \sum_{n = 0}^{\infty} c_n {(z - a)}^n, \quad F_2(z) = \sum_{n = -\infty}^{-1} c_n {(z - a)}^n
+	\]
+	both converge. By Theorem 5.15 (lecture notes), either $F_1$ converges at $z = a$ (but then the Laurent series converges nowhere as the principal is not defined at $z = a$) or for some $0 < R \le \infty$, $F_1$ converges absolutely for $|z - a| < R$.
+
+	Now define $w = 1 / (z - a)$. Then
+	\[
+		F_2(z) = \sum_{n = -\infty}^{-1} c_n (z - a)^n = \sum_{n = -\infty}^{-1} c_n w^{-n} = \sum_{m = 1}^{\infty} c_{-m} w^m =: \tilde{F}(w)
+	\]
+	Either $\tilde{F}$ converges only at $w = 0$ (so the Laurent series converges nowhere) or for some $0 < R' \le \infty$ such that $\tilde{F}$ converges when $|w| < R$. Let
+	\[
+		r = \begin{cases}
+			1 / R' & \text{ if } R' \ne \infty \\
+			0 & \text{ if } R' = \infty
+		\end{cases}
+	\]
+	Then $F_2$ converges when $|w| < R' \Longleftrightarrow |z - a| > $. TODO: check lecture notes. 
 \end{proof}
 
 \end{document}
