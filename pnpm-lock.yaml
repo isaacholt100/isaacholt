@@ -7,13 +7,13 @@ specifiers:
   '@types/react': 18.0.9
   '@types/react-dom': 18.0.5
   '@types/react-pdf': ^6.2.0
-  bootstrap: ^5.1.3
+  bootstrap: ^5.2.3
   create-next-app: ^13.0.5
   eslint: 8.16.0
   eslint-config-next: 12.1.6
   next: ^13.3.0
   react: ^18.2.0
-  react-bootstrap: 2.4.0
+  react-bootstrap: 2.7.3
   react-dom: ^18.2.0
   react-pdf: ^6.2.0
   sass: 1.52.1
@@ -27,7 +27,7 @@ dependencies:
   create-next-app: 13.0.5
   next: 13.3.0_b5knpwzyx75lje32tbaohqfofi
   react: 18.2.0
-  react-bootstrap: 2.4.0_jbvntnid6ohjelon6ccj5dhg2u
+  react-bootstrap: 2.7.3_jbvntnid6ohjelon6ccj5dhg2u
   react-dom: 18.2.0_react@18.2.0
   react-pdf: 6.2.0_biqbaboplfbrettd7655fr4n2y
   sharp: 0.32.0
@@ -1818,8 +1818,8 @@ packages:
       strip-json-comments: 2.0.1
     dev: false
 
-  /react-bootstrap/2.4.0_jbvntnid6ohjelon6ccj5dhg2u:
-    resolution: {integrity: sha512-dn599jNK1Fg5GGjJH+lQQDwELVzigh/MdusKpB/0el+sCjsO5MZDH5gRMmBjRhC+vb7VlCDr6OXffPIDSkNMLw==}
+  /react-bootstrap/2.7.3_jbvntnid6ohjelon6ccj5dhg2u:
+    resolution: {integrity: sha512-MhQq+YENiMwnO8MblF96PYAVpb6V6slOjUs6+v/RthTI8zzNkAZmBe7EfXiRtQFvFpM/h16YK4ruaqh9zhlR8Q==}
     peerDependencies:
       '@types/react': '>=16.14.8'
       react: '>=16.14.0'

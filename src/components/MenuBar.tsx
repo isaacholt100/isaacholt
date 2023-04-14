@@ -34,9 +34,11 @@ const LINKS = [
 	},
 ];
 
+const IMAGE_SIZE = 52;
+
 function ImageHomeLink(props: { className?: string }) {
 	return (
-		<div className={styles.image_container + " me-2" + (props.className ? " " + props.className : "")} style={{marginLeft: -4}}>
+		<div className={" me-2" + (props.className ? " " + props.className : "")} style={{marginLeft: -4, height: IMAGE_SIZE, width: IMAGE_SIZE}}>
 			<Link href="/" className="d-block h-100 btn btn-primary rounded-circle border-0 position-relative p-0" style={{ backgroundColor: "transparent" }}>
 				<Image
 					src={personalIcon}
@@ -44,7 +46,7 @@ function ImageHomeLink(props: { className?: string }) {
 					className={"rounded-circle"}
 					priority
 					fill
-					sizes="52px"
+					sizes={IMAGE_SIZE + "px"}
 				/>
 			</Link>
 		</div>
