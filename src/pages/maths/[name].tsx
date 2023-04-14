@@ -3,7 +3,7 @@ import Icon from "@mdi/react";
 import { GetStaticPaths, GetStaticProps } from "next"
 import Link from "next/link";
 import { Button } from "react-bootstrap";
-import { capitalizeName, getMathsNotePDF, getMathsNotesPaths } from "../../lib/mathsNotes";
+import { capitalizeName, getMathsNotesPaths } from "../../lib/mathsNotes";
 import PDFViewer from "../../components/PDFViewer";
 import { useEffect, useState } from "react";
 import Head from "next/head";
@@ -26,7 +26,7 @@ export default function MathsNotesViewer(props: { name: string, displayName: str
 				setError(true);
 			}
 		})();
-	}, []);
+	}, [props.name]);
 	return (
 		<>
 			<Head>

@@ -1,4 +1,4 @@
-import { promises as fs, stat } from "fs";
+import { promises as fs } from "fs";
 import path from "path";
 
 const notesDirectory = path.join(process.cwd(), "public/maths-notes");

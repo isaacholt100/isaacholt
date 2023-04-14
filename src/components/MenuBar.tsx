@@ -8,7 +8,7 @@ import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import { useEffect, useState } from "react";
 import Icon from "@mdi/react";
-import { mdiClose, mdiDotsVertical, mdiDotsVerticalCircle, mdiMenu } from "@mdi/js";
+import { mdiClose, mdiDotsVertical } from "@mdi/js";
 import { Offcanvas } from "react-bootstrap";
 
 const LINKS = [

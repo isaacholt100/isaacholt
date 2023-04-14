@@ -1,15 +1,14 @@
-import { mdiDownload, mdiDownloadCircle, mdiFile } from "@mdi/js";
+import { mdiCodeBracesBox, mdiFile } from "@mdi/js";
 import Icon from "@mdi/react";
 import { GetStaticProps } from "next";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import { Button, ButtonProps, Card, Col, Row } from "react-bootstrap";
 import PageTitle from "../../components/PageTitle";
 import { getMathsNotes, MathsNoteFile } from "../../lib/mathsNotes";
 
 function downloadLinkProps(github: boolean, name: string, extension: string): Partial<ButtonProps> {
 	return {
-		href: (github ? GITHUB_REPO_URL + "/blob/public" : "") + "/maths-notes/" + name + "/" + name + "." + extension,
+		href: (github ? GITHUB_REPO_URL + "/blob/main/public" : "") + "/maths-notes/" + name + "/" + name + "." + extension,
 		target: "_blank",
 		as: "a",
 	}
@@ -22,13 +21,12 @@ const DATE_FORMAT_OPTIONS: Intl.DateTimeFormatOptions = {
 	month: "2-digit",
 	year: "numeric",
 }
-"https://github.com/isaacholt100/isaacholt/blob/main/public/maths-notes/algebra/algebra.tex"
+
 export default function Maths(props: { mathsNotes: MathsNoteFile[] }) {
-	const router = useRouter();
 	return (
 		<>
 			<PageTitle title="Maths Notes" />
-			<p>If you notice a mistake in any of these notes, feel free to create an issue or submit a pull request on this website{"'"}s <Link className="link-primary" href={GITHUB_REPO_URL}>GitHub repository</Link>.</p>
+			<p>These notes were made with <Link className="link-primary" href={"https://typst.app/docs/"}>Typst</Link>. If you notice a mistake in any of these notes, feel free to create an issue or submit a pull request on this website{"'"}s <Link className="link-primary" href={GITHUB_REPO_URL}>GitHub repository</Link>.</p>
 			<Row className="g-2 g-md-3">
 				{props.mathsNotes.map(note => (
 					<Col xs={12} sm={6} lg={4} xl={3} key={note.name}>
@@ -38,12 +36,12 @@ export default function Maths(props: { mathsNotes: MathsNoteFile[] }) {
 								<Card.Title as="h3" className="text-primary">
 									{note.displayName}
 								</Card.Title>
-								<Card.Text>
+								<Card.Text className="mt-auto">
 									{note.dateCreated !== null && "Created: " + new Date(note.dateCreated).toLocaleDateString("en-GB", DATE_FORMAT_OPTIONS) + " | "}
 									
 									Edited: {new Date(note.dateModified).toLocaleDateString("en-GB", DATE_FORMAT_OPTIONS)}
 								</Card.Text>
-								<Row className="g-2 mt-auto">
+								<Row className="g-2">
 									{/*<Col>
 										<Link href={router.asPath + "/" + note.name} legacyBehavior passHref>
 											<Button
@@ -60,7 +58,7 @@ export default function Maths(props: { mathsNotes: MathsNoteFile[] }) {
 									<Col>
 										<Button variant="light" className="w-100" {...downloadLinkProps(false, note.name, "pdf")}>
 											<span className="d-flex align-items-center justify-content-center">
-												<Icon path={mdiDownloadCircle} size="24px" className="me-1" />
+												<Icon path={mdiFile} size="24px" className="me-1" />
 												PDF
 											</span>
 										</Button>
@@ -68,7 +66,7 @@ export default function Maths(props: { mathsNotes: MathsNoteFile[] }) {
 									<Col>
 										<Button variant="outline-light" className="w-100" {...downloadLinkProps(true, note.name, "typ")}>
 											<span className="d-flex align-items-center justify-content-center">
-												<Icon path={mdiDownloadCircle} size="24px" className="me-1" />
+												<Icon path={mdiCodeBracesBox} size="24px" className="me-1" />
 												Source
 											</span>
 										</Button>

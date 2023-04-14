@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import Row from "react-bootstrap/Row";
 import Card from "react-bootstrap/Card";
@@ -6,7 +5,7 @@ import Col from "react-bootstrap/Col";
 import PageTitle from "../components/PageTitle";
 import Button from "react-bootstrap/Button";
 import Icon from "@mdi/react";
-import { mdiCodeBracesBox, mdiEye, mdiOpenInNew } from "@mdi/js";
+import { mdiCodeBracesBox, mdiOpenInNew } from "@mdi/js";
 
 interface Project {
 	name: string;
