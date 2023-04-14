@@ -19,7 +19,7 @@ const MAIN_LINKS: MainLink[] = [{
 	path: "/projects",
 }, {
 	name: "Contact Me",
-	path: "/contact"
+	path: "/socials"
 }];
 
 export default function Home() {

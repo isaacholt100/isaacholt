@@ -476,6 +476,41 @@ The general solution is
 	\]
 \end{definition}
 
+\begin{remark}
+	If the starting potential $V(\underline{q})$ is deformed slightly, then the zero eigenvalues of $A$ will become positive or negative. So if a system has a zero mode, we expect to find a principle that restricts the deformations of $V(\underline{q})$.
+
+	For example, consider two particles of the same mass in one dimension, with positions $x_1$ and $x_2$. Say we have a symmetry
+	\[
+		\begin{aligned}
+			x_1 \to x_1 + \epsilon a \\
+			x_2 \to x_2 + \epsilon a
+		\end{aligned}
+	\]
+	for a constant $a$. Then the potential only depends on the difference $x_1 - x_2$ and we have
+	\[
+		L = \frac{1}{2} m (\dot{x}_1^2 + \dot{x}_2^2) - V(x_1 - x_2)
+	\]
+	This symmetry gives rise to a zero mod associated with translation of the system's centre of mass. To see this, define new coordinates $x_+ = \frac{1}{\sqrt{2}} (x_1 + x_2)$ and $x_- = \frac{1}{\sqrt{2}} (x_1 - x_2)$. Then the Lagrangian is given by
+	\[
+		L = \frac{1}{2} m (\dot{x}_+^2 + \dot{x}_-^2) - V(\sqrt{2} x_-)
+	\]
+	which has a zero mod for $x_+$. So zero modes still exist under translation symmetry.
+\end{remark}
+
+\begin{example}
+	Consider two pendula, of length $1$ with mass $1$, suspended a distance $d$ apart. The masses on the pendula are connected by a spring with constant $k$ and natural length $d$. Let $\theta_1$ be the angle between the first pendulum and the vertical, and $\theta_2$ be the angle between the second pendulum and the vertical. The velocity of the first mass is $(-\cos(\theta_1) \dot{\theta}_1)^2 + (\sin(\theta_1) \dot{q}_1)^2 = \dot{\theta}_1^2$, and similarly the velocity of the second mass is $\dot{\theta}_2^2$. The kinetic energy is therefore
+	\[
+		T = \frac{1}{2} (\dot{\theta}_1^2 + \dot{\theta}_2^2)
+	\]
+	The potential from gravity is $-g(\cos(\theta_1) + \cos(\theta_2))$ and the potential from the spring is $k(l - d)^2 / 2$, where $l - d$ is the extension and
+	\[
+		l = \sqrt{(\cos(\theta_1) - \cos(\theta_2))^2 + (\sin(\theta_1) - \sin(\theta_2) + d)^2}
+	\]
+	
+\end{example}
+
+NOTES directly from lecture notes up to here.
+
 \section{Hamiltonian Formalism}
 
 \begin{definition}
@@ -625,10 +660,11 @@ TODO: properties on poisson bracket
 	\[
 		\psi: \mathbb{R}^2 \rightarrow \mathbb{C}
 	\]
+	Often we will refer to a wave function as $\psi(x)$, a function of just position, at a fixed point in time.
 \end{definition}
 
 \begin{remark}
-	We require that $\psi$ is continuous, and that $\diff{\psi(x)}{x}$ is continuous ($\psi$ must be differentiable), except when the potential energy $V(x)$ is not finite. 
+	We require that $\psi$ is continuous, and that $\diffp{\psi(x)}{x}$ is continuous ($\psi$ must be differentiable), except when the potential energy $V(x)$ is not finite. 
 \end{remark}
 
 \begin{definition}
@@ -649,7 +685,7 @@ TODO: properties on poisson bracket
 \end{definition}
 
 \begin{definition}
-	A wave function $\psi$ is \textbf{square-normalisable} if the integral
+	A wave function $\psi$ is called \textbf{square-normalisable} if the integral
 	\[
 		\int_{-\infty}^{\infty} P(x, t) dx
 	\]
@@ -657,7 +693,7 @@ TODO: properties on poisson bracket
 \end{definition}
 
 \begin{definition}
-	A wave function $\psi$ is \textbf{normalised} if
+	A wave function $\psi$ is called \textbf{normalised} if
 	\[
 		\int_{-\infty}^{\infty} P(x, t) dx = 1 \quad \forall t \in \mathbb{R}	
 	\]
@@ -666,7 +702,7 @@ TODO: properties on poisson bracket
 \begin{definition}
 	For a given time $t$, the \textbf{expectation} value of a polynomial function $f(x)$ of position $x$, is defined as
 	\[
-		\langle f(x) \rangle := \int_{-\infty}^{-\infty} P(x, t) f(x) dx
+		\langle f(x) \rangle := \int_{-\infty}^{\infty} P(x, t) f(x) dx
 	\]
 \end{definition}
 
@@ -675,17 +711,13 @@ TODO: properties on poisson bracket
 \end{remark}
 
 \begin{definition}
-	The \textbf{uncertainty} of $x$ is defined as
+	The \textbf{uncertainty} of a quantity $A$ is defined as
 	\[
-		\Delta x = \sqrt{\langle x^2 \rangle - \langle x \rangle ^2}
+		\Delta A = \sqrt{\langle A^2 \rangle - \langle A \rangle ^2}
 	\]
 \end{definition}
 
 \subsection{Examples of wave functions}
-
-\begin{remark}
-	For now, we will look at wave functions at a fixed time, $\psi(x)$.
-\end{remark}
 
 \begin{definition}
 	The \textbf{Gaussian wave function} is defined as
@@ -715,7 +747,7 @@ TODO: properties on poisson bracket
 \end{remark}
 
 \begin{definition}
-	If a particle's position $x$ is confined to $0 < x < L$, particle is said to be in an \textbf{infinite potential well}, defined as
+	If a particle's position $x$ is confined to $0 < x < L$, particle is said to be in an \textbf{infinite potential well}, with the potential of the particle defined as
 	\[
 		V(x) = \begin{cases}
 			0 & \text{ if } 0 < x < L \\
@@ -737,7 +769,7 @@ TODO: properties on poisson bracket
 	\[
 		\int_{0}^{L} |\psi(x)|^2 dx = |C|^2 \int_{0}^{L} x(L - x) dx = |C|^2 \frac{L^3}{6} = 1
 	\]
-	which implies $C = \sqrt{6 / L^3} e^{i \theta}$ for any $\theta$. We choose $\theta = 0$ here.
+	which implies $C = \sqrt{6 / L^3} e^{i \theta}$ for any $\theta$. We often choose $\theta = 0$ for simplicity.
 \end{example}
 
 \begin{remark}
@@ -757,7 +789,7 @@ TODO: properties on poisson bracket
 \begin{definition}
 	The \textbf{momentum operator} $\hat{p}$ is defined as
 	\[
-		\hat{p} (\psi(x)) := -i \hbar \diffp{}{x} (\psi(x))
+		\hat{p} \psi(x) := -i \hbar \diffp{}{x} (\psi(x))
 	\]
 	so that
 	\[
@@ -765,7 +797,7 @@ TODO: properties on poisson bracket
 			\delta_{\epsilon} \psi(x)
 				& := \psi(x - \epsilon) - \psi(x) \\
 				& = -\epsilon \diffp{}{x} \psi(x) + O(\epsilon^2) \\
-				& = -\epsilon \frac{i}{\hbar} \hat{p} (\psi(x))
+				& = -\epsilon \frac{i}{\hbar} \hat{p} \psi(x)
 		\end{aligned}
 	\]
 	where $\hbar$ is a constant of proportionality.
@@ -779,9 +811,9 @@ TODO: properties on poisson bracket
 \end{definition}
 
 \begin{definition}
-	We define a \textbf{position operator} $\hat{x}$ which multiplies a wave function by $x$:
+	The \textbf{position operator} $\hat{x}$, which multiplies a wave function by $x$, is defined as
 	\[
-		\hat{x} (\psi(x)) = x \psi(x)
+		\hat{x} \psi(x) = x \psi(x)
 	\]
 \end{definition}
 
@@ -789,7 +821,7 @@ TODO: properties on poisson bracket
 	The \textbf{commutator} of the position and momentum operators $\hat{x}$ and $\hat{p}$ is defined as
 	\[
 		\begin{aligned}
-			\relax [\hat{x}, \hat{p}] (\psi(x))
+			\relax [\hat{x}, \hat{p}] \psi(x)
 				& = \hat{x} (\hat{p} (\psi(x))) - \hat{p} (\hat{x} (\psi(x))) \\
 				& = \hat{x} \left( -i \hbar \diffp{}{x} \psi(x) \right)	+ i \hbar \diffp{}{x} (x \psi(x)) \\
 				& = i \hbar \psi(x)
@@ -977,7 +1009,7 @@ TODO: properties on poisson bracket
 				& = \langle \psi_1(x) + \psi_2(x), \psi_1(x) \rangle + \langle \psi_1(x) + \psi_2(x), \psi_2(x) \rangle \\
 				& = \langle \psi_1(x), \psi_1(x) \rangle + \langle \psi_2(x), \psi_1(x) \rangle + \langle \psi_1(x), \psi_2(x) \rangle + \langle \psi_2(x), \psi_2(x) \rangle \\
 				& = \langle \psi_1(x), \psi_1(x) \rangle + \overline{\langle \psi_1(x), \psi_2(x) \rangle} + \langle \psi_1(x), \psi_2(x) \rangle + \langle \psi_2(x), \psi_2(x) \rangle \\
-				& = |\psi_1(x)|^2 + |\psi_2(x)|^2 + 2 \text{Re}(\overline{\psi_1(x)} \psi_2(x)) \\
+				& = |\psi_1(x)|^2 + |\psi_2(x)|^2 + 2 \Re(\overline{\psi_1(x)} \psi_2(x)) \\
 				& \le |\psi_1(x)|^2 + |\psi_2(x)|^2 + 2 |\overline{\psi_1(x)} \psi_2(x)| \\
 				& \le |\psi_1(x)|^2 + |\psi_2(x)|^2 + 2 |\overline{\psi_1(x)}| |\psi_2(x)| \\
 				& = |\psi_1(x)|^2 + |\psi_2(x)|^2 + (|\psi_1(x)|^2 + |\psi_2(x)|^2) - {(|\psi_1(x)| + |\psi_2(x)|)}^2 \\
@@ -1477,6 +1509,516 @@ TODO: properties on poisson bracket
 		\psi(x) = \int_{-\infty}^{\infty} c(p) \phi_p(x) dp = \frac{1}{\sqrt{2 \pi \hbar}} \int_{-\infty}^{\infty} c(p) e^{ipx / \hbar} dp
 	\]
 	which is the result of the Fourier transform.
+\end{example}
+
+\subsection{The Postulates of Quantum Mechanics}
+
+\begin{definition}
+	The \textbf{postulates of quantum mechanics} are the following:
+	\begin{enumerate}
+		\item A particle is described by a normalised wave function $\psi(x)$.
+		\item Measurable quantities or observables are represented by Hermitian operators $A(x, p)$, where $x$ is position and $p$ is momentum, which are constructed polynomial or real analytic function of the position and momentum operators:
+		\[
+			\begin{aligned}
+				\hat{x} & = x \\
+				\hat{p} & = -i \hbar \diffp{}{x}
+			\end{aligned}
+		\]
+		E.g. the Hamiltonian operator is $\hat{H} = \frac{\hat{p}^2}{2m} + V(x)$.
+		\item The possible values of a measurement of $A$ are its eigenvalues $a$.
+		\begin{itemize}
+			\item If the eigenvalues $\{ a_j \}$ are discrete, then with a basis of eigenfunctions $\phi_j(x)$ which satisfy $\langle \phi_i, \phi_j \rangle = \delta_{i, j}$, the probability of measuring $a_j$ is $P_j := |\langle \phi_j, \psi \rangle|^2$.
+			\item If the eigenvalues $a \in \mathbb{R}$ are continuous, then with a basis of eigenfunctions $\phi_a(x)$ which satisfy $\langle \phi_a, \phi_{a'} \rangle = \delta(a - a')$, the probability density function is given by $P(a) := |\langle \phi_a, \psi \rangle|^2$.
+		\end{itemize}
+		\item Immediately after a measurement of $A$ yielding $a_j$ ($a$ for the continuous case), the wave function is $\phi_j(x)$ ($\phi_a(x)$ for the continuous case).
+		\item If no measurements are taken, the wave function evolution in time is determined by the Schrodinger equation:
+		\[
+			i \hbar \diffp{\psi(x, t)}{t} = \hat{H} \psi(x, t)
+		\]
+	\end{enumerate}
+\end{definition}
+
+\begin{corollary}
+	Observable quantities are represented by Hermitian operators, which have real eigenvalues, hence the outcomes of measurements are real numbers.
+\end{corollary}
+
+\begin{remark}
+	In this case that the eigenvalues are discrete, the wave function can be written as a sum of the orthonormal basis eigenfunctions as
+	\[
+		\sum_j c_j \phi_j(x)
+	\]
+	where $c_j = \langle \phi_j, \psi \rangle$. The probability of measuring $a_j$ is $P_j = |c_j|^2$, which means the probabilities add to $1$, since the wave function is normalised:
+	\[
+		\langle \psi, \psi \rangle = \sum_j |c_j|^2 = \sum_j P_j = 1
+	\]
+\end{remark}
+
+\begin{remark}
+	In the case that the eigenvalues are continuous, the wave function can be written as an integral
+	\[
+		\psi(x) = \int_{-\infty}^{\infty} c(a) \phi_a(x) da
+	\]
+	where $c(a) = \langle \phi_a, \psi \rangle$. The probability density function is given by $P(a)) = |c(a)|^2$, and the wave function is normalised so
+	\[
+		\langle \psi, \psi \rangle = \int_{-\infty}^{\infty} |c(a)|^2 da = \int_{-\infty}^{\infty} P(a) da = 1
+	\]
+\end{remark}
+
+\begin{remark}
+	In the continuous case, assuming a measurement of infinite accuracy, after the wave function collapses to $\phi_a(x)$ due to a measurement $a$ of $A$, the wave function immediately aftewards is no longer square-normalisable:
+	\[
+		\langle \phi_a, \phi_a \rangle = \infty
+	\]
+	Real-world measurements have an uncertainty $\epsilon$, which means the wave function immediately after the measurement is instead
+	\[
+		\int \delta_{\epsilon} (a - a') \phi_{a'}(x) da'
+	\]
+	where $\delta_{\epsilon}(a - a')$ has a sharp peak of width $\epsilon$ around $a' = a$, which corresponds to the case where the accuracy is infinite, since $\delta_{\epsilon}(a - a') \to \delta(a - a')$ as $\epsilon \to 0$.
+\end{remark}
+
+\begin{definition}
+	The \textbf{expectation value} of a Hermitian operator is defined as
+	\[
+		\langle A \rangle = \langle \psi, A \psi \rangle = \int_{-\infty}^{\infty} \overline{\psi(x)} A \psi(x) dx
+	\]
+\end{definition}
+
+\begin{proposition}
+	Let $A$ be a hermitian operator with discrete eigenvalues $a_j$ and let $\phi_j$ be an orthonormal basis of eigenfunctions of $A$. Then the expectation value of $A$ is
+	\[
+		\langle A \rangle = \sum_j a_j P_j
+	\]
+	where $P_j = |\langle \phi_j, \psi \rangle|^2$.
+\end{proposition}
+
+\begin{proof}
+	\[
+		\begin{aligned}
+			\langle A \rangle & = \sum_{i, j} \overline{c_i} c_j \langle \phi_i, A \phi_j \rangle = \sum_{i, j} a_j \overline{c_i} c_j \langle \phi_i, \phi_j \rangle \\
+			& = \sum_j a_j |c_j|^2 = \sum_j a_j P_j
+		\end{aligned}
+	\]
+	where $c_i$ is the coefficient of $\phi_i$ in the expansion of the wave function $\psi$, $c_i = \langle \phi_i, \psi \rangle$.
+\end{proof}
+
+\begin{proposition}
+	Let $A$ be a hermitian operator with continuous eigenvalues $a$ and eigenfunctions $\phi_a(x)$. Then the expectation value of $A$ is
+	\[
+		\langle A \rangle = \int_{-\infty}^{\infty} a P(a) da
+	\]
+	where $P(a) = |\langle \phi_a, \psi \rangle|^2$.
+\end{proposition}
+
+\begin{proof}
+	\[
+		\begin{aligned}
+			\langle A \rangle & = \int_{-\infty}^{\infty} \overline{\psi(x)} A \psi(x) dx \\
+			& = \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} \overline{c(a)} c(a') \langle \phi_a, A \phi_{a'} \rangle da \ da' \\
+			& = \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} \overline{c(a)} c(a') a' \langle \phi_a, \phi_{a'} \rangle da \ da' \\
+			& = \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} \overline{c(a)} c(a') a' \delta(a - a') da \ da' \\
+			& = \int_{-\infty}^{\infty} a |c(a)|^2 da = \int_{-\infty}^{\infty} a P(a) da
+		\end{aligned}
+	\]
+\end{proof}
+
+\begin{example}
+	The position operator, $\hat{x} = x$, multiplies a wave function by $x$. The position operator has a continuous spectrum with an orthonormal basis of eigenfunctions given by
+	\[
+		\phi_{x'}(x) = \delta(x - x')
+	\]
+	These are eigenfunctions with eigenvalue $x'$ since
+	\[
+		\hat{x} \phi_{x'}(x) = x \delta(x - x') = x' \delta(x - x') = x' \phi_{x'}(x)
+	\]
+	They are also orthonormal, since
+	\[
+		\langle \phi_{x_1}, \phi_{x_2} \rangle = \int_{-\infty}^{\infty} \phi_{x_1}(x) \phi_{x_2}(x) dx = \int_{-\infty}^{\infty} \delta(x - x_1) \delta(x - x_2) dx = \delta(x_1 - x_2)
+	\]
+	$\phi_{x'}$ can be viewed as a wave function immediately a measurement of position with infinite accuracy. Note it is not square-normalisable: $\langle \phi_{x'}, \phi_{x'} \rangle = \delta(x' - x') = \delta(0) = \infty$. Any wave function $\psi$ can be expanded in this basis:
+	\[
+		\psi(x) = \int_{-\infty}^{\infty} c(x') \phi_{x'}(x) dx' = \int_{-\infty}^{\infty} c(x') \delta(x - x') dx' = c(x)
+	\]
+	The probability density function for position is therefore
+	\[
+		P(x) = |\langle \phi_{x}, \psi \rangle|^2 = \left| \int_{-\infty}^{\infty} \delta(x - x') \psi(x') dx' \right|^2 = |\psi(x)|^2
+	\]
+\end{example}
+
+\begin{example}
+	The momentum operator, $\hat{p} = -i \hbar \diffp{x}{x}$, has a continuous spectrum with an orthonormal basis of eigenfunctions given by
+	\[
+		\phi_p(x) = \frac{1}{\sqrt{2 \pi \hbar}} e^{ipx / \hbar}
+	\]
+	They are orthonormal, since
+	\[
+		\langle \phi_p, \phi_{p'} \rangle = \frac{1}{2 \pi \hbar} \int_{-\infty}^{\infty} e^{i(p' - p)x / \hbar} dp = \delta(p - p')
+	\]
+	They are not square-normalisable, since $\langle \phi_p, \phi_p \rangle = \delta(p - p) = \delta(0) = \infty$. Any wave function $\psi$ can be expanded in this basis:
+	\[
+		\psi(x) = \int_{-\infty}^{\infty} c(p) \phi_p(x) = \frac{1}{2 \pi \hbar} \int_{-\infty}^{\infty} c(p) e^{ipx / \hbar} dp
+	\]
+	where
+	\[
+		c(p) = \langle \phi_p, \psi \rangle = \int_{-\infty}^{\infty} \overline{\phi_p(x)} \psi(x) dx = \frac{1}{2 \pi \hbar} \int_{-\infty}^{\infty} \overline{e^{ipx / \hbar}} \psi(x) dx
+	\]
+	The probability density function for momentum is therefore
+	\[
+		\tilde{P}(p) = |c(p)|^2
+	\]
+\end{example}
+
+\subsection{Commutators and the uncertainty principle}
+
+\begin{definition}
+	Let $A$ and $B$ be linear operatorrs. The \textbf{commutator} of $A$ and $B$ is defined as
+	\[
+		[A, B] := AB - BA
+	\]
+\end{definition}
+
+\begin{definition}
+	Let $A$ and $B$ be linear operators. The \textbf{anti-commutator} of $A$ and $B$ is defined as
+	\[
+		\{ A, B \} := AB + BA
+	\]
+\end{definition}
+
+\begin{proposition}
+	(\textbf{Properties of the commutator}) Let $A$, $B$ and $C$ be linear operators, and $a_1, a_2$ scalars. The commutator satisfies the following properties:
+	\begin{enumerate}
+		\item (\textbf{Anti-symmetry}) $[A, B] = -[B, A]$.
+		\item (\textbf{Linearity}) $[a_1 A_1 + a_2 A_2, B] = a_1 [A_1, B] + a_2 [A_2, B]$.
+		\item $[A, BC] = B[A, C] + [A, B]C$.
+		\item (\textbf{Jacobi identity}) $[A, [B, C]] + [B, [C, A]] + [C, [A, B]] = 0$.
+	\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+	Omitted.
+\end{proof}
+
+\begin{theorem}\label{thm:commutingOperatorsHaveSameEigenfunctions}
+	(\textbf{Two commuting matrices are simultaneously diagonalisable}) Let $A$ and $B$ be Hermitian operators and $[A, B] = 0$. Then there exists an orthonormal basis of wave functions that are eigenfunctions of both $A$ and $B$.
+\end{theorem}
+
+\begin{proof}
+	We prove the case where the spectrum of eigenvalues $\{ a_j \}$ of $A$ is discrete and non-degenerate, so up to normalisation there exists a unique solution to $A \phi_j(x) = a_j \phi_j(x)$ for each eigenvalue $a_j$. We can normalise the solutions to make an orthonormal basis, so that $\langle \phi_, \phi_j \rangle = \delta_{i, j}$.
+
+	We want to show $\phi_j$ is also an eigenfunction of $B$. $[A, B] = 0 \Longleftrightarrow AB = BA$ so
+	\[
+		A(B \phi_j) = B (A \phi_j) = B(a_j \phi_j) = a_j (B \phi_j)
+	\]
+	hence $B \phi_j$ is also an eigenfunction of $A$ with eigenvalue $a_j$. But eigenfuntions with eigenvalue $a_j$ are unique up to normalisation, hence $B \phi_j(x) = b_j \phi_j(x)$ for some $b_j$.
+\end{proof}
+
+\begin{definition}
+	Let $A$ and $B$ be Hermitian operators which represent observable quantities. $A$ and $B$ are called \textbf{compatible} if their commutator vanishes: $[A, B] = 0$.
+\end{definition}
+
+\begin{proposition}
+	The position operator $\hat{x}$ and momentum operator $\hat{p}$ are not compatible.
+\end{proposition}
+
+\begin{proof}
+	Let $\psi$ be a wave function, then
+	\[
+		[\hat{x}, \hat{p}] \psi = x \left( -i\hbar \diffp{\psi}{x} \right) + i \hbar \diffp{}{x} (x \psi) = i \hbar \psi
+	\]
+	Hence $[\hat{x}, \hat{p}] = i\hbar \ne 0$.
+\end{proof}
+
+\begin{proposition}
+	The momentum operator $\hat{p}$ and the Hamiltonian operator $\hat{H} = \frac{\hat{p}^2}{2m} + V(x)$ are compatible iff $V(x)$ is a constant.
+\end{proposition}
+
+\begin{proof}
+	We have that $[\hat{H}, \hat{p}] = [V(x), \hat{p}] = i\hbar \diffp{V(x)}{x}$.
+\end{proof}
+
+\begin{proposition}
+	The position operator $\hat{x}$ and the Hamiltonian operator $\hat{H}$ are not compatible.
+\end{proposition}
+
+\begin{proof}
+	\[
+		[\hat{H}, \hat{x}] = \frac{1}{2m} [\hat{p}^2, \hat{x}] = \frac{1}{2m} (\hat{p} [\hat{p}, \hat{x}] + [\hat{p}, \hat{x}] p) = -\frac{i\hbar}{m} \hat{p} \ne 0
+	\]
+\end{proof}
+
+\begin{example}
+	Let $A$ be a measurable quantity for which we measure a value of $a_j$. Then wave function immediately after the measurement is the associated eigenfunction $\phi_j$.
+
+	If we measure $A$ immediately after this, the measurement will be $a_j$ with probability $1$, since $\phi_j$ is an eigenfunction of $A$. This corresponds with the uncertainty of $A$ vanishing:
+	\[
+		\begin{aligned}
+			{(\Delta A)}^2 & = \langle A^2 \rangle - {\langle A \rangle}^2 = \langle \phi_j, A^2 \phi_j \rangle - {\langle \phi_j A, \phi_j \rangle}^2 \\
+			& = a_j^2 \langle \phi_j, \phi_j \rangle - {(a_j \langle \phi_j, \phi_j \rangle)}^2 = a_j^2 - a_j^2 = 0
+		\end{aligned}
+	\]
+	Now if we measure $B$ immediately after this:
+	\begin{itemize}
+		\item If $[A, B] = 0$, $\phi_j$ is also an eigenfunction of $B$ with eigenvalue $b_j$ by Theorem~\ref{thm:commutingOperatorsHaveSameEigenfunctions}, so a measurement of $B$ yields $b_j$ with probability $1$. Similarly, $\Delta B = 0$.
+		\item If $[A, B] \ne 0$, $\phi_j$ is not an eigenfunction of $B$ and there are multiple possible outcomes. If the measurement of $B$ yields an eigenvalue $b$, then the wave function now becomes the eigenfunction corresponding to $b$, so $\Delta B = 0$, but now $\Delta A > 0$.
+	\end{itemize}
+\end{example}
+
+\begin{remark}
+	Note that ``immediately after'' here means the measurements are taken without time between them. Generally, if there is time between the measurements, then the wave function will evolve in between, so the measurement of $A$ will not yield $a_j$ with probability $1$, although eigenstates of the Hamiltonian operator and operators which commute with it do remain eigenstates under time evolution.
+\end{remark}
+
+\begin{theorem}
+	(\textbf{The generalised uncertainty principle}) For every square-normalisable wave function,
+	\[
+		\Delta A \Delta B \ge \frac{1}{2} | \langle [A, B] \rangle |
+	\]
+\end{theorem}
+
+\begin{proof}
+	We prove the case that $\langle A \rangle = \langle B \rangle = 0$. We have
+	\[
+		{(\Delta A)}^2 = \langle A^2 \rangle = \langle \psi, A^2 \psi \rangle = \langle A \psi, A \psi \rangle
+	\]
+	and similarly for $B$, so we have
+	\[
+		{(\Delta A)}^2 {(\Delta B)}^2 = \langle A \psi, A \psi \rangle \langle B \psi, B \psi \rangle \ge |\langle A \psi, B \psi \rangle|^2
+	\]
+	by the Cauchy-Schwartz inequality. Now
+	\[
+		\begin{aligned}
+			\langle A \psi, B \psi \rangle & = \langle AB \rangle \\
+			& = \frac{1}{2} \langle (AB - BA) \rangle + \frac{1}{2} \langle (AB + BA) \rangle \\
+			& = \frac{1}{2} \langle [A, B] \rangle + \frac{1}{2} \langle \{ A, B \} \rangle
+		\end{aligned}
+	\]
+	$[A, B]$ is anti-Hermitian, so $\langle [A, B] \rangle \in i \mathbb{R}$, and $\{ A, B \}$ is Hermitian, so $\langle \{ A, B \} \rangle \in \mathbb{R}$. Taking the modulus of both sides, we get
+	\[
+		|\langle A \psi, B \psi \rangle|^2 = \frac{1}{4} |\langle [A, B] \rangle|^2 + \frac{1}{4} |\langle \{ A, B \} \rangle|^2 \ge \frac{1}{4} |\langle [A, B] \rangle|^2
+	\]
+	which completes the proof.
+\end{proof}
+
+\begin{example}
+	For position and momentum, we have
+	\[
+		\Delta x \Delta p \ge \frac{1}{2} \hbar
+	\]
+	which is \textbf{Heisenberg's uncertainty principle}.
+\end{example}
+
+\begin{example}
+	For momentum and energy, we have
+	\[
+		\Delta \Delta H \ge \frac{\hbar}{2} \langle V'(x) \rangle
+	\]
+	which vanishes if $V(x)$ is constant.
+\end{example}
+
+\begin{example}
+	For position and energy, we have
+	\[
+		\Delta x \Delta H \ge \frac{\hbar}{2m} \langle p \rangle
+	\]
+	which means square-normalisable eigenfunctions of the Hamiltonian must have $\langle p \rangle = 0$.
+\end{example}
+
+\subsection{Energy}
+
+\begin{example}
+	In an infinite potential well,
+	\[
+		V(x) = \begin{cases}
+			0 \text{ if } 0 < x < L \\
+			\infty \text{ otherwise}
+		\end{cases}
+	\]
+	the spectrum of the Hamiltonian is discrete and non-degenerate with eigenvalues
+	\[
+		E_n = \frac{\hbar^2 n^2 \pi^2}{2mL^2}
+	\]
+\end{example}
+
+\begin{theorem}
+	Let the potential of a particle be bounded below, so $V(x) \ge V_0$ for every $x \in \mathbb{R}$, and let $V(x_0) = V_0$ be the minimum. Thne if the wave function is normalised, $\langle H \rangle > V_0$.
+\end{theorem}
+
+\begin{proof}
+	The energy expectation value is
+	\[
+		\begin{aligned}
+			\langle H \rangle & = \langle \psi, \bar{H} \psi \rangle \\
+			& = \frac{1}{2m} \langle \psi, \hat{p}^2 \psi \rangle + \langle \psi, V \psi \rangle \\
+			& = \frac{1}{2m} \langle \hat{p} \psi, \hat{p} \psi \rangle + \langle \psi, V \psi \rangle \\
+			& \ge \langle \psi, V \psi \rangle = \int_{-\infty}^{\infty} V(x) |\psi(x)|^2 dx
+			& \ge V_0 \int_{-\infty}^{\infty} |\psi(x)|^2 dx = V_0
+		\end{aligned}
+	\]
+	Now we show that $\langle H \rangle \ne V_0$. For equality to hold, $\langle \hat{p} \psi, \hat{p} \psi \rangle = 0$, so
+	\[
+		0 = \hat{p} \psi = -i\hbar \diffp{\psi(x)}{x} \Longrightarrow \psi(x) = c
+	\]
+	where $c \in \mathbb{C}$ is a constant. But $\psi$ is normalised, so $\psi(x) \to 0$ as $x \to \pm\infty$, hence $c = 0$, but then $\psi$ would not integrate to $1$. So $\langle H \rangle > V_0$.
+\end{proof}
+
+\begin{corollary}
+	Let $\psi(x)$ be a normalised eigenfunction of $H$ with eigenvalue $E$. Then $E > V_0$.
+\end{corollary}
+
+\begin{proof}
+	By the previous theorem, $\langle H \rangle = \langle \psi, H \psi \rangle = E \langle \psi, \psi \rangle = E > V_0$.
+\end{proof}
+
+\begin{definition}
+	The smallest eigenvalue $E$ of the Hamiltonian is called the \textbf{zero-point energy}.
+\end{definition}
+
+\begin{theorem}
+	The spectrum of the Hamiltonian is non-degenerate.
+\end{theorem}
+
+\begin{proof}
+	Let $\psi_1$ and $\psi_2$ be two square-normalisable eigenfunctions with the same eigenvalue $E$. We will show that $\psi_1 = k \psi_2$ for some constant $k$. We have
+	\[
+		\hat{H} \psi_1(x) = -\frac{-\hbar}{2m} \partial_x^2 \psi_1(x) + V(x) \psi_1(x) = E \psi_1(x) \\
+		\hat{H} \psi_2(x) = -\frac{-\hbar}{2m} \partial_x^2 \psi_2(x) + V(x) \psi_2(x) = E \psi_2(x)
+	\]
+	Multiplying the top equation by $\psi_2(x)$ and subtracting it from the bottom equation multiplied by $\psi_1(x)$ gives
+	\[
+		0 = \psi_1 \partial_x^2 \psi_2 - \psi_2 \partial_x^2 \psi_1 = \partial_ (\psi_1 \partial_x \psi_2 - \psi_2 \partial_x \psi_1)
+	\]
+	Hence
+	\[
+		\psi_1 \partial_x \psi_2 - \psi_2 \partial_x \psi_1 = c
+	\]
+	for some $c \in \mathbb{C}$. But $\psi_1$ and $\psi_2$ are square-normalisable, so vanish as $x \to \pm\infty$, hence $c = 0$. So we have
+	\[
+		\begin{aligned}
+			\psi_1 \partial_x \psi_2 - \psi_2 \partial_x \psi_1 & = 0 \\
+			\Longrightarrow \frac{\partial_x \psi_1}{\psi_1} - \frac{\partial_x \psi_2}{\psi_2} & = 0 \\
+			\Longrightarrow \partial_x (\log(\psi_1) - \log(\psi_2)) & = 0 \\
+			\Longrightarrow \log \left( \frac{\psi_1}{\psi_2} \right) = A \\
+			\Longrightarrow \psi_1 = e^A \psi_2
+		\end{aligned}
+	\]
+	for some constant $A \in \mathbb{C}$. Hence $\psi_1$ and $\psi_2$ are the same eigenfunction, up to scalar multiplication.
+\end{proof}
+
+\subsection{Stationary states}
+
+\begin{proposition}
+	Let $\psi(x)$ be an wave function at time $t = 0$. Then
+	\[
+		\psi(x, t) = \phi(x) e^{-iEt/\hbar}
+	\]
+	is a solution to the Schrodinger equation, where $\phi(x) = \psi(x, 0)$ is an eigenfunction of the Hamiltonian with eigenvalue $E$.
+\end{proposition}
+
+\begin{proof}
+	Write the wave function as the product of functions of position and time:
+	\[
+		\psi(x, t) = \phi(x) T(t)
+	\]
+	Substituting this into Schrodinger's equation gives
+	\[
+		i\hbar \frac{1}{T(t)} \diffp{T(t)}{t} = -\frac{\hbar^2}{2m} \frac{1}{\phi(x)} \diffp[2]{\phi(x)}{x} + V(x)
+	\]
+	The left hand side is a function of only $t$ and the right hand side is a function of only $x$, so both sides equal a constant:
+	\[
+		i\hbar \frac{1}{T(t)} \diffp{T(t)}{t} = E = -\frac{\hbar^2}{2m} \frac{1}{\phi(x)} \diffp[2]{\phi(x)}{x} + V(x)
+	\]
+	This gives $T(t) = e^{-iEt/\hbar}$, and that $\phi$ is an eigenfunction of the Hamiltonian with eigenvalue $E$. $\bar{H}$ is a Hermitian operator so $E \in \mathbb{R}$.
+\end{proof}
+
+\begin{corollary}
+	Schrodinger's equation is linear, so all possible of solutions are linear combinations of the stationary wave functions. Let $\phi(x, 0)$ be an initial wave function, then the following procedure generates a solution of Schrodingers equation $\psi(x, t)$ at time $t > 0$:
+	\begin{enumerate}
+		\item Construct an orthonormal basis of Hamiltonian eigenfunctions $\phi_j(x)$ with eigenvalues $E_j$, which gives stationary wave functions
+		\[
+			\psi_j(x, t) = \phi_j(x) e^{-iE_jt/\hbar}
+		\]
+		These wave functions are orthogonal for every $t$:
+		\[
+			\langle \psi_i, \psi_j \rangle = |e^{i(E_i - E_j)t \ \hbar}| \langle \phi_i, \phi_j \rangle = |e^{i(E_i - E_j)t \ \hbar}| \delta_{i, j} = \delta_{i, j}
+		\]
+		\item Expand the initial wave function $\psi(x, 0)$ as a linear combination of the orthonormal basis of Hamiltonian eigenfunctions,
+		\[
+			\psi(x, 0) = \sum_j c_j \phi_j(x)
+		\]
+		The wave function is normalised iff $\langle \psi, \psi \rangle = \sum_j |c_j|^2 = 1$.
+		\item The general solution $\psi(x, t)$ is then
+		\[
+			\psi(x, t) = \sum_j c_j \psi_j(x, t) = \sum_j c_j \phi_j(x) e^{-iE_j t / \hbar}
+		\]
+		This is indeed a solution since Schrodingers equation is linear, and coincides with the initial wave function $\psi(x, 0)$ at $t = 0$. This solution is unique.
+	\end{enumerate}
+\end{corollary}
+
+\begin{example}
+	Define the normalised initial wave function
+	\[
+		\psi(x, 0) = c_1 \phi_1(x) + c_2 \phi_2(x)
+	\]
+	where $|c_1|^2 + |c_2|^2 = 1$. The wave function at later times is then
+	\[
+		\psi(x, t) = c_1 \psi_1(x, t) + c_2 \psi_2(x, t) = c_1 \phi_1(x) e^{-iE_1 t / \hbar} + c_2 \phi_2(x) e^{-iE_2 t / \hbar}
+	\]
+	The possible outcomes of energy measurements are $E_1$, with probability $P_1 = |c_1|^2$ and $E_2$, with probability $|c_2|^2$. The probabiilty density is
+	\[
+		\begin{aligned}
+			P(x, t) & = |\psi(x, t)|^2
+			& = |c_1 \phi_1(x) e^{-iE_1 t / \hbar} + c_2 \phi_2(x) e^{-iE_2 t / \hbar}|^2 \\
+			& = |c_1|^2 |\phi_1(x)|^2 + |c_2|^2 |\phi_2(x)|^2 + 2 \Re(c_1 \overline{c_2} \phi_1(x) \overline{\phi_2(x)} e^{-i(E_1 - E_2)t/\hbar})
+		\end{aligned}
+	\]
+	So the probability density and position expectation values oscillate in time with frequency $\omega = (E_2 - E_1) / \hbar$.
+\end{example}
+
+\begin{example}
+	Consider the infinite potential well $0 < x < L$ with initial wave function
+	\[
+		\psi(x, 0) = \frac{1}{\sqrt{2}} (\phi_1(x) + \phi_2(x))
+	\]
+	The unique solution to Schrodinger's equation is
+	\[
+		\psi(x, t) = \frac{1}{\sqrt{2}} (\phi_1(x) e^{-iE_1 t / \hbar} + \phi_2(x) e^{-iE_2 t / \hbar})
+	\]
+	The possible outcomes of energy measurements are $E_1$, with probability $1 / 2$, and $E_2$, with probability $1 / 2$. The probability density is
+	\[
+		\begin{aligned}
+			P(x, t) & = |\psi(x, t)|^2 \\
+			& = \frac{1}{L} \left( {\sin (\pi x / L)}^2 + {\sin (2 \pi x / L)}^2 + 2\sin(\pi x / L) \sin(2 \pi x / L) \cos(\omega t) \right)
+		\end{aligned}
+	\]
+	where
+	\[
+		\omega = (E_2 - E_1) / \hbar = \frac{3\hbar\pi^2}{2mL^2}
+	\]
+\end{example}
+
+\begin{example}
+	Consider a free particle moving on a line, so the potential is a constant, $V(x) = V_0$ (assume $V_0 = 0$). The momentum eigenfunctions are solutions to
+	\[
+		-i\hbar\diffp{}{x} \phi_p(x) = p \phi_p(x)
+	\]
+	which has solutions
+	\[
+		\phi_p(x) = \frac{1}{\sqrt{2\pi\hbar}} e^{ipx/\hbar}
+	\]
+	for every $p \in \mathbb{R}$. The momentum operator therefore has a continuous spectrum, so we choose a normalisatio satisfying
+	\[
+		\begin{aligned}
+			\langle \phi_p, \phi_{p'} \rangle & = \int_{-\infty}^{\infty} \overline{\phi_p(x)} \phi_{p'}(x) dx \\
+			\frac{1}{\sqrt{2\pi\hbar}} \int_{-\infty}^{\infty} e^{-i(p - p')x / \hbar} dx \\
+            & = \delta(p - p')
+		\end{aligned}
+	\]
+    The spectrum is also non-degenerate as there is a unique eigenfunction $\phi_p(x)$ for every eigenvalue $p$. These same eigenfunctions are also eigenfunctions of the Hamiltonian operator:
+    \[
+        \hat{H} \phi_p(x) = -\frac{\hbar^2}{2m}\diffp[2]{}{x} \phi_p(x) = E_p \phi_p(x)
+    \]
+    where $E_p = p^2 / (2m)$. The spectrum of the Hamiltonian is continuous but degenerate since $\phi_p$ and $\phi_{-p}$ have the same energy $E_p = E_{-p}$. Stationary solutions to Schrodinger's equation are therefore given by
+    \[
+        \psi_p(x, t) = \phi_p(x) e^{-iE_p t / \hbar} = \frac{1}{\sqrt{2\pi\hbar}} e^{i(px - E_p t) / \hbar}
+    \]
 \end{example}
 
 \end{document}

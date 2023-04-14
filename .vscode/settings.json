@@ -6,6 +6,6 @@
 		"**/*.synctex.gz": true,
 		"**/*.synctex(busy)": true,
 		"**/maths-notes/**/*.log": true,
-		".next": true
+		//".next": true
 	}
 }

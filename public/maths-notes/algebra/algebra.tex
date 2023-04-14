@@ -7,6 +7,11 @@
 
 \input{../titletoc.tex}
 
+\newcommand{\ord}{\text{ord}}
+\newcommand{\Stab}{\text{Stab}}
+\newcommand{\ccl}{\text{ccl}}
+\newcommand{\End}{\text{End}}
+
 \section{Rings and fields}
 
 \subsection{Rings, subrings and fields}
@@ -31,9 +36,9 @@
 \begin{example}
 	Let $V$ be a finite dimensional vector space over $\mathbb{C}$. The set of \textbf{linear endomorphisms} is defined as
 	\[
-		\text{End}(V) = \{ f: V \rightarrow V : f \text{ is a linear map} \}
+		\End(V) = \{ f: V \rightarrow V : f \text{ is a linear map} \}
 	\]
-	For $f \in \text{End}(V)$ and $g \in \text{End}(V)$, addition is defined as
+	For $f \in \End(V)$ and $g \in \End(V)$, addition is defined as
 	\[
 		(f + g)(v) := f(v) + g(v)
 	\]
@@ -41,9 +46,9 @@
 	\[
 		f \cdot g := f \circ g
 	\]
-	where $(f \circ g)(v) := f(g(v))$. $\text{End}(v)$ is an abelian group under addition, and it forms a ring with the addition and multiplication operations defined as above:
+	where $(f \circ g)(v) := f(g(v))$. $\End(v)$ is an abelian group under addition, and it forms a ring with the addition and multiplication operations defined as above:
 	\begin{enumerate}
-		\item The identity element is defined as the identity map $\text{id}: V \rightarrow V$, $\text{id}(v) := v$.
+		\item The identity element is defined as the identity map $\id: V \rightarrow V$, $\id(v) := v$.
 		\item Associativity: $f \circ (g \circ h) (v) = f((g \circ h)(v)) = f(g(h(v)))$ and $((f \circ g) \circ h) (v) = (f \circ g) (h(v)) = f(g(h(v))) = f \circ (g \circ h) (v)$.
 		\item Distributivity is similarly easy to check.
 	\end{enumerate}
@@ -686,6 +691,8 @@
 	\]
 \end{example}
 
+NOTES directly from lecture notes up to here
+
 \section{Homomorphisms between Rings}	
 
 Let $R$ and $S$ be two rings. A map $f: R \rightarrow S$ is called a (ring)-homomorphism if:
@@ -847,7 +854,7 @@ $R / I$ with the two binary operations of addition and multiplication is a ring:
 Hence, given a ring $R$ and an ideal $I \subseteq R$, there exists a ring homomorphism ($\Pi$) such that $\ker \Pi = I$.
 
 \begin{theorem}
-	(First Isomorphism Theorem or FIT) Let $\phi: R \rightarrow S$ be a ring homomorphism. The map $\bar{\phi}: R / \ker \phi \rightarrow \text{Im } \phi = \bar{x} \rightarrow \phi(x)$ is well-defined and it is a ring isomorphism: $R / \ker \phi \cong \text{Im } \phi$.
+	(First Isomorphism Theorem or FIT) Let $\phi: R \rightarrow S$ be a ring homomorphism. The map $\bar{\phi}: R / \ker \phi \rightarrow \Im(\phi) = \bar{x} \rightarrow \phi(x)$ is well-defined and it is a ring isomorphism: $R / \ker \phi \cong \Im(\phi)$.
 \end{theorem}
 
 \begin{proof}
@@ -862,7 +869,7 @@ Hence, given a ring $R$ and an ideal $I \subseteq R$, there exists a ring homomo
 	Hence $\bar{\phi}$ is a ring homomorphism.
 
 	$\bar{\phi}(\bar{x}) = 0 \Leftrightarrow \phi(x) = 0 \Leftrightarrow x \in \ker \phi \Leftrightarrow \bar{x} = 0$, hence $\ker \bar{\phi} = \{\bar{0}\}$.
-	Let $y \in \text{Im } \phi \Leftrightarrow$ for some $x \in R$, $\phi(x) = y$. Hence $\bar{\phi}(\bar{x}) = \phi(x) = y$, hence $\bar{\phi}$ is also surjective, hence it is bijective.
+	Let $y \in \Im(\phi) \Leftrightarrow$ for some $x \in R$, $\phi(x) = y$. Hence $\bar{\phi}(\bar{x}) = \phi(x) = y$, hence $\bar{\phi}$ is also surjective, hence it is bijective.
 \end{proof}
 
 \begin{definition}
@@ -1106,7 +1113,7 @@ Hence, given a ring $R$ and an ideal $I \subseteq R$, there exists a ring homomo
 
 \section{Group Theory}
 
-\begin{definition}
+\begin{definition}\label{def:group}
 	A \textbf{group} is a pair $(G, \circ)$ where $G$ is a set and $\circ$ is a map
 	\[
 		\circ: G \times G \rightarrow G, \quad \circ (g, h) = g \circ h
@@ -1159,7 +1166,7 @@ Hence, given a ring $R$ and an ideal $I \subseteq R$, there exists a ring homomo
 \end{definition}
 
 \begin{definition}
-	The \textbf{general linear group} is defined as the set $GL_2 (\mathbb{R}) := \{ A \in M_2 (\mathbb{R}) : \det A \ne 0 \}$ together with $\circ$ being matrix multiplication.
+	The \textbf{general linear group} is defined as the set $\GL_2 (\mathbb{R}) := \{ A \in M_2 (\mathbb{R}) : \det A \ne 0 \}$ together with $\circ$ being matrix multiplication.
 \end{definition}
 
 \begin{lemma}
@@ -1169,15 +1176,15 @@ Hence, given a ring $R$ and an ideal $I \subseteq R$, there exists a ring homomo
 \begin{proof}
 	\hfill
 	\begin{enumerate}
-		\item $\det (A B) = \det A \det B \ne 0$ so $A, B \in GL_2(\mathbb{R}) \Rightarrow AB \in GL_2(\mathbb{R})$.
+		\item $\det (A B) = \det A \det B \ne 0$ so $A, B \in \GL_2(\mathbb{R}) \Rightarrow AB \in \GL_2(\mathbb{R})$.
 		\item Matrix multiplication is associative.
 		\item The identity is $I_2$.
-		\item The inverse of $A \in GL_2(\mathbb{R})$ is $A^{-1}$, which exists since $\det A \ne 0$.
+		\item The inverse of $A \in \GL_2(\mathbb{R})$ is $A^{-1}$, which exists since $\det A \ne 0$.
 	\end{enumerate}
 \end{proof}
 
 \begin{remark}
-	$GL_2(\mathbb{R})$ is non-abelian.
+	$\GL_2(\mathbb{R})$ is non-abelian.
 \end{remark}
 
 \subsection{Subgroups}
@@ -1198,7 +1205,7 @@ Hence, given a ring $R$ and an ideal $I \subseteq R$, there exists a ring homomo
 	A subgroup $H$ of $G$ is \textbf{proper} if $H \ne \{ e \}$ and $H \ne G$. We write $H < G$.
 \end{definition}
 
-\begin{proposition}
+\begin{proposition}\label{prop:subgroupCriteria}
 	(\textbf{Subgroup criteria}) Let $(G, \circ)$ be a group. Then $H \subseteq G$ is a subgroup iff all these conditions hold:
 	\begin{enumerate}
 		\item $H \ne \emptyset$
@@ -1365,9 +1372,9 @@ Hence, given a ring $R$ and an ideal $I \subseteq R$, there exists a ring homomo
 \end{example}
 
 \begin{definition}
-	Let $G$ be a group, and let $g \in G$. The \textbf{order} of $g$ in $G$, written as $\text{ord}_G (g)$ or $\text{ord}(g)$ is the smallest $d \in \mathbb{N}$ such that $g^d = e$.
+	Let $G$ be a group, and let $g \in G$. The \textbf{order} of $g$ in $G$, written as $\ord_G (g)$ or $\ord(g)$ is the smallest $d \in \mathbb{N}$ such that $g^d = e$.
 
-	If $d$ does not exist, $\text{ord}_G(g) = \infty$. If $\text{ord}_G(g) < \infty$, $g$ has \textbf{finite order}, otherwise, $g$ has \textbf{infinite order}.
+	If $d$ does not exist, $\ord_G(g) = \infty$. If $\ord_G(g) < \infty$, $g$ has \textbf{finite order}, otherwise, $g$ has \textbf{infinite order}.
 \end{definition}
 
 \begin{example}
@@ -1377,8 +1384,8 @@ Hence, given a ring $R$ and an ideal $I \subseteq R$, there exists a ring homomo
 \begin{example}
 	In $D_4$, the symmetries of a square,
 	\begin{itemize}
-		\item The rotation by $\frac{\pi}{2}$, $r$, has $\text{ord} (r) = 4$.
-		\item Reflection, $s$, has $\text{ord}(s) = 2$.
+		\item The rotation by $\frac{\pi}{2}$, $r$, has $\ord (r) = 4$.
+		\item Reflection, $s$, has $\ord(s) = 2$.
 	\end{itemize}
 \end{example}
 
@@ -1397,7 +1404,7 @@ Hence, given a ring $R$ and an ideal $I \subseteq R$, there exists a ring homomo
 \end{proof}
 
 \begin{remark}
-	For every $g \ne e$ in $G$ of prime order, $G = \langle g \rangle$, and $\text{ord}_G(g) = p$.
+	For every $g \ne e$ in $G$ of prime order, $G = \langle g \rangle$, and $\ord_G(g) = p$.
 \end{remark}
 
 \subsection{Permutation groups}
@@ -1637,9 +1644,9 @@ Hence, given a ring $R$ and an ideal $I \subseteq R$, there exists a ring homomo
 \begin{example}
 	(Problems class) Given a group $G$, define
 	\[
-		\text{Tor}(G) := \{ x \in G: \text{ord}(x) < \infty \}
+		\text{Tor}(G) := \{ x \in G: \ord(x) < \infty \}
 	\]
-	so $x \in \text{Tor}(G)$ iff $\exists d \ge 1, x^d = e$. Let $x, y \in {(\text{Tor}(G))}^2$, such that $x \circ y = y \circ x$. Prove that $x \circ y \in \text{Tor}(G)$ and $\text{ord}(x \circ y) \le \text{lcm}(\text{ord}(x), \text{ord}(y))$.
+	so $x \in \text{Tor}(G)$ iff $\exists d \ge 1, x^d = e$. Let $x, y \in {(\text{Tor}(G))}^2$, such that $x \circ y = y \circ x$. Prove that $x \circ y \in \text{Tor}(G)$ and $\ord(x \circ y) \le \lcm(\ord(x), \ord(y))$.
 
 	Let $k \ge 1$. We use induction to show that
 	\[
@@ -1649,11 +1656,11 @@ Hence, given a ring $R$ and an ideal $I \subseteq R$, there exists a ring homomo
 	\[
 		x^k \circ y^k \circ x \circ y = x^k \circ x \circ y^k \circ y = x^{k + 1} \circ y^{k + 1}
 	\]
-	Let $\text{ord}(x) = a$ and $\text{ord}(y) = b$, then let $d = \text{lcm}(a, b)$ ($d$ which $a$ and $b$ divide works). Then
+	Let $\ord(x) = a$ and $\ord(y) = b$, then let $d = \lcm(a, b)$ ($d$ which $a$ and $b$ divide works). Then
 	\[
 		{(x \circ y)}^d = x^d \circ y^d = {(x^a)}^b \circ {(y^b)}^a = e^b \circ e^a = e
 	\]
-	So $\text{ord}(xy) \le \text{lcm}(\text{ord}(x), \text{ord}(y)) < \infty$.
+	So $\ord(xy) \le \lcm(\ord(x), \ord(y)) < \infty$.
 \end{example}
 
 TODO: 3.19, 3.20, 3.21, 3.22
@@ -1665,7 +1672,7 @@ TODO: 3.19, 3.20, 3.21, 3.22
 \end{definition}
 
 \begin{example}
-	For $n = 3$, $(1 \ 2 \ 3) = (1 \ 2) \circ (2 \ 3) \in A_3$. Also, $\text{sgn}(e) = 1$ so $e \in A_3$.
+	For $n = 3$, $(1 \ 2 \ 3) = (1 \ 2) \circ (2 \ 3) \in A_3$. Also, $\sgn(e) = 1$ so $e \in A_3$.
 \end{example}
 
 \begin{lemma}
@@ -1687,7 +1694,7 @@ TODO: 3.19, 3.20, 3.21, 3.22
 		\[
 			\sigma_1 \circ \sigma_2 = \tau_1 \circ \tau_2 \circ \cdots \circ \tau_{2r} \circ \tau_1' \circ \tau_2' \circ \cdots \circ \tau_{2s}'
 		\]
-		so $\sigma_1 \circ \sigma_2$ has even parity, so $\text{sgn}(\sigma_1 \circ \sigma_2) = 1 \Longrightarrow \sigma_1 \circ \sigma_2 \in A_n$.
+		so $\sigma_1 \circ \sigma_2$ has even parity, so $\sgn(\sigma_1 \circ \sigma_2) = 1 \Longrightarrow \sigma_1 \circ \sigma_2 \in A_n$.
 		\item For every $\sigma \in A_n$,
 		\[
 			\sigma = \tau_1 \circ \tau_2 \circ \cdots \circ \tau_{2r}
@@ -1696,14 +1703,14 @@ TODO: 3.19, 3.20, 3.21, 3.22
 		\[
 			\sigma^{-1} = {(\tau_1 \circ \tau_2 \circ \cdots \circ \tau_{2r})}^{-1} = \tau_{2r} \circ \cdots \circ \tau_1
 		\]
-		hence $\text{sgn}(\sigma^{-1}) = 1$ so $\sigma^{-1} \in A_n$.
+		hence $\sgn(\sigma^{-1}) = 1$ so $\sigma^{-1} \in A_n$.
 	\end{enumerate}
 \end{proof}
 
 \begin{example}
-	$\{ \sigma \in S_n: \text{sgn}(\sigma) = -1 \}$ is not a group since it does not contain $e$. But if $\tau \in S_n$ is a transposition,
+	$\{ \sigma \in S_n: \sgn(\sigma) = -1 \}$ is not a group since it does not contain $e$. But if $\tau \in S_n$ is a transposition,
 	\[
-		\tau A_n = \{ \tau \circ \sigma: \sigma = \tau_1 \circ \tau_2 \circ \cdots \circ \tau_{2r}, r \ge 0 \} = \{ \sigma \in S_n: \text{sgn}(\sigma) = -1 \}
+		\tau A_n = \{ \tau \circ \sigma: \sigma = \tau_1 \circ \tau_2 \circ \cdots \circ \tau_{2r}, r \ge 0 \} = \{ \sigma \in S_n: \sgn(\sigma) = -1 \}
 	\]
 	So $S_n = \tau A_n \cup A_n$, and $\tau A_n \cap A_n = \emptyset$.
 \end{example}
@@ -1828,12 +1835,12 @@ TODO: 3.25, 3.26, 3.27, 3.28, 3.29
 \begin{definition}
 	Let $\phi: G_1 \rightarrow G_2$ be a group homomorphism. The \textbf{image} of $\phi$ is defined as
 	\[
-		\text{im}(\phi) := \{ \phi(g): g \in G_1 \} \subseteq G_2
+		\Im(\phi) := \{ \phi(g): g \in G_1 \} \subseteq G_2
 	\]
 \end{definition}
 
 \begin{lemma}
-	Let $\phi: G_1 \rightarrow G_2$ be a group homomorphism. Then $\ker{\phi} \le G_1$, $\text{im} \le G_2$ and $\ker(\phi) \triangleleft G_1$.
+	Let $\phi: G_1 \rightarrow G_2$ be a group homomorphism. Then $\ker{\phi} \le G_1$, $\Im \le G_2$ and $\ker(\phi) \triangleleft G_1$.
 \end{lemma}
 
 \begin{example}
@@ -1845,24 +1852,24 @@ TODO: 3.25, 3.26, 3.27, 3.28, 3.29
 	\[
 		\ker(\phi) = \{ k d: k \in \mathbb{Z} \}
 	\]
-	where $d = \text{ord}(g)$. If $d = \infty$ then $\ker(\phi) = \{ 0 \}$, otherwise $\ker(\phi) = d \mathbb{Z}$.
+	where $d = \ord(g)$. If $d = \infty$ then $\ker(\phi) = \{ 0 \}$, otherwise $\ker(\phi) = d \mathbb{Z}$.
 	\[
-		\text{im}(\phi) = \langle g \rangle
+		\Im(\phi) = \langle g \rangle
 	\]
-	So if $G = D_n$ and $g = s$ then $\text{ord}(g) = 2$ so $\ker(\phi) = 2 \mathbb{Z}$ and $\text{im}(\phi) = \{ e, s \}$.
+	So if $G = D_n$ and $g = s$ then $\ord(g) = 2$ so $\ker(\phi) = 2 \mathbb{Z}$ and $\Im(\phi) = \{ e, s \}$.
 \end{example}
 
 \begin{example}
-	Consider the sign map $\text{sgn}: S_n \rightarrow \{ 1, -1 \}$. If $\sigma_1, \sigma_2 \in {(S_n)}^2$, $\sigma = \tau_1 \circ \cdots \circ \tau_r$, $\sigma = \tau_1' \circ \cdots \circ \tau_s'$, where the $\tau_i$ and $\tau_i'$ are transpositions. So
+	Consider the sign map $\sgn: S_n \rightarrow \{ 1, -1 \}$. If $\sigma_1, \sigma_2 \in {(S_n)}^2$, $\sigma = \tau_1 \circ \cdots \circ \tau_r$, $\sigma = \tau_1' \circ \cdots \circ \tau_s'$, where the $\tau_i$ and $\tau_i'$ are transpositions. So
 	\[
 		\sigma_1 \circ \sigma_2 = \tau_1 \circ \cdots \circ \tau_r \circ \tau_1' \circ \cdots \circ \tau_s'
 	\]
-	which gives $\text{sgn}(\sigma_1 \circ \sigma_2) = {(-1)}^{r + s} = {(-1)}^r {(-1)}^s = \text{sgn}(\sigma_1) \text{sgn}(\sigma_2)$.
+	which gives $\sgn(\sigma_1 \circ \sigma_2) = {(-1)}^{r + s} = {(-1)}^r {(-1)}^s = \sgn(\sigma_1) \sgn(\sigma_2)$.
 	Then
 	\[
 		\begin{aligned}
-			\ker(\text{sgn}) & = \{ \sigma \in S_n: \text{sgn}(\sigma) = 1 \} = A_n \\
-			\text{im}(\text{sgn}) = \{ 1, -1 \}
+			\ker(\sgn) & = \{ \sigma \in S_n: \sgn(\sigma) = 1 \} = A_n \\
+			\Im(\sgn) = \{ 1, -1 \}
 		\end{aligned}
 	\]
 \end{example}
@@ -1876,7 +1883,7 @@ TODO: 3.25, 3.26, 3.27, 3.28, 3.29
 	\[
 		\begin{aligned}
 			\ker(\phi) & = n \mathbb{Z} = \{ n k: k \in \mathbb{Z} \} \\
-			\text{im}(\phi) & = \mathbb{Z} / n
+			\Im(\phi) & = \mathbb{Z} / n
 		\end{aligned}
 	\]
 \end{example}
@@ -1884,7 +1891,7 @@ TODO: 3.25, 3.26, 3.27, 3.28, 3.29
 \begin{proposition}
 	Let $\phi: G_1 \rightarrow G_2$. Then
 	\begin{enumerate}
-		\item $\text{im}(\phi) \le G_2$.
+		\item $\Im(\phi) \le G_2$.
 		\item $\ker(\phi) \le G_1$.
 		\item $\ker(\phi) \triangleleft G_1$.
 	\end{enumerate}
@@ -1982,12 +1989,12 @@ TODO: 3.25, 3.26, 3.27, 3.28, 3.29
 \begin{theorem}
 	(\textbf{First isomorphism theorem (FIT) for groups}) Let $\phi: G_1 \rightarrow G_2$ be a group homomorphism. Then
 	\[
-		\text{im}(\phi) \cong G_1 / \ker(\phi)
+		\Im(\phi) \cong G_1 / \ker(\phi)
 	\]
 \end{theorem}
 
 \begin{proof}
-	We construct an isomorphism $\tilde{\phi}: G / \ker(\phi) \rightarrow \text{im}(\phi)$ by
+	We construct an isomorphism $\tilde{\phi}: G / \ker(\phi) \rightarrow \Im(\phi)$ by
 	\[
 		\tilde{\phi}(g \circ \ker(\phi)) = \phi(g)
 	\]
@@ -2009,15 +2016,15 @@ TODO: 3.25, 3.26, 3.27, 3.28, 3.29
 			& \Longrightarrow \ker(\tilde{\phi}) = \{ \ker(\phi) \}
 		\end{aligned}
 	\]
-	Finally, we need to show that $\tilde{\phi}$ is surjective. Since $x \in \text{im}(\phi) \Longleftrightarrow \exists g \in G_1, \ \phi(g) = x$, $x = \tilde{\phi}(g \circ \ker(\phi))$ hence $\tilde{\phi}$ is surjective.
+	Finally, we need to show that $\tilde{\phi}$ is surjective. Since $x \in \Im(\phi) \Longleftrightarrow \exists g \in G_1, \ \phi(g) = x$, $x = \tilde{\phi}(g \circ \ker(\phi))$ hence $\tilde{\phi}$ is surjective.
 \end{proof}
 
 \begin{corollary}
-	Let $G$ be a group and $g \in G$ with $\text{ord}(g) = n < \infty$. Then
+	Let $G$ be a group and $g \in G$ with $\ord(g) = n < \infty$. Then
 	\[
 		\langle g \rangle \cong (\mathbb{Z} / n, +)
 	\]
-	If $\text{ord}(g) = \infty$, then $\langle g \rangle \cong (\mathbb{Z}, +)$.
+	If $\ord(g) = \infty$, then $\langle g \rangle \cong (\mathbb{Z}, +)$.
 \end{corollary}
 
 \begin{proof}
@@ -2025,15 +2032,15 @@ TODO: 3.25, 3.26, 3.27, 3.28, 3.29
 	\[
 		\phi(k) = g^k
 	\]
-	This is a homomorphism, and if $\text{ord}(g) = n < \infty$ then
+	This is a homomorphism, and if $\ord(g) = n < \infty$ then
 	\[
 		\ker(\phi) = n \mathbb{Z} \Longrightarrow \mathbb{Z} / \ker(\phi) = \mathbb{Z} / n \mathbb{Z} \cong \mathbb{Z} / n
 	\]
 	So by FIT for groups,
 	\[
-		\mathbb{Z} / n = \text{im}(\phi_n) \cong \mathbb{Z} / \ker(\phi_n) = \mathbb{Z} / n \mathbb{Z}
+		\mathbb{Z} / n = \Im(\phi_n) \cong \mathbb{Z} / \ker(\phi_n) = \mathbb{Z} / n \mathbb{Z}
 	\]
-	$\text{im}(\phi) = \langle g \rangle$ by definition, so by FIT for groups, $\mathbb{Z} / n \cong \langle g \rangle$. The case $\text{ord}(g) = \infty$ is similar, except that $\ker(\phi) = \{ 0 \}$.
+	$\Im(\phi) = \langle g \rangle$ by definition, so by FIT for groups, $\mathbb{Z} / n \cong \langle g \rangle$. The case $\ord(g) = \infty$ is similar, except that $\ker(\phi) = \{ 0 \}$.
 \end{proof}
 
 \begin{corollary}
@@ -2041,7 +2048,7 @@ TODO: 3.25, 3.26, 3.27, 3.28, 3.29
 \end{corollary}
 
 \begin{proof}
-	$G$ is a cyclic group since $|G|$ is prime. Thus, $G = \langle g \rangle$ where $\text{ord}(g) = p$. By the previous corollary, $G \cong (\mathbb{Z} / p, +)$.
+	$G$ is a cyclic group since $|G|$ is prime. Thus, $G = \langle g \rangle$ where $\ord(g) = p$. By the previous corollary, $G \cong (\mathbb{Z} / p, +)$.
 \end{proof}
 
 \begin{example}
@@ -2049,11 +2056,11 @@ TODO: 3.25, 3.26, 3.27, 3.28, 3.29
 	\[
 		\phi_n(k) = \bar{k} = \{ k + nm: m \in \mathbb{Z} \}
 	\]
-	Then $\ker(\phi_n) = n \mathbb{Z}$ and $\text{im}(\phi_n) = \mathbb{Z} / n$ since $\forall 0 \le j \le n - 1, \ \phi(j) = j$.
+	Then $\ker(\phi_n) = n \mathbb{Z}$ and $\Im(\phi_n) = \mathbb{Z} / n$ since $\forall 0 \le j \le n - 1, \ \phi(j) = j$.
 \end{example}
 
 \begin{example}
-	We have seen that $\ker(\text{sgn}) = A_n$ and $\text{im}(\text{sgn}) = \{ \pm 1 \}$. So by FIT for groups,
+	We have seen that $\ker(\sgn) = A_n$ and $\Im(\sgn) = \{ \pm 1 \}$. So by FIT for groups,
 	\[
 		\{ \pm 1 \} \cong S_n / A_n
 	\]
@@ -2065,7 +2072,7 @@ TODO: 3.25, 3.26, 3.27, 3.28, 3.29
 	\[
 		\phi(r^i s^j) = j \pmod{2}
 	\]
-	$\text{im}(\phi) = \mathbb{Z} / 2$ and $\ker(\phi) = \{ r^i: 0 \le i \le n - 1\} = \langle r \rangle$. So by FIT for groups,
+	$\Im(\phi) = \mathbb{Z} / 2$ and $\ker(\phi) = \{ r^i: 0 \le i \le n - 1\} = \langle r \rangle$. So by FIT for groups,
 	\[
 		D_n / \langle r \rangle \cong \mathbb{Z} / 2
 	\]
@@ -2076,7 +2083,7 @@ TODO: 3.25, 3.26, 3.27, 3.28, 3.29
 \begin{lemma}
 	Let $\phi: G_1 \rightarrow G_2$ be a group isomorphism. Then
 	\begin{enumerate}
-		\item If $g \in G$ then $\text{ord}_{G_1}(g) = \text{ord}_{G_2}(\phi(g))$. In particular, the sets $\{ \text{ord}_{G_1}(g): g \in G_1 \}$ and $\{ \text{ord}_{G_2}(g): g \in G_2 \}$ are equal.
+		\item If $g \in G$ then $\ord_{G_1}(g) = \ord_{G_2}(\phi(g))$. In particular, the sets $\{ \ord_{G_1}(g): g \in G_1 \}$ and $\{ \ord_{G_2}(g): g \in G_2 \}$ are equal.
 		\item $|G_1| = |G_2|$.
 		\item $G_1$ is Abelian iff $G_2$ is also Abelian.
 		\item The sets $|H|: H \le G_1$ and $|H|: H \le G_2$ are equal.
@@ -2086,7 +2093,7 @@ TODO: 3.25, 3.26, 3.27, 3.28, 3.29
 \begin{proof}
 	\hfill
 	\begin{enumerate}
-		\item Let $g \in G_1$ and let $d_1 := \text{ord}_{G_1}(g), d_2 := \text{ord}_{G_2}(\phi(g))$. Note that
+		\item Let $g \in G_1$ and let $d_1 := \ord_{G_1}(g), d_2 := \ord_{G_2}(\phi(g))$. Note that
 		\[
 			e_{G_2} = \phi(e_{G_1}) = \phi(g^{d_1}) = \phi(g)^{d_1} \Longrightarrow d_2 \le d_1
 		\]
@@ -2106,8 +2113,827 @@ TODO: 3.25, 3.26, 3.27, 3.28, 3.29
 	\begin{enumerate}
 		\item $D_4$ and $\mathbb{Z} / 4$: $|D_4| = 8$ and $|\mathbb{Z} / 4| = 4$.
 		\item $S_3$ and $\mathbb{Z} / 6$: $S_3$ is not Abelian, but $\mathbb{Z} / 6$ is.
-		\item $A_4$ and $D_6$: in $D_6$, $\text{ord}(r) = 6$ but in $A_4$, the permutations have orders of $1, 2$ or $3$.
+		\item $A_4$ and $D_6$: in $D_6$, $\ord(r) = 6$ but in $A_4$, the permutations have orders of $1, 2$ or $3$.
 	\end{enumerate}
+\end{example}
+
+\begin{example}
+	(Problems class) Decompose $D_6$ into left cosets with respect to $H = \{ e, r^3, s, r^3, s \}$. Is every left coset also a right coset?
+
+	We want to express $D_6$ as
+	\[
+		D_6 = H \cup x \circ H \cup y \circ H
+	\]
+	where $x, y \in {(D_6)}^2, x \circ H \ne H, x \circ H \ne y \circ H$. (Since $|H| = |x \circ H| = |y \circ H| = 4$ and they are disjoint so $|H \cup x \circ H \cup y \circ H) = 12 = |D_6|$). We have that
+	\[
+		D_6 = \{ r^i  \circ s^j: 0 \le i \le 5, 0 \le j \le 1 \}
+	\]
+	\begin{itemize}
+		\item If $j = 0, 0 \le i \le 2$ then $r^i \circ s^j = r^i \circ e \in r^i \circ H$.
+		\item If $j = 0, 3 \le i \le 5$ then $r^i \circ s^j = r^{i - 3} \circ r^3 \in r^{i - 3} \circ H$.
+		\item If $j = 1, 0 \le i \le 2$ then $r^i \circ s^j = r^i \circ s \in r^i \circ H$.
+		\item If $j = 1, 3 \le i \le 5$ then $r^i \circ s^j = r^{i - 3} \circ r^3 \circ s \in r^{i - 3} \circ H$.
+	\end{itemize}
+	So $\forall x \in D_6, x \in H \cup r \circ H \cup r^2 \circ H$ so $D_6 \subseteq H \cup r \circ H \cup r^2 \circ H$. But each of $H, r \circ H, r^2 \circ H$ are a subset of $D_6$ so $D_6 = H \cup r \circ H \cup r^2 \circ H$. Now we determine whether every left coset is a right coset. If this were true, then
+	\[
+		r \circ H = \{ r, r^4, r \circ s, r^4 \circ s \} = H \circ x = \{ x, r^3 \circ x, s \circ x, r^3 \circ s \circ s \}
+	\]
+	for some $x \in D_6$. Using the fact that $s \circ r \circ s = r^{-1}$, $r \circ H = \{ r, r^4, s \circ r^5, s \circ r^2 \}$. $r \in H \circ r$ and $r^4 \in H \circ r$ but $s \circ r^5 = s \circ r^3 \circ r^2 = (r^3 \circ s) \circ r^2 \in H \circ r^2$ and $s \circ r^2 \in H \circ r^2$. So $r \circ H \subseteq H \circ r \cup H \circ r^2$ and intersects both, so it can't be a right coset (since if $r \circ H = H \circ x$ then $H \circ x = H \circ r$ or $H \circ x \cap H \circ r = \emptyset$, but $H \circ r \ne H \circ r^2$, $H \circ x \cap H \circ r \ne \emptyset$ and $H \circ x \cap H \circ r^2 \ne \emptyset$).
+\end{example}
+
+\begin{example}
+	(Problems class) Show that $A_4$ has no subgroup of order $6$.
+
+	We use the fact that there only two groups of order $6$ (up to isomorphism): $\mathbb{Z} / 6$ and $S_3$. So to show any $H \le |A_4|$ has $|H| \ne 6$, we can show that $H \not\cong \mathbb{Z} / 6$ and $H \not\cong S_3$. Since $H \le A_4$, if $x \in H$, then $\ord(x) \in \{ 1, 2, 3 \}$. But $\bar{1} \in \mathbb{Z} / 6$ has order $6$. But isomorphisms preserve order so $\mathbb{Z} / 6 \not\cong H$.
+
+	$S_3 = \{ e, (1 \ 2), (1 \ 3), (2 \ 3), (1 \ 2 \ 3), (1 \ 3 \ 2) \}$ has $1$ element of order $1$, three elements of order $2$ and two elements of order $2$. Consider $\tau \circ \sigma$ where $\tau, \sigma \in H^2, \ord(2) = 2, \ord(\sigma) = 3$. $A_4$ contains only the order $2$ elements $\{ (1 \ 2) (3 \ 4), (1 \ 3) (2 \ 4), (1 \ 4) (2 \ 3) \}$. As $H$ has three order $2$ elements, $H$ must contain all of these. Up to relabelling, we can assume that $(1 \ 2 \ 3) \in H$. But then $(1 \ 2) (3 \ 4) (1 \ 2 \ 3) = (2 \ 4 \ 3)$, $(1 \ 3) (2 \ 4) (1 \ 2 \ 3) = (1 \ 4 \ 2)$, and $(1 \ 4) (2 \ 3) (1 \ 2 \ 3) = (1 \ 3 \ 4)$ which are distinct $3$-cycles. So there are at least $3$ elements of order $3$ in $H$, but there should only be $2$.
+\end{example}
+
+\begin{example}
+	(Problems class) Construct an isomorphism $\phi: D_3 \rightarrow S_3$. How many such isomorphisms exist?
+
+	As $D_3$ is generated by $r$ and $s$, it is enough to determine $\phi(r)$ and $\phi(s)$ in order to determine $\phi$. Since isomorphisms fix the orders of elements, $\ord_{S_3}(\phi(r)) = \ord_{D_3}(r) = 3$ and $\ord_{S_3}(\phi(s)) = \ord_{D_3}(s) = 2$. There are two elements of order $3$ in $S_3$ and $3$ elements of order $2$ in $S_3$, so there are $2 \cdot 3 = 6$ possible values of $(\phi(r), \phi(s))$. So there are six possible isomorphisms. For example $\phi(r) = (1 \ 2 \ 3), \phi(s) = (1 \ 2)$.
+\end{example}
+
+\subsection{Direct products}
+
+\begin{definition}
+	Let $(G_1, \circ_1)$ and $(G_2, \circ_2)$ be groups. The \textbf{direct product} of $G_1$ and $G_2$ is the set
+	\[
+		G \times H = \{ (g_1, g_2): g_1 \in G_1, g_2 \in G_2 \}
+	\]
+	equipped with the operation $\circ_{G_1 \times G_2}$ defined by
+	\[
+		(g_1, g_2) \circ_{G_1 \times G_2} (h_1, h_2) = (g_1 \circ_1 h_1, g_2 \circ_2 h_2)
+	\]
+	We can also define, by induction,
+	\[
+		G_1 \times G_2 \times \cdots \times G_n = \{ (g_1, g_2, \ldots, g_n): \forall i \in \{ 1, \dots, n \}, \ g_i \in G_i \}
+	\]
+\end{definition}
+
+\begin{example}
+	Let $G_1 = \mathbb{Z} / 3, G_2 = \mathbb{Z} / 4$, then
+	\[
+		G_1 \times G_2 = \{ (a \pmod{3}, b \pmod{4}): a, b \in \mathbb{Z}^2 \}
+	\]
+	and $(\bar{a} + \bar{b}) + (\bar{c}, \bar{d}) = (\overline{a + c}, \overline{b + d})$.
+\end{example}
+
+\begin{example}
+	Let $G_1 = S_3, G_2 = S_4$, then for every $\sigma_1, \sigma_2 \in {(S_3)}^2, \alpha_1, \alpha_2 \in {(S_4)}^2$,
+	\[
+		(\sigma_1, \alpha_1) \circ (\sigma_2, \alpha_2) (i, j) = (\sigma_1 \circ \sigma_2, \alpha_1 \circ \alpha_2) (i, j)
+	\]
+	where $i \in \{ 1, 2, 3 \}, j \in \{ 1, 2, 3, 4 \}$.
+\end{example}
+
+\begin{lemma}
+	If $G_1$ and $G_2$ are groups, then $G_1 \times G_2$ is a group.
+\end{lemma}
+
+\begin{proof}
+	Using the \hyperref[def:group]{properties of a group},
+	\begin{itemize}
+		\item $\circ_{G_1 \times G_2}$ is associative.
+		\item By definition, $G_1 \times G_2$ is closed under $\circ_{G_1 \times G_2}$.
+		\item The identity element is $(e_G, e_H)$.
+		\item The inverse of $(g_1, g_2)$ is $(g_1^{-1}, g_2^{-1})$.
+	\end{itemize}
+\end{proof}
+
+\begin{proposition}\label{prop:directProductProperties}
+	(\textbf{Properties of the direct product})
+	\begin{enumerate}
+		\item $\forall d \in \mathbb{Z}, (g, h) \in G_1 \times G_2$, ${(g_1, g_2)}^d = (g_1^d, g_2^d)$.
+		\item If $\ord_{G_1}(g_1) = n$ and $\ord_{G_2}(g_2) = m$, then $\ord_{G_1 \times G_2}((g_1, g_2)) = \lcm(n, m)$.
+		\item If $H_1 \le G_1$ and $H_2 \le G$ then $H_1 \times H_2 \le G_1 \times G_2$. Note that if $H_2 = \{ e_{G_2} \}$, then $H_1 \times H_2 \cong H_2$, with $(h_1, h_2) \rightarrow h_1$ as the isomorphism.
+	\end{enumerate}
+\end{proposition}
+
+\subsection{Subgroups in direct products}
+
+\begin{example}
+	There exist subgroups of $G_1 \times G_2$ that are not direct products of subgroups of $G_1$ and $G_2$.
+
+	Let $G_1 = G_2 = \mathbb{Z}$, then $G_1 \times G_2 = \{ (a, b): a, b \in \mathbb{Z}^2 \}$. Let $K = \{ (a, a): a \in \mathbb{Z} \}$, the diagonal subgroup. But $K$ is not a direct product of two subgroups of $G_1$ and $G_2$.
+\end{example}
+
+\begin{theorem}\label{thm:directProductSubgroupsCongToGroup}
+	Let $G$ be a group that contains subgroups $H, K$ such that
+	\begin{enumerate}
+		\item $H \times K = \{ hk: h \in H, k \in K \} = G$.
+		\item $H \cap K = \{ e_G \}$.
+		\item For every $h \in H, k \in K, \ hk = kh$.
+	\end{enumerate}
+	Then $G \cong H \times K$.
+\end{theorem}
+
+\begin{proof}
+	Omitted.
+\end{proof}
+
+\begin{theorem}
+	(\textbf{Chinese remainder theorem (CRT)}) Let $m, n \in \mathbb{N}^2$ be coprime. Then
+	\[
+		\mathbb{Z} / (mn) \cong \mathbb{Z} / n \times \mathbb{Z} / n
+	\]
+\end{theorem}
+
+\begin{proof}
+	Let $G = \mathbb{Z} / (mn)$. Let $H = \{ nx \pmod{mn}: 0 \le x \le m - 1 \}$ and $K = \{ ny \pmod{mn}: 0 \le y \le n - 1 \}$. Then $H \cong \mathbb{Z} / m$ and $K \cong \mathbb{Z} / n$. We have
+	\begin{enumerate}
+		\item $H K = \{ nx + my \pmod{mn}: 0 \le x \le m - 1, 0 \le y \le n - 1 \} = \{ z \pmod{mn}: 0 \le z \le mn - 1$.
+		\item If $z \in H \cap K$ for some $z$ then $z = nx = ny$ for some $0 \le x \le m - 1$, $0 \le y \le n - 1$. Since $m$ and $n$ are coprime, $x = y = 0$ so $H \cap K = \{ \bar{0} \}$.
+		\item $G$ is abelian so $h k = k h$ for every $h \in H$, $k \in K$.
+	\end{enumerate}
+	So by Theorem~\ref{thm:directProductSubgroupsCongToGroup}, $G \cong H \times K$ so $\mathbb{Z} / (mn) \cong \mathbb{Z} / n \times \mathbb{Z} / n$.
+\end{proof}
+
+\begin{example}
+	$D_{10} \cong D_5 \times \mathbb{Z} / 2$.
+
+	Let $G = D_{10}$. Let $H = \{ r^{2k} s^j: 0 \le k \le 4, 0 \le j \le 1 \}$ and $K = \{ e, r^5 \} = \langle r^5 \rangle$. Then $H \cong D_5$ and $K \cong \mathbb{Z} / 2$. So by Theorem~\ref{thm:directProductSubgroupsCongToGroup}, $H \cong G \times K$.
+\end{example}
+
+\begin{theorem}
+	(\textbf{Cayley's theorem}) Let $(G, \cdot)$ be a group. Then $(G, \cdot)$ is isomorphic to a subgroup of $S_G$, the group of bijections $\phi: G \rightarrow G$, with the group operation as composition.
+\end{theorem}
+
+\begin{proof}
+	Let $\psi: G \rightarrow S_G$ be the bijection defined by
+	\[
+		\psi(g)(h) := g \circ h
+	\]
+	$\psi$ is a homomorphism, since
+	\[
+		\psi(g_1 g_2)(h) = (g_1 g_2) h = g_1 (g_2 h) = \psi(g_1)(\psi(g_2)(h)) = (\psi(g_1) \circ \psi(g_2)) (h)
+	\]
+	$\ker(\psi) = \{ e_G \}$, since if $g \in \ker(\psi)$, then $\psi(g)$ is the identity map, so $\psi(g)(h) = gh = h$ for every $h \in G$, so $g = e_G$. We have seen that $G / \ker(\psi) \cong \Im(\psi)$, so $G \cong G / \{ e_G \} \cong \Im(\psi)$. And $\Im(\psi) \le S_G$, since $\psi$ is a homomorphism.
+\end{proof}
+
+\begin{example}
+	Let $(G, \circ) = (\mathbb{Z} / 4, +)$ and let $\psi(\bar{a})(\bar{b}) = \bar{a} + \bar{b}$. The group table is
+	\[
+		\begin{matrix}
+			+ & \bar{1} & \bar{2} & \bar{3} & \bar{4} \\
+			\psi(\bar{1}) & \bar{3} & \bar{4} & \bar{1} & \bar{2} \\
+			\psi(\bar{2}) & \bar{4} & \bar{1} & \bar{2} & \bar{3} \\
+			\psi(\bar{3}) & \bar{4} & \bar{1} & \bar{2} & \bar{3} \\
+			\psi(\bar{4}) & \bar{1} & \bar{2} & \bar{3} & \bar{4}
+		\end{matrix}
+	\]
+	So $\psi(\bar{1})$ corresponds to the cycle
+	\[
+		\begin{bmatrix}
+			1 & 2 & 3 & 4 \\
+			2 & 3 & 4 & 1
+		\end{bmatrix}
+		= (1 \ 2 \ 3 \ 4)
+	\]
+	etc. We see $\mathbb{Z} / 4$ is isomorphic to a subgroup o $S_4$.
+\end{example}
+
+\begin{example}
+	Let $G = D_3 = \{ r^i s^j: 0 \le i \le 2, 0 \le j \le 1 \}$. A section of the group table looks like
+	\[
+		\begin{matrix}
+			\circ & e & r & r^2 & s & rs & r^2 s \\
+			\psi(r) & r & r^2 & e & rs & r^2 s & s \\
+			\psi(s) & s & r^2 s & rs & e & r^2 & r \\
+		\end{matrix}
+	\]
+	so $\psi(r)$ corresponds to the cycle
+	\[
+		\begin{bmatrix}
+			1 & 2 & 3 & 4 & 5 & 6 \\
+			2 & 3 & 1 & 5 & 6 & 4
+		\end{bmatrix}
+		= (1 \ 2 \ 3) (4 \ 5 \ 6)
+	\]
+\end{example}
+
+\section{Group Actions}
+
+\subsection{Group actions}
+
+\begin{definition}\label{def:groupAction}
+	Let $G$ be a group and $X$ be a set. A \textbf{group action} of $G$ on $X$ is a homomorphism $\psi: G \rightarrow S_X$ ($S_X$ is the set of bijections on $X$) such that
+	\begin{enumerate}
+		\item $\psi_g: X \rightarrow X$ is a bijection for every $g \in G$, and
+		\item $\psi_{g_1 g_2} = \psi_{g_1} \circ \psi_{g_2}$ for every $g_1, g_2 \in G^2$.
+	\end{enumerate}
+	We say that $G$ acts on $X$. We sometimes use the notation $g \cdot x$ to mean $\psi_g(x)$.
+\end{definition}
+
+%\begin{example}
+%	Let $(G, \circ) = (\mathbb{Z}, +)$ and $X = \mathbb{C}$. For every $n \in \mathbb{Z}$, define $\phi_n: \mathbb{C} \rightarrow \mathbb{C}$ by
+%	\[
+%		\phi_n(z) = z^n
+%	\]
+%\end{example}
+%
+%\begin{example}
+%	Let $G = \text{SL}_2(\mathbb{Z})$ and $X = \mathbb{Z}^2$. For every $A \in \text{SL}_2(\mathbb{Z})$, define $\phi_A: \mathbb{Z}^2 \rightarrow \mathbb{Z}^2$ by
+	%\[
+	%	\phi_A((x, y)) = A \cdot (x, y)
+	%\]
+%\end{example}
+%
+
+\begin{definition}
+	Let $\psi: G \to S_X$ be a group action. Let $x \in X$.
+	\begin{itemize}
+		\item The \textbf{orbit} of $x$, denoted $\mathcal{O}(x)$, is defined as
+		\[
+			\mathcal{O}(x) := \{ y \in X: \exists g \in G: \psi_g(x) = y \}
+		\]
+		\item The \textbf{stabiliser} of $x$, denoted $\Stab_G(x)$, is defined as
+		\[
+			\Stab_G(x) := \{ g \in G: \psi_g(x) = x \}
+		\]
+	\end{itemize}
+\end{definition}
+
+\begin{lemma}
+	For every $x \in X$, $\Stab_G(x) \le G$.
+\end{lemma}
+
+\begin{proof}
+	Check the \hyperref[prop:subgroupCriteria]{subgroup criteria}:
+	\begin{enumerate}
+		\item $e \in \Stab_G(x)$, since $\psi_e(x) = x$ ($\psi_e$ is the identity map).
+		\item Let $g_1, g_2 \in {(\Stab_G(x))}^2$. Then $\psi_{g_1 g_2}(x) = (\psi_{g_1} \circ \psi_{g_2}) (x) = \psi_{g_1}(\psi_{g_2}(x)) = \psi_{g_1}(x) = x$. Hence $g_1 g_2 \in \Stab_G(x)$.
+		\item Let $g \in \Stab_G(x)$. Then $\psi_{g^{-1}}(x) = \psi_{g}^{-1}(\psi_g(x)) = \psi_{g^{-1} g} (x) = \psi_e(x) = x$. Hence $g^{-1} \in \Stab_G(x)$.
+	\end{enumerate}
+\end{proof}
+
+\begin{example}
+	Let $(G, \circ) = (\mathbb{Z}, +)$, $X = \mathbb{R}$, $\psi_n(x) = n + x$. Then
+	\[
+		\psi_{n_1 + n_2}(x) = (n_1 + n_2) + x = n_1 + (n_2 + x) = \psi_{n_1} (n_2 + x) = \psi_{n_1} (\psi_{n_2} (x))
+	\]
+	So $\psi$ is a group action of $G$ on $X$. Also,
+	\[
+		\begin{aligned}
+			\mathcal{O}(x) & = \{ n + x: n \in \mathbb{Z} \} \\
+			\Stab_G(x) & = \{ n \in \mathbb{Z}: n + x = x \} = \{ 0 \}
+		\end{aligned}
+	\]
+\end{example}
+
+\begin{example}
+	Let $(G, \circ) = (\mathbb{R}_{\ge 0}, \cdot)$, $X = \mathbb{C}$, $\psi_r(z) = r z$. Then $\psi$ is a group action of $G$ on $X$.
+	
+	If $z \ne 0$, then $\mathcal{O}(x)$ is the line from $0$ through $z$. If $z = 0$, then $\mathcal{O}(x) = \{ 0 \}$. Also,
+	\[
+		\begin{aligned}
+			\Stab_G(x) & = \{ r > 0: rz = z \} = \begin{cases}
+				(0, \infty) & \text{ if } z = 0 \\
+				\{ 1 \} & \text{ if } z \ne 0
+			\end{cases}
+		\end{aligned}
+	\]
+\end{example}
+
+\begin{example}
+	Let $G = \GL_2(\mathbb{R})$, $X = \mathbb{R}^2$, $\psi_A(x, y) = A(x, y)$. Then $\psi$ is a group action of $G$ on $X$.
+	\[
+		\begin{aligned}
+			\mathcal{O}(x, y) & = \{ A(x, y): A \in \GL_2(\mathbb{R}) \} \\
+			\Stab_G(x, y) & = \{ A \in \GL_2(\mathbb{R}): A(x, y) = (x, y) \}
+		\end{aligned}
+	\]
+	so $\Stab_G(x, y)$ is the set of $A \in G$ such that $(x, y)$ is an eigenvalue of $A$ with eigenvalue $1$.
+\end{example}
+
+\begin{proposition}\label{prop:orbitsNotEqualImpliesEmptyIntersection}
+	Let a group $G$ act on a set $X$ with group action $\psi$. Then
+	\[
+		\bigcup_{x \in X} \mathcal{O}(x) = X
+	\]
+	and if $x, y \in X^2$ are such that $\mathcal{O}(x) \ne \mathcal{O}(y)$, then $\mathcal{O}(x) \cap \mathcal{O}(y) = \emptyset$.
+\end{proposition}
+
+\begin{proof}
+	For every $x \in X$, $x \in \mathcal{O}(x)$, since $\psi_e(x) = x$. So $\mathcal{O}(x) \ne \emptyset$ and
+	\[
+		X = \bigcup_{x \in X} \{ x \} \subseteq \bigcup_{x \in X} \mathcal{O}(x) \subseteq X
+	\]
+	so
+	\[
+		\bigcup_{x \in X} \mathcal{O}(x) = X
+	\]
+	Assume that for some $x, y \in x^2$ with $\mathcal{O}(x) \ne \mathcal{O}(y)$, $\mathcal{O}(x) \cap \mathcal{O}(y) \ne \emptyset$. Then there exists $z \in \mathcal{O}(x) \cap \mathcal{O}(y)$. So for some $g, h \in G^2$, $\psi_g(x) = z = \psi_h(y) \Longrightarrow (\psi_{h^{-1}} \circ \psi_g)(x) = y = \psi_{h^{-1} g} (x)$.
+
+	Hence if $g' \in G$, $\psi_{g'}(y) = (\psi_{g'} \circ \psi_{h^{-1} g}) = \psi_{g' h^{-1} g} (x)$. So for every $y' \in \mathcal{O}(y)$, $y' \in \mathcal{O}(x)$. Similarly, for every $x' \in \mathcal{O}(x)$, $x' \in \mathcal{O}(y)$. So $\mathcal{O}(x) = \mathcal{O}(y)$, which is a contradiction.
+\end{proof}
+
+\subsection{The action of a group on itself}
+
+\begin{definition}
+	The \textbf{conjugation action} for a group $G$ is defined as $\psi: G \to S_G$,
+	\[
+		\psi_g(h) := ghg^{-1}
+	\]
+\end{definition}
+
+\begin{definition}
+	Let $G$ be a group and $h, h' \in G^2$. $h$ and $h'$ are called \textbf{conjugate} if for some $g \in G$,
+	\[
+		h' = g h g^{-1}
+	\]
+	Equivalently, $h$ and $h'$ are conjugate if and only if $h' \in \mathcal{O}(h)$ under the conjugation action. 
+\end{definition}
+
+\begin{definition}
+	The \textbf{conjugacy class} of $h \in G$ is defined as
+	\[
+		\ccl_G(h) := \{ g h g^{-1}: g \in G \}
+	\]
+\end{definition}
+
+\begin{remark}
+	Since conjugacy classes are orbits under the conjugation action, if $g \in \ccl_G(h)$, then $\ccl_G(h) = \ccl_G(g)$.
+\end{remark}
+
+\begin{proposition}
+	The conjugation action is a group action.
+\end{proposition}
+
+\begin{proof}
+	We check the properties defined in Definition~\ref{def:groupAction}:
+	\begin{enumerate}
+		\item $\psi_{g_1 g_2} (h) = g_1 g_2 h (g_1 g_2)^{-1} = g_1 (g_2 h g_2^{-1}) g_1^{-1} = \psi_{g_1}(g_2 h g_2^{-1}) = (\psi_{g_1} \circ \psi_{g_2})(h)$.
+		\item $\psi_g(h_1) = \psi_g(h_2) \Longleftrightarrow g h_1 g^{-1} = g h_2 g^{-1} \Longleftrightarrow h_1 = h_2$ so $\psi_g$ is injective. Also, if $h \in G$, then $x = g^{-1} h g$, so $\psi_g(x) = g(g^{-1} h g) g^{-1} = h$ if $\psi_g$ is surjective.
+	\end{enumerate}
+\end{proof}
+
+\begin{example}
+	$\ccl_G(e_G) = \{ e_G \}$.
+\end{example}
+
+\begin{example}
+	Let $G$ be Abelian and $h \in G$. Then $\ccl_G(h) = \{ h \}$. So for every Abelian group $G$ and $h \in G$, $|\ccl_G(h)| = 1$.
+
+	Conversely, let $G$ be a group such that for every $h \in G$, $|\ccl_G(h)| = 1$. Since $h \in \ccl_G(h)$ ($h = ehe$), $\forall g \in G, g h g^{-1} = h$ so $gh = hg$ so $G$ is Abelian.
+\end{example}
+
+\begin{proposition}\label{prop:elementsInCclHaveSameOrder}
+	All elements in $\ccl_G(h)$ have the same order.
+\end{proposition}
+
+\begin{proof}
+	For every $g, h \in G^2$,
+	\[
+		{(g h g^{-1})}^k = g h^k g^{-1} \Longrightarrow \ord_G(h) = \ord_G(g h g^{-1})
+	\]
+\end{proof}
+
+\begin{example}
+	Let $G = S_3 = \{ e_1, (1 \ 2), (2 \ 3), (1 \ 3), (1 \ 2 \ 3), (1 \ 3 \ 2) \}$. By Proposition~\ref{prop:elementsInCclHaveSameOrder}, $\ccl_G ((1 \ 3))$ contains only transpositions and $\ccl_G((1 \ 2 \ 3))$ contains only $3$-cycles.
+	\[
+		\begin{aligned}
+			(1 \ 2) (1 \ 3) (1 \ 2) & = (2 \ 3), \\
+			(2 \ 3) (1 \ 3) (2 \ 3) & = (1 \ 2), \\
+			e (1 \ 3) e & = (1 \ 3)
+		\end{aligned}
+	\]
+	so $(1 \ 2), (1 \ 3), (2 \ 3) \in {(\ccl_G((1 \ 3)))}^3$. But $\ccl_G((1 \ 3))$ contains only transpositions so $\ccl_G((1 \ 3)) = \{ (1 \ 2), (1 \ 3), (2 \ 3) \}$.
+
+	$(1 \ 2) \in \ccl_G((1 \ 2))$ so by Proposition~\ref{prop:orbitsNotEqualImpliesEmptyIntersection}, $\ccl_G((1 \ 2)) = \ccl_G((1 \ 3))$ and similarly, $\ccl_G((1 \ 3)) = \ccl_G((2 \ 3))$.
+
+	$(2 \ 3)(1 \ 2 \ 3)(2 \ 3) = (1 \ 3 \ 2)$ so $\ccl_G((1 \ 2 \ 3)) = \{ (1 \ 2 \ 3), (1 \ 3 \ 2) \} = \ccl_G((1 \ 3 \ 2))$.
+\end{example}
+
+\begin{example}
+	Let $G = D_5 = \{ r^k s^j: 0 \le k \le 4, 0 \le j \le 1 \}$. Then
+	\[
+		\begin{aligned}
+			\ccl_G(r^k) & = \{ r^i s^j r^k s^j r^{-i}: 0 \le i \le 4, 0 \le j \le 1 \} = \{ r^k, r^{-k} \} \\
+			\ccl_G(r^k s) & = \{ r^i s^j (r^k s) s^j r^{-i}: 0 \le i \le 4, 0 \le k \le 4 \} = \{ r^i s: 0 \le i \le 4 \}
+		\end{aligned}
+	\]
+\end{example}
+
+\subsection{The orbit stabiliser theorem}
+
+\begin{lemma}
+	Let $\psi: G \to S_G$, $\psi_g(h) = gh$. Then $\forall h \in G, |\mathcal{O}(h)| \cdot |\Stab_G(h)| = |G|$.
+\end{lemma}
+
+\begin{proof}
+	$\Stab_G(h) = \{ e_G \}$ and $\mathcal{O}(h) = G$ for every $h \in G$. So $|\Stab_G(h)| = 1$ and $|\mathcal{O}(h)| = |G|$ for every $h \in G$.
+\end{proof}
+
+\begin{lemma}
+	Let $\psi: G \to S_G$, $\psi_g(h) = gh g^{-1}$ be the conjugation map. Then $|\Stab_G(e)| \cdot |\mathcal{O}(e)| = |G|$.
+\end{lemma}
+
+\begin{proof}
+	$\Stab_G(e) = G$ and $\mathcal{O}(e) = \{ e \}$ so $|\Stab_G(e)| = |G|$ and $|\mathcal{O}(e)| = 1$.
+\end{proof}
+
+\begin{theorem}\label{thm:orbitStabiliser}
+	(\textbf{The Orbit-Stabiliser Theorem}) Let $\psi: G \to S_X$ be a group action of $G$ on $X$. Then $\forall x \in X$, there exists a bijection $\psi_x: \mathcal{O}(x) \to \{ g \cdot \Stab_G(x): g \in G \}$ defined as
+	\[
+		\psi_x(\psi_g(x)) = g \cdot \Stab_G(x)
+	\]
+\end{theorem}
+
+\begin{proof}
+	First we check that $\psi_x$ is well-defined, i.e. if $y \in \mathcal{O}(x)$ can be written as $g_1 \cdot x = y = g_2 \cdot x$, then $\psi_x(g_1 \cdot x) = \psi_x(g_2 \cdot x)$. To show this, note if $g_1 \cdot x = g_2 \cdot x$, then $\psi_{g_1}(x) = \psi_{g_2}(x)$ so $(\psi_{g_2}^{-1} \circ \psi_{g_1}) (x) = x = \psi_{g_2^{-1} g_1}(x) = (g_2^{-1} g_1) \cdot x$. So $g_2^{-1} g_1 \in \Stab_G(x) \Longrightarrow g_1 \in g_2 \cdot \Stab_G(x)$ hence $\psi_x(g_1 \cdot x) = g_1 \cdot \Stab_G(x) = (g_2 g) \cdot \Stab_G(x)$ where $g \in \Stab_G(x)$. So $\psi_x(g_1 \cdot x) = g_2 \cdot \Stab_G(x) = \psi_x(g_2 \cdot x)$.
+
+	We now show injectivity of $\psi_x$. Let $\psi_x(g_1 \cdot x) = \psi_x(g_2 \cdot x) \Longleftrightarrow g_1 \cdot \Stab_G(x) = g_2 \Stab_G(x) \Longleftrightarrow g_2^{-1} g_1 \cdot \Stab_G(x) = \Stab_G(x) \Longleftrightarrow g_2^{-1} g_1 \in \Stab_G(x) \Longleftrightarrow g_2^{-1} g_1 \cdot x = x \Longleftrightarrow g_1 \cdot x = g_2 \cdot x$.
+\end{proof}
+
+\begin{remark}
+	We use the notation $\psi_x(g \cdot x)$ to mean $g \cdot \Stab_G(x)$.
+\end{remark}
+
+\begin{corollary}
+	Let $G$ be a finite group. Then
+	\[
+		\forall x \in X, |\mathcal{O}(x)| \cdot |\Stab_G(x)| = |G|
+	\]
+	In particular, $|\mathcal{O}(x)|$ and $|\Stab_G(x)|$ divide $|G|$ for every $x \in X$.
+\end{corollary}
+
+\begin{proof}
+	By the \hyperref[thm:orbitStabiliser]{orbit-stabiliser theorem},
+	\[
+		|\mathcal{O}(x)| = | \{ g \cdot \Stab_G(x): g \in G \} |
+	\]
+	Let $g_1 \cdot \Stab_G(x), \dots, g_r \cdot \Stab_G(x)$ be the distinct cosets, with $r = |\mathcal{O}(x)|$. Since cosets of $H \ge G$ partition $G$,
+	\[
+		G = \bigcup_{i = 1}^r g_i \cdot \Stab_G(x)
+	\]
+	Since these cosets are disjoint,
+	\[
+		|G| = \sum_{i = 1}^r |g_i \cdot \Stab_G(x)| = \sum_{i = 1}^{r} |\Stab_G(x)| = r \cdot |\Stab_G(x)| = |\mathcal{O}(x)| \cdot |\Stab_G(x)|
+	\]
+\end{proof}
+
+\section{Cauchy's Theorem and Classification of Groups}
+
+\subsection{Cauchy's theorem}
+
+\begin{theorem}\label{thm:cauchysTheorem}
+	(\textbf{Cauchy's theorem}) If $G$ is finite and $p$ is prime with $p \mid |G|$, then for some $g \in G$, $\ord_G(g) = p$.
+\end{theorem}
+
+\begin{proof}
+	Let $H = \mathbb{Z} / p$ and let
+	\[
+		X = \{ (g_1, \dots, g_p) \in G^p: g_1 g_2 \cdots g_p = e_G \}
+	\]
+	Then $\underline{e} := (e_G, \dots, e_G) \in X$. We have that if $g \in G$,
+	\[
+		\ord_G(g) = p \Longrightarrow g^p = e \Longleftrightarrow (g, \dots, g) \in X
+	\]
+	Also if $(g, \dots, g) \in X$ and $g \ne e_G$, then $g^p = e_G$ so $\ord_G(g) \mid p \Longrightarrow \ord_G(g) = p$. So we want to find tuples $(g, \dots, g) \in X$ with $g \ne e_G$.
+
+	If $(g_1, \dots, g_p) \in X$ then so are $(g_2, g_2, \dots, g_p, g_1)$, $(g_{i + 1}, \dots, g_p, g_1, \dots, g_i)$ for $i = 1, \dots, p$, since if $x = (g_1 \cdots g_i)$ and $y = (g_{i + 1} \cdots g_p)$ then $xy = e_G \Longleftrightarrow yx = e_G$.
+
+	Define the group action of $H$ on $X$ for $\bar{i} \in H$ by
+	\[
+		\bar{i} \cdot (g_1, \dots, g_p) = (g_{i + 1}, \dots, g_p, g_1, \dots, g_i)
+	\]
+	By the \hyperref[thm:orbitStabiliser]{orbit-stabiliser theorem},
+	\[
+		|\{ \bar{i} \cdot \underline{g}: \bar{i} \in \mathbb{Z} / p \}| = |\mathcal{O}(\underline{g})| \mid |H|
+	\]
+	for every $\underline{g} \in X$. Hence for every $g \in X$, $|\mathcal{O}(g)| = 1$ or $p$. We know that $X$ is partitioned by orbits, i.e.
+	\[
+		X = \bigcup_{\underline{g} \in X} \mathcal{O}(\underline{g}) = \bigcup_{i = 1}^m \mathcal{O}(\underline{g}_i)
+	\]
+	where the $\mathcal{O}(\underline{g}_i)$ are distinct, thus disjoint. We are looking for $g \ne e_G$ such that $\underline{g} = (g, \dots, g) \in X$, so $|\mathcal{O}(\underline{g})| = 1$. We have
+	\[
+		\begin{aligned}
+			|X| & = \left| \bigcup_{i = 1}^m \mathcal{O}(\underline{g}_i) \right| \\
+			& = \sum_{i = 1}^m |\mathcal{O}(\underline{g}_i)| \\
+			& = \sum_{i = 1, |\mathcal{O}(\underline{g}_i)| = 1}^m 1 + \sum_{i = 1, |\mathcal{O}(\underline{g}_i)| = p}^m p \\
+		\end{aligned}
+	\]
+	Taking modulo $p$ on both sides, we get
+	\[
+		|\{ 1 \le i \le m: |\mathcal{O}(\underline{g_i})| = 1 \}| \equiv 0 \pmod{p}
+	\]
+	Since $\underline{e} = (e_G, \dots, e_G) \in X$, it is cvered by $\mathcal{O}(\underline{g_1})$, without loss of generality. But then $\mathcal{O}(\underline{g}_1) = \mathcal{O}(\underline{e}) = \{ \underline{e} \}$. So $\{ 1 \le i \le m: |\mathcal{O}(\underline{g_i})| = 1 \} \ne \emptyset$ so $|\{ 1 \le i \le m: |\mathcal{O}(\underline{g_i})| = 1 \}| \ge p$. since $p > 1$, for some $\underline{g_i} \ne \underline{e}$, $|\mathcal{O}(\underline{g_i})| = 1$. This completes the proof.
+\end{proof}
+
+\begin{example}
+	Let $G = S_5$, then $|G| = 5! = 1 \cdot 2 \cdot 3 \cdot 4 \cdot 5$ and $(1 \ 2)$, $(3 \ 4 \ 5)$ and $(1 \ 2 \ 3 \ 4 \ 5)$ have prime orders $2$, $3$ and $5$.
+\end{example}
+
+\begin{example}
+	Let $G = D_{10}$, then $|G| = 20 = 2 \cdot 2 \cdot 4$ and $\ord(s) = 2$, $\ord(r^2) = 5$.
+\end{example}
+
+\begin{theorem}\label{thm:groupOrder2p}
+	Given a finite group $G$ with $|G| = 2p$, for $p$ an odd prime, then either:
+	\begin{enumerate}
+		\item $G$ is cyclic, so $G \cong \mathbb{Z} / 2p$.
+		\item $G \cong D_p$.
+	\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+	By Cauchy's theorem, for some $a, b \in G^2$ such that $\ord_G(a) = 2$ and $\ord_G(b) = p$. Let $H := \langle b \rangle$. Then $|H| = p = \frac{1}{2} |G|$ hence $H \triangleleft G$, so $aH = Ha$. $b \in H \Longrightarrow aba^{-1} = aba \in H$. Hence for some $0 \le k \le p - 1$, $aba = b^k \Longrightarrow b = a b^k a = {(aba)}^k = b^{k^2} \Longrightarrow b^{k^2 - 1} = e_G$ (since $a$ has order $2$). $\ord_G(b) = p$ so $k^2 - 1 \equiv 0 \pmod{p}$. $\mathbb{Z} / p$ is a field and $(k + 1)(k - 1) \equiv 0 \pmod{p}$ so $k \equiv 1 \pmod{p}$ or $k \equiv -1 \pmod{p}$, so $k = p - 1$ or $k = 1$.
+
+	If $k = p - 1$, then $aba = b^{p - 1} = b^{-1}$, so $G \cong D_p$, with the isomorphism $\phi: D_p \to G$, $\phi(r) = b$, $\phi(s) = a$.
+
+	If $k = 1$, then $aba = b$, so $ab = ba$ since $a$ has order $2$. Let $x = ab$, then $\langle x \rangle = \{ {(ab)}^k: k \in \mathbb{Z} \} = \{ a^k b^k: k \in \mathbb{Z} \}$, hence $|\langle x \rangle| = 2p$ so $\langle x \rangle = G$ so $G \cong \mathbb{Z} / 2p$, with the isomorphism $\phi: \mathbb{Z} / 2p \to \langle x \rangle$, $\phi(i) = x^i$.
+\end{proof}
+
+\begin{example}
+	Classify all groups $G$ with $|G| = 74$.
+
+	$74 = 2 \cdot 37$ and $37$ is prime, so by Theorem~\ref{thm:groupOrder2p}, $G \cong \mathbb{Z} / 74$ or $G \cong D_{37}$.
+\end{example}
+
+\begin{example}
+	Show $S_3 \cong D_3$.
+
+	By Theorem~\ref{thm:groupOrder2p}, $S_3 \cong \mathbb{Z} / 6$ or $S_3 \cong D_3$. Since $S_3$ does not contain an element of order $6$, $S_3 \not\cong \mathbb{Z} / 6$. Hence $S_3 \cong D_3$.
+\end{example}
+
+\begin{definition}
+	Let $G$ be a group. The \textbf{centre} of $G$ is defined as
+	\[
+		Z(G) := \{ g \in G: gh = hg \ \forall h \in G \}
+	\]
+\end{definition}
+
+\begin{definition}
+	Let $G$ be a group and $S \subseteq G$. The \textbf{centraliser} of $S$ is defined as
+	\[
+		Z(S) := \{ g \in G: gh = hg \ \forall h \in S \}
+	\]
+	If $S = \{ h \}$ for some $h \in G$, then we write $Z(\{ h \})$ as $Z(h)$.
+\end{definition}
+
+\begin{remark}
+	For every $h \in G$,
+	\[
+		Z(h) = \{ g \in G: ghg^{-1} = h \}
+	\]
+	is the stabiliser of $h$ under the conjugation action.
+\end{remark}
+
+\begin{remark}
+	For every $h \in G$, $Z(G) \subseteq Z(h)$.
+\end{remark}
+
+\begin{proposition}\label{prop:primePowerGroupOrderHasNonTrivialCentre}
+	Let $G$ be a finite group with $|G| = p^k$ where $p$ is a prime and $k \in \mathbb{N}$. Then $Z(G) \ne \{ e_G \}$.
+\end{proposition}
+
+\begin{proof}
+	Using the \hyperref[thm:orbitStabiliser]{orbit-stabiliser theorem} on the conjugation action of $G$ on itself, $|G| = |\ccl(h)| \cdot |Z(h)| = |\ccl(h)| \cdot |\mathcal{O}(h)|$ for every $h \in G$, hence $|\ccl(h)| \mid |G|$. We have a partition
+	\[
+		G = \bigcup_{g \in R} \ccl_G(g)
+	\]
+	for $R \subseteq G$ a maximal subset, hence
+	\[
+		|G| = \sum_{g \in R} |\ccl_G(g)| = \sum_{g \in R, \ |\ccl_G(g) = 1} 1 + \sum_{g \in R, \ p \mid |\ccl_G(g)|} |\ccl_G(p)|
+	\]
+	$|\ccl_G(g)| = 1 \Longleftrightarrow \ccl_G(g) = \{ g \} \Longleftrightarrow g = hgh^{-1} \ \forall h \in G \Longleftrightarrow g \in Z(G)$. Therefore
+	\[
+		|Z(G)| = |G| - \sum_{g \in R, \ p \mid |\ccl_G(g)|} |\ccl_G(g)| \equiv 0 \pmod{p}
+	\]
+	since $p \mid |G|$ and $p \mid |\ccl_G(g)|$. Hence either $|Z(G)| = 0$ or $|Z(G)| \ge p$. Since $e_G \in Z(G)$, $|Z(G) \ne 0$ hence $|Z(G)| \ge p \ge 2$. So $Z(G) - \{ e_G \} \ne \emptyset$.
+\end{proof}
+
+\begin{theorem}
+	Given a finite group $G$ with $|G| = p^2$, for $p$ prime, then $G$ is abelian and either $G \cong \mathbb{Z} / p^2$ or $G \cong \mathbb{Z} / p \times \mathbb{Z} / p$.
+\end{theorem}
+
+\begin{proof}
+	Since $Z(G) \ge G$, $|Z(G)| \in \{ 1, p, p^2 \}$ by Lagrange's theorem. By Proposition~\ref{prop:primePowerGroupOrderHasNonTrivialCentre}, $|Z(G)| \ne 1$. If $|Z(G)| = p^2$ then $Z(G) = G$, so $G$ is abelian. Now assume $Z(G) = p$.
+
+	Let $h \in G - Z(G)$. $|\Stab_G(h)| \mid |G|$ so $|\Stab_G(h)| \in \{ p, p^2 \}$, since $Z(G) \subseteq \Stab_G(h)$. If $|\Stab_G(h)| = p^2$ then $G = \Stab_G(h)$, so $ghg^{-1} = h$ for every $g \in G$, hence $h \in Z(G)$, which is a contradiction. So $|\Stab_G(h) = p = |Z(G)|$ hence $Z(G) = \Stab_G(h)$. But $h \in \Stab_G(h)$ since $hhh^{-1} = h$, hence $h \in Z(G)$ which is a contradiction. Thus $|Z(G)| = p^2$ and $G$ is Abelian.
+
+	Now for every $g \in G$, $\ord_G(g) \mid |G|$ so $\ord_G(g) \in \{ 1, p, p^2 \}$. If for some $g$, $\ord_G(g) = p^2$, then $\langle g \rangle \subseteq G$ and $|\langle g \rangle| = p^2$ so $\langle g \rangle = G$. Hence $G = \langle g \rangle \cong \mathbb{Z} / p^2$.
+
+	Otherwise, if $g \ne e_G$, then $\ord_G(g) = p$. We claim that if for some $x, y \in {(G - \{ e_G \})}^2$ such that $y \ne x^j$ for every $0 \le j \le p - 1$, then $G = \{ x^i y^j: 0 \le i, j \le p - 1 \}$ (proof omitted). Thus we can construct an isomorphism
+	\[
+		\phi: \mathbb{Z} / p \times \mathbb{Z} / p \to G
+	\]
+	with $\phi(i, j) = x^i y^j$.
+\end{proof}
+
+\begin{example}
+	Classify all proper subgroups of $G$, where $|G| = 578$. We have $578 = 2 \cdot 17^2$. The non-trivial divisors of $578$ are therefore $\{ 2, 17, 2 \cdot 17, 17 \cdot 17 \}$. Subgroups of order $2$ and $17$ are isomorphic to $\mathbb{Z} / 2$ and $\mathbb{Z} / 17$ respectively. Subgroups of order $17 \cdot 17$ are isomorphic to $\mathbb{Z} / 289$ or $\mathbb{Z} / 17 \times \mathbb{Z} / 17$. Subgroups of order $2 \cdot 17$ are isomorphic to $\mathbb{Z} / 34$ or $D_{17}$.
+\end{example}
+
+\subsection{Classifying finitely generated Abelian groups}
+
+\begin{definition}
+	A group $G$ is called \textbf{finitely generated} if for some $S \subseteq G$ with $|S| < \infty$, $S = \{ g_1, \dots, g_r \}$, then
+	\[
+		G = \langle \{ g_1, \dots, g_r \} \rangle = \{ g_1^{a_{1, 1}} \dots g_r^{a_{1, r}} g_2^{a_{2, 1}} \dots g_r^{a_{2, r}} \dots g_1^{a_{n, 1}} \dots g_r^{a_{n, r}}: a_{i, j} \in \mathbb{Z} \}
+	\]
+\end{definition}
+
+\begin{remark}
+	Sometimes we use the notation $a_i g_i$ to mean $g_i^{a_i}$.
+\end{remark}
+
+\begin{remark}
+	Not all groups are finitely generated, e.g. $(\mathbb{Q}, +)$ is not finitely generated, since if $\mathbb{Q} = \{ a_1 \frac{m_1}{n_1} + \cdots + a_r \frac{m_r}{n_r}: a_i \in \mathbb{Z} \}$ for some generating set $\{ \frac{m_1}{n_1}, \dots, \frac{m_r}{n_r} \} \subseteq \mathbb{Q}$, then any element in $\mathbb{Q}$ can be written as
+	\[
+		\frac{A}{n_1 \cdots n_r}
+	\]
+	but $\frac{1}{n_1 \cdots n_r + 1}$ is not of this form.
+\end{remark}
+
+\begin{example}
+	The size of the generating set $S$ or its elements aren't unique.
+\end{example}
+
+\begin{example}
+	$(\mathbb{Z}, +) = \langle 1 \rangle = \langle \{ 2, -1 \} \rangle = \langle \{ 2, 3 \} \rangle$.
+\end{example}
+
+\begin{example}
+	$\mathbb{Z}^k = \langle \{ \underline{e_1}, \dots, \underline{e_k} \} \rangle$ where $\underline{e_i} = (0, \dots, 1, \dots, 0)$ with $1$ in the $i$th position.
+\end{example}
+
+\begin{example}
+	Let $G = \langle \{ g_1, \dots, g_r \} \rangle$, so $G = \{ g_1^{a_1} + \cdots + g_r^{a_r}: a_i \in \mathbb{Z} \}$. The there is a homomorphism $\phi: \mathbb{Z}^k \to G$, $\phi(a_1, \dots, a_k) := g_1^{a_1} + \cdots + g_r^{a_r}$.
+\end{example}
+
+\begin{proposition}
+	If $G$ is finitely generated by $\{ g_1, \dots, g_r \}$, then $G$ is isomorphic to $\mathbb{Z}^r / K$ where
+	\[
+		K = \ker(\phi) = \{ \underline{a} \in \mathbb{Z}^r: g_1^{a_1} \cdots g_r^{a_r} = e_G \}
+	\]
+\end{proposition}
+
+\begin{proof}
+	Omitted (use FIT).
+\end{proof}
+
+\begin{definition}
+	The group $K \le \mathbb{Z}^r$ is called the \textbf{relation subgroup of $G$}. Every $\underline{a} \in K$ is called a \textbf{relation of $G$}.
+\end{definition}
+
+\begin{proposition}\label{prop:rank}
+	Let $H \le \mathbb{Z}^r$. Then for some $0 \le d \le r$, $H \cong \mathbb{Z}^d$, with the isomorphism
+	\[
+		(a_1, \dots, a_r) \to (b_1, \dots, b_d, 0, \dots, 0)
+	\]
+	$d$ is called the \textbf{(free) rank} of $H$.
+\end{proposition}
+
+\begin{proof}
+	Omitted.
+\end{proof}
+
+\begin{example}
+	Let $r = 1$ and $H \le \mathbb{Z}$. Then $H = \{ 0 \}$ or $H = m \mathbb{Z}$, $m \in \mathbb{N}$. $\{ 0 \}$ is a rank 0 subgroup. $m \mathbb{Z}$ is a rank 1 subgroup and the isomorphism is $mk \to k$.
+\end{example}
+
+\begin{example}
+	By Proposition~\ref{prop:rank}, $K \cong \mathbb{Z}^d$ with $0 \le d \le r$, since if $d = 0$, $K \cong \{ 0 \}$ so $G \cong \mathbb{Z}^r$ and if $d = r$, $K \cong \mathbb{Z}^r$ so $G \cong \{ 0 \}$. We have $K = \langle \{ \underline{a_1}, \dots, \underline{a_d} \} \rangle$ and we must have
+	\[
+		\lambda_1 \underline{a_1} + \cdots + \lambda_d \underline{a_d} = 0 \Longleftrightarrow \lambda_1 = \cdots = \lambda_d = 0
+	\]
+	The relation subgroup of $K$ is $\{ 0 \}$. By studying the associated matrix
+	\[
+		A(K) = \begin{bmatrix}
+			\underline{a_1} \\
+			\vdots \\
+			\underline{a_d}
+		\end{bmatrix} = \begin{bmatrix}
+			a_{1, 1} & \cdots & a_{1, r} \\
+			\vdots & \ddots & \vdots \\
+			a_{d, 1} & \cdots & a_{d, r}
+		\end{bmatrix}
+	\]
+	we can find a reduced form of $A(K)$ by Gaussian elimination:
+	\[
+		A(K) \to \begin{bmatrix}
+			\tilde{a}_{1, 1} & 0 & 0 & \cdots & 0 \\
+			0 & \tilde{a}_{2, 2} & 0 & \cdots & 0 \\
+			\vdots & \vdots & \ddots & \vdots & \vdots \\
+			0 & \cdots & 0 & 0 & \tilde{a}_{d, d}
+		\end{bmatrix}
+	\]
+	where $\tilde{a}_{i, i} \in \mathbb{Z}$. So we see that $K$ can be generated by
+	\[
+		\begin{aligned}
+			& \tilde{a}_{1, 1} \cdot (1, 0, \cdots 0) \\
+			& \tilde{a}_{2, 2} \cdot (0, 1, \cdots 0) \\
+			& \cdots \\
+			& \tilde{a}_{d, d} \cdot (0, 0, \cdots 1, 0, \cdots 0)
+		\end{aligned}
+	\]
+	Writing $d_i = \tilde{a}_{i, i}$, gives the following theorem.
+\end{example}
+
+\begin{theorem}
+	(\textbf{Fundamental theorem of finitely generated Abelian groups}) Let $G$ be a finitely generated Abelian group. Then for some integer $1 \le r \le k$ and $d_1, \dots, d_r \in \mathbb{N}^r$, with $d_1 \mid d_2$, $d_2 \mid d_3$, $\cdots$, $d_{r - 1} \mid d_r$ such that
+	\[
+		G \cong \mathbb{Z}^{k - r} \times \mathbb{Z} / d_1 \times \cdots \times \mathbb{Z} / d_r
+	\]
+	if $G = \langle \{ g_1, \dots, g_k \}$.
+\end{theorem}
+
+\begin{corollary}
+	Let $G$ be a finite Abelian group. Then for some $r \ge 1$ and $d_1, \dots, d_r \in \mathbb{N}^r$, with $d_1 \mid d_2$, $d_2 \mid d_3$, $\cdots$, $d_{r - 1} \mid d_r$,
+	\[
+		G \cong \mathbb{Z} / d_1 \times \cdots \times \mathbb{Z} / d_r
+	\]
+	(The infinite part $\mathbb{Z}^{k - r}$). In this case, $|G| = n = d_1 \cdots d_r$.
+\end{corollary}
+
+\begin{definition}
+	The $d_i$ above are called the \textbf{torsion coefficients}.
+\end{definition}
+
+THIS COROLLARY AND THE FOLLOWING EXAMPLE WILL APPEAR IN THE EXAM
+
+\begin{example}
+	Find all Abelian groups of order $32$. By the above corollary, $G \cong \mathbb{Z} / d_1 \times \cdots \times \mathbb{Z} / d_r$, where $d_1 \dots d_r = 32$ and $d_1 \mid d_2$, $d_2 \mid d_3$, $\cdots$, $d_{r - 1} \mid d_r$ and $d_i > 1$.
+
+	$32 = 2^5$ so $d_i \mid 2^5$ so $d_i = 2^{a_i}$ where $1 \le a_i \le 5$. Also $a_1 + \cdots + a_r = 5$ and $a_i \le a_{i + 1}$ since $d_i \mid d_{i + 1}$. So $1 \le r \le 5$. The possible tuples $(a_1, \dots, a_r)$ are
+	\[
+		\begin{aligned}
+			& (1, 1, 1, 1, 1) \\
+			& (1, 1, 1, 2) \\
+			& (1, 1, 3) \\
+			& (1, 4) \\
+			& (5)
+		\end{aligned}
+	\]
+	So all Abelian groups of order $32$ are ${(\mathbb{Z} / 2 )}^5$, ${(\mathbb{Z} / 2)} \times \mathbb{Z} / 4$, etc.
+\end{example}
+
+\begin{example}
+	(Problems class) Let $G$ be an Abelian group, with $|G| = 100$. Show that for some $x \in G$, $\ord_G(x) = 10$. What are the torsion coefficients of $G$ if no element has order $> 10$?
+
+	We have some torsion coefficients $1 < d_1 \le d_2 \le \cdots \le d_r$ with $d_1 \mid d_2$, $d_2 \mid d_3$, $\cdots$, $d_{r - 1} \mid d_r$ such that
+	\[
+		G \cong \mathbb{Z} / d_1 \times \cdots \times \mathbb{Z} / d_r
+	\]
+	$|G| = 2^2 \cdot 5^2$. The maximum multiplicity of these prime factors is $2$, so $1 \le r \le 2$. We have $|G| = d_1 \cdots d_r = 100$ so $d_i = 2^{a_i} \cdot 5^{b_i}$, $a_i \le a_{i + 1}$, $b_i \le b_{i + 1}$. We look at partitions of $2$ to get possible $a_i$ and $b_i$.
+	\[
+		2^{a_1 + \cdots + a_r} \cdot 5^{b_1 + \cdots + b_r} = d_1 \cdots d_r = 2^2 \cdot 5^2 \Longrightarrow a_1 + \cdots + a_r = 2, b_1 + \cdots + b_r = 2
+	\]
+	So either $a_1 = 1$ and $a_2 = 1$ or $a_1 = 0$ and $a_2 = 2$. Similarly, $b_1 = 1$ and $a_2 = 1$ or $b_1 = 0$ and $b_2 = 2$. For $r = 1$, $d_1 = 100$ so $G = \mathbb{Z} / 100$. For $r = 2$, we have the possibilities:
+	\[
+		\begin{aligned}
+			& (a_1, b_1) = (1, 1), (a_2, b_2) = (1, 1) \Longrightarrow d_1 = 2 \cdot 5 = 10, d_2 = 2 \cdot 5 = 10 \\
+			& (a_1, b_1) = (1, 0), (a_2, b_2) = (1, 2) \Longrightarrow d_1 = 2^1 \cdot 5^0 = 2, d_2 = 2^1 \cdot 5^2 = 40 \\
+			& (a_1, b_1) = (0, 1), (a_2, b_2) = (2, 1) \Longrightarrow d_1 = 2^0 \cdot 5^1 = 5, d_2 = 2^2 \cdot 5^1 = 20
+		\end{aligned}
+	\]
+	so $G \cong \mathbb{Z} / 100$, $G \cong \mathbb{Z} / 2 \times \mathbb{Z} / 50$, $G \cong \mathbb{Z} / 5 \times \mathbb{Z} / 20$ or $G \cong \mathbb{Z} / 10 \times \mathbb{Z} / 10$.
+
+	If $G \cong \mathbb{Z} / 100$, then $x = 10$ has order $10$. If $G \cong \mathbb{Z} / 10 \times \mathbb{Z} / 10$, then $x = (1, 1)$ has order $10$. If $G \cong \mathbb{Z} / 2 \times \mathbb{Z} / 50$, then $x = (0, 5)$ has order $10$. If $G \cong \mathbb{Z} / 5 \times \mathbb{Z} / 20$, then $x = (0, 2)$ has order $10$.
+
+	If no element has order $> 10$, then $G \cong \mathbb{Z} / 10 \times \mathbb{Z} / 10$, so $d_1 = d_2 = 10$.
+\end{example}
+
+\begin{example}
+	Let $G$ be a finite Abelian group, such that $|G|$ is not divisible by a square (not equal to $1$). Show that $G$ is cyclic.
+
+	We want to show that if $G \cong \mathbb{Z} / d_1 \times \cdots \times \mathbb{Z} / d_r$, with $1 < d_1 < \cdots < d_r$ and $d_1 \mid d_2, \dots, d_i \mid d_{i + 1}$ then $r = 1$.
+
+	Assume that opposite, that $r \ge 2$. We have $|G| = d_1 \cdots d_r$ and $d_1 \mid d_2$, $d_1 \mid d_3, \dots, d_1 \mid d_r$. Hence $d_1^r \mid d_1 d_2 \cdots d_r$, so $d_1^r \mid |G|$. By assumption, $r \ge 2$, so $d_1^2 \mid d_1^r$ so $d_1^2 \mid |G|$. But $d_1 > 1$ so $d_1^2 > 1$ so $|G|$ is divisible by a square (not equal to $1$) so we have a contradiction.
+
+	Hence $r \ge 1$, so $G$ is cyclic.
+\end{example}
+
+\begin{example}
+	(Problems class) Let $G$ be a finite group such that $\forall x \in G - \{ e_G \}$, $\ord_G(x) = 2$. Then $G \cong {(\mathbb{Z} / 2)}$ for some $k \ge 0$.
+
+	$G$ only has elements of order $2$, so if $xy \in G$, then $e_G = (xy)^2 = xyxy = xyx^{-1} y^{-1}$ since $x = x^{-1}$, $y = y^{-1}$, so $G$ is Abelian. By the structure theorem for finite Abelian groups, for some $r \ge 1$, and $1 < d_1 \le \cdots \le d_r$, with $d_1 \mid d_2, \dots, d_i \mid d_{i + 1}$, $G \cong \mathbb{Z} / d_1 \times \cdots \times \mathbb{Z} / d_r =: H$.
+	
+	Suppose for the sake of contradiction that for some $1 \le i \le r$, $d_i \ge 3$. Let $y = (0, \dots, 0, 1, 0 \dots, 0)$ with $1$ in the $i$ position and let $x \in G$ correspond to $y$, so let $\phi: G \to H$ be an isomorphism, then $x = \phi^{-1} (y)$. So $\ord_G(x) = \ord_H(y) = d_i \ge 3$, but this is a contradiction.
+
+	Hence $d_1 = \cdots = d_r = 2$.
+\end{example}
+
+\begin{example}
+	(Problems class) Classify all Abelian groups of order $60$ and $144$.
+
+	$60 = 2^2 \cdot 3 \cdot 5$, so if $G \cong \mathbb{Z} / d_1 \times \cdots \times \mathbb{Z} / d_r$, with $1 < d_1 < \cdots < d_r$ and $d_1 \mid d_2, \dots, d_i \mid d_{i + 1}$, $1 \le r \le 2$ as the highest multiplicity of a prime factor of $60$ is $2$. If $r = 1$, then $d_1 = 60$, so $G \cong \mathbb{Z} / 60$.
+
+	If $r = 2$, then let $d_1 = 2^{a_i} \cdot 3^{b_i} \cdot 5^{c_i}$ so $(a_1, b_1, c_1) = (1, 0, 0)$ and $(a_2, b_2, c_2) = (1, 1, 1)$. So $d_1 = 2$ and $d_2 = 30$, so $G \cong \mathbb{Z} / 2 \times \mathbb{Z} / 30$.
+
+	$144 = 2^4 \cdot 3^2$ so $1 \le r \le 4$. Look at the partitions of the multiplicity of $2$ ($4$ in this case).
+	\[
+		\begin{aligned}
+			& r = 1: 4 \text{ for } a_i, 2 \text{ for } b_i \\
+			& r = 2: 1 + 3, 2 + 2 \text{ for } a_i, 0 + 2, 1 + 1 \text{ for } b_i  \\
+			& r = 3: 1 + 1 + 2 \text{ for } a_i, 0 + 1 + 1, 0 + 0 + 2 \text{ for } b_i \\
+			& r = 4: 1 + 1 + 1 + 1 \text{ for } a_i, 0 + 0 + 0 + 2, 0 + 0 + 1 + 1 \text{ for } b_i
+		\end{aligned}
+	\]
+	So $G$ is isomorphic to $\mathbb{Z} / 144$, $\mathbb{Z} / 2 \times \mathbb{Z} / 72$, $\mathbb{Z} / 6 \times \mathbb{Z} / 24$, $\mathbb{Z} / 4 \times \mathbb{Z} / 36$, $\mathbb{Z} / 3 \times \mathbb{Z} / 48$, $\mathbb{Z} / 12 \times \mathbb{Z} / 12$, $\mathbb{Z} / 2 \times \mathbb{Z} / 6 \times \mathbb{Z} / 12$, $\mathbb{Z} / 2 \times \mathbb{Z} / 2 \times \mathbb{Z} / 36$, $\mathbb{Z} / 2 \times \mathbb{Z} / 2 \times \mathbb{Z} / 2 \times \mathbb{Z} / 18$, or $\mathbb{Z} / 2 \times \mathbb{Z} / 2 \times \mathbb{Z} / 6 \times \mathbb{Z} / 6$.
 \end{example}
 
 \end{document}

@@ -7,9 +7,19 @@
 
 \input{../titletoc.tex}
 
+\newcommand{\Arg}{\text{Arg}}
+\newcommand{\Log}{\text{Log}}
+\newcommand{\biholo}{\mathrel{\overset{\sim}{\longrightarrow}}}
+\newcommand{\Res}{\text{Res}}
+
+\section{Summary notes}
+
+
+
 \section{The complex plane and Riemann sphere}
 
 \subsection{Complex numbers}
+ff
 
 \begin{definition}
 	A \textbf{complex number} $z$ is a number $z = x + iy$ where $x, y \in \mathbb{R}^2$ and $i$ is the \textbf{imaginary unit}. The set of all complex numbers is written as $\mathbb{C}$.
@@ -26,7 +36,7 @@
 \end{definition}
 
 \begin{definition}
-	For a complex number $z = x + iy$, the \textbf{real part} of $z$, $\text{Re}(z)$, is $x$ and the \textbf{imaginary part}, $\text{Im}(z)$, is $y$.
+	For a complex number $z = x + iy$, the \textbf{real part} of $z$, $\Re(z)$, is $x$ and the \textbf{imaginary part}, $\Im(z)$, is $y$.
 \end{definition}
 
 \begin{definition}
@@ -53,7 +63,7 @@
 	\begin{enumerate}
 		\item $\forall z_1, z_2 \in \mathbb{C}^2, z_1 z_2 \Longleftrightarrow z_1 = 0 \text{ or } z_2 = 0$.
 		\item $\forall z \in \mathbb{C}, |z| = \sqrt{z \overline{z}}$.
-		\item $\text{Re}(z) = \frac{z + \overline{z}}{2}$ and $\text{Im}(z) = \frac{z - \overline{z}}{2i}$.
+		\item $\Re(z) = \frac{z + \overline{z}}{2}$ and $\Im(z) = \frac{z - \overline{z}}{2i}$.
 		\item $z^{-1} = \frac{\overline{z}}{|z|^2}$.
 	\end{enumerate}
 \end{lemma}
@@ -74,7 +84,7 @@
 \end{definition}
 
 \begin{definition}
-	$\arg(z)$ is only defined up to multiples of $2 \pi$. The \textbf{principal value} of $\arg(z)$ is the value of $\arg(z)$ in the interval $\left(-\pi, \pi \right]$, written as $\text{Arg}(z)$.
+	$\arg(z)$ is only defined up to multiples of $2 \pi$. The \textbf{principal value} of $\arg(z)$ is the value of $\arg(z)$ in the interval $\left(-\pi, \pi \right]$, written as $\Arg(z)$.
 \end{definition}
 
 \begin{lemma}
@@ -127,7 +137,7 @@
 		\item ${(\cos(\theta) + i \sin(\theta))}^n = \cos(n \theta) + i \sin(n \theta)$ (de Moivre's formula).
 		\item $\forall z_1, z_2, |z_1 + z_2| \le |z_1| + |z_2|$.
 		\item $\forall z \in \mathbb{C}, |z| \ge 0$ and $|z| = 0 \Longleftrightarrow z = 0$.
-		\item $\max \{ |\text{Re}(z)|, |\text{Im}(z)| \} \le |z| \le |\text{Re}(z)| + |\text{Im}(z)|$.
+		\item $\max \{ |\Re(z)|, |\Im(z)| \} \le |z| \le |\Re(z)| + |\Im(z)|$.
 	\end{enumerate}
 \end{corollary}
 
@@ -138,7 +148,7 @@
 \begin{definition}
 	The \textbf{upper half} of the complex plane, $\mathbb{H}$, is defined as
 	\[
-		\mathbb{H} = \{ z \in \mathbb{C}: \text{Im}(z) > 0 \}
+		\mathbb{H} = \{ z \in \mathbb{C}: \Im(z) > 0 \}
 	\]
 \end{definition}
 
@@ -158,7 +168,7 @@
 		\item $\forall z_1, z_2 \in \mathbb{C}^2, e^{z_1 + z_2} = e^{z_1} e^{z_2}$.
 		\item $e^z = 1 \Longleftrightarrow \exists k \in \mathbb{Z}, z = 2 \pi i k$.
 		\item $e^{-z} = 1 \ e^z$.
-		\item $|e^z| = e^{\text{Re}(z)}$.
+		\item $|e^z| = e^{\Re(z)}$.
 	\end{enumerate}
 \end{proposition}
 
@@ -200,7 +210,7 @@
 \end{definition}
 
 \begin{lemma}
-	For every $w \in \mathbb{C}^*$, $e^z = w$ has a solution for $z$. Let $w = |w| e^{i \theta}$, $\theta = \text{Arg}(w)$. Then every solution for $z$ is given by
+	For every $w \in \mathbb{C}^*$, $e^z = w$ has a solution for $z$. Let $w = |w| e^{i \theta}$, $\theta = \Arg(w)$. Then every solution for $z$ is given by
 	\[
 		z = \log(|w|) + i (\theta + 2 \pi k), \quad k \in \mathbb{Z}
 	\]
@@ -227,15 +237,15 @@
 \end{definition}
 
 \begin{definition}
-	Choosing $\theta_1 = -\pi$ and $\theta_2 = \pi$, so that $\arg = \text{Arg}$, gives the \textbf{principal branch of logarithm}
+	Choosing $\theta_1 = -\pi$ and $\theta_2 = \pi$, so that $\arg = \Arg$, gives the \textbf{principal branch of logarithm}
 	\[
-		\text{Log}(z) := \log(|z|) + i \text{Arg}(z)
+		\Log(z) := \log(|z|) + i \Arg(z)
 	\]
 	which has a jump discontinuity on the ray $\mathbb{R}_{\le 0}$ (the non-positive real axis).
 \end{definition}
 
 \begin{remark}
-	The prinical branch, $\text{Log}$, matches the definition of $\log$ for real numbers, so is the branch that should be used, unless otherwise stated.
+	The prinical branch, $\Log$, matches the definition of $\log$ for real numbers, so is the branch that should be used, unless otherwise stated.
 \end{remark}
 
 \begin{lemma}
@@ -291,7 +301,7 @@
 \begin{definition}
 	The \textbf{inverse stereographic projection}, the inverse of $P$, is
 	\[
-		P^{-1}(z) = \frac{1}{1 + |z|^2} (2 \text{Re}(z), 2 \text{Im} (z), |z|^2 - 1)
+		P^{-1}(z) = \frac{1}{1 + |z|^2} (2 \Re(z), 2 \Im (z), |z|^2 - 1)
 	\]
 \end{definition}
 
@@ -331,7 +341,7 @@
 
 \subsection{Metric spaces}
 
-\begin{definition}
+\begin{definition}\label{def:metricSpace}
 	A \textbf{metric space} is a set $X$ together with a function $d: X \times X \rightarrow \mathbb{R}_{\ge 0}$ that satisfies, for every $x, y, z \in X^3$,
 	\begin{enumerate}
 		\item \textbf{(D1) Positivity}: $d(x, y) \ge 0$ and $d(x, y) = 0 \Longleftrightarrow x = y$.
@@ -459,11 +469,11 @@
 	For the $l_1$-norm, in $B_1(0)$, we have $|x| + |y| < 1$ so in the 1st quadrant, $y < 1 - x$, in the 2nd quadrant, $y < 1 + $, in the 3rd quadrant, $y > -1 - x$, and in the 4th quadrant, $y > -1 + x$. So the unit ball is the inside of the diamond with vertices $(1, 0), (0, 1), (-1, 0), (0, -1)$.
 \end{example}
 
-\begin{definition}
+\begin{definition}\label{def:openSet}
 	Let $(X, d)$ be a metric space. $U \subset X$ is called \textbf{open} (in $X$) if for every $x \in U$, for some $\epsilon > 0$, $B_{\epsilon}(x) \subset U$.
 \end{definition}
 
-\begin{definition}
+\begin{definition}\label{def:closedSet}
 	Let $(X, d)$ be a metric space. $U \subset X$ is called \textbf{closed} (in $X$) its complement in $X$, $X - U$, is open.
 \end{definition}
 
@@ -488,7 +498,7 @@
 \end{proof}
 
 \begin{example}
-	$\mathbb{H}, \mathbb{D}, \mathbb{C}^*, \mathbb{C} - \mathbb{R}_{\le 0}$ are all open. The 1st quadrant $\Omega_1 := \{ z \in \mathbb{C}: \text{Re}(z) > 0, \text{Im}(z) > 0 \}$ is open, since for every $z \in \Omega_1$, let $r = \min( \text{Re}(z), \text{Im}(z) ) > 0$, then $B_r(z) \subset \Omega_1$.
+	$\mathbb{H}, \mathbb{D}, \mathbb{C}^*, \mathbb{C} - \mathbb{R}_{\le 0}$ are all open. The 1st quadrant $\Omega_1 := \{ z \in \mathbb{C}: \Re(z) > 0, \Im(z) > 0 \}$ is open, since for every $z \in \Omega_1$, let $r = \min( \Re(z), \Im(z) ) > 0$, then $B_r(z) \subset \Omega_1$.
 \end{example}
 
 \begin{example}
@@ -562,66 +572,974 @@
 	is an infinite union of closed sets but $(0, 1)$ is open in $\mathbb{R}$.
 \end{remark}
 
+\begin{definition}
+	Let $(X, d)$ be a metric space and $A \subseteq X$. The \textbf{interior} of $A$, $A^0$ is defined as
+	\[
+		A^0 := \{ x \in A; \text{ for some open set } U \subseteq A, x \in U \}
+	\]
+\end{definition}
+
+\begin{definition}
+	Let $(X, d)$ be a metric space and $A \subseteq X$. The \textbf{closure} of $A$, $\bar{A}$ is defined as the complement of the interior of the complement:
+	\[
+		\bar{A} := \{ x \in X: \text{ for every open set } U, x \in U \Longrightarrow U \cap A \ne \emptyset \} = X - {(X - A)}^0
+	\]
+\end{definition}
+
+\begin{definition}
+	Let $(X, d)$ be a metric space and $A \subseteq X$. The \textbf{boundary} of $A$, $\partial A$ is defined as the closure without the interior:
+	\[
+		\partial A := \bar{A} - A^0 = X - (A^0 \cup {(X - A)}^0)
+	\]
+\end{definition}
+
+\begin{definition}
+	Let $(X, d)$ be a metric space and $A \subseteq X$. The \textbf{exterior} of $A$, $A^e$, is the defined as the complement of the closure:
+	\[
+		A^e := X - \bar{A} = X - (A^0 \cup \partial A) = {(X - A)}^0
+	\]
+\end{definition}
+
+\begin{remark}
+	The interior and exterior are open and the boundary and closure are closed.
+\end{remark}
+
+\begin{remark}
+	The interior of a set contains the points that are not on its ``edge''. Adding the missing edge points to the interior gives the closure.
+\end{remark}
+
+\begin{proposition}
+	For a subset $A \subset X$,
+	\begin{enumerate}
+		\item \[
+			A \text{ is open} \Longleftrightarrow \partial A \cap A = \emptyset \Longleftrightarrow A = A^0 = \bigcup_{U \subseteq A, U \text{ open}} U
+		\].
+		\item \[
+			A \text{ is closed} \Longleftrightarrow \partial A \subseteq A \Longleftrightarrow A = \bar{A} = \bigcap_{A \subseteq F, F \text{ closed}} F
+		\]
+	\end{enumerate}
+\end{proposition}
+
+\begin{remark}
+	The interior $A^0$ is the largest open set contained in $A$ and the closure $\bar{A}$ is the smallest closed set containing $A$.
+\end{remark}
+
+\begin{remark}
+	For simple sets in $\mathbb{R}^n$ or $\mathbb{C}^n$, the closure can be obtained simply by replacing strict inequalities with inequalities, and the interior can be obtained by replacing inequalities with strict inequalities.
+\end{remark}
+
+\begin{example}
+	Let $A = \{ z \in \mathbb{C}: 1 < |z| \le 3 \}$. Then
+	\[
+		\begin{aligned}
+			A^0 & = \{ z \in \mathbb{C}: 1 < |z| < 3 \} \\
+			\bar{A} & = \{ z \in \mathbb{C}: 1 \le |z| \le 3 \} \\
+			\partial A & = \{ z \in \mathbb{C}: |z| = 1 \} \cup \{ z \in \mathbb{C}: |z| = 3 \}
+		\end{aligned}
+	\]
+\end{example}
+
+\begin{example}
+	For every ball $B_r(x)$ in $\mathbb{R}^n$ or $\mathbb{C}^n$, the closure of $B_r(x)$ is equal to the closed ball:
+	\[
+		\overline{B_r(x)} = \bar{B}_r(x)
+	\]
+	Note that this does not hold for every metric space.
+\end{example}
+
+\subsection{Convergence and continuity}
+
+\begin{definition}
+	Let $(X, d)$ be a metric space. A sequence $\{ x_n \}$ in $X$ is said to \textbf{converge} to a point $x \in X$ if
+	\[
+		\lim_{n \rightarrow \infty} d(x_n, x) = 0
+	\]
+	Equivalently,
+	\[
+		\forall \epsilon > 0, \ \exists N \in \mathbb{N}, \ \forall n > N, \quad d(x_n, x) < \epsilon
+	\]
+	We write $x_n \rightarrow x$ as $n \rightarrow \infty$ or $\lim_{n \rightarrow \infty} x_n = x$.
+\end{definition}
+
+\begin{proposition}
+	Limits in the complex plane follow the Calculus of Limits Theorem (COLT) rules.
+\end{proposition}
+
+\begin{proposition}
+	Let $\{ z_n \}_{n \in \mathbb{N}}$ be a sequence of complex numbers $z_n = x_n + i y_n$. Let $z_0 = x_0 + i y_0$. Then
+	\[
+		\lim_{n \rightarrow \infty} z_n = z_0 \Longleftrightarrow \lim_{n \rightarrow \infty} x_n = x_0 \text{ and } \lim_{n \rightarrow \infty} y_n = y_0
+	\]
+	So $\{ z_n \}_{n \in \mathbb{N}}$ converges iff the real sequences $\{ \Re(z_n) \}_{n \in \mathbb{N}}$ and $\{ \Im(z_n) \}_{n \in \mathbb{N}}$ converge.
+\end{proposition}
+
+\begin{lemma}\label{lem:sequenceLimitUnique}
+	Let $(X, d)$ be a metric space. Then
+	\begin{enumerate}
+		\item A sequence $\{ x_n \}_{n \in \mathbb{N}}$ in $X$ has at most one limit.
+		\item \[
+			\lim_{n \rightarrow \infty} x_n = x \Longleftrightarrow \forall \text{ open } U \text{ with } x \in U, \ \exists N \in \mathbb{N}, \ \forall n > N, \ x_n \in U
+		\]
+	\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+	\hfill
+	\begin{enumerate}
+		\item Let $x$ and $y$ be two limits of $\{ x_n \}_{n \in \mathbb{N}}$. Then for every $n$, by the triangle inequality, $d(x, y) \le d(x, x_n) + d(x_n, y)$, so
+		\[
+			d(x, y) \le \lim_{n \rightarrow \infty} d(x, x_n) + \lim_{n \rightarrow \infty} d(x_n, y) = 0 + 0 = 0
+		\]
+		so $d(x, y) = 0 \Longleftrightarrow x = y$ by \hyperref[def:metricSpace]{property (D2)} of a metric space.
+		\item ($\Rightarrow$): Let $x = \lim_{n \rightarrow \infty} x_n$, let $U$ be open and $x \in U$. By definition, for some $r > 0$, $B_r(x) \subseteq U$ and for some $N \in \mathbb{N}$, for every $n > N$, $d(x_n, x) < r$. So for every $n > N$, $x_n \in B_r(x) \subseteq U$.
+		($\Leftarrow$): Let $\epsilon > 0$. We want to find an $N \in \mathbb{N}$ such that $d(x_n, x) < \epsilon$ for every $n > N$. The ball $B_{\epsilon}(x)$ is open and $x \in B_{\epsilon}(x)$. So for some $N \in \mathbb{N}$, $x_n \in B_{\epsilon}(x)$ for every $n > N$. But this means $d(x_n, x) < \epsilon$ for every $n > N$.
+	\end{enumerate}
+\end{proof}
+
+\begin{definition}\label{def:continuousMap}
+	A map $f: (X_1, d_1) \rightarrow (X_2, d_2)$ is called \textbf{continuous} at $x_0 \in X_1$ if
+	\[
+		\forall \epsilon > 0, \ \exists \delta > 0, \ \forall x \in X_1, \quad d_1(x, x_0) < \delta \Longrightarrow d_2(f(x), f(x_0)) < \epsilon
+	\]
+	$f$ is \textbf{continuous on $X_1$} if it is continuous at every $x_0 \in X_1$.
+\end{definition}
+
+\begin{remark}
+	An equivalent definition of continuity at $x_0$ is
+	\[
+		\forall \epsilon > 0, \ \exists \delta > 0, \quad x \in B_{\delta}(x_0) \Longrightarrow f(x) \in B_{\epsilon}(f(x_0))
+	\]
+	where $B_{\delta}(x_0) \subseteq X_1$ and $B_{\epsilon}(f(x_0)) \subseteq X_2$.
+\end{remark}
+
+\begin{lemma}\label{lem:continuousFunctionsBasicProperties}
+	(Basic properties of continuous functions)
+	\begin{enumerate}
+		\item Products, sum and quotients of real or complex valued continuous functions on a metric space $X$ are also continuous. So let $f: X \rightarrow \mathbb{C}$, $g: X \rightarrow \mathbb{C}$, then $f + g$, $fg$ and $f / g$ are continuous.
+		\item Compositions of continuous functions are continuous. So let $f: X_1 \rightarrow X_2$ and $g: X_2 \rightarrow X_3$ be continuous, then $g \circ f: X_1 \rightarrow X_3$ is continuous.
+	\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+	Same as Analysis I.
+\end{proof}
+
+\begin{example}
+	The following functions are continuous:
+	\begin{itemize}
+		\item The identity function.
+		\item Constant functions.
+		\item $\Re$ and $\Im$.
+		\item Complex conjugation, $z \rightarrow \overline{z}$.
+		\item The modulus function, $z \rightarrow |z|$.
+		\item Every polynomial.
+		\item $\exp, \sin, \cos, \sinh, \cosh$.
+		\item The $\arg$ function that takes values in $(\theta_1, \theta_2]$ is continuous on $\mathbb{C} - R_{\theta_1}$ where $R_{\theta_1}$ is the ray with angle $\theta_1$.
+		\item The $\log$ function corresponding to the $\arg$ function above is continuous on $\mathbb{C} - R_{\theta_1}$.
+	\end{itemize}
+\end{example}
+
+\begin{definition}
+	Let $f: X_1 \rightarrow X_2$ and $U \subseteq X_2$. The \textbf{preimage of $U$ under $f$}, $f^{-1}(U)$, is defined as
+	\[
+		f^{-1}(U) := \{ x \in X_1: f(x) \in U \}
+	\]
+\end{definition}
+
+\begin{theorem}\label{thm:continuityViaOpenSets}
+	Let $(X_1, d_1)$ and $(X_2, d_2)$ be metric spaces. Then the following statements are all equivalent:
+	\begin{enumerate}
+		\item $f: X_1 \rightarrow X_2$ is continuous.
+		\item $f^{-1}(U)$ is open in $X_1$ for every open set $U \subseteq X_2$.
+		\item $f^{-1}(F)$ is closed in $X_1$ for every closed set $F \subseteq X_2$.
+	\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+	(1. $\Rightarrow$ 2.): Let $U \subseteq X_2$ be open and let $x \in f^{-1}(U)$. $U$ is open and $f(x) \in U$ so by Definition~\ref{def:openSet}, for some $\epsilon > 0$, $B_{\epsilon}(f(x)) \subseteq U$. $f$ is continuous, so by Definition~\ref{def:continuousMap} for some $\delta > 0$, if $y \in B_{\delta}(x)$, $f(y) \in B_{\epsilon}(f(x)) \Longrightarrow f(y) \in U \Longrightarrow y \in f^{-1}(U)$. This holds for every $y \in B_{\delta}(x)$, so $B_{\delta}(x) \subseteq f^{-1}(U)$, hence $f^{-1}(U)$ is open by Definition~\ref{def:openSet}.
+
+	(2. $\Rightarrow$ 1.): Let $x \in X_1$ and $\epsilon > 0$. We must find a $\delta$ such that $y \in B_{\delta}(x) \Longrightarrow f(y) \in B_{\epsilon}(f(x))$. By Lemma~\ref{lem:openBallsAreOpen}, $B_{\epsilon}(f(x))$ is open. $f(x) \in B_{\epsilon}(f(x))$ so $x \in f^{-1}(B_{\epsilon}(f(x)))$. Also, $f^{-1}(B_{\epsilon}(f(x)))$ is open by assumption, hence for some $\delta > 0$, $B_{\delta}() \subseteq f^{-1}(B_{\epsilon}(f(x)))$. This means that $y \in B_{\delta}(x) \Longrightarrow f(y) \in B_{\epsilon}(f(x))$.
+
+	(1. $\Rightarrow$ 3.): TODO.
+	
+	(3. $\Rightarrow$ 1.): TODO.
+\end{proof}
+
+\begin{remark}
+	The proof of the above theorem allows us to restate it more precisely, for example,
+	\[
+		f: X_1 \rightarrow X_2 \text{ continuous } \Longleftrightarrow f^{-1}(U) \text{ open in } X_1 \text{ for every open } U \subseteq X_2 \text{ containing } f(x)
+	\]
+\end{remark}
+
+\begin{remark}
+	By Theorem~\ref{thm:continuityViaOpenSets}, if $f: X_1 \rightarrow X_2$ is continuous, then $f^{-1}(\{ x \})$ is closed for every $x \in X_2$.
+\end{remark}
+
+\begin{example}
+	Show that the set below is open:
+	\[
+		U = \{ (x, y) \in \mathbb{R}^2: (x^2 + y^2) {\cos(x^2 - y^2)}^4 > 2
+	\]
+	The function $f(x, y) = (x^2 + y^2) {\cos(x^2 - y^2)}^4$ is continuous by Lemma~\ref{lem:continuousFunctionsBasicProperties}. We can write $U$ as
+	\[
+		U = \{ (x, y) \in \mathbb{R}^2: f((x, y)) \in (2, \infty) \} = f^{-1}((2, \infty))
+	\]
+	$(2, \infty)$ is open in $\mathbb{R}$ so $U$ is the preimage of an open set under a continuous map so by Theorem~\ref{thm:continuityViaOpenSets}, $U$ is open.
+\end{example}
+
+\begin{proposition}
+	(Useful properties of the preimage)
+	\begin{itemize}
+		\item $f^{-1}(A \cup B) = f^{-1}(A) \cup f^{-1}(B)$.
+		\item $f^{-1}(A \cap B) = f^{-1}(A) \cap f^{-1}(B)$.
+		\item $f^{-1}(A - B) = f^{-1}(A) - f^{-1}(B)$.
+	\end{itemize}
+\end{proposition}
+
+\begin{example}
+	Show that the set below is open:
+	\[
+		U = \{ (x, y) \in \mathbb{R}^2: xy > 2, x^2 + y^2 > 4 \}
+	\]
+	Let $f(x, y) = xy$ and $g(x, y) = x^2 + y^2$. We can write $U$ as
+	\[
+		U = f^{-1}((1, \infty)) \cap g^{-1}((2, \infty))
+	\]
+	$f$ and $g$ are both continuous by Lemma~\ref{lem:continuousFunctionsBasicProperties} and $(1, \infty)$ and $(3, \infty)$ are open in $\mathbb{R}$, so by Theorem~\ref{thm:continuityViaOpenSets}, $f^{-1}((1, \infty))$ and $g^{-1}((2, \infty))$ are open. $U$ is the intersection of two open sets so by Lemma~\ref{lem:unionsAndIntersectionsOpen}, $U$ is open.
+\end{example}
+
+\begin{example}
+	Show the function below is not continuous at $(0, 0)$:
+	\[
+		f(x, y) = \begin{cases}
+			\frac{xy}{x^2 + y^2} & \text{ if } (x, y) \ne (0, 0) \\
+			0 & \text{ otherwise}
+		\end{cases}
+	\]
+	We claim that the preimage $f^{-1}((-\epsilon, \epsilon))$ is not open for small $\epsilon$. $f((0, 0)) = 0$ hence $(0, 0) \in f^{-1}((-\epsilon, \epsilon))$. We must show that every open ball in $\mathbb{R}^2$ centred at $(0, 0)$ is not contained in $f^{-1}((-\epsilon, \epsilon))$.
+	
+	Let $\epsilon < 1/4$ and $\delta > 0$. Then $(\delta / 2, \delta / 2) \in B_{\delta}((0, 0))$ since $|(\delta / 2, \delta / 2) - (0, 0)| = \delta / \sqrt{2} < \delta$. But $f((\delta / 2, \delta / 2)) = 1 / 2 > \epsilon$ so $(\delta / 2, \delta / 2) \notin f^{-1}((-\epsilon, \epsilon))$. So for every $\delta > 0$, $B_{\delta}((0, 0)) \not\subseteq f^{-1}((-\epsilon, \epsilon))$, so $f^{-1}((-\epsilon, \epsilon))$. Hence by Theorem~\ref{thm:continuityViaOpenSets}, $f$ is not continuous at $(0, 0)$.
+\end{example}
+
+\subsection{Compactness}
+
+\begin{definition}\label{def:compactSet}
+	Let $(X, d)$ be a metric space. A non-empty $K \subseteq X$ is called \textbf{(sequentially) compact} if for every sequence $\{ x_n \}_{n \in \mathbb{N}}$ in $K$, there is a subsequence $\{ x_{n_k} \}_{k \in \mathbb{N}}$ which converges to a point $x \in K$.
+\end{definition}
+
+\begin{remark}
+	Note that in the above definition, $\{ x_n \}_{n \in \mathbb{N}}$ does not have to converge.
+\end{remark}
+
+\begin{lemma}\label{lem:subsequenceConvergesToSameLimit}
+	Let $\{ x_n \}_{n \in \mathbb{N}}$ be a sequence in a metric space $(X, d)$ which converges to $x \in X$. Then every subsequence converges to the same limit $x$.
+\end{lemma}
+
+\begin{proof}
+	Let $\{ x_{n_k} \}_{k \in \mathbb{N}}$ be a subsequence of $\{ x_n \}_{n \in \mathbb{N}}$. For every $\epsilon > 0$, for some $N \in \mathbb{N}$, for every $k > N$, $x_k \in B_{\epsilon}(x)$. But $n_k > k$ so $x_{n_k} \in B_{\epsilon}(x)$. Hence $\{ x_{n_k} \}_{k \in \mathbb{N}}$ converges to $x$.
+\end{proof}
+
+\begin{proposition}\label{prop:convergenceInClosedSubset}
+	Let $(X, d)$ be a metric space and $F \subset X$. Then the following are equivalent:
+	\begin{itemize}
+		\item $F$ is closed.
+		\item Every sequence in $F$ which converges in $X$ converges in $F$, i.e. in $\{ x_n \}_{n \in \mathbb{N}} \subseteq F$ and $x_n \rightarrow x$ for some $x \in X$, then $x \in F$.
+	\end{itemize}
+\end{proposition}
+
+\begin{proof}
+	($\Rightarrow$): Let $F$ be closed and $\{ x_n \}_{n \in \mathbb{N}} \subseteq F$ be a sequence which converges to $x \in X$. Assume $x \notin F$, so $x \in X - F$. $X - F$ is open, so by Definition~\ref{def:openSet}, there exists an open ball $B_{\epsilon}(x) \subseteq X - F$. But $x_n \rightarrow x$ so for some $N \in \mathbb{N}$, for every $n > N$, $x_n \in B_{\epsilon}(x)$, but then $x_n \in X - F \Longrightarrow x_n \notin F$ which is a contradiction.
+	
+	($\Leftarrow$): We show that $X - F$ is open. Let $x \in X - F$, then we must find a ball $B_{\epsilon}(x) \in X - F$. If for some $n \in \mathbb{N}$, $B_{1 / n}(x) \subseteq X - F$, we are done. If not, then pick an $x_n \in B_{1 / n}(x) \cap F$ for each $n$. But $x_n \rightarrow x$ and $x_n \in F$ hence $x \in F$, but this contradicts the assumption that $x \notin F$.
+\end{proof}
+
+\begin{corollary}\label{cor:compactSetsClosedAndHaveCompactCloseSubsets}
+	\hfill
+	\begin{enumerate}
+		\item Compact sets are closed.
+		\item Every closed subset of a compact subset is compact.
+	\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+	\hfill
+	\begin{enumerate}
+		\item Let $F$ be compact and let $\{ x_n \}_{n \in \mathbb{N}} \subseteq F$ be a sequence which converges to $x \in X$. By Definition~\ref{def:compactSet}, there exists a convergent subsequence $\{ x_{n_k} \}_{k \in \mathbb{N}}$ which converges to $x_0 \in F$. By Lemma~\ref{lem:sequenceLimitUnique}, $x_0 = x$ so $x \in F$. By Proposition~\ref{prop:convergenceInClosedSubset}, $F$ is closed.
+		\item Let $K$ be compact and $F \subseteq K$ be closed. Let $\{ x_n \}_{n \in \mathbb{N}} \subseteq F$ be a sequence. Since each $x_k \in K$, by Definition~\ref{def:compactSet}, there exists a convergent subsequence $\{ x_{n_k} \}_{k \in \mathbb{N}}$ which converges to $x \in K$. By Proposition~\ref{prop:convergenceInClosedSubset}, $x \in F$. Hence $F$ is compact.
+	\end{enumerate}
+\end{proof}
+
+\begin{example}
+	Not all closed sets are compact, e.g. $[0, \infty)$ is closed in $\mathbb{R}$ but $x_n = n$ has no convergent subsequence. The problem arises since $[0, \infty)$ is unbounded.
+\end{example}
+
+\begin{definition}\label{def:boundedSet}
+	Let $(X, d)$ be a metrix space. $A \subseteq X$ is called \textbf{bounded} if
+	\[
+		\exists R > 0, \ \exists x \in X, \quad A \subset B_R(x)
+	\]
+	i.e. $A$ is bounded if it is contained in an open ball in $X$.
+\end{definition}
+
+\begin{lemma}\label{lem:compactSetsBounded}
+	Let $(X, d)$ be a metric space and $K \subseteq K$ be compact. Then $K$ is bounded.
+\end{lemma}
+
+\begin{proof}
+	We will prove the contrapositive to this statement, that if $K$ is not bounded then it is not compact. Let $K$ be not bounded and let $x \in K$. So for every $k \in \mathbb{N}$, for some $x_k \in K$, $d(x_k, x) \ge k$, as $K \not\subseteq B_k(x)$. Assume $x_0$ is a limit of the subsequence $\{ x_{n_k} \}_{k \in \mathbb{N}}$, then by the \hyperref[def:metricSpace]{triangle inequality}
+	\[
+		d(x_{n_k}, x_0) \ge d(x_{n_k}, x) - d(x, x_0) \ge n_k - d(x, x_0) \ge k - d(x, x_0) \to \infty \text{ as} k \to \infty
+	\]
+	So $\{ x_n \}_{n \in \mathbb{N}}$ has no convergent subsequence, hence $K$ is not compact.
+\end{proof}
+
+\begin{theorem}
+	(\textbf{Heine-Borel for $\mathbb{R}^n$}) $K \in \mathbb{R}^n$ is compact iff $K$ is closed and bounded.
+\end{theorem}
+
+\begin{remark}
+	Heine-Borel does not hold for all metric spaces.
+\end{remark}
+
+\begin{theorem}
+	(\textbf{Heine-Borel for $\mathbb{C}$}) $K \subseteq \mathbb{C}$ is compact iff $K$ is closed and bounded.
+\end{theorem}
+
+\begin{proof}
+	($\Rightarrow$): By Corollary~\ref{cor:compactSetsClosedAndHaveCompactCloseSubsets}, $K$ is closed and by Lemma~\ref{lem:compactSetsBounded}, $K$ is bounded.
+
+	($\Leftarrow$): By Bolzano-Weierstrass, Heine-Borel holds for subsets of $\mathbb{R}$. Let $K \subseteq \mathbb{C}$ be closed and bounded. As $K$ is bounded, for some $R > 0$, $K \subseteq B_R(0)$, so $\forall z \in K, |z| < R$. Let $\{ z_n \}_{n \in \mathbb{N}} \subseteq \mathbb{C}$ be a sequence where $z_n = x_n + i y_n$, hence $|x_n| < R$ and $|y_n| < R$. We want to show there exists a convergent subsequence of $\{ z_n \}_{n \in \mathbb{N}}$ with limit in $K$.
+
+	By Heine-Borel for $\mathbb{R}$, $[-R, R]$ is compact as it is closed and bounded. $\{ x_n \}_{n \in \mathbb{N}}$ lies in $[-R, R]$ so there exists a convergent subsequence $\{ x_{n_k} \}_{k \in \mathbb{N}}$ with limit $x_0 \in [-R, R]$. So the subsequence $\{ z_{n_k} \}_{k \in \mathbb{N}}$, where $z_{n_k} = x_{n_k} + i y_{n_k}$, has imaginary part $\{ y_{n_k} \}_{k \in \mathbb{N}}$ in $[-R, R]$ so there exists a convergent subsequence $\{ y_{n_{m_k}} \}_{k \in \mathbb{N}}$ with limit $y_0 \in [-R, R]$. So the subsequence $\{ z_{n_{m_k}} \}_{k \in \mathbb{N}}$, where $z_{n_{m_k}} = x_{n_{m_k}} + i y_{n_{m_k}}$, has imaginary part which converges to $y_0$ and by Lemma~\ref{lem:subsequenceConvergesToSameLimit}, the real part converges to $x_0$. Hence $\{ z_{n_{m_k}} \}_{k \in \mathbb{N}}$ converges to $z_0 = x_0 + i y_0$ and $K$ is closed by assumption, so by Proposition~\ref{prop:convergenceInClosedSubset}, $x_0 + i y_0 \in K$. Hence $K$ is compact.
+\end{proof}
+
+\begin{example}
+	$\mathbb{C}$ is not compact with respect to the standard metric, e.g. the sequence $\{ ik \}_{k \in \mathbb{N}}$ has no convergent subsequence.
+\end{example}
+
+\begin{lemma}\label{lem:continuityViaSequences}
+	Let $X$ and $Y$ be metric spaces and $f: X \to Y$. $f$ is continuous at $x \in X$ iff
+	\[
+		\lim_{n \to \infty} f(x_n) = f(x)
+	\]
+	for every convergent sequence $\{ x_n \}_{n \in \mathbb{N}}$ in $X$ with $x_n \to x$.
+\end{lemma}
+
+\begin{proof}
+	TODO.
+\end{proof}
+
+\begin{theorem}
+	Let $X$ and $Y$ be metric spaces and $f: X \to Y$. Then if $K \subset X$ is compact and $f$ is continuous, then the image $f(K)$ is compact in $Y$.
+
+	In particular, if $Y = \mathbb{R}$, then every continuous $f: X \to \mathbb{R}$ attains minima and maxima on compact sets.
+\end{theorem}
+
+\begin{proof}
+	Let $\{ y_n \}_{n \in \mathbb{N}}$ be a sequence in $f(K)$, and let $y_n = f(x_n)$. We must show that $\{ y_n \}_{n \in \mathbb{N}}$ has a convergent subsequence with limit in $f(K)$. $K$ is compact so there exists a convergent subsequence $\{ x_{n_k} \}_{k \in \mathbb{N}}$ of $\{ x_n \}_{n \in \mathbb{N}}$ with limit $x \in K$. $f$ is continuous so by Lemma~\ref{lem:continuityViaSequences}, $y_{n_k} = f(x_{n_k}) \to f(x)$. So $\{ y_{n_k} \}_{k \in \mathbb{N}}$ converges to $f(x)$ and $x \in K$ so $f(x) \in f(K)$.
+\end{proof}
+
+\section{Complex Differentiation}
+
+\subsection{Complex differentiablity}
+
+\begin{definition}\label{def:complexDifferentiablity}
+	Let $U \subseteq \mathbb{C}$ be open. $f: U \to \mathbb{C}$ is called \textbf{(complex) differentiable at $z_0 \in U$} if
+	\[
+		\lim_{z \to z_0} \frac{f(z) - f(z_0)}{z - z_0}
+	\]
+	exists. This limit is called the \textbf{derivative of $f$ at $z_0$} and we define $f'(z_0)$ as
+	\[
+		f'(z_0) = \lim_{h \to 0} \frac{f(z_0 + h) - f(z_0)}{h}
+	\]
+\end{definition}
+
+\begin{remark}
+	Here, $h$ is a complex number, so the limit must exist from every direction.
+\end{remark}
+
+\begin{remark}
+	Complex differentiablity at $z$ implies continuity at $z$.
+\end{remark}
+
+\begin{example}
+	Let $f(z) = z^2$. For every $z \in \mathbb{C}$,
+	\[
+		\lim_{h \to 0} \frac{{(z + h)}^2 - z^2}{h} = \lim_{h \to 0} \frac{z^2 + 2hz + h^2 - z^2}{h} = \lim_{h \to 0} (2z + h) = 2z
+	\]
+	So $f'(z) = 2z$, and $f$ is differentiable on $\mathbb{C}$.
+\end{example}
+
+\begin{example}
+	Let $f(z) = \bar{z}$. For every $z \in \mathbb{C}$,
+	\[
+		\begin{aligned}
+			\lim_{h \to 0, h \in \mathbb{R}} \frac{\overline{z + h} - \overline{z}}{h} & = \lim_{h \to 0, h \in \mathbb{R}} \frac{h}{h} = 1 \\
+			\lim_{h \to 0, h \in \mathbb{R}} \frac{\overline{z + ih} - \overline{z}}{ih} & = \lim_{h \to 0, h \in \mathbb{R}} \frac{-ih}{ih} = -1 \ne 1
+		\end{aligned}
+	\]
+	So $f$ is differentiable nowhere as the limits do not agree.
+\end{example}
+
+\begin{proposition}
+	Sums, products and quotients of complex differentiable functions are complex differentiable where defined. In particular, the product and quotient rules hold for complex derivatives.
+\end{proposition}
+
+\begin{proof}
+	Omitted.
+\end{proof}
+
+\begin{proposition}\label{prop:chainRule}
+	Compositions of complex differentiable functions are complex differentiable where defined. In particular, the chain rule holds for complex derivatives.
+\end{proposition}
+
+\begin{proof}
+	Omitted.
+\end{proof}
+
+\begin{example}
+	Non-constant, purely real or imaginary functions are not complex differentiable, e.g. $\Re(z)$, $\Im(z)$, $|z|$ are nowhere differentiable.
+\end{example}
+
+\subsection{Cauchy-Riemann equations}
+
+\begin{definition}
+	Let $U \subseteq \mathbb{C}$ and $f: U \rightarrow \mathbb{C}$. We can write
+	\[
+		f(z) = u(x, y) + i v(x, y)
+	\]
+	where $z = x + iy$, $x, y \in \mathbb{R}$, $u, v: \mathbb{R}^2 \to \mathbb{R}$ are real functions. $u$ is called the \textbf{real part} of $f$ and $v$ is called the \textbf{imaginary part}.
+\end{definition}
+
+\begin{example}
+	Let $f(z) = z^2$. Then $f(z) = z^2 = {(x + iy)}^2 = x^2 + 2ixy - y^2 = x^2 - y^2 + 2ixy$. So $u(x, y) = x^2 - y^2$ and $v(x, y) = 2xy$.
+\end{example}
+
+\begin{proposition}\label{prop:cauchyRiemann}
+	Let $f = u + iv$ be complex differentiable at $z_0$. Then the real partial derivatives $u_x, u_y, v_x, v_y$ exist at $z_0$ and satisfy the \textbf{Cauchy-Riemann equations}:
+	\[
+		\begin{aligned}
+			u_x(z_0) & = v_y(z_0) \\
+			u_y(z_0) & = -v_x(z_0)
+		\end{aligned}
+	\]
+	Also,
+	\[
+		f'(z_0) = u_x(z_0) + i v_x(z_0)
+	\]
+\end{proposition}
+
+\begin{proof}
+	$f$ is complex differentiable at $z_0 = x_0 + i y_0$ so the limit in Definition~\ref{def:complexDifferentiablity} exists from every direction, in particular the purely real and imaginary directions. So
+	\[
+		f'(z_0) = \lim_{h \to 0, h \in \mathbb{R}} \frac{f(z_0 + h) - f(z_0)}{h} = \lim_{h \to 0, h \in \mathbb{R}} \frac{f(z_0 + ih) - f(z_0)}{ih}
+	\]
+	When $h$ is real,
+	\[
+		\begin{aligned}
+			f(z_0 + h) & = f((x_0 + h) + iy_0) = u(x_0 + h, y_0) + i v(x_0 + h, y_0) \\
+			f(z_0 + ih) & = f(x_0 + i(y_0 + h)) = u(x_0, y_0 + h) + i v(x_0, y_0 + h)
+		\end{aligned}
+	\]
+	hence
+	\[
+		\begin{aligned}
+			f'(z_0) & = \lim_{h \to 0} \frac{u(x_0 + h, y_0) - u(x_0, y_0)}{h} + i \lim_{h \to 0} \frac{v(x_0 + h, y_0) - v(x_0, y_0)}{h} \\
+			& = u_x(x_0, y_0) + i v_x(x_0, y_0) \\
+			& = \frac{1}{i} \lim_{h \to 0} \frac{u(x_0, y_0 + h) - u(x_0, y_0)}{h} + \frac{i}{i} \lim_{h \to 0} \frac{v(x_0, y_0 + h) - v(x_0, y_0)}{h} \\
+			& = -i u_y(x_0, y_0) + v_y(x_0, y_0)
+		\end{aligned}
+	\]
+	Comparing real and imaginary parts completes the proof.
+\end{proof}
+
+\begin{example}
+	Let $f(z) = z^2$ then $u(x, y) = x^2 - y^2$ and $v(x, y) = 2xy$. So
+	\[
+		u_x = 2x, \quad v_y = 2x, \quad u_y = -2y, \quad v_x = 2y
+	\]
+	so the Cauchy-Riemann equations are satisfied, as expected (since $f$ is complex differentiable).
+\end{example}
+
+\begin{theorem}\label{thm:partialsContinuousAndCauchyRiemannImpliesDifferentiable}
+	Let $U \subseteq \mathbb{C}$ be open and $f = u + iv$. If the partial derivatives $u_x, u_y, v_x, v_y$ exist, are continuous, and satisfy the Cauchy-Riemann equations at $z_0 \in U$, then $f$ is complex differentiable at $z_0$.
+\end{theorem}
+
+\begin{proof}
+	Omitted.
+\end{proof}
+
+\begin{example}
+	Let $f(z) = \exp(z) = e^x \cos(y) + i e^x \sin(y)$. Let $u(x, y) = e^x \cos(y)$ and $v(x, y) = e^x \sin(y)$, then
+	\[
+		\begin{aligned}
+			u_x & = e^x \cos(y) = v_y \\
+			u_y = -e^x \sin(y) = -v_x
+		\end{aligned}
+	\]
+	The partial derivative $u_x, u_y, v_x, v_y$ exist, are continuous and satisfy the Cauchy-Riemann equations for every $z_0 \in \mathbb{C}$. So by Theorem~\ref{thm:partialsContinuousAndCauchyRiemannImpliesDifferentiable}, $f$ is differentiable on $\mathbb{C}$ and by Proposition~\ref{prop:cauchyRiemann},
+	\[
+		f'(z) = u_x + i v_x = e^x \cos(y) + i e^x \sin(y) = \exp(z)
+	\]
+\end{example}
+
+\begin{example}
+	Let $f(z) = e^{iz}$ then by the \hyperref[prop:chainRule]{chain rule}, $f'(z) = i e^{iz}$. $\sin, \cos, \sinh, \cosh$ are all sums of $\exp$ so they are all differentiable on $\mathbb{C}$, and
+	\[
+		\sin'(z) = \cos(z), \quad \cos'(z) = -\sin(z), \quad \sinh'(z) = \cosh(z), \cosh'(z) = \sinh(z)
+	\]
+\end{example}
+
+\begin{example}
+	Similarly, all polynomial and rational functions are differentiable on $\mathbb{C}$ (except where not defined) and for $a_0, \dots, a_n \in \mathbb{C}$,
+	\[
+		(a_0 + a_1 z + \cdots + a_n z^n)' = a_1 + 2 a_2 z + \cdots + n a_n z^{n - 1}
+	\]
+\end{example}
+
+\begin{example}
+	The branch of $\log$ corresponding to arguments in $(\theta_1, \theta_2]$ is differentiable on $\mathbb{C} - R_{\theta_1}$, with $\log(z) = 1/z$.
+\end{example}
+
+\begin{example}\label{exa:differentiableOnCircle}
+	Let $f(z) = f(x + iy) = (x^3 + 3x^2 y - y^3 - x^2 - 2y^2) + i(-x^3 + 3xy^2 - y^3 + 4xy + 3y)$, then $u_y(z) = -v_x(z)$ for every $z \in \mathbb{C}$ but $u_x = v_y$ iff $3x^2 - 2x = -3y^2 + 4x + 3 \Longleftrightarrow {(x - 1)}^2 + y^2 = 2$. So $f$ is differentiable only on the circle of radius $\sqrt{2}$ and centre $1$.
+\end{example}
+
+\begin{definition}
+	Let $U \subseteq \mathbb{C}$ be open. $f: U \to \mathbb{C}$ is called \textbf{holomorphic on $U$} if it is complex differentiable at every point in $U$.
+
+	$f$ is called \textbf{holomorphic at $z_0 \in U$} if for some $\epsilon > 0$, $f$ is holomorphic on the open ball $B_{\epsilon}(z_0)$.
+\end{definition}
+
+\begin{example}
+	$\exp, \sin, \cos, \sinh, \cosh$ and polynomials are holomorphic on $\mathbb{C}$.
+\end{example}
+
+\begin{example}
+	Logarithms and complex powers are holomorphic every apart from their branch cuts.
+\end{example}
+
+\begin{example}
+	$f$ defined in Example~\ref{exa:differentiableOnCircle} is holomorphic nowhere, since any open ball in $\mathbb{C}$ centred at a point $z_0$ on this circle contains a point $w$ not on the circle, and $f$ is not differentiable at $w$.
+\end{example}
+
+\subsection{Connected sets and zero derivatives}
+
+\begin{definition}
+	A \textbf{path} (or \textbf{curve}) from $a \in \mathbb{C}$ to $b \in \mathbb{C}$ is a continuous function $\gamma: [0, 1] \rightarrow \mathbb{C}$ where $\gamma(0) = a$ and $\gamma(1) = b$. $\gamma$ is called \textbf{closed} if $a = b$. $\gamma$ is called \textbf{smooth} if it is continuously differentiable.
+\end{definition}
+
+\begin{definition}
+	$U \subseteq \mathbb{C}$ is called \textbf{path-connected} if for every $a, b \in U$, for some smooth path $\gamma$ from $a$ to $b$, $\gamma(t) \in U$ for every $t \in [0, 1]$.
+\end{definition}
+
+\begin{definition}
+	A \textbf{domain} (or \textbf{region}) $D$ is an open, path-connected subset of $\mathbb{C}$.
+\end{definition}
+
+\begin{example}
+	$B_r(z)$ is open for every $z \in \mathbb{C}$ and $r > 0$. $B_r(z)$ is also path-connected, since for every $a, b \in B_r(z)$, the line-segment $\gamma(t) = a + (b - a)t$ is a smooth path, so $B_r(z)$ is a domain. The same holds for $\mathbb{C}$.
+\end{example}
+
+\begin{example}
+	$\mathbb{C} - R_{\le 0}$ is path-connected. Let $a, b \in \mathbb{C} - R_{\le 0}$, then if $a$ lies on the positive real axis then a line segment in $\mathbb{C} - R_{\le 0}$ exists from $a$ to $b$. Otherwise, we can find an arc of a circle which starts at $a$ and ends at $b$, while staying in $\mathbb{C} - R_{\le 0}$.
+
+	$\mathbb{C} - R_{\le 0}$ is also open so it is a domain.
+\end{example}
+
+\begin{example}
+	$\{ z \in \mathbb{C}: |z| \ne 1 \}$ is not a domain. It is not path-connected, since if $|a| < 1$ and $|b| > 1$, then there doesn't exist a continuous path from $a$ to $b$ without crossing the circle $|z| = 1$.
+\end{example}
+
+\begin{lemma}\label{lem:chainRuleForPaths}
+	(\textbf{Chain rule}) Let $U \subseteq \mathbb{C}$ be open, $f: U \to \mathbb{C}$ be holomorphic on $U$ and $\gamma: [0, 1] \to U$ be a smooth path. Then
+	\[
+		\forall t \in [0, 1], \quad (f \circ \gamma)'(t) = f'(\gamma(t)) \cdot \gamma'(t)
+	\]
+\end{lemma}
+
+\begin{proof}
+	Omitted.
+\end{proof}
+
+\begin{theorem}
+	Let $D$ be a domain and $f: D \to \mathbb{C}$ be holomorphic. If $\forall z \in D, \ f'(z) = 0$, then $f$ is constant on $D$.
+\end{theorem}
+
+\begin{proof}
+	$D$ is path-connected, so we can show that $f$ is constant on every smooth path $\gamma \subset D$, i.e. we show that $f \circ \gamma$ is a constant function. Let $f = u + iv$. By the \hyperref[lem:chainRuleForPaths]{chain rule},
+	\[
+		(f \circ \gamma)'(t) = f'(\gamma(t)) \cdot \gamma'(t) = 0 = (u \circ \gamma)'(t) + i (v \circ \gamma)'(t)
+	\]
+	So $u \circ \gamma$ and $v \circ \gamma$ are constant on $\gamma$ so $f$ is also.
+\end{proof}
+
+\begin{remark}
+	The same result holds if, instead of $\forall z \in D, \ f'(z) = 0$:
+	\begin{itemize}
+		\item $f$ has constant real or imaginary part; or
+		\item $f$ has constant modulus.
+	\end{itemize}
+\end{remark}
+
+\subsection{The angle-preserving properties of holomorphic functions}
+
+\begin{definition}
+	Let $D$ be a domain. A real differentiable function $f: D \to \mathbb{C}$ is called \textbf{conformal at $z_0$} if it preserves the angle and orientation between any two tangent vectors at $z_0$. This is equivalent to saying that $f$ preserves the angle and orientation between any two smooth paths that pass through $z_0$.
+
+	$f$ is called \textbf{conformal} if it is conformal at every point in $D$.
+\end{definition}
+
+\begin{lemma}\label{lem:holomorphicImpliesConformal}
+	(\textbf{Holomorphic maps are conformal}) Let $f$ be holomorphic with $f'(z_0) \ne 0$. Then $f$ is conformal at $z_0$.
+\end{lemma}
+
+\begin{proof}
+	Let $\gamma: [0, 1] \to \mathbb{C}$ be a smooth path passing through $z_0 = \gamma(t_0)$. Consider the tangent vector to $\gamma$ at $z_0$. The path $f \circ \gamma$ is the path produced by mapping $\gamma$ under $f$. So we calculate what happens to the tangent vector $\gamma'(t_0)$ by using the chain rule involving $(f \circ \gamma)'(t_0)$:
+	\[
+		(f \circ \gamma)'(t_0) = f'(\gamma(t_0)) \cdot \gamma'(t_0) = f'(z_0) \cdot \gamma'(t_0)
+	\]
+	So we see that $f$ multiplies the tangent vector $\gamma'(t_0)$ by the complex number $f'(z_0)$, so this is equivalent to a dilation by $|f'(z_0)|$ and a rotation by the angle $\Arg(f'(z_0))$, which both preserve and angles and orientations between vectors.
+\end{proof}
+
+\begin{example}
+	Let $f(z) = z^2$, then $f'(z) = 2z$, so $f'(z) = 0 \Longleftrightarrow z = 0$. Hence $f$ is conformal on $\mathbb{C}^* = \mathbb{C} - \{ 0 \}$ since it is holomorphic everywhere. $f$ is not conformal at $0$ as $f'(0) = 0$ so $f$ sends tangent vectors at the origin to zero, so does not preserve angles.
+\end{example}
+
+\begin{corollary}
+	Let $f$ be holomorphic, $f'(z_0)$. Then $f$ rotates tangent vectors at $z_0$ by $\Arg(f'(z_0))$ and dilates them by $|f'(z_0)|$.
+\end{corollary}
+
+\begin{proposition}\label{prop:conformalImpliesHolomorphic}
+	({Conformal maps are holomorphic}) Let $D$ be a domain. If $f$ is conformal at $z_0 \in D$, then $f$ is complex differentiable at $z_0$ and $f'(z_0) \ne 0$. In particular, $f$ is conformal on $D$ iff $f$ is holomorphic with $f'(z) \ne 0$ for every $z \in D$.
+\end{proposition}
+
+\begin{proof}
+	Non-examinable.
+\end{proof}
+
+\begin{example}
+	Let $f(z) = f(x + iy) = xy + iy^2 = u(x, y) + i v(x, y)$. Then $u_x = y, v_y = 2y, u_y = x, v_x = 0$. So the Cauchy-Riemann equations hold only at $x = y = 0$. So $f$ is not differentable at $z_0 \ne 0$ so by Proposition~\ref{prop:conformalImpliesHolomorphic}, $f$ is not conformal at $z_0 \ne 0$. $f'(0) = 0$ so by Proposition~\ref{prop:conformalImpliesHolomorphic}, $f$ is not conformal at $0$, so is nowhere conformal.
+\end{example}
+
+\begin{corollary}
+	Every conformal map maps orthogonal grids in the $(x, y)$-plane to orthogonal grids. (Note, these grids may be made up of arbitrary smooth curves, not just straight lines).
+\end{corollary}
+
+\begin{example}
+	Let $f(z) = f(x + iy) = z^2 = x^2 - y^2 + 2xy i$ and consider the grid in the $(x, y)$-plane made of lines parallel to the real and imaginary axes, of distance $1$ from each other.
+
+	Given a line that doesn't pass through the origin, $x = a \ne 0$, $f$ maps this line to the points $(a^2 - y^2, 2ay)$ in the $(u, v)$-plane. Let $u(y) = a^2 - y^2$ and $v(y) = 2ay$, then $v^2 = 4a^2 y^2$ hence $u(v) = a^2 - v^2/4a^2$. Similarly, the line $y = b \ne 0$ is mapped to the parabola $u = v^2 / 4b^2 - b^2$ in the $(u, v)$-plane. So the lines are mapped to parabolae, which cross at right angles.
+
+	The level curves $u(x, y) = x^2 - y^2 = a$ and $v(x, y) = 2xy = b$ trace the curves $y^2 = x^2 - a$ and $y = b/(2x)$. These level curves are perpendicular when drawn on a graph, since $f$ is conformal on $\mathbb{C}^*$ and they map to perpendicular straight lines.
+\end{example}
+
+\subsection{Biholomorphic maps}
+
+\begin{definition}
+	Let $D$ and $D'$ be domains. $f: D \to D'$ is called \textbf{biholomorphic} if $f$ is holomorphic, a bijection, and its inverse $f^{-1}: D' \to D$ is also holomorphic. $f$ is called a \textbf{biholomorphism}, and the domains $D$ and $D'$ are called \textbf{biholomorphic}. We write $f: D \biholo D'$.
+\end{definition}
+
+\begin{example}
+	$\exp: \mathbb{C} \to \mathbb{C}^*$ is not biholomorphic since it is not injective: $e^z = e^{z + 2n \pi i}$. To make it a biholomorphic map, we can restrict it to a smaller domain.
+	
+	We have that $\exp(z_1) = \exp(z_2)$ iff $\Re(z_1) = \Re(z_2)$ and $\Im(z_1) - \Im(z_2) \in 2 \pi \mathbb{Z}$. So let
+	\[
+		D = \{ z \in \mathbb{C}: \Im(z) \in (-\pi, \pi) \}
+	\]
+	If $z = x + iy \in D$ then $\exp(z) = e^x e^{iy}$ so $\Arg(\exp(z)) \ne \pi$ for every $z \in D$, so $\exp$ maps $D$ to $\mathbb{C} - \mathbb{R}_{\le 0}$ and is injective on $D$, so is a bijection between $D$ and $\mathbb{C} - \mathbb{R}_{\le 0}$. Its inverse is $\Log$ which maps $\mathbb{C} - \mathbb{R}_{\le 0}$ to $D$ and is differentiable on $\mathbb{C} - \mathbb{R}_{\le 0}$ so holomorphic on $\mathbb{C} - \mathbb{R}_{\le 0}$. So $\exp$ is biholomorphic on $D$.
+\end{example}
+
+\begin{example}
+	Let $f(z) = z^2$. It is not injective since e.g. $f(1) = f(-1) = 1$. $f(z_1) = f(z_2)$ with $z_1 \ne z_2$ iff $z_1 = \pm z_2$. So we can make $f$ biholomorphic by restricting to the domain
+	\[
+		\mathbb{H}_R := \{ z \in \mathbb{C}: \Re(z) > 0
+	\]
+	$f$ maps $\mathbb{H}_R$ to $\mathbb{C} - \mathbb{R}_{\le 0}$. It is a bijection with inverse
+	\[
+		f^{-1}(z) = \exp \left( \frac{1}{2} \Log(z) \right)
+	\]
+	$f^{-1}$ is the composition of holomorphic functions so is holomorphic. So $f: \mathbb{H}_R \to \mathbb{C} - \mathbb{R}_{\le 0}$ is biholomorphic.
+\end{example}
+
+\begin{example}
+	The affine linear maps $f(z) = az + b$, $a \in \mathbb{C}^*$, $b \in \mathbb{C}$ are biholomorphic from $\mathbb{C}$ to $\mathbb{C}$.
+\end{example}
+
+\begin{lemma}
+	Let $D \subseteq \mathbb{C}$ be a domain. The set of all biholomorphic maps $f: D \biholo D$ forms a group under composition. This group is called the \textbf{automorphism group of $D$}, written $\text{Aut}(D)$.
+\end{lemma}
+
+\begin{proof}
+	\hfill
+	\begin{enumerate}
+		\item The identity map $\id \in \text{Aut}(D)$ and is biholomorphic.
+		\item Composition of functions is associative: $f \circ (g \circ h) = (f \circ g) \circ h$.
+		\item $f^{-1}$ is the group inverse of $f$ as $f \circ f^{-1} = f^{-1} \circ f = \id$. $f^{-1} \in \text{Aut}(D)$ since it is biholomorphic (since $f$ is biholomorphic).
+		\item $\text{Aut}(D)$ is closed, since $(f \circ g)$ is holomorphic by the chain rule, and its inverse ${(f \circ g)}^{-1} = g^{-1} \circ f^{-1}$ is holomorphic as it is the composition of holomorphic functions.
+	\end{enumerate}
+\end{proof}
+
+NOTES directly from lecture notes up to here.
+
 \section{Mobius Transformations}
+
+\subsection{Definition and first properties of Mobius transformations}
+
+\begin{definition}
+	The set of matrices $\GL_2(\mathbb{C})$ is defined as
+	\[
+		\GL_2(\mathbb{C}) = \{ A \in M_2(\mathbb{C}): \det(A) \ne 0 \}
+	\]
+\end{definition}
+
+\begin{definition}
+	Let $T = \begin{bmatrix}
+		a & b \\
+		c & d
+	\end{bmatrix} \in \GL_2(\mathbb{C})$. The \textbf{Mobius transformation} $M_T: \hat{\mathbb{C}} \to \hat{\mathbb{C}}$ is defined as
+	\[
+		M_T(z) = \begin{cases}
+			\frac{az + b}{cz + d} & \text{ if } cz + d \ne 0 \\
+			\infty & \text{ if } cz + d = 0
+		\end{cases}
+	\]
+	for $z \ne \infty$ and for $z = \infty$,
+	\[
+		M_T(\infty) = \begin{cases}
+			\frac{a}{c} & \text{ if } c \ne 0 \\
+			\infty & \text{ if } c = 0
+		\end{cases}
+	\]
+\end{definition}
+
+\begin{remark}\label{rem:mobiusTransformationDet1}
+	Let $T \in \GL_2(\mathbb{C})$. Then for some $k$, $k^2 = \det(T)$. So
+	\[
+		M_T(z) = \frac{az + b}{cz + d} = \frac{az/k + b/k}{cz/k + d/k} = M_{\frac{1}{k} T} (z)
+	\]
+	and $\det(\frac{1}{k} T) = \frac{1}{k^2} \det(T) = 1$. So every $T \in \GL_2(\mathbb{C})$ can be scaled to obtain $T' = \frac{1}{k} T \in \GL_2(\mathbb{C})$ such that $M_{T'} = M_T$ and $\det(T') = 1$.
+\end{remark}
+
+\begin{example}
+	$f(z) = z^-1$ is a Mobius transformation associated with the matrix $\begin{bmatrix} 0 & 1 \\ 1 & 0 \end{bmatrix}$. $f$ maps the punctured unit ball $B_1(0) - \{ 0 \}$ to the outside of the closed unit ball $\mathbb{C} - \overline{B_1}(0)$.
+\end{example}
+
+\begin{example}
+	The \textbf{Cayley map} $f(z) = \frac{z - i}{z + i}$ associated with the matrix $\begin{bmatrix} 1 & -i \\ 1 & i \end{bmatrix}$ is a Mobius transformation.
+
+	$f(z) \in B_1(0) \Longleftrightarrow |f(z)| < 1 \Longleftrightarrow |z + i| > |z - i| \Longleftrightarrow z \in \mathbb{H} = \{ z \in \mathbb{C}: \Im(z) > 0 \}$ so $f$ maps the upper half plane to the unit ball. $f(\infty) = 1$ and $f(-i) = \infty$.
+\end{example}
+
+\begin{lemma}
+	The set of Mobius transformations form a group under composition, with
+	\begin{enumerate}
+		\item $M_{T_1} \circ M_{T_2} = M_{T_1 T_2}$.
+		\item ${(M_T)}^{-1} = M_{T^{-1}}$.
+		\item $M_T = \id \Longleftrightarrow T = t \begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix}$ for some $t \in \mathbb{C}^*$.
+	\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+	Omitted.
+\end{proof}
+
+\begin{lemma}\label{lem:mobiusTransformationBiholo}
+	Let $T = \begin{bmatrix} a & b \\ c & d \end{bmatrix} \in \GL_2(\mathbb{C})$. If $c = 0$, then
+	\[
+		M_T: \mathbb{C} \biholo \mathbb{C}
+	\]
+	is a biholomorphic map. If $c \ne 0$, then
+	\[
+		M_T: \mathbb{C} - \{ \frac{-d}{c} \} \biholo \mathbb{C} - \{ \frac{a}{c} \}
+	\]
+	is a biholomorphic map.
+\end{lemma}
+
+\begin{proof}
+	If $c = 0$, then since $\det(T) \ne 0$, $a \ne 0$ and $d \ne 0$. So
+	\[
+		M_T(z) = \frac{a}{d} z + \frac{b}{d}
+	\]
+	is an affine linear map which is holomorphic. It is a bijection with inverse
+	\[
+		{(M_T)}^{-1} = \frac{d}{a} z - \frac{b}{a}
+	\]
+	which is also holomorphic. So $M_T: \mathbb{C} \biholo \mathbb{C}$ is biholomorphic.
+
+	If $c \ne 0$, then
+	\[
+		M_T'(z) = \frac{a(cz + d) - c(az + b)}{{(cz + d)}^2} = \frac{\det(T)}{{(cz + d)}^2}
+	\]
+	The derivative exists on $\mathbb{C} - \{ \frac{-d}{c} \}$ and so $M_T$ is holomorphic there. It is bijective with its inverse as the inverse Mobius transformation, which similarly is also holomorphic. So $M_T: \mathbb{C} - \{ \frac{-d}{c} \} \biholo \mathbb{C} - \{ \frac{a}{c} \}$ is biholomorphic.
+\end{proof}
+
+\begin{corollary}
+	$M_T$ is conformal at every $z \in \mathbb{C}$ with $M_T(z) \ne \infty$.
+\end{corollary}
+
+\begin{proof}
+	By Lemma~\ref{lem:holomorphicImpliesConformal}, $M_T$ is conformal on $\mathbb{C}$ except at points that map to $\infty$.
+\end{proof}
 
 \begin{corollary}
 	Any Mobius transformation is a bijection from $\hat{\mathbb{C}}$ to $\hat{\mathbb{C}}$.
 \end{corollary}
 
-Let $T \in GL_2(\mathbb{C})$ and $M_T$ be a Mobius transformation, then a point $z$ is a fixed point of $M_T$ if $M_T(z) = z$.
+\begin{proof}
+	By Lemma~\ref{lem:mobiusTransformationBiholo}, $M_T$ has an inverse $M_{T^{-1}}$ with $M_T \circ M_{T^{-1}} = \id = M_{T^{-1}} \circ M_T$. Both are maps from $\hat{\mathbb{C}}$ to $\hat{\mathbb{C}}$ and so are bijections.
+\end{proof}
 
-\begin{lemma}
-	Let $T \in GL_2(\mathbb{C})$. If $M_T: \mathbb{C} \rightarrow \mathbb{C}$ is not the identity map, then $M_T$ has at most two fixed points in $\mathbb{C}$. If a Mobius transformation has three fixed points then it is the identity map.
+\subsection{Fixed points, the cross-ratio, and the three points theorem}
+
+\begin{definition}
+	Let $T \in \GL_2(\mathbb{C})$ and $M_T$ be a Mobius transformation. A point $z$ is called a \textbf{fixed point} of $M_T$ if $M_T(z) = z$. 
+\end{definition}
+
+\begin{lemma}\label{lem:threeFixedPointsImpliesIdentity}
+	Let $T \in \GL_2(\mathbb{C})$. If $M_T: \hat{\mathbb{C}} \rightarrow \hat{\mathbb{C}}$ is not the identity map, then $M_T$ has at most two fixed points in $\hat{\mathbb{C}}$. In particular, if a Mobius transformation has three fixed points in $\hat{\mathbb{C}}$ then it is the identity map.
 \end{lemma}
 
 \begin{proof}
-	Case 1: Suppose $M_T(\infty) = \infty$. From the definition, $M_T(z) = \frac{az + b}{cz + d}$, therefore $c = 0$. So $M_T(z) = \frac{a}{d}z + \frac{b}{d}$, with $a \ne 0, d \ne 0$ (since $\det T \ne 0$).
-
-	Such an affine linear map has at most one fixed point because:
+	If $M_T(\infty) = \infty$, then from the definition, $M_T(z) = \frac{az + b}{cz + d}$, therefore $c = 0$. So $M_T(z) = \frac{a}{d}z + \frac{b}{d}$, with $a \ne 0, d \ne 0$ (since $\det T \ne 0$). Such an affine linear map has at most one fixed point because:
 	\begin{itemize}
 		\item If $a \ne d$ then $\frac{a}{d}z + \frac{b}{d} = z \Longleftrightarrow z = \frac{b}{d - a}$ so $M_T$ has a unique fixed point.
 		\item If $a = d$ then $b \ne 0$ (since we assume $M_T$ is not the identity). So $M_T(z) = z + \frac{b}{a}$ is a translation which has no fixed points.
 	\end{itemize}
-
-	Case 2: Suppose $M_T(\infty) \ne \infty$. Suppose $z_0 \in \mathbb{C}$ is such that $M_T(z_0) = z_0$. We have $M_T(z_0) = z_0 \Longleftrightarrow \frac{a z_0 + b}{c z_0 + d} = z_0 \Longleftrightarrow c z_0 ^ 2 + (d - a)z_0 - b = 0$. This quadratic equation has at most two roots so there are at most two fixed points of $M_T$.
+	If $M_T(\infty) \ne \infty$, then all fixed points of $M_T$ are in $\mathbb{C}$. Suppose $z_0 \in \mathbb{C}$ is such that $M_T(z_0) = z_0$. We have
+	\[
+		M_T(z_0) = z_0 \Longleftrightarrow \frac{a z_0 + b}{c z_0 + d} = z_0 \Longleftrightarrow c z_0 ^ 2 + (d - a)z_0 - b = 0
+	\]
+	This quadratic equation has at most two roots so there are at most two fixed points of $M_T$ in $\hat{\mathbb{C}}$.
 \end{proof}
 
 \begin{definition}
-	Given four distinct points $z_0, z_1, z_2, z_3 \in \mathbb{C}$, the cross-ratio of these points denoted $(z_0, z_1; z_2, z_3)$ is defined by
-	\[\frac{(z_0 - z_2)(z_1 - z_3)}{(z_0 - z_3)(z_1 - z_2)}\]
-
-	We extend the definition to the case where one of the points is $\infty$ by removing all differences involving that point e.g. $(\infty, z_0; z_2, z_3) = \frac{z_1 - z_3}{z_1 - z_2}$.
+	Given four distinct points $z_0, z_1, z_2, z_3 \in \mathbb{C}$, the \textbf{cross-ratio} of these points, denoted $(z_0, z_1; z_2, z_3)$, is defined as
+	\[
+		(z_0, z_1; z_2, z_3) = \frac{(z_0 - z_2)(z_1 - z_3)}{(z_0 - z_3)(z_1 - z_2)}
+	\]
+	We extend the definition to the case where one of the points is $\infty$ by removing all differences involving that point e.g.
+	\[
+		(\infty, z_0; z_2, z_3) = \frac{z_1 - z_3}{z_1 - z_2}
+	\]
 \end{definition}
 
-\begin{theorem}
-	(Three points theorem)
-	Let ${z_1, z_2, z_3}$ and ${w_1, w_2, w_3}$ be two sets of three ordered points in $\hat{\mathbb{C}}$. Then there exists a unique Mobius transformation $f$ such that $f(z_i) = w_i$ for every $i \in \{1, 2, 3\}$.
+\begin{theorem}\label{thm:threePointsTheorem}
+	(\textbf{Three points theorem}) Let ${z_1, z_2, z_3}$ and ${w_1, w_2, w_3}$ be two sets of three distinct points in $\hat{\mathbb{C}}$. Then there exists a unique Mobius transformation $f$ such that $f(z_i) = w_i$ for every $i \in \{1, 2, 3\}$.
 \end{theorem}
 
 \begin{proof}
-	Existence:
+	Existence: define the Mobius transformations
+	\[
+		F(z) = (z, w_1; w_2, w_3) = \frac{(z - w_2)(w_1 - w_3)}{(z - z_3)(w_1 - w_2)}, \quad G(z) = (z, z_1; z_2, z_3) = \frac{(z - z_2)(z - z_3)}{(z - z_3)(z_1 - z_2)}
+	\]
+	Then $F(w_1) = 1$, $F(w_2) = 0$, $F(w_3) = \infty$ and similarly, $G(z_1) = 1$, $G(z_2) = 0$, $G(z_3) = \infty$. Therefore $F^{-1} \circ G$ maps each $z_i$ to $w_i$.
 
-	We consider the functions $F(z) = (z, w_1; w_2, w_3) = \frac{(z - w_2)(w_1 - w_3)}{(z - z_3)(w_1 - w_2)}$ and $G(z) = \frac{(z - z_2)(z - z_3)}{(z - z_3)(z_1 - z_2)}$. These are Mobius transformations with the properties that $F(w_1) = 1$, $F(w_2) = 0$, $F(w_3) = \infty$ and similarly, $G(z_1) = 1$, $G(z_2) = 0$, $G(z_3) = \infty$. Therefore $F^{-1} \circ G$ maps each $z_i$ to $w_i$.
+	Uniqueness: assume that there are two such maps, say $f_1$ and $f_2$. Then the Mobius transformation $H = f_1^{-1} \circ f_2$ satisfies $H(z_i) f_1^{-1}(f_2(z_i)) = f_1^{-1}(w_i) = z_i$.
 
-	Uniqueness:
-
-	Assume that there are two such maps, say $f_1$ and $f_2$. Then the Mobius transformation $H = f_1 ^ {-1} \circ f_2$ satisfies $H(z_i) = z_i$.
-
-	This shows that $H$ has three fixed points so, by Three Point Theorem, it must be the identity. Thus $f_1 = f_2$.
+	Thus $H$ has three fixed points $z_1, z_2, z_3$ so, by Lemma~\ref{lem:threeFixedPointsImpliesIdentity}, $H$ is the identity. Thus $f_1 = f_2$.
 \end{proof}
 
-\begin{proposition}
-	Mobius transformations preserve the cross ratio. That is, if $z_0, z_1, z_2, z_3$ are four distinct points in $\hat{\mathbb{C}}$ and $f$ is a Mobius transformation, then $(f(z_0), f(z_1); f(z_2), f(z_3)) = (z_0, z_1; z_2, z_3)$.
+\begin{proposition}\label{prop:mobiusTransformationsPreserveCrossRatio}
+	(\textbf{Mobius transformations preserve the cross-ratio}) Let $z_0$, $z_1$, $z_2$, $z_3$ be four distinct points in $\hat{\mathbb{C}}$ and $f$ be a Mobius transformation. Then
+	\[
+		(f(z_0), f(z_1); f(z_2), f(z_3)) = (z_0, z_1; z_2, z_3)
+	\]
 \end{proposition}
 
 \begin{proof}
-	Let $w_i = f(z_i)$ for every $i \in \{1, 2, 3\}$. Let $F(z) = (z, w_1; w_2, w_3)$ and $G(z) = (z, z_1; z_2, z_3)$. Recall $F^{-1} \circ G$ maps $z_i$ to $w_i$ like $f$ does. Since there is a unique Mobius transformation with this property, we have \[f = F^{-1} \circ G\] and \[F \circ f = G\]
-
-	That is, $(f(z_0), w_1; w_2, w_3) = F \circ f (z_0) = G(z_0) = (z_0, z_1; z_2, z_3)$.
+	Let $w_i = f(z_i)$ for every $i \in \{1, 2, 3\}$. Let $F(z) = (z, w_1; w_2, w_3)$ and $G(z) = (z, z_1; z_2, z_3)$. By the \hyperref[thm:threePointsTheorem]{three points theorem}, $F^{-1} \circ G$ maps $z_i$ to $w_i$, as does $f$, hence $f = F^{-1} \circ G \Longleftrightarrow F \circ f = G$. Then
+	\[
+		(f(z_0), f(z_1); f(z_2), f(z_3)) = (f(z_0), w_1; w_2, w_3) = F \circ f (z_0) = G(z_0) = (z_0, z_1; z_2, z_3)
+	\]
 \end{proof}
 
+\begin{example}
+	Find the unique Mobius transformation $f: \hat{\mathbb{C}} \to \hat{\mathbb{C}}$ that maps the points $\{ 1, -1, i \}$ to $\{ 0, \infty, 1 \}$. By Proposition~\ref{prop:mobiusTransformationsPreserveCrossRatio},
+	\[
+		\begin{aligned}
+			& \frac{w_1 - w_3}{f(z) - w_3} = \frac{(z - z_2)(z_1 - z_3)}{(z - z_3)(z_1 - z_2)} \\
+			\Longleftrightarrow & \frac{0 - 1}{f(z) - 1} = \frac{(z - (-1))(1 - i)}{(z - i)(1 - (-1))} \\
+			\Longleftrightarrow & f(z) - 1 = \frac{-2(z - i)}{(z + 1)(1 - i)} \\
+			\Longleftrightarrow & f(z) = \frac{(-1 - i)z + (1 + i)}{(1 - i)z + (1 - i)} = \frac{-1 - i}{1 - i} \frac{z - 1}{z + 1} = \frac{-iz + i}{z + 1}
+		\end{aligned}
+	\]
+\end{example}
+
 \begin{remark}
-	General strategy: to find Mobius transformation, find image of 3 points and use the fact that cross ratio is preserved. Plug known points into (*) and rearrange for $f(z_0)$.
+	The general strategy to find a Mobius transformation from how it maps three points is to use Proposition~\ref{prop:mobiusTransformationsPreserveCrossRatio}, and then rearrange to find $f(z)$.
+\end{remark}
+
+\begin{remark}
+	The general strategy to find the image of a region $D$ under a Mobius transformation $M_T$ is:
+	\begin{enumerate}
+		\item Find the image $M_T(\partial D)$ of the boundary $\partial D$.
+		\item Compute $M_T(z_0)$ for $z_0 \in D$.
+		\item The region $D'$ bounded by $M_T(\partial D)$ and containing $M_T(z_0)$ is the image of $D$ under $M_T$. $M_T$ is a biholomorphism from $D$ to $D'$.
+	\end{enumerate}
+\end{remark}
+
+\subsection{Circles and lines}
+
+\begin{lemma}\label{lem:equationOfCirclesAndLines}
+	(\textbf{Equation of circles and lines in $\mathbb{C}$}) Let $\gamma, \beta \in \mathbb{C}$ and $\alpha \in \mathbb{C}$. Then the equation
+	\[
+		\gamma z \bar{z} - \alpha \bar{z} - \bar{\alpha} z + \beta = 0
+	\]
+	defines a circle if $\gamma = 1$ and $|\alpha|^2 - \beta > 0$, and a line if $\gamma = 0$ and $\alpha \ne 0$. Also, any circle or line can be described by this equation.
+\end{lemma}
+
+\begin{proof}
+	A circle of centre $\alpha$ and radius $r$ is defined by
+	\[
+		|z - \alpha|^2 = r^2 = (z - a)(\overline{z - a})(\bar{z} - \bar{a}) = z\bar{z} - \alpha \bar{z} - \bar{\alpha} z + \beta = 0
+	\]
+	Now let $\beta = \alpha \bar{\alpha} - r^2$, so $r^2 = |\alpha|^2 - \beta > 0$, then
+	\[
+		z\bar{z} - \alpha\bar{z} - \bar{\alpha}z + \beta = 0
+	\]
+	A line can be written as a bisector between $w_1 \ne w_2 \in \mathbb{C}$:
+	\[
+		\begin{aligned}
+			& |z - w_1| = |z - w_2| = (z - w_1)(\bar{z} - \bar{w}_1) = (z - w_2)(\bar{z} - \bar{w}_2) \\
+			& = z\bar{z} - w_1 \bar{z} - \bar{w}_1 z + w_1 \bar{w}_1 = z\bar{z} - w_2 \bar{z} - \bar{w}_2 z + w_2 \bar{w}_2
+		\end{aligned}
+	\]
+	Let $\alpha = w_1 - w_2 \ne 0$ and $\beta = w_1 \bar{w}_1 - w_2 \bar{w}_2 \in \mathbb{R}$, then
+	\[
+		-\alpha\bar{z} - \bar{\alpha}z + \beta = 0
+	\]
+\end{proof}
+
+\begin{proposition}\label{prop:circlesAndLines}
+	Mobius transformations map circles and lines in $\hat{\mathbb{C}}$ to circles and lines in $\hat{\mathbb{C}}$.
+\end{proposition}
+
+\begin{proof}
+	Let $M_T$ be a Mobius transformation, $T = \begin{bmatrix} a & b \\ c & d \end{bmatrix}$. By Remark~\ref{rem:mobiusTransformationDet1}, we can assume that $\det(T) = 1$. If $c = 0$, then $M_T$ is an affine linear map and so preserves circles and lines, since rotations, dilations and translations do. So assume $c \ne 0$. Now
+	\[
+		M_T(z) = \frac{az + b}{cz + d} = \frac{caz + cb}{c(cz + d)} = \frac{a}{c} + \frac{cb - ad}{c(cz + d)} = \frac{a}{c} - \frac{1}{c(cz + d)} = \frac{a}{c} - \frac{1}{c^2} \frac{1}{z + d/c}
+	\]
+	So $M_T$ is the composition of linear maps and the function $f(z) = 1/z$. linear maps preserve circles and lines so we just need to prove that $f$ preserves circles and lines. Also $f^{-1}(z) = f(z)$ so we only need to consider one direction.
+
+	Let $X$ be a circle or line. By Lemma~\ref{lem:equationOfCirclesAndLines}, $X$ is defined by the equation $\gamma z \bar{z} - \alpha \bar{z} - \bar{\alpha} z + \beta = 0$. If $z \in f(X)$ and $z \ne 0$, then $f(z) = f^{-1}(z) \in X$ hence
+	\[
+		\gamma(1 / z)\overline{(1 / z)} - \alpha \overline{(1 / z)} - \overline{\alpha}(1 / z) + \beta = 0 \Longleftrightarrow \beta z\bar{z} - \alpha \bar{z} - \bar{\alpha} z + \gamma = 0
+	\]
+	If $\beta = 0$ then the equation describes a line. If $\beta \ne 0$, then
+	\[
+		z \bar{z} - \frac{\alpha}{\beta} \bar{z} - \frac{\bar{\alpha}}{\beta} z + \frac{\gamma}{\beta} = 0
+	\]
+	Now $|\alpha / \beta|^2 - \gamma / \beta > 0$ since if $X$ is a line then $\gamma = 0$ and $\alpha \ne 0$, and if $X$ is a circle then $\gamma = 1$.
+\end{proof}
+
+\begin{definition}
+	A \textbf{circline} is an object that is either a circle or a line.
+\end{definition}
+
+\begin{remark}
+	A circle is determined by three of its points, hence to find the image of a circle under a Mobius transformation, we just need to find where the three points on the circle are mapped.
 \end{remark}
 
 \subsection{The Riemann Sphere Revisited}
@@ -666,11 +1584,11 @@ Notation: for a domain $D \subset \mathbb{C}$, let $Mob(D)$ be the set of Mobius
 
 	We see that the coefficients of $T$ are real.
 	
-	If $T \in GL_2 (\mathbb{R})$ and $z = x + iy$ then
+	If $T \in \GL_2 (\mathbb{R})$ and $z = x + iy$ then
 	\[Im(M_T(z)) = Im(\frac{az + b}{cz + d}) = Im(\frac{(az + b)(c \bar{z} + d)}{|cz + d|^2})\]
 	\[= Im(\frac{bc \bar{z} + adz}{(cz + d)}) = \frac{y \det T}{|cz+d|}\]
 
-	We have $z \in \mathbb{H} \Leftrightarrow y > 0$ so $M_T(z) \in H \Leftrightarrow T \in GL_2(\mathbb{R})$, $\det T > 0$. We can therefore replace $T$ by a real matrix of determinant 1 by scaling $T$ by a real number.
+	We have $z \in \mathbb{H} \Leftrightarrow y > 0$ so $M_T(z) \in H \Leftrightarrow T \in \GL_2(\mathbb{R})$, $\det T > 0$. We can therefore replace $T$ by a real matrix of determinant 1 by scaling $T$ by a real number.
 \end{proof}
 
 \begin{proposition}
@@ -1138,9 +2056,9 @@ To find a biholomorphism $f$ between domains, we build $f$ in various stages usi
 	\[ \left | \int_a^b g(t) dt \right | \le \int_a^b |g(t)| dt \]
 	If we write $\int_a^b g(t) dt = r e^{i \theta}$ with $r \ge 0$, then
 
-	\[ \left | \int_a^b g(t) dt \right | = |r e^{i \theta}| = r = \text{Re} \left( e^{-i \theta} \int_a^b g(t) dt \right ) \]
+	\[ \left | \int_a^b g(t) dt \right | = |r e^{i \theta}| = r = \Re \left( e^{-i \theta} \int_a^b g(t) dt \right ) \]
 
-	\[ = \text{Re}\left( \int_a^b g(t) e^{-i \theta} dt \right) = \int_a^b \text{Re}( g(t) e^{-i \theta}) dt \le \int_a^b \left |e^{-i \theta} g(t) \right | dt = \int_a^b |g(t)| dt \]
+	\[ = \Re\left( \int_a^b g(t) e^{-i \theta} dt \right) = \int_a^b \Re( g(t) e^{-i \theta}) dt \le \int_a^b \left |e^{-i \theta} g(t) \right | dt = \int_a^b |g(t)| dt \]
 
 	Let $g(t) = f(\gamma(t)) \gamma'(t)$, then
 
@@ -1308,11 +2226,11 @@ To find a biholomorphism $f$ between domains, we build $f$ in various stages usi
 \end{theorem}
 
 \begin{proof}
-	By Lemma~\text{Re}f{lem:ctLem1},
+	By Lemma~\Ref{lem:ctLem1},
 	\[
 		\int_{\partial \Delta} f(z) dz = 0 \quad \forall \Delta \in D
 	\]
-	By Lemma~\text{Re}f{lem:ctLem2}, $f$ has a holomorphic antiderivative $F$. Then, by FTC,
+	By Lemma~\Ref{lem:ctLem2}, $f$ has a holomorphic antiderivative $F$. Then, by FTC,
 	\[
 		\int_{\gamma} f(z) dz = 0 \quad \forall \text{ closed } \gamma \in D
 	\]
@@ -1731,7 +2649,7 @@ Then $h$ is a convergent power series so is holomorphic by theorem 5.21 (lecture
 	\end{itemize}
 \end{definition}
 
-\begin{theorem}
+\begin{theorem}\label{thm:identityTheorem}
 	(\textbf{Identity theorem}) Let $f, g: D \rightarrow \mathbb{C}$ be holomorphic on a domain $D$. If $S = \{ z \in D: f(z) = g(z) \}$ contains a non-isolated point, then
 	\[
 		f(z) = g(z) \quad \text{on } D
@@ -1837,7 +2755,7 @@ Then $h$ is a convergent power series so is holomorphic by theorem 5.21 (lecture
 \end{example}
 
 \begin{example}
-	Calculate the Taylor series of $f(z) = \text{Log}(1 + z)$ about $z = 0$.
+	Calculate the Taylor series of $f(z) = \Log(1 + z)$ about $z = 0$.
 	\[
 		f'(z) = \frac{1}{1 + z} = \frac{1}{1 - (-z)} = \sum_{n = 0}^{\infty} {(-z)}^n
 	\]
@@ -1845,7 +2763,7 @@ Then $h$ is a convergent power series so is holomorphic by theorem 5.21 (lecture
 	\[
 		f(z) = \sum_{n = 0}^{\infty} \frac{{(-1)}^n}{n + 1} z^{n + 1} + c \quad (|z| < 1)
 	\]
-	for some $c$. $\text{Log}(1 + 0) = 0$, so $c = 0$.
+	for some $c$. $\Log(1 + 0) = 0$, so $c = 0$.
 \end{example}
 
 \subsection{Harmonic functions and the Dirichlet problem}
@@ -2249,6 +3167,69 @@ Then $h$ is a convergent power series so is holomorphic by theorem 5.21 (lecture
 	\]
 \end{example}
 
+\begin{example}
+	(Problems class) Let $f$ and $g$ be holomorphic functions on a domain $D$ and suppose the product $\bar{f} g$ is also holomorphic on $D$.
+	\begin{enumerate}
+		\item Show that if $g(w) \ne 0$ for some $w \in D$ then $\bar{f}$ is holomorphic at $w$.
+		\item Prove that either $f$ is constant on $D$ or $g(z) = 0 \ \forall z \in D$.
+	\end{enumerate}
+
+	\begin{enumerate}
+		\item Let $h(z) = \overline{f(z)} g(z)$. By continuity (or Theorem 7.19 (lecture notes)), for some $\rho > 0$, $g(z) \ne 0$ on $B_{\rho}(w)$. Hence $\overline{f(z)} = h(z) / g(z)$ is holomorphic on $B_{\rho}(w)$ since $g$ and $h$ are holomorphic.
+		\item Assume that for some $w$, $g(w) \ne 0$. By the proof of the local max mod (lecture notes), we know that if $f$ and $\bar{f}$ are holomorphic then $f$ is constant on $B_{\rho}(w)$. By analytic continuation, $f$ must be constant on $D$.
+	\end{enumerate}
+\end{example}
+
+\begin{example}
+	(Problems class) Let $S \subset \mathbb{C}$ be a non-empty set and let $w \in S$. Show that the first statements implies the second:
+	\begin{enumerate}
+		\item The point $w$ is a non-isolated point in $S$.
+		\item For some sequence $\{ z_n \}_{n \in \mathbb{N}}$ with $z_n \in S - \{ w \}$, $z_n \rightarrow w$ as $n \rightarrow \infty$.
+	\end{enumerate}
+
+	Assume $w$ is non-isolated in $S$. So $\forall \epsilon > 0, \exists z \in B_{\epsilon}(w) \cap S$, $z \ne w$. In particular, let $\epsilon = 1 / n$. By definition, for some $z_n \in S$, $|z_n - w| < 1 / n$ and $z_n \ne w$. So $z_n \rightarrow w$ as $n \rightarrow \infty$.
+\end{example}
+
+\begin{example}
+	(Problems class) Let $f$ be holomorphic on the unit disc $B_1(0)$ and satisfy $f(1 / n) = 1 / (n + 1)$ for every $n \ge 2$. Find the analytic continuation of $f$ to $\mathbb{C} - \{ -1 \}$.
+
+	We have
+	\[
+		f(1 / n) = 1 / (n + 1) = \frac{1 / n}{1 + 1 / n}
+	\]
+	Therefore $f$ matches $g(z) = z / (1 + z)$ on the sequence $\{ 1 / n \}_{n \ge 2}$. The limit of this sequence is $0$. Using Lemma 2.29 (lecture notes),
+	\[
+		f(0) = f \left( \lim_{n \rightarrow \infty} \frac{1}{n} \right) = \lim_{n \rightarrow \infty} f \left( \frac{1}{n} \right) = \lim_{n \rightarrow \infty} \frac{1}{n + 1} = 0 = 0 / (1 + 0) = g(0)
+	\]
+	Hence $S = \{ z \in B_1(0): f(z) = g(z) \}$ contains $\{ 1 / n \}_{n \ge 2} \cup \{ 0 \}$ and $z = 0$ is a non-isolated point of $S$. So by the \hyperref[thm:identityTheorem]{Identity Theorem}, $f(z) = g(z) = z / (1 + z)$ on $B_1(0)$. By uniqueness of analytic continuation, the only holomorphic function $g$ on $\mathbb{C} - \{ -1 \}$ that matches $f$ on $B_1(0)$ is $g(z) = z / (1 + z)$.
+\end{example}
+
+\begin{example}
+	(Problems class)
+	\begin{enumerate}
+		\item Show that $\Re(\Log(z)) = u(x, y) = \log (\sqrt{x^2 + y^2})$ is harmonic on $\mathbb{C} - \{ 0 \}$.
+		\item Show that there does not exist a function $f$ that is holomorphic on $\mathbb{C} - \{ 0 \}$ with real part $u$.
+	\end{enumerate}
+
+	\begin{enumerate}
+		\item For $(x, y) \ne (0, 0)$, $u(x, y) = \frac{1}{2} \log (x^2 + y^2)$. So
+		\[
+			\begin{aligned}
+				u_x = \frac{1}{2} \frac{2x}{x^2 + y^2} = \frac{x}{x^2 + y^2} & \Longrightarrow u_{xx} = \frac{y^2 - x^2}{{(x^2 + y^2)}^2} \\
+				& u_{yy} = \frac{x^2 - y^2}{{(x^2 + y^2)}^2}
+			\end{aligned}
+		\]
+		Thus $u_{xx} + u_{yy} = 0$. Hence $u$ is harmonic.
+		\item Assume there exists a holomorphic $f = u + iv$ on $\mathbb{C} - \{ 0 \}$ such that $u = \log(|z|)$. Then $v$ is a harmonic conjugate of $u$ on $\mathbb{C} - \{ 0 \}$. But this contains $\mathbb{C} - \mathbb{R}_{\le 0}$ so $v$ is a harmonic conjugate of $u$ on $\mathbb{C} - \mathbb{R}_{\le 0}$. But $\Log(z) = u + i \Arg(z)$ is holomorphic on this set and has real part $u$. Thus by uniqueness of the harmonic conjugate, $v = \Arg(z) + c$. But then $f = u + iv = \Log(z) + ic$ on $\mathbb{C} - \mathbb{R}_{\le 0}$. But this is a contradiction because $f$ would not then be holomorphic.
+	\end{enumerate}
+\end{example}
+
+\begin{example}
+	(Problems class) Let $u = 3x^2 y - y^3 - 2x^2 + 2y^2$. Find the harmonic conjugate $v$ of $u$.
+
+	We need $u_x = v_y$ and $u_y = -v_x$. So $v_y = u_x = 6xy - 4x$ so $v(x, y) = 3xy^2 - 4xy + g(x)$. Also $v_x = 3y^2 - 4y + g'(x) = -u_y = -3x^2 + 3y^2 - 4y$. So $g'(x) = -3x^2$ so $g(x) = x^3 + c$ for a constant $c$. So $v(x, y) = 3xy^2 - 4xy - x^3 - c$.
+\end{example}
+
 \section{Holomorphic functions on punctured domains}
 
 \subsection{Laurent series}
@@ -2312,5 +3293,1180 @@ Then $h$ is a convergent power series so is holomorphic by theorem 5.21 (lecture
 	\]
 	Then $F_2$ converges when $|w| < R' \Longleftrightarrow |z - a| > $. TODO: check lecture notes. 
 \end{proof}
+
+TODO: notes from lecture.
+
+\begin{theorem}
+	(\textbf{Holomorphic functions on annuli have convergent Laurent series}) Let $A_{r, R}(a)$ be an annulus and $f: A_{r, R}(a) \rightarrow \mathbb{C}$ be holomorphic. Then for some $c_n \in \mathbb{C}$,
+	\[
+		f(z) = \sum_{n = -\infty}^{\infty} c_n {(z - a)}^n \quad (z \in A_{r, R}(a))
+	\]
+	and the annulus of convergence of this Laurent series contains $A_{r, R}(a)$.
+\end{theorem}
+
+\begin{proof}
+	TODO: first part of proof.
+
+	For $z \in \gamma_2$,
+	\[
+		\begin{aligned}
+			\frac{1}{z - w} = \frac{1}{(z - a)(1 - \frac{w - a}{z - a})} & = \frac{1}{z - a} \sum_{n = 0}^{\infty} {\left( \frac{w - a}{z - a} \right)}^n \\
+			& = \sum_{n = 0}^{\infty} \frac{{(w - a)}^n}{(z - a)^{n + 1}}
+		\end{aligned}
+	\]
+	so
+	\[
+		\begin{aligned}
+			f_2(w)
+				& = \frac{1}{2 \pi i} \int_{\gamma_2} \sum_{n = 0}^{\infty} \frac{{(w - a)}^n}{(z - a)^{n + 1}} dz \\
+				& = \sum_{n = 0}^{\infty} \left( \frac{1}{2 \pi i} \int_{\gamma_2} \frac{f(z)}{{(z - a)}^{n + 1}} dz \right) {(w - a)}^n \\
+				& = \sum_{n = 0}^{\infty} c_n {(w - a)}^n
+		\end{aligned}
+	\]
+	For $z \in \gamma_1$,
+	\[
+		\begin{aligned}
+			\frac{1}{z - w} = -\frac{1}{w - z} & = \frac{-1 / (w - a)}{1 - \frac{z - a}{w - a}} \\
+			& = -\frac{1}{w - a} \sum_{n = 0}^{\infty} {\left( \frac{z - a}{w - a} \right)}^n
+		\end{aligned}
+	\]
+	Hence
+	\[
+		\begin{aligned}
+			f_1(w)
+				& = -\frac{1}{2 \pi i} \int_{\gamma_1} f(z) \sum_{n = 0}^{\infty} \frac{{(z - a)}^n}{{(w - a)}^{n + 1}} dz \\
+				& = \sum_{n = 0}^{\infty} \left( -\frac{1}{2 \pi i} \int_{\gamma_1} f(z) {(z - a)}^n \right) \frac{1}{{(w - a)}^{n + 1}} \\
+				& = \sum_{m = -\infty}^{-1} \left( -\frac{1}{2 \pi i} \int_{\gamma_1} \frac{f(z)}{{(z - a)}^{m + 1}} dz \right) {(w - a)}^m \quad \text{ where } m = -n - 1
+		\end{aligned}
+	\]
+\end{proof}
+
+\subsection{Classification of isolated singularities}
+
+\begin{definition}
+	We define the \textbf{punctured ball} of radius $R$ centred at $a$ as
+	\[
+		B_R^*(a) = \{ z \in \mathbb{C}: 0 < |z - a| < R \} = B_R(a) - \{ a \} = A_{0, R}(a)
+	\]
+\end{definition}
+
+\begin{definition}\label{def:isolatedSingularity}
+	$f$ is said to have an \textbf{isolated singularity} at $z = a$ if $f$ is holomorphic on $B_R^*(a)$ and one of the following conditions holds:
+	\begin{enumerate}
+		\item $\forall n \le -1, c_n = 0$ where $c_n$ are the coefficients of the Laurent series of $f$ (so $f$ has zero principal part). In this case, $f$ is said to have a \textbf{removable singularity} at $z = a$, and
+		\[
+			f(z) = \sum_{n = 0}^{\infty} c_n {(z - a)}^n
+		\]
+		\item For some $k > 0$, $c_{-k} \ne 0$ but $\forall n > k, c_{-n} = 0$. In this case, $f$ is said to have a \textbf{pole of order $k$} at $z = a$, and
+		\[
+			f(z) = \sum_{n = -k}^{\infty} c_n {(z - a)}^n
+		\]
+		So the principal part has finitely many non-zero terms.
+		\item There are infinitely many negative terms in the Laurent series of $f$. In this case, $f$ is said to have a \textbf{essential singularity} at $z = a$.
+	\end{enumerate}
+\end{definition}
+
+\begin{definition}
+	A pole of order $1$ is called \textbf{simple}.
+\end{definition}
+
+\begin{example}
+	Let $f(z) = (e^z - 1) / z$ on $B_1^*(0)$.
+	\[
+		f(z) = \frac{\sum_{n = 0}^{\infty} \frac{z^n}{n!} - 1}{z} = \sum_{n = 1}^{\infty} \frac{z^n}{n!} = \sum_{m = 0}^{\infty} \frac{z^m}{(m + 1)!}
+	\]
+	Hence $f$ has a removable singularity at $z = 0$. Note we can set $f(0) = 1$. Then the new $f$ is holomorphic on $B_1(0)$.
+\end{example}
+
+\begin{example}
+	Let $f(z) = (e^z - 1) / z^2$ on $B_1^*(0)$.
+	\[
+		f(z) = \frac{\sum_{n = 0}^{\infty} \frac{z^n}{n!} - 1}{z^2} = \sum_{n = 1}^{\infty} \frac{z^{n - 2}}{n!} = \sum_{m = -1}^{\infty} \frac{z^m}{(m + 2)!}
+	\]
+\end{example}
+
+\begin{example}
+	Let $f(z) = e^{1 / z}$ be defined on $B_1^*(0)$.
+	\[
+		f(z) = \sum_{n = 0}^{\infty} \frac{{(1 / z)}^n}{n!} = \sum_{n = 0}^{\infty} \frac{1}{n!} \frac{1}{z^n} = \sum_{m = -\infty}^{0} \frac{z^m}{(-m)!}
+	\]
+	Hence $f$ has an essential singularity at $z = 0$.
+\end{example}
+
+\subsection{Removable singularities}
+
+\begin{lemma}\label{lem:removableSingularityIffExtendsToHolomorphic}
+	Let $f$ be holomorphic on $B_R^*(a)$. Then $f$ has a removable singularity at $z = a$ iff $f$ extends to a holomorphic function on $B_R(a)$.
+\end{lemma}
+
+\begin{proof}
+	($\Leftarrow$): If $f$ extends to a holomorphic function on $B_R(a)$, for some $g: B_R(a) \rightarrow \mathbb{C}$, $f(z) = g(z)$ on $B_R^*(a)$. By Cauchy-Taylor (lecture notes), $g$ has a Taylor series on $B_R(a)$; in particular this Taylor series matches $f$ on $B_R^*(a)$. Hence $f$ has a removable singularity at $z = a$.
+	
+	($\Rightarrow$): If $f$ has a removable singularity at $z = a$, then by Definition~\ref{def:isolatedSingularity}, the Laurent series of $f$ is a Taylor series on $B_R^*(a)$. This Taylor series must converge on $B_R(a)$ by theorem 5.15 (lecture notes). Hence $f$ is equal to its Taylor series on $B_R^*(a)$ and the Taylor series is holomorphic on $B_R(a)$ and extends $f$ to $B_R(a)$.
+\end{proof}
+
+\begin{proposition}\label{prop:removableSingularityIffLimitIsZero}
+	Let $f: B_R^*(a) \rightarrow \mathbb{C}$ is holomorphic. Then $f$ has a removable singularity at $z = a$ iff
+	\[
+		\lim_{z \to a} (z - a) f(z) = 0
+	\]
+\end{proposition}
+
+\begin{proof}
+	($\Rightarrow$): Assume $f$ has a removable singularity at $z = a$. By Lemma~\ref{lem:removableSingularityIffExtendsToHolomorphic}, $f$ can be extended to a holomorphic function $\tilde{f}$ at $z = a$. Then
+	\[
+		\lim_{z \to a} (z - a) f(z) = \lim_{z \to a} (z - a) \tilde{f}(z) = (a - a) \tilde{f} (a) = 0
+	\]
+	($\Leftarrow$): Assume $\lim_{z \to a} (z - a) f(z) = 0$. Since $f$ is holomorphic on $B_R^*(a)$, by Theorem 9.7 (lecture notes), $f$ has a Laurent series and by Proposition 9.5 (lecture notes), the coefficients of
+	\[
+		f(z) = \sum_{n = -\infty}^{\infty} c_n {(z - a)}^n
+	\]
+	are given by
+	\[
+		c_n = \frac{1}{2 \pi i} \int_{|z - a| = \rho} \frac{f(z)}{{(z - a)}^{n + 1}} dz, \quad \rho \in (0, R)
+	\]
+	We need to show that $\forall n > 0, c_{-n} = 0$. By the Estimation Lemma (lecture notes),
+	\[
+		\begin{aligned}
+			0 \le |c_n| & = \left| \frac{1}{2 \pi i} \int_{|z - a| = \rho} \frac{f(z)}{{(z - a)}^{n + 1}} dz \right| \\
+			& \le \frac{1}{2 \pi} \cdot 2 \pi \rho \cdot \sup_{|z - a| = \rho} \left| \frac{f(z)}{{(z - a)}^{n + 1}} \right| \\
+			& = \rho \cdot \sup_{|z - a| = \rho} \left| \frac{|(z - a) f(z)|}{|z - a|^{n + 2}} \right| \\
+			& = \frac{\rho}{\rho^{n + 2}} \cdot \sup_{|z - a| = \rho} \left| (z - a) f(z) \right| \\
+			& = \frac{1}{\rho^{n + 1}} \cdot \sup_{|z - a| = \rho} \left| (z - a) f(z) \right|
+			& \to 0 \quad \text{as} \quad \rho \to 0, \forall n \le -1
+		\end{aligned}
+	\]
+	Thus $c_n = 0$ by squeezing.
+\end{proof}
+
+\begin{example}
+	Let $f(z) = (e^z - 1) / z$ on $B_1^*(0)$.
+
+	\[
+		\lim_{z \rightarrow 0} z f(z) = \lim_{z \to 0} (e^z - 1) = e^0 - 1 = 0
+	\]
+	So by Proposition~\ref{prop:removableSingularityIffLimitIsZero}, $f$ has a removable singularity.
+\end{example}
+
+\subsection{Poles}
+
+\begin{proposition}
+	Let $f: B_R^*(a) \rightarrow \mathbb{C}$ be holomorphic. Then the following statements are all equivalent:
+	\begin{enumerate}
+		\item $f$ has a pole of order $k$ at $z = a$.
+		\item $f(z) = g(z) / {(z - a)}^k$ for some holomorphic function $g: B_R(a) \rightarrow \mathbb{C}$, with $g(a) \ne 0$.
+		\item For some $0 < r < R$ and some holomorphic $h: B_r(a) \rightarrow \mathbb{C}$, $h$ has a zero of order $k$ at $z = a$ and $f(z) = 1 / h(z)$ on $B_r^*(a)$.
+	\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+	\hfill
+	\begin{itemize}
+		\item (1. $\Rightarrow$ 2.): If $f$ has a pole of order $k$ at $z = a$, then its Laurent series is of the form
+		\[
+			f(z) = \sum_{n = -k}^{\infty} c_n {(z - a)}^n
+		\]
+		where $c_{-k} \ne 0$. Define $g_1: B_R^*(a) \rightarrow \mathbb{C}$ by
+		\[
+			\begin{aligned}
+				g_1(z) := f(z) \cdot {(z - a)}^k
+					& = {(z - a)}^k \sum_{n = -k}^{\infty} c_n {(z - a)}^n \\
+					& = \sum_{n = -k}^{\infty} c_n {(z - a)}^{n + k} \\
+					& = \sum_{m = 0}^{\infty} c_{m - k} {(z - a)}^m
+			\end{aligned}
+		\]
+		This is a Taylor series so $g_1$ has a removable singularity at $z = a$. By Lemma 9.11 (lecture notes), $g_1$ can be extended to a holomorphic function $g: B_R(a) \rightarrow \mathbb{C}$ on $B_R(a)$. Then $f(z) = g_1(z) / {(z - a)}^k = g(z) / {(z - a)}^k$ on $B_R^*(a)$. Finally, $g(a) = c_{-k} \ne 0$.
+	
+		\item (2. $\Rightarrow$ 3.): If $f(z) = g(z) / {(z - a)}^k$ for some holomorphic function $g: B_R(a) \rightarrow \mathbb{C}$, with $g(a) \ne 0$, then by the Principle of Isolated Zeros (lecture notes), for some $0 < r \le R$, $g(z) \ne 0$ on $B_r^*(a)$ and so as $g(a) \ne 0$, $g(z) \ne 0$ on $B_r(a)$. Define
+		\[
+			h(z) := \frac{{(z - a)}^k}{g(z)}
+		\]
+		which is holomorphic on $B_r(a)$. So $h(z) = {(z - a)}^k \frac{1}{g(z)}$ so $h$ has a zero of order $k$ at $z = a$. Finally,
+		\[
+			f(z) = \frac{g(z)}{{(z - a)}^k} = \frac{{(z - a)}^k}{h(z) {(z - a)}^k} = \frac{1}{h(z)}
+		\]
+		\item (3. $\Rightarrow$ 2.): By definition, for some holomorphic $h_1(z)$ on $B_r(a)$, $h(z) = {(z - a)}^k h_1(z)$ and $h_1(a) \ne 0$. Also, $f(z) = 1 / h(z) = 1 / ({(z - a)}^k h_1(z))$ which is holomorphic on $B_r^*(a)$. So $h_1(z) \ne 0$ on $B_r(a)$, hence
+		\[
+			g_1(z) := 1 / h_1(z)
+		\]
+		is holomorphic on $B_r(a)$ and $g_1(a) \ne 0$. Finally,
+		\[
+			{(z - a)}^k f(z) = \frac{{(z - a)}^k}{{(z - a)}^k h_1(z)} = g_1(z)
+		\]
+		on $B_r(a)$. By analytic continuation, $g_1$ can be extended to a holomorphic function $g$ on $B_R(a)$ which satisfies the same condition.
+		\item (2. $\Rightarrow$ 1.): By Cauchy-Taylor, $g$ has a Taylor series on $B_R(a)$:
+		\[
+			g(z) = \sum_{n = 0}^{\infty} a_n {(z - a)}^n
+		\]
+		with $a_0 = g(a) \ne 0$. $f$ has Laurent series
+		\[
+			f(z) = \frac{g(z)}{{(z - a)}^k} = \sum_{n = 0}^{\infty} a_n {(z - a)}^{n - k} = \sum_{m = -k}^{\infty} a_{m + k} {(z - a)}^m
+		\]
+		Here, $c_{-k} = a_0 \ne 0$ so $f$ has a pole of order $k$ at $z = a$.
+	\end{itemize}
+\end{proof}
+
+\begin{example}
+	Classify the isolated singularities and zeroes of the following function:
+	\[
+		f(z) = \frac{\sin(z)}{z \cos(z)} = \frac{\tan(z)}{z}
+	\]
+	We look at the zeros of the numerator and the denominator. For the zeroes of the numerator,
+	\[
+		\sin(z) = 0 = \frac{1}{2i} \left( e^{iz} - e^{-iz} \right) \Longleftrightarrow e^{iz} = e^{-iz} \Longleftrightarrow e^{2iz} = 1
+	\]
+	Since by Proposition 1.9 (3.) (lecture notes) $e^z \Longleftrightarrow z = 2n \pi i$ for some $n \in \mathbb{Z}$, so $2iz = 2n \pi i$ so $z = n \pi$ for some $n \in \mathbb{Z}$. For the zeroes of the denominator,
+	\[
+		\begin{aligned}
+			z \cos(z) = 0 & \Longleftrightarrow z = 0 \text{ or } (\cos(z) = 0 \\
+			& \Longleftrightarrow e^{iz} = -e^{iz} \Longleftrightarrow e^{2iz} = -1 \Longleftrightarrow z = \frac{\pi}{2} + n \pi \text{ for some } n \in \mathbb{Z})	
+		\end{aligned}
+	\]
+	$f(a) = 0$ when the numerator is zero and the denominator is non-zero, so $f(z) = 0$ for $z = n \pi$, $n \ne 0$. We have
+	\[
+		f'(z) = \frac{\cos(z)}{z \cos(z)} - \frac{\sin(z) (\cos(z) - z \sin(z))}{{(z \cos(z))}^2}
+	\]
+	so $f'(n \pi) = 1 / (n \pi) \ne 0$ so $n \pi$ for $n \ne 0$ is zero of order $1$.
+	
+	By Proposition 9.15 (lecture notes), to find the poles of $f$, consider the zeroes of
+	\[
+		h(z) = \frac{z \cos(z)}{\sin(z)}
+	\]
+	$h(z) \ne 0$ when the numerator is zero and the denominator is non-zero, so when $z = n\pi + \pi / 2$. We have
+	\[
+		h'(z) = \frac{\cos(z) - z \sin(z)}{\sin(z)} - \frac{z {\cos(z)}^2 }{{(\sin(z))}^2}
+	\]
+	so $h'(n \pi + \pi / 2) = -n \pi - \pi / 2 \ne 0$ so $h$ has a zero of order $1$ at $z = n \pi + \pi / 2$. By Proposition 9.15 (lecture notes), $f$ has a pole of order $1$ at $z = n \pi + \pi / 2$.
+
+	To determine what happens at $z = 0$,
+	\[
+		\lim_{z \rightarrow 0} z f(z) = \lim_{z \rightarrow 0} \frac{\sin(z)}{\cos(z)} = 0
+	\]
+	so by Proposition 9.12 (lecture notes), $f$ has a removable singularity at $z = 0$.
+\end{example}
+
+\begin{proposition}
+	Let $f: B_R^*(a) \rightarrow \mathbb{C}$ be holomorphic. Then $f$ has a pole at $z = a$ iff
+	\[
+		\lim_{z \rightarrow a} |f(z)| = \infty \Longleftrightarrow (\forall M > 0, \exists \delta > 0, |z - a| < \delta \Longrightarrow |f(z)| \ge M)
+	\]
+\end{proposition}
+
+\begin{proof}
+	($\Rightarrow$): Assume $f$ has a pole of order $k$. By Proposition 9.15 (3.) (lecture notes),
+	\[
+		|f(z)| = |g(z)| \cdot |{(z - a)}^{-k}|
+	\]
+	for some holomorphic $g$. But $g(a) \ne 0$ and $g$ is holomorphic so
+	\[
+		\lim_{z \to a} |g(z)| \cdot |z - a|^{-k} = \infty
+	\]
+	($\Leftarrow$): If the limit holds, then for some $r > 0$, $f(z) \ne 0$ on $B_r^*(a)$. So $h(z) = 1 / f(z)$ is holomorphic on $B_r^*(a)$. Now
+	\[
+		0 \le |(z - a) h(z)| = |(z - a) / f(z)| = 0
+	\]
+	so $h$ has a removable singularity at $z = a$ by Lemma 9.11 (lecture notes). So $h$ can be extended to a holomorphic function on $B_r(a)$. Finally,
+	\[
+		|h(a)| = \lim_{z \to a} |h(z)| = \lim_{z \to a} 1 / |f(z)| = 0
+	\]
+	So $h(a) = 0$ so $h$ has a zero at $z = a$.
+\end{proof}
+
+\subsection{Essential singularities}
+
+\begin{theorem}
+	(\textbf{Casoratti-Weierstrass Theorem}) Let $f: B_R^*(a) \to \mathbb{C}$ be holomorphic and let $f$ have an essential singularity at $z = a$. Then
+	\[
+		\forall w \in \mathbb{C}, \forall 0 < r < R, \forall \epsilon > 0, \exists z \in B_r^*(a), \quad f(z) \in B_{\epsilon}(w)
+	\]
+\end{theorem}
+
+\begin{proof}
+	Assume the converse, that
+	\[
+		\exists w \in \mathbb{C}, \exists 0 < r < R, \exists \epsilon > 0, \forall z \in B_r^*(a), \quad f(z) \notin B_{\epsilon}(w)
+	\]
+	Define
+	\[
+		g(z) := \frac{1}{f(z) - w}
+	\]
+	Since $|f(z) - w| \ge \epsilon$, $|g(z)| \le 1 / \epsilon$ on $B_r^*(a)$ and $g$ is holomorphic on $B_r^*(a)$. By Theorem 9.14 (lecture notes), $g$ has a removable singularity at $z = a$ so by Lemma 9.11 (lecture notes), $g$ can be extended to a holomorphic function on $B_r(a)$.
+	
+	Now $f(z) = w + 1 / g(z)$. If $g(a) \ne 0$, then
+	\[
+		\lim_{z \to a} (z - a) f(z) = \lim_{z \to a} (z - a) \frac{w g(z) + 1}{g(z)} = 0 \cdot \frac{w g(a)}{g(a)} = 0
+	\]
+	so $f$ has a removable singularity at $z = a$. Otherwise if $g(a) = 0$, define
+	\[
+		h(z) = 1 / f(z) = \frac{g(z)}{w g(z) + 1}
+	\]
+	$h$ is holomorphic and $h(a) = 0$. So $a$ is a zero of $h$, so by Proposition 9.15 (lecture notes), $f$ has a pole at $z = a$. So either $f$ has a removable singularity at $z = a$ or a pole at $z = a$, so it does not have an essential singularity at $z = a$. Contradiction.
+\end{proof}
+
+\begin{theorem}\label{thm:bigPicard}
+	(\textbf{Big Picard Theorem}) Let $f: B_R^*(a) \to \mathbb{C}$ be holomorphic and let $f$ have an essential singularity at $z = a$. Then
+	\[
+		\exists b \in \mathbb{C}, \forall 0 < r < R, \quad \mathbb{C} - \{ b \} \subseteq f(B_r^*(a))
+	\]
+\end{theorem}
+
+\begin{proof}
+	Omitted.
+\end{proof}
+
+\begin{example}
+	Let $f(z) = e^{1 / z}$. By Theorem~\ref{thm:bigPicard}, $\mathbb{C} - \{ 0 \} \subseteq f(B_r^*(0))$. Pick $w \in \mathbb{C} - \{ 0 \}$. Then for some $z$, $e^{1 / z} = w$.
+\end{example}
+
+\begin{example}
+	(Problems class) Compute the principal part of the Laurent Series about $z = 0$ of $f(z) = e^z / z^4$.
+
+	We have
+	\[
+		e^z = \sum_{n = 0}^{\infty} \frac{z^n}{n!}
+	\]
+	So
+	\[
+		\begin{aligned}
+			f(z)
+				& = \sum_{n = 0}^{\infty} \frac{z^{n - 4}}{n!} \\
+				& = \sum_{m = -4}^{\infty} \frac{z^m}{(m + 4)!}
+		\end{aligned}
+	\]
+	So the principal part is
+	\[
+		\sum_{m = -4}^{-1} \frac{z^m}{(m + 4)!} = \frac{1}{z^4} + \frac{1}{z^3} + \frac{1}{2z^2} + \frac{1}{6z}
+	\]
+\end{example}
+
+\begin{example}
+	(Problems class) Compute the principal part of the Laurent Series about $z = 0$ of
+	\[
+		f(z) = \frac{e^{\sinh(z^2 + iz - 17)}}{e^{\cosh(z^2 + iz + 17)}}
+	\]
+	$f$ is holomorphic everywhere so the principal part is $0$.
+\end{example}
+
+\begin{example}
+	(Problems class) Let $f(z) = z / (1 + z^2)$. Find the Laurent series of $f$ on $0 < |z| < 1$ and $|z| > 1$.
+	For $0 < |z| < 1$:
+	\[
+		f(z) = z \frac{z}{1 - {(-z)}^2} = z \sum_{n = 0}^{\infty} {(-z^2)}^n = \sum_{n = 0}^{\infty} {(-1)}^n z^{2n + 1}
+	\]
+	For $|z| > 1$:
+	\[
+		\begin{aligned}
+			f(z) = \frac{1/z}{1/z^2 + 1} & = \frac{1}{z} \frac{1}{1 - -(1/z^2)} \\
+			& = \frac{1}{z} \sum_{n = 0}^{\infty} \left( -\frac{1}{z^2} \right)^n = \sum_{n = 0}^{\infty} {(-1)}^n \frac{1}{z^{2n + 1}} \\
+			& = \sum_{m = -\infty}^{0} {(-1)}^m z^{2m - 1}
+		\end{aligned}
+	\]
+\end{example}
+
+\begin{example}
+	(Problems class) Show that the Laurent series
+	\[
+		f(z) = \sum_{n = -\infty}^{\infty} z^n
+	\]
+	converges nowhere on $\mathbb{C}$.
+
+	Consider the principal part and analytic part of the $f$. For $f$ to converge, both parts must converge. The analytic part is
+	\[
+		\sum_{n = 0}^{\infty} z^n
+	\]
+	which diverges for $|z| > 1$. The principal part is
+	\[
+		\sum_{n = -\infty}^{-1} z^n = \sum_{m = 1}^{\infty} z^{-m} = \sum_{m = 1}^{\infty} {(\frac{1}{z})}^m
+	\]
+	which diverges for $|1 / z| > 1 \Longleftrightarrow |z| < 1$. Every open annulus which contains the unit disc $|z| = 1$ must contain points $z$ with $|z| \ne 1$, hence by Proposition 9.3 (lecture notes), $f$ diverges for $|z| = 1$, hence it diverges on $\mathbb{C}$.
+\end{example}
+
+\begin{example}
+	(Problems class) Let $f: B_r^*(a) \to \mathbb{C}$ be holomorphic with a pole of order $m$ at $z = a$. Show that $f'(z)$ has a pole of order $m + 1$ at $z = a$. What is the coefficient of $1 / (z - a)$ in the Laurent series of $f'$?
+
+	We have
+	\[
+		f(z) = \sum_{n = -m}^{\infty} c_n {(z - a)}^n
+	\]
+	where $c_{-m} \ne 0$. By theorem 5.21 (lecture notes) and the fact that the principal part has finitely many terms (as $f$ has a pole), we can term-by-term differentiate. The derivative of the analytic part of $f$ is
+	\[
+		\sum_{n = 1}^{\infty} n c_n {(z - a)}^{n - 1}
+	\]
+	The principal part is
+	\[
+		\sum_{n = -m}^{-1} c_n {(z - a)}^n
+	\]
+	so its derivative is
+	\[
+		\sum_{n = -m}^{-2} n c_n {(z - a)}^{n - 1}
+	\]
+	So the Laurent series of $f'$ is
+	\[
+		\sum_{n = -m}^{-1} n c_n {(z - a)}^{n - 1} + \sum_{n = 1}^{\infty} n c_n {(z - a)}^{n - 1}
+	\]
+	so the coefficient of $1 / (z - a)$ is $0$.
+\end{example}
+
+\begin{example}
+	(Problems class) For every $k, m > 0$, give a holomorphic $f$ on $\mathbb{C} - \{ \pm 1, \pm i \}$ with a zero of order $k$ at $z = -i$, a pole of order $m$ at $z = i$, a removable singularity at $z = 1$ and an essential singularity at $z = -1$.
+
+	$f_1(z) = \frac{1}{{(z - i)}^m}$ has a pole of order $m$ at $z = i$. $f_2(z) = \frac{e^{z - 1} - 1/e}{z - 1}$ has a removable singularity at $z = 1$. $f_3(z) = e^{1/(z + 1)}$ has an essential singularity at $z = -1$.
+	\[
+		f(z) = (f_1(z) + f_2(z) + f_3(z)) {(z + i)}^k
+	\]
+	is therefore a possible solution.
+\end{example}
+
+\section{Cauchy's Residue Theorem}
+
+\subsection{Cauchy's residue theorem}
+
+\begin{definition}
+	Let $D$ be a domain. $f: D \to \mathbb{C}$ is called \textbf{meromorphic} on $D$ if for some $S \subset D$,
+	\begin{itemize}
+		\item $f$ is holomorphic on $D - S$ and
+		\item $f$ has a pole at every point in $S$ and
+		\item all points in $S$ are isolated.
+	\end{itemize}
+\end{definition}
+
+\begin{remark}
+	If $\gamma$ is a simple closed contour, it has finitely many poles in $D_{\gamma}^{\text{int}}$. $f$ is called meromorphic on $D_{\gamma}^{\text{int}} \cup \gamma$ if for some domain $D$ where $D_{\gamma}^{\text{int}} \cup \gamma \subset D$, $f$ is meromorphic on $D$.
+\end{remark}
+
+\begin{definition}
+	Let $D$ be a domain and $f$ be holomorphic on $D$ with a pole at $z = a$ with Laurent series
+	\[
+		f(z) = \sum_{n = -k}^{\infty} c_n {(z - a)}^n
+	\]
+	Then the \textbf{residue of $f$ at $z = a$}, denoted $\Res_{z = a}(f)$, is defined as
+	\[
+		\Res_{z = a}(f) = c_{-1}
+	\]
+\end{definition}
+
+\begin{theorem}\label{thm:cauchysResidueTheorem}
+	(\textbf{Cauchy's Residue Theorem}) Let $\gamma$ be a positively-oriented simple closed contour and let $f$ be meromorphic on 
+	$D_{\gamma}^{\text{int}} \cup \gamma$. If $f$ has no poles on $\gamma$, then
+	\[
+		\int_{\gamma} f(z) dz = 2 \pi i \cdot \sum_{j = 1}^{m} \Res_{z = a_j}(f)
+	\]
+	where $a_1, \dots, a_n$ are the poles of $f$ \textbf{inside} $\gamma$.
+\end{theorem}
+
+\begin{proof}
+	Let $a_1, \dots, a_n$ be the poles of $f$ in $D_{\gamma}^{\text{int}}$. Consider the Laurent series of $f$ about each pole $a_j$. Define
+	\[
+		f_j(z) = \sum_{m = -k_j}^{-1} c_{n, j} {(z - a_j)}^n
+	\]
+	as the principal part of the Laurent series about $z = a_j$, where $c_{n, j}$ is the $c_n$ coefficient in the Laurent series about $z - a_j$. Each $f_j(z)$ is a finite sum of reciprocals of ${(z - a_j)}^n$ hence $f_j(z)$ is holomorphic on $\mathbb{C} - \{ a_j \}$ so $f_j(z)$ can be extended to a holomorphic function on $\mathbb{C} - \{ a_j \}$. In particular, the contour integral of $f_j(z)$ around $\gamma$ is well-defined. For $n \le -1$, by CIF for simple closed contours and the fundamental theorem of calculus,
+	\[
+		\int_{\gamma} {(z - a_j)}^n dz = \begin{cases}
+			2 \pi i & \text{ if } n = -1 \\
+			0 & \text{ if } n \ne -1
+		\end{cases}
+	\]
+	So
+	\[
+		\begin{aligned}
+			\int_{\gamma} f_j(z) dz & = \int_{\gamma} \sum_{n = -k_j}^{-1} c_{n, j} {(z - a_j)}^n dz \\
+			& = \sum_{n = -k_j}^{-1} c_{n, j} \int_{\gamma} {(z - a_j)}^n dz = 2 \pi i c_{-1, j} = \Res_{z = a_j}(f) \cdot 2 \pi i
+		\end{aligned}
+	\]
+	We want to show
+	\[
+		\begin{aligned}
+			& \int_{\gamma} f(z) dz = 2 \pi i \sum_{j = 1}^{m} \Res_{z = a_j}(f) = \sum_{j = 1}^{m} \int_{\gamma} f_j(z) dz \\
+			\Longleftrightarrow & \int_{\gamma} \left( f(z) - \sum_{j = 1}^{m} f_j(z) \right) dz = 0
+		\end{aligned}
+	\]
+	Let
+	\[
+		g(z) = f(z) - \sum_{j = 1}^{m} f_j(z)
+	\]
+	Since $f_j(z)$ is holomorphic at $z = a_j$ for $j \ne i$ and $f_j(z)$ is the principal part of the Laurent series of $f$ at $z = a_j$, $g$ has a Taylor series expansion about every $z = a_j$. Thus $g$ can be extended to a holomorphic function $\tilde{g}$ at every $z = a_j$, then $\tilde{g}$ is holomorphic on $D_{\gamma}^{\text{int}} \cup \gamma$. Finally,
+	\[
+		\int_{\gamma} \left( f(z) - \sum_{j = 1}^{m} f_j(z) \right) dz = \int_{\gamma} g(z) dz = \int_{\gamma} \tilde{g}(z) dz = 0
+	\]
+	by Cauchy's theorem for simple closed contours.
+\end{proof}
+
+\begin{proposition}\label{prop:calculatingResidues}
+	(\textbf{Rules for calculating residues})
+	\begin{enumerate}
+		\item (\textbf{Linear combinations}) Let $f$ and $g$ both have a pole at $z = a$ and $A, B \in \mathbb{C}$. Then
+		\[
+			\Res_{z = a}(Af + Bg) = A \cdot \Res_{z = a}(f) + B \cdot \Res_{z = a}(g)
+		\]
+		\item (\textbf{Cover-up rule for poles of order $1$}) Let $f$ have a simple pole (order $1$) at $z = a$. Then
+		\[
+			\Res_{z = a}(f) = \lim_{z \to a} (z - a) f(z)
+		\]
+		\item (\textbf{Simple zero on the denominator}) If $f(z) = g(z) / h(z)$ with $g$ and $h$ holomorphic at $z = a$ and $g(a) \ne 0$ and $h$ has a zero of order $1$, then
+		\[
+			\Res_{z = a}(f) = \frac{g(a)}{h'(a)}
+		\]
+		\item (\textbf{Poles of higher order}) If $f(z) = g(z) / {(z - a)}^k$ where $g$ is holomorphic, then
+		\[
+			\Res_{z = a}(f) = \frac{g^{(k - 1)} (a)}{(k - 1)!}
+		\]
+	\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+	\hfill
+	\begin{enumerate}
+		\item Omitted.
+		\item \[
+			f(z) = \sum_{n = -1}^{\infty} c_n {(z - a)}^n
+		\]
+		with $c_{-1} \ne 0$, as the pole has order $1$. Then
+		\[
+			\lim_{z \to a} f(z) = \lim_{z \to a} \sum_{n = -1}^{\infty} c_n {(z - a)}^{n + 1} = \lim_{z \to a} \sum_{m = 0}^{\infty} c_{m - 1} {(z - a)}^m = c_{-1}
+		\]
+		\item By Proposition 9.15 (lecture notes), $f$ has a pole of order $1$ at $z = a$ hence
+		\[
+			f(z) = \sum_{n = -1}^{\infty} c_n {(z - a)}^n
+		\]
+		Since $h$ is holomorphic and $h(a) = 0$, by Cauchy-Taylor,
+		\[
+			h(z) = \sum_{n = 1}^{\infty} d_n {(z - a)}^n
+		\]
+		$h$ has a zero of order $1$ so $h(z) = (z - a) h_1(z)$ for some $h_1(z)$ with $h_1(a) \ne 0$ and so
+		\[
+			h_1(z) = \sum_{n = 0}^{\infty} d_n {(z - a)}^n
+		\]
+		and $h_1(a) = d_1 \ne 0$. Also,
+		\[
+			h'(z) = \sum_{n = 1}^{\infty} n d_n {(z - a)}^{n - 1}
+		\]
+		so $h'(a) = d_1 = h_1(a)$. We have
+		\[
+			\begin{aligned}
+				& (z - a) \frac{g(z)}{h(z)} = (z - a) f(z) = \sum_{n = -1}^{\infty} c_n {(z - a)}^{n + 1} \\
+				& \Longleftrightarrow \frac{g(z)}{h_1(z)} = \sum_{m = 0}^{\infty} c_{m - 1} {(z - a)}^m \\
+				& \Longrightarrow \frac{g(a)}{h_1(a)} = c_{-1} = \Res_{z = a}(f)
+			\end{aligned}
+		\]
+		\item $g$ is holomorphic so by Cauchy-Taylor,
+		\[
+			g(z) = \sum_{n = 0}^{\infty} c_n {(z - a)}^n
+		\]
+		So
+		\[
+			f(z) = \frac{1}{{(z - a)}^k} g(z) = \sum_{n = 0}^{\infty} c_n {(z - a)}^{n - k} = \sum_{m = -k}^{\infty} c_{m + k} {(z - a)}^m
+		\]
+		Hence by Remark 7.3 (lecture notes)
+		\[
+			\Res_{z = a}(f) = c_{k - 1} = \frac{g^{(k - 1)}(a)}{(k - 1)!}
+		\]
+	\end{enumerate}
+\end{proof}
+
+\begin{example}
+	Let $f(z) = 1 / (z^2 - 9)$. It has simple poles at $z = \pm 3$ and
+	\[
+		\Res_{z = 3}(f) = \lim_{z \to 3} (z - 3) \frac{1}{(z + 3)(z - 3)} = \frac{1}{6}
+	\]
+\end{example}
+
+\begin{example}
+	Let $f(z) = 1 / \sin(z)$. Then $g(z) = 1$, $h(z) = \sin(z)$. $h$ has a zero of order $1$ at $z = 0$. Then
+	\[
+		\Res_{z = a}(f) = \frac{1}{\cos(0)} = 1
+	\]
+\end{example}
+
+\begin{example}
+	Let $f(z) = 1 / \sin(z)$, so $\Res_{z = 0}(f) = 1$ by the above example. So by Cauchy's residue theorem, for every $0 < \rho < \pi$,
+	\[
+		\int_{|z| = \rho} \frac{1}{\sin(z)} dz = 2 \pi i \cdot \Res_{z = 0}(f) = 2 \pi i
+	\]
+\end{example}
+
+\begin{example}
+	Compute $\int_{\gamma} e^z / (z^2 + z^3) dz$ where $\gamma$ is any simple closed contour with $0 \in D_{\gamma}^{\text{int}}$ and $-1 \in D_{\gamma}^{\text{ext}}$.
+	\[
+		f(z) = \frac{e^z}{z^2 (z + 1)}
+	\]
+	So $f$ has poles of order $2$ at $z = 0$ and order $1$ at $z = -1$. Let $g(z) = e^z / (1 + z)$. By Cauchy's residue theorem,
+	\[
+		\int_{\gamma} f(z) dz = 2 \pi i \cdot \Res_{z = 0}(f) = 2 \pi i \cdot g'(0) = 0
+	\]
+\end{example}
+
+\subsection{Calculation of real integrals}
+
+\begin{example}\label{exa:integralRationalTrigFunctions}
+	(\textbf{Integral of rational functions of $\sin$ and $\cos$}) Show that for every $-1 < a < 1$,
+	\[
+		\int_{0}^{2 \pi} \frac{1}{1 + a \sin(\theta)} d\theta = \frac{2 \pi}{\sqrt{1 - a^2}}
+	\]
+	Assume $a \ne 0$. We have
+	\[
+		\sin(\theta) = \frac{e^{i\theta} - e^{-i\theta}}{2i}
+	\]
+	Note that $\gamma(\theta) = e^{i\theta}$ for $\theta \in [0, 2 \pi]$ is the unit circle and $\gamma'(\theta) = i e^{i\theta}$. So
+	\[
+		\begin{aligned}
+			\int_{0}^{2 \pi} \frac{1}{1 + a \sin(\theta)} d\theta & = \int_{0}^{2 \pi} \frac{1}{1 + \frac{a}{2i} (e^{i\theta} - e^{-i\theta})} d\theta \\
+			& = \int_{0}^{2 \pi} \frac{2i}{2i + a e^{i\theta} - a e^{-i\theta}} \frac{i e^{i \theta}}{i e^{i \theta}} d\theta \\
+			& = \int_{0}^{2 \pi} \frac{2i}{2i + a \gamma(\theta) - a / \gamma(\theta)} \frac{\gamma'(\theta)}{i \gamma(\theta)} d\theta \\
+			& = \int_{\gamma} \frac{2i}{(2i + az - a/z) iz} dz \\
+			& = \int_{\gamma} \frac{2}{a} \frac{1}{z^2 + i \frac{2}{a} z - 1} dz \\
+		\end{aligned}
+	\]
+	The denominator of the integrand has roots $z_1, z_2 = \left( \frac{-1 \pm \sqrt{1 - a^2}}{a} \right) i$. Since $|a| < 1$, $|z_2| = \frac{1 + \sqrt{1 - a^2}}{|a|} > 1$. Since $z_1 z_2 = -1$, $|z_1| < 1$. By Cauchy's residue theorem,
+	\[
+		\int_{0}^{2 \pi} \frac{1}{1 + a \sin(\theta)} d\theta = 2 \pi i \cdot \Res_{z = z_1}(f)
+	\]
+	Since $z = z_1$ is a pole of order $1$, by the cover up rule (lecture notes),
+	\[
+		\int_{0}^{2 \pi} \frac{1}{1 + a \sin(\theta)} d\theta = 2 \pi i \cdot \lim_{z \to z_1} (z - z_1) f(z) = 2 \pi i \frac{2}{a} \frac{1}{z_1 - z_2} = \frac{2 \pi}{\sqrt{1 - a^2}}
+	\]
+\end{example}
+
+\begin{remark}
+	We can use the method from Example~\ref{exa:integralRationalTrigFunctions} to compute
+	\[
+		\int_{0}^{2\pi} F(\sin(\theta), \cos(\theta)) d\theta
+	\]
+	where $F = P(x, y) / Q(x, y)$ is the quotient of polynomials $P$ and $Q$ in two variables. The general method is the \textbf{change of variables}: write
+	\[
+		z = e^{i \theta}, \quad \sin(\theta) = \frac{z - z^{-1}}{2i}, \quad \cos(\theta) = \frac{z + z^{-1}}{2}
+	\]
+	which gives
+	\[
+		\int_{0}^{2\pi} F(\sin(\theta), \cos(\theta)) d\theta = \int_{|z| = 1} F \left( \frac{z - z^{-1}}{2i}, \frac{z + z^{-1}}{2} \right) \frac{1}{iz} dz
+	\]
+	This method works as long as $F(z)$ does not have a pole on $|z| = 1$.
+\end{remark}
+
+\begin{example}\label{exa:integratingRationalFunctions}
+	(\textbf{Integrating rational functions}) Evaluate
+	\[
+		\int_{0}^{\infty} \frac{x^2}{x^6 + 1} dx = \lim_{R \to \infty} \int_{0}^{R} \frac{x^2}{x^6 + 1} dx
+	\]
+	Let $f(z) = \frac{z^2}{z^6 + 1}$. The denominator is zero when $z^6 + 1 = 0 \Longleftrightarrow z^6 = e^{i\pi} = e^{\pi i + 2k\pi i}$ hence $f$ has poles at $z = e^{i\pi / 6 + k\pi i / 3}$ for $k = 0, 1, 2, 3, 4, 5$. The numerator is non-zero for all these $z_k$, so they are all poles of $f$. Since
+	\[
+		f(z) = \frac{z^2}{\prod_{k = 0}^{5} (z - z_k)}
+	\]
+	each pole is of order $1$. By Proposition~\ref{prop:calculatingResidues} (3) with $g(z) = z^2$, $h(z) = z^6 + 1$,
+	\[
+		\Res_{z = z_k}(f) = \frac{g(z_k)}{h'(z_k)} = \frac{z_k^2}{6 z_k^5} = \frac{1}{6 z_k^3}
+	\]
+	Consider the ``D'' shaped contour $\gamma_R$ defined by
+	\[
+		\gamma_R = L_R \cup C_R
+	\]
+	where $L_R$ is the line joining $-R$ to $R$ and $C_R$ is the semicircle of radius $R$ in the upper half plane rejoining $R$ to $-R$. By \hyperref[thm:cauchysResidueTheorem]{Cauchy's residue theorem}, for every $R > 1$,
+	\[
+		\int_{\gamma_R} f(z) dz = 2 \pi i \sum_{k = 0}^2 \Res_{z = z_k}(f) = \left( \frac{1}{6 z_0^3} + \frac{1}{6 z_1^3} + \frac{1}{6 z_2^3} \right) 2 \pi i = \frac{2 \pi i}{6} \left( \frac{1}{i} - \frac{1}{i} + \frac{1}{i} \right) = \frac{\pi}{3}
+	\]
+	Note that $f$ is even and so
+	\[
+		\int_{L_R} f(z) dz = \int_{-R}^{R} f(x) dx = 2 \int_{0}^{R} \frac{x^2}{x^6 + 1} dx
+	\]
+	Also,
+	\[
+		\int_{\gamma_R} f(z) dz = \int_{L_R} f(z) dz + \int_{C_R} f(z) dz
+	\]
+	Hence
+	\[
+		\begin{aligned}
+			\lim_{R \to \infty} \int_{0}^{R} \frac{x^2}{x^6 + 1} dx & = \lim_{R \to \infty} \frac{1}{2} \int_{L_R} f(z) dz \\
+			& = \frac{1}{2} \lim_{R \to \infty} \left( \int_{\gamma_R} f(z) dz - \int_{C_R} f(z) dz \right) = \frac{\pi}{6} - \lim_{R \to \infty} \int_{C_R} f(z) dz
+		\end{aligned}
+	\]
+	We claim that
+	\[
+		\lim_{R \to \infty} \int_{C_R} f(z) dz = 0
+	\]
+	By the estimation lemma (lecture notes),
+	\[
+		\left| \int_{C_R} f(z) dz \right| \le L(C_R) \cdot \sup_{z \in C_R} |f(z)|
+	\]
+	$L(C_R) = \pi R$ and for $|z| = R$,
+	\[
+		|f(z)| = \left| \frac{z^2}{z^6 + 1} \right| = \frac{|z|^2}{|z^6 + 1|} \le \frac{|z|^2}{||z|^6 - 1|} = \frac{R^2}{R^6 - 1}
+	\]
+	Hence
+	\[
+		\left| \int_{C_R} f(z) dz \right| \le \pi R \frac{R^2}{R^6 - 1} = \frac{\pi R^3}{R^6 - 1} \to 0 \text{ as } R \to \infty
+	\]
+	Thus
+	\[
+		\int_{0}^{\infty} \frac{x^2}{x^6 + 1} dx = \frac{\pi}{6}
+	\]
+\end{example}
+
+\begin{remark}
+	The method in Example~\ref{exa:integratingRationalFunctions} works for integrals of the form
+	\[
+		\lim_{R \to \infty} \int_{-R}^{R} \frac{p(x)}{q(x)} dx
+	\]
+	for polynomials $p$ and $q$ which satisfy:
+	\begin{itemize}
+		\item $q$ has no real roots.
+		\item $\deg(q) \ge \deg(p) + 2$.
+	\end{itemize}
+\end{remark}
+
+\subsection{Principal value integrals}
+
+\begin{definition}
+	The \textbf{Cauchy principal value} of $\int_{-\infty}^{\infty} f(x) dx$ is defined as
+	\[
+		\text{P.V. } \int_{-\infty}^{+\infty} f(x) dx := \lim_{r \to \infty} \int_{-r}^{r} f(x) dx
+	\]
+	Note if $\int_{-\infty}^{\infty} f(x) dx$ exists then it equals the Cauchy principal value. If $f$ is even they also match.
+\end{definition}
+
+\begin{lemma}\label{lem:jordansLemma}
+	(\textbf{Jordan's lemma}) If for some $R > 0$, a function $f$ is holomorphic on $D = \{ z \in \mathbb{C}: |z| > r \}$ and $z f(z)$ is bounded on $D$, then
+	\[
+		\forall \alpha > 0, \quad \lim_{R \to \infty} \int_{C_R} f(z) e^{i \alpha z} dz = 0
+	\]
+	where $C_R(\theta) = R e^{i \theta}$ for $\theta \in [0, \pi]$.
+\end{lemma}
+
+\begin{proof}
+	$z f(z)$ is bounded, so for some $M \le 0$, $|z f(z)| \le M$ on $D$. Now
+	\[
+		\begin{aligned}
+			\left| \int_{C_R} f(z) e^{i \alpha z} dz \right| & = \left| \int_{0}^{\pi} f(C_R(\theta)) e^{i \alpha C_R(\theta)} C_R'(\theta) d\theta \right| = \left| \int_{0}^{\pi} f(R e^{i\theta}) e^{i \alpha R e^{i\theta}} i R e^{i\theta} d\theta \right| \\
+			& \le \int_{0}^{\pi} \left| f(R e^{i\theta}) R e^{i\theta} \right| \cdot |e^{i \alpha R e^{i\theta}}| d\theta \le M \int_{0}^{\pi} |e^{i \alpha R e^{i\theta}}| d\theta \\
+			& = M \int_{0}^{\pi} \left| e^{i \alpha R (\cos(\theta) + i \sin(\theta))} \right| d\theta = M \int_{0}^{\pi} \left| e^{-\alpha R \sin(\theta)} \cdot e^{i \alpha R \cos(\theta)} \right| d\theta \\
+			& = M \int_{0}^{\pi} e^{- \alpha R \sin(\theta)} d\theta = 2M \int_{0}^{\pi / 2} e^{- \alpha R \sin(\theta)} d\theta \\
+			& \le 2M \int_{0}^{\pi / 2} e^{-\alpha R \cdot 2 \theta / \pi} d\theta = 2M \left[ -\frac{\pi}{2\alpha R} e^{-\alpha R \cdot 2 \theta \ pi} \right]_0^{\pi / 2} \\
+			& = \frac{\pi M}{\alpha R} \left[ -e^{-\alpha R \cdot 2\theta / \pi} \right]_0^{\pi / 2} = \frac{\pi M}{\alpha R} \left[ 1 - e^{-\alpha R} \right] \\
+			& \le \frac{\pi M}{\alpha R} \to 0 \text{ as } R \to \infty
+		\end{aligned}
+	\]
+\end{proof}
+
+\begin{example}
+	(\textbf{Principal value integrals and Jordan's lemma}) Compute
+	\[
+		\int_{-\infty}^{\infty} \frac{x \sin(x)}{x^2 + 1} dx
+	\]
+	The integrand is even, so
+	\[
+		\int_{-\infty}^{\infty} \frac{x \sin(x)}{x^2 + 1} dx = \lim_{R \to \infty} \int_{-R}^{R} \frac{x \sin(x)}{x^2 + 1} dx
+	\]
+	Let $f(z) = z / (z^2 + 1)$. We will compute
+	\[
+		\int_{\gamma _R} f(z) e^{iz} dz
+	\]
+	where $L_R \cup C_R$ is $D$-shaped. We have
+	\[
+		\begin{aligned}
+			\int_{L_R} f(z) e^{iz} dz & = \int_{L_R} f(z) (\cos(z) + i \sin(z)) dz \\
+			& = \int_{-R}^{R} f(x) \cos(x) dx + i \int_{-R}^{R} f(x) \sin(x) dx
+		\end{aligned}
+	\]
+	Hence
+	\[
+		\int_{-R}^{R} \frac{x \sin(x)}{x^2 + 1} dx = \Im\left( \int_{L_R} f(z) e^{iz} dz \right)
+	\]
+	Also,
+	\[
+		\int_{L_R} f(z) e^{iz} dz = \int_{\gamma_R} f(z) e^{iz} dz - \int_{C_R} f(z) e^{iz} dz
+	\]
+	and
+	\[
+		f(z) e^{iz} = \frac{z e^{iz}}{z^2 + 1} = \frac{z e^{iz}}{(z + i)(z - i)}
+	\]
+	So by Cauchy's residue theorem, and Proposition~\ref{prop:calculatingResidues} (2.),
+	\[
+		\begin{aligned}
+			\int_{\gamma_R} f(z) e^{iz} dz & = 2 \pi i \cdot \Res_{z = i} (f(z) e^{iz}) = 2 \pi \\
+			& = 2 \pi i \cdot \lim_{z \to i} (z - i) f(z) e^{iz} \\
+			& = 2 \pi i \cdot \lim_{z \to i} \frac{z e^{iz}}{z + i} = \frac{i e^{-1}}{2i} \cdot 2 \pi i = \frac{i\pi}{e}
+		\end{aligned}
+	\]
+	Thus
+	\[
+		\int_{-R}^{R} \frac{x \sin(x)}{x^2 + 1} dx = \frac{\pi}{e} - \Im\left( \int_{C_R} f(z) e^{iz} dz \right)
+	\]
+	By \hyperref[lem:jordansLemma]{Jordan's lemma} with $\alpha = 1$, for $|z| = R$,
+	\[
+		|z f(z)| = \left| \frac{z^2}{z^2 + 1} \right| \le \frac{|z|^2}{|z|^2 - 1} = \frac{R^2}{R^2 - 1} = \frac{1}{1 - 1/R^2}
+	\]
+	so for $r = \sqrt{2}$, $|z f(z)| \le 2$ hence
+	\[
+		\lim_{R \to \infty} \int_{C_R} f(z) e^{iz} dz = 0
+	\]
+	Finally,
+	\[
+		\int_{-\infty}^{\infty} \frac{x \sin(x)}{x^2 + 1} dx = \lim_{R \to \infty} \left( \frac{\pi}{e} - \Im \left(\int_{C_R} f(z) e^{iz} dz \right) \right) = \frac{\pi}{e}
+	\]
+\end{example}
+
+\begin{remark}
+	The same method works for
+	\[
+		\text{P.V. } \int_{-\infty}^{\infty} f(x) \sin(\alpha x) dx
+	\]
+	or
+	\[
+		\text{P.V. } \int_{-\infty}^{\infty} f(x) \cos(\alpha x) dx
+	\]
+	where $f$ is meromorphic satisfying Jordan's lemma, e.g. $f(x) = p(x) / q(x)$ where $p$ and $q$ are polynomials, $q$ has no real roots and $\deg(q) \le \deg(p) + 1$.
+\end{remark}
+
+\begin{lemma}\label{lem:indentationLemma}
+	(\textbf{Indentation lemma}) Let $g$ be meromorphic on $\mathbb{C}$ with a simple pole at $z = 0$. Then
+	\[
+		\lim_{\epsilon \to 0} \int_{C_{\epsilon}} g(z) dz = \pi i \cdot \Res_{z = 0}(g)
+	\]
+	where $C_{\epsilon}(\theta) = \epsilon e^{i\theta}$, $\theta \in [0, \pi]$.
+\end{lemma}
+
+\begin{proof}
+	Since $g$ has a simple pole at $z = 0$, it has a Laurent series
+	\[
+		g(z) = \sum_{n = -1}^{\infty} c_n z^n
+	\]
+	where $c_1 = \Res_{z = 0}(g)$. Note $g(z) = \frac{c_{-1}}{z} + h(z)$ where $h$ is holomorphic on $B_R(0)$, and
+	\[
+		\int_{C_{\epsilon}} g(z) dz = c_{-1} \int_{c_{\epsilon}} \frac{1}{z} dz + \int_{C_{\epsilon}} h(z) dz
+	\]
+	For every $r < R$, the function $h$ is holomorphic on the compact set $\overline{B_r}(0)$ so by Theorem 2.30 (lecture notes), $h$ attains a maximum on $\overline{B_r}(0)$ and so for some $M$, $|h(z)| \le M$ on $\overline{B_r}(0)$. Thus
+	\[
+		\left| \int_{C_{\epsilon}} h(z) dz \right| \le \epsilon \pi M \to 0 \text{ as } \epsilon \to 0
+	\]
+	Finally,
+	\[
+		\int_{C_{\epsilon}} \frac{1}{z} dz = \int_{0}^{\pi} \frac{1}{\epsilon e^{i\theta}} i e^{i\theta} d\theta = i \pi
+	\]
+	hence
+	\[
+		\lim_{\epsilon \to 0} \int_{C_{\epsilon}} g(z) dz = c_{-1} i \pi + 0 = \pi i \cdot \Res_{z = 0}(g)
+	\]
+\end{proof}
+
+\begin{example}
+	(\textbf{Use of indented contours}) Evaluate the integral
+	\[
+		\int_{0}^{\infty} \frac{\sin(x)}{x} dx
+	\]
+	Define $\gamma = \gamma_{R, \rho} = L_2 \cup (-C_{\rho}) \cup L_1 \cup C_R$ where $L_1$ is the line from $\rho$ to $R$, $L_2$ is the line from $-R$ to $-\rho$, $C_R$ is the semicircle from $-R$ to $R$ and $C_{\rho}$ is the semicircle from $-\rho$ to $\rho$.
+
+	Note $g(z) := e^{iz} / z$ is holomorphic on $D_{\gamma}^{\text{int}} \cup \gamma$. By Theorem 8.15 (lecture notes),
+	\[
+		\int_{\gamma} g(z) dz = 0
+	\]
+	Note that
+	\[
+		\int_{\gamma} g(z) dz = \int_{L_2} g(z) dz - \int_{C_{\rho}} g(z) dz + \int_{L_1} g(z) dz + \int_{C_R} g(z) dz
+	\]
+	hence
+	\[
+		\begin{aligned}
+			\int_{L_1} g(z) dz + \int_{L_2} g(z) dz & = \int_{C_{\rho}} g(z) dz - \int_{C_R} g(z) dz \\
+			& = \int_{L_1} \frac{e^{iz}}{z} dz + \int_{L_2} \frac{e^{iz}}{z} dz \\
+			& = \int_{\rho}^{R} \frac{e^{ix}}{x} dx + \int_{-R}^{-\rho} \frac{e^{ix}}{x} dx \\
+			& = \int_{\rho}^{R} \frac{e^{ix}}{x} dx + \int_{\rho}^{R} -\frac{e^{-ix}}{x} dx \\
+			& = \int_{\rho}^{R} \frac{e^{ix} - e^{-ix}}{x} dx \\
+			& = 2i \int_{\rho}^{R} \frac{\sin(x)}{x} dx
+		\end{aligned}
+	\]
+	Thus
+	\[
+		\int_{0}^{\infty} \frac{\sin(x)}{x} dx = \lim_{R \to \infty, \rho \to 0} \frac{1}{2i} \left( \int_{C_{\rho}} g(z) dz - \int_{C_R} g(z) dz \right)
+	\]
+	Now let $f(z) = 1/z$ so $g(z) = f(z) e^{iz}$. Clearly $|z f(z)| = 1$ is bounded outside any $\overline{B_r}(0)$ so by \hyperref[lem:jordansLemma]{Jordan's lemma},
+	\[
+		\lim_{R \to \infty} \int_{C_R} g(z) dz = 0
+	\]
+	By the \hyperref[lem:indentationLemma]{indentation lemma},
+	\[
+		\lim_{\rho \to 0} \int_{C_{\rho}} g(z) dz = \pi i \cdot \Res_{z = 0}(g) = \pi i \cdot \lim_{z \to 0} z g(z) = \pi i
+	\]
+	by Proposition~\ref{prop:calculatingResidues} (2). Thus
+	\[
+		\int_{0}^{\infty} \frac{\sin(x)}{x} dx = \frac{1}{2i} \pi i = \frac{\pi}{2}
+	\]
+\end{example}
+
+\begin{example}
+	Show that
+	\[
+		\int_{0}^{\infty} \frac{\log(x)}{{(x^2 + 4)}^2} dx = \frac{\pi}{32} (\log(2) - 1)
+	\]
+	Let $f(z) = \log(z) / {(z^2 + 4)}^2$, where $\log(z) = \log(|z|) + i \arg(z)$, where $-\pi / 2 < \arg(z) < 3\pi / 2$. Consider the indented contour $\gamma = \gamma_{R, \rho}$, then
+	\[
+		\int_{\gamma} f(z) dz = \int_{L_2} f(z) dz - \int_{C_{\rho}} f(z) dz + \int_{L_1} f(z) dz + \int_{C_R} f(z) dz
+	\]
+	Note
+	\[
+		\int_{L_1} f(z) dz = \int_{\rho}^{R} \frac{\log(x)}{{(x^2 + 4)}^2} dx
+	\]
+	If $x < 0$, then $x = |x| e^{i\pi}$, so $\log(x) = \log(|x|) + i \pi$. Hence
+	\[
+		\int_{L_2} f(z) dz = \int_{-\rho}^{-R} \frac{\log(x) + i \pi}{(x^2 + 4)^2} dx
+	\]
+	So
+	\[
+		\int_{L_1} f(z) dz + \int_{L_2} f(z) dz = 2 \int_{\rho}^{R} \frac{\log(x)}{{(x^2 + 4)}^2} dx + i \pi \int_{\rho}^{R} \frac{1}{(x^2 + 4)^2} dx
+	\]
+	We have
+	\[
+		\int_{0}^{\infty} \frac{\log(x)}{{(x^2 + 4)}^2} dx = \lim_{R \to \infty, \rho \to 0} \frac{1}{2} \Re \left( \int_{\gamma} f(z) - \int_{C_R} f(z) dz + \int_{C_{\rho}} f(z) dz \right)
+	\]
+	On $C_R$, we have
+	\[
+		|f(z)| = \left| \frac{\log(z)}{{(z^2 + 4)}^2} \right| \le \frac{\log(z) + |\arg(z)|}{||z|^2 - 4|^2} \le \frac{\log(R) + \pi}{{(R^2 - 4)}^2}
+	\]
+	so by the Estimation Lemma,
+	\[
+		\left| \int_{C_R} f(z) dz \right| \le L(C_R) \sup_{z \in C_R} |f(z)| \le \frac{\pi R (\log(R) + \pi)}{{(R^2 - 4)}^2} = \frac{\pi \log(R) / R + \pi^2 / R^2}{(R^2 - 4)^2} \to 0 \text{ as } R \to \infty
+	\]
+	Similarly, on $C_{\rho}$, we have
+	\[
+		|f(z)| \le \frac{|\log(|z|)| + |\arg(z)|}{||z|^2 - 4|^2} = \frac{-\log(\rho) + \pi}{{(\rho^2 - 4)}^2}
+	\]
+	Note that $\lim_{\rho \to 0} \rho \log(\rho) = \lim_{\rho \to 0} \frac{\log(\rho)}{1 / \rho} = \lim_{\rho \to 0} \frac{1/p}{-1/p^2} = 0$ by L'Hopital's rule. So by the Estimation lemma,
+	\[
+		\left| \int_{C_{\rho}} f(z) dz \right| \le \frac{\pi \rho \log(\rho) + \pi^2 \rho}{{(4 - \rho)}^2} \to 0 \text{ as } \rho \to 0
+	\]
+	By Cauchy's Residue theorem, we have
+	\[
+		\int_{\gamma} f(z) dz = 2 \pi i \cdot \Res_{z = 2i} (f) = 2\pi i \frac{g'(2i)}{(2 - 1)!} = \frac{\pi}{16} (\log(2) - 1) + \frac{i\pi^2}{32}
+	\]
+	where $g(z) = \log(z) / {(z + 2i)}^2$. So finally,
+	\[
+		\int_{0}^{\infty} \frac{\log(x)}{{(x^2 + 4)}^2} dx = \lim_{R \to \infty, \rho \to 0} \frac{1}{2} \Re \left( \int_{\gamma} f(z) - \int_{C_R} f(z) dz + \int_{C_{\rho}} f(z) dz \right) = \frac{\pi}{32} (\log(2) - 1)
+	\]
+\end{example}
+
+\begin{example}
+	(Problems class) Determine all poles of the following function and calculate the residue of each pole:
+	\[
+		f(z) = \frac{1}{z^2} + \frac{1}{z^2 + 1}
+	\]
+	We have
+	\[
+		f(z) = \frac{z^2 + 1 + z^2}{z^2 (z^2 + 1)} = \frac{2z^2 + 1}{z^2 (z + i)(z - i)}
+	\]
+	So $i$ and $-i$ are poles of order $1$ and $0$ is a pole of order $2$. $f(z) = 1/z^2 + h(z)$ where $h(z) = 1/(z^2 + 1)$ is holomorphic at $0$, so $h$ has a Taylor series at $z = 0$, so $\Res_{z = 0}(f) = 0$.
+
+	For $z = i$, by the cover-up rule,
+	\[
+		\Res_{z = i}(f) = \lim_{z \to i} (z - i) f(z) = \frac{2i^2 + 1}{i^2 (2i)} = \frac{1}{2i}
+	\]
+	Similarly for $z = -i$.
+\end{example}
+
+\begin{example}
+	(Problems class) Use Cauchy's theorem to evaluate the integral
+	\[
+		\int_{|z| = 8} \frac{z - 1}{e^z - 1} dz
+	\]
+	Let $f(z) = \frac{z - 1}{e^z - 1}$, then the reciprocal of $f$ has a zero when $e^z = 1 \Longleftrightarrow z = 2m \pi i$ for $m \in \mathbb{Z}$. So these are the poles of $f$. Their orders are $1$ since the derivative of $1 / f$ at $z = 2n\pi i$ is not zero. So we consider the poles $0, -2\pi i, 2 \pi i$ for Cauchy's residue theorem. By Proposition~\ref{prop:calculatingResidues} (3) with $g(z) = z - 1$ and $h(z) = e^z - 1$,
+	\[
+		\Res_{z = 2m\pi i} (f) = \frac{g(2m\pi i)}{h'(2m \pi i)} = 2m \pi i - 1
+	\]
+	So by Cauchy's residue theorem,
+	\[
+		\int_{|z| = 8} f(z) dz = 2 \pi i \cdot \sum_{m = -1}^{1} 2m \pi i = 2 \pi i ((-2\pi i - 1) + (0 - 1) + (2\pi i - 1)) = -6 \pi i
+	\]
+\end{example}
+
+\begin{example}
+	(Problems class) By converting into a complex contour integral, evaluate
+	\[
+		\int_{0}^{\pi} \frac{1}{4 + \sin(\theta)^2} d\theta
+	\]
+	We have $\sin(\theta) = \frac{e^{i\theta} - e^{i\theta}}{2i}$. So
+	\[
+		\begin{aligned}
+			\int_{0}^{\pi} \frac{1}{4 + \sin(\theta)^2} d\theta & = \int_{0}^{\pi} \frac{1}{4 - {(e^{i\theta} - e^{-i\theta})}^2 / 4} d\theta \\
+			& = \int_{0}^{\pi} \frac{1}{4 - \frac{1}{4} (e^{2i\theta} + e^{-2i\theta} - 2)} d\theta \\
+			& = \int_{0}^{\pi} \frac{4e^{2i\theta}}{16e^{2i\theta} - e^{4i\theta} - 1 + 2e^{2i\theta}} d\theta \\
+			& = 2i \int_{0}^{\pi} \frac{2i e^{2i\theta}}{e^{4i\theta} - 18e^{2i\theta} + 1} d\theta \\
+			& = 2i \int_{0}^{\pi} \frac{\gamma'(\theta)}{\gamma(\theta)^2 - 18 \gamma(\theta) + 1} d\theta, \quad \gamma(\theta) = e^{2i\theta} \\
+			& = 2i \int_{|z| = 1} \frac{1}{z^2 - 18z + 1} dz
+		\end{aligned}
+	\]
+	There are poles at $z = 9 \pm 4\sqrt{5}$ which are both simple. $|9 - 4\sqrt{5}| < 1$ and $|9 + 4\sqrt{5}| > 1$ so we just need to calculate
+	\[
+		\Res_{z = 9 - 4\sqrt{5}} (f) = \frac{1}{2z - 18}\Big|_{z = 9 - 4\sqrt{5}} = -\frac{1}{8\sqrt{5}}
+	\]
+	Thus
+	\[
+		\int_{0}^{\pi} \frac{1}{4 \sin(\theta)^2} d\theta = 2i \cdot 2 \pi i \cdot -\frac{1}{8\sqrt{5}} = \frac{\pi}{2\sqrt{5}}
+	\]
+\end{example}
+
+\begin{example}
+	(Problems class) Evaluate
+	\[
+		\int_{0}^{\infty} f(x) dx = \int_{0}^{\infty} \frac{1}{(x^2 + a^2)(x^2 + b^2)} dx
+	\]
+	The integrand is even so
+	\[
+		\int_{0}^{\infty} f(x) dx = \lim_{R \to \infty} \int_{0}^{R} f(x) dx = \frac{1}{2} \lim_{R \to \infty} \int_{-R}^R f(x) dx
+	\]
+	Let $L_R$ be the line from $-R$ to $R$, so
+	\[
+		\int_{-R}^{R} f(x) dx = \int_{L_R} f(z) dz
+	\]
+	and $C_R$ be the semicircle from $R$ to $-R$ and let $\gamma_R = L_R \cup C_R$. So
+	\[
+		\int_{0}^{\infty} f(x) dx = \frac{1}{2} \lim_{R \to \infty} \left( \int_{\gamma_R} f(z) dz - \int_{C_R} f(z) dz \right)
+	\]
+	For every $z \in C_R$, $|z| = R$, so we have
+	\[
+		|f(z)| = \frac{1}{|z^2 + a^2| \cdot |z^2 + b^2|} \le \frac{1}{(|z|^2 - |a|^2)(|z|^2 - |b|^2)} = \frac{1}{(R^2 - |a|^2)(R^2 - |b|^2)}
+	\]
+	$f$ has poles at $ia, -ia, ib, -ib$, so hence when $R > \max(|a|, |b|)$, $\gamma_R$ contains the poles $ia$ and $ib$. By the estimation lemma,
+	\[
+		\begin{aligned}
+			\left| \int_{C_R} f(z) dz \right| & \le \pi R \cdot \sup_{z \in C_R} |f(z)| \le \frac{\pi R}{(R^2 - |a|^2)(R^2 - |b|^2)} \to 0 \quad \text{as} \quad R \to \infty
+		\end{aligned}
+	\]
+	By Proposition~\ref{prop:calculatingResidues} (2),
+	\[
+		\Res_{z = ai} (f) = \frac{1}{2ai (b^2 - a^2)}, \quad \Res_{z = bi} (f) = \frac{1}{2bi (a^2 - b^2)}
+	\]
+	So
+	\[
+		\int_{0}^{\infty} f(x) dx = \frac{1}{2} 2 \pi i \cdot (\Res_{z = ai} (f) + \Res_{z = bi} (f)) = \frac{\pi}{2ab(a + b)}
+	\]
+\end{example}
+
+\subsection{The argument principle}
+
+\begin{lemma}
+	Let $f$ be meromorphic on a domain $D$ with a zero or a pole of order $k$ at $z = a$. Then
+	\[
+		\frac{f'(z)}{f(z)}
+	\]
+	has a simple pole at $z = a$ and
+	\[
+		\Res_{z = a} \left( \frac{f'(z)}{f(z)} \right) = \begin{cases}
+			k & \text{ if f has a zero} \\
+			-k & \text{ if f has a pole}
+		\end{cases}
+	\]
+\end{lemma}
+
+\begin{proof}
+	By definition, if $f$ has a zero, for some $g$ holomorphic on $B_R(a)$,
+	\[
+		f(z) = {(z - a)}^k g(z), \quad g(a) \ne 0
+	\]
+	Then
+	\[
+		\frac{f'(z)}{f(z)} = \frac{k {(z - a)}^{k - 1} g(z) + {(z - a)}^k g'(z)}{{(z - a)}^k g(z)} = \frac{k}{z - a} + \frac{g'(z)}{g(z)}
+	\]
+	Similarly if $f$ has a pole, for some $g$ holomorphic on $B_R(a)$,
+	\[
+		f(z) = \frac{g(z)}{{(z - a)}^k}, \quad g(a) \ne 0
+	\]
+	Then
+	\[
+		\int_{f'(z)}^{f(z)} = \frac{g'(a) {(z - a)}^{-k} - k g(z) {(z - a)}^{-k - 1}}{g(z) {(z - a)}^{-k}} = \frac{-k}{z - a} + \frac{g'(z)}{g(z)}
+	\]
+	Since $g' / g$ is holomorphic at $z = a$, by definition of Laurent series, we arrive at the result.
+\end{proof}
+
+\begin{example}
+	Let $f(z) = e^z / z$, so $f$ has a simple pole at $z = 0$. Then
+	\[
+		f'(z) = e^z / z - e^z / z^2 \Longrightarrow \frac{f'(z)}{f(z)} = \frac{-1}{z} + 1
+	\]
+	So $\Res_{z = 0}(f) = -1$.
+\end{example}
+
+\begin{remark}
+	$f' / f$ has a pole if
+	\begin{itemize}
+		\item $f$ has a zero or a pole.
+		\item $f'$ has a pole.
+	\end{itemize}
+	But $f'$ has a pole if and only if $f$ has a pole. So the only poles of $f' / f$ are at the zeros and poles of $f$.
+\end{remark}
+
+\begin{theorem}
+	(\textbf{The argument principle}) Let $\gamma$ be a positively-oriented simple closed contour and let $f$ be meromorphic on and inside $\gamma$ ($D_{\gamma}^{\text{int}} \cup \gamma$). Then if $f$ has no poles or zeroes on $\gamma$, then
+	\[
+		\frac{1}{2 \pi i} \int_{\gamma} \frac{f'(z)}{f(z)} dz = Z_f - P_f
+	\]
+	where $Z_f$ is the number of zeros of $f$ and $P_f$ is the number of poles of $f$ in $D_{\gamma}^{\text{int}}$ where we count with multiplicities (so a zero/pole of order $3$ counts as $3$).
+\end{theorem}
+
+\begin{proof}
+	Let $h(z) = f'(z) / f(z)$. Then $h$ is meromorphic and its pole are at the zeros/poles of $f$ which are all simple by Lemma 10.19 (lecture notes). So by Cauchy's Residue theorem,
+	\[
+		\int_{\gamma} h(z) dz = 2 \pi i \sum_{i = 1}^m \Res_{z = a_i} (h)
+	\]
+	where $a_i$ are the poles of $h$ inside $\gamma$. By Lemma 10.19 (lecture notes), those residues are
+	\[
+		\begin{cases}
+			k_i & \text{ if } a_i \text{ was a zero of order } k_i \text{ of f} \\
+			-k_i & \text{ if } a_i \text{ was a pole of order } k_i \text{ of f}
+		\end{cases}
+	\]
+\end{proof}
+
+\begin{example}
+	Let
+	\[
+		f(z) = \frac{{(z - 3)}^3 {(z - 1)}^7 z^3}{{(z - i)}^4 {(z - 4)}^5 {(z - 3i)}^7}
+	\]
+	Calculate $\int_{\gamma} f'(z) / f(z) dz$ where $\gamma(\theta) = \frac{7}{2} e^{i \theta}$, $\theta \in [0, 2\pi]$.
+
+	By the argument principle,
+	\[
+		\int_{\gamma} f'(z) / f(z) dz = 2 \pi i (Z_f - P_f) = 2 \pi i ((3 + 7 + 3) - (4 + 7)) = 4 \pi i
+	\]
+\end{example}
+
+\begin{theorem}
+	(\textbf{Rouche's theorem}) Let $\gamma$ be a simple closed contour and let $f$ and $g$ be holomorphic on $D_{\gamma}^{\text{int}} \cup \gamma$. If $\forall z \in \gamma$,
+	\[
+		|f(z) - g(z)| < |g(z)|
+	\]
+	then $f$ and $g$ have the same number of zeros inside $\gamma$ (counted with multiplicity).
+\end{theorem}
+
+\begin{proof}
+	If $f(z_0) = 0$ for some $z_0 \in \gamma$, then $|g(z_0)| = |0 - g(z_0)| = |f(z_0) - g(z_0)| < |g(z_0)|$, so we have a contradiction. Similarly, if $g(z_0) = 0$ for some $z_0 \in \gamma$, then $|f(z_0)| = |f(z_0) - 0| = |f(z_0) - g(z_0)| < |g(z_0)| = 0$. Hence $f$ and $g$ have no zeros or poles on $\gamma$.
+
+	Let $h(z) = f(z) / g(z)$. Since $f$ and $g$ are holomorphic and $g(z) \ne 0$ on $\gamma$, then $h(z)$ has no poles on $\gamma$ and since $f(z) \ne 0$ on $\gamma$, then $h(z)$ has no zeros on $\gamma$. Note that inside $\gamma$, all poles of $h$ must occur from zeros of $g$, which are isolated, by the Principle of Isolated Zeros. So $h$ is meromorphic.
+
+	Let $Z_h$, $Z_f$, $Z_g$ be the number of zeros of $h$, $f$ and $g$ respectively. Then by the argument principle,
+	\[
+		\begin{aligned}
+			Z_h & = \frac{1}{2\pi i} \int_{\gamma} \frac{h'(z)}{h(z)} dz \\
+			& = \frac{1}{2\pi i} \int_{\gamma} \frac{f'(z) / g(z) - f(z) g'(z) / g(z)^2}{f(z) / g(z)} dz \\
+			& = \frac{1}{2 \pi i} \frac{f'(z)}{f(z)} dz - \frac{1}{2 \pi i} \frac{g'(z)}{g(z)} dz = Z_f - Z_g
+		\end{aligned}
+	\]
+	So we need to show $Z_h = 0$. By observation, $Z_h = I(h \circ \gamma; 0)$. We will show $\Gamma_h = h \circ \gamma$ lies in $B_1(1)$, i.e. for $z \in \gamma$, $|h(z) - 1| < 1$. We have
+	\[
+		|h(z) - 1| = \left| \frac{f(z)}{g(z)} - \frac{g(z)}{g(z)} \right| = \frac{|f(z) - g(z)|}{|g(z)|} < 1
+	\]
+	therefore $h \circ \gamma \subset B_1(1)$ and $Z_h = 0$.
+\end{proof}
+
+\begin{example}
+	Let $P(z) = z^4 + 6z + \pi$. Let $g(z) = z^4$, then for $|z| = 2$,
+	\[
+		|g(z)| = |z^4| = |z|^4 = 16 > 12 + \pi = 6|z| + \pi \le |6z + \pi| = |P(z) - g(z)|
+	\]
+	Thus $P$ has the same number of roots as $z^4$ inside $|z| = 2$ by Rouche's theorem, i.e. $P$ has $4$ roots inside $|z| = 2$. Now let $g(z) = 6z$, then for $|z| = 1$,
+	\[
+		|g(z)| = |6z| = 6|z| = 6 > 1 + \pi = |z|^4 + \pi \ge |z^4 + \pi| = |P(z) - g(z)|
+	\]
+	$g$ has one zero inside $|z| = 1$ so $P$ has one zero  of size $|z| < 1$ and three zeros of size $1 < |z| < 2$.
+\end{example}
+
+\begin{example}
+	Let $f(z) = \cos(\pi z) - \pi^{\pi} z^m$, $m \in \mathbb{Z}$.
+\end{example}
 
 \end{document}

@@ -7,6 +7,126 @@
 
 \input{../titletoc.tex}
 
+\section{Summary notes}
+
+\begin{itemize}
+	\item \textbf{Scalar field}: maps $\mathbb{R}^n \rightarrow \mathbb{R}$.
+	\item \textbf{Vector field}: maps $\mathbb{R}^n \rightarrow \mathbb{R}^n$.
+	\item \textbf{Curve}: maps $\mathbb{R} \rightarrow \mathbb{R}^n$.
+	\item A \textbf{tangent} to a curve $\underline{x}(t)$ is given by $\diff{\underline{x}}{t}$.
+	\item The \textbf{arc-length} parameterisation of a curve $\underline{x}$ is such that
+	\[
+		\left| \diff{\underline{x}(s)}{s} \right| = 1 \quad \forall s
+	\]
+	\item \textbf{Partial derivatives}:
+	\[
+		\diffp{f(\underline{x})}{x_a} = \lim_{h \rightarrow 0}{\frac{f(\underline{x} + h\underline{e}_a) - f(\underline{x})}{h}}
+	\]
+	\item \textbf{Chain rule}: for a scalar field $f(\underline{x})$ and curve $\underline{x}(t) = x_1(t) \underline{e}_1 + \cdots + x_n(t) \underline{e}_n$,
+	\[
+		\diff{f(\underline{x}(t))}{t} = \sum_{i = 1}^n \diffp{f(\underline{x})}{x_i} \diff{x_i}{t}
+	\]
+	Here $F(t) := f(\underline{x}(t))$ is the restriction of $f(\underline{x})$ to the curve $\underline{x}(t)$.
+	\item \textbf{Differential operator}: maps functions to functions, e.g.
+	\[
+		\diff{}{t} = \sum_{i = 1}^n \diffp{}{x_i} \diff{x_i}{t}
+	\]
+	\item Let $f, g: \mathbb{R} \to \mathbb{R}$, then
+	\begin{itemize}
+		\item $f(x) \diff{}{x}$ is a differential operator. It acts on $g(x)$ to give $f(x) \diff{g(x)}{x}$.
+		\item $\diff{}{x} f(x)$ is a differential operator. It acts on $g(x)$ to give $\diff{}{x} (f(x) g(x))$.
+		\item $\left( \diff{}{x} f(x) \right)$ is an differential operator. It acts on $g(x)$ to give $\diff{f(x)}{x} g(x)$.
+	\end{itemize}
+	\item \textbf{del (or nabla)}:
+	\[
+		\underline{\nabla} = \sum_{i = 1}^n \diffp{}{x_i} \underline{e}_i
+	\]
+	so $\diff{}{t} = \underline{\nabla} . \diff{\underline{x}(t)}{t}$.
+	\item \textbf{gradient} of a scalar field $f: \mathbb{R}^n \to \mathbb{R}$:
+	\[
+		\underline{\nabla} f \equiv \text{grad}(f) = \sum_{i = 1}^n \diffp{f}{x_i} \underline{e}_i
+	\]
+	\item \textbf{Directional derivative} of $f: \mathbb{R}^n \to \mathbb{R}$ in direction of a unit tangent $\underline{\hat{n}} = \diff{\underline{x}(s)}{s}$ to a curve $x: \mathbb{R} \to \mathbb{R}^n$:
+	\[
+		\diff{f(\underline{x}(s))}{s} = \underline{\hat{n}} . \underline{\nabla} f \equiv \diff{f}{\underline{\hat{n}}}
+	\]
+	where $\underline{x}$ is parameterised in terms of arc-length $s$.
+	\item $\underline{\nabla} f$ at a point $\underline{p}$ is orthogonal to curves contained in level set of $f$ at $\underline{p}$.
+	\item $\underline{\nabla} f$ points in the direction where $f$ increases fastest.
+	\item \textbf{Properties of the gradient}: let $f, g: \mathbb{R}^n \to \mathbb{R}$, $a, b \in \mathbb{R}$, $\phi: \mathbb{R} \to \mathbb{R}$, then
+	\begin{itemize}
+		\item $\underline{\nabla} (af + bg) = a \underline{\nabla} f + b \underline{\nabla} g$
+		\item $\underline{\nabla} (fg) = f \underline{\nabla} g + g \underline{\nabla} f$
+		\item $\underline{\nabla} \phi(f) = (\underline{\nabla} f) \diff{\phi}{f}$
+	\end{itemize}
+	\item \textbf{Divergence} of a vector field $\underline{v}(\underline{x}) = \sum_{i = 1}^n v_i(\underline{x}) \underline{e}_i$:
+	\[
+		\underline{\nabla} . \underline{v} \equiv \text{div}(\underline{v}) = \sum_{i = 1}^n \diffp{v_i}{x_i}
+	\]
+	Note that the formula will be different in other coordinates systems. Also $\underline{\nabla} . \underline{v} \ne \underline{\nabla} \cdot \underline{v}$.
+	\item Considering a vector field as a fluid, if the divergence at a point is positive the vector field acts as a \textbf{source} at that point (more fluid leaving than entering), if the divergence is negative the vector field acts as a \textbf{sink} at that point (more fluid entering than leaving). The magnitude of the divergence is the rate of flow and the direction of the divergence is the direction of flow.
+	\item \textbf{Properties of div}: for $f: \mathbb{R}^n \to \mathbb{R}$, $\underline{v}, \underline{w}: \mathbb{R}^n \to \mathbb{R}^n$, $a, b \in \mathbb{R}$,
+	\begin{itemize}
+		\item $\underline{\nabla} . (a \underline{v} + b \underline{w}) = a \underline{\nabla} . \underline{v} + b \underline{\nabla} . \underline{w}$
+		\item $\underline{\nabla} . (f \underline{v}) = (\underline{\nabla} f) . \underline{v} + f \underline{\nabla} . \underline{v}$
+	\end{itemize}
+	\item \textbf{Curl} of $\underline{v}: \mathbb{R}^n \to \mathbb{R}^n$:
+	\[
+		\underline{\nabla} \times \underline{v} \equiv \text{curl}(\underline{v}) = \begin{vmatrix}
+			\underline{e}_1 & \underline{e}_2 & \underline{e}_3 \\
+			\diffp{}{x} & \diffp{}{y} & \diffp{}{z} \\
+			v_1 & v_2 & v_3
+		\end{vmatrix} = \underline{e}_1 \left( \diffp{v_3}{y} - \diffp{v_2}{z} \right) - \underline{e}_2 \left( \diffp{v_3}{x} - \diffp{v_1}{z} \right) + \underline{e}_3 \left( \diffp{v_2}{x} - \diffp{v_1}{y} \right)
+	\]
+	\item Considering a vector field as a fluid, the magnitude of the curl at a point corresponds to the rotational speed of the fluid, and the direction of the curl corresponds to which axis the fluid is rotating around, determined using the right-hand rule (fingers represent rotation of the fluid, thumb points in direction of curl).
+	\item \textbf{Properties of curl}: for $f: \mathbb{R}^3 \to \mathbb{R}$, $\underline{v}, \underline{w}: \mathbb{R}^3 \to \mathbb{R}^3$, $a, b \in \mathbb{R}$,
+	\begin{itemize}
+		\item $\underline{\nabla} \times (a \underline{v} + b \underline{w}) = a \underline{\nabla} \times \underline{v} + b \underline{\nabla} \times \underline{w}$
+		\item $\underline{\nabla} \times (f \underline{v}) = (\underline{\nabla} f) \times \underline{v} + f \underline{\nabla} \times \underline{v}$
+	\end{itemize}
+	\item \textbf{Laplacian} of $f: \mathbb{R}^n \to \mathbb{R}$:
+	\[
+		\Delta f \equiv \underline{\nabla}^2 f := \underline{\nabla} . (\underline{\nabla} f) = \text{div}(\text{grad}(f)) = \sum_{i = 1}^n \diffp[2]{f}{x_i}
+	\]
+	Note this formula is only valid for \textbf{cartesian} coordinates.
+	\item \textbf{Einstein summation convention}: in an expression involving a summation, then index of summation always appears twice. The convention is that the summation sign is removed, and whenever an index appears twice, it is summed over.
+	\item \textbf{Dummy indices}: repeated indices. They can be renamed without changing the expression.
+	\item \textbf{Free indices}: non-repeated indices. They must match on both sides of an equation.
+	\item An index can't be repeated more than twice, so $(\underline{u} . \underline{v})^2 = u_i v_i u_j v_j \ne u_i v_i u_i v_i$.
+	\item \textbf{Kronecker delta}:
+	\[
+		\delta_{ij} := \begin{cases}
+			1 & \text{if } i = j \\
+			0 & \text{if } i \ne j
+		\end{cases} = \diffp{x_i}{x_j}
+	\]
+	\item If $\delta_{ij}$ has a dummy index $i$, then remove the $\delta_{ij}$ and replace the dummy index $i$ by $j$ in the rest of the expression.
+	\item \textbf{Levi-Cevita symbol}:
+	\[
+		\begin{aligned}
+			\epsilon_{ijk} & = -\epsilon_{jik} = -\epsilon{ikj} \quad \text{(antisymmetry)} \\
+			\epsilon_{123} & = 1
+		\end{aligned}
+	\]
+	\item \textbf{Properties of $\epsilon_{ijk}$}:
+	\begin{itemize}
+		\item $\epsilon_{ijk} = -\epsilon_{kji}$
+		\item $\epsilon_{ijk} = 0$ if $i = j$ or $j = k$ or $k = i$
+		\item If $\epsilon_{ijk}$ is zero then $(i \ j \ k)$ is a permutation of $(1 \ 2 \ 3)$.
+		\item $\epsilon_{ijk} = 1$ if $(i \ j \ k)$ is an even permutation of $(1 \ 2 \ 3)$ (even number of swaps).
+		\item $\epsilon_{ijk} = -1$ if $(i \ j \ k)$ is an odd permutation of $(1 \ 2 \ 3)$ (odd number of swaps).
+		\item $\epsilon_{ijk} = \epsilon_{jki} = \epsilon_{kij}$ (cyclic permutation).
+	\end{itemize}
+	\item The cross product $\underline{C} = \underline{A} \times \underline{B}$ can be written as $C_i = \epsilon_{ijk} A_j B_k$.
+	\item \textbf{Very useful $\epsilon_{ijk}$ formula}:
+	\[
+		\sum_{k = 1}^{3} \epsilon_{ijk} \epsilon_{klm} = \delta_{il} \delta_{jm} - \delta_{im} \delta_{jl}
+	\]
+	\item Notation: $\partial_i := \diffp{}{x_i}$.
+	\item $\underline{\nabla} . \underline{v} = \diffp{v_i}{x_i} = \partial_i v_i$.
+	\item ${(\underline{\nabla} \times \underline{v})}_i = \epsilon_{ijk} \diffp{}{x_j} v_k = \epsilon_{ijk} \partial_j v_k$.
+\end{itemize}
+
 \begin{theorem}
 	If $f(x): U \rightarrow \mathbb{R}$ is differentiable with U an open subset of $\mathbb{R}^n$ and if $x$ is a function of $u_1, \dots, u_m$, such that the partial derivatives $\diffp{x_i}{u_j}$ exist for all $1 \le i \le n$ and all $1 \le j \le m$, and if $F(u_1, \dots, u_m) = f(x(u_1, \dots, u_m))$ then $\diffp{F}{u_b} = \diffp{x_i}{u_b} \diffp{f}{x_i}$
 \end{theorem}
@@ -1050,7 +1170,7 @@ TODO: notes up to end of section 2.4.1
 \begin{definition}
 	The \textbf{sign function} is defined as
 	\[
-		\text{sgn}(x) = \Theta(x) - \Theta(-x) = \begin{cases}
+		\sgn(x) = \Theta(x) - \Theta(-x) = \begin{cases}
 			1 & \text{ if } x > 0 \\
 			0 & \text{ if } x = 0 \\
 			-1 & \text{ if } x < 0
@@ -1070,7 +1190,7 @@ TODO: notes up to end of section 2.4.1
 	\]
 	So the derivative of the sign function is
 	\[
-		\text{sgn}'(x) = \diff{}{x} \Theta(x) - \diff{}{x} \Theta(-x) = \delta(x) - \diff{}{x} \Theta(-x) = 2 \delta(x)
+		\sgn'(x) = \diff{}{x} \Theta(x) - \diff{}{x} \Theta(-x) = \delta(x) - \diff{}{x} \Theta(-x) = 2 \delta(x)
 	\]
 \end{example}
 
@@ -1091,7 +1211,7 @@ TODO: notes up to end of section 2.4.1
 	\]
 \end{example}
 
-\section{Lebesgue Integration}
+\section{Sturm-Liouville Theory}
 
 TODO: notes from lecture
 
@@ -1266,9 +1386,9 @@ TODO: notes from lecture
 \begin{definition}
 	Let $\mathbb{H}_1, \mathbb{H}_2$ be Hilbert spaces, with ${\langle \cdot, \cdot \rangle}^{(1)}$ and ${\langle \cdot, \cdot \rangle}^{(2)}$. Let $L: D(L) \subset \mathbb{H}_1 \rightarrow \mathbb{H}_2$ be an unbounded linear Operator on $\mathbb{H}_1$, with $D(L)$ dense in $\mathbb{H}_1$.
 	
-	The \textbf{adjoint} $(L^*, D(L^*))$ of $L$ is defined as the linear Operator with $L*: D(L^*) \subset \mathbb{H}_2 \rightarrow \mathbb{H}_1$ defined by
+	The \textbf{adjoint} $(L^*, D(L^*))$ of $L$ is defined as the linear Operator with $L^*: D(L^*) \subset \mathbb{H}_2 \rightarrow \mathbb{H}_1$ defined by
 	\[
-		{\langle L(v_1), v_2 \rangle}^{(2)} = {\langle v_1, L*(v_2) \rangle}^{(1)}, \quad v_1 \in \mathbb{H}_1
+		{\langle L(v_1), v_2 \rangle}^{(2)} = {\langle v_1, L^* (v_2) \rangle}^{(1)}, \quad v_1 \in \mathbb{H}_1
 	\]
 	where
 	\[
@@ -1339,9 +1459,9 @@ TODO: define BVP or IVP
 	\[
 		L = p_0 d_x^2 + p_1 d_x + p_2, \quad L* = \overline{p_0} d_x^2 + (2 \overline{p_0}' - \overline{p_1}) d_x + (\overline{p_0}'' - \overline{p_1}' + \overline{p_2})
 	\]
-	so $L = L*$ if $p_0 = \overline{p_0}$ (so $p_0$ is a real-valued function), $p_1 = 2 \overline{p_0}' - \overline{p_1}$, and $p_2 = \overline{p_0}'' - \overline{p_1}' + \overline{p_2}$. So $p_1 + \overline{p_1} = 2 \text{Re} (p_1) = 2 p_0'$. Also $p_2 - \overline{p_2} = 2 \text{Im}(p_2) = p_0'' - \overline{p_1}'$ so $2 \text{Im}(p_2) = \text{Im}(p_1')$.
+	so $L = L*$ if $p_0 = \overline{p_0}$ (so $p_0$ is a real-valued function), $p_1 = 2 \overline{p_0}' - \overline{p_1}$, and $p_2 = \overline{p_0}'' - \overline{p_1}' + \overline{p_2}$. So $p_1 + \overline{p_1} = 2 \Re (p_1) = 2 p_0'$. Also $p_2 - \overline{p_2} = 2 \Im(p_2) = p_0'' - \overline{p_1}'$ so $2 \Im(p_2) = \Im(p_1')$.
 
-	Hence $\{ p_0, \text{Im}(p_0), \text{Re}(p_2) \}$ characterises a formally self-adjoint operator.
+	Hence $\{ p_0, \Im(p_0), \Re(p_2) \}$ characterises a formally self-adjoint operator.
 \end{example}
 
 \begin{definition}
@@ -1412,11 +1532,11 @@ TODO: define BVP or IVP
 \begin{remark}
 	More generally, for an operator
 	\[
-		L = p_0 \diff[2]{p_1}{x} + p_1 \diff{}{x} + p_2
+		L = p_0 \diff[2]{}{x} + p_1 \diff{}{x} + p_2
 	\]
 	we have
 	\[
-		\rho L = \rho p_0 \diff[2]{p_1}{x} + \rho p_1 \diff{}{x} + \rho p_2
+		\rho L = \rho p_0 \diff[2]{}{x} + \rho p_1 \diff{}{x} + \rho p_2
 	\]
 	The adjoint of $L$ is
 	\[
@@ -1436,5 +1556,670 @@ TODO: define BVP or IVP
 		\rho = \frac{1}{p_0} \exp \left( \int \frac{p_1}{p_0} dx \right)
 	\]
 \end{remark}
+
+\begin{example}
+	Let $L = d_x^2 - 2x d_x - 2 \alpha$, where $\alpha$ is a constant. Here, $p_0 = 1$, $p_1 = -2x \ne 0 = p_0'$ so not $L$ is not Sturm-Liouville. So
+	\[
+		\rho = \frac{1}{1} \exp \left( \int \frac{-2x}{1} dx \right) = \exp \left( -x^2 \right)
+	\]
+	gives $\rho L$ is a Sturm-Liouville operator.
+\end{example}
+
+\subsection{Eigenfunction method for differential operators}
+
+\begin{definition}
+	A function $u_n$ satisfying
+	\[
+		L u_n(x) = \lambda_n u_n(x)
+	\]
+	for a differential operator $L$ is called an \textbf{eigenfunction of $L$} and $\lambda_n$ is called an \textbf{eigenvalue} associated with $u_n$.
+\end{definition}
+
+\begin{remark}
+	Eigenfunctions are unique up to scalar multiplication.
+\end{remark}
+
+\begin{definition}
+	A function $u_n$ satisfying
+	\[
+		L u_n (x) = \lambda_n w(x) u_n(x)
+	\]
+	for a differential operator $L$ and a weight function $w(x)$ is called an \textbf{eigenfunction of $L$ with respect to $w$}, with eigenvalue $\lambda_n$.
+\end{definition}
+
+\begin{example}
+	The heat flow in a non-uniform rod (with no internal heat source) can be modelled by the BVP
+	\[
+		\begin{aligned}
+			U_t - \frac{1}{w(x)} ({(p_0(x) U_x})_x + p_2(x) U) & = 0, \quad a < x < b, t > 0 \\
+			B_1(U) = \alpha_1 U(a, t) + \beta_1 U_x(a, t) & = 0, \quad t \ge 0 \\
+			B_2(U) = \eta_2 U(b, t) + \kappa_2 U_x(b, t) & = 0, \quad t \ge 0 \\
+			U(x, 0) & = f(x)
+		\end{aligned}
+	\]
+	To solve this PDE, we use the method of \textbf{separation of variables}: let
+	\[
+		U(x, t) = T(t) u(x)
+	\]
+	Substituting this into the BVP gives
+	\[
+		\frac{T'(t)}{T(t)} = \frac{1}{w(x) u(x)} (p_0(x) d_x^2 + p_0'(x) d_x + p_2(x)) u(x) \frac{{(p_0(x) u'(x))}_x + p_2(x) u(x)}{w(x) u(x)}
+	\]
+	Note that $p_0(x) d_x^2 + p_0'(x) d_x + p_2(x)$ is a Sturm-Liouville operator. Now the LHS depends only on $t$ and the RHS depends only on $x$. Hence for some constant $\lambda$,
+	\[
+		\frac{T_t}{T} = \frac{{(p_0 u_x)}_x + p_2 u}{w u} = -\lambda
+	\]
+	This gives the ODES
+	\[
+		(p_0 u')_x + p_2 u + \lambda w u = 0, \quad a < x < b \\
+		T' = -\lambda T
+	\]
+	By assumption, $U \ne 0$,
+	\[
+		B_1(U) = 0 = B_1(u) \quad \text{ and } \quad B_2(U) = 0 = B_2(u)
+	\]
+\end{example}
+
+\begin{definition}
+	The BVP $\mathcal{L} u + \lambda w u = 0$, $B_1(u) = B_2(u) = 0$, where $\mathcal{L}$ is a Sturm-Liouville operator is called a \textbf{Sturm-Liouville eigenvalue problem}.
+\end{definition}
+
+\begin{remark}
+	A Sturm-Liouville operator given by $L := -\mathcal{L}$, where $-\mathcal{L}$ is an SL operator, then Green's formula becomes
+	\[
+		\langle -\mathcal{L} u, v \rangle - \langle u, -\mathcal{L} v \rangle = -\left[ \overline{p_0} (v \overline{u'}) - v' \overline{u} \right]_a^b
+	\]
+	If the problem is restricted to the subspace
+	\[
+		\begin{aligned}
+			& \mathcal{H} := \{ g \in C^2 ([a, b]) \subset L^2 (w, [a, b]): B_1(g) := \alpha_1 g(a) + \beta_1 g'(a) = 0, B_2(g) := \eta_2 g(b) + \kappa_2 g'(b) = 0 \} \\
+			& |\alpha_1| + |\beta_1| > 0, |\eta_2| + |\kappa_2| > 0, \alpha_1, \beta_1, \eta_2, \kappa_2 \in \mathbb{R}
+		\end{aligned}
+	\]
+	Then $D(\mathcal{L}) = D(-\mathcal{L})$ and $(-\mathcal{L}, D(-\mathcal{L}))$.
+\end{remark}
+
+\begin{definition}
+	A \textbf{regular Sturm-Liouville (SL) eigenvalue problem} is a BVP on a finite interval $[a, b]$ given by
+	\[
+		\begin{aligned}
+			& \mathcal{L} u + \lambda w u = 0, \quad a < x < b, \lambda \in \mathbb{C} \\
+			& B_1(u) = \alpha_1 u(a) + \beta_1 u'(a) = 0 \\
+			& B_2(u) = \eta_2 u(b) + \kappa_2 u'(b) = 0 \\
+			& \alpha_1, \beta_1, \eta_2, \kappa_2 \in \mathbb{R}, |\alpha_1| + |\beta_1| > 0, |\eta_2| + |\kappa_2| > 0
+		\end{aligned}
+	\]
+	where $\mathcal{L}$ is a Sturm-Liouville operator with $p_0 \in C^1([a, b])$, $p_2 \in C^0 ([a, b])$, $\forall x \in [a, b], p_0(x) > 0 \text{ and } w(x) > 0$.
+
+	Solving this BVP is equivalent to finding the set of eigenvalues $\{ \lambda_n \}$ of the SL operator $\mathcal{L}$ with respect to $w$, and the corresponding eigenfunctions $\{ u_n \}$.
+\end{definition}
+
+\begin{example}
+	Consider the BVP on $[a, b]$ given by
+	\[
+		\mathcal{L}u + \lambda u = 0, \quad a < x < b, u'(a) = 0 = u'(b)
+	\]
+	where $\mathcal{L} = d_x^2$. The boundary conditions $\alpha_1 = \eta_2 = 0$ and $\beta_1 = \kappa_2 = 1$ are Neumann boundary conditions.
+\end{example}
+
+\begin{definition}
+	A Sturm-Liouville eigenvalue problem is called \textbf{singular} if either
+	\begin{itemize}
+		\item Either $p_0$ or $w$ vanish at either $a$ or $b$.
+		\item $p_0$ or $w$ is not continuous.
+		\item The problem is defined on an infinite interval.
+	\end{itemize}
+\end{definition}
+
+\begin{example}
+	The Bessel equation of order $\nu$ is given by
+	\[
+		r^2 y''(r) + r y'(r) + (r^2 - \nu^2) y(r) = 0, \quad r > 0, y(r)
+	\]
+	where $\nu$ is a constant. This is a singular SL eigenvalue problem on $[0, L]$. To show this, let $r = \sqrt{\lambda} x$ then let $u(x) = y(r) = \sqrt{\lambda} y(x)$. Then
+	\[
+		\begin{aligned}
+			& u'(x) = \diff{}{x} y(r) = \diff{}{r} y(r) \cdot \diff{r}{x} = \sqrt{\lambda} y'(r) \\
+			& = u''(x) = \diff[2]{}{x} y(r) = \lambda y''(r)
+		\end{aligned}
+	\]
+	This gives the Bessel equation as
+	\[
+		x^2 u''(x) + x u'(x) + (\lambda x^2 - \nu^2) u(x) = 0
+	\]
+	And since $x \ne 0$ (since $x \in [0, L]$), dividing by $x$ gives
+	\[
+		x d_x^2 + d_x - \frac{\nu^2}{x} + \lambda x u = 0
+	\]
+	Here, the weight function is $w(x) = x$. If we were given boundary conditions, for example the Dirichlet boundary conditions $u(L) = 0$ and $|u(0)| \le \infty$, then we obtain a Sturm-Liouville BVP. It is singular, since $p_0(x) = w(x)$ vanishes at $x = 0$ which is an endpoint of $[0, L]$.
+\end{example}
+
+\begin{definition}
+	An interval $[a, b]$ is called the \textbf{natural interval} of a BVP if $p_0(a) = p_0(b) = 0$ and $p_0(x) > 0$ for every $x \in (a, b)$. In this case, ${\langle (-\mathcal{L} u, v) \rangle}_w = {\langle u, (_\mathcal{L}) v \rangle}_w$, no matter what the boundary conditions on $u$ and $v$ are.
+\end{definition}
+
+\begin{example}
+	The Hermite equation is defined as
+	\[
+		Lu = 0, \quad L = d_x^2 - 2x d_x + 2 \nu
+	\]
+	where $x \in \mathbb{R}$ and $\nu \in \mathbb{R}$ is a constant. $L$ is not an SL operator, but multiplying $L$ by
+	\[
+		\rho(x) = \exp \left( \int -2x dx \right) = e^{-x^2}
+	\]
+	which makes
+	\[
+		\mathcal{L} = \rho L = e^{-x^2} d_x^2 - 2x e^{-x^2} d_x + 2 \nu e^{-x^2}
+	\]
+	an SL operator. Then the Hermite equation becomes
+	\[
+		\mathcal{L} u = d_x (e^{-x^2} d_x) u + 2 \nu e^{-x^2} u = 0
+	\]
+	Define
+	\[
+		\tilde{\mathcal{L}} = d_x (e^{-x^2} d_x)
+	\]
+	which is also an SL operator. Then
+	\[
+		\tilde{\mathcal{L}} u + 2 \nu e^{-x^2} u = 0
+	\]
+	so here the eigenvalue is $\lambda = 2 \nu$ and the weight function is $w(x) = e^{-x^2}$. $\lim_{x \rightarrow \pm \infty} p_9(x) = 0$ and $p_0(x) > 0$ on $(-\infty, \infty)$ so the natural interval is $[-\infty, \infty]$.
+\end{example}
+
+\begin{definition}
+	A \textbf{periodic Sturm-Liouville eigenvalue problem} on $[a, b]$ is defined as
+	\[
+		\mathcal{L} u(x) + \lambda w(x) u(x) = 0, \quad a < x < b, u(a) = u(b), u'(a) = u'(b)
+	\]
+	where $L = d_x (p_0 d_x) + p_2$ and $p_0, p_2, w$ are periodic with period $b - a$.
+\end{definition}
+
+\begin{example}
+	Consider the periodic Sturm-Liouville eigenvalue problem on $[0, L]$ given by
+	\[
+		\mathcal{L} u + \lambda u = 0, \quad 0 < x < L, u(0) = u(L), u'(0) = u'(L)
+	\]
+	where $\mathcal{L} = d_x^2$ and restrict the problem to the subspace of functions
+	\[
+		\mathcal{H} := \{ g: g \in C^2 ([0, L]), g(0) = g(L), g'(0) = g'(L) \}
+	\]
+	which means that $(-\mathcal{L}, D(-\mathcal{L}))$ is self-adjoint and so has real eigenvalues. Let $u_n(x) = e^{\mu x}$, then $\mu^2 + \lambda = 0$ so $\mu = \pm\sqrt{\lambda}$.
+	\begin{enumerate}
+		\item If $\lambda < 0$, then $u_n(x) = A_n e^{\sqrt{-\lambda} x} + B_n e^{-\sqrt{-\lambda} x} = (A_n + B_n) \cosh(\sqrt{-\lambda} x) + (A_n - B_n) \sinh(\sqrt{-\lambda} x)$ is an eigenfunction.
+		\item If $\lambda = 0$, then $u_n(x) = A_n x + B_n$ is an eigenfunction.
+		\item If $\lambda > 0$, then $u_n(x) = (\alpha_n + \beta_n) \cos(\sqrt{\lambda} x) + i (\alpha_n - \beta_n) \sin(\sqrt{\lambda} x)$ is an eigenfunction, with $\alpha, \beta \in \mathbb{C}$.
+	\end{enumerate}
+	Now we impose the boundary conditions:
+	\begin{enumerate}
+		\item If $u(0) = u(L)$, then $A + B = A e^{L \sqrt{-\lambda}} + B e^{-L \sqrt{-\lambda}}$ and $u'(x) = A \sqrt{\lambda} e^{x \sqrt{-\lambda}} - B \sqrt{\lambda} e^{-x \sqrt{-\lambda}}$. $u'(0) = u'(L)$ so $A - B = Ae^{L \sqrt{-\lambda}} - Be^{-L \sqrt{-\lambda}}$. So $A = B = 0$ gives the trivial solution $u(x) = 0$.
+		\item If $u(0) = u(L)$, then $A + B = AL + B$ so $A = 0$. So $u(x) = B$.
+		\item If $u(0) = u(L)$, then $A = A \cos(L \sqrt{\lambda}) + B \sin(L \sqrt{\lambda})$ and $u'(x) = -A \sqrt{\lambda} \sin(x \sqrt{\lambda}) + B \sqrt{\lambda} \cos(x \sqrt{\lambda})$. $u'(0) = u'(L)$. $u'(0) = u'(L)$ so $B = -A \sin(L \sqrt{\lambda}) + B \cos(L \sqrt{\lambda})$. Hence $A^2 + B^2 = (A^2 + B^2) \cos(L \sqrt{\lambda})$ so $\cos(L \sqrt{\lambda}) = 1$ so $\lambda = {(2 n \pi / L)}^2$ for $n \in \mathbb{N}$. Hence $u(x) = A \cos(\frac{2 \pi n}{L} x) + B \sin(\frac{2 \pi n}{L} x)$ for $n \in \mathbb{N}$.
+		
+		This means for a fixed eigenvalue $\lambda_n = {(2 n \pi / L)}^2$, we have two linearly independent solutions: $u_n(x) = \cos(\frac{2 \pi n}{L} x)$ and $u_m(x) = \sin(\frac{2 \pi m}{L} x)$.
+	\end{enumerate}
+\end{example}
+
+\begin{example}
+	(Problems class) Expand the function $f(x) = x$ for $0 \le x \le 1$ in terms of the normalised eigenfunctions $\hat{u}_n(x)$ of the Sturm-Liouville eigenvalue problem $u''(x) + \lambda u(x) = 0$, $0 < x < 1$ with the boundary conditions $u(0) = 0$ and $u'(1) + u(1) = 0$.
+
+	First we find $\{ \lambda_n \}$ and $\{ \hat{u}_n \}$ from $u_n'' + \lambda_n u_n = 0$, $u_n(0) = 0$, $u_n'(1) + u_n(1) = 0$. We have $\mathcal{L} = d_x^2$, with weight function $w(x) = 1$. The characteristic equation is $m^2 + \lambda_n = 0$ so $m = \pm \sqrt{-\lambda_n}$.
+	\begin{itemize}
+		\item If $\lambda_n < 0$, there are no non-trivial solutions.
+		\item If $\lambda_n = 0$, there are no non-trivial solutions.
+		\item If $\lambda_n > 0$, then $u_n(x) = A_n \cos(\sqrt{\lambda_n} x) + B_n \sin(\sqrt{\lambda_n} x)$ is a solution. $u_n(0) = 0$ so $A_n = 0$. $u_n'(x) = B_n \sqrt{\lambda_n} \cos(\sqrt{\lambda_n} x)$ so $u_n'(1) + u_n(1) = B_n \sqrt{\lambda} \cos(\sqrt{\lambda_n}) + B_n \sin(\sqrt{\lambda_n}) = 0$. If $B_n \ne 0$, we need $\cos(\sqrt{\lambda_n}) + \sin(\sqrt{\lambda_n}) = 0$. Let $\lambda_n = k_n^2$ and rewrite the boundary conditions as $-k_n = \tan(k_n)$ so there are an infinite number of eigenvalues.
+	\end{itemize}
+	To find the normalised eigenfunctions,
+	\[
+		\begin{aligned}
+			\langle u_n, u_n \rangle = B_n^2 \int_{0}^{1} \sin(\sqrt{\lambda_n} x)^2 dx & = B_n^2 \frac{1}{2} \int_{0}^{1} (1 - \cos(2 \sqrt{\lambda_n} x)) dx \\
+			& = \frac{1}{2} B_n^2 \left( 1 - \frac{1}{2 \sqrt{\lambda_n}} 2 \sin(\lambda_n) \cos(\lambda_n) \right) \\
+			& = \frac{1}{2} B_n^2 (1 + {\cos(\sqrt{\lambda_n})}^2) \\
+			& \Longrightarrow \hat{u}_n(x) = \sqrt{\frac{2}{1 + {\cos(\sqrt{\lambda_n})}^2}} \sin(\sqrt{\lambda_n} x)
+		\end{aligned}
+	\]
+
+	Now we expand $f$ in the basis $\{ \hat{u}_n \}$. Let us denote the generalised Fourier expansion of $f$ as
+	\[
+		F_f(x) := \sum_{n = 1}^{\infty} f_n \hat{u}_n(x)
+	\]
+	where $f_n$ are the generalised Fourier coefficients, given by
+	\[
+		\begin{aligned}
+			f_n & = {\langle f, \hat{u}_n \rangle}_{w = 1} \\
+			& = \int_{0}^{1} f(y) \hat{u}_n(y) dy \\
+			& = \int_{0}^{1} y B_n \sin(\sqrt{\lambda_n} y) dy \\
+			& = B_n \left[ -\frac{y}{\sqrt{\lambda_n}} \cos(\sqrt{\lambda_n} y) \right]_0^1 + \int_{0}^{1} 1 \cdot \frac{\cos(\sqrt{\lambda_n} y)}{\sqrt{\lambda_n}} dy \\
+			& = -\frac{1}{\sqrt{\lambda_n}} B_n \cos(\sqrt{\lambda_n}) + \left[ \frac{B_n}{\sqrt{\lambda_n}} \sin(\sqrt{\lambda_n}) \right]_0^1 \\
+			& = \frac{2}{\lambda_n} {\left( \frac{2}{1 + {\cos(\sqrt{\lambda_n})}^2} \right)}^{1 / 2} \sin(\sqrt{\lambda_n})
+		\end{aligned}
+	\]
+	So
+	\[
+		F_f(x) = \sum_{n = 1}^{\infty} \frac{4}{\lambda_n (1 + {\cos(\sqrt{\lambda_n})}^2)} \sin(\sqrt{\lambda_n} x) \sin(\sqrt{\lambda_n})
+	\]
+	Note $f$ is continuous with $f'(x) = 1$. Then $F_f(x)$ converges to $\frac{1}{2} (f(x^+) + f(x^-)) = \frac{1}{2} \lim_{\epsilon \to 0} (f(x + \epsilon) + f(x - \epsilon)) = f(x)$. However, it does not converge uniformly on $[0, 1]$ since $f(0) = 0$ but $f'(1) + f(1) = 1 + 1 \ne 0$.
+\end{example}
+
+\subsection{Spectral properties of regular Sturm-Liouville operators}
+
+\begin{proposition}\label{prop:slRealEigenvalues}
+	The eigenvalues $\lambda_n$ of the regular Sturm-Liouville eigenvalue problem are real.
+\end{proposition}
+
+\begin{proof}
+	Let $u$ be a non-zero eigenfunction with eigenvalue $\lambda$, so $\mathcal{L} u + \lambda w u = 0$. Then
+	\[
+		\lambda {\langle u, u \rangle}_w = {\langle u, \lambda u \rangle}_w = \langle u, \lambda w u \rangle = -\langle u, \mathcal{L} u \rangle = -\langle \mathcal{L} u, u \rangle = \langle \lambda w u, u \rangle = \bar{\lambda} {\langle u, u \rangle}_w
+	\]
+\end{proof}
+
+\begin{proposition}
+	The eigenfunctions $u_m$ and $u_n$ corresponding to distinct eigenvalues $\lambda_m$ and $\lambda_n$ are orthogonal with respect to the inner product.
+\end{proposition}
+
+\begin{proof}
+	By Proposition~\ref{prop:slRealEigenvalues}, $\lambda_m$ and $\lambda_n$ are real, hence
+	\[
+		\lambda_n {\langle u_m, u_n \rangle}_w = {\langle u_m, \lambda_n u_n \rangle}_w = -\langle u_m, \mathcal{L} u_n \rangle = -\langle \mathcal{L} u_m, u_n \rangle = \lambda_m {\langle u_m, u_n \rangle}_w
+	\]
+	and $\lambda_m \ne \lambda_n$ so $\langle u_m, u_n \rangle = 0$.
+\end{proof}
+
+\begin{proposition}
+	The following properties hold for regular Sturm-Liouville problems:
+	\begin{enumerate}
+		\item The eigenfunctions of a regular or periodic Sturm-Liouville problem can be chosen to be real.
+		\item The eigenvalues have multiplicity one.
+		\item There exists a smallest eigenvalue but not a largest one. The set of eigenvalues is countably infinite and is a monotically increasing sequence, so
+		\[
+			\lambda_1 < \lambda_2 < \cdots < \lambda_n < \cdots
+		\]
+		and $\lim_{n \to \infty} \lambda_n = \infty$.
+	\end{enumerate}
+\end{proposition}
+
+\begin{proposition}
+	The orthonormal set $\{ \hat{u}_n \}_{n = 0}^{\infty}$ of all eigenfunctions of a regular Sturm-Liouville eigenvalue problem is complete in the inner product space $E(w, [a, b])$ of all piecewise continuous functions on $[a, b]$, with inner product ${\langle \cdot, \cdot \rangle}_w$. So
+	\[
+		\lim_{k \to \infty} ||u - \sum_{n = 0}^k {\langle u, \hat{u}_n \rangle}_w \hat{u}_n||_w = 0 \quad \forall g \in E(w, [a, b])
+	\]
+	We write
+	\[
+		g(x) = \sum_{n = 0}^{\infty} {\langle \hat{u}_n, g \rangle}_w \hat{u}_n(x), \quad \hat{u}_n \in C^2([a, b])
+	\]
+\end{proposition}
+
+\begin{proposition}
+	Let $\{ \hat{u}_n \}_{n = 0}^{\infty}$ be an orthonormal set of eigenfunctions of a regular Sturm-Liouville eigenvalue problem.
+	\begin{enumerate}
+		\item Let $f$ be piecewise smooth on $[a, b]$. Then for every $x \in (a, b)$, the eigenfunction expansion of $f$ with respect to $\{ \hat{u}_n \}_{n = 0}^{\infty}$ converges to
+		\[
+			\frac{1}{2} (f(x_+) + f(x_-)) := \frac{1}{2} \left( \lim_{\epsilon
+			 \to 0} f(x + \epsilon) + \lim_{\epsilon \to 0} f(x - \epsilon) \right)
+		\]
+		So we have
+		\[
+			\frac{1}{2} (f(x_+) + f(x_-)) = \sum_{n = 0}^{\infty} {\langle \hat{u}_n, f \rangle}_w \hat{u}_n(x)
+		\]
+		\item Let $f$ be continuous and $f'$ be piecewise continuous. If $f$ satisfies the boundary conditions of the given Sturm-Liouville eigenvalue problem, then the eigenfunction expansion of $f$ with respect to $\{ \hat{u}_n \}_{n = 0}^{\infty}$ converges uniformly to $f$ on $[a, b]$.
+	\end{enumerate}
+\end{proposition}
+
+\begin{example}
+	Let $\mathcal{L} u + \lambda u = 0$, $x \in (0, \pi)$, $u(0) = u(\pi) = 0$, where $\mathcal{L} = \frac{d^2}{dx^2}$ (assume $(-\mathcal{L}, D(-\mathcal{L}))$). Find the eigenvalues $\lambda_n$ and eigenfunctions $u_n(x)$.
+
+	We have $u_n''(x) + \lambda_n u_n(x) = 0$, so the characteristic equation is $m^2 + \lambda_n = 0$ so $m = \pm \sqrt{-\lambda_n}$. The eigenfunctions are therefore
+	\[
+		u_n(x) = A e^{\sqrt{-\lambda_n} x} + B e^{-\sqrt{-\lambda_n} x}
+	\]
+	There are only non-trivial solutions when $\lambda_n > 0$. Since $u_n(0) = u_n(\pi) = 0$, $A = 0$ and $\lambda_n = n^2$. So the eigenfunctions are $u_n(x) = B_n \sin(nx)$. Now we find the normalised eigenfunctions $\hat{u}_n$:
+	\[
+		\langle u_n, u_n \rangle = \int_{0}^{\pi} B_n^2 \sin^2(nx) dx = 1 = B_n^2 \frac{\pi}{2}
+	\]
+	so $B_n = \sqrt{2 / \pi}$. We can therefore write the constant function $f(x) = 1$ as
+	\[
+		\begin{aligned}
+			f(x) = 1 & = \sum_{n = 1}^{\infty} \langle 1, \hat{u}_n \rangle \hat{u}_n(x) \\
+			& = \sum_{n = 1}^{\infty} \int_{0}^{\pi} 1 \cdot \sqrt{\frac{2}{\pi}} \sin(nx) dx \hat{u}_n(x) \\
+			& = \sum_{n = 1}^{\infty} \sqrt{\frac{2}{\pi}} \left[ \frac{-\cos(nx)}{n} \right]_0^{\pi} \hat{u}_n(x) \\
+			& = \frac{2}{\pi} \sum_{n = 1}^{\infty} \frac{1 - {(-1)}^n}{n} \sin(nx) \\
+		\end{aligned}
+	\]
+	$f$ is constant on $[0, \pi]$, is piecewise smooth and $\forall x \in (0, \pi)$, the expansion of $f$ converges to $\frac{1}{2} (f(x_+) + f(x_-)) = \frac{1}{2} (1 + 1) = 1$. However, the convergence is not uniform as $f$ does not satisfy the boundary conditions $f(0) = f(\pi) = 0$.
+\end{example}
+
+\begin{proposition}
+	(\textbf{Completeness of eigenfunctions}) Given a Sturm-Liouville eigenvalue problem with weight $w$, we can expand any function $f(x)$ as an eigenfunction series
+	\[
+		\begin{aligned}
+			f(x) & = \sum_{n = 0}^{\infty} {\langle f, \hat{u}_n \rangle}_w \hat{u}_n(x) \\
+			& = \sum_{n = 0}^{\infty} \left( \int_{a}^{b} f(y) \hat{u}_n (y) w(y) dy \hat{u}_n(x) \right) \\
+			& = \int_{a}^{b} \left( \sum_{n = 0}^{\infty} \hat{u}_n(y) \hat{u}_n(x) w(y) \right) f(y) dy \\
+			& = w(x) \left( \int_{a}^{b} f(y) \hat{u}_n(y) dy \right) \hat{u}_n(x)
+		\end{aligned}
+	\]
+	Since this expansion holds for every $f$,
+	\[
+		\sum_{n = 0}^{\infty} \hat{u}_n(y) \hat{u}_n(x) w(y) = \delta(x - y)
+	\]
+	by the sifting property of the $\delta$ distribution.
+\end{proposition}
+
+\section{Green's functions}
+
+\subsection{The importance of Green's functions}
+
+\begin{definition}
+	The \text{impulse} of a force, $f(t)$, over the interval $[\tau, \tau + \Delta \tau]$ is given by
+	\[
+		\int_{\tau}^{\tau + \Delta \tau} f(t) dt
+	\]
+\end{definition}
+
+\begin{definition}
+	We can describe an instantaneous force at $t = \tau$ as the distribution $\delta(t - \tau)$, since
+	\[
+		\lim_{\Delta \tau} \int_{\tau}^{\tau + \Delta \tau} \delta(t - \tau) dt = 1
+	\]
+\end{definition}
+
+\begin{definition}\label{def:greensFunction}
+	Consider the equation
+	\[
+		L x(t) := x''(t) + w^2 x(t) = f(t), \quad x(0) = x'(0) = 0 \le t < \infty
+	\]
+	We can solve this equation for $x(t)$ by viewing $f(t)$ has a continuous sum of successive instantaneous forces. Instead of solving $L x(t) := x''(t) + w^2 x(t) = f(t)$, we solve
+	\[
+		\diffp[2]{G(t, \tau)}{t} + w^2 G(t, \tau) = \delta(t - \tau), \quad G(0, \tau) = \diffp{G(0, \tau)}{t} = 0
+	\]
+	where $G(t, \tau)$ some function called the \textbf{Green's function for the dynamical system}. $G$ can be interpreted as the response of the system at time $t$ to a unit impulse at $\tau$.
+\end{definition}
+
+\begin{remark}
+	$\partial_t G(t, \tau)$ should have a jump discontinuity at $t = \tau$.
+\end{remark}
+
+\begin{proposition}
+	The solution to the equation in Definition~\ref{def:greensFunction} is given as
+	\[
+		x(t) = \int_{0}^{\infty} f(\tau) G(t, \tau) d\tau
+	\]
+\end{proposition}
+
+\begin{proof}
+	We can write $f(t)$ as a continuous sum of impulses as follows:
+	\[
+		f(t) = \int_{0}^{\infty} f(\tau) \delta(\tau - t) d\tau
+	\]
+	(by the sifting property of $\delta$). Check by inserting $x(t)$ into the original equation:
+	\[
+		\begin{aligned}
+			L x(t) = \diff[2]{}{t} x(t) + w^2 x(t) & = \int_{0}^{\infty} \left( \diff[2]{}{t} G(t, \tau) d\tau + w^2 \int_{0}^{\infty} G(t, \tau) \right) f(\tau) \\
+			& = \int_{0}^{\infty} \delta(t - \tau) f(\tau) d\tau = f(t)
+		\end{aligned}
+	\] 
+\end{proof}
+
+\begin{example}
+	Consider the PDE
+	\[
+		\Delta^2 \phi(\underline{r}) + k^2 \phi(\underline{r}) = \rho(\underline{r})
+	\]
+	where $\rho(\underline{r})$ is a source function. This PDE is associated to electratistic problems in 3D. The Green's function $G(\underline{r}, \underline{r'})$ is the potential at $\underline{r}$ due to a point charge at $\underline{r}'$, represented by $\delta(\underline{r} - \underline{r'})$. $G$ satisfies
+	\[
+		\Delta^2 G(\underline{r}, \underline{r'}) + k^2 G(\underline{r}, \underline{r'}) = \delta(\underline{r} - \underline{r'})
+	\]
+\end{example}
+
+\begin{example}
+	Green's functions can be used to model partial/wave scattering. For a particle with energy $E$ and mass $m$, we have
+	\[
+		-\frac{\hbar^2}{2m} \Delta^2 \psi(\underline{r}) + V(\underline{r}) \psi(\underline{r}) = E \psi(\underline{r})
+	\]
+	This gives a solution
+	\[
+		\psi(\underline{r}) = \psi_0(\underline{r}) + \int_V G(\underline{r}, \underline{r'}) \frac{2m}{\hbar^2} V(\underline{r'}) \psi_0(\underline{r'}) d V'
+	\]
+\end{example}
+
+\subsection{Green's functions for ODEs}
+
+\begin{definition}
+	An \textbf{initial value problem (IVP)} is defined by the following equation and boundary conditions:
+	\[
+		L u(t) = f(t), \quad u(a) = \gamma_1, u'(a) = \gamma_2
+	\]
+\end{definition}
+
+\begin{definition}
+	An \textbf{IN/IN IVP} is an IVP of the form $Lu(t) = f(t), \quad u(a) = \gamma_1 \ne 0, u'(a) = \gamma_2 \ne 0$.
+\end{definition}
+
+\begin{definition}
+	An \textbf{IN/HOM IVP} is an IVP of the form $Lu(t) = f(t), \quad u(a) = u'(a) = 0$.
+\end{definition}
+
+\begin{definition}
+	A \textbf{HOM/IN IVP} is an IVP of the form $Lu(t) = 0, \quad u(a) = \gamma_1 \ne 0, u'(a) = \gamma_2 \ne 0$.
+\end{definition}
+
+\begin{definition}
+	A \textbf{boundary value problem (BVP)} is defined by
+	\[
+		Lu(x) = f(x)
+	\]
+	with boundary conditions
+	\[
+		\begin{aligned}
+			B_1(u) & = \alpha_1 u(a) + \beta_1 u'(a) + \eta_1 u(b) + \kappa_1 u'(b) = \gamma_1 \\
+			B_2(u) & = \alpha_2 u(a) + \beta_2 u'(a) + \eta_2 u(b) + \kappa_2 u'(b) = \gamma_2
+		\end{aligned}
+	\]
+	If $\gamma_1 = \gamma_2 = 0$, the boundary conditions are called \textbf{homogenous}.
+	There are similar definitions for IN/IN, IN/HOM, and HOM/IN BVPs.
+\end{definition}
+
+\begin{definition}
+	The \textbf{Wronskian} of two differentiable functions $u_1$ and $u_2$ is defined as
+	\[
+		W(u_1, u_2)(x) := \left|
+		\begin{matrix}
+			u_1(x) & u_2(x) \\
+			u_1'(x) & u_2'(x)
+		\end{matrix}
+		\right| = u_1(x) u_2'(x) - u_1'(x) u_2(x)
+	\]
+\end{definition}
+
+\begin{theorem}
+	Let $u_1, u_2 \in C^1 ([a, b])$ and $W(u_1, u_2)(x_0) \ne 0$ for some $x_0 \in [a, b]$. Then $u_1$ and $u_2$ are linearly independent on $[a, b]$
+\end{theorem}
+
+\begin{theorem}
+	Let $u_1$ and $u_2$ be linearly dependent, then the Wronskian $W(u_1, u_2)$ is zero at all points in the domain.
+\end{theorem}
+
+\begin{remark}
+	Note that for arbitrary functions $u_1$ and $u_2$, the Wronskian being zero does not imply that the functions are linearly independent.
+\end{remark}
+
+\begin{lemma}
+	Let $u_1$ and $u_2$ be solutions of the homogenous differential equation $u''(x) + p(x) u'(x) + q(x) u(x) = 0$ on an interval $[a, b]$. Then their Wronskian is either always zero or never zero on $[a, b]$.
+\end{lemma}
+
+\begin{lemma}
+	Let $u_1$ and $u_2$ be solutions of the homogenous differential equation $u''(x) + p(x) u'(x) + q(x) u(x) = 0$ on an interval $[a, b]$. Then $u_1$ and $u_2$ are linearly independent if and only if $W(u_1, u_2) = 0$ on $[a, b]$.
+\end{lemma}
+
+\begin{theorem}
+	Let $u_p(x)$ be a particular solution of the inhomogenous second order linear ODE $Lu(x) = f(x)$ and let $\{ u_1, u_2 \}$ be a basis for the vector space of solutions of the homogenous equation $Lu(x) = 0$. Then the general solution of $Lu(x) = f(x)$ is given by
+	\[
+		u_g(x) = u_p(x) + c_1 u_1(x) + c_2 u_2(x)
+	\]
+	where $c_1$ and $c_2$ are constants.
+\end{theorem}
+
+\begin{theorem}
+	(\textbf{Existence and uniqueness of solutions to an IVP}) If the function $p_0$, $p_1$, $p_2$ and $f$ satisfy the conditions (lecture notes) on an interval $I \subseteq \mathbb{R}$ containing $a$, then there exists a unique solution to the IVP in 4.9 (lecture notes) in some neighbourhood of $a$.
+\end{theorem}
+
+\begin{proposition}
+	(\textbf{Properties of the Green's function of an IVP})
+	\begin{enumerate}
+		\item $G(t, \tau)$ is continuous at $t = \tau$:
+		\[
+			\lim_{\epsilon \to 0^+} G(\tau + \epsilon, \tau) = \lim_{\epsilon \to 0^+} G(\tau - \epsilon, \tau)
+		\]
+		\item $\partial_t G(t, \tau)$ has a jump discontinuity at $t = \tau$:
+		\[
+			\lim_{\epsilon \to 0^+} (\partial_t G(\tau + \epsilon, \tau) - \partial_t G(\tau - \epsilon, \tau)) = \frac{1}{p_0(\tau)}
+		\]
+	\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+	TODO.
+\end{proof}
+
+\begin{theorem}
+	The Green's function $G(t, \tau)$ for the IVP
+	\[
+		L_t G(t, \tau) = \delta(t - \tau), \quad G(0, \tau) = 0, \partial_t G(0, \tau) = 0, \quad L_t := p_0(t) \partial_t^2 + p_1(t) \partial_t + p_2(t)
+	\]
+	is given by
+	\[
+		G(t, \tau) = \frac{u_1(\tau) u_2(t) - u_2(\tau) u_1(t)}{p_0(\tau) W(u_1, u_2) (\tau)} \Theta(t - \tau) = \begin{cases}
+			0 & \text{ if } 0 \le t < \tau \\
+			\frac{u_1(\tau) u_2(t) - u_2(\tau) u_1(t)}{p_0(\tau) W(u_1, u_2) (\tau)} & \text{ if } \tau \le t
+		\end{cases}
+	\]
+	where $u_1$ and $u_2$ are two linearly independent solutions of $Lu = 0$.
+\end{theorem}
+
+\begin{proof}
+	TODO.
+\end{proof}
+
+\begin{example}
+	(Problems class) Consider the BVP
+	\[
+		((x^2 - 15x + 27) d_x^2 + (2x - 15) d_x + 18x + 9) u = f(x)
+	\]
+	on $[3, 9]$, $u(9) + \frac{1}{3} u(3) + \frac{1}{3} u'(3) = 0$ and $u'(9) + 2 u(3) + 3u'(3) = 0$. Find the boundary conditions of the adjoint operator.
+
+	The operator $L$ is Sturm-Liouville so $L$ is formally self-adjoint. To find $D(L^*)$, we want the boundary terms in Green's formula to vanish:
+	\[
+		\begin{aligned}
+			B(x) & := [p_0(x) (\bar{u}'(x) v(x) - \bar{u}(x) v'(x))]_3^9 \\
+			& = [(x^2 - 15x + 27) (\bar{u}'(x) v(x) - \bar{u}(x) v'(x))]_3^9 \\
+			& = -27 (\bar{u}'(9) v(9) - \bar{u}(9) v'(9)) - (-9) (\bar{u}'(3) v(3) - \bar{u}(3) v'(3))
+		\end{aligned}
+	\]
+	Now we use the boundary conditions to replace $\bar{u}(9)$ and $\bar{u}'(9)$ with $\bar{u}(9) = -\frac{1}{3} \bar{u}(3) - \frac{1}{3} \bar{u}'(3)$ and $\bar{u}'(9) = -2 \bar{u}(3) - 3 \bar{u}'(3)$:
+	\[
+		\begin{aligned}
+			B(x) & = -27 [(-2\bar{u}(3) - 3\bar{u}'(3)) v(9) + \frac{1}{3} (\bar{u}(3) + \bar{u}'(3)) v'(9)] + 9 [\bar{u}'(3) v(3) - \bar{u}(3) v'(3)] \\
+			& = \bar{u}(3) (54 v(9) - 9v'(9) - 9v'(3)) + \bar{u}'(3) (81 v(9) - 9v'(9) + 9v(3)) = 0
+		\end{aligned}
+	\]
+	Hence, since $\bar{u}(3)$ and $\bar{u}'(3)$ are arbitrary, we have
+	\[
+		\begin{aligned}
+			6v(9) - v'(9) - v'(3) & = 0 \\
+			9v(9) - v'(9) + v(3) & = 0
+		\end{aligned}
+	\]
+	First we eliminate $v(9)$, giving $v'(9) = -3v'(3) - 2v(3)$, and then eliminate $v'(9)$, giving $v(9) = \frac{1}{3} v(3) + \frac{1}{3} v'(3)$.
+\end{example}
+
+\begin{example}
+    (Problems class) Solve the IN/IN BVP on $[1, 3]$, given by
+    \[
+        d_x^2 u - \frac{1}{x} d_x u = 16x, \quad u(1) = 1, u(3) = 9   
+    \]
+
+    First we solve the associated HOM/IN problem:
+    \[
+        \begin{aligned}
+            u_{\text{hom}}''(x) - \frac{1}{x} u_{\text{hom}}'(x) & = 0, \quad u_{\text{hom}}(1) = 1, u_{\text{hom}}(3) = 0 \\
+            \Longrightarrow x^2 u_{\text{hom}}''(x) - x u_{\text{hom}}'(x) & = 0
+        \end{aligned}
+    \]
+    which is a Cauchy-Euler equation. Using the variable change $x = e^t$, $u(x) = u(e^t) =: v(t)$, so $u'(x) = d_x v(t) = d_t v(t) \diff{t}{x} = \frac{1}{x} v'(t)$, we get
+    \[
+        \begin{aligned}
+            u''(x) & = d_x u'(x) = d_x \left( \frac{1}{x} v'(t) \right) \\
+            & = -\frac{1}{x^2} v'(t) + \frac{1}{x} \diff{}{t} v'(t) \diff{t}{x} \\
+            & = \frac{1}{x^2} (v''(t) - v'(t)) \\
+            & \Longrightarrow v''(t) - 2v'(t) = 0
+        \end{aligned}
+    \]
+    The characteristic equation for this is $m^2 - 2m = m(m - 2) = 0$ so $m = 0$ or $m = 2$. Hence
+    \[
+        v(t) = A + Be^{2t} \Longrightarrow u_{\text{hom}}(x) = A + Bx^2
+    \]
+    Now imposing the boundary conditions, $u_{\text{hom}}(1) = 1 = A + B$ and $u_{\text{hom}}(3) = 9 = A + 9B$, so $B = 1$ and $A = 0$, so $u_{\text{hom}}(x) = x^2$. Now we solve the associated IN/HOM BVP:
+    \[
+        L u_p(x) = 16x, \quad L = d_x^2 - \frac{1}{x} d_x, \quad u_p(1) = 0, u_p(3) = 0
+    \]
+    We construct the Green's function $G(x, \xi)$, which satisfies
+    \[
+        \partial_x^2 G(x, \xi) - \frac{1}{x} \partial_x G(x, \xi) = \delta(x - \xi)
+    \]
+    and $G(1, \xi) = G(3, \xi) = 0$. So for $1 < x < \xi$,
+    \[
+        \partial_x^2 G(x, \xi) - \frac{1}{x} \partial_x G(x, \xi) = 0, \quad G(1, \xi) = 0
+    \]
+    and for $\xi < x < 3$,
+    \[
+        \partial_x^2 G(x, \xi) - \frac{1}{x} \partial_x G(x, \xi) = 0, \quad G(3, \xi) = 0
+    \]
+    To construct the ansatze, we need two linear independent solutions of $Lu = 0$, which we have already solved. So we take $u_1(x) = 1$ and $u_2(x) = x^2$. So ansatz 1 is
+    \[
+        G(x, \xi) = A_1 (\xi) \cdot 1 + B_1 (\xi) \cdot x^2, \quad G(1, \xi) = 0
+    \]
+    and ansatz 2 is
+    \[
+        G(x, \xi) = A_2 (\xi) \cdot 1 + B_2 (\xi) \cdot x^2, \quad G(3, \xi) = 0
+    \]
+    $G(1, \xi) = 0 \Longrightarrow A_1(\xi) = -B_1(\xi)$ and $G(3, \xi) = 0 \Longrightarrow A_2(\xi) = -9B_2(\xi)$. So
+    \[
+        G(x, \xi) = \begin{cases}
+            B_1(\xi) (x^2 - 1) & \text{if } 1 < x < \xi \\
+            B_2(\xi) (x^2 - 9) & \text{if } \xi < x < 3
+        \end{cases}
+    \]
+    Using the continuity of $G(x, \xi)$ at $x = \xi$, we have $B_1(\xi) (\xi^2 - 1) = B_2(\xi) (\xi^2 - 9)$ (since $x^2 - 9$ and $x^2 - 1$ are polynomials so continuous).
+    
+    Now using the jump discontinuity of $\partial_x G(x, \xi)$ at $x = \xi$, since $\partial_x G(x, \xi) = 2x B_1(\xi)$ for $x < \xi$ and $\partial_x G(x, \xi) = 2x B_2(\xi)$ for $x > \xi$,
+    \[
+        1 = 2 \xi B_2(\xi) - 2 \xi B_1(\xi)
+    \]
+    Now we obtain
+    \[
+        \begin{aligned}
+            B_1(\xi) & = \frac{\xi^2 - 9}{16\xi} = -A_1(\xi) \\
+            B_2(\xi) & = \frac{\xi^2 - 1}{16\xi} = -\frac{1}{9} A_2(\xi)
+        \end{aligned}
+    \]
+    So
+    \[
+        G(x, \xi) = \begin{cases}
+            \frac{9 - \xi^2}{16\xi} (1 - x^2) & \text{if } 1 < x < \xi \\
+            \frac{1 - \xi^2}{16\xi} (9 - x^2) & \text{if } \xi < x < 3
+        \end{cases}
+    \]
+    which gives
+    \[
+        \begin{aligned}
+            u_p(x) & = \int_{1}^{3} G(x, \xi) f(\xi) d\xi \\
+            & = \int_{x}^{3} (9 - \xi^2) (1 - x^2) d\xi + \int_{1}^{x} (1 - \xi^2)(9 - x^2) d\xi \\
+        \end{aligned}
+    \]
+    Finally, the full solution is
+    \[
+        u(x) = u_{\text{hom}}(x) + u_p(x) = \frac{16}{3} x^3 - 16 x^2 + 12
+    \]
+\end{example}
 
 \end{document}

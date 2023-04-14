@@ -1018,11 +1018,11 @@ We want to minimise the error when computing this with floating points, and mini
 	\]
 	Let $i^*$ be an $i$ that realises the maximum. Then let
 	\[
-		x_j = \text{sgn} (A_{i^*, j})
+		x_j = \sgn (A_{i^*, j})
 	\]
 	Let $k = i^*$, then
 	\[
-		\sum_j A_{i^*, j} x_j = \sum_j A_{i^*, j} \cdot \text{sgn} (A_{i^*, j}) = \sum_j |A_{i^*, j}| = \max_i \sum_j |A_{i, j}|
+		\sum_j A_{i^*, j} x_j = \sum_j A_{i^*, j} \cdot \sgn (A_{i^*, j}) = \sum_j |A_{i^*, j}| = \max_i \sum_j |A_{i, j}|
 	\]
 \end{proof}
 
@@ -1281,6 +1281,597 @@ This means the relative error in $x$ is less than a constant multiplied by the r
 		\end{bmatrix}
 	\]
 	The eigenvalues of $A^T A$ are given by $0 = (1 - \lambda) (1 + a^2 - \lambda) - a^2$, which gives $\lambda_1 \approx 2$ and $\lambda_2 \approx 2 a^2$ for $|a| >> 1$.
+\end{example}
+
+\subsection{Iterative methods for linear systems}
+
+This section is concerned with solving the equation $Ax = b$ with $A$ a matrix and $x$ and $b$ vectors, for very large sizes of $A$.
+
+\begin{definition}
+	We define \textbf{Richardson's method} as the following: for some $\omega > 0$, let
+	\[
+		x^{(k+1)} = x^{(k)} + \omega (b - Ax^{(k)})
+	\]
+	Clearly $x^{(k)} = x^{(k + 1)} = x$, the exact solution, satisfies this. The \textbf{residual} is defined as $r^{(k)} := x^{(k)} - x$. Then
+	\[
+		\begin{aligned}
+			r^{(k + 1)}
+				& = x^{(k + 1)} - x \\
+				& = x^{(k)} - x + \omega (b - Ax^{(k)}) \\
+				& = r^{(k)} + \omega (b - Ax^{(k)} - Ax) \\
+				& = (I - \omega A) r^{(k)}
+		\end{aligned}
+	\]
+	So $r^{(k)} = {(I - \omega A)}^k r^{(0)}$. Consider the case where $A$ has real eigenvalues which satisfy
+	\[
+		0 < \lambda_1 \le \lambda_2 \le \cdot \le \lambda_m
+	\]
+	So the eigenvalues of $I - \omega A$ are also real and satisfy
+	\[
+		1 - \omega \lambda_m \le \cdots \le 1 - \omega \lambda_1 < 1
+	\]
+	By the spectral radius theorem (TODO: add this to notes), for convergence, we need
+	\[
+		-1 < 1 - \omega \lambda_m \Longleftrightarrow \omega < 2 / \lambda_m = 2 / \rho(A)
+	\]
+	So the iteration converges iff the above equation holds.
+\end{definition}
+
+\begin{remark}
+	If $\rho(A)$ is large, then $\omega$ must be small. This is a problem, because if $\omega$ is small, then the iteration takes a long time to converge.
+\end{remark}
+
+\begin{definition}
+	$A$ is called \textbf{strictly upper triangular} if $A$ is upper triangular and $A_{i, i} 0 0$ for every $i$. $A$ is called \textbf{unit upper triangular triangular} if $A$ is upper triangular and $A_{i, i} = 1$ for every $i$.
+\end{definition}
+
+\begin{definition}
+	We define \textbf{Jacobi's method} as follows: assuming $A_{i, i} \ne 0$ for every $i$, we rewrite $Ax = b$ as
+	\[
+		Dx = (E + F)x + b
+	\]
+	where $D$ is diagonal, $E$ is strictly lower triangular, $F$ is strictly upper triangular, and we use the iteration
+	\[
+		D x^{(k + 1)} = (E + F) x^{(k)} + b \Longleftrightarrow x^{(k + 1)} = D^{-1} ( (E + F) x^{(k)} + b) =: M_J^{-1} (N_J x^{(k)} + b)
+	\]
+	Consider the residual $r^{(k)} := x^{(k)} - x$:
+	\[
+		\begin{aligned}
+			r^{(k + 1)}
+				& = x^{(k + 1)} - x \\
+				& = M^{-1} N x^{(k)} + M^{-1} b - x \\
+				& = M^{-1} N r^{(k)} + M^{-1} N x + M^{-1} b - x \\
+				& = M^{-1} N r^{(k)}
+		\end{aligned}
+	\]
+	Arguing as before, this iteration converges iff
+	\[
+		{(M_J^{-1} N_J)}^k \to 0 \quad \text{as } k \to \infty
+	\]
+	The implementation of this method is as follows:
+	\[
+		x_i^{(k + 1)} = \left( \sum_{j \ne i} A_{i, j} x_j^{(k)} + b_i \right) / A_{i, i}
+	\]
+\end{definition}
+
+\begin{remark}
+	Computing eigenvalues is even harder than solving $Ax = b$.
+\end{remark}
+
+\begin{definition}
+	A square matrix $B$ is called \textbf{strictly diagonally dominant} if
+	\[
+		\forall i, \quad |B_{i, i}| < \sum_{j \ne i} |B_{i, j}|
+	\]
+	$B$ is called \textbf{diagonally dominant} if
+	\[
+		\forall i, \quad |B_{i, i}| \le \sum_{j \ne i} |B_{i, j}|
+	\]
+\end{definition}
+
+\begin{proposition}
+	The Jacobi method converges if $A$ is strictly diagonal dominant.
+\end{proposition}
+
+\begin{proof}
+	\[
+		\begin{aligned}
+			{(M^{-1} N)}_{i, j}
+				& = \sum_k D_{i, k}^{-1} {(A - D)}_{i, j} \\
+				& = D_{i, i}^{-1} {(A - D)}_{i, j} \\
+				& = \begin{cases}
+					A_{i, i}^{-1} A_{i, j} & \text{if } i \ne j \\
+					0 & \text{ otherwise}
+				\end{cases}
+		\end{aligned}
+	\]
+	Then consider
+	\[
+		||M^{-1} N||_{\infty} = \max_i |M^{-1} N_{i, j}| = \max_i \sum_{j \ne i} |A_{i, j}| / |A_{i, i}| < 1
+	\]
+	if $A$ is strictly diagonal dominant, henc ${(M^{-1} N)}^k \to 0$ as $k \to \infty$.
+\end{proof}
+
+\begin{definition}
+	The \textbf{Gauss-Seidel method} is defined as the iteration
+	\[
+		\begin{aligned}
+			x_i^{(k + 1)}
+				& = \left( b_i - \sum_{j < i} A_{i, j} x_j^{(k + 1)} - \sum_{j > i} A_{i, j} x_j^{(k)} \right) \\
+				& = x_i^{(k)} + \left( b_i - \sum_{j < i} A_{i, j} x_j^{(k + 1)} - \sum_{j \ge i} A_{i, j} x_j^{(k)} \right)
+		\end{aligned}
+	\]
+	which only requires one vector for $x$: when computing $x_i^{(k + 1)}$, we use the updated values of $x_j$ for $j < i$ and the old values of $x_j$ for $j \ge i$.
+
+	Splitting $A$ into $A = D - E - F$ where $D$ is diagonal, $E$ is strictly lower triangular, and $F$ is strictly upper triangular, we can write
+	\[
+		(D - E) x^{(k + 1)} = F x^{(k)} + b \Longleftrightarrow M x^{(k + 1)} = N x^{(k)} + b
+	\]
+	where $M = D - E$ and $N = F$. Consider $r^{(k)} := x^{(k)} - x$, then
+	\[
+		r^{(k + 1)} = M^{-1} (N x^{(k)} + b) - x = M^{-1} (N r^{(k)} + Nx + b) - x = M^{-1} N r^{(k)}
+	\]
+\end{definition}
+
+\begin{proposition}
+	If $A$ is strictly diagonally dominant, then the Gauss-Seidel method converges.
+\end{proposition}
+
+\begin{remark}
+	To accelerate convergence, we can sometimes use a parameter $w > 1$ and use
+	\[
+		x_i^{(k)} + w \left( b_i - \sum_{j < i} A_{i, j} x_j^{(k + 1)} - \sum_{j \ge i} A_{i, j} x_j^{(k)} \right)
+	\]
+\end{remark}
+
+\begin{example}
+	Let $W$ be any non-singular matrix and $||\cdot||$ be any vector norm. Prove that
+	\[
+		||x||_W := ||Wx||
+	\]
+	is a vector norm.
+
+	Verify the properties:
+	\begin{itemize}
+		\item $||cx||_W = ||W(cx)|| = ||c(Wx)|| = |c| ||Wx|| = |c| ||x||_W$.
+		\item $||x + y||_W = ||W(x + y)|| = ||Wx + Wy|| \le ||Wx|| + ||Wy|| = ||x||_W + ||y||_W$.
+		\item If $x \ne 0$, then $Wx \ne 0$ as $W$ is non-singular. Hence $||x||_W = 0 \Longrightarrow x = 0$.
+	\end{itemize}
+\end{example}
+
+\begin{example}
+	Prove that for symmetric $A$, $\rho(A) = ||A||_2$.
+
+	For any matrix $B$, $||B||_2 = \rho{(B B^T)}^1/2$. For symmetric $A = A^T$, we have a full set of eigenvectors with eigenvalues $\lambda_1 \le \cdots \le \lambda_n$. Now if $Av = \lambda v$ then $A A^T v = A^2 v = A(\lambda v) = \lambda^2 v$. So if $\lambda^2$ is an eigenvalue of $A A^T$ then $|\lambda|$ is an eigenvalue of $A$ with a largest modulus.
+\end{example}
+
+\section{$L^2$ Approximations}
+
+\subsection{$L^2$ approximations of functions}
+
+\begin{definition}
+	Let $f$ be a function and $w$ be a weight function, with $w(x) > 0$ except at a finite number of points. The \textbf{weighted $L^2$ norm} of $f$ is defined as
+	\[
+		||f||_{L^2_w (a, b)} := \left( \int_{a}^{b} |f(x)|^2 w(x) dx \right)
+	\]
+\end{definition}
+
+\begin{remark}
+	The weighted $L^2$ norm is a seminorm for every function $f$ but is a norm for every continuous $f$.
+\end{remark}
+
+\begin{example}
+	To solve the problem, we can write $p(x) = p_0 \phi(x) + \cdots + p_N \phi_N(x)$ for some undetermined coefficients $p_0, \ldots, p_N$. Then
+	\[
+		\begin{aligned}
+			E(p) & = \int_a^b |p_0 \phi_0(x) + \cdots + p_N \phi_N(x) - f(x)|^2 w(x) dx \\
+			& = \int_{a}^{b} \left| \sum_{i = 0}^N p_i \phi_i(x) - f(x) \right|^2 w(x) dx \\
+			& = \int_{a}^{b} \left( \sum_{j, k}^N p_j p_k \phi_j(x) \phi_k(x) - 2 f(x) \sum_k p_k \phi_k(x) + {f(x)}^2 \right) w(x) dx \\
+			& = ||f||^2 - 2 \sum_k p_k \int_{a}^{b} \phi_k(x) f(x) w(x) dx + \sum_{j, k} p_j p_k \int_{a}^{b} \phi_j(x) \phi_k(x) w(x) dx \\
+			& =: ||f||^2 - 2 \sum_k p_k q_k + \sum_{j, k} p_j p_k A_{j, k}
+		\end{aligned}
+	\]
+	To find the $p$ which minimises this, we vary the coefficients $p_j$ until we find a stationary point. For $i \in \{0, \ldots, N\}$,
+	\[
+		\diffp{E}{p_i} = -2 q_i + 2 \sum_k A_{i, k} p_k + \sum_j p_j A_{j, i} \Longleftrightarrow \sum_j A_{i, j} p_j = q_i
+	\]
+	If we can solve this linear system, we have our stationary point. We show that $A$ is strictly positive definite, so there is a unique $p$ which minimises the error. For every vector $(z_0, \ldots, z_N)$,
+	\[
+		\begin{aligned}
+			\sum_{j, k} A_{j, k} z_j z_k & = \int_{a}^{b} \left( \sum_j z_j \phi_j(x) \right) \left( \sum_k z_k \phi_k(x) \right) w(x) dx \\
+			& = \int_{a}^{b} \left( \sum_j z_j \phi_j(x) \right)^2 w(x) dx \\
+			& > 0 \text{ iff the } \phi_j \text{ are linearly independent}
+		\end{aligned}
+	\]
+	so assuming that $\phi_j$ are linearly independent, $A$ is strictly positive definite. So $E(p)$ has a unique minimum and no maximum.
+\end{example}
+
+\begin{example}
+	Let $(a, b) = (-1, 1)$ and $w(x) = {(1 - x^2)}^{-1/2}$. Find a quadratic approximation to $f(x) = \arcsin(x)$. We use the above example to compute
+	\[
+		q_0 = \int_{-1}^{1} x^0 \arcsin(x) {(1 - x^2)}^{-1/2} dx = 0
+	\]
+	since the integrand is an odd function. Similarly,
+	\[
+		q_2 = \int_{-1}^{1} x^2 \arcsin(x) {(1 - x^2)}^{-1/2} dx = 0
+	\]
+	Now
+	\[
+		q_1 = \int_{-1}^{1} x^1 \arcsin(x) {(1 - x^2)}^{-1/2} dx = \int_{0}^{\pi} \cos(\theta) (\pi / 2 - \theta) d\theta = 2
+	\]
+	So
+	\[
+		\begin{aligned}
+			A_{1, 1} & = \int_{-1}^{1} x^0 x^0 {(1 - x^2)}^{-1/2} dx = \pi \\
+			A_{1, 2} = A_{2, 1} & = \int_{-1}^{1} x^0 x^1 {(1 - x^2)}^{-1/2} dx = 0 \\
+			A_{2, 3} = A_{3, 2} & = \int_{-1}^{1} x^1 x^2 {(1 - x^2)}^{-1/2} dx = 0 \\
+			A_{3, 1} = A_{2, 2} = A_{1, 3} & = \int_{-1}^{1} x^2 x^0 {(1 - x^2)}^{-1/2} dx = \frac{\pi}{2} \\
+			A_{3, 3} & = \int_{-1}^{1} x^2 x^2 {(1 - x^2)}^{-1/2} dx = \frac{3 \pi}{8}
+		\end{aligned}
+	\]
+	So
+	\[
+		A = \pi \begin{pmatrix}
+			1 & 0 & 1/2 \\
+			0 & 1/2 & 0 \\
+			1/2 & 0 & 3/8
+		\end{pmatrix},
+		\quad q = (0, 2, 0)
+	\]
+	So $p = \frac{1}{\pi} (0, 4, 0)$ so $p(x) = \frac{4}{\pi} x$.
+\end{example}
+
+\begin{definition}
+	A map $(\cdot, \cdot): V \times V \rightarrow \mathbb{C}$ is called an \textbf{inner product} if $\forall u, v \in V$ and $\alpha, \beta \in \mathbb{C}$,
+	\begin{enumerate}
+		\item $(\alpha u + \beta u', v) = \alpha (u, v) + \beta (u', v)$.
+		\item $(u, v) = \overline{(v, u)}$.
+		\item $(u, u) \geq 0$ and $(u, u) = 0$ iff $u = 0$.
+	\end{enumerate}
+\end{definition}
+
+\begin{remark}
+	From properties 1. and 2. of an inner product, $(u, \alpha u) = \overline{\alpha} (u, v)$.
+\end{remark}
+
+\begin{theorem}
+	Given an inner product $(\cdot, \cdot)$ on $V$, the map $||\cdot||: V \rightarrow \mathbb{R}_+$ defined as
+	\[
+		||u|| := {(u, u)}^{1/2}
+	\]
+	is a norm.
+\end{theorem}
+
+\begin{proof}
+	\hfill
+	\begin{itemize}
+		\item Linearity: use properties 1. and 2.
+		\item Positivity for $u \ne 0$ follows from property 3.
+		\item The triangle inequality follows from Cauchy-Schwarz:
+		\[
+			\begin{aligned}
+				0 \le ||u + \alpha v||^2 & = (u + \alpha v, u + \alpha v) \\
+				& = ||u||^2 + |\alpha|^2 ||v||^2 + \alpha (v, u) + \overline{\alpha} (u, v)
+			\end{aligned}
+		\]
+		Then set $\alpha = -(u, v) / ||v||^2$ so $\overline{\alpha} = -(v, u) / ||v||^2$ by property 2. Then
+		\[
+			\begin{aligned}
+				0 & \le ||u||^2 + |(u, v)|^2 / ||v||^2 - (u, v) (v, u) / ||v||^2 - (v, u) (u, v) / ||v||^2 \\
+				& = ||u||^2 - |(u, v)|^2 / ||v||^2 \\
+				& \Longleftrightarrow |(u, v)|^2 \le ||u||^2 ||v||^2
+			\end{aligned}
+		\]
+		This proves the Cauchy-Schwarz inequality. Now
+		\[
+			\begin{aligned}
+				||u + v||^2 = (u + v, u + v) & = ||u||^2 + ||v||^2 + (u, v) + (v, u) \\
+				& = ||u||^2 + ||v||^2 + 2 |(u, v)| \\
+				& \le ||u||^2 + ||v||^2 + 2 ||u|| ||v|| \\
+				& = {(||u|| + ||v||)}^2
+			\end{aligned}
+		\]
+		so
+	\end{itemize}
+\end{proof}
+
+\begin{example}\label{exa:innerProdRN}
+	Let $V = \mathbb{R}^n$ and let $u = (u_1, \ldots, u_n) = u_1 \underline{e_1} + \cdots + u_n \underline{e_n}$. An inner product is defined as
+	\[
+		(u, v) = \sum_{i = 1}^{n} u_i v_i
+	\]
+	Then a norm is
+	\[
+		||u|| = \sqrt{\sum_{i = 1}^{n} u_i^2}
+	\]
+\end{example}
+
+\begin{example}
+	Let $V = C^0 ([a, b])$. An inner product is defined as
+	\[
+		{(u, v)}_{L^2 w (a, b)} := \int_{a}^{b} u(x) v(x) w(x) dx
+	\]
+	Then a norm is
+	\[
+		{(u, u)}_{L^2 w (a, b)} = ||u||^2_{L^2 w (a, b)}
+	\]
+	i.e. the $L^2$ norm as before.
+\end{example}
+
+\begin{theorem}
+	Let $V$ be an inner product space and $X$ be a linear subspace of $V$. Let $f \in V$ be given and suppose $\tilde{p} \in X$ minimises $||f - p||$:
+	\[
+		E(\tilde{p}) = ||f - \tilde{p}||^2 \le ||f - p||^2 \quad \forall p \in X
+	\]
+	Then $\tilde{p}$ satisfies
+	\[
+		(f - \tilde{p}, p) = 0 \quad \forall p \in X
+	\]
+\end{theorem}
+
+\begin{proof}
+	(Assume $V$ is a real inner product space). Assume that $(f - \tilde{p}, \hat{p}) = a \ne 0$ for some $\hat{p} \in X$. Let
+	\[
+		q = \hat{p} + \frac{a}{||\hat{p}||^2} \hat{p} \in X
+	\]
+	Then
+	\[
+		\begin{aligned}
+			||f - q||^2 & = ||f - \hat{p} - \frac{a}{||\hat{p}||^2} \hat{p}||^2 \\
+			& = ||f - \hat{p}||^2 - \frac{2a}{||\hat{p}||^2} (f - \tilde{p}, \hat{p}) + \frac{a^2}{||\hat{p}||^4} ||\hat{p}||^2 \\
+			& = ||f - \tilde{p}||^2 - \frac{a^2}{||\hat{p}||^2} \\
+			& < ||f - \tilde{p}||^2
+		\end{aligned}
+	\]
+	But this is a contradiction as then $||f - p||$ is not minimised by $\tilde{p}$. So $a = 0$.
+\end{proof}
+
+\begin{definition}
+	(\textbf{Gram-Schmidt}) Given a basis $\{ \phi_k \}$ which is not orthogonal, the algorithm is as follows:
+	\begin{itemize}
+		\item $\hat{\phi}_0 = \phi_0$.
+		\item \[
+			\hat{\phi}_k = \phi_k - \sum_{j = 0}^{k - 1} \frac{(\hat{\phi}_j, \phi_k)}{||\hat{\phi}_j||^2} \hat{\phi}_j
+		\]
+	\end{itemize}
+\end{definition}
+
+\begin{proposition}
+	Let $V = C^0 (a, b; \mathbb{R})$ with the inner product
+	\[
+		{(u, v)}_{L^2 w(a, b)} := \int_{a}^{b} u(x) v(x) w(x) dx
+	\]
+	and $X = P_n$ (set of polynomials of degree $n$). let $P_n = \text{span}\{ \phi_0, \dots, \phi_n \}$ with $\phi_k \in P_k$. The following properties hold:
+	\begin{enumerate}
+		\item $\{ \phi_k \}$ is unique up to normalisation: if $\{ \hat{\phi}_k \}$ is another orthogonal set with respect to the same inner product, then $\hat{\phi}_k = c_k \phi_k$ for some $c_k \in \mathbb{R}$.
+		\item $\phi_k$ has exactly $k$ real roots in $(a, b)$.
+		\item $\{ \phi_k \}$ satisfy the recurrence relation $\phi_{-1} (x) := 0, \phi_0(x) = 1$,
+		\[
+			\phi_{k + 1} (x) = \frac{1}{||\phi_k||} x \phi_k(x) - \frac{(x \phi_k, \phi_k)}{||\phi_k||^3} \phi_k(x) - \frac{||\phi_k||}{||\phi_{k - 1}||} \phi_{k - 1}(x)
+		\]
+	\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+	\hfill
+	\begin{enumerate}
+		\item Let $\phi_k(x) = a_k x^k + \cdots + a_0$, $\tilde{\phi}_k(x) = \tilde{a}_k x^k + \cdots + \tilde{a}_0$. Then $\tilde{\phi}_k(x) - \frac{\tilde{a}_k}{a_k} \phi_k(x) =: b_{k - 1} x^{k - 1} + \cdots + b_0 =: \delta \phi(x) \in P_{n - 1}$. Now,
+		\[
+			(\delta \phi, \delta \phi) = \left( \tilde{\phi}_k - \frac{\tilde{a}_k}{a_k} \phi_k, \delta \phi \right) = (\tilde{\phi}_k, \delta \phi) - \frac{\tilde{a}_k}{a_k} (\phi_k, \delta \phi) = 0
+		\]
+		since $(\tilde{\phi}_k, \phi_m) = 0$ for $k \ne m$ since they are orthogonal. Hence $\delta \phi = 0$.
+		\item We have $\forall p \in P_{k - 1}, (\phi_k, p) = 0$. $\phi_k$ can have at most $k$ sign changes in $(a, b)$. We will show that it has exactly $k$ sign changes. Assume that $\phi_k$ has $m < k$ sign changes at $\{ x_j \}_{j = 1}^m$. Define
+		\[
+			s(x) := (x - x_1) \cdots (x - x_m) \in P_m
+		\]
+		Then
+		\[
+			(\phi_k, s) = \int_{a}^{b} \phi_k(x) s(x) w(x) dx = 0
+		\]
+		since $s \in P_m$ with $m < k$. So $m = k$ and each sign change corresponds to a simple root.
+		\item Omitted.
+	\end{enumerate}
+\end{proof}
+
+\begin{remark}
+	Properties 1 and 2 imply that the roots of $\phi_k$ are unique. The recurrence relation defined above should be used instead of Gram-Schmidt where possible.
+\end{remark}
+
+\subsection{Convergence of $L^2$ approximations}
+
+\begin{theorem}
+	(\textbf{Weierstrass}) For every $f \in C^0 (a, b; \mathbb{R})$ and every $\epsilon > 0$, for some $N \in \mathbb{N}$ and $p \in P_N$,
+	\[
+		\max_{x \in [a, b]} |f(x) - p(x)| < \epsilon
+	\]
+\end{theorem}
+
+\begin{proof}
+	Omitted.
+\end{proof}
+
+\section{Numerical Integration}
+
+We want to numerically approximate the integral
+\[
+	I[f] = \int_{a}^{b} f(x) w(x) dx
+\]
+for $w(x)$ a weight function.
+
+\begin{definition}
+	For a function $f$, a \textbf{quadrature formlula} is defined as
+	\[
+		Q_n(f) = (b - a) \sum_{k = 0}^n \hat{\sigma}_k f(x_k)
+	\]
+	where $\hat{\sigma}_k$ are are the \textbf{coefficients} and $x_k \in (a, b)$ are the \textbf{nodes}.
+\end{definition}
+
+\begin{example}
+	The trapezium rule is
+	\[
+		Q_1(f) = (b - a) \frac{f(a) + f(b)}{2}
+	\]
+	Here $x_0 = a$, $x_1 = b$, $\hat{\sigma}_0 = \hat{\sigma}_1 = \frac{1}{2}$.
+\end{example}
+
+\begin{definition}
+	A quadrature formula $Q_n$ has \textbf{degree of exactness} $r$ if
+	\begin{itemize}
+		\item $Q_n(x^m) = I(x^m)$ for $m \in \{ 0, \dots, r \}$ and
+		\item $Q_n(x^{r + 1}) \ne I(x^{r + 1})$.
+	\end{itemize}
+\end{definition}
+
+\begin{proposition}
+	\hfill
+	\begin{enumerate}
+		\item $Q_n$ is linear: $Q_n(f + g) = Q_n(f) + Q_n(g)$.
+		\item If $Q_n$ has degree of exactness $r$, then $Q_n(p) = I(p)$ for every $p \in P_r$.
+	\end{enumerate}
+\end{proposition}
+
+\begin{definition}
+	(\textbf{Interpolatory quadrature}) Let $w(x) = 1$ and let $\{ x_k \}_{k = 0}^n$ be such that $x_k < x_{k + 1}$. We interpolate $f$ by $p \in P_n$ at the nodes: $p(x_k) = f(x_k)$. Then we compute
+	\[
+		I_n(f) = \int_{a}^{b} p(x) dx
+	\]
+	Now using the Lagrange interpolation formula,
+	\[
+		p(x) = \sum_{k = 0}^{n} f(x_k) L_k(x)
+	\]
+	where
+	\[
+		L_k(x) = \prod_{j = 0, j \ne k}^{n} \frac{x - x_j}{x_k - x_j}
+	\]
+	Therefore
+	\[
+		I_n(f) = \int_{a}^{b} \sum_k f(x_k) L_k(x) dx = \sum_k f(x_k) \int_{a}^{b} L_k(x) dx
+	\]
+	Let $t = \frac{x - a}{b - a} \in (0, 1)$, $t_k = \frac{x_k - a}{b - a} \in (0, 1)$. Then
+	\[
+		\int_{a}^{b} L_k(x) = \int_{a}^{b} \prod_{j \ne k} \frac{x - x_j}{x_k - x_j} dx = (b - a) \int_{0}^{1} \prod_{j \ne k} \frac{t - t_j}{t_k - t_j} dt =: \sigma_k
+	\]
+\end{definition}
+
+\begin{definition}
+	If the nodes $x_k$ are equidistant, $x_k = x_{k - 1} - x_{k + 1} - x_k$, the resulting quadrature is called a \textbf{Newton-Cotes formula}. If $x_0 = a$ and $x_n = b$, it is called a \textbf{closed Newton-Cotes formula}.
+\end{definition}
+
+\begin{example}
+	For $n = 0$, $L_0(x) = 1$ and $\sigma_0 = 1$. So $I_0(f) = (b - a) F(\xi)$ for any $\xi \in [a, b]$.
+
+	If $\xi = \frac{b + a}{2}$, this is called the \textbf{rectangle method}.
+\end{example}
+
+\begin{example}
+	For $n = 1$, for the closed Newton-Cotes formula, $t_0 = 0$ and $t_1 = 1$. $L_0(t) = \frac{t - t_1}{t_0 - t_1} = 1 - t$ and $L_1(t) = \frac{t - t_0}{t_1 - t_0} = t$, so $\sigma_0 = \sigma_1 = \frac{1}{2}$. Hence
+	\[
+		I_1(f) = (b - a) \frac{f(a) + f(b)}{2}
+	\]
+\end{example}
+
+\begin{example}
+	For $n = 2$, for the closed Newton-Cotes formula, $t_0 = 0$, $t_1 = \frac{1}{2}$ and $t_2 = 1$. $L_0(t) = \frac{(t - t_1)(t - t_2)}{(t_0 - t_1)(t_0 - t_2)} = \frac{1}{2} t^2 - t$ and $L_1(t) = \frac{(t - t_0)(t - t_2)}{(t_1 - t_0)(t_1 - t_2)} = -t^2 + t$ and $L_2(t) = \frac{(t - t_0)(t - t_1)}{(t_2 - t_0)(t_2 - t_1)} = \frac{1}{2} t^2 - \frac{1}{2} t$. So $\sigma_0 = \sigma_2 = \frac{1}{6}$ and $\sigma_1 = \frac{2}{3}$. Hence
+	\[
+		I_2(f) = (b - a) \frac{f(a) + 4f(\frac{a + b}{2}) + f(b)}{6}
+	\]
+	This is called \textbf{Simpson's rule}.
+\end{example}
+
+\begin{theorem}
+	Let $f \in C^{n + 1}([a, b])$ and let $p \in P_n$ interpolate $f$ at $\{ x_k \}_{k = 0}^n \subset [a, b]$. Then for every $x \in [a, b]$,
+	\[
+		f(x) - p(x) = \frac{(x - x_0) \cdots (x - x_n)}{(n + 1)!} f^{(n + 1)}(\xi)
+	\]
+	where $\xi \in (a, b)$ and we denote $\omega_{n + 1}(x) = (x - x_0) \cdots (x - x_n)$.  
+\end{theorem}
+
+\begin{theorem}
+	Let $f \in C^{n + 1}([a, b])$. If $I_n$ is an interpolatory quadrature on $[a, b]$, then
+	\[
+		|I(f) - I_n(f)| \le \frac{1}{(n + 1)!} \max_{\xi \in (a, b)} |f^{(n + 1)}(\xi)| \int_{a}^{b} |(x - x_0) \cdots (x - x_n)| dx
+	\]
+\end{theorem}
+
+\begin{example}
+	(Problems class) Suppose that the interpolatory quadrature formula $I_1$ has the nodes $1/4$ and $2/3$ on the integration domain $[0, 1]$. Compute the coefficients of $I_1$.
+	
+	$I_1(f) = \sum_{k = 0}^{n} \sigma_k f(x_k) = \sigma_0 f(1/4) + \sigma_1 f(2/3)$. We compute
+	\[
+		\begin{aligned}
+			\sigma_0 & = (b - a) \int_{a}^{b} \prod_{j \ne 0} \frac{x - x_j}{x_0 - x_j} dx = \int_{0}^{1} \frac{x - x_1}{x_0 - x_1} dx \\
+			& = \int_{0}^{1} \frac{x - 2/3}{1/4 - 2/3} dx = \frac{2}{5}
+		\end{aligned}
+	\]
+	and
+	\[
+		\begin{aligned}
+			\sigma_1 = \int_{0}^{1} \frac{x - x_0}{x_1 - x_0} dx = \frac{3}{5}
+		\end{aligned}
+	\]
+\end{example}
+
+\begin{example}
+	(Problems class) Find the coefficient $\sigma_0$ in the open Newton-Cotes formula
+	\[
+		I_0(f) = \sigma_0 f \left( \frac{a + b}{2} \right)
+	\]
+	and prove that
+	\[
+		|I(f) - I_0(f)| \le \frac{(b - a)^3}{24} \max_{\xi \in (a, b)} |f^{(2)}(\xi)|
+	\]
+	We use Taylor's theorem to write
+	\[
+		f(x) = f(x_0) + (x - x_0) f'(x_0) + \frac{{(x - x_0)}^2}{2!} f''(\xi(x))
+	\]
+	where $\xi(x) \in \text{conv} \{ x, x_0 \} \subset [0, 1]$. Then, with $p_0 = f(x_0)$ a constant polynomial,
+	\[
+		\begin{aligned}
+			I(f) - I_0(f) & = I(f) - I(p_0) = I(f - p_0) \\
+			& = \int_{a}^{b} (f(x) - p_0(x)) dx \\
+			& = \int_{a}^{b} ((x - x_0) f'(x_0) + \frac{{(x - x_0)}^2}{2!} f''(\xi(x))) dx \\
+			& = f'(x_0) \int_{a}^{b} (x - x_0) dx + \frac{1}{2!} \int_{a}^{b} f''(\xi(x)) (x - x_0)^2 dx
+		\end{aligned}
+	\]
+	So
+	\[
+		\begin{aligned}
+			|I(f) - I_0(f)| & = \frac{1}{2} \left| \int_{a}^{b} f''(\xi(x)) (x - x_0)^2 dx \right| \\
+			& \le \frac{1}{2} \int_{a}^{b} |f''(\xi(x))| (x - x_0)^2 dx \\
+			& \le \frac{1}{2} \max_{\xi \in [0, 1]} |f''(\xi)| \int_{a}^{b} (x - x_0)^2 dx \\
+			& = \frac{(b - a)^3}{24} \max_{\xi \in (a, b)} |f^{(2)}(\xi)|
+		\end{aligned}
+	\]
+\end{example}
+
+\begin{example}
+	(Problems class) Show that the Fourier-Chebyshev expansion
+	\[
+		\tilde{p}(x) = \sum_{k = 0}^{\infty} \frac{(f, T_k)}{||T_k||^2} T_k(x)
+	\]
+	where $T_K$ is the Chebyshev polynomial and the inner product is in $(-1, 1)$ with weight $w(x) = {(1 - x^2)}^{-1/2}$, converges for every $f \in C^2 ([-1, 1])$.
+
+	We will show that the series
+	\[
+		p_N(x) = \sum_{k = 0}^{N} \frac{(f, T_k)}{||T_k||^2} T_k(x)
+	\]
+	converges absolutely.
+	\[
+		\begin{aligned}
+			||p_N||^2 & = (p_N, p_N) = \sum_{j, k} c_j c_k (T_k, T_j) = c_0^2 \pi + \sum_{k = 1}^{N} c_k^2 \pi / 2
+		\end{aligned}
+	\]
+	where $c_j = (f, T_j) / ||T_j||^2$. Now
+	\[
+		\begin{aligned}
+			(f, T_k) & = \int_{-1}^{1} f(x) T_k(x) {(1 - x^2)}^{-1/2} dx \\
+			& = \int_{0}^{\pi} f(\cos(\theta)) \cos(k\theta) d\theta \\
+			& = \frac{1}{k} \left[ f(\cos(\theta)) \sin(k \theta) \right]_{0}^{\pi} - \frac{1}{k} \int_{0}^{\pi} \sin(k \theta) \diff{}{\theta} f(\cos(\theta)) d\theta \\
+			& = \frac{1}{k^2} \left[ \cos(k\theta) \diff{}{\theta} f(\cos(\theta)) \right] + \frac{1}{k^2} \int_{0}^{\pi} \cos(k \theta) \diff[2]{}{\theta} f(\cos(\theta)) d\theta \\
+			& = -\frac{1}{k^2} \left[ \cos(k\theta) f'(\cos(\theta)) \sin(\theta) \right]_{0}^{\pi} - \frac{1}{k^2} \int_{0}^{\pi} \cos(k \theta) \diff{}{\theta} (\sin(\theta) f'(\cos(\theta))) d\theta \\
+			& = -\frac{1}{k^2} \int_{0}^{\pi} \cos(k \theta) (\cos(\theta) f'(\cos(\theta) - \sin(\theta)^2 f''(\cos(\theta))) d\theta
+		\end{aligned}
+	\]
 \end{example}
 
 \end{document}
