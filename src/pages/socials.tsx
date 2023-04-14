@@ -1,9 +1,6 @@
-import Head from "next/head";
-import pageTitle from "../lib/title";
 import Icon from "@mdi/react";
-import { mdiChessPawn, mdiDiscord, mdiEmail, mdiFacebook, mdiGithub, mdiGitlab, mdiInstagram, mdiLinkedin, mdiReddit, mdiStackExchange, mdiStackOverflow, mdiTwitter } from "@mdi/js";
+import { mdiChessPawn, mdiDiscord, mdiEmail, mdiGithub, mdiGitlab, mdiInstagram, mdiLinkedin, mdiReddit, mdiStackExchange, mdiStackOverflow } from "@mdi/js";
 import PageTitle from "../components/PageTitle";
-import Link from "next/link";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
