@@ -7,23 +7,31 @@ import { Button, ButtonProps, Card, Col, Row } from "react-bootstrap";
 import PageTitle from "../../components/PageTitle";
 import { getMathsNotes, MathsNoteFile } from "../../lib/mathsNotes";
 
-function downloadLinkProps(name: string, extension: string): Partial<ButtonProps> {
+function downloadLinkProps(github: boolean, name: string, extension: string): Partial<ButtonProps> {
 	return {
-		href: "/maths-notes/" + name + "/" + name + "." + extension,
+		href: (github ? GITHUB_REPO_URL + "/blob/public" : "") + "/maths-notes/" + name + "/" + name + "." + extension,
 		target: "_blank",
 		as: "a",
 	}
 }
 
+const GITHUB_REPO_URL = "https://github.com/isaacholt100/isaacholt";
+
+const DATE_FORMAT_OPTIONS: Intl.DateTimeFormatOptions = {
+	day: "2-digit",
+	month: "2-digit",
+	year: "numeric",
+}
+"https://github.com/isaacholt100/isaacholt/blob/main/public/maths-notes/algebra/algebra.tex"
 export default function Maths(props: { mathsNotes: MathsNoteFile[] }) {
 	const router = useRouter();
 	return (
 		<>
 			<PageTitle title="Maths Notes" />
-			<p>If you notice a mistake in any of these notes, feel free to create an issue or submit a pull request on this website{"'"}s <Link className="link-primary" href="https://github.com/isaacholt100/isaacholt">GitHub repository</Link></p>
+			<p>If you notice a mistake in any of these notes, feel free to create an issue or submit a pull request on this website{"'"}s <Link className="link-primary" href={GITHUB_REPO_URL}>GitHub repository</Link>.</p>
 			<Row className="g-2 g-md-3">
 				{props.mathsNotes.map(note => (
-					<Col xs={12} xl={6} key={note.name}>
+					<Col xs={12} sm={6} lg={4} xl={3} key={note.name}>
 						<Card border="light" bg="transparent" className="h-100">
 							{/*<img src="..." className="card-img-top" alt="" />*/}
 							<Card.Body className="d-flex flex-column">
@@ -31,12 +39,12 @@ export default function Maths(props: { mathsNotes: MathsNoteFile[] }) {
 									{note.displayName}
 								</Card.Title>
 								<Card.Text>
-									{note.dateCreated !== null && "Created: " + new Date(note.dateCreated).toLocaleDateString() + " | "}
+									{note.dateCreated !== null && "Created: " + new Date(note.dateCreated).toLocaleDateString("en-GB", DATE_FORMAT_OPTIONS) + " | "}
 									
-									Edited: {new Date(note.dateModified).toLocaleDateString()}
+									Edited: {new Date(note.dateModified).toLocaleDateString("en-GB", DATE_FORMAT_OPTIONS)}
 								</Card.Text>
 								<Row className="g-2 mt-auto">
-									<Col>
+									{/*<Col>
 										<Link href={router.asPath + "/" + note.name} legacyBehavior passHref>
 											<Button
 												as="a"
@@ -48,9 +56,9 @@ export default function Maths(props: { mathsNotes: MathsNoteFile[] }) {
 													</span>
 											</Button>
 										</Link>
-									</Col>
+									</Col>*/}
 									<Col>
-										<Button variant="outline-light" className="w-100" {...downloadLinkProps(note.name, "pdf")}>
+										<Button variant="light" className="w-100" {...downloadLinkProps(false, note.name, "pdf")}>
 											<span className="d-flex align-items-center justify-content-center">
 												<Icon path={mdiDownloadCircle} size="24px" className="me-1" />
 												PDF
@@ -58,10 +66,10 @@ export default function Maths(props: { mathsNotes: MathsNoteFile[] }) {
 										</Button>
 									</Col>
 									<Col>
-										<Button variant="outline-light" className="w-100" {...downloadLinkProps(note.name, "tex")}>
+										<Button variant="outline-light" className="w-100" {...downloadLinkProps(true, note.name, "typ")}>
 											<span className="d-flex align-items-center justify-content-center">
 												<Icon path={mdiDownloadCircle} size="24px" className="me-1" />
-												TeX
+												Source
 											</span>
 										</Button>
 									</Col>

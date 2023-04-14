@@ -10,7 +10,17 @@ export interface MathsNoteFile {
 	dateCreated: string | null; // birthtime property of fs.stat not available on all operating systems
 }
 
+const FULL_NAMES: {[key: string]: string} = {
+	"amv": "Analysis in Many Variables",
+	"dssc": "Data Science and Statistical Computing",
+	"ent": "Elementary Number Theory",
+	"math-phys": "Mathematical Physics"
+}
+
 export function capitalizeName(name: string): string {
+	if (FULL_NAMES[name] !== undefined) {
+		return FULL_NAMES[name];
+	}
 	return name.split("-").map(s => s.charAt(0).toLocaleUpperCase() + s.slice(1)).join(" ")
 }
 
@@ -25,7 +35,7 @@ export async function getMathsNotes(): Promise<MathsNoteFile[]> {
 		folders
 			.filter(f => !f.name.startsWith("."))
 			.map(async f => {
-				const stats = await fs.stat(path.join(notesDirectory, f.name, f.name + ".tex"));
+				const stats = await fs.stat(path.join(notesDirectory, f.name, f.name + ".typ"));
 				return {
 					name: f.name,
 					displayName: capitalizeName(f.name),
