@@ -199,3 +199,23 @@
 - *Power series can be differentiated term-by-term in disc of convergence*: let $sum_(n = 0)^oo a_n (z - c)^n$ have radius of convergence $R$ and converge to $f: B_R(c) -> CC$. Then $f$ is holomorphic on $B_R(c)$ and $ f'(z) = sum_(n = 1)^oo n a_n (z - c)^(n - 1) $
 - Power series with $R > 0$ can be differentiated infinitely many times and $ f^((k))(z) = sum_(n = k)^oo k! binom(n, k) a_n (z - c)^(n - k) $ So $f^((k))(c) = k! a_k$.
 - *Power series can be integrated term-by-term in disc of convergence*: power series with $R > 0$ has holomorphic antiderivative $F: B_R(c) -> CC$ given by $ F(z) = sum_(n = 0)^oo a_n / (n + 1) (z - c)^(n + 1) $
+
+= Complex integration over contours
+
+- Let $f: [a, b] -> CC$, $f = u + i v$, then $ integral_a^b f(t) dif t = integral_a^b u(t) dif t + i integral_a^b v(t) dif t $
+- Let $f_1, f_2: [a, b] -> CC$, $c in CC$, then $ integral_a^b (f_1(t) + f_2(t)) dif t = integral_a^b f_1(t) dif t + integral_a^b f_2(t) dif t, quad integral_a^b c f_1(t) dif t = c integral_a^b f_1(t) dif t $
+- Curve $gamma: [a, b] -> CC$ is $C^1$ if *continuously differentiable* (derivative exists and is continuous).
+- *Integral of continuous $f: U -> CC$ along curve $gamma: [a, b] -> U$, $gamma in C^1$*: $ integral_gamma f(z) dif z := integral_a^b f(gamma(t)) gamma'(t) dif t $
+- Let $f_1, f_2: [a, b] -> CC$, $c in CC$, then $ integral_gamma (f_1(z) + f_2(z)) dif z = integral_gamma f_1(z) dif z + integral_a^b f_2(z) dif z, quad integral_gamma c f_1(z) dif z = c integral_gamma f_1(z) dif z $
+- $(-gamma): [-b, -a] -> CC$, $(-gamma)(t) := gamma(-t)$, then $ integral_(-gamma) f(z) dif z = - integral_gamma f(z) dif z $
+- Let $phi: [a', b'] -> [a, b]$ be continuously differentiable, $phi(a') = a$, $phi(b') = b$, $delta: [a', b'] -> CC$, $delta = gamma compose phi$. Then $ integral_gamma f(z) dif z = integral_delta f(z) dif z $
+- Let $gamma: [a, b] -> CC$, $a = a_0 < a_1 < dots.h.c < a_n = b$, $gamma_i: [a_(i - 1), a_i] -> CC$ be $C^1$, $gamma_i(t) := gamma(t)$ for $t in [a_(i - 1), a_i]$. Then $gamma$ is *piecewise $C^1$ curve*, or *contour*. $ integral_gamma f(z) dif z = sum_(i = 1)^n integral_gamma_i f(z) dif z $ is a *contour integral*.
+- *Contour union*: let $gamma: [a, b] -> CC$, $delta: [c, d] -> CC$, then $ (gamma union delta): [a, b + d - c] -> CC, quad (gamma union delta)(t) := cases(
+	gamma(t) & "if" t in [a, b],
+	delta(t + c - b) & "if" t in [b, b + d - c]
+) $ Then $ integral_(gamma union delta) f(z) dif z = integral_gamma f(z) dif z + integral_delta f(z) dif z $
+- *Complex Fundamental Theorem of Calculus (FTC)* Let $U subset.eq CC$ open, $F: U -> CC$ holomorphic with derivative $f$, $gamma: [a, b] -> U$ contour. Then $ integral_gamma f(z) dif z = F(gamma(b)) - F(gamma(a)) $ So if $gamma$ closed, then $integral_gamma f(z) dif z = 0$. Also, if $gamma_1$ and $gamma_2$ have same endpoints, then $ integral_(gamma_1) f(z) dif z = integral_(gamma_2) f(z) dif z $
+- If $F' = f$, $F$ is *antiderivative* or *primitive* of $f$.
+- *Length* of contour $gamma$: $ L(gamma) := integral_a^b |gamma'(t)| dif t $
+- *Estimation lemma*: Let $f: U -> CC$ continuous, $gamma: [a, b] -> U$ contour. Then $ |integral_gamma f(z) dif z| <= L(gamma) dot.op sup_gamma |f| $ where $sup_gamma |f| := sup{|f(z)|: z in gamma}$
+- *Converse to FTC*: Let $D$ domain, $f: D -> CC$ continuous, $integral_gamma f(z) dif z = 0$ for every closed contour $gamma in D$. Then exists holomorphic $F: D -> CC$ (unique up to addition of constant) such that $ F'(z) = f(z) $
