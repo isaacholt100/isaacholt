@@ -74,4 +74,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 		},
 	}
 }*/
-export {}
+export default function Test() {
+	return null;
+}
