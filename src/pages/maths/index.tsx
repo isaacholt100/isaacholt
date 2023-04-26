@@ -5,7 +5,6 @@ import Link from "next/link";
 import { Button, ButtonProps, Card, Col, Row } from "react-bootstrap";
 import PageTitle from "../../components/PageTitle";
 import { getMathsNotes, MathsNoteFile } from "../../lib/mathsNotes";
-import { Fragment } from "react";
 
 function downloadLinkProps(github: boolean, name: string, extension: string): Partial<ButtonProps> {
 	return {
