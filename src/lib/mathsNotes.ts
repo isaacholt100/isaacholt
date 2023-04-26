@@ -1,5 +1,6 @@
 import { promises as fs } from "fs";
 import path from "path";
+import { capitalizeName } from "./capitalizeName";
 
 const notesDirectory = path.join(process.cwd(), "public/maths-notes");
 
@@ -10,26 +11,12 @@ export interface MathsNoteFile {
 	dateCreated: string | null; // birthtime property of fs.stat not available on all operating systems
 }
 
-const FULL_NAMES: {[key: string]: string} = {
-	"amv": "Analysis in Many Variables",
-	"dssc": "Data Science and Statistical Computing",
-	"ent": "Elementary Number Theory",
-	"math-phys": "Mathematical Physics"
-}
-
-export function capitalizeName(name: string): string {
-	if (FULL_NAMES[name] !== undefined) {
-		return FULL_NAMES[name];
-	}
-	return name.split("-").map(s => s.charAt(0).toLocaleUpperCase() + s.slice(1)).join(" ")
-}
-
 export async function getMathsNotes() {
 	const contents = await fs.readdir(notesDirectory, { withFileTypes: true });
 	return await Promise.all(
 		contents
 			.filter(c => c.isDirectory() && !c.name.startsWith("."))
-			.map(async f => ({ year: capitalizeName(f.name), notes: await getMathsNotesFromYear(f.name) }))
+			.map(async f => ({ year: f.name, notes: await getMathsNotesFromYear(f.name) }))
 	);
 }
 
