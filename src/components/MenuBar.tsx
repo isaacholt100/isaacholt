@@ -36,32 +36,6 @@ const LINKS = [
 
 const IMAGE_SIZE = 52;
 
-let colour = [0, 255, 94];
-
-function hue(c_max: number, delta: number, r: number, g: number, b: number) {
-	if (delta == 0) {
-		return 0;
-	} else if (c_max == r) {
-		return 60 * (((g - b) / delta) % 6);
-	} else if (c_max == g) {
-		return 60 * (((b - r) / delta) + 2);
-	} else {
-		return 60 * (((r - g) / delta) + 4);
-	}
-}
-
-
-
-function hsv(r: number, g: number, b: number) {
-	r = r / 255;
-	g = g / 255;
-	b = b / 255;
-	const c_max = Math.max(...colour);
-	const c_min = Math.min(...colour);
-	const delta = c_max - c_min;
-	return hue(c_max, delta, r, g, b);
-}
-
 function ImageHomeLink(props: { className?: string }) {
 	return (
 		<div className={" me-2" + (props.className ? " " + props.className : "")} style={{marginLeft: -4, height: IMAGE_SIZE, width: IMAGE_SIZE}}>
