@@ -1,4 +1,4 @@
-#import "../template.typ": template
+#import "../../template.typ": template
 #show: template
 
 = The complex plane and Riemann sphere
@@ -218,4 +218,128 @@
 - If $F' = f$, $F$ is *antiderivative* or *primitive* of $f$.
 - *Length* of contour $gamma$: $ L(gamma) := integral_a^b |gamma'(t)| dif t $
 - *Estimation lemma*: Let $f: U -> CC$ continuous, $gamma: [a, b] -> U$ contour. Then $ |integral_gamma f(z) dif z| <= L(gamma) dot.op sup_gamma |f| $ where $sup_gamma |f| := sup{|f(z)|: z in gamma}$
-- *Converse to FTC*: Let $D$ domain, $f: D -> CC$ continuous, $integral_gamma f(z) dif z = 0$ for every closed contour $gamma in D$. Then exists holomorphic $F: D -> CC$ (unique up to addition of constant) such that $ F'(z) = f(z) $
+- *Converse to FTC*: Let $D$ domain, $f: D -> CC$ continuous, $integral_gamma f(z) dif z = 0$ for every closed contour $gamma in D$. Then exists holomorphic antiderivative $F: D -> CC$ (unique up to addition of constant) such that $ F'(z) = f(z) $
+- Domain $D$ *starlike* if for some $a_0 in D$, for every $a_0 != b in D$, straight line from $a_0$ to $b$ contained in $D$.
+- *Cauchy's theorem for starlike domains*: let $D$ starlike domain, $f: D -> CC$ holomorphic, $gamma in D$ closed contour. Then $ integral_gamma f(z) dif z = 0 $ Same holds if $f$ holomorphic on $D - S$, $S$ finite set of points, and $f$ continuous on $D$.
+- Let $U$ open, $f: U -> C$ holomorphic, $Delta in U$ be triangle. Then $ integral_(diff Delta) f(z) dif z = 0 $ Same holds if $f$ holomorphic on $U - S$, $S$ finite set of points, and $f$ continuous on $U$.
+- By default, always use *anti-clockwise* parameterisation of contour.
+- Let $D$ starlike domain, $f: D -> CC$ continuous, $integral_(diff Delta) f(z) dif z = 0$ for every triangle $Delta in D$. Then exists holomorphic $F: D -> CC$ such that $F' = f$.
+- *Cauchy's integral formula (CIF)*: let $B = B_r(a)$, $f: B -> CC$ holomorphic. Then for every $w in B, rho$ such that $|w - a| < rho < r$, $ f(w) = 1/(2 pi i) integral_(|z - a| = rho) f(z) / (z - w) dif z $
+
+= Features of holomorphic functions
+
+- *Cauchy-Taylor theorem*: let $U subset.eq CC$ open, $f: U -> CC$ holomorphic, $r > 0$, $B_r(a) subset U$. Then $f$ is given by power series (*Taylor series of $f$ around $a$*) that converges on $B_r(a)$: $ f(z) = sum_(n = 0)^oo c_n (z - a)^n, quad z in B_r(a) $ where $ c_n = 1 / (2 pi i) integral_(|z - a| = rho) f(z) / ((z - a)^(n + 1)) dif z $ for any $0 < rho < r$.
+- Function with Taylor series expansion on $B_r(a)$, $r > 0$, is *analytic at $a$*.
+- Function *analytic* if analytic at every point in domain.
+- Holomorphic $<==>$ analytic.
+- *Cauchy's integral formula (CIF) for derivatives*: let $B = B_r(a)$, $f: B -> CC$ holomorphic. For every $0 < rho < r$, $ integral_(|z - a| = rho) f(z) / ((z - a)^(n + 1)) dif z = (2 pi i) / (n!) f^((n))(a) $
+- So $f$ has Taylor series expansion on $B_r(a)$: $ f(z) = sum_(n = 0)^oo (f^((n))(a)) / (n!) (z - a)^n $
+- Equivalent of Cauchy-Taylor doesn't hold for real analysis, e.g. $ f(x) = cases(
+	e^(-1/x) & "if" x > 0,
+	0 & "if" x <= 0
+) $ has derivatives of all orders and $f^((n))(0) = 0$. But Taylor series around $x = 0$ would be $ f(x) = sum_(n = 0)^oo c_n x^n, quad x in (0 - epsilon, 0 + epsilon) $ for some $epsilon > 0$. But then $c_n = f^((n)) / (n!) = 0$ but $f$ isn't identically zero in any neighbourhood of the origin. So $f$ doesn't have a Taylor series.
+- *Holomorphic functions have infinitely many derivatives*: let $U subset.eq CC$ open, $f: U -> CC$ holomorphic. Then $f$ has derivatives of all orders on $U$ which are all holomorphic.
+- *Morera's theorem*: let $D$ domain, $f: D -> CC$ continuous. If for every closed contour $gamma$ in $D$, $ integral_gamma f(z) dif z = 0 $ then $f$ holomorphic.
+- $f: CC -> CC$ *entire* if holomorphic on $CC$.
+- $f: CC -> CC$ *bounded* if for some $M > 0$, $|f(z)| <= M$ for every $z in CC$.
+- *Liouville's theorem*: every bounded entire function is constant.
+- *Fundamental theorem of algebra*: every non-constant polynomial with complex coefficients has complex root.
+- *Local maximum modulus principle*: let $f: B_r(a) -> CC$ holomorphic. If $ forall z in B_r(a), |f(z)| <= |f(a)| $ then $f$ constant on $B_r(a)$.
+- *Maximum modulus principle*: let $D$ domain, $f: D -> CC$ holomorphic. If for some $a in D$, $ forall z in D, |f(z)| <= |f(a)| $ then $f$ constant on $D$.
+- If $U subset CC$ path-connected and open, then not possible to write $U = U_1 union U_2$, where $U_1, U_2$ disjoint, open, non-empty. So domains are connected.
+- $f: B_r(a) -> CC$ has *zero of order $m$ at $a$* if for some $m > 0$, exists holomorphic $h: B_r(a) -> CC$ such that $f(z) = (z - a)^m h(z)$, $h(a) != 0$.
+- $f$ has zero of order $m$ at $a$ iff $ f(a) = f^((1))(a) = dots.h.c = f^((m - 1))(a) = 0 $ and $f^((m))(a) != 0$.
+- *Principle of isolated zeros*: let $f: B_r(a) -> CC$ holomorphic, $f != 0$. Then for some $0 < rho <= r$, $ forall z in B_rho(a) - {a}, quad f(z) != 0 $ Holds for $f(a) = 0$, i.e. zeros of holomorphic functions are isolated.
+- *Uniqueness of analytic continuation theorem*: let $D' subset D$ non-empty domains, $f: D' -> CC$ holomorphic. Then exists at most one holomorphic $g: D -> CC$ such that $ forall z in D', quad f(z) = g(z) $ If $g$ exists, it is *analytic continuation of $f$ to $D$*.
+- Let $D$ domain, $f, g: D -> CC$ holomorphic, $B_r(a) subset D$. If $f(z) = g(z)$ on $B_r(a)$ then $f(z) = g(z)$ on $D$.
+- Let $S subset C$, $w in S$.
+	- $w$ *isolated point of $S$* if for some $epsilon > 0$, $B_epsilon(w) sect S = {w}$.
+	- $w$ *non-isolated point of $S$* if $forall epsilon > 0$, exists $w != z in S$ such that $z in B_epsilon(w)$.
+- Let $f, g: D -> CC$ holomorphic on domain $D$. If $S := {z in D: f(z) = g(z)}$ contains non-isolated point, then $f(z) = g(z)$ on $D$.
+- Let $D subset.eq CC$ domain, $u: D -> RR$ *harmonic* if has continuous second order partial derivatives and satisfies *Laplace's equation*: $ u_(x x) + u_(y y) = 0 $
+- Let $f = u + i v: D -> CC$ holomorphic on domain $D$. Then $u$ and $v$ harmonic.
+- *Existence of harmonic conjugates theorem*: let $D$ starlike domain, $u: D -> RR$ harmonic. Then exists harmonic $v: D -> RR$ such that $f = u + i v$ holomorphic on $D$. $v$ is *harmonic conjugate of $u$*, unique up to addition of real constant. *Note*: condition of $D$ being starlike is removed when Cauchy's theorem is proved in generality.
+- Let $f: D -> CC$ holomorphic on domain $D$. Then $f$ has holomorphic antiderivative on $D$.
+- *Dirichlet problem*: let $D subset.eq CC$ domain with closure $overline(D)$, boundary $diff D$, $g: diff D -> RR$ continuous. Find continuous $mu: overline(D) -> RR$ such that $mu$ harmonic on $D$ and $mu = g$ on $diff D$.
+- Let $f = u + i v: D -> CC$ holomorphic on domain $D$, $mu$ harmonic on $f(D)$. Then $tilde(mu) := mu compose f$ harmonic on $D$.
+
+= General form of Cauchy's theorem and C.I.F.
+
+- Let curve $gamma: [a, b] -> CC$, $gamma(t) = w + r(t) e^(i theta(t))$, $w in CC$, $r, theta: [a, b] -> RR$, piecewise $C^1$, $r(t) > 0$. *Winding number (index)* of $gamma$ around $w$ is $ I(gamma; w) := (theta(b) - theta(a)) / (2 pi) $
+- Let contour $gamma: [a, b] -> CC$, $w in CC$, $w in.not gamma$. Then exists $r, theta: [a, b] -> RR$ piecewise $C^1$, $r(t) > 0$ such that $ gamma(t) = w + r(t) e^(i theta(t)) $. Here, $r(t) = |gamma(t) - w|$.
+- Let $gamma: [a, b] -> CC$ closed contour, $w in.not gamma$. Then $ I(gamma; w) = 1/(2 pi i) integral_gamma 1/(z - w) dif z $
+- Let $D$ starlike domain, $gamma$ closed contour in $D$. If $w in.not D$, then $I(gamma; w) = 0$.
+- Let $U subset.eq CC$ open.
+	- Closed contour $gamma$ in $U$ *homologous to zero in $U$* if $I(gamma; w) = 0$ for every $w in.not U$.
+	- $U$ is *simply connected* if every closed contour in $U$ homologous to zero in $U$.
+- *Cycle*: finite collection of closed contours in $U$, denoted as formal sum $ Gamma := gamma_1 + dots.h.c + gamma_n $ $w$ *does not lie in $Gamma$* if $w in.not gamma_i$ for all $i$. Define $ I(Gamma; w) := sum_(i = 1)^n I(gamma_i; w) $ and $ integral_Gamma f(z) dif z := sum_(i = 1)^n integral_(gamma_i) f(z) dif z $ $Gamma$ *homologous to zero in $U$* if $I(Gamma; w) = 0$ for every $w in.not U$.
+- Closed curve $gamma: [a, b] -> CC$ *simple* if for any $t_1 < t_2$, $gamma(t_1) = gamma(t_2) ==> t_1 = a "and" t_2 = b$ (no self-crossing or backtracking).
+- *Jordan curve theorem*: Let $gamma$ closed curve. Then $CC - gamma$ is disjoint union of two domains, exactly one of which is bounded. Bounded domain is *interior* of $gamma$, $D_gamma^"int"$. Unbounded domain is *exterior*, $D_gamma^"ext"$. $w$ lies inside $gamma$ if $w in D_gamma^"int"$ and outside $gamma$ if $w in D_gamma^"ext"$.
+- Let $gamma$ simple closed contour. Then possible to put orientation on $gamma$ such that $forall w in CC - gamma$, $ I(gamma; w) = cases(
+	1 & "if" w in D_gamma^"int",
+	0 & "if" w in D_gamma^"ext",
+) $ Then $gamma$ is *positively oriented* (interior always on left of curve - anticlockwise).
+- Let $D$ domain, $f: D -> CC$ holomorphic, $Gamma$ cycle in $D$, homologous to zero in $D$.
+	- *General form of Cauchy's theorem*: $ integral_Gamma f(z) dif z = 0 $
+	- *General form of CIF*: $ forall w in D - Gamma, quad integral_Gamma f(z) / (z - w) dif z = 2 pi i I(Gamma; w) f(w) $
+- For simple closed curve $gamma$, $f$ holomorphic on $D_gamma^"int" union gamma$ if exists domain $D$ such that $D_gamma^"int" union gamma subset D$ and $f$ holomorphic on $D$.
+- Let $gamma$ simple closed curve and $f$ holomorphic on $D_gamma^"int" union gamma$.
+	- *Cauchy's theorem for simple closed curves*: $ integral_gamma f(z) dif z = 0 $
+	- *CIF for simple closed contours*: $ forall w in D_gamma^"int", quad integral_gamma f(z) / (z - w) dif z = 2 pi i f(w) $
+
+= Holomorphic functions on punctured domains
+
+- *Laurent series*: $ sum_(n = -oo)^oo c_n (z - a)^n $ *Principal part*: $sum_(n = -oo)^(-1) c_n (z - a)^n$. *Analytic part*: $sum_(n = 0)^oo c_n (z - a)^n$.
+- Laurent series converges at $z$ iff principal and analytic parts converge at $z$.
+- *Annulus centre $a$, internal/external radii $r$ and $R$*: $ A_(r, R)(a) := {z in CC: r < |z - a| < R} $
+- If Laurent series isn't power series ($c_n != 0$ for some $n < 0$) then either:
+	- It never converges or
+	- Exists $0 <= r < R <= oo$ such that it converges on $A_(r, R)(a)$ and diverges for $|z - a| < r$ or $|z - a| > R$. $A_(r, R)(a)$ is *annulus of convergence*.
+- If Laurent series has annulus of convergence $A_(r, R)(a)$ then it converges uniformly on any $A_(rho_1, rho_2)$ with $r < rho_1 < rho_2 < R$. So it converges locally uniformly on $A_(r, R)(a)$ so represents holomorphic function on $A_(r, R)(a)$.
+- If Laurent series has annulus of convergence containing $A_(r, R)(a)$, then $c_n$ are unique and given by, for any $rho in (r, R)$ $ c_n = 1/(2 pi i) integral_(|z - a| = rho) f(z) / (z - a)^(n + 1) dif z $ So Laurent series in $A_(r, R)(a)$ unique.
+- *Holomorphic functions on annuli have Laurent series*: let $f: A_(r, R)(a) -> CC$ holomorphic, then exist unique $c_n in CC$ such that $ forall z in A_(r, R)(a), quad f(z) = sum_(n = -oo)^oo c_n (z - a)^n $ and annulus of convergence of Laurent series contains $A_(r, R)(a)$. Series is *Laurent series of $f$ on $A$*.
+- *Punctured ball*: $B_R^*(a) := B_R(a) - {a} = A_(0, R)(a)$.
+- If $f$ holomorphic on $B_R^*(a)$, $f$ has *isolated singularity* at $a$.
+- Types of isolated singularity:
+	- $f$ has *removable singularity* at $z = a$ if $c_n = 0$ for all $n <= -1$ (principal part is zero).
+	- $f$ has *pole of order $k$* at $z = a$ if $c_(-k) != 0$ and $c_n = 0$ for all $n < -k$.
+	- $f$ has *essential singularity* at $z = a$ if exist infinitely many $n < 0$ such that $c_n != 0$.
+- $f: B_R^*(a) -> CC$ has removable singularity at $z = a$ iff $f$ extends to holomorphic function on $B_R(a)$.
+- Let $f: B_R^*(a) -> CC$ holomorphic, $R > 0$. Then $f$ has removable singularity at $z = a$ iff $ lim_(z -> a) (z - a) f(z) = 0 $
+- *Riemann extension theorem*: Let $f: B_R^*(a) -> CC$ holomorphic and bounded, then $f$ has removable singularity at $z = a$.
+- Let $f: B_R^*(a) -> CC$ holomorphic. The following are equivalent:
+	- $f$ has pole of order $k$ at $z = a$.
+	- $f(z) = (z - a)^(-k) g(z)$, $g: B_R(a) -> CC$ holomorphic, $g(a) != 0$.
+	- Exists $0 < r <= R$ and $h: B_r(a) -> CC$ holomorphic with zero of order $k$ at $z = a$ such that $f(z) = 1 \/ h(z)$ for $z in B_r^*(a)$.
+- Let $f: B_R^*(a) -> CC$ holomorphic. Then $f$ has pole at $z = a$ iff $ lim_(z -> a) |f(z)| = oo $
+- *Casorati-Weierstrass theorem*: let $f: B_R^*(a) -> CC$ holomorphic with essential singularity at $z = a$. Then $ forall w in CC, forall 0 < r < R, forall epsilon > 0, exists z in B_r^*(a), quad f(z) in B_epsilon(w) $
+- *Big Picard theorem*: let $f: B_R^*(a) -> CC$ holomorphic with essential singularity at $z = a$. Then for some $b in CC$, $ forall 0 < r < R, quad CC - {b} subset.eq f(B_r^*(a)) $
+
+= Cauchy's residue theorem
+
+- $f$ *meromorphic* on domain $D$ if $f$ holomorphic on $D - S$, $S subset D$ has no non-isolated points and $f$ has pole at every $s in S$.
+- $f$ meromorphc on $D_gamma^"in" union gamma$ if exists domain $D$ containing $D_gamma^"in" union gamma$ and $f$ meromorphic on $D$.
+- Let $f$ meromorphic on domain $D$ with pole at $a$, with Laurent series $ f(z) = sum_(n = -k)^oo c_n (z - a)^n $ *Residue of $f$ at $a$* is $ "Res"_(z = a)(f) := c_(-1) $
+- *Cauchy's residue theorem*: Let $f$ meromorphic on $D_gamma^"in" union gamma$, $gamma$ positively oriented simple closed contour, $f$ has no poles on $gamma$ and finite number of poles inside $gamma$, ${a_1, ..., a_m}$. Then $ integral_gamma f(z) dif z = 2 pi i sum_(j = 1)^m "Res"_(z = a_j)(f) $
+- *Simple pole*: pole of order $1$.
+- *Rules for calculating residues*:
+	- *Linear combinations*: $"Res"_(z = a) (A f + B g) = A "Res"_(z = a)(f) + B "Res"_(z = a)(g)$.
+	- *Cover up rule for poles of order $1$*: if $z = a$ is pole of order $1$, $ "Res"_(z = a)(f) = lim_(z -> a) (z - a) f(z) $
+	- *Simple zero on denominator*: if $f(z) = g(z) \/ h(z)$, $g, h$ holomorphic at $a$, $g(a) != 0$, $z = a$ is zero of order $1$ of $h$, then $ "Res"_(z = a)(f) = g(a) / (h'(a)) $
+	- *Poles of higher orders*: if $f(z) = g(z) \/ (z - a)^k$, $k > 0$, $g$ holomorphic at $a$, then $ "Res"_(z = a)(f) = (g^((k - 1))(a)) / ((k - 1)!) $
+- To calculate $ integral_0^(2 pi) F(sin(theta), cos(theta)) dif theta $ where $F$ is rational function, use change of variable $z = e^(i theta)$, and use $ integral_0^(2 pi) F(sin(theta), cos(theta)) dif theta = integral_(|z| = 1) F((z - z^(-1)) / (2 i), (z + z^(-1)) / 2) (dif z) / (i z) $
+- To calculate $ lim_(R -> oo) integral_(-R)^R p(x) / q(x) dif x $ where $deg(q) >= deg(p) + 2$ and $q$ has no real roots, integrate $f(z) = p(z) \/ q(z)$ over $gamma_R = L_R union C_R$ where $R$ greater than maximum modulus of roots of $q$. Use e.g. Estimation Lemma or Jordan's lemma to show $lim_(R -> oo) integral_(C_R) f(z) dif z = 0$.
+- $ integral_(-oo)^oo f(x) dif x = lim_(r -> oo) integral_(0)^r f(x) dif x + lim_(s -> oo) integral_(-s)^0 f(x) dif x $
+- *Cauchy principal value* of $integral_(-oo)^oo f(x) dif x$: $ P.V. integral_(-oo)^oo f(x) dif x = lim_(r -> oo) integral_(-r)^r f(x) dif x $
+- If $f$ even, $P.V. integral_(-oo)^oo f(x) dif x = integral_(-oo)^oo f(x) dif x$
+- *Jordan's lemma*: let $f$ holomorphic on $D = {z in CC: |z| > r}$ for some $r > 0$, $z f(z)$ bounded on $D$. Then for every $alpha > 0$, $ lim_(R -> oo) integral_(C_R) f(z) e^(i alpha z) dif z = 0 $ where $C_R = R e^(i theta), theta in [0, pi]$.
+- To calculate $ P.V. integral_(-oo)^oo f(x) sin(alpha x) dif x quad "or" quad P.V. integral_(-oo)^oo f(x) cos(alpha x) dif x $ where $f$ meromorphic in $CC$ with no real poles and $f$ satisfies Jordan's lemma, calculate integral $ integral_(gamma_R) f(z) e^(i alpha z) dif z $ with CRT, where $gamma_R = L_R union C_R$. Then use $ integral_(L_R) f(z) e^(i alpha z) dif z = integral_(-R)^R f(x) cos(alpha x) dif x + i integral_(-R)^R f(x) sin(alpha x) dif x $ and equate real/imaginary parts. Use Jordan's lemma to show $lim_(R -> oo) integral_(C_R) f(z) e^(i alpha z) dif z = 0$.
+- *Indentation lemma*: Let $g$ meromorphic on $CC$ with simple pole at $0$, $C_epsilon(theta) = epsilon e^(i theta), theta in [0, pi]$. Then $ lim_(epsilon -> 0) integral_(C_epsilon) g(z) dif z = pi i "Res"_(z = 0)(g) $
+- To calculate $ integral_(-oo)^oo f(x) dif x $ where $f$ has simple pole at $z = 0$, let $gamma_(rho, R) = L_2 union (-C_rho) union L_1 union C_R$ where $L_2$ is line from $-R$ to $-rho$, $L_1$ is line from $rho$ to $R$. Take $rho -> 0$ and $R -> oo$, use indentation lemma and Jordan's lemma. *Note*: may have to choose appropriate branch cut so that $f$ holomorphic on $D$.
+- Let $f$ meromorphic with zero or pole order $k > 0$ at $a$. Then $f' \/ f$ has simple pole at $a$ and $ "Res"_(z = a)(f' \/ f) = cases(
+	k & "if f has zero at" z = a,
+	-k & "if f has pole at" z = a
+) $
+- *Argument principle*: let $gamma$ positively oriented simple closed contour, $f$ meromorphic on $D_gamma^"int" union gamma$, $f$ has no zeros or poles on $gamma$, $Z_f$ be number of zeros of $f$ in $D_gamma^"int"$ (counted with multiplicity), $P_f$ be number of poles of $f$ in $D_gamma^"int"$ (counted with multiplicity). Then $ 1/(2 pi i) integral_gamma (f'(z)) / f(z) dif z = Z_f - P_f = I(Gamma_f; 0), quad Gamma_f = f compose gamma $ (Counted with multiplicity means zero/pole of order $k$ counts $k$ times).
+- *Rouche's theorem*: let $gamma$ simple closed contour, $f, g$ holomorphic on $D_gamma^"int" union gamma$, with $ forall z in gamma, |f(z) - g(z)| < |g(z)| $ Then $f$ and $g$ have same number of zeros (counted with multiplcity) inside $gamma$.
+- *Open mapping theorem*: let $f$ holomorphic, non-constant on domain $D$. Then if $U subset D$ open, $f(U)$ is open.

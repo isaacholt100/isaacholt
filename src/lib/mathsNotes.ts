@@ -24,18 +24,27 @@ export function capitalizeName(name: string): string {
 	return name.split("-").map(s => s.charAt(0).toLocaleUpperCase() + s.slice(1)).join(" ")
 }
 
-async function getMathsNotesFolders() {
+export async function getMathsNotes() {
 	const contents = await fs.readdir(notesDirectory, { withFileTypes: true });
+	return await Promise.all(
+		contents
+			.filter(c => c.isDirectory() && !c.name.startsWith("."))
+			.map(async f => ({ year: capitalizeName(f.name), notes: await getMathsNotesFromYear(f.name) }))
+	);
+}
+
+async function getMathsNotesYearFolders(folder: string) {
+	const contents = await fs.readdir(notesDirectory + "/" + folder, { withFileTypes: true });
 	return contents.filter(c => c.isDirectory());
 }
 
-export async function getMathsNotes(): Promise<MathsNoteFile[]> {
-	const folders = await getMathsNotesFolders();
+export async function getMathsNotesFromYear(folder: string): Promise<MathsNoteFile[]> {
+	const folders = await getMathsNotesYearFolders(folder);
 	return await Promise.all(
 		folders
 			.filter(f => !f.name.startsWith("."))
 			.map(async f => {
-				const stats = await fs.stat(path.join(notesDirectory, f.name, f.name + ".typ"));
+				const stats = await fs.stat(path.join(notesDirectory + "/" + folder, f.name, f.name + ".typ"));
 				return {
 					name: f.name,
 					displayName: capitalizeName(f.name),
@@ -46,7 +55,7 @@ export async function getMathsNotes(): Promise<MathsNoteFile[]> {
 	);
 }
 
-export async function getMathsNotesPaths() {
+/*export async function getMathsNotesPaths() {
 	const folders = await getMathsNotesFolders();
 	return folders.map(f => f.name);
 }
@@ -54,4 +63,4 @@ export async function getMathsNotesPaths() {
 export async function getMathsNotePDF(name: string): Promise<string> {
 	const file = await fs.readFile(path.join(notesDirectory, name, name + ".pdf"));
 	return file.toString("base64");
-}
+}*/

@@ -1,4 +1,4 @@
-import { mdiChevronLeftCircle } from "@mdi/js";
+/*import { mdiChevronLeftCircle } from "@mdi/js";
 import Icon from "@mdi/react";
 import { GetStaticPaths, GetStaticProps } from "next"
 import Link from "next/link";
@@ -73,4 +73,4 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 			displayName: capitalizeName(params?.name as string),
 		},
 	}
-}
+}*/

@@ -1,0 +1,20 @@
+- No need to memorise chapters 1-2
+- Know definition of wave function, relation to probability
+- Expectation values, uncertainty
+- Standard Gaussian integral formula
+- Infinite potential well and know the eigenfunctions for this potential (sines and cosines)
+- Momentum operator
+- Canonical expectation relation: [x, p] = i hbar
+- Schrodinger's equation
+- Wave function continuous and differentiable except where V undefined
+- Hermitian operators and inner products
+- Matrix elements of operators
+- Discrete and continuous spectra of eigenvalues
+- **Formula for Dirac delta in terms of integral of complex exponential**
+- **Subsequent measurements of quantities which are/aren't compatible**
+- Evolution of wave function with time and superposition of solutions to Schrodinger's equation
+- Don't need to know formula for propagator
+- **Important: two particle systems**
+- Raising/lowering operators
+- Probability current density, don't need to learn formulas by heart
+- Ignore chapter 20
