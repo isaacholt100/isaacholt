@@ -225,3 +225,48 @@
 - *Simple harmonic oscillator potential*: $ V(x) = 1/2 m omega^2 x^2 $ where $omega$ is angular frequency.
 - If $V$ has minimum at $x = x_0$ and $|x - x_0|$ small, $m omega^2 approx 1/2 V''(x_0)$ by Taylor expanion of $V(x)$ around $x_0$.
 - Energy spectrum of Hamiltonian for simple harmonic oscillator is $E_n = planck.reduce omega (n + 1/2)$
+
+= The continuity equation
+
+- *Probability current density*: $ J := planck.reduce / (2m i) (overline(psi) diff_x psi - psi diff_x overline(psi)) $
+- *Continuity equation*: $ diff_t P + diff_x J = 0 $ where $P(x, t) = |psi(x, t)|^2$.
+- Probability current vanishes for square-normalisable wave functions.
+
+= Scattering problems
+
+- When particle has to cross potential, for $t -> -oo$, $psi(x, t) -> psi_I(x, t)$ is incoming wavepacket, then it scatters from the potential, as $t -> oo$, tends to sum of reflected and transmitted wavepackets: $ psi(x, t) -> psi_R(x, t) + psi_T(x, t) $ As $t -> oo$, reflected and transmitted wavepackets don't interfere.
+- Probability of reflection is $ R = lim_(t -> oo) integral_(-oo)^oo |psi_R(x, t)|^2 dif x $ Probability of transmission is $ T = lim_(t -> oo) integral_(-oo)^oo |psi_T(x, t)|^2 dif x $ $R + T = 1$ if $psi$ normalised.
+
+= Tunnelling
+
+- *Finite step potential*: for $V_0 > 0$ $ V(x) = cases(
+	0 & "if" x < 0,
+	V_0 & "if" x >= 0
+) $
+- Scattering occurs when particle has energy $E > V_0$.
+- Tunnelling occurs when particle has energy $0 < E < V_0$.
+- For scattering, Hamiltonian eigenfunctions are $ phi(x) = cases(
+	e^(i k x) + r e^(-i k x) & "if" x < 0,
+	t e^(i k' x) & "if" x >= 0
+) $ where $k = sqrt(2m E \/ planck.reduce^2)$, $k' = sqrt(2m(E - V_0) \/ planck.reduce^2)$
+- Determine $r$ and $t$ by using that $psi$ and $diff_x psi$ continuous at $x = 0$.
+- *Finite barrier potential*: $ V(x) = cases(
+	0 & "if" x < 0,
+	V_0 & "if" 0 <= x <= L,
+	0 & "if" x > L
+) $
+- For tunnelling, Hamiltonian eigenfunctions are $ phi(x) = cases(
+	e^(i k x) + r e^(-i k x) & "if" x < 0,
+	t e^(-kappa x) & "if" x >= 0
+) $ where $kappa = sqrt(2m (V_0 - E) \/ planck.reduce^2)$. Coefficients $r$ and $t$ found by replacing $k' -> i kappa$.
+
+= Momentum-space wave function
+
+- *Momentum-space wave function*: $ tilde(psi)(p) = 1/sqrt(2pi planck.reduce) integral_(-oo)^oo psi(x) e^(-i p x \/ planck.reduce) dif x $ satisfies $ psi(x) = 1/sqrt(2 pi planck.reduce) integral_(-oo)^oo tilde(psi)(p) e^(i p x \/ planck.reduce) dif p $
+- For momentum-space wave function, position and momentum act as operators $ hat(x) & = i planck.reduce diff / (diff p) \ hat(p) = p $
+- *Momentum probability density*: $tilde(P)(p) = |tilde(psi)(p)|^2$. Probability of momentum measurement being $a < p < b$ is $ integral_a^b tilde(P)(p) dif p $
+- Momentum expectation value of $f(p)$: $ angle.l f(p) angle.r = integral_(-oo)^oo f(p) tilde(P)(p) dif p $
+- Position expectation value of $f(x)$: $ angle.l f(x) angle.r = integral_(-oo)^oo overline(tilde(psi)(p)) f(i planck.reduce diff / (diff p)) tilde(psi)(p) dif p $
+- $psi(x)$ normalised iff $tilde(psi)(p)$ normalised.
+- Translating $psi(x)$ by $x_0$ multiplies $tilde(psi)(p)$ by $e^(-i p x_0 \/ planck.reduce)$.
+- Translating $tilde(psi)(p)$ by $p_0$ multiplies $psi(x)$ by $e^(i p_0 x \/ planck.reduce)$.

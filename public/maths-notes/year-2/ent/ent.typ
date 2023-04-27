@@ -121,4 +121,22 @@
 ) $
 - $ ((a b) / p) = (a / p) (b / p) $
 - $(a / p) = (b / p)$ if $a ident b quad (mod p)$.
-- Let $p$ odd prime, $a in ZZ$, $gcd(a, p) = 1$, then $ a^((p - 1)\/2) ident (a / p) quad (mod p) $
+- *Euler's criterion*: Let $p$ odd prime, $a in ZZ$, $gcd(a, p) = 1$, then $ a^((p - 1)\/2) ident (a / p) quad (mod p) $
+- $-1$ is QR if $p ident 1 quad (mod 4)$ and is NQR if $p ident 3 quad (mod 4)$.
+- *Quadratic reciprocity law (QRL)*: let $p != q$ odd primes, then $ (p / q) (q / p) = (1)^((p - 1) / 2 (q - 1) / 2) $ If $p = 2$, $ (2 / q) = (-1)^((q^2 - 1) / 8) $
+- *Algorithm for computing Legendre symbol* $(a / p)$:
+	- Divide $a$ by $p$ to get $a = t p + r$ so $(a / p) = (r / p)$.
+	- If $r = 0$, $(r / p) = 0$ so stop.
+	- If $r = 1$, $(r / p) = 1$ so stop.
+	- If $r != 0, 1$ factorise into primes $r = q_1^(e_1) dots.h.c q_k^(e_k)$ so $(r / p) = product_(i = 1)^k (q_i / p)^(e_i)$.
+	- $r < p$ so $q_i < p$, so calculate $(q_i / p)$ for each $i$.
+		- If $q_i = 2$, use $(2 / p) = (-1)^((p^2 - 1)/8)$.
+		- If $q_i > 2$, use $(q_i / p) = (-1)^(((q_i - 1)(p - 1))/4) (p / q_i)$ and go to step $1$ to calculate $(p / q_i)$.
+- *Note*: to evaluate $((-1) / p)$, easier to use Euler's criterion.
+- There are infinitely many primes of form $4n + 1$.
+
+= Sums of two squares
+
+- If $m$ and $n$ are sums of two squares, then so is $m n$ since $(a^2 + b^2) (c^2 + d^2) = (a c + b d)^2 (a d - b c)^2$.
+- Let $p$ odd prime. Then $p$ sum of two squares iff $p ident 1 quad (mod 4)$.
+- Let $n > 1$, $n = p_1 p_2 dots.h.c p_k N^2$, $p_i$ distinct primes, $N in NN$. Then $n$ sum of two squares iff $p_i = 2$ or $p_i ident 1 quad (mod 4)$ for all $i$.
