@@ -104,7 +104,7 @@
 - Compact sets are bounded
 - *Heine-Borel for $CC$*: $K subset.eq CC$ is compact iff $K$ is closed and bounded.
 - $f: X -> Y$ is continuous at $x in X$ iff $ lim_(n -> oo) f(x_n) = f(x) $ for every convergent sequence ${x_n}$ in $X$ with $x_n -> x$.
-- If $K subset.eq X$ is compact and $f: X -> Y$ is continuous, then $f(K)$ is compact in $Y$.
+- If $K subset.eq X$ is compact and $f: X -> Y$ is continuous, then $f(K)$ is compact in $Y$. So for $Y = RR$, any continuous real-valued function attains maxima and minima on compact sets.
 
 = Complex differentiation
 
@@ -255,7 +255,7 @@
 - Let $S subset C$, $w in S$.
 	- $w$ *isolated point of $S$* if for some $epsilon > 0$, $B_epsilon(w) sect S = {w}$.
 	- $w$ *non-isolated point of $S$* if $forall epsilon > 0$, exists $w != z in S$ such that $z in B_epsilon(w)$.
-- Let $f, g: D -> CC$ holomorphic on domain $D$. If $S := {z in D: f(z) = g(z)}$ contains non-isolated point, then $f(z) = g(z)$ on $D$.
+- *Identity theorem*: Let $f, g: D -> CC$ holomorphic on domain $D$. If $S := {z in D: f(z) = g(z)}$ contains non-isolated point, then $f(z) = g(z)$ on $D$.
 - Let $D subset.eq CC$ domain, $u: D -> RR$ *harmonic* if has continuous second order partial derivatives and satisfies *Laplace's equation*: $ u_(x x) + u_(y y) = 0 $
 - Let $f = u + i v: D -> CC$ holomorphic on domain $D$. Then $u$ and $v$ harmonic.
 - *Existence of harmonic conjugates theorem*: let $D$ starlike domain, $u: D -> RR$ harmonic. Then exists harmonic $v: D -> RR$ such that $f = u + i v$ holomorphic on $D$. $v$ is *harmonic conjugate of $u$*, unique up to addition of real constant. *Note*: condition of $D$ being starlike is removed when Cauchy's theorem is proved in generality.

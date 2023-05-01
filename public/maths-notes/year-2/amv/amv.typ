@@ -167,7 +167,7 @@
 - Region $D$ *simply connected* if any closed curve in $D$ can be continuously shrunk to point in $D$.
 - Every closed curve in $D$ is boundary of surface in $D$.
 - Let $underline(F)$ vector field and $underline(nabla) times underline(F) = underline(0)$ in simply connected region $D$. If $C_1$ and $C_2$ are paths in $D$ joining $underline(a)$ to $underline(b)$ then $ integral_(C_1) underline(F) dot.op dif underline(x) = integral_(C_2) underline(F) dot.op dif underline(x) $ so line integral is path-independent and $underline(F)$ is conservative.
-- If $underline(F) = underline(nabla) phi$ for scalar field $phi$ ($underline(F)$ is *exact*) then $integral_C underline(F) dot.op dif underline(x)$ is path-independent so $underline(F)$ is conservative. If $C$ goes from $underline(a)$ to $underline(b)$ then $ integral_C underline(F) dot.op dif underline(x) = phi(underline(a)) - phi(underline(b)) $
+- If $underline(F) = underline(nabla) phi$ for scalar field $phi$ ($underline(F)$ is *exact*) then $integral_C underline(F) dot.op dif underline(x)$ is path-independent so $underline(F)$ is conservative. If $C$ goes from $underline(a)$ to $underline(b)$ then $ integral_C underline(F) dot.op dif underline(x) = phi(underline(b)) - phi(underline(a)) $
 - $underline(nabla) times underline(F) = 0 <==> "path indepence of integral" <==> exists phi, underline(F) = underline(nabla) phi$
 
 = Non-Cartesian systems
@@ -189,7 +189,7 @@
 - Let $x = g(u, v)$, $y = h(u, v)$, then *scale factors for mapping given by $g$ and $h$* are $h_u := norm(diff_u underline(r))$, $h_v := norm(diff_v underline(r))$.
 - Unit vectors corresponding to $tilde(underline(e))_r$ and $tilde(underline(e))_theta$ are $underline(e)_r = tilde(underline(e))_r$ and $underline(e)_theta = 1/r tilde(underline(e))_theta$ which form orthonormal basis.
 - $dif underline(r) = diff_r underline(r) dif r + diff_theta underline(r) dif theta = dif r underline(e)_r + r dif theta underline(e)_theta$ by chain rule.
-- *Gradient in polar coordinates*: $underline(nabla) = underline(e)_r diff_r + underline(e)_theta 1/r diff_theta$, obtained by comparing $dif f = underline(nabla) f dot.op dif underline(r) = diff_r f dif r + diff_theta f dif theta$ for function $f(r, theta)$.
+- *Gradient in polar coordinates*: $underline(nabla) = underline(e)_r diff_r + underline(e)_theta 1/r diff_theta$, obtained by comparing $dif f := underline(nabla) f dot.op dif underline(r) = diff_r f dif r + diff_theta f dif theta$ for function $f(r, theta)$.
 - *Divergence in polar coordinates*: for $underline(A)(r, theta) = A_r underline(e)_r + A_theta underline(e)_theta$, $ underline(nabla) dot.op underline(A) = 1/r (diff_r(r A_r) + diff_theta A_theta) $
 - *Laplacian in polar coordinates*: $underline(nabla)^2 = diff_r^2 + 1/r diff_r + 1/r^2 diff_theta^2$
 - *Spherical polar coordinates*: $x = r sin(theta) cos(phi)$, $y = r sin(theta) sin(phi)$, $z = r cos(theta)$, $r >= 0$, $theta in [0, pi]$, $phi in [0, 2 pi)$.

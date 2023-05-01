@@ -140,3 +140,23 @@
 - If $m$ and $n$ are sums of two squares, then so is $m n$ since $(a^2 + b^2) (c^2 + d^2) = (a c + b d)^2 (a d - b c)^2$.
 - Let $p$ odd prime. Then $p$ sum of two squares iff $p ident 1 quad (mod 4)$.
 - Let $n > 1$, $n = p_1 p_2 dots.h.c p_k N^2$, $p_i$ distinct primes, $N in NN$. Then $n$ sum of two squares iff $p_i = 2$ or $p_i ident 1 quad (mod 4)$ for all $i$.
+
+= Continued fractions
+
+- *Finite continued fraction (CF)*: $ [a_0; a_1, ..., a_n] = a_0 + 1/(a_1 + 1/(dots.down + 1/a_n)) $
+- *Simple* CF: $a_0 in ZZ$, $a_1, ..., a_n in NN$.
+- Any rational number can be written as finite simple continued fraction.
+- *$k$th convergent* of CF $[a_0; a_1, ..., a_n]$: $ C_k := [a_0; a_1, ..., a_k] $
+- $C_n = p_n \/ q_n$, where $ mat(p_k, p_(k - 1); q_k, q_(k - 1)) = mat(a_1, 1; 1, 0) mat(a_2, 1; 1, 0) dots.h.c mat(a_k, 1; 1, 0) $ so $p_1 = a_0 a_1 + 1$, $p_0 = a_0$, $q_1 = a_1$, $q_0 = 1$ and $p_k = a_k p_(k - 1) + p_(k - 2)$, $q_k = a_k q_(k - 1) + q_(k - 2)$
+- If $[a_0; a_1, ..., a_n]$ is simple CF, then $q_(k - 1) <= q_k$ and $q_(k - 1) < q_k$ if $k > 1$.
+- $ p_k q_(k - 1) - q_k p_(k - 1) = (-1)^(k + 1) $
+- $gcd(p_k, q_k) = 1$.
+- Let $alpha = [a_0; a_1, ..., a_n]$, $k = 0, ..., n - 1$, then even numbered convergents increasing:  $ C_0 < C_2 < dots.h.c < C_(2m)$, odd numbered convergents decreasing $C_(2m + 1) < dots.h.c < C_3 < C_1$ and for every $k$ with $2k + 1 <= n$, $ p_(2k) / q_(2k) < alpha <= p_(2k + 1) / q_(2k + 1) $ and $ |alpha - p_k / q_k| <= 1/(q_k q_(k + 1)) $
+- *Infinite CF* $[a_0; a_1, ...]$ is limit of convergents $C_n = [a_0; a_1, ..., a_n]$.
+- For simple infinite CF, limit always exists.
+- *Pell's equation*: $x^2 - d y^2 = 1$, $d in NN$ not square.
+- *Negative Pell's equation*: $x^2 - d y^2 = -1$.
+- Infinite CF *periodic* if of form $ [a_0; a_1, ..., a_m, a_(m + 1), ..., a_(m + n), a_(m + 1), ..., a_(m + n), ...] $ $a_0; a_1, ..., a_m$ is initial part, $a_(m + 1), ..., a_(m + n), a_(m + 1), ..., a_(m + n), ...$ is periodic part. In periodic part, $a_i = a_j$ iff $i ident j quad (mod n)$. Write as $ [a_0; a_1, ..., a_m, overline(a_(m + 1)\, ...\, a_(m + n))] $ $n$ is *period*.
+- If $d$ not square, CF of $sqrt(d)$ is periodic with initial part only $a_0$.
+- Let $p_k \/ q_k$ be convergents of simple CF expansion of $sqrt(d)$ with period $n$, then for all $k >= 1$, $ p_(k n - 1)^2 - d q_(k n - 1)^2 = (-1)^(k n) $
+- So if $n$ even or $k$ even, $(x, y) = (p_(k n - 1), q_(k n - 1))$ are solution to Pell's equation. Else $(x, y) = (p_(k n - 1), q_(k n - 1))$ are solution to negative Pell's equation. *All* positive solutions to (negative) Pell equation given by above.

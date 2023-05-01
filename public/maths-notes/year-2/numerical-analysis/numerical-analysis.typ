@@ -82,7 +82,7 @@
 - $x_n -> x_*$ with *order at least $alpha > 1$* if $ lim_(n -> oo) |x_(n + 1) - x_*| / |x_n - x_*|^alpha = lambda < oo $ If $alpha = 1$, then $lambda < 1$ is required.
 - *Exact order of convergence* of $x_n -> x_*$: $ alpha := sup{beta: lim_(n -> oo) |x_(n + 1) - x_*| / |x_n - x_*|^beta < oo} $ Limit must be $< 1$ for $alpha = 1$.
 - Convergence is *superlinear* if $alpha > 1$, *linear* if $alpha = 1$ and $lambda < 1$, *sublinear* otherwise.
-- If $g in C^2$, then with fixed point iteration, $ |x_(n + 1) - x_*| / |x_n - x_*| -> |f'(x_*)| "as" n -> oo $ so $x_n -> x_*$ superlinearly if $g'(x_*) = 0$ and linearly otherwise.
+- If $g in C^2$, then with fixed point iteration, $ |x_(n + 1) - x_*| / |x_n - x_*| -> |g'(x_*)| "as" n -> oo $ so $x_n -> x_*$ superlinearly if $g'(x_*) = 0$ and linearly otherwise.
 - If $g in C^N$, fixed point iteration converges with order $N > 1$ iff $ g'(x_*) = dots.h.c = g^((N - 1))(x_*) = 0, quad g^((N))(x_*) != 0 $
 - *Newton-Raphson*: fixed point iteration with $g(x) = x - f(x) \/ f'(x)$ $ x_(n + 1) = x_n - f(x_n) / (f'(x_n)) $
 - For Newton-Raphson, $g'(x_*) = 0$ so quadratic convergence.

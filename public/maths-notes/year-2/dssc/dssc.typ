@@ -66,8 +66,7 @@
 - *Midpoint Riemann integral estimate*: $ integral_a^b f(x) dif x = (b - a) / n sum_(i = 1)^n f(x_i) $ where $ x_i = a + (b - a)/n (i - 1/2) $
 - For $d$ dimensions, Riemann sum converges in $O(n^(-2\/d))$, Monte Carlo converges in $O(n^(-1\/2))$ regardless of $d$.
 - $100(1 - alpha)%$ confidence interval for Monte Carlo integration: $ mu in hat(mu)_n plus.minus z_(alpha \/ 2) sigma / sqrt(n) $ where $sigma$ estimated with standard sample deviation of ${y_i} = {g(x_i)}$.
-- If $g(x)$ constant multiple of indicator function, $g(x) = c II{A(x)}$ for condition $A$, then $ hat(p)_n = 1/n sum_(i = 1)^n II{A(x_i)} $ is estimator for $p = PP(A)$. Binomial confidence interval is $ p in hat(p)_n plus.minus z_(alpha \/ 2) sqrt((hat(p)_n (1 - hat(p)_n)) / n) $
-- TODO: fill in notes here
+- If $g(x)$ constant multiple of indicator function, $g(x) = c II{A(x)}$ for condition $A$, then $ hat(p)_n = 1/n sum_(i = 1)^n II{A(x_i)} $ is estimator for $p = PP(A)$. Binomial confidence interval is $ p in hat(p)_n plus.minus z_(alpha \/ 2) sqrt((hat(p)_n (1 - hat(p)_n)) / n) $ so confidence interval for $mu$ is $ mu in hat(mu)_n plus.minus c z_(alpha \/ 2) sqrt((hat(p)_n (1 - hat(p)_n)) / n) $ ($hat(mu)_n = c hat(p)_n$).
 - Probability of no $1$s in $n$ Monte Carlo samples is $(1 - p)^n$ so one-sided $100(1 - alpha)%$ confidence interval has upper bound $p <= 1 - a^(1\/n) approx -log(a) / n$ using Taylor expansion.
 - If $hat(p)$ very small and non-zero, $ c z_(alpha \/ 2) sqrt((hat(p)_n (1 - hat(p)_n)) / n) approx c z_(alpha \/ 2) sqrt((hat(p)_n) / n) $ so relative error is $ delta := c z_(alpha \/ 2) sqrt((hat(p)_n) / n) \/ hat(p) = (c z_(alpha \/ 2)) / sqrt(hat(p)_n n) $ for relative error at most $delta$, $ n >= (c^2 z_(alpha \/ 2)^2) / (hat(p)_n delta^2) $ so $n$ grows inversely with $hat(p)_n$.
 - To estimate probability of event $PP(X in E)$, Monte Carlo estimate $EE[II{X in E}]$.
@@ -90,3 +89,15 @@
 - When $f, tilde(f)$ normalised, expected number of iterations of rejection sampling algorithm is $c$.
 - *Important*: when choosing value of $c$, always round *up* if inexact.
 - When checking if rejection sampling can be used, check if ratio $f(x) \/ tilde(f)(x)$ tends to $0$ as $x -> plus.minus oo$ and differentiate ratio with respect to $x$ to find maximum.
+- *Normalised importance sampling*: given normalised density function $f$ and normalised proposal density function $tilde(f)$, $n$ importance samples produced by: for $i in {1, ..., n}$:
+	- Simulate $x_i tilde.op tilde(f)(dot.op)$.
+	- Compute $w_i = f(x_i) \/ tilde(f)(x_i)$.
+	This produces importance samples ${(x_i, w_i)}_(i = 1)^n$. $mu = EE_(tilde(f))[g(X)]$ estimated by *importance sampling estimator* $ hat(mu) = 1/n sum_(i = 1)^n w_i g(x_i) $ ($EE_(tilde(f))[hat(mu)] = mu$, provided $tilde(f)(x) > 0$ whenever $f(x) g(x) != 0$).
+- Variance of importance sampling estimator is $ "Var"(hat(mu)) = (sigma_(tilde(f))^2) / n $ where $ sigma_(tilde(f))^2 = integral_(tilde(Omega)) (g(x) f(x) - mu tilde(f)(x))^2 / (tilde(f)(x)) dif x $ and $tilde(Omega)$ is support of $tilde(f)$.
+- Can estimate variance with $ hat(sigma)_(tilde(f))^2 = 1/n sum_(i = 1)^n (w_i g(x_i) - hat(mu))^2 $
+- Distribution which minimises estimator variance is $ tilde(f)_"opt"(x) = (|g(x)| f(x)) / (integral_Omega |g(x)| f(x) dif x) $
+- *Self-normalised importance sampling*: same as normalised importance sampling, but compute $ hat(mu) = 1/(sum_(i = 1)^n w_i) sum_(i = 1)^n w_i g(x_i) $ Can use for unnormalised density functions $f, tilde(f)$. $hat(mu)$ is not unbiased.
+- Approximate variance of self-normalised estimator: $ "Var"(hat(mu)) approx (sigma_(tilde(f))^2) / n $ where $ sigma_(tilde(f))^2 = sum_(i = 1)^n w_i'^2 (g(x_i) - hat(mu))^2 $ and $ w_i' = w_i / (sum_(j = 1)^n w_j) $
+- *Effective sample size $n_e$*: size of sample for which variance of naive Monte Carlo average $(1/n_e sum_(i = 1)^(n_e) g(x_i))$ with sample size $n_e$, $sigma^2 \/ n_e$ ($sigma^2$ is variance of $g(X)$), is equal to variance of importance sampling estimator $hat(mu)$, $"Var"(hat(mu))$: $ n_e = (n overline(w)^2) / overline(w^2) $ where $ overline(w)^2 = (1/n sum_(i = 1)^n w_i)^2, quad overline(w^2) = 1/n sum_(i = 1)^n w_i^2 $
+- Small $n_e$ means importance sampling is poor estimator.
+- Poor estimator if proposal distribution has much less probability in tails than target distribution.
