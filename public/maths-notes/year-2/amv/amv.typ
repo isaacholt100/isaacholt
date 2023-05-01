@@ -298,7 +298,7 @@
 - Let space $V$ be function $[a, b] -> CC$. Let *weight* function $w: [a, b] -> RR_(>= 0)$ with finitely many zeros. *Inner product with weight $w$*: $ angle.l underline(u), underline(v) angle.r_w := integral_a^b overline(u)(x) v(x) w(x) dif x $ Write $angle.l underline(u), underline(v) angle.r_(w = 1)$ as $angle.l underline(u), underline(v) angle.r$.
 - $W subset.eq V$ *dense in $V$* if $ forall v in V, forall epsilon > 0, exists w in W, quad d(v, w) < epsilon $
 - *Linear Operator*: $(L, D(L))$, $D(L)$ is dense linear subspace of $HH$, $L: D(L) -> HH$ linear: $ L(a u + v b) = a L(u) + b L(v) $ $L$ is the *operator*, $D(L)$ is *domain* of $L$.
-- Linear operator $L: HH_1 -> HH_2$ *bounded* if for some $M >= 0$, $ forall h in HH_1, quad norm(L v)_(HH_2) <= M norm(v)_(HH_1) $ If $M$ doesn't exist, $L$ *unbounded*.
+- Linear operator $L: HH_1 -> HH_2$ *bounded* if for some $M >= 0$, $ forall v in HH_1, quad norm(L v)_(HH_2) <= M norm(v)_(HH_1) $ If $M$ doesn't exist, $L$ *unbounded*.
 - *Norm* of $L$ is $ norm(L) := inf{M: forall h in HH_1, norm(L v)_(HH_2) <= M norm(v)_(HH_1)} $
 - To show $L$ unbounded, find sequence ${x_n} subset D(L)$ with $norm(x_n)_(HH_1) <= M$ for some $M$, but $norm(L x_n)_(HH_2) -> oo$ as $n -> oo$.
 - *Adjoint* of $(L, D(L))$ is $(L^*, D(L^*))$ where $L*: D(L*) -> HH_1$, $ angle.l L v_1, v_2 angle.r^(HH_2) = angle.l v_1, L^* v_2 angle.r^(HH_1), quad v_1 in D(L), v_2 in D(L^*) $ and $ D(L^*) := {v_2 in HH_2: exists v_2^* in HH_1, forall v_1 in D(L), angle.l L v_1, v_2 angle.r^(HH_2) = angle.l v_1, v_2^* angle.r^(HH_1) } $ For each $v_2 in D(L*)$, $v_2^* = L^* v_2$ is unique.
