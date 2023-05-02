@@ -262,6 +262,7 @@
 - Let $f: D -> CC$ holomorphic on domain $D$. Then $f$ has holomorphic antiderivative on $D$.
 - *Dirichlet problem*: let $D subset.eq CC$ domain with closure $overline(D)$, boundary $diff D$, $g: diff D -> RR$ continuous. Find continuous $mu: overline(D) -> RR$ such that $mu$ harmonic on $D$ and $mu = g$ on $diff D$.
 - Let $f = u + i v: D -> CC$ holomorphic on domain $D$, $mu$ harmonic on $f(D)$. Then $tilde(mu) := mu compose f$ harmonic on $D$.
+- So if $mu$ harmonic on $D'$ and want to find a harmonic $tilde(mu)$ on $D$, find holomorphic $f$ mapping $D$ to $D'$ so $f(D) = D'$. Then $tilde(mu) = mu compose f$ is solution.
 
 = General form of Cauchy's theorem and C.I.F.
 
