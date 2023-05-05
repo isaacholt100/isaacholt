@@ -352,7 +352,7 @@
 	- $L_t G(t, tau) = delta(t - tau)$, $G(0, tau) = 0 = diff_t G(0, tau)$.
 	- $G(0, tau) = 0 = diff_t G(0, tau)$.
 	- $G$ continuous at $t = tau$: $ lim_(epsilon -> 0^+) G(tau + epsilon, tau) = lim_(epsilon -> 0^+) G(tau - epsilon, tau) $
-	- Jump discontinuity of $diff_t G$ at $t = tau$: $ lim_(epsilon -> 0^+) (diff_t G(tau + epsilon, tau) - diff_t G(tau - epsilon, tau)) = 1/(p_0(tau)) $
+	- Jump discontinuity of $diff_t G$ at $t = tau$: $ lim_(epsilon -> 0^+) ((diff G) / (diff t) (tau + epsilon, tau) - (diff G) / (diff t) (tau - epsilon, tau)) = 1/(p_0(tau)) $
 	- Define ansatz: $ G(t, tau) & = A_1(tau) u_1(t) + B_1(tau) u_2(t) quad "for" t < tau \ G(t, tau) & = A_2(tau) u_1(t) + B_2(tau) u_2(t) quad "for" tau < t $ where $u_1, u_2$ linearly independent solutions of $L u = 0$.
 	- For $t < tau$, $G(0, tau) = 0 = diff_t G(0, tau)$ which should give $A_1(tau) = B_1(tau) = 0$ so $G(t, tau) = 0$ for $t < tau$.
 	- For $t > tau$, use jump discontinuity of $diff_t G$ and continuity of $G$ to find $A_2(tau)$ and $B_2(tau)$.
@@ -369,7 +369,7 @@
 	- $L_x G(x, xi) = delta(x - xi)$, $G(a, xi) = 0$ for $x < xi$, $G(b, xi) = 0$ for $xi < x$.
 	- Define ansatz: $ G(x, xi) & = A_1(xi) u_1(x) + B_1(xi) u_2(x) quad "for" x < xi \ G(x, xi) & = A_2(xi) u_1(x) + B_2(xi) u_2(x) quad "for" xi < x $ where $u_1, u_2$ linearly independent solutions of $L u = 0$.
 	- $G$ continuous at $x = xi$: $ lim_(epsilon -> 0^+) G(xi + epsilon, xi) = lim_(epsilon -> 0^+) G(xi - epsilon, xi) $
-	- Jump discontinuity of $diff_x G$ at $x = xi$: $ lim_(epsilon -> 0^+) (diff_x G(xi + epsilon, xi) - diff_t G(xi - epsilon, xi)) = 1/(p_0(xi)) $
+	- Jump discontinuity of $diff_x G$ at $x = xi$: $ lim_(epsilon -> 0^+) ((diff G) / (diff x) (xi + epsilon, xi) - (diff G) / (diff x) (xi - epsilon, xi)) = 1/(p_0(xi)) $
 	- Use continuity, jump discontinuity and boundary conditions to find $A_1, B_1, A_2, B_2$.
 	- *Final solution*: $ u_p(x) = integral_a^b G(x, xi) f(xi) dif xi $
 	- *Note*: if boundary conditions are $B_1(u) = gamma_1, B_2(u) = gamma_2$, $G$ must satisfy $B_1(G) = 0, B_2(G) = 0$.

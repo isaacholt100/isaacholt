@@ -285,7 +285,7 @@
 	- *General form of CIF*: $ forall w in D - Gamma, quad integral_Gamma f(z) / (z - w) dif z = 2 pi i I(Gamma; w) f(w) $
 - For simple closed curve $gamma$, $f$ holomorphic on $D_gamma^"int" union gamma$ if exists domain $D$ such that $D_gamma^"int" union gamma subset D$ and $f$ holomorphic on $D$.
 - Let $gamma$ simple closed curve and $f$ holomorphic on $D_gamma^"int" union gamma$.
-	- *Cauchy's theorem for simple closed curves*: $ integral_gamma f(z) dif z = 0 $
+	- *Cauchy's theorem for simple closed contours*: $ integral_gamma f(z) dif z = 0 $
 	- *CIF for simple closed contours*: $ forall w in D_gamma^"int", quad integral_gamma f(z) / (z - w) dif z = 2 pi i f(w) $
 
 = Holomorphic functions on punctured domains
@@ -305,7 +305,7 @@
 	- $f$ has *removable singularity* at $z = a$ if $c_n = 0$ for all $n <= -1$ (principal part is zero).
 	- $f$ has *pole of order $k$* at $z = a$ if $c_(-k) != 0$ and $c_n = 0$ for all $n < -k$.
 	- $f$ has *essential singularity* at $z = a$ if exist infinitely many $n < 0$ such that $c_n != 0$.
-- $f: B_R^*(a) -> CC$ has removable singularity at $z = a$ iff $f$ extends to holomorphic function on $B_R(a)$.
+- $f: B_R^*(a) -> CC$ has removable singularity at $z = a$ iff $f$ extends to holomorphic function on $B_R(a)$ ($f$ has analytic continuation to $B_R(a)$).
 - Let $f: B_R^*(a) -> CC$ holomorphic, $R > 0$. Then $f$ has removable singularity at $z = a$ iff $ lim_(z -> a) (z - a) f(z) = 0 $
 - *Riemann extension theorem*: Let $f: B_R^*(a) -> CC$ holomorphic and bounded, then $f$ has removable singularity at $z = a$.
 - Let $f: B_R^*(a) -> CC$ holomorphic. The following are equivalent:
@@ -319,9 +319,9 @@
 = Cauchy's residue theorem
 
 - $f$ *meromorphic* on domain $D$ if $f$ holomorphic on $D - S$, $S subset D$ has no non-isolated points and $f$ has pole at every $s in S$.
-- $f$ meromorphc on $D_gamma^"in" union gamma$ if exists domain $D$ containing $D_gamma^"in" union gamma$ and $f$ meromorphic on $D$.
+- $f$ meromorphic on $D_gamma^"int" union gamma$ if exists domain $D$ containing $D_gamma^"in" union gamma$ and $f$ meromorphic on $D$.
 - Let $f$ meromorphic on domain $D$ with pole at $a$, with Laurent series $ f(z) = sum_(n = -k)^oo c_n (z - a)^n $ *Residue of $f$ at $a$* is $ "Res"_(z = a)(f) := c_(-1) $
-- *Cauchy's residue theorem*: Let $f$ meromorphic on $D_gamma^"in" union gamma$, $gamma$ positively oriented simple closed contour, $f$ has no poles on $gamma$ and finite number of poles inside $gamma$, ${a_1, ..., a_m}$. Then $ integral_gamma f(z) dif z = 2 pi i sum_(j = 1)^m "Res"_(z = a_j)(f) $
+- *Cauchy's residue theorem*: Let $f$ meromorphic on $D_gamma^"int" union gamma$, $gamma$ positively oriented simple closed contour, $f$ has no poles on $gamma$ and finite number of poles inside $gamma$, ${a_1, ..., a_m}$. Then $ integral_gamma f(z) dif z = 2 pi i sum_(j = 1)^m "Res"_(z = a_j)(f) $
 - *Simple pole*: pole of order $1$.
 - *Rules for calculating residues*:
 	- *Linear combinations*: $"Res"_(z = a) (A f + B g) = A "Res"_(z = a)(f) + B "Res"_(z = a)(g)$.

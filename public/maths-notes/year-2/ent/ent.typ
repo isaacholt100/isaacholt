@@ -123,7 +123,7 @@
 - $(a / p) = (b / p)$ if $a ident b quad (mod p)$.
 - *Euler's criterion*: Let $p$ odd prime, $a in ZZ$, $gcd(a, p) = 1$, then $ a^((p - 1)\/2) ident (a / p) quad (mod p) $
 - $-1$ is QR if $p ident 1 quad (mod 4)$ and is NQR if $p ident 3 quad (mod 4)$.
-- *Quadratic reciprocity law (QRL)*: let $p != q$ odd primes, then $ (p / q) (q / p) = (1)^((p - 1) / 2 (q - 1) / 2) $ If $p = 2$, $ (2 / q) = (-1)^((q^2 - 1) / 8) $
+- *Quadratic reciprocity law (QRL)*: let $p != q$ odd primes, then $ (p / q) (q / p) = (-1)^((p - 1) / 2 (q - 1) / 2) $ If $p = 2$, $ (2 / q) = (-1)^((q^2 - 1) / 8) $
 - *Algorithm for computing Legendre symbol* $(a / p)$:
 	- Divide $a$ by $p$ to get $a = t p + r$ so $(a / p) = (r / p)$.
 	- If $r = 0$, $(r / p) = 0$ so stop.

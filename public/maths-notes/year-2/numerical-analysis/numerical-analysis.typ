@@ -10,7 +10,8 @@
 	(-1)^s (1.d_1...d_52)_2 2^e "if" e != 0 "or" 2047,
 	(-1)^s (0.d_1...d_52)_2 2^(-1022) "if" e = 0
 ) $ where $e = (e_10...e_0)_2$ $e = 2047$ is used to store $"NaN", plus.minus infinity$. The first case $e != 0$ is a *normal* representation, the $e = 0$ case is a *subnormal representation*.
-- Floating-point numbers have finite range and precision.
+- Floating-point numbers have *finite precision*: exists $epsilon_M > 0$ such that $"fl"(x) = "fl"((1 + epsilon) x)$ for all $epsilon < epsilon_M$.
+- Floating-point numbers have finite range: exists $m_"max"$ and $m_"min"$ such that $"fl"$ defined only when $m_"min" <= |x| <= m_"max"$.
 - *Underflow*: where floating point calculation result is smaller than smallest representable float. Result is set to zero.
 - *Overflow*: where floating point calculation result is larger than largest representable float. *Floating-point exception* is raised.
 - *Machine epsilon $epsilon_M$*: difference between smallest representable number greater than $1$ and $1$. $epsilon_M = beta^(-k+1)$.
@@ -178,8 +179,8 @@
 - *Rectangle method*: $ I_0(f) = (b - a) f((a + b) / 2) $
 - If $p$ interpolates $f$ at ${x_k} subset [a, b]$ then for all $x in [a, b]$, $ f(x) - p(x) = (omega_(n + 1)(x)) / ((n + 1)!) f^((n + 1))(xi) $ where $omega_(n + 1)(x) = (x - x_0) dots.h.c (x - x_n)$ and $xi in (a, b)$.
 - $ |I(f) - I_n(f)| <= 1/((n + 1)!) max_(xi in [a, b]) |f^((n + 1))(xi)| integral_a^b |w_(n + 1)(x)| dif x $
-- *Composite quadrature*: divide $[a, b]$ into $m$ subintervals ${[x_(i - 1), x_i]}_(i = 1)^m$ of each length $h = (b - a)/m$ and apply interpolatory quadrature to each subinterval, then add each of these together and divide by $m$.
-- *Trapezium rule*: use composite with closed Newton-Cotes formula with $n = 1$: $I_1(f) = (b - a) (f(a) + f(b)) / 2$ to give $ C_(1, m)(f) = (b - a) / m (f(x_0) + 1/2 f(x_1) + dots.h.c + 1/2 f(x_(m - 1)) + f(x_m)) $
+- *Composite quadrature*: divide $[a, b]$ into $m$ subintervals ${[x_(i - 1), x_i]}_(i = 1)^m$ of each length $h = (b - a)/m$ and apply interpolatory quadrature to each subinterval, then add each of these together.
+- *Trapezium rule*: use composite with closed Newton-Cotes formula with $n = 1$: $I_1(f) = (b - a) (f(a) + f(b)) / 2$ to give $ C_(1, m)(f) = (b - a) / m (1/2 f(x_0) + f(x_1) + dots.h.c + f(x_(m - 1)) + 1/2 f(x_m)) $
 - *Simpson's $1/3$ rule*: use composite with closed Newton-Cotes formula with $n = 2$: $I_2(f) = (b - a) (1/6 f(a) + 2/3 f((a + b) / 2) + 1/6 f(b))$ to give $ C_(2, m)(f) = (b - a) / m (1/6 f(x_0) + 2/3 f(x_(1/2)) + 1/3 f(x_1) + dots.h.c + 1/3 f(x_(m - 1)) + 2/3 f(x_(m - 1/2)) + 1/6 f(x_m)) $
 - To compute error bounds for composite, add individual error bounds for each of the individual quadratures.
 - Interpolatory formula $ G_n = sum_(k = 0)^n rho_k f(x_k) $ obtains highest degree of exactness $2n + 1$ iff nodes ${x_k}$ chosen so that $hat(p)(x) = (x - x_0) dots.h.c (x - x_n)$ satisfies $ forall p in P_n, quad (hat(p), p) = 0 $ ${x_k}$ must be roots of $phi_(n + 1) in P_(n + 1)$ where ${phi_j}$ are orthogonal polynomials with respect to inner product $(dot.op, dot.op)_(a, b, w)$ Then coefficients given by $ rho_k = integral_a^b product_(l != k) (x - x_l) / (x_k - x_l) w(x) dif x $ where $w$ is weight function.
