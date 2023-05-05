@@ -89,7 +89,7 @@
 - For Newton-Raphson, $g'(x_*) = 0$ so quadratic convergence.
 - Can use Newton-Raphson to solve $1 \/ x - b = 0$: $ x_(n + 1) = x_n - (1 \/ x_n - b) / (-1 \/ x_n^2) = x_n (2 - b x_n) $
 - *Newton-Raphson in $d$ dimensions*: $ underline(x)_(n + 1) = underline(x)_n - (D f)^(-1) (underline(x)_n) underline(f)(underline(x)_n) $ where $D f$ is *Jacobian*.
-- *Secant method*: approximate $f'(x_n) approx (f(x_n) - f(x_(n - 1))) / (x_n - x_(n - 1))$ with Newton-Raphson: $ x_(n + 1) = x_n - (x_n - x_(n - 1)) / (f(x_n) - f(x_(n - 1))) f(x_n) $
+- *Secant method*: approximate $f'(x_n) approx (f(x_n) - f(x_(n - 1))) / (x_n - x_(n - 1))$ with Newton-Raphson: $ x_(n + 1) = x_n - (x_n - x_(n - 1)) / (f(x_n) - f(x_(n - 1))) f(x_n) $ If $f'(x_*) != 0$, order is $(1 + sqrt(5)) \/ 2$.
 
 = Numerical differentiation
 
@@ -178,9 +178,9 @@
 - If nodes symmetric, $t_(n - k) = 1 - t_k$ then $sigma_(n - k) = sigma_k$.
 - *Rectangle method*: $ I_0(f) = (b - a) f((a + b) / 2) $
 - If $p$ interpolates $f$ at ${x_k} subset [a, b]$ then for all $x in [a, b]$, $ f(x) - p(x) = (omega_(n + 1)(x)) / ((n + 1)!) f^((n + 1))(xi) $ where $omega_(n + 1)(x) = (x - x_0) dots.h.c (x - x_n)$ and $xi in (a, b)$.
-- $ |I(f) - I_n(f)| <= 1/((n + 1)!) max_(xi in [a, b]) |f^((n + 1))(xi)| integral_a^b |w_(n + 1)(x)| dif x $
+- Error bounded by $ |I(f) - I_n(f)| <= 1/((n + 1)!) max_(xi in [a, b]) |f^((n + 1))(xi)| integral_a^b |omega_(n + 1)(x)| dif x $
 - *Composite quadrature*: divide $[a, b]$ into $m$ subintervals ${[x_(i - 1), x_i]}_(i = 1)^m$ of each length $h = (b - a)/m$ and apply interpolatory quadrature to each subinterval, then add each of these together.
 - *Trapezium rule*: use composite with closed Newton-Cotes formula with $n = 1$: $I_1(f) = (b - a) (f(a) + f(b)) / 2$ to give $ C_(1, m)(f) = (b - a) / m (1/2 f(x_0) + f(x_1) + dots.h.c + f(x_(m - 1)) + 1/2 f(x_m)) $
 - *Simpson's $1/3$ rule*: use composite with closed Newton-Cotes formula with $n = 2$: $I_2(f) = (b - a) (1/6 f(a) + 2/3 f((a + b) / 2) + 1/6 f(b))$ to give $ C_(2, m)(f) = (b - a) / m (1/6 f(x_0) + 2/3 f(x_(1/2)) + 1/3 f(x_1) + dots.h.c + 1/3 f(x_(m - 1)) + 2/3 f(x_(m - 1/2)) + 1/6 f(x_m)) $
 - To compute error bounds for composite, add individual error bounds for each of the individual quadratures.
-- Interpolatory formula $ G_n = sum_(k = 0)^n rho_k f(x_k) $ obtains highest degree of exactness $2n + 1$ iff nodes ${x_k}$ chosen so that $hat(p)(x) = (x - x_0) dots.h.c (x - x_n)$ satisfies $ forall p in P_n, quad (hat(p), p) = 0 $ ${x_k}$ must be roots of $phi_(n + 1) in P_(n + 1)$ where ${phi_j}$ are orthogonal polynomials with respect to inner product $(dot.op, dot.op)_(a, b, w)$ Then coefficients given by $ rho_k = integral_a^b product_(l != k) (x - x_l) / (x_k - x_l) w(x) dif x $ where $w$ is weight function.
+- *Gaussian* interpolatory formula $ G_n = sum_(k = 0)^n rho_k f(x_k) $ obtains highest degree of exactness $2n + 1$ iff nodes ${x_k}$ chosen so that $hat(p)(x) = (x - x_0) dots.h.c (x - x_n)$ satisfies $ forall p in P_n, quad (hat(p), p) = 0 $ ${x_k}$ must be roots of $phi_(n + 1) in P_(n + 1)$ where ${phi_j}$ are orthogonal polynomials with respect to inner product $(dot.op, dot.op)_(a, b, w)$ Then coefficients given by $ rho_k = integral_a^b product_(l != k) (x - x_l) / (x_k - x_l) w(x) dif x $ where $w$ is weight function.
