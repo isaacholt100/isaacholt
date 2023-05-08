@@ -31,7 +31,7 @@
 = $underline(nabla)$ acting on vector fields
 
 - *Divergence* of a vector field $underline(v)(underline(x)) = sum_(i = 1)^n v_i(underline(x)) underline(e)_i$: $ underline(nabla) . underline(v) ident "div"(underline(v)) = sum_(i = 1)^n (diff v_i) / (diff x_i) $ Note that the formula will be different in other coordinates systems. Also $underline(nabla) . underline(v) != underline(nabla) dot.op underline(v)$.
-- Considering a vector field as a fluid, if the divergence at a point is positive the vector field acts as a *source* at that point (more fluid leaving than entering), if the divergence is negative the vector field acts as a *sink* at that point (more fluid entering than leaving). The magnitude of the divergence is the rate of flow and the direction of the divergence is the direction of flow.
+- Considering a vector field as a fluid, if the divergence at a point is positive the vector field acts as a *source* at that point (more fluid leaving than entering), if the divergence is negative the vector field acts as a *sink* at that point (more fluid entering than leaving). The magnitude of vector at point is the rate of flow at that point and direction of vector is direction of flow.
 - *Properties of div*: for $f: RR^n -> RR$, $underline(v), underline(w): RR^n -> RR^n$, $a, b in RR$,
 	- $underline(nabla) . (a underline(v) + b underline(w)) = a underline(nabla) . underline(v) + b underline(nabla) . underline(w)$
 	- $underline(nabla) . (f underline(v)) = (underline(nabla) f) . underline(v) + f underline(nabla) . underline(v)$
@@ -58,11 +58,11 @@
 	0 & "if" i != j
 ) quad = (diff x_i) / (diff x_j) $
 - If $delta_(i j)$ has a dummy index $i$, then remove the $delta_(i j)$ and replace the dummy index $i$ by $j$ in the rest of the expression.
-- *Levi-Cevita symbol*: $ epsilon_(i j k) & = -epsilon_(j i k) = -epsilon(i k j) quad "(antisymmetry)" med epsilon_(123) & = 1 $
+- *Levi-Cevita symbol*: $ epsilon_(i j k) & = -epsilon_(j i k) = -epsilon_(i k j) quad "(antisymmetry)" med epsilon_(123) & = 1 $
 - *Properties of $epsilon_(i j k)$*:
 	- $epsilon_(i j k) = -epsilon_(k j i)$
 	- $epsilon_(i j k) = 0$ if $i = j$ or $j = k$ or $k = i$
-	- If $epsilon_(i j k)$ is zero then $(i med j med k)$ is a permutation of $(1 med 2 med 3)$.
+	- If $epsilon_(i j k) != 0$ then $(i med j med k)$ is a permutation of $(1 med 2 med 3)$.
 	- $epsilon_(i j k) = 1$ if $(i med j med k)$ is an even permutation of $(1 med 2 med 3)$ (even number of swaps).
 	- $epsilon_(i j k) = -1$ if $(i med j med k)$ is an odd permutation of $(1 med 2 med 3)$ (odd number of swaps).
 	- $epsilon_(i j k) = epsilon_(j k i) = epsilon_(k i j)$ (cyclic permutation).
@@ -74,7 +74,7 @@
 
 = Differentiability of scalar fields
 
-- *$f(underline(x))$ tends to $L$ as $x$ tends to $a$*:3 $ lim_(underline(x) -> underline(a)) f(underline(x)) = L <==> forall epsilon > 0, exists delta > 0, forall underline(x), 0 < |underline(x) - underline(a)| < delta ==> |f(underline(x)) - L| < epsilon $
+- *$f(underline(x))$ tends to $L$ as $x$ tends to $a$*: $ lim_(underline(x) -> underline(a)) f(underline(x)) = L <==> forall epsilon > 0, exists delta > 0, forall underline(x), 0 < |underline(x) - underline(a)| < delta ==> |f(underline(x)) - L| < epsilon $
 - Scalar field $f$ *continuous* at $underline(a)$ if $lim_(underline(x) -> underline(a)) f(underline(x))$ exists and is equal to $f(underline(a))$
 - If $f$ and $g$ are continuous scalar fields at $underline(a)$ then so are:
 	- $f + g$
@@ -94,7 +94,7 @@
 - Function is *continuously differentiable* at $underline(a)$ if it and all its partial derivatives exist and are continuous at $underline(a)$. It is *continuously differentiable* on an open $U$ if it and all its partial derivatives exist and are continuous on $U$.
 - Continuous differentiability implies differentiability.
 - *Smooth function*: partial derivatives of all orders exist.
-- Let $U subset.eq RR^n$ be open. If $f, g: U -> RR$ continuous at $underline(a) in RR^n$ then so are:
+- Let $U subset.eq RR^n$ be open. If $f, g: U -> RR$ differentiable (or smooth) at $underline(a) in RR^n$ then so are:
 	- $f + g$
 	- $f g$
 	- $f \/ g$ (if $g(underline(a)) != 0$)
@@ -155,6 +155,7 @@
 - *Surface integral* defined as $ integral_S underline(F) dot.op dif underline(A) = lim_(Delta A_k -> 0) sum_k underline(F)(underline(x)_k^*) dot.op hat(underline(n))_k Delta A_k $
 - For surface $underline(x)(u, v)$, $ integral_S underline(F) dot.op dif underline(A) = integral_U underline(F)(underline(x)(u, v)) dot.op ((diff underline(x)) / (diff u) times (diff underline(x)) / (diff v)) dif u dif v $ since $((diff underline(x)) / (diff u) times (diff underline(x)) / (diff v))$ is normal to surface.
 - For surface $f(x, y, z) = c$, $ integral_S underline(F) dot.op dif underline(A) = integral_A (underline(F) dot.op underline(nabla) f) / (underline(e_3) dot.op underline(nabla) f) dif x dif y $ where $(x, y)$ range over $A$, $A$ is *projection* of $S$ onto $x, y$ plane.
+- If unit normal to surface $S$, $underline(hat(n))$, is known and $underline(F) dot.op underline(hat(n))$ is constant, then $ integral_S underline(F) dot.op dif underline(A) = integral_S underline(F) dot.op underline(hat(n)) dif A = underline(F) dot.op underline(hat(n)) integral_S dif A = underline(F) dot.op underline(hat(n)) times "area of" S $
 
 = Green's, Stoke's and divergence theorems
 
@@ -185,7 +186,7 @@
 - $dif V_(u v w)$ is parallelopiped-shaped.
 - *Gradient in Cartesian coordinates*: $underline(nabla) = underline(e)_1 diff_x + underline(e)_2 diff_y + underline(e)_3 diff_z$.
 - *Laplacian in Cartesian coordinates*: $underline(nabla)^2 = diff_x^2 + diff_y^2 + diff_z^2$.
-- For 2D polar coordinates, let $underline(r) = r cos(theta) underline(e)_1 + r sin(theta) underline(e)_2$, then $ tilde(underline(e))_r & := diff_r = cos(theta) underline(e)_1 + sin(theta) underline(e)_2, \ tilde(underline(e))_theta & := diff_theta = -r sin(theta) underline(e)_1 + r cos(theta) underline(e)_2 $
+- For 2D polar coordinates, let $underline(r) = r cos(theta) underline(e)_1 + r sin(theta) underline(e)_2$, then $ tilde(underline(e))_r & := diff_r underline(r) = cos(theta) underline(e)_1 + sin(theta) underline(e)_2, \ tilde(underline(e))_theta & := diff_theta underline(r) = -r sin(theta) underline(e)_1 + r cos(theta) underline(e)_2 $
 - Let $x = g(u, v)$, $y = h(u, v)$, then *scale factors for mapping given by $g$ and $h$* are $h_u := norm(diff_u underline(r))$, $h_v := norm(diff_v underline(r))$.
 - Unit vectors corresponding to $tilde(underline(e))_r$ and $tilde(underline(e))_theta$ are $underline(e)_r = tilde(underline(e))_r$ and $underline(e)_theta = 1/r tilde(underline(e))_theta$ which form orthonormal basis.
 - $dif underline(r) = diff_r underline(r) dif r + diff_theta underline(r) dif theta = dif r underline(e)_r + r dif theta underline(e)_theta$ by chain rule.
