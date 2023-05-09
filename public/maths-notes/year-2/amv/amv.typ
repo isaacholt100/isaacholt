@@ -329,7 +329,7 @@
 	- Set of eigenvalues is countably infinite and monotonically increasing sequence: $lambda_1 < lambda_2 < dots.h.c$ and $lim_(n -> oo) lambda_n = oo$.
 	- For regular SL problem, can write *generalised Fourier expansion (eigenfunction expansion)* of $u$ as $ u = sum_(n = 0)^oo angle.l hat(u)_n, u angle.r_w hat(u)_n $ for normalised eigenfunctions $hat(u)_n$.
 	- If $frak(L) u_n(x) + lambda_n w(x) u_n(x) = f(x)$, then $f(x) = sum_(n = 0)^oo angle.l hat(u)_n, f angle.r_w hat(u)_n$. Equate eigenfunction of $f$ with eigenfunction expansion of $u$ in $frak(L) u_n(x) + lambda_n w(x) u_n(x)$ and take inner product with $hat(u)_m$ to determine $c_m = angle.l hat(u)_m, u angle.r$
-- If $f$ piecewise smooth on $[a, b]$, for all $x in (a, b)$, $ 1/2 (f(x_+) + f(x_-)) := 1/2 (lim_(epsilon -> 0) f(x + epsilon) + lim_(epsilon -> 0) f(x - epsilon)) sum_(n = 0)^oo angle.l hat(u)_n, u angle.r_w hat(u)_n(x) $
+- If $f$ piecewise smooth on $[a, b]$, for all $x in (a, b)$, $ 1/2 (f(x_+) + f(x_-)) := 1/2 (lim_(epsilon -> 0) f(x + epsilon) + lim_(epsilon -> 0) f(x - epsilon)) = sum_(n = 0)^oo angle.l hat(u)_n, u angle.r_w hat(u)_n(x) $
 - *Completeness of eigenfunctions*: $ sum_(n = 0)^oo hat(u)_n(y) hat(u)_n(x) w(y) = delta(x - y) = delta(y - x) = sum_(n = 0)^oo hat(u)_n(x) hat(u)_n(y) w(x) $
 
 = Green's functions
