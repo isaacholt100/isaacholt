@@ -17,12 +17,12 @@
 - Conjugation represents reflection in the real axis.
 - Taking the real (imaginary) part represents projection onto the real (imaginary) axis.
 - $|z_1 z_2| = |z_1| |z_2|$.
-- $(cos(theta) + i sin(theta))^n = cos(n theta) + i sin(n theta)$.
+- *De Moivre's formula*: $(cos(theta) + i sin(theta))^n = cos(n theta) + i sin(n theta)$.
 - *Triangle inequality*: $|z_1 + z_2| <= |z_1| + |z_2|$.
 - $|z| >= 0$ and $|z| = 0 <==> z = 0$.
 - $max{|"Re"(z)|, |"Im"(z)|} <= |z| <= |"Re"(z)| + |"Im"(z)|$.
 - *Complex exponential function*: $ exp(z) := e^x (cos(y) + i sin(y)) $.
-- $forall z in CC, e^z = 0$.
+- $forall z in CC, e^z != 0$.
 - $e^(z_1 + z_2) = e^(z_1) e^(z_2)$.
 - $e^z = 1 <==> z = 2 pi i k$ for some $k in ZZ$.
 - $e^(-z) = 1 \/ e^z$.
@@ -177,7 +177,7 @@
 
 = Notions of convergence in complex analysis and power series
 
-- For $X$ and $Y$ metric spaces, ${f_n}_(n in NN): X -> Y$ *converges pointwise on $X$ to $f$* if $ forall x in X, forall epsilon > 0, exists N in NN, forall n > n, quad d_Y(f_n(x), f(x)) < epsilon $ $f(x) = lim_(n -> infinity) f_n(x)$ is *limit function*.
+- For $X$ and $Y$ metric spaces, ${f_n}_(n in NN): X -> Y$ *converges pointwise on $X$ to $f$* if $ forall x in X, forall epsilon > 0, exists N in NN, forall n > N, quad d_Y(f_n(x), f(x)) < epsilon $ $f(x) = lim_(n -> infinity) f_n(x)$ is *limit function*.
 - ${f_n}_(n in NN)$ *converges uniformly on $X$ to $f$* if $ forall epsilon > 0, exists N in NN, forall n > N, forall x in X, quad d_Y(f_n(x), f(x)) < epsilon $
 - Uniform convergence implies pointwise convergence.
 - *Uniform limits of continuous functions are continuous*: let ${f_n}_(n in NN)$ be all continuous on $X$ and converge uniformly to $f$ on $X$. Then $f$ is continuous on $X$.
@@ -206,7 +206,7 @@
 - Let $f_1, f_2: [a, b] -> CC$, $c in CC$, then $ integral_a^b (f_1(t) + f_2(t)) dif t = integral_a^b f_1(t) dif t + integral_a^b f_2(t) dif t, quad integral_a^b c f_1(t) dif t = c integral_a^b f_1(t) dif t $
 - Curve $gamma: [a, b] -> CC$ is $C^1$ if *continuously differentiable* (derivative exists and is continuous).
 - *Integral of continuous $f: U -> CC$ along curve $gamma: [a, b] -> U$, $gamma in C^1$*: $ integral_gamma f(z) dif z := integral_a^b f(gamma(t)) gamma'(t) dif t $
-- Let $f_1, f_2: [a, b] -> CC$, $c in CC$, then $ integral_gamma (f_1(z) + f_2(z)) dif z = integral_gamma f_1(z) dif z + integral_a^b f_2(z) dif z, quad integral_gamma c f_1(z) dif z = c integral_gamma f_1(z) dif z $
+- Let $f_1, f_2: [a, b] -> CC$, $c in CC$, then $ integral_gamma (f_1(z) + f_2(z)) dif z = integral_gamma f_1(z) dif z + integral_gamma f_2(z) dif z, quad integral_gamma c f_1(z) dif z = c integral_gamma f_1(z) dif z $
 - $(-gamma): [-b, -a] -> CC$, $(-gamma)(t) := gamma(-t)$, then $ integral_(-gamma) f(z) dif z = - integral_gamma f(z) dif z $
 - Let $phi: [a', b'] -> [a, b]$ be continuously differentiable, $phi(a') = a$, $phi(b') = b$, $delta: [a', b'] -> CC$, $delta = gamma compose phi$. Then $ integral_gamma f(z) dif z = integral_delta f(z) dif z $
 - Let $gamma: [a, b] -> CC$, $a = a_0 < a_1 < dots.h.c < a_n = b$, $gamma_i: [a_(i - 1), a_i] -> CC$ be $C^1$, $gamma_i(t) := gamma(t)$ for $t in [a_(i - 1), a_i]$. Then $gamma$ is *piecewise $C^1$ curve*, or *contour*. $ integral_gamma f(z) dif z = sum_(i = 1)^n integral_gamma_i f(z) dif z $ is a *contour integral*.
@@ -284,7 +284,7 @@
 	- *General form of Cauchy's theorem*: $ integral_Gamma f(z) dif z = 0 $
 	- *General form of CIF*: $ forall w in D - Gamma, quad integral_Gamma f(z) / (z - w) dif z = 2 pi i I(Gamma; w) f(w) $
 - For simple closed curve $gamma$, $f$ holomorphic on $D_gamma^"int" union gamma$ if exists domain $D$ such that $D_gamma^"int" union gamma subset D$ and $f$ holomorphic on $D$.
-- Let $gamma$ simple closed curve and $f$ holomorphic on $D_gamma^"int" union gamma$.
+- Let $gamma$ simple closed, positively oriented contour and $f$ holomorphic on $D_gamma^"int" union gamma$.
 	- *Cauchy's theorem for simple closed contours*: $ integral_gamma f(z) dif z = 0 $
 	- *CIF for simple closed contours*: $ forall w in D_gamma^"int", quad integral_gamma f(z) / (z - w) dif z = 2 pi i f(w) $
 
