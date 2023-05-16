@@ -28,7 +28,7 @@
 - $e^(-z) = 1 \/ e^z$.
 - $|e^z| = e^("Re"(z))$.
 - $forall k in ZZ$, $exp(z) = exp(z + 2k pi i)$.
-- $ sin(z) := 1 / (2 i) (e^(i z) - e^(-i z)), quad cos(z) := 1/2 (e^(i z) + e^(-i z)) \ sinh(z) := 1/2 (e^z + e^(-z)), quad cosh(z) := 1/2 (e^z + e^(-z)) $
+- $ sin(z) := 1 / (2 i) (e^(i z) - e^(-i z)), quad cos(z) := 1/2 (e^(i z) + e^(-i z)) \ sinh(z) := 1/2 (e^z - e^(-z)), quad cosh(z) := 1/2 (e^z + e^(-z)) $
 - For every $w in CC^*$, $ e^z = w = |w| e^(i phi) $ has solutions $ z = log(|w|) + i(phi + 2k pi), quad k in ZZ $
 - Let $theta_2 - theta_1 = 2 pi$, let $arg$ be the argument function in $lr((theta_1, theta_2])$. Then $ log(z) := log(|z|) + i arg(z) $ is a *branch of logarithm*. Jump discontinuity on *branch cut*, the ray $R_(theta_1) = R_(theta_2)$.
 - *Principal branch of log*: where $arg(z) = "Arg"(z) in lr((-pi, pi])$.

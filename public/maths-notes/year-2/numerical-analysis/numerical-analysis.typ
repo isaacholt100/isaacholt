@@ -7,11 +7,11 @@
 - *Floating-point representation*: $ x = (0.d_1...d_(k-1)) beta^(d_k...d_n - B) $ where $B$ is an *exponent bias*.
 - If $d_1 != 0$ then the floating point system is *normalised* and each float has a unique representation.
 - *binary64*: stored as $ s e_10...e_0 d_1...d_52 $ where $s$ is the *sign* ($0$ for positive, $1$ for negative), $e_10...e_0$ is the *exponent*, and $d_1...d_52$ is the *mantissa*. The bias is $1023$. The number represented is $ cases(
-	(-1)^s (1.d_1...d_52)_2 2^e "if" e != 0 "or" 2047,
+	(-1)^s (1.d_1...d_52)_2 2^(e - 1023) "if" e != 0 "or" 2047,
 	(-1)^s (0.d_1...d_52)_2 2^(-1022) "if" e = 0
 ) $ where $e = (e_10...e_0)_2$ $e = 2047$ is used to store $"NaN", plus.minus infinity$. The first case $e != 0$ is a *normal* representation, the $e = 0$ case is a *subnormal representation*.
 - Floating-point numbers have *finite precision*: exists $epsilon_M > 0$ such that $"fl"(x) = "fl"((1 + epsilon) x)$ for all $epsilon < epsilon_M$.
-- Floating-point numbers have finite range: exists $m_"max"$ and $m_"min"$ such that $"fl"$ defined only when $m_"min" <= |x| <= m_"max"$.
+- Floating-point numbers have *finite range*: exists $m_"max"$ and $m_"min"$ such that $"fl"$ defined only when $m_"min" <= |x| <= m_"max"$.
 - *Underflow*: where floating point calculation result is smaller than smallest representable float. Result is set to zero.
 - *Overflow*: where floating point calculation result is larger than largest representable float. *Floating-point exception* is raised.
 - *Machine epsilon $epsilon_M$*: difference between smallest representable number greater than $1$ and $1$. $epsilon_M = beta^(-k+1)$.
@@ -22,7 +22,7 @@
 	((0.d_1...d_k)_beta + beta^(-k)) dot.op beta^e & "if" rho >= 1/2
 ) $ where $rho = (0.d_(k + 1)...)$.
 - *Relative rounding error*: $ epsilon_x = ("fl"(x) - x) / x <==> "fl"(x) = x(1 + epsilon_x) $
-- $ |("fl"_"chop" - x) / x| <= beta^(-k + 1), quad |(tilde("fl")_"round"(x) - x) / x| <= 1/2 beta^(-k + 1) $
+- $ |("fl"_"chop"(x) - x) / x| <= beta^(-k + 1), quad |(tilde("fl")_"round"(x) - x) / x| <= 1/2 beta^(-k + 1) $
 - *Round-to-nearest half-to-even*: fairer rounding than regular rounding for discrete values. In the case of a tie, round to nearest even integer: $ "fl"_"round"(x) = cases(
 	(0.d_1...d_k)_beta dot.op beta^e & "if" rho < 1/2 "or" (rho = 1/2 "and" d_k "is even"),
 	((0.d_1...d_k)_beta + beta^(-k)) dot.op beta^e & "if" rho > 1/2 "or" (rho = 1/2 "and" d_k "is odd")
@@ -144,9 +144,10 @@
 	- $norm(A)_2 = max{sqrt(|lambda|): lambda "eigenvalue of" A^T A} = rho(A^T A)^(1 \/ 2) = rho(A A^T)^(1 \/ 2) $
 	- $norm(A)_oo = norm(A)_"row"$.
 - *Condition number* of $A$ with respect to norm $norm(dot.op)_*$: $ kappa_*(A) := norm(A^(-1))_* norm(A)_* $
+- For $A (x + delta x) = b + delta b$, $ norm(delta x)_* / norm(x)_* <= kappa_*(A) norm(delta b)_* / norm(b)_* $
 - If $norm(B) < 1$ for any submultiplicative matrix norm $norm(dot.op)$, $ B^k -> 0 quad "as" k -> oo $ Also, $ B^k -> 0 quad "as" k -> oo <==> rho(B) < 1 $
 - *Richardson's method for lineary systems*: $A x = b$ so $x = x + w(b - A x)$ for some $w$. So iterate $ x^((k + 1)) = x^((k)) + w(b - A x^((k))) $ *Residual*: $ r^((k)) := x^((k)) - x$ satisfies $ r^((k + 1)) = (I - w A) r^((k)) ==> r^((k)) = (I - w A)^k r^((0)) $ So iteration converges iff $(I - w A)^k -> 0 <==> rho(I - w A) < 1$
-- *Jacobi's method*: split $A$ into $A = D - E - F$, $D$ diagonal, $E$ strictly lower triangular, $F$ strictly upper triangular. Rewrite $A x = b$ as $D x = (E + F) x + b$, and iterate $ x^((k + 1)) = D^(-1) ((E + F) x^(k) + b) $ Residual satisfies $r^((k + 1)) = D^(-1) (E + F) r^((k))$ so iteration converges iff $(D^(-1) (E + F))^k -> 0$. Converges if $A$ *strictly diagonally dominant* ($|a_(i i)| > sum_(j != i) |a_(i j)|$ for all $i$).
+- *Jacobi's method*: split $A$ into $A = D - E - F$, $D$ diagonal, $E$ strictly lower triangular, $F$ strictly upper triangular. Rewrite $A x = b$ as $D x = (E + F) x + b$, and iterate $ x^((k + 1)) = D^(-1) ((E + F) x^((k)) + b) $ Residual satisfies $r^((k + 1)) = D^(-1) (E + F) r^((k))$ so iteration converges iff $(D^(-1) (E + F))^k -> 0$. Converges if $A$ *strictly diagonally dominant* ($|a_(i i)| > sum_(j != i) |a_(i j)|$ for all $i$).
 - *Gauss-Seidel method*: iterate $ (D - E) x^((k + 1)) = F x^((k)) + b $ Residual satisfies $r^((k + 1)) = (D - E)^(-1) F r^((k))$. Converges if $A$ strictly diagonally dominant.
 
 = $L^2$ approximations and orthogonal polynomials
