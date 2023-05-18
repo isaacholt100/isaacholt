@@ -270,7 +270,7 @@ $ deg(f) = cases(
 - Let $phi: G -> S_X$ group action, $x in X$. *Orbit* of $x$ inside $X$ is $ G(x) := cal(O)(x) := {phi(g)(x): g in G} $
 - Let $phi: G -> S_X$ group action, $x in X$. *Stabiliser* of $x$ in $G$ is $ G_x := "Stab"_G(x) := {g in G: phi(g)(x)= x} $
 - For every $x in X$, $"Stab"_G(x)$ is subgroup of $G$.
-- *Notation*: can write $g(x)$ instead of $phi(g(x))$.
+- *Notation*: can write $g(x)$ instead of $phi(g)(x)$.
 - Let $phi: G -> S_X$ group action. Then all orbits $cal(O)(x)$ partition $X$ so:
 	- Every orbit non-empty subset of $X$.
 	- Union of all orbits is $X$.
