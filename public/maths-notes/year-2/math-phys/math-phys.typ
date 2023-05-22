@@ -8,7 +8,7 @@
 - At the extrema of $f$, $(d f(s)) / (d s) = 0$ so $delta f = O((delta s)^2)$
 - *Functional*: map from functions to $RR$
 - $y(t)$ *stationary* for functional $S$ if $ (d S[y(t) + epsilon z(t)]) / (d epsilon) divides_(epsilon = 0) = 0 $ for every smooth $z(t)$ with $z(a) = z(b) = 0$. We use the notation $delta y(t) = epsilon z(t)$. $y(t)$ is called a *path*.
-- *Action principle (variational principle)*: paths described by particles are stationary paths of $S$: $ delta S := S[x + delta x] - S[x] = O((delta x)^2) $ for arbitrary smooth small deformations $delta x(t)$ around true path $x(t)$.
+- *Action principle (variational principle)*: paths described by particles are stationary paths of $S$ (an action functional): $ delta S := S[x + delta x] - S[x] = O((delta x)^2) $ for arbitrary smooth small deformations $delta x(t)$ around true path $x(t)$.
 - *Fundamental lemma of the calculus of variations*: Let $f(x)$ be continuous in $[a, b]$ and $ integral_a^b f(x) g(x) dif x = 0 $ for every smooth $g(x)$ in $[a, b]$ with $g(a) = g(b) = 0$. Then $f(x) = 0$ in $[a, b]$.
 - *Notation*: $ (diff L) / (diff x) = (diff L(r, s)) / (diff r) divides_((r, s) = (x(t), dot(x)(t))), quad (diff L) / (diff dot(x)) = (diff L(r, s)) / (diff s) divides_((r, s) = (x(t), dot(x)(t))) $
 - For a path $underline(q)$ and a Lagrangian $L(underline(q), underline(dot(q)))$, the action for the path is $ S = integral_(t_0)^(t_1) L(underline(q)(t), underline(dot(q))(t))) dif t $
@@ -74,7 +74,7 @@
 - *Neumann (free) boundary condition*: $u_x(0, t) = 0$ which gives $ u(x, t) = f(x - c t) + f(-x - c t) $ So waves reflected off boundary and not turned upside down.
 - *Junction conditions*:
 	- $u$ continuous at $0$: $ lim_(epsilon -> 0^+) u(epsilon, t) = lim_(epsilon -> 0^-) u(epsilon, t) $
-	- Energy conservation across junction: $ d/(d t) (lim_(epsilon -> 0) T(-epsilon, epsilon)) = lim_(epsilon -> 0) (T_(t x))_(x = -epsilon) - lim_(epsilon -> 0) (T_(t x))_(x = epsilon) $
+	- Energy conservation across junction: $ d/(d t) (lim_(epsilon -> 0^+) E(-epsilon, epsilon)) = lim_(epsilon -> 0^+) (T_(t x))_(x = -epsilon) - lim_(epsilon -> 0^+) (T_(t x))_(x = epsilon) $
 - *Ansatz for wave function with spring at junction at $x = 0$*: $ u(x, t) = cases(
 	"Re"((e^(i p x) + R e^(-i p x)) e^(-i p c t)) & "if" x <= 0,
 	"Re"(T e^(i p(x - c t))) & "if" x > 0
@@ -120,7 +120,7 @@
 - *Position operator*: $ hat(x) = x $
 - *Momentum operator*: $ hat(p) = -i planck.reduce diff / (diff x) $ where $planck.reduce$ is *reduced Planck constant*.
 - *Commutator*: $ [hat(x), hat(p)] := hat(x) hat(p) - hat(p) hat(x) = i planck.reduce $
-- *Expectation value of momentum for wave function $psi$*: $ angle.l psi angle.r = integral_(-oo)^oo overline(psi(x, t)) hat(p) psi(x, t) dif x = -i planck.reduce integral_(-oo)^oo overline(psi(x, t)) diff / (diff x) psi(x, t) dif x $
+- *Expectation value of momentum for wave function $psi$*: $ angle.l p angle.r = integral_(-oo)^oo overline(psi(x, t)) hat(p) psi(x, t) dif x = -i planck.reduce integral_(-oo)^oo overline(psi(x, t)) diff / (diff x) psi(x, t) dif x $
 - *Expection value of function of momentum*: $ angle.l f(p) angle.r = integral_(-oo)^oo overline(psi(x, t)) f(hat(p)) psi(x, t) dif x $
 - *Momentum uncertainty*: $ Delta p = sqrt(angle.l p^2 angle.r - angle.l p angle.r^2) $
 - *Heisenberg's uncertainty principle*: for any normalised wave function, $ Delta x Delta p >= planck.reduce / 2 $
@@ -232,7 +232,7 @@
 
 - *Probability current density*: $ J := planck.reduce / (2m i) (overline(psi) diff_x psi - psi diff_x overline(psi)) $
 - *Continuity equation*: $ diff_t P + diff_x J = 0 $ where $P(x, t) = |psi(x, t)|^2$.
-- Probability current vanishes for square-normalisable wave functions.
+- Probability current vanishes as $x -> plus.minus infinity$ for square-normalisable wave functions.
 
 = Scattering problems
 

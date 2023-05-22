@@ -111,7 +111,7 @@
 
 = Quadratic residues
 
-- Let $p$ prime, $a in ZZ$, $gcd(a, n) = 1$. $a$ is *quadratic residue (QR) $mod p$* if for some $x in ZZ$, $x^2 ident a quad (mod p)$. If not, $a$ is *quadratic non-residue (NQR) $mod p$*.
+- Let $p$ prime, $a in ZZ$, $gcd(a, p) = 1$. $a$ is *quadratic residue (QR) $mod p$* if for some $x in ZZ$, $x^2 ident a quad (mod p)$. If not, $a$ is *quadratic non-residue (NQR) $mod p$*.
 - For $p$ odd prime, there are $(n - 1)/2$ QR's and QNR's $mod p$.
 - Products of QR's and NQR's satisfy: $ Q R times Q R = Q R \ Q R times N R = N R \ N R times N R = Q R $
 - Let $p$ prime, $a in ZZ$, *Legendre symbol* is $ (a / p) := cases(
@@ -137,7 +137,7 @@
 
 = Sums of two squares
 
-- If $m$ and $n$ are sums of two squares, then so is $m n$ since $(a^2 + b^2) (c^2 + d^2) = (a c + b d)^2 (a d - b c)^2$.
+- If $m$ and $n$ are sums of two squares, then so is $m n$ since $(a^2 + b^2) (c^2 + d^2) = (a c + b d)^2 + (a d - b c)^2$.
 - Let $p$ odd prime. Then $p$ sum of two squares iff $p ident 1 quad (mod 4)$.
 - Let $n > 1$, $n = p_1 p_2 dots.h.c p_k N^2$, $p_i$ distinct primes, $N in NN$. Then $n$ sum of two squares iff $p_i = 2$ or $p_i ident 1 quad (mod 4)$ for all $i$.
 
@@ -147,7 +147,7 @@
 - *Simple* CF: $a_0 in ZZ$, $a_1, ..., a_n in NN$.
 - Any rational number can be written as finite simple continued fraction.
 - *$k$th convergent* of CF $[a_0; a_1, ..., a_n]$: $ C_k := [a_0; a_1, ..., a_k] $
-- $C_n = p_n \/ q_n$, where $ mat(p_k, p_(k - 1); q_k, q_(k - 1)) = mat(a_1, 1; 1, 0) mat(a_2, 1; 1, 0) dots.h.c mat(a_k, 1; 1, 0) $ so $p_1 = a_0 a_1 + 1$, $p_0 = a_0$, $q_1 = a_1$, $q_0 = 1$ and $p_k = a_k p_(k - 1) + p_(k - 2)$, $q_k = a_k q_(k - 1) + q_(k - 2)$
+- $C_n = p_n \/ q_n$, where $ mat(p_k, p_(k - 1); q_k, q_(k - 1)) = mat(a_0, 1; 1, 0) mat(a_1, 1; 1, 0) dots.h.c mat(a_k, 1; 1, 0) $ so $p_1 = a_0 a_1 + 1$, $p_0 = a_0$, $q_1 = a_1$, $q_0 = 1$ and $p_k = a_k p_(k - 1) + p_(k - 2)$, $q_k = a_k q_(k - 1) + q_(k - 2)$
 - If $[a_0; a_1, ..., a_n]$ is simple CF, then $q_(k - 1) <= q_k$ and $q_(k - 1) < q_k$ if $k > 1$.
 - $ p_k q_(k - 1) - q_k p_(k - 1) = (-1)^(k + 1) $
 - $gcd(p_k, q_k) = 1$.

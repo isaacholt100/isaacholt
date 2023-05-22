@@ -101,7 +101,7 @@
 - Can estimate variance with $ hat(sigma)_(tilde(f))^2 = 1/n sum_(i = 1)^n (w_i g(x_i) - hat(mu))^2 $
 - Distribution which minimises estimator variance is $ tilde(f)_"opt"(x) = (|g(x)| f(x)) / (integral_Omega |g(x)| f(x) dif x) $
 - *Self-normalised importance sampling*: same as normalised importance sampling, but compute $ hat(mu) = 1/(sum_(i = 1)^n w_i) sum_(i = 1)^n w_i g(x_i) $ Can use for unnormalised density functions $f, tilde(f)$. $hat(mu)$ is not unbiased.
-- Approximate variance of self-normalised estimator: $ "Var"(hat(mu)) approx (sigma_(tilde(f))^2) / n $ where $ sigma_(tilde(f))^2 = sum_(i = 1)^n w_i'^2 (g(x_i) - hat(mu))^2 $ and $ w_i' = w_i / (sum_(j = 1)^n w_j) $
+- Approximate variance of self-normalised estimator: $ "Var"(hat(mu)) approx (hat(sigma)_(tilde(f))^2) / n $ where $ hat(sigma)_(tilde(f))^2 = sum_(i = 1)^n w_i'^2 (g(x_i) - hat(mu))^2 $ and $ w_i' = w_i / (sum_(j = 1)^n w_j) $
 - *Effective sample size $n_e$*: size of sample for which variance of naive Monte Carlo average $(1/n_e sum_(i = 1)^(n_e) g(x_i))$ with sample size $n_e$, $sigma^2 \/ n_e$ ($sigma^2$ is variance of $g(X)$), is equal to variance of importance sampling estimator $hat(mu)$, $"Var"(hat(mu))$: $ n_e = (n overline(w)^2) / overline(w^2) $ where $ overline(w)^2 = (1/n sum_(i = 1)^n w_i)^2, quad overline(w^2) = 1/n sum_(i = 1)^n w_i^2 $
 - Small $n_e$ means importance sampling is poor estimator.
 - Poor estimator if proposal distribution has much less probability in tails than target distribution.
