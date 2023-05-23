@@ -38,7 +38,6 @@
 - *Division algorithm*: let $a in ZZ$, $b in NN$. Then exist unique $q$ and $r$ such that $ a = q b + r, quad 0 <= r < b $
 - *Common divisor* $d$ of $a$ and $b$ is such that $d | a$ and $d | b$.
 - *Greatest common divisor ($gcd$)* of $a$ and $b$ is maximal common divisor.
-- $gcd(0, 0)$ doesn't exist.
 - *Properties of $gcd$*:
 	- $gcd(a, b) = gcd(b, a)$.
 	- If $a > 0$, $gcd(a, 0) = a$.
@@ -59,19 +58,20 @@
 
 = Classical equations and integer solutions
 
-- *Pythagorean triple* $(x, y, z)$: solution to $x^2 + y^2 = z^2$. *Primitive* if $gcd(x, y, z) = 1$.
-- Every Pythagorean triple $(x, y, z)$, with $2 divides x$, given by $ cases(
+- *Pythagorean triple* $(x, y, z) in NN^3$: solution to $x^2 + y^2 = z^2$. *Primitive* if $gcd(x, y, z) = 1$.
+- Every primitive Pythagorean triple $(x, y, z)$, with $2 divides x$, given by $ cases(
 	x = 2 s t,
 	y = s^2 - t^2,
 	z = s^2 + t^2
 ) $ with $s > t >= 1$, $gcd(s, t) = 1$ and $s ident.not t quad (mod 2)$.
 - *Fermat's theorem*: no integer solutions exist to $x^4 + y^4 = z^2$.
+- *Diophantine equation*: equation where integer or rational solutions are sought.
 
 = Modular arithmetic and congruences
 
+- $a$ *congruent to* $b$ *modulo $n$*, $a ident b quad (mod n)$ if $n divides (a - b)$.
 - *Residue (congruence) class*: set of integers congruent $mod n$.
-- $a ident b quad (mod n)$ if $n divides (a - b)$.
-- If $a ident a quad (mod n)$ and $a' ident b' quad (mod n)$ then:
+- If $a ident b quad (mod n)$ and $a' ident b' quad (mod n)$ then:
 	- $a + a' ident b + b' quad (mod n)$ and
 	- $a a' ident b b' quad (mod n)$.
 - If $gcd(c, n) = 1$, then $a c ident b c quad (mod n)$ implies $a ident b quad (mod n)$.
@@ -104,7 +104,7 @@
 - If $a^d ident 1 quad (mod n)$ for some $d$, then $"ord"(a) divides d$. So $"ord"(a) divides phi(n)$.
 - Let $gcd(a, n) = 1$, $a$ is *primitive root $mod n$* if $"ord"_n(a) = phi(n)$.
 - Let $p$ prime, $f(x)$ polynomial with integer coefficients of degree $n$. Then $f$ has at most $n$ roots $mod p$, so $f(x) ident 0 quad (mod p)$ has at most $n$ solutions $mod p$.
-- Let $p$ prime, $d divides p - 1$. Then $x^d - 1 ident 0 quad (mod p)$ has exactly $d$ solutions $mod p$.
+- Let $p$ prime, $d divides p - 1$. Then $x^d - 1 ident 0 quad (mod p)$ has exactly $d$ solutions $mod p$ by Fermat's little theorem.
 - Let $p$ prime, then there are $phi(p - 1)$ primitive roots $mod p$.
 - Let $g$ primitive root $mod p$, $gcd(a, p) = 1$. Then for some $r in NN$, $ a ident g^r quad (mod p) $ ($g, g^2, ..., g^(p - 1)$ are distinct).
 - Primitive roots $mod n$ exist iff $n = 2, 4, p^k$ or $2 p^k$ for odd prime $p$, $k in NN$.
@@ -112,7 +112,7 @@
 = Quadratic residues
 
 - Let $p$ prime, $a in ZZ$, $gcd(a, p) = 1$. $a$ is *quadratic residue (QR) $mod p$* if for some $x in ZZ$, $x^2 ident a quad (mod p)$. If not, $a$ is *quadratic non-residue (NQR) $mod p$*.
-- For $p$ odd prime, there are $(n - 1)/2$ QR's and QNR's $mod p$.
+- For $p$ odd prime, there are $(p - 1)/2$ QR's and QNR's $mod p$.
 - Products of QR's and NQR's satisfy: $ Q R times Q R = Q R \ Q R times N R = N R \ N R times N R = Q R $
 - Let $p$ prime, $a in ZZ$, *Legendre symbol* is $ (a / p) := cases(
 	1 & "if" a "QR",
@@ -138,7 +138,7 @@
 = Sums of two squares
 
 - If $m$ and $n$ are sums of two squares, then so is $m n$ since $(a^2 + b^2) (c^2 + d^2) = (a c + b d)^2 + (a d - b c)^2$.
-- Let $p$ odd prime. Then $p$ sum of two squares iff $p ident 1 quad (mod 4)$.
+- Let $p$ odd prime. Then $p$ sum of two squares iff $p ident 1 quad (mod 4)$ (and if $p ident 1 quad (mod 4)$, this sum of two squares is unique).
 - Let $n > 1$, $n = p_1 p_2 dots.h.c p_k N^2$, $p_i$ distinct primes, $N in NN$. Then $n$ sum of two squares iff $p_i = 2$ or $p_i ident 1 quad (mod 4)$ for all $i$.
 
 = Continued fractions
@@ -156,7 +156,7 @@
 - For simple infinite CF, limit always exists.
 - *Pell's equation*: $x^2 - d y^2 = 1$, $d in NN$ not square.
 - *Negative Pell's equation*: $x^2 - d y^2 = -1$.
-- Infinite CF *periodic* if of form $ [a_0; a_1, ..., a_m, a_(m + 1), ..., a_(m + n), a_(m + 1), ..., a_(m + n), ...] $ $a_0; a_1, ..., a_m$ is initial part, $a_(m + 1), ..., a_(m + n), a_(m + 1), ..., a_(m + n), ...$ is periodic part. In periodic part, $a_i = a_j$ iff $i ident j quad (mod n)$. Write as $ [a_0; a_1, ..., a_m, overline(a_(m + 1)\, ...\, a_(m + n))] $ $n$ is *period*.
+- Infinite CF *periodic* if of form $ [a_0; a_1, ..., a_m, a_(m + 1), ..., a_(m + n), a_(m + 1), ..., a_(m + n), ...] $ $a_0; a_1, ..., a_m$ is initial part, $a_(m + 1), ..., a_(m + n), a_(m + 1), ..., a_(m + n), ...$ is periodic part. In periodic part, $a_i = a_j$ if $i ident j quad (mod n)$. Write as $ [a_0; a_1, ..., a_m, overline(a_(m + 1)\, ...\, a_(m + n))] $ $n$ is *period*.
 - If $d$ not square, CF of $sqrt(d)$ is periodic with initial part only $a_0$.
 - Let $p_k \/ q_k$ be convergents of simple CF expansion of $sqrt(d)$ with period $n$, then for all $k >= 1$, $ p_(k n - 1)^2 - d q_(k n - 1)^2 = (-1)^(k n) $
 - So if $n$ even or $k$ even, $(x, y) = (p_(k n - 1), q_(k n - 1))$ are solution to Pell's equation. Else $(x, y) = (p_(k n - 1), q_(k n - 1))$ are solution to negative Pell's equation. *All* positive solutions to (negative) Pell equation given by above.
