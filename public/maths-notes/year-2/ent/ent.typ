@@ -74,6 +74,7 @@
 - If $a ident b quad (mod n)$ and $a' ident b' quad (mod n)$ then:
 	- $a + a' ident b + b' quad (mod n)$ and
 	- $a a' ident b b' quad (mod n)$.
+- There are $n$ residue classes $mod n$: $overline(0), overline(1), ..., overline(n - 1)$.
 - If $gcd(c, n) = 1$, then $a c ident b c quad (mod n)$ implies $a ident b quad (mod n)$.
 - *Complete set of residues mod $n$*: subset $R subset ZZ$ of size $n$ whose remainders $mod n$ are distinct.
 - Let $R$ be complete set of residues mod $n$ and let $gcd(a, n) = 1$, then $ a R := {a x: x in RR} $ is also complete set of residues mod $n$.
@@ -104,15 +105,15 @@
 - If $a^d ident 1 quad (mod n)$ for some $d$, then $"ord"(a) divides d$. So $"ord"(a) divides phi(n)$.
 - Let $gcd(a, n) = 1$, $a$ is *primitive root $mod n$* if $"ord"_n(a) = phi(n)$.
 - Let $p$ prime, $f(x)$ polynomial with integer coefficients of degree $n$. Then $f$ has at most $n$ roots $mod p$, so $f(x) ident 0 quad (mod p)$ has at most $n$ solutions $mod p$.
-- Let $p$ prime, $d divides p - 1$. Then $x^d - 1 ident 0 quad (mod p)$ has exactly $d$ solutions $mod p$ by Fermat's little theorem.
+- Let $p$ prime, $d divides p - 1$. Then $x^d - 1 ident 0 quad (mod p)$ has exactly $d$ solutions $mod p$.
 - Let $p$ prime, then there are $phi(p - 1)$ primitive roots $mod p$.
-- Let $g$ primitive root $mod p$, $gcd(a, p) = 1$. Then for some $r in NN$, $ a ident g^r quad (mod p) $ ($g, g^2, ..., g^(p - 1)$ are distinct).
+- Let $g$ primitive root $mod p$, $gcd(a, p) = 1$. Then for some $r in NN$, $ a ident g^r quad (mod p) $ ($g, g^2, ..., g^(p - 1)$ are distinct and form complete set of residues $mod p$).
 - Primitive roots $mod n$ exist iff $n = 2, 4, p^k$ or $2 p^k$ for odd prime $p$, $k in NN$.
 
 = Quadratic residues
 
 - Let $p$ prime, $a in ZZ$, $gcd(a, p) = 1$. $a$ is *quadratic residue (QR) $mod p$* if for some $x in ZZ$, $x^2 ident a quad (mod p)$. If not, $a$ is *quadratic non-residue (NQR) $mod p$*.
-- For $p$ odd prime, there are $(p - 1)/2$ QR's and QNR's $mod p$.
+- For $p$ odd prime, there are $(p - 1)/2$ QR's and $(p - 1)/2$ QNR's $mod p$.
 - Products of QR's and NQR's satisfy: $ Q R times Q R = Q R \ Q R times N R = N R \ N R times N R = Q R $
 - Let $p$ prime, $a in ZZ$, *Legendre symbol* is $ (a / p) := cases(
 	1 & "if" a "QR",
