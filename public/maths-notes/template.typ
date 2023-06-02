@@ -1,6 +1,6 @@
 #let template(doc) = [
 	#set text(
-		//font: ("SF Pro Text", "Helvetica", "Arial"),
+        font: "New Computer Modern",
 		size: 12pt,
 	)
 	#set math.mat(delim: "[")

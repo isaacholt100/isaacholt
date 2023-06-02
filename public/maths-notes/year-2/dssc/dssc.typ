@@ -3,6 +3,7 @@
 
 = Introduction
 
+- $29$
 - By Central Limit Theorem, if sample $(x_1, ..., x_n)$ with each $X_i tilde.op D(mu, sigma^2)$ ($D$ is some distribution) then as $n -> oo$, $ overline(X) tilde.op N(mu, sigma^2 / n) $ So distribution of sample mean always tends to normal distribution, with standard deviation $sigma \/ sqrt(n)$.
 - *Unbiased estimate of standard deviation of sample mean*: $ s = sqrt(1 / (n - 1) sum_(i = 1)^n (x_i - overline(x))^2) $
 - *Standard error of sample mean*: estimate of standard deviation of sample mean: $s \/ sqrt(n)$.
