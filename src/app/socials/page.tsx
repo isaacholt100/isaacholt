@@ -1,10 +1,7 @@
 import Icon from "@mdi/react";
-import { mdiChessPawn, mdiDiscord, mdiEmail, mdiGithub, mdiGitlab, mdiInstagram, mdiLinkedin, mdiReddit, mdiStackExchange, mdiStackOverflow } from "@mdi/js";
-import PageTitle from "../components/PageTitle";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Button from "react-bootstrap/Button";
-import styles from "../styles/contact.module.scss";
+import { mdiChessPawn, mdiDisc as mdiDiscord, mdiEmail, mdiGithub, mdiGitlab, mdiInstagram, mdiLinkedin, mdiReddit, mdiStackExchange, mdiStackOverflow } from "@mdi/js";
+//import styles from "@/styles/contact.module.scss";
+import PageTitle from "../../components/PageTitle";
 
 interface Social {
 	name: string;
@@ -74,15 +71,13 @@ export default function Socials() {
 	return (
 		<>
 			<PageTitle title="Socials" />
-			<Row className="g-2 g-md-3">
+			<div className="row g-2 g-md-3">
 				{SOCIALS.map(social => (
-					<Col xs={12} sm={6} xl={4} key={social.name}>
-						<Button
+					<div className="col col-xs-12 col-sm-6 col-xl-4" key={social.name}>
+						<a
 							href={social.url}
-							as="a"
-							size="lg"
-							variant="outline-light"
-							className={"w-100 position-relative d-flex justify-content-center align-items-center " + styles["social-button"]}
+							className={"btn btn-outline-light btn-lg w-100 position-relative d-flex justify-content-center align-items-center"}
+                            style={{height: 72,fontSize: 20}}
 							target="_blank"
 						>
 							<Icon
@@ -94,10 +89,10 @@ export default function Socials() {
 							<span>
 								{social.name}
 							</span>
-						</Button>
-					</Col>
+						</a>
+					</div>
 				))}
-			</Row>
+			</div>
 		</>
 	);
 }

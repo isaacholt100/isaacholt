@@ -1,6 +1,6 @@
 import Link from "next/link";
-import PageTitle from "../components/PageTitle";
-import { LINKEDIN_URL } from "./socials";
+import PageTitle from "../../components/PageTitle";
+import { LINKEDIN_URL } from "../socials/page";
 
 export default function About() {
 	return (

@@ -1,9 +1,5 @@
 import Link from "next/link";
-import Row from "react-bootstrap/Row";
-import Card from "react-bootstrap/Card";
-import Col from "react-bootstrap/Col";
-import PageTitle from "../components/PageTitle";
-import Button from "react-bootstrap/Button";
+import PageTitle from "../../components/PageTitle";
 import Icon from "@mdi/react";
 import { mdiCodeBracesBox, mdiOpenInNew } from "@mdi/js";
 
@@ -57,52 +53,45 @@ export default function Projects() {
 	return (
 		<>
 			<PageTitle title="Projects" />
-			<Row className="g-2 g-md-3">
+			<div className="row g-2 g-md-3">
 				{PROJECTS.map(project => (
-					<Col xs={12} sm={6} lg={4} xl={3} key={project.name}>
-						<Card border="light" bg="transparent" className="h-100">
+					<div className="col col-xs-12 col-sm-6 col-lg-4 col-xl-3" key={project.name}>
+						<div className="card border-light h-100 bg-transparent">
 							{/*<img src="..." className="card-img-top" alt="" />*/}
-							<Card.Body className="d-flex flex-column">
-								<Card.Title as="h3" className="text-primary">
+							<div className="card-body d-flex flex-column">
+								<h3 className="card-title text-primary">
 									{project.name}
-								</Card.Title>
-								<Card.Text>
+								</h3>
+								<div className="card-text">
 									{project.description}
-								</Card.Text>
-								<Row className="g-2 mt-auto">
+								</div>
+								<div className="row g-2 mt-auto">
 									{project.url && (
-										<Col>
-											<Link href={project.url} passHref legacyBehavior>
-												<Button
-													as="a"
-													href={project.url} variant="light"
-													className="w-100"
-													target="_blank"
-												>
-													<span className="d-flex align-items-center justify-content-center">
-														<Icon path={mdiOpenInNew} size="24px" className="me-1" />
-														Visit
-													</span>
-												</Button>
+										<div className="col">
+											<Link href={project.url} role="button" target="_blank" className="btn btn-light w-100">
+                                                <span className="d-flex align-items-center justify-content-center">
+                                                    <Icon path={mdiOpenInNew} size="24px" className="me-1" />
+                                                    Visit
+                                                </span>
 											</Link>
-										</Col>
+										</div>
 									)}
 									{project.source && (
-										<Col>
-											<Button variant="outline-light" href={project.source} className="w-100">
-													<span className="d-flex align-items-center justify-content-center">
-														<Icon path={mdiCodeBracesBox} size="24px" className="me-1" />
-														Source
-													</span>
-											</Button>
-										</Col>
+										<div className="col">
+											<a role="button" href={project.source} className="btn btn-outline-light w-100" target="_blank">
+                                                <span className="d-flex align-items-center justify-content-center">
+                                                    <Icon path={mdiCodeBracesBox} size="24px" className="me-1" />
+                                                    Source
+                                                </span>
+											</a>
+										</div>
 									)}
-								</Row>
-							</Card.Body>
-						</Card>
-					</Col>
+								</div>
+							</div>
+						</div>
+					</div>
 				))}
-			</Row>
+			</div>
 		</>
 	);
 }
