@@ -1,9 +1,6 @@
-import Head from "next/head";
 import MenuBar from "../components/MenuBar";
 import "../styles/globals.scss";
 import { Metadata } from "next";
-
-const PRIMARY_COLOR = "#26ed1c";
 
 export const metadata: Metadata = {
     title: {
