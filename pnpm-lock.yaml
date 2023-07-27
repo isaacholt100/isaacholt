@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@mdi/js':
-    specifier: 7.2.96
-    version: 7.2.96
+    specifier: 6.7.96
+    version: 6.7.96
   '@mdi/react':
     specifier: 1.6.1
     version: 1.6.1
@@ -43,9 +43,6 @@ devDependencies:
   '@types/react-dom':
     specifier: 18.0.5
     version: 18.0.5
-  '@types/react-pdf':
-    specifier: ^6.2.0
-    version: 6.2.0
   eslint:
     specifier: 8.16.0
     version: 8.16.0
@@ -107,8 +104,8 @@ packages:
     resolution: {integrity: sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==}
     dev: true
 
-  /@mdi/js@7.2.96:
-    resolution: {integrity: sha512-paR9M9ZT7rKbh2boksNUynuSZMHhqRYnEZOm/KrZTjQ4/FzyhjLHuvw/8XYzP+E7fS4+/Ms/82EN1pl/OFsiIA==}
+  /@mdi/js@6.7.96:
+    resolution: {integrity: sha512-vZvhFrNN9LQx+Awu3nU6ESfXXDpRA/CA4mwikzU5g8uf9NpAocK43ecQvVNntwiXlLKpyplas8d4lsfpqjtXLA==}
     dev: false
 
   /@mdi/react@1.6.1:
@@ -307,15 +304,6 @@ packages:
     resolution: {integrity: sha512-OWPWTUrY/NIrjsAPkAk1wW9LZeIjSvkXRhclsFO8CZcZGCOg2G0YZy4ft+rOyYxy8B7ui5iZzi9OkDebZ7/QSA==}
     dependencies:
       '@types/react': 18.0.9
-    dev: true
-
-  /@types/react-pdf@6.2.0:
-    resolution: {integrity: sha512-OSCYmrfaJvpXkM5V4seUMAhUDOAOqbGQf9kwv14INyTf7AjDs2ukfkkQrLWRQ8OjWrDklbXYWh5l7pT7l0N76g==}
-    dependencies:
-      '@types/react': 18.0.9
-      pdfjs-dist: 2.16.105
-    transitivePeerDependencies:
-      - worker-loader
     dev: true
 
   /@types/react-transition-group@4.4.5:
@@ -814,10 +802,6 @@ packages:
       '@babel/runtime': 7.22.6
       csstype: 3.1.1
     dev: false
-
-  /dommatrix@1.0.3:
-    resolution: {integrity: sha512-l32Xp/TLgWb8ReqbVJAFIvXmY7go4nTxxlWiAFyhoQw9RKEOHBZNnyGvJWqDVSPmq3Y9HlM4npqF/T6VMOXhww==}
-    dev: true
 
   /emoji-regex@9.2.2:
     resolution: {integrity: sha512-L18DaJsXSUk2+42pv8mLs5jJT2hqFkFE4j21wOmgbUqsZ2hL72NsUU785g9RXgo3s0ZNgVl42TiHp3ZtOv/Vyg==}
@@ -1985,18 +1969,6 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
-  /pdfjs-dist@2.16.105:
-    resolution: {integrity: sha512-J4dn41spsAwUxCpEoVf6GVoz908IAA3mYiLmNxg8J9kfRXc2jxpbUepcP0ocp0alVNLFthTAM8DZ1RaHh8sU0A==}
-    peerDependencies:
-      worker-loader: ^3.0.8
-    peerDependenciesMeta:
-      worker-loader:
-        optional: true
-    dependencies:
-      dommatrix: 1.0.3
-      web-streams-polyfill: 3.2.1
-    dev: true
-
   /picocolors@1.0.0:
     resolution: {integrity: sha512-1fygroTLlHu66zi26VoTDv8yRgm0Fccecssto+MhsZ0D/DGW2sm8E8AjW7NU5VVTRt5GxbeZ5qBuJr+HyLYkjQ==}
 
@@ -2626,11 +2598,6 @@ packages:
       glob-to-regexp: 0.4.1
       graceful-fs: 4.2.11
     dev: false
-
-  /web-streams-polyfill@3.2.1:
-    resolution: {integrity: sha512-e0MO3wdXWKrLbL0DgGnUV7WHVuw9OUvL4hjgnPkIeEvESk74gAITi5G606JtZPp39cd8HA9VQzCIvA49LpPN5Q==}
-    engines: {node: '>= 8'}
-    dev: true
 
   /which-boxed-primitive@1.0.2:
     resolution: {integrity: sha512-bwZdv0AKLpplFY2KZRX6TvyuN7ojjr7lwkg6ml0roIy9YeuSr7JS372qlNW18UQYzgYK9ziGcerWqZOmEn9VNg==}
