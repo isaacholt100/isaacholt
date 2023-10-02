@@ -84,8 +84,7 @@ export default function MenuBar() {
                         <Offcanvas.Body className="p-2 p-sm-0">
                             <Nav className="ms-auto my-sm-2 my-md-3 mt-0 mb-2">
                                 {LINKS.map((link, i) => (
-                                    <Link href={link.path} key={link.path} role="button"
-                                        className={"btn ms-md-3 ms-sm-2 ms-0 mt-sm-0 " + (i !== 0 ? "mt-2 " : "") + (pathname === (link.path) ? "btn-primary" : "btn-outline-light")}>
+                                    <Link href={link.path} key={link.path} role="button" className={"btn ms-md-3 ms-sm-2 ms-0 mt-sm-0 " + (i !== 0 ? "mt-2 " : "") + (pathname === (link.path) ? "btn-primary" : "btn-outline-light")}>
                                         {link.name}
                                     </Link>
                                 ))}
