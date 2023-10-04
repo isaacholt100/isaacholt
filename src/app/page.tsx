@@ -1,5 +1,7 @@
 import Link from "next/link";
 import styles from "../styles/Home.module.scss";
+import Icon from "@mdi/react";
+import { mdiFile, mdiFilePdfBox } from "@mdi/js";
 
 interface MainLink {
     name: string;
@@ -31,6 +33,7 @@ export default function Home() {
                     </div>
                 ))}
             </div>
+            <a className="btn btn-light mt-3 btn-lg w-100"><Icon path={mdiFile} size={"36px"} /> My CV</a>
         </div>
     );
 }
