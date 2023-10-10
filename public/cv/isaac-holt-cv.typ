@@ -27,8 +27,9 @@
 
 = Isaac Holt
 
-#link("mailto:isaac_holt@icloud.com")[Email] |
-#link("https://www.linkedin.com/in/isaacholt100/")[LinkedIn] |
+#link("tel:+447393098225")[+44 7393 098225] |
+#link("mailto:isaac_holt@icloud.com")[isaac_holt\@icloud.com] |
+#link("https://www.linkedin.com/in/isaacholt100/")[linkedin.com/in/isaacholt100] |
 #link("https://github.com/isaacholt100")[GitHub] |
 #link("https://isaacholt.vercel.app")[Personal Website]
 
@@ -38,7 +39,7 @@ Highly capable mathematician who excels at tackling difficult problems. Focussed
 
 == Education
 
-*Durham University* #date("09/2021", "Present") \
+*Durham University* #date("09/2021", "06/2024") \
 MMath Mathematics \
 - Third year modules: Analysis, Cryptography and Codes, Differential Geometry, Machine Learning and Neural Networks, Quantum Computing, Topology.
 - Predicted 1st (average mark 90%).
@@ -50,7 +51,7 @@ MMath Mathematics \
 == Research Experience
 
 *Research Project in Tropical Geometry* #date("06/2023", "07/2023") \
-Durham University \
+Department of Mathematical Sciences, Durham University \
 - Area of research was how the tropical modification of certain polynomial systems can be used to determine the generic root count.
 - The results of our work are expected to be published as a paper at the end of this year.
 - Attended a #link("https://www.oscar-system.org/meetings/2023-09/")[working group] in Germany relating to this research, to write code for the OSCAR computer algebra system.
@@ -77,7 +78,7 @@ Blutick \
 == Projects
 
 *bnum* #h(1fr) #date("05/2021", "Present") \
-#link("https://crates.io/crates/bnum")[Rust library] with over 150,000 downloads that provides fixed size signed and unsigned integer types, designed to extend the functionality of Rust's primitive integer types to arbitrary bit sizes. I am developing a floating point type that similarly will extend the functionality of Rust's floating point types to arbitrary bit sizes.
+#link("https://crates.io/crates/bnum")[Rust library] with over 150,000 downloads that provides fixed size signed and unsigned integer types, designed to extend the functionality of Rust's primitive integer types to arbitrary bit sizes. I am developing a floating-point type that similarly will extend the functionality of Rust's floating-point types.
 
 == Extracurriculars
 
