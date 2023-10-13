@@ -1,6 +1,8 @@
 #import "../../template.typ": template
 #show: template
 
+#let powset(X) = $cal(P)(X)$
+
 = Metric spaces
 
 == Metrics
@@ -54,5 +56,23 @@ If $f$ satisfies these, it is *continuous at $a$*.
 - *Topology* on set $X$ is $tau subset.eq cal(P)(X)$ with:
     - $nothing in tau$, $X in tau$.
     - If $forall i in I, U_i in tau$, then $ union.big_(i in I) U_i in tau $
-    - $U_1, U_2 in tau ==> U_1 sect U_2 in tau$.
+    - $U_1, U_2 in tau ==> U_1 sect U_2 in tau$ (this is equivalent to $U_1, ..., U_n in tau ==> sect_(i in [n]) U_i in tau$).
 - $(X, tau)$ is *topological space*. Elements of $tau$ are *open* subsets of $X$.
+- $A subset.eq X$ *closed* if $X - A$ is open.
+- Let $X$ be a set. Then $tau = powset(X)$ is the *discrete topology* on $X$.
+- $tau = {nothing, X}$ is the *indiscrete topology* on $X$.
+- *Examples*:
+    - For metric space $(M, d)$, find the open sets. Let $tau_d subset.eq cal(P)(M)$ exactly contain these open sets. Then $(M, tau_d)$ is a topological space. The metric $d$ *induces* the topology $tau_d$.
+    - Let $X = NN_0$ and $tau = {nothing} union {U subset.eq X: X - U "is finite"}$.
+- *Proposition*: for topological space $X$:
+    - $X$ and $nothing$ are closed
+    - Arbitrary intersections of closed sets are closed
+    - Finite unions of closed sets are closed
+- *Proposition*: for topological space $(X, tau)$ and $A subset.eq X$, the *induced (subspace) topology on $A$* $ tau_A = {A sect U: U in tau} $ is a topology on $A$.
+- *Example*: let $X = RR$ with standard topology induced by metrix $d(x, y) = |x - y|$. Let $A = [1, 5]$. Then $lr([1, 3)) = A sect (0, 3)$ and $[1, 5] = A sect (0, 6)$ are open in $A$.
+- *Example*: consider $RR$ with standard topology $tau$. Then
+    - $tau_ZZ$ is the discrete topology on $ZZ$.
+    - $tau_QQ$ is not the discrete topology on $QQ$.
+- *Proposition*: the metrics $d_p$ for $p in lr([1, oo))$ and $d_oo$ all induce the same topology on $RR^n$.
+- *Definition*: $(X, tau)$ is *Hausdorff* if $ forall x != y in X, exists U, V in tau: U sect V = nothing and x in U, y in V $
+- *Lemma*: any metric space $(M, d)$ is Hausdorff.

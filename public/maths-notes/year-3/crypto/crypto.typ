@@ -13,3 +13,14 @@
     - One-time pad is information-theoretically secure against ciphertext-only attack: $PP(M = m | C = c) = PP(M = m)$.
     - Keys must never be reused, so must be as long as message.
     - Keys must be truly random.
+- *Hill cipher*:
+    - Plaintext divided into blocks $P_1, ..., P_r$ of length $n$.
+    - Each block represented as vector $P_i in (ZZ \/ 26 ZZ)^n$
+    - Key is invertible $n times n$ matrix $M$ with elements in $ZZ \/ 26 ZZ$.
+    - Ciphertext for block $P_i$ is $ C_i = M P_i $ It can be decrypted with $P_i = M^(-1) C$.
+    - Let $P = (P_1, ..., P_r)$, $C = (C_1, ..., C_r)$, then $C = M P$.
+- *Confusion*: each character of ciphertext depends on many characters of key.
+- *Diffusion*: each character of ciphertext depends on many characters of plaintext.
+- For Hill cipher, $i$th character of ciphertext depends on $i$th row of key - this is medium confusion.
+- Hill cipher is susceptible to known plaintext attack:
+    - If $P = (P_1, ..., P_n)$ are $n$ blocks of plaintext with length $n$ such that $P$ is invertible and we know $P$ and the corresponding $C$, then we can recover $M$, since $C = M P ==> M = C P^(-1)$.

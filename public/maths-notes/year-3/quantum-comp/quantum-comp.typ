@@ -6,7 +6,8 @@
 #let ket(arg) = $lr(| arg angle.r)$
 #let bra(arg) = $lr(angle.l arg |)$
 #let braket(..args) = $lr(angle.l #args.pos().join("|") angle.r)$
-#let conj(arg) = $#arg^*$
+#let conj(arg) = $arg^*$
+#let expected(arg) = $angle.l arg angle.r$
 
 = Quantum mechanics essentials
 
@@ -37,4 +38,10 @@
 - $hat(A)$ is *self-adjoint (Hermitian)* if $hat(H)^dagger = hat(H)$. Self-adjoint operators correspond to *observables* (measurable quantities) since they have real eigenvalues. Similarly, a *hermitian matrix* $H$ satisfies $H^dagger = (H^T)^* = H$.
 - $hat(U)$ is *unitary* if $hat(U)^dagger hat(U) = hat(I)$. Unitary operators describe time-evolution in quantum mechanics. Similarly, a unitary matrix $U$ satisfies $U^dagger U = U U^dagger = I$.
 - If we have $braket(n, m) = delta_(n m)$, the basis is orthonormal.
-- *Qubit system*: Hilbert space $cal(H) = "span"(ket(0), ket(1))$. Any $ket(psi) in cal(H)$ can be written as $a_0 ket(0) + a_1 ket(1)$. If $ket(phi) = b_0 ket(0) + b_1 ket(1)$, $ braket(phi, psi) & = (b_0^* bra(0) + b_1^* ket(1))(a_0 ket(0) + a_1 ket(1)) \ & = conj(b_0) a_0 braket(0, 0) + conj(b_1) a_1 braket(1, 1) + conj(b_0) a_1 braket(0, 1) + conj(b_1) a_0 braket(1, 0) = conj(b_0) a_0 + conj(b_1) a_0 \ & = mat(conj(b_0), conj(b_1)) mat(1, 0; 0, 1) mat(a_0; a_1) $ If $ket(0), ket(1)$ is an energy eigenbasis, then $hat(H) ket(0) = E_0 ket(0)$ and $hat(H) ket(1) = E_1 ket(1)$ where $E_0, E_1$ are eigenvalues. $PP("measuring " E_0) = a_0^2 = |braket(0, psi)|^2, PP("measuring " E_1) = a_1^2 = |braket(1, psi)|^2$. If $a_0^2 + a_1^2 = 1$, then $braket(psi, psi) = 1$ so $psi$ is normalised. The expected energy measurement is $E_0 |a_0|^2 + E_1 |a_1|^2$.
+- *Qubit system*: Hilbert space $cal(H) = "span"(ket(0), ket(1))$. Any $ket(psi) in cal(H)$ can be written as $a_0 ket(0) + a_1 ket(1)$. If $ket(phi) = b_0 ket(0) + b_1 ket(1)$, $ braket(phi, psi) & = (b_0^* bra(0) + b_1^* ket(1))(a_0 ket(0) + a_1 ket(1)) \ & = conj(b_0) a_0 braket(0, 0) + conj(b_1) a_1 braket(1, 1) + conj(b_0) a_1 braket(0, 1) + conj(b_1) a_0 braket(1, 0) = conj(b_0) a_0 + conj(b_1) a_0 \ & = mat(conj(b_0), conj(b_1)) mat(1, 0; 0, 1) mat(a_0; a_1) $ If $ket(0), ket(1)$ is an energy eigenbasis, then $hat(H) ket(0) = E_0 ket(0)$ and $hat(H) ket(1) = E_1 ket(1)$ where $E_0, E_1$ are eigenvalues. $PP("measuring " E_0) = a_0^2 = |braket(0, psi)|^2, PP("measuring " E_1) = a_1^2 = |braket(1, psi)|^2$. If $a_0^2 + a_1^2 = 1$, then $braket(psi, psi) = 1$ so $psi$ is normalised. The expected energy measurement is $expected(E) = E_0 |a_0|^2 + E_1 |a_1|^2$.
+- *Matrix form* of operator $hat(A)$: $ A_(n m) = braket(n, hat(A), m) $ For $hat(A)^dagger$, $braket(n, hat(A)^dagger, m) = conj(braket(m, hat(A), n))$.
+- *Change of basis*: $B = S^(-1) A S$.
+- *Schrodinger equation in braket notation*: $ i hbar diff / (diff t) ket(psi(t)) = hat(H) ket(psi(t)) $ If $hat(H)$ independent of $t$, then $ket(psi(t)) = e^(-i / hbar hat(H) t)$.
+- *Exponential of operator*: $ exp(hat(A)) = sum_(n = 0)^oo hat(A)^n / n! $
+- If $hat(A) = "diag"(a_1, ..., a_n)$ is diagonal, then $exp(hat(A)) = "diag"(e^(a_1), ..., e^(a_n))$.
+- If $J^2 = -I$ ($I$ is identity matrix) then $ exp(J t) = cos(t) I + sin(t) J $

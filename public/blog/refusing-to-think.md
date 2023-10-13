@@ -1,0 +1,9 @@
+# Refusing to think
+
+Over the summer of this year, when I was on holiday in Europe, I read the book _1984_ by George Orwell. Ashamedly, this was not the first time I had picked up this novel: a few years ago, I had begun to read it, but, being impatient and lacking the ability to focus at that time, I did not progress beyond the first page. Since then, however, I had heard it referred to a number of times, and eventualy I decided it would be worthwhile for me to have a second attempt. After all, I was well aware that it is a classic.
+
+_1984_ is both brilliant and terrifying. Brilliant, because Orwell writes masterfully and grips you from the very beginning, convincingly laying out a hypothetical future utterly controlled by _The Party_. Terrifying, because it is not so difficult to imagine how, under certain conditions, modern society might deterioate into this totalitarian regime, and, moreover, is already in certain parts of the world. For any reader who even absorbs a fraction of the book's contents and underlying narrative, Orwell provides a great to think about seriously and in depth. Indeed, I would almost go as far as to state that the impression it left on me was one of a profound disturbance. And while there are multiple aspects of the socialist pseudo-utopia that Orwell describes, the one that resonated with me the most, and which has been troubling me ever since, is the concept of _Doublethink_.
+
+At this stage, I would absolutely urge anyone who has not yet read _1984_ to do so, because I firmly believe it is a text which everyone should be exposed to, such is the impact that it had on me (and, I'm sure, countless others).
+
+I will now briefly summarise the concept of Doublethink. ...
