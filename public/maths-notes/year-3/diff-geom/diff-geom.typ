@@ -50,3 +50,16 @@ $tilde(vd(alpha)) = vd(alpha) compose h: J -> RR^n$ is a *reparametrisation* of 
 - *Definition*: *(signed) curvature* $kappa(s)$ of unit speed plane curve $alpha: I -> RR^2$ at $s in I$ is defined by $ vd(t)'(s) = kappa(s) vd(n)(s) $ Note that we can compute $kappa(s)$ by $ vd(t)'(s) dot.op vd(n)(s) = kappa(s) vd(n)(s) dot.op vd(n)(s) = kappa(s) norm(vd(n)(s))^2 = kappa(s) $
 - *Rule for sign of curvature*: if curve turns clockwise, curvature is negative, if curve turns anti-clockwise, its curvature is positive.
 - *Proposition*: let $alpha: I -> RR^2$ be any smooth regular plane curve, $alpha(u) = (x(u), y(u))$. Then its curvative is $ kappa(u) = (x'(u) y''(u) - x''(u) y'(u)) / ((x'(u))^2 + (y'(u))^2)^(3\/2) $
+- *Definition*: let $alpha: I -> RR^2$ regular and smooth, $kappa: I -> RR$ be its curvature, $n: I -> RR^2$ its unit normal vector. Assume $kappa(u) != 0$. Then *radius of curvature* of $alpha$ at $alpha(u)$ is $ r(u) = 1 / (|kappa(u)|) $ The *centre of curvature* of $alpha$ at $alpha(u)$ is $ e(u) = alpha(u) + 1 / (|kappa(u)|) n(u) $ Corresponding *curvature circle* of $alpha$ at $alpha(u)$ is $ {P in RR^2: norm(P - e(u)) = r(u)} $
+
+== Four vertex theorem and fundamental theorem of plane curves
+
+- *Definition*: let $alpha: I -> RR^2$ regular and smooth, $kappa: I -> RR$ its curvature. Then
+    - $alpha(u)$ is *inflection point* of $alpha$ if $kappa(u) = 0$.
+    - $alpha(u)$ is *vertex* of $alpha$ if $kappa'(u) = 0$.
+- *Example*: for parabola $alpha(u) = (u, u^2)$, $ kappa(u) = 2 / (1 + 4u^2)^(3\/2), quad kappa'(u) = - (24u) / (1 + 4u^2)^(5\/2) $ So there are no inflection points, and there is one vertex at the origin ($u = 0$).
+- *Jordan Curve Theorem*: a simple closed continuous curve $alpha: [a, b] -> RR^2$ divides $RR^2$ into two regions: one bounded and one unbounded.
+- *Four vertex theorem*: let $alpha: [a, b] -> RR^2$ smooth, regular, closed, simple plane curve. Then $alpha$ has at least $4$ vertices.
+- *Theorem (Isoperimetric inequality)*: let $alpha: [a, b] -> RR^2$ smooth, regular, simple plane curve of length $L = l(alpha)$ and $A$ be area of bounded region enclosed by $a$. Then $ L^2 >= 4pi A $ with equality iff $alpha$ describes a circle.
+- *Theorem (Fundamental theorem of local theory of plane curves)*: let $I subset RR$ open interval, smooth $kappa: I -> RR$, $s_o in I$, $a in RR^2$, $v_0 in RR^2$, $norm(v_0) = 1$. Then exists unique smooth unit speed curve $alpha: I -> RR^2$ with curvature $kappa_alpha = kappa$ satisfying $alpha(s_0) = a, alpha'(s_0) = t_alpha (s_0) = v_0$
+- *Remark*: all orientation preserving isometries of $RR^2$ are of the form $ f(x) = f_(A, b) (x) = x dot.op A + b, quad A in "SO"(2), b in RR^2 $

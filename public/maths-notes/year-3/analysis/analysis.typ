@@ -40,6 +40,18 @@
     - $RR - E$ is open.
 - Arbitrary intersections of closed sets are closed. Finite unions of closed sets are closed.
 
+== The extended real numbers
+
+- *Definition*: *extended reals* are $RR union {-oo, oo}$ with the order relation $-oo < oo$ and $forall x in RR, -oo < x < oo$. $oo$ is an upper bound and $-oo$ is a lower bound for every $x in RR$, so $sup(RR) = oo$, $inf(RR) = -oo$.
+    - Addition: $forall a in RR, a + oo = oo and a + (-oo) = -oo$. $oo + oo = oo - (-oo) = oo$. $oo - oo$ is undefined.
+    - Multiplication: $forall a in RR_(>0), a dot.op oo = oo$, $forall a in RR_(<0), a dot.op = -oo$. $oo dot.op oo = oo$ and $0 dot.op oo = oo$.
+    - $limsup$ and $liminf$ are defined as $ limsup x_n := inf_(n in NN) {sup_(k >= n) x_k}, quad liminf x_n := sup_(n in NN) {inf_(k >= n) x_k} $
+- *Definition*: extended real number $l$ is *limit* of $(x_n)$ if either
+    - $forall epsilon > 0, exists N in NN: forall n >= N, |x_n - l| < epsilon$. Then $(x_n)$ *converges to $l$*. or
+    - $forall Delta > 0, exists N in NN: forall n >= N, x_n > Delta$ (limit is $oo$) or
+    - $forall Delta > 0, exists N in NN: forall n >= N, x_n < -Delta$ (limit is $-oo$).
+    $(x_n)$ *converges in the extended reals* if it has a limit in the extended reals.
+
 = Further analysis of subsets of $RR$
 
 TODO: up to here, check that all notes are made from these topics
@@ -88,3 +100,12 @@ TODO: up to here, check that all notes are made from these topics
 - Set $E$ is *$G_delta$* if $E = sect_(n in NN) U_n$ with $U_n$ open.
 - Set $E$ is *$F_sigma$* if $E = union_(n in NN) F_n$ with $F_n$ closed.
 - *Lemma*: set of points where $f: RR -> RR$ is continuous is $G_delta$.
+
+= Construction of Lebesgue measure
+
+== Lebesgue outer measure
+
+- *Definition*: let $I$ non-empty interval with endpoints $a = inf(I) in {-oo} union RR$ and $b = sup(I) in RR union {oo}$. The *length* of $I$ is $ ell(I) := b - a $ and set $ell(nothing) = 0$.
+- *Example*: if $I = lr((-oo, b]) = lr((-oo, a]) union [a, b]$ then $ell(I) = oo = ell(lr(-oo, a])) + ell([a, b])$
+- *Definition*: let $A subset.eq RR$. *Lebesgue outer measure* of $A$ is infimum of all sums of lengths of intervals covering $A$: $ mu^*(A) := inf{sum_(k = 1)^oo ell(I_k): A subset.eq sum_(k = 1)^oo I_k, I_k "intervals"} $ It satisfies *monotonicity*: $A subset.eq B ==> mu^*(A) <= mu^*(B)$.
+- *Proposition*: outer measure is countably subadditive: if ${E_k}_(k = 1)^oo$ is any countable collection of sets then $ mu^*(union.big_(k = 1)^oo E_k) <= sum_(k = 1)^oo mu^*(E_k) $

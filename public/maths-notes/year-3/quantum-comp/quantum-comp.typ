@@ -34,7 +34,7 @@
 - Note that the state labelled zero, $ket(0)$, is not equal to the zero state (the $0$ vector).
 - If $hat(A)$ is linear opearator then $hat(A) (a ket(psi) + b ket(phi)) = a \(hat(A) ket(psi)\) + b \(hat(A) ket(phi)\)$
 - Products and combinations of linear operators are also linear operators.
-- *Adjoint (Hermitian conjugate)* of $hat(A)$, $hat(A)^dagger$ is defined by $ bra(psi) (hat(A)^dagger ket(phi)) = conj(bra(phi) (hat(A) ket(psi))) $
+- *Adjoint (Hermitian conjugate)* of $hat(A)$, $hat(A)^dagger$ is defined by $ bra(psi) (hat(A)^dagger ket(phi)) = conj((bra(phi) (hat(A) ket(psi)))) $
 - $hat(A)$ is *self-adjoint (Hermitian)* if $hat(H)^dagger = hat(H)$. Self-adjoint operators correspond to *observables* (measurable quantities) since they have real eigenvalues. Similarly, a *hermitian matrix* $H$ satisfies $H^dagger = (H^T)^* = H$.
 - $hat(U)$ is *unitary* if $hat(U)^dagger hat(U) = hat(I)$. Unitary operators describe time-evolution in quantum mechanics. Similarly, a unitary matrix $U$ satisfies $U^dagger U = U U^dagger = I$.
 - If we have $braket(n, m) = delta_(n m)$, the basis is orthonormal.
@@ -45,3 +45,11 @@
 - *Exponential of operator*: $ exp(hat(A)) = sum_(n = 0)^oo hat(A)^n / n! $
 - If $hat(A) = "diag"(a_1, ..., a_n)$ is diagonal, then $exp(hat(A)) = "diag"(e^(a_1), ..., e^(a_n))$.
 - If $J^2 = -I$ ($I$ is identity matrix) then $ exp(J t) = cos(t) I + sin(t) J $
+- $hat(A)$ *diagonalisable* if $hat(A) = hat(S) hat(D) hat(S)^(-1)$ where $hat(D)$ is diagonal and $hat(S)$ has columns corresponding to eigenvectors of $hat(A)$.
+- For $hat(A)$ diagonalisable, $ exp(hat(A)) = sum_(n = 0)^oo (hat(S) hat(D) hat(S)^(-1))^n / (n!) = hat(S) (sum_(n = 0)^oo hat(D)^n / (n!)) hat(S)^(-1) = hat(S) exp(hat(D)) hat(S)^(-1) $
+- For an orthonormal basis ${ket(n)}$, the identity operator is given by $ I = sum_n ket(n) bra(n) $
+- *Spectral representation of operator*: $ hat(A) = sum_n lambda_n ket(n) bra(n) $ for orthonomal eigenvectors ${ket(n)}$. We can view a function $f$ acting on real numbers as acting on $hat(A)$ by $ f(hat(A)) = sum_n f(lambda_n) ket(n) bra(n) $
+
+== Pure states and mixed states
+
+- For $hat(rho)_psi = ket(psi) bra(psi)$, $ tr(hat(rho)) & = sum_n braket(n, hat(rho), n) = sum_n braket(, psi) braket(psi, n) \ & = sum_n braket(psi, n) braket(n, psi) = bra(psi) (sum_n ket(n) bra(n)) ket(psi) = braket(psi, psi) = 1 $

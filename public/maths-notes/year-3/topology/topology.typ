@@ -76,3 +76,14 @@ If $f$ satisfies these, it is *continuous at $a$*.
 - *Proposition*: the metrics $d_p$ for $p in lr([1, oo))$ and $d_oo$ all induce the same topology on $RR^n$.
 - *Definition*: $(X, tau)$ is *Hausdorff* if $ forall x != y in X, exists U, V in tau: U sect V = nothing and x in U, y in V $
 - *Lemma*: any metric space $(M, d)$ is Hausdorff.
+- *Example*: let $|X| >= 2$ with the indiscrete topology. Then $X$ is not Hausdorff, since $tau = {X, nothing}$ and if $x != y in X$, the only open set containing $x$ is $X$ (same for $y$). But $X sect X = X != nothing$.
+- *Furstenberg's topology on $ZZ$*: define $U subset.eq ZZ$ to be open if $ forall a in U, exists 0 != d in ZZ: a + d ZZ =: {a + d n: n in ZZ} subset.eq U $
+- Furstenberg's topology is Hausdorff.
+
+== Continuity
+
+- *Definition*: let $X, Y$ topological spaces.
+    - $f: X -> Y$ is *continuous* if $ forall V "open in" Y, f^(-1) (V) "open in" X $
+    - $f$ is *continuous at $a in X$* if $ forall V "open in" Y, f(a) in V, exists U "open in" X: a in U subset.eq f^(-1) (V) $
+- *Lemma*: $f: X -> Y$ continuous iff $f$ continuous at every $a in X$. (Key idea for proof: $union_(a in f^(-1) (V)) U_a subset.eq f^(-1) (V) = union_(a in f^(-1) (V)) {a} subset.eq union_(a in f^(-1) (V)) U_a$)
+- *Example*: inclusion $i: (A, tau_A) -> (X, tau_X)$, $A subset.eq X$, is always continuous.
