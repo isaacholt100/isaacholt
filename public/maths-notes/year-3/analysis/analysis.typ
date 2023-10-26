@@ -39,6 +39,10 @@
     - $E$ is closed.
     - $RR - E$ is open.
 - Arbitrary intersections of closed sets are closed. Finite unions of closed sets are closed.
+- *Definition*: collection $C$ of subsets of $RR$ *covers* (is a *covering* of) $F subset.eq RR$ if $F subset.eq union_(S in C) S$. If each $S$ in $C$ open, $G$ is *open covering*. If $C$ is finite, $C$ is *finite cover*.
+- Covering $C$ of $F$ *contains a finite subcover* if exists ${S_1, ..., S_n} subset.eq C$ with $F subset.eq union_(i = 1)^n S_i$ (i.e. a finite subset of $C$ covers $F$). $F$ is *compact* if any open covering $U$ contains a finite subcover.
+- *Example*: $RR$ is not compact, $[a, b]$ is compact.
+- *Heine-Borel theorem*: if $F subset RR$ closed and bounded then any open covering of $F$ has finite subcovering (so $F$ is compact). If $F$ compact then $F$ closed and bounded.
 
 == The extended real numbers
 
@@ -107,5 +111,17 @@ TODO: up to here, check that all notes are made from these topics
 
 - *Definition*: let $I$ non-empty interval with endpoints $a = inf(I) in {-oo} union RR$ and $b = sup(I) in RR union {oo}$. The *length* of $I$ is $ ell(I) := b - a $ and set $ell(nothing) = 0$.
 - *Example*: if $I = lr((-oo, b]) = lr((-oo, a]) union [a, b]$ then $ell(I) = oo = ell(lr(-oo, a])) + ell([a, b])$
-- *Definition*: let $A subset.eq RR$. *Lebesgue outer measure* of $A$ is infimum of all sums of lengths of intervals covering $A$: $ mu^*(A) := inf{sum_(k = 1)^oo ell(I_k): A subset.eq sum_(k = 1)^oo I_k, I_k "intervals"} $ It satisfies *monotonicity*: $A subset.eq B ==> mu^*(A) <= mu^*(B)$.
-- *Proposition*: outer measure is countably subadditive: if ${E_k}_(k = 1)^oo$ is any countable collection of sets then $ mu^*(union.big_(k = 1)^oo E_k) <= sum_(k = 1)^oo mu^*(E_k) $
+- *Definition*: let $A subset.eq RR$. *Lebesgue outer measure* of $A$ is infimum of all sums of lengths of intervals covering $A$: $ mu^*(A) := inf{sum_(k = 1)^oo ell(I_k): A subset.eq union.big_(k = 1)^oo I_k, I_k "intervals"} $ It satisfies *monotonicity*: $A subset.eq B ==> mu^*(A) <= mu^*(B)$.
+- *Proposition*: outer measure is *countably subadditive*: if ${E_k}_(k = 1)^oo$ is any countable collection of sets then $ mu^*(union.big_(k = 1)^oo E_k) <= sum_(k = 1)^oo mu^*(E_k) $
+- *Lemma*: we have $ mu^*(A) = inf{sum_(k = 1)^oo ell(I_k): A subset union.big_(k = 1)^oo I_k, I_k != nothing "open intervals"} $
+- Lebesgue outer measure of interval is its length: $mu^*(I) = ell(I)$.
+
+== Measurable sets
+
+- *Notation*: $E^c = RR - E$.
+- *Proposition*: let $E = (a, oo)$. Then $ forall A subset.eq RR, quad mu^*(A sect E) + mu^*(A sect E^c) $
+- *Definition*: $E subset.eq RR$ is *Lebesgue measurable* if $ forall A subset.eq RR, mu^*(A) = mu^*(A sect E) + mu^*(A sect E^c) $ Collection of such sets is $cal(F)_(mu^*)$.
+- *Lemma (excision property)*: let $E$ Lebesgue measurable set with finite measure and $E subset.eq B$, then $ mu^*(B - E) = mu^*(B) - mu^*(E) $
+- *Remark*: not every set is Lebesgue measurable.
+- *Definition*: collection of subsets of $RR$ is an *algebra* if contains $nothing$ and closed under taking complements and finite unions: if $A, B in cal(A)$ then $RR - A, A union B in cal(A)$.
+- *Proposition*: if $E_1, ..., E_n$ Lebesgue measurable then $union_(k = 1)^n E_k$ is Lebesgue measurable. If $E_1, ..., E_n$ disjoint then $ mu^*(A sect union.big_(k = 1)^n E_k) = sum_(k = 1)^n mu^*(A sect E_k) $ for any $A subset.eq RR$. In particular, for $A = RR$, $ mu^*(union.big_(k = 1)^n E_k) = sum_(k = 1)^n mu^*(E_k) $

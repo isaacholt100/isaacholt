@@ -45,4 +45,45 @@
 - *Attacks on RSA*:
     - If you can factor $n$, you can compute $d$, so can break RSA (as then you know $phi(n)$ so can compute $e^(-1) quad (mod phi(n))$).
     - If $phi(n)$ is known, then we have $p q = n$ and $(p - 1)(q - 1) = phi(n)$ so $p + q = n - phi(n) + 1$. Hence $p$ and $q$ are roots of $x^2 - (n - phi(n) + 1) + n = 0$.
-    - *Known $d$*: we have $d e - 1$ is multiple of $phi(n)$. Look for a factor $A$ of $d e - 1$ such that $(p - 1) | A$, $(p - 1) divides.not A$. Then try $x^A - 1$ for random $x$, this satisfies $x^A - 1$ is divisible by $p$, hence $gcd(x^A - 1, n) = p$.
+    - *Known $d$*: we have $d e - 1$ is multiple of $phi(n)$. Look for a factor $A$ of $d e - 1$ such that $(p - 1) | A$, $(q - 1) divides.not A$. Then try $x^A - 1$ for random $x$, this satisfies $x^A - 1$ is divisible by $p$, hence $gcd(x^A - 1, n) = p$.
+- *RSA signatures*:
+    - Public key is $(n, e)$ and private key is $d$.
+    - When sending a message $m$, message is *signed* by also sending $s = m^d mod n$.
+    - $(m, s)$ is received, *verified* by checking if $m = s^e mod n$.
+    - Forging a signature on a message $m$ would require finding $s$ with $m = s^e mod n$. This is the RSA problem.
+    - However, choosing signature $s$ first then taking $m = s^e mod n$.
+    - To solve this, $(m, s)$ is sent where $s = h(m)^d$, $h$ is *hash function*. Then the message receiver verifies $h(m) = s^e mod n$.
+    - Now, for a signature to be forged, an attacker would have to find $m$ with $h(m) = s^e mod n$.
+- *Hash function* is function $h: {"messages"} -> cal(H)$ that:
+    - Can be computed efficiently
+    - Is preimage-resistant: can't quickly find $m$ with given $h(m)$.
+    - Is collision-resistant: can't quickly find $m, m'$ with $h(m) = h(m')$.
+    Example is SHA-256.
+- *Theorem*: it is no easier to find $phi(n)$ than to factorise $n$.
+- *Theorem*: it is no easier to find $d$ than to factor $n$.
+- *Miller-Rabin algorithm*:
+    + Choose random $x mod n$.
+    + Let $n - 1 = 2^r s$, $y = x^s$.
+    + Compute $y, y^2, ..., y^(2^r) mod n$.
+    + If $1$ isn't in this list, $n$ is *composite* (with witness $x$).
+    + If $1$ is in list preceded bynumber other than $plus.minus 1$, $n$ is *composite* (with witness $a$).
+    + Other, $n$ is *possible prime* (to base $x$).
+
+== Factorisation
+
+- *Trial division algorithm*: for $p = 2, 3, 5, ...$ test whether $p | n$.
+- *Fermat's method*:
+    - Let $a = ceil(sqrt(n))$. Compute $a^2 mod n$, $(a + 1)^2 mod n$ until a square $x^2 equiv (a + i)^2 mod n$ appears. Then compute $gcd(a + i - x, n)$.
+    - Works well under special conditions on the factors: if $|p - q| <= 2 sqrt(2) root(4, n)$ then Fermat's method takes one step: $x = ceil(sqrt(n))$ works.
+- An integer is $B$-smooth if all its prime factors are $<= B$.
+- *Quadratic sieve*:
+    - Choose $B$ and let $m$ be numberof primes $<= B$.
+    - Look at integers $x = ceil(sqrt(n)) + k$, $k = 1, 2, ...$ and check whether $y = x^2 - n$ is $B$-smooth.
+    - Once $y_1 = x_1^2 - n, ..., y_t = x_t^2 - n$ are all $B$-smooth with $t > m$, find some product of them that is a square.
+    - Deduce a congruence between the squares.
+- *Other factorisation algorithms*:
+    - Pollard's $rho$ algorithm.
+    - Pollard's $p - 1$ algorithm.
+    - Lenstra's algorithm using elliptic curves.
+    - General number field sieve
+    - Shor's algorithm: $ln(N)^2 ln(ln(N))$.

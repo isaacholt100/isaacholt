@@ -2,6 +2,7 @@
 #show: template
 
 #let powset(X) = $cal(P)(X)$
+#let inv(x) = $#x^(-1)$
 
 = Metric spaces
 
@@ -62,14 +63,14 @@ If $f$ satisfies these, it is *continuous at $a$*.
 - Let $X$ be a set. Then $tau = powset(X)$ is the *discrete topology* on $X$.
 - $tau = {nothing, X}$ is the *indiscrete topology* on $X$.
 - *Examples*:
-    - For metric space $(M, d)$, find the open sets. Let $tau_d subset.eq cal(P)(M)$ exactly contain these open sets. Then $(M, tau_d)$ is a topological space. The metric $d$ *induces* the topology $tau_d$.
+    - For metric space $(M, d)$, find the open sets with respect to metric $d$. Let $tau_d subset.eq cal(P)(M)$ exactly contain these open sets. Then $(M, tau_d)$ is a topological space. The metric $d$ *induces* the topology $tau_d$.
     - Let $X = NN_0$ and $tau = {nothing} union {U subset.eq X: X - U "is finite"}$.
 - *Proposition*: for topological space $X$:
     - $X$ and $nothing$ are closed
     - Arbitrary intersections of closed sets are closed
     - Finite unions of closed sets are closed
 - *Proposition*: for topological space $(X, tau)$ and $A subset.eq X$, the *induced (subspace) topology on $A$* $ tau_A = {A sect U: U in tau} $ is a topology on $A$.
-- *Example*: let $X = RR$ with standard topology induced by metrix $d(x, y) = |x - y|$. Let $A = [1, 5]$. Then $lr([1, 3)) = A sect (0, 3)$ and $[1, 5] = A sect (0, 6)$ are open in $A$.
+- *Example*: let $X = RR$ with standard topology induced by metric $d(x, y) = |x - y|$. Let $A = [1, 5]$. Then $lr([1, 3)) = A sect (0, 3)$ and $[1, 5] = A sect (0, 6)$ are open in $A$.
 - *Example*: consider $RR$ with standard topology $tau$. Then
     - $tau_ZZ$ is the discrete topology on $ZZ$.
     - $tau_QQ$ is not the discrete topology on $QQ$.
@@ -87,3 +88,42 @@ If $f$ satisfies these, it is *continuous at $a$*.
     - $f$ is *continuous at $a in X$* if $ forall V "open in" Y, f(a) in V, exists U "open in" X: a in U subset.eq f^(-1) (V) $
 - *Lemma*: $f: X -> Y$ continuous iff $f$ continuous at every $a in X$. (Key idea for proof: $union_(a in f^(-1) (V)) U_a subset.eq f^(-1) (V) = union_(a in f^(-1) (V)) {a} subset.eq union_(a in f^(-1) (V)) U_a$)
 - *Example*: inclusion $i: (A, tau_A) -> (X, tau_X)$, $A subset.eq X$, is always continuous.
+- *Lemma*: a composition of continuous functions is continuous.
+- *Lemma*: let $f: X -> Y$ be function between topological spaces. Then $f$ is continuous iff $ forall A "closed in" Y, quad f^(-1) (A) "closed in" X $
+- *Remark*: we can use continuous functions decide that sets are open or closed.
+- *Definition*: *$n$-sphere* is $ S^n := {(x_1, ..., x_(n + 1)) in RR^(n + 1): sum_(i = 1)^n x_i^2 = 1} $
+- *Example*: in the standard topology, the $n$-sphere is a closed subset of $RR^(n + 1)$. (Consider the preimage of ${1}$ which is closed in $RR$).
+- Can consider set of square matrices $M_(n, n) (RR) tilde.equiv RR^(n^2)$ and give it the standard topology.
+- *Example*:
+    - Note $ det(A) = sum_(sigma in "sym"(n)) ("sgn"(sigma) product_(i = 1)^n a_(i, sigma(i))) $ is a polynomial in the entries of $A$ so is continuous function from $M_n (RR)$ to $RR$.
+    - $"GL"_n (RR) = {A in M_n (RR): det(A) != 0} = det^(-1) (RR - {0})$ is open.
+    - $"SL"_n (RR) = {A in M_n (RR): det(A) = 1} = det^(-1) ({1})$ is closed.
+    - $O(n) = {A in M_n (RR): A A^T = I}$ is closed - consider $f_(i, j) (A) = (A A^T)_(i, j)$ then $ O(n) = sect.big_(1 <= i, j <= n) (f_(i, j))^(-1) ({delta_(i, j)}) $
+    - $"SO"(n) = O(n) sect "SL"_n (RR)$ is closed.
+- *Definition*: for $X, Y$ topological spaces, $h: X -> Y$ is *homeomorphism* if $h$ is bijective, continuous and $h^(-1)$ is continuous. $X$ and $Y$ are *homeomorphic*. A homeomorphism gives bijection between $tau_X$ and $tau_Y$ and satisfies $ h(A sect B) = h(A) sect h(B), quad h(A union B) = h(A) union h(B) $
+- *Example*: in standard topology, $(0, 1)$ is homeomorphic to $RR$. (Consider $f: (-pi/2, pi/2) -> (-oo, oo)$, $f = tan$, $g: (0, 1) -> (-pi/2, pi/2)$, $g(x) = pi (x - 1/2)$ and $f compose g$).
+- *Example*: $RR$ with standard topology $tau_"st"$ is not homoeomorphic to $RR$ with the discrete topology $tau_d$. (Consider $h^(-1) ({a}) = {h^(-1) (a)}$, ${a} in tau_"st"$ but ${h^(-1) (a)} in.not tau_"st"$).
+- *Example*: let $X = RR union {overline(0)}$. Define $f_0: RR -> X$, $f_0(a) = a$ and $f_(overline(0)): RR -> X$, $f_(overline(0))(a) = a$ for $a != 0$, $f_(overline(0))(0) = overline(0)$. Topology on $X$ has $A subset.eq X$ open iff $f_0^(-1)(A)$ and $f_(overline(0))^(-1)(A)$ open. Every point in $X$ lies in open set: for $a in.not {0, overline(0)}$, $a in (a - (|a|)/2, a + (|a|)/2)$ and both pre-images of this are same open interval, for $0$, set $U_0 = (-1, 0) union {0} union (0, 1) subset.eq X$ then $f_0^(-1) (U_0) = (-1, 1)$ and $f_(underline(0))^(-1) (U_0) = (-1, 0) union (0, 1)$ are both open. For $overline(0)$, set $U_(overline(0)) = (-1, 0) union {overline(0)} union (0, 1) subset.eq X$, then $f_(overline(0))^(-1)(U_(overline(0))) = (-1, 1)$ and $f_0^(-1)(U_(overline(0))) = (-1, 0) union (0, 1)$ are both open. So $U_0$ and $U_(overline(0))$ both open in $X$. $X$ is not Hausdorff since any open sets containing $0$ and $overline(0)$ must contain "open intervals" such as $U_0$ and $U_(overline(0))$.
+- *Example (Furstenberg's proof of infinitude of primes)*: since $a + d ZZ$ is infinite, any nonempty finite set is not open, so any set with finite complement is not closed. For fixed $d$, sets $d ZZ$, $1 + d ZZ, ..., (d - 1) + d ZZ$ partition $ZZ$. So the complement of each is the union of the rest, so each is open and closed. Every $n in ZZ - {-1, 1}$ is prime or product of primes, so $ZZ - {-1, 1} = union_(p "prime") p ZZ$, but finite unions of closed sets are closed, and since $ZZ - {-1, 1}$ has finite complement, the union must be infinite.
+
+== Limits, bases and products
+
+== Limit points, interiors and closures
+
+- *Definition*: for topological space $X$, $x in X$, $A subset.eq X$:
+    - *Open neighbourhood of $x$* is open set $N$, $x in N$.
+    - $x in X$ is *limit point* of $A$ if every open neighbourhood $N$ of $x$ satisfies $ (N - {x}) sect A != nothing $
+- *Corollary*: $x$ is not limit point of $A$ iff exists neighbourhood $N$ of $x$ with $ A sect N = cases({x} & "if" x in A, nothing & "if" x in.not A) $
+- *Example*: let $X = RR$ with standard topology.
+    - $0 in X$, then $(-1\/2, 1\/2)$ is open neighbourhood of $0$.
+    - If $U subset.eq X$ open, $U$ is open neighbourhood for any $x in U$.
+    - Let $A = {1/n: n in ZZ - {0}}$, then only limit point in $A$ is $0$.
+- *Definition*: let $A subset.eq X$.
+    - *Interior* of $A$ is largest open set contained in $A$: $ A^circle.small = union.big_(U "open" \ U subset.eq A) U $
+    - *Closure* of $A$ is smallest closed set containing $A$: $ overline(A) = sect.big_(F "closed" \ A subset.eq F) $ If $A^circle.small = X$, $A$ is *dense* in $X$.
+- *Lemma*:
+    - $overline(X - A) = X - A^circle.small$
+    - $overline(A) = X - (X - A)^circle.small$
+- *Example*:
+    - Let $QQ subset RR$ with standard topology. Then $QQ^circle.small = nothing$ and $overline(QQ) = RR$ (since every nonempty open set in $RR$ contains rational and irrational numbers).
+- *Lemma*: $overline(A) = A union L$ where $L$ is the set of limit points of $A$.

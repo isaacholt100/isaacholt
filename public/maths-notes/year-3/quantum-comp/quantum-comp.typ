@@ -52,4 +52,8 @@
 
 == Pure states and mixed states
 
-- For $hat(rho)_psi = ket(psi) bra(psi)$, $ tr(hat(rho)) & = sum_n braket(n, hat(rho), n) = sum_n braket(, psi) braket(psi, n) \ & = sum_n braket(psi, n) braket(n, psi) = bra(psi) (sum_n ket(n) bra(n)) ket(psi) = braket(psi, psi) = 1 $
+- *Pure state*: linear combination of states $ket(psi) = ket(psi_1) + dots.h.c + ket(psi)n)$. Probability of being in this state is $1$.
+- For a *density matrix* describing a *pure state* $hat(rho)_psi = ket(psi) bra(psi)$, $ tr(hat(rho)_psi) & = sum_n braket(n, hat(rho), n) = sum_n braket(n, psi) braket(psi, n) \ & = sum_n braket(psi, n) braket(n, psi) = bra(psi) (sum_n ket(n) bra(n)) ket(psi) = braket(psi, psi) = 1 $ Also $tr(hat(rho)_psi^2) = 1$.
+- $ expected(E)_psi & = braket(psi, hat(H), I, psi) = sum_n braket(psi, hat(H), n) braket(n, psi) \ & = sum_n braket(n, psi) braket(psi, hat(H), n) = sum_n braket(n, hat(rho)_psi, hat(H), n) = tr(hat(rho)_psi hat(H)) $
+- *Mixed state*: probability $p_i$ for each state $ket(psi_i)$. $hat(rho)_i = ket(psi_i) bra(psi_i)$ and $ hat(rho) = sum_i p_i hat(rho)_i $ For observable $hat(A)$ expressed in matrix form with basis as the states $ket(psi_i)$, then $expected(hat(A)) = tr(hat(rho) hat(A))$. For mixed state, we still have $tr(hat(rho)) = 1$ but $tr(hat(rho)^2) = sum_i p_i^2 <= 1$ with equality only when some $p_i = 1$ (i.e. a pure state). It conveys how "mixed" the state is.
+- *Example*: for ensemble ${(3/4, ket(0)), (1/4, ket(1))}$, $ hat(rho) = 3/4 ket(0) bra(0) + 1/4 ket(1) bra(1) = mat(3\/4, 0; 0, 1\/4) $ This ensemble is *not* unique: $ {(1/2, sqrt(3/4) ket(0) + sqrt(1/4) ket(1)), (1/2, sqrt(3/4) ket(0) - sqrt(1/4) ket(1))} $ gives an equivalent density matrix: $ hat(rho)_1 & = (sqrt(3/4) ket(0) + sqrt(1/4) ket(1))(sqrt(3/4) bra(0) + sqrt(1/4) bra(1)) \ & = 3/4 ket(0) bra(0) + 1/4 ket(1) bra(1) + ..., hat(rho)_2 = ..., 1/2 hat(rho)_1 + 1/2 hat(rho)_2 = mat(3\/4, 0; 0, 1\/4) $
