@@ -127,3 +127,4 @@ If $f$ satisfies these, it is *continuous at $a$*.
 - *Example*:
     - Let $QQ subset RR$ with standard topology. Then $QQ^circle.small = nothing$ and $overline(QQ) = RR$ (since every nonempty open set in $RR$ contains rational and irrational numbers).
 - *Lemma*: $overline(A) = A union L$ where $L$ is the set of limit points of $A$.
+- *Theorem (Dirichlet prime number theorem)*: let $a, d$ coprime, the set $a + d ZZ$ contains infinitely many primes.

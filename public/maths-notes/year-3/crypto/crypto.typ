@@ -87,3 +87,20 @@
     - Lenstra's algorithm using elliptic curves.
     - General number field sieve
     - Shor's algorithm: $ln(N)^2 ln(ln(N))$.
+
+== Primitive roots
+
+- Let $p$ prime, $g in FF_p^times$. *Order* of $g$ is smallest $a in NN_0$ such that $g^a = 1$. $g$ is *primitive root* if its order is $p - 1$.
+- Let $p$ prime, $g in FF_p^times$ primitive root. If $x in FF_p^times$ then $x = g^L$ for some $0 <= L < p - 1$. Then $L$ is *discrete logarithm* of $x$ to base $g$. Write $L = L_g (x)$. It satisfies:
+    - $g^(L_g (x)) equiv x quad (mod p)$ and $g^a equiv x quad (mod p) <==> a equiv L_g (x) quad (mod p - 1)$.
+    - $L_g (1) = 0$, $L_g (g) = 1$.
+    - $L_g (x y) equiv L_g (x) + L_g (y) quad (mod p - 1)$.
+    - $h$ is primitive root mod $p$ iff $L_g (h)$ coprime to $p - 1$. So number of primitive roots mod $p$ is $phi(p - 1)$.
+- *Discrete logarithm problem*: given $p, g, x$, compute $L_g (x)$.
+- *Diffie-Hellman key exchange*:
+    - Two parties agree on prime $p$ and primitive root $g mod p$.
+    - Alice chooses secret $alpha mod (p - 1)$ and sends $g^alpha mod p$ to Bob.
+    - Bob chooses secret $beta mod (p - 1)$ and sends $g^beta mod p$ to Alice.
+    - Alice and Bob both compute $kappa = g^(alpha beta) = (g^alpha)^beta) = (g^beta)^alpha mod p$.
+- *Diffie-Hellman problem*: given $p, g, g^alpha, g^beta$, compute $g^(alpha beta)$.
+- If discrete logarithm problem cna be solved, so can Diffie-Hellman problem (since could compute $alpha = L_g (g^a)$ or $beta = L_g (g^beta)$).

@@ -103,3 +103,17 @@ These imply $phi(0) = 0$, $phi(-a) = -phi(a)$, $phi(a^(-1)) = phi(a)^(-1)$.
 - *Definition*: let $L \/ K$ field extension, $theta in L$. Then $theta$ is *algebraic over $K$* if $ exists 0 != f(x) in K[x]: f(theta) = 0 $ Otherwise, $theta$ is *transcendental over $K$*.
 - *Example*: for $n >= 1$, $theta = e^(2pi i\/n)$ is algebraic over $QQ$ (root of $x^n - 1$).
 - *Example*: $t in K(t)$ is transcendental over $K$.
+- *Lemma*: the algebraic elements in $K(t)\/K$ are precisely $K$.
+- *Lemma*: let $L\/K$ field extension, $theta in L$. Define $I_K (theta) := {f(x) in K[x]: f(theta) = 0}$. Then $I_K (theta)$ is ideal in $K[x]$ and
+    - If $theta$ transcendental over $K$, $I_K (theta) = {0}$
+    - If $theta$ algebraic over $K$, then exists unique monic irreducible polynomial $m(x) in K[x]$ such that $I_K (theta) = angle.l m(x) angle.r$.
+- *Definition*: for $theta in L$ algebraic over $K$, *minimla polynomial* of $theta$ over $K$ is the unique monic polynomial $m(x) in K[x]$ such that $I_K (theta) = angle.l m(x) angle.r$. The *degree* of $theta$ over $K$ is $deg(m(x))$.
+- *Remark*: if $f(x) in K[x]$ irreducible over $K$, monic and $f(theta) = 0$ then $f(x) = m(x)$.
+- *Example*:
+    - Any $theta in K$ has minimal polynomial $x - theta$ over $K$.
+    - $i in CC$ has minimal polynomial $x^2 + 1$ over $RR$.
+    - $sqrt(2)$ has minimal polynomial $x^2 - 2$ over $QQ$. $root(3, 2)$ has minimal polynomial $x^3 - 2$ over $QQ$.
+
+== Constructing field extensions
+
+- *Lemma*: let $K$ field, $f(x) in K[x]$ non-zero. Then $ f(x) "irreducible over" K <==> K[x] \/ angle.l f(x) angle.r "is a field" $
