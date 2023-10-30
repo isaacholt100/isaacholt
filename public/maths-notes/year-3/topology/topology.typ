@@ -100,7 +100,7 @@ If $f$ satisfies these, it is *continuous at $a$*.
     - $"SL"_n (RR) = {A in M_n (RR): det(A) = 1} = det^(-1) ({1})$ is closed.
     - $O(n) = {A in M_n (RR): A A^T = I}$ is closed - consider $f_(i, j) (A) = (A A^T)_(i, j)$ then $ O(n) = sect.big_(1 <= i, j <= n) (f_(i, j))^(-1) ({delta_(i, j)}) $
     - $"SO"(n) = O(n) sect "SL"_n (RR)$ is closed.
-- *Definition*: for $X, Y$ topological spaces, $h: X -> Y$ is *homeomorphism* if $h$ is bijective, continuous and $h^(-1)$ is continuous. $X$ and $Y$ are *homeomorphic*. A homeomorphism gives bijection between $tau_X$ and $tau_Y$ and satisfies $ h(A sect B) = h(A) sect h(B), quad h(A union B) = h(A) union h(B) $
+- *Definition*: for $X, Y$ topological spaces, $h: X -> Y$ is *homeomorphism* if $h$ is bijective, continuous and $h^(-1)$ is continuous. $X$ and $Y$ are *homeomorphic*. A homeomorphism gives bijection between $tau_X$ and $tau_Y$ which satisfies $ h(A sect B) = h(A) sect h(B), quad h(A union B) = h(A) union h(B) $
 - *Example*: in standard topology, $(0, 1)$ is homeomorphic to $RR$. (Consider $f: (-pi/2, pi/2) -> (-oo, oo)$, $f = tan$, $g: (0, 1) -> (-pi/2, pi/2)$, $g(x) = pi (x - 1/2)$ and $f compose g$).
 - *Example*: $RR$ with standard topology $tau_"st"$ is not homoeomorphic to $RR$ with the discrete topology $tau_d$. (Consider $h^(-1) ({a}) = {h^(-1) (a)}$, ${a} in tau_"st"$ but ${h^(-1) (a)} in.not tau_"st"$).
 - *Example*: let $X = RR union {overline(0)}$. Define $f_0: RR -> X$, $f_0(a) = a$ and $f_(overline(0)): RR -> X$, $f_(overline(0))(a) = a$ for $a != 0$, $f_(overline(0))(0) = overline(0)$. Topology on $X$ has $A subset.eq X$ open iff $f_0^(-1)(A)$ and $f_(overline(0))^(-1)(A)$ open. Every point in $X$ lies in open set: for $a in.not {0, overline(0)}$, $a in (a - (|a|)/2, a + (|a|)/2)$ and both pre-images of this are same open interval, for $0$, set $U_0 = (-1, 0) union {0} union (0, 1) subset.eq X$ then $f_0^(-1) (U_0) = (-1, 1)$ and $f_(underline(0))^(-1) (U_0) = (-1, 0) union (0, 1)$ are both open. For $overline(0)$, set $U_(overline(0)) = (-1, 0) union {overline(0)} union (0, 1) subset.eq X$, then $f_(overline(0))^(-1)(U_(overline(0))) = (-1, 1)$ and $f_0^(-1)(U_(overline(0))) = (-1, 0) union (0, 1)$ are both open. So $U_0$ and $U_(overline(0))$ both open in $X$. $X$ is not Hausdorff since any open sets containing $0$ and $overline(0)$ must contain "open intervals" such as $U_0$ and $U_(overline(0))$.
@@ -127,4 +127,9 @@ If $f$ satisfies these, it is *continuous at $a$*.
 - *Example*:
     - Let $QQ subset RR$ with standard topology. Then $QQ^circle.small = nothing$ and $overline(QQ) = RR$ (since every nonempty open set in $RR$ contains rational and irrational numbers).
 - *Lemma*: $overline(A) = A union L$ where $L$ is the set of limit points of $A$.
-- *Theorem (Dirichlet prime number theorem)*: let $a, d$ coprime, the set $a + d ZZ$ contains infinitely many primes.
+- *Dirichlet prime number theorem*: let $a, d$ coprime, the set $a + d ZZ$ contains infinitely many primes.
+- *Example*: let $A$ be the set of primes in $ZZ$ with the Furstenberg topology. By the above lemma, we only need to find the limit points in $ZZ - A$ to find $overline(A)$. $10 ZZ$ is an open neighbourhood of $0$ for $0$ inside $ZZ - A$. For $a in.not {-1, 0, 1}$, $a + 10a ZZ$ is an open neighbourhood of $a$. These sets have no primes so the corresponding points are not limit points of $A$. For $plus.minus 1$, any open neighbourhood of $1$ contains a set $plus.minus 1 + d ZZ$ for some $d != 0$, but by the Dirichlet prime number theorem, this set contains at least one prime. So $overline(A) = A union {plus.minus 1}$.
+- *Lemma*:
+    - Let $A subset.eq M$ for metric space $M$. If $x$ is limit point of $A$ then exists sequence $x_n$ in $A$ such that $lim_(n -> oo) x_n = x$.
+    - If $x in M - A$ and exists sequence $x_n$ in $A$ with $lim_(n -> oo) x_n = x$ then $x$ is limit point of $A$.
+

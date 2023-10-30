@@ -36,7 +36,7 @@ $container-max-widths: map.set($container-max-widths, "xxl", map.get($grid-break
 //@import "../../node_modules/bootstrap/scss/root";
 
 @import "../../node_modules/bootstrap/scss/transitions";
-@import "../../node_modules/bootstrap/scss/buttons";
+// @import "../../node_modules/bootstrap/scss/buttons";
 @import "../../node_modules/bootstrap/scss/navbar";
 @import "../../node_modules/bootstrap/scss/nav";
 @import "../../node_modules/bootstrap/scss/card";
@@ -115,3 +115,4 @@ $container-max-widths: map.set($container-max-widths, "xxl", map.get($grid-break
 @import "../../node_modules/bootstrap/scss/utilities/api";
 
 // 8. Add additional custom code here
+// @import "@primer/css";
