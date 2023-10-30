@@ -133,3 +133,9 @@ If $f$ satisfies these, it is *continuous at $a$*.
     - Let $A subset.eq M$ for metric space $M$. If $x$ is limit point of $A$ then exists sequence $x_n$ in $A$ such that $lim_(n -> oo) x_n = x$.
     - If $x in M - A$ and exists sequence $x_n$ in $A$ with $lim_(n -> oo) x_n = x$ then $x$ is limit point of $A$.
 
+== Bases
+
+- *Definition*: a *basis* for topology $tau$ on $X$ is collection $cal(B) subset.eq tau$ such that $ forall U in tau, U = union.big_(b in cal(B)) b $ (every open $U$ is a union of sets in $B$).
+- *Example*:
+    - For metric space $(M, d)$, $cal(B) = {B(x; r): x in M, r > 0}$ is basis for the induced topology. (Since if $U$ open, $U = union_(u in U) {u} subset.eq union_(u in U) B(u, r_u) subset.eq U$.)
+    - In $RR^n$ with standard topology, $cal(B) = {B(q; 1\/m): q in QQ^n, m in NN}$ is a *countable* basis. (Find $m in NN$ such that $1/m < r/2$ and $q in QQ^n$ such that $q in B(p; 1/m)$, then $B(q; 1/m) subset.eq B(p; r) subset.eq U$ using the triangle inequality).

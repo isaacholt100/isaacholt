@@ -124,4 +124,32 @@ TODO: up to here, check that all notes are made from these topics
 - *Lemma (excision property)*: let $E$ Lebesgue measurable set with finite measure and $E subset.eq B$, then $ mu^*(B - E) = mu^*(B) - mu^*(E) $
 - *Remark*: not every set is Lebesgue measurable.
 - *Definition*: collection of subsets of $RR$ is an *algebra* if contains $nothing$ and closed under taking complements and finite unions: if $A, B in cal(A)$ then $RR - A, A union B in cal(A)$.
+- *Remark*: if a union of a countable collection of Lebesgue measurable sets is also the union of a countable disjoint collection of Lebesgue measurable sets: if ${A_k}_(k = 1)^oo$ is countable collection of Lebesgue measurable sets, then let $A_1' = A_1$ and for $k > 1$, define $ A_k' = A_k - union_(i = 1)^(k - 1) A_i $ then ${A_k'}_(k = 1)^oo$ is disjoint union of Lebesgue measurable sets.
 - *Proposition*: if $E_1, ..., E_n$ Lebesgue measurable then $union_(k = 1)^n E_k$ is Lebesgue measurable. If $E_1, ..., E_n$ disjoint then $ mu^*(A sect union.big_(k = 1)^n E_k) = sum_(k = 1)^n mu^*(A sect E_k) $ for any $A subset.eq RR$. In particular, for $A = RR$, $ mu^*(union.big_(k = 1)^n E_k) = sum_(k = 1)^n mu^*(E_k) $
+- *Proposition*: if $E$ is countable union of Lebesgue measurable sets, then $E$ is Lebesgue measurable. Also, if ${E_k}_(k in NN)$ is countable disjoint collection of Lebesgue measurable sets then $ mu^* (union.big_(k = 1)^oo E_k) = sum_(k = 1)^oo mu^* (E_k) $
+
+== Abstract definition of a measure
+
+- *Definition*: let $X subset.eq RR$. Collection of subsets of $cal(F)$ of $X$ is *$sigma$-algebra* if
+    - $nothing in F$
+    - $E in F ==> E^c in F$
+    - $E_1, ..., E_n in F ==> union_(k = 1)^oo E_k in cal(F)$.
+- *Example*:
+    - Trivial examples are $cal(F) = {nothing, RR}$ and $cal(F) = cal(P)(RR)$.
+    - Arbitrary intersections of $sigma$-algebras are $sigma$-algebras.
+- *Definition*: let $cal(F)$ $sigma$-algebra of $X$. $nu: cal(F) -> RR union {plus.minus oo}$ is *measure* satisfying
+    - $nu(nothing) = 0$
+    - $forall E in cal(F), nu(E) >= 0$
+    - *Countable additivity*: if $E_1, E_2, ... in cal(F)$ are disjoint then $ nu(union.big_(k = 1)^oo E_k) = sum_(k = 1)^oo nu(E_k) $
+    Elements of $cal(F)$ are *measurable* (as they are the only sets on which the measure $nu$ is defined).
+- *Proposition*: if $nu$ is measure then it satisfies:
+    - *Monotonicity*: $A subset.eq B ==> nu(A) <= nu(B)$.
+    - *Countable subadditivity*: $nu(union_(k in NN) E_k) <= sum_(k in NN) nu(E_k)$.
+    - *Excision*: if $A$ has finite measure, then $A subset.eq B ==> m(B - A) = m(B) - m(A)$.
+
+== Lebesgue measure
+
+- *Lemma*: the Lebesgue measurable sets form a $sigma$-algebra and contain every interval.
+- *Theorem (Caratheodory extension)*: the restriction of the outer measure $mu^*$ to the $sigma$-algebra of Lebesgue measurable sets is a measure.
+- *Definition*: the measure $mu$ of $mu^*$ restricted to $cal(F)_(mu^*)$ is the *Lebesgue measure*. It satisfies $mu(I) = ell(I)$ for any interval $I$ and is translation invariant.
+- *Hahn extension theorem*: there exists unique measure $mu$ defined on $cal(F)_(mu^*)$ for which $mu(I) = ell(I)$ for any interval $I$.
