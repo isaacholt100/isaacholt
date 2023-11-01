@@ -2,7 +2,9 @@ const FULL_NAMES: {[key: string]: string} = {
 	"amv": "Analysis in Many Variables",
 	"dssc": "Data Science and Statistical Computing",
 	"ent": "Elementary Number Theory",
-	"math-phys": "Mathematical Physics"
+	"math-phys": "Mathematical Physics",
+    "crypto": "Cryptography and Codes",
+    "quantum-comp": "Quantum Computing",
 }
 
 export function capitalizeName(name: string): string {

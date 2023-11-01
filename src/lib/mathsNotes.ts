@@ -16,6 +16,7 @@ export async function getMathsNotes() {
 	return await Promise.all(
 		contents
 			.filter(c => c.isDirectory() && !c.name.startsWith("."))
+            .reverse()
 			.map(async f => ({ year: f.name, notes: await getMathsNotesFromYear(f.name) }))
 	);
 }
