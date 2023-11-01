@@ -3,6 +3,7 @@
 
 #let char = $op("char")$
 #let cbrt(arg) = $root(3, #arg)$
+#let ideal(gens) = $angle.l gens angle.r$
 
 = Introduction
 
@@ -107,7 +108,7 @@ These imply $phi(0) = 0$, $phi(-a) = -phi(a)$, $phi(a^(-1)) = phi(a)^(-1)$.
 - *Lemma*: let $L\/K$ field extension, $theta in L$. Define $I_K (theta) := {f(x) in K[x]: f(theta) = 0}$. Then $I_K (theta)$ is ideal in $K[x]$ and
     - If $theta$ transcendental over $K$, $I_K (theta) = {0}$
     - If $theta$ algebraic over $K$, then exists unique monic irreducible polynomial $m(x) in K[x]$ such that $I_K (theta) = angle.l m(x) angle.r$.
-- *Definition*: for $theta in L$ algebraic over $K$, *minimla polynomial* of $theta$ over $K$ is the unique monic polynomial $m(x) in K[x]$ such that $I_K (theta) = angle.l m(x) angle.r$. The *degree* of $theta$ over $K$ is $deg(m(x))$.
+- *Definition*: for $theta in L$ algebraic over $K$, *minimal polynomial* of $theta$ over $K$ is the unique monic polynomial $m(x) in K[x]$ such that $I_K (theta) = angle.l m(x) angle.r$. The *degree* of $theta$ over $K$ is $deg(m(x))$.
 - *Remark*: if $f(x) in K[x]$ irreducible over $K$, monic and $f(theta) = 0$ then $f(x) = m(x)$.
 - *Example*:
     - Any $theta in K$ has minimal polynomial $x - theta$ over $K$.
@@ -117,3 +118,14 @@ These imply $phi(0) = 0$, $phi(-a) = -phi(a)$, $phi(a^(-1)) = phi(a)^(-1)$.
 == Constructing field extensions
 
 - *Lemma*: let $K$ field, $f(x) in K[x]$ non-zero. Then $ f(x) "irreducible over" K <==> K[x] \/ angle.l f(x) angle.r "is a field" $
+- *Theorem*: let $m(x) in K[x]$ irreducible, monic, $K_m := K[x] \/ ideal(m(x))$. Then
+    - $K_m \/ K$ is field extension.
+    - Let $theta = pi(x)$ where $pi: K[x] -> K_m$ is canonical projection, then $theta$ has minimal polynomial $m(x)$ and $K_m = K(theta)$.
+- *Definition*: let $L_1 \/ K$, $L_2 \/ K$ field extensions, $phi: L_1 -> L_2$ field homomorphism. $phi$ is *$K$-homomorphism* if $forall a in K, phi(a) = a$ ($phi$ fixes elements of $K$).
+    - If $phi$ is isomorphism then it is *$K$-isomorphism*.
+    - If $L_1 = L_2$ then $phi$ is *$K$-automorphism*.
+- *Example*:
+    - Complex conjugation $CC -> CC$ is $RR$-automorphism.
+    - Let $K$ field, $char(K) != 2$, $sqrt(2) in.not K$, so $x^2 - 2$ is minimal polynomial of $sqrt(2)$ over $K$, then $K(sqrt(2)) tilde.equiv K[x] \/ ideal(x^2 - 2)$ is field extension of $K$ and $a + b sqrt(2) -> a - b sqrt(2)$ is $K$-automorphism.
+- *Proposition*: let $L\/K$ field extension, $tau in L$ with $m(tau) = 0$ and $K_L (tau)$ be minimal subfield of $L$ containing $K$ and $tau$. Then exists unique $K$-isomorphism $phi: K_m -> K_L (tau)$ such that $phi(theta) = tau$.
+- *Proposition*: let $theta$ transcendental over $K$, then exists unique $K$-isomorphism $phi: K(t) -> K(theta)$ such that $phi(t) = theta$: $ phi(f(g)/g(t)) = phi(f(theta)/g(theta)) $

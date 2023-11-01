@@ -58,3 +58,17 @@
 - *Mixed state*: probability $p_i$ for each state $ket(psi_i)$. $hat(rho)_i = ket(psi_i) bra(psi_i)$ and $ hat(rho) = sum_i p_i hat(rho)_i $ For observable $hat(A)$ expressed in matrix form with basis as the states $ket(psi_i)$, then $expected(hat(A)) = tr(hat(rho) hat(A))$. For mixed state, we still have $tr(hat(rho)) = 1$ but $tr(hat(rho)^2) = sum_i p_i^2 <= 1$ with equality only when some $p_i = 1$ (i.e. a pure state). It conveys how "mixed" the state is.
 - *Example*: for ensemble ${(3/4, ket(0)), (1/4, ket(1))}$, $ hat(rho) = 3/4 ket(0) bra(0) + 1/4 ket(1) bra(1) = mat(3\/4, 0; 0, 1\/4) $ This ensemble is *not* unique: $ {(1/2, sqrt(3/4) ket(0) + sqrt(1/4) ket(1)), (1/2, sqrt(3/4) ket(0) - sqrt(1/4) ket(1))} $ gives an equivalent density matrix: $ hat(rho)_1 & = (sqrt(3/4) ket(0) + sqrt(1/4) ket(1))(sqrt(3/4) bra(0) + sqrt(1/4) bra(1)) \ & = 3/4 ket(0) bra(0) + 1/4 ket(1) bra(1) + ..., hat(rho)_2 = ..., 1/2 hat(rho)_1 + 1/2 hat(rho)_2 = mat(3\/4, 0; 0, 1\/4) $
 - *Definition*: *trace distance* between two density matrices: $ D(hat(rho)_1, hat(rho)_2) = 1/2 tr |hat(rho)_1 - hat(rho)_2| = sum_i |lambda_i| $ where $|hat(A)| = sqrt(hat(A)^dagger hat(A))$ and $lambda_i$ are the eigenvalues of $hat(rho)_1 - hat(rho)_2$.
+
+= Bipartite systems
+
+== Tensor products
+
+- *Tensor product* $ket(phi) times.circle ket(psi)$ in $H_1 times.circle H_2$ satisfies:
+    - *Scalar multiplication*: $c(ket(phi) times.circle ket(psi)) = (c ket(phi)) times.circle ket(psi) = ket(phi) times.circle (c ket(psi))$
+    - *Linearity*:
+        - $a ket(psi) times.circle ket(phi_1) + b ket(psi) times.circle ket(phi_2) = ket(psi) times.circle (a ket(phi_1) + b ket(phi_2))$
+        - $a ket(psi_1) times.circle ket(phi) + b ket(psi_2) times.circle ket(phi) = (a ket(psi_1) + b ket(psi_2)) times.circle ket(phi)$
+- Inner products of $H_1$ and $H_2$ induce an inner product on $H_1 times.circle H_2$: for $ket(psi_1), ket(psi_2) in H_1$, $ket(phi_1), ket(phi_2) in H_2$, $ (bra(psi_1) times.circle bra(phi_1))(ket(psi_2) times.circle ket(phi_2)) = braket(psi_1, psi_2) braket(phi_1, phi_2) $
+- For a bases ${ket(i)}$ for $H_1$ and ${ket(j)}$ for $H_2$, ${ket(i) times.circle ket(j)}$ is basis for $H_1 times.circle H_2$: for $ket(psi) in H_1$, $ket(phi) in H_2$, $ ket(psi) times.circle ket(phi) = (sum_i a_i ket(i)) times.circle (sum_j b_j ket(j)) = sum_(i, j) a_i b_j ket(i) times.circle ket(j) $
+- The most general vector $ket(psi) in H_1 times.circle H_2$ is $ ket(psi) = sum_(i, j) c_(i, j) ket(i) times.circle ket(j) $ Generally, this cannot be written as a tensor product $ket(psi) times.circle ket(phi)$. If it can be, it is a *separable* state. If not, it is *entangled* (e.g. a linear combination of separable states is generally entangled).
+- If ${ket(i)}$, ${ket(j)}$ orthonormal then the inner product in $H_1 times.circle H_2$ is given by $ braket(phi, psi) & = (sum_(i, j) d_(i, j)^* bra(i) times.circle bra(j))(sum_(m, n) c_(m, m) ket(m) times.circle ket(n)) \ & = sum_(i, j, m, n) d_(i, j)^* c_(m, n) braket(i, m) braket(j, n) = sum_(i, j) c_(i, j)^* d_(i, j) $

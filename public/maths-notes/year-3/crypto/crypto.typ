@@ -1,18 +1,44 @@
 #import "../../template.typ": template
 #show: template
 
+#let modulo(n) = $thick mod #n$
+#let lmodulo(n) = $quad mod #n$
+
+= Introduction
+
+- Basic encryption process:
+    - A has a message (*plaintext*) which is *encrypted* using an *encryption key* to produce the *ciphertext*, which is sent to $B$.
+    - B uses a *decryption key* (which depends on the encryption key) to *decrypt* the ciphertext and recover the original plaintext.
+    - It should be computationally infeasible to determine the plaintext without knowing the decryption key.
+- *Caesar cipher*:
+    - Add a constant to each letter in the plaintext to produce the ciphertext: $ "ciphertext letter" = "plaintext letter" + k quad mod 26 $
+    - To decrypt, $ "plaintext letter" = "ciphertext letter" - k quad mod 26 $
+    - The key is $k thick mod 26$.
+- Cryptosystem objectives:
+    - *Secrecy*: the intercepted message should be not able to be decrypted
+    - *Integrity*: a message should not allowed to be altered without the receiver knowing
+    - *Authenticity*: the receiver should be certain of the identity of the sender
+    - *Non-repudiation*: the sender should not be able to claim they sent a message; the receiver should be able to prove they did.
+- *Kerckhoff's principle*: a cryptographic system should be secure even if the details of the system are known to an attacker.
+- Types of attack:
+    - *Ciphertext-only*: the plaintext is deduced from the ciphertext.
+    - *Known-plaintext*: intercepted ciphertext and associated stolen plaintext are used to determine the key.
+    - *Chosen-plaintext*: an attacker tricks a sender into encrypting various chosen plaintexts and observes the ciphertext, then uses this information to determine the key.
+    - *Chosen-ciphertext*: an attacker tricks the receiver into decrypting various chosen ciphertexts and observes the resulting plaintext, then uses this information to determine the key.
+
 = Symmetric key ciphers
 
+- *Converting letters to numbers*: treat letters as integers modulo $26$, with $A = 1$, $Z = 0 equiv 26 thick (mod 26)$. Treat a string of text as a vector of integers modulo $26$.
 - *Symmetric key cipher*: one in which encryption and decryption keys are equal.
 - *Key size*: $log_2 ("number of possible keys")$.
-- *Caesar cipher*: shift all characters by a constant amount. Key size is $log_2 (26)$
-- *Substitution cipher*: key is permutation of ${a, ..., z}$. Key size is $log_2 (26!)$.
+- *Substitution cipher*: key is permutation of ${a, ..., z}$. Key size is $log_2 (26!)$. It is vulnerable to plaintext attacks and ciphertext-only attacks, since different letters (and letter pairs) occur with different frequencies in English.
 - *Stirling's formula*: $ n! approx sqrt(2 pi n) (n / e)^n $
-- If any statistical properties of plaintext are reflected in cipher text, then we can use this as basis for an attack. We compare the most common letters in the English language with the most common letters in the message. We can also compare letter pairs.
-- *One-time pad*: key is random sequence of integers $mod 26$, $(k_1, k_2, ...)$. If message is $(m_1, m_2, ..., m_r)$ then ciphertext is $(c_1, c_2, ...) = (k_1 + m_1, k_2 + m_2, ...)$. To decrypt the ciphertext, $m_i = c_i - k_i$. Once $(k_1, ..., k_r)$ have been used, they must never be used again.
+- *One-time pad*: key is uniformly, independently random sequence of integers $mod 26$, $(k_1, k_2, ...)$, it is known to the sender and receiver. If message is $(m_1, m_2, ..., m_r)$ then ciphertext is $(c_1, c_2, ..., c_r) = (k_1 + m_1, k_2 + m_2, ..., k_r + m_r)$. To decrypt the ciphertext, $m_i = c_i - k_i$. Once $(k_1, ..., k_r)$ have been used, they must never be used again.
     - One-time pad is information-theoretically secure against ciphertext-only attack: $PP(M = m | C = c) = PP(M = m)$.
-    - Keys must never be reused, so must be as long as message.
+    - Disadvantage is keys must never be reused, so must be as long as message.
     - Keys must be truly random.
+- *Chinese remainder theorem*: let $m, n in NN$ coprime, $a, b in ZZ$. Then exists unique solution $x modulo(m n)$ to the congruences $ x equiv a & lmodulo(m) \ x equiv b & lmodulo(n) $
+- *Block cipher*: group characters in plaintext into blocks of $n$ (the *block length*) and encrypt each block with a key. So plaintext $p = (p_1, p_2, ...)$ is divided into blocks $P_1, P_2, ...$ where $P_1 = (p_1, ..., p_n)$, $P_2 = (p_(n + 1), ..., p_(2n))$. Then ciphertext blocks are given by $C_i = f("key", P_i)$ for some encryption function $f$.
 - *Hill cipher*:
     - Plaintext divided into blocks $P_1, ..., P_r$ of length $n$.
     - Each block represented as vector $P_i in (ZZ \/ 26 ZZ)^n$
@@ -20,10 +46,11 @@
     - Ciphertext for block $P_i$ is $ C_i = M P_i $ It can be decrypted with $P_i = M^(-1) C$.
     - Let $P = (P_1, ..., P_r)$, $C = (C_1, ..., C_r)$, then $C = M P$.
 - *Confusion*: each character of ciphertext depends on many characters of key.
-- *Diffusion*: each character of ciphertext depends on many characters of plaintext.
-- For Hill cipher, $i$th character of ciphertext depends on $i$th row of key - this is medium confusion.
+- *Diffusion*: each character of ciphertext depends on many characters of plaintext. Ideal diffusion changes a proportion of $(S - 1)\/S$ of the characters of the ciphertext, where $S$ is the number of possible symbols.
+- For Hill cipher, $i$th character of ciphertext depends on $i$th row of key - this is medium confusion. If $j$th character of plaintext changes and $M_(i j) != 0$ then $i$th character of ciphertext changes. $M_(i j)$ is non-zero with probability roughly $25\/26$ so good diffusion.
 - Hill cipher is susceptible to known plaintext attack:
     - If $P = (P_1, ..., P_n)$ are $n$ blocks of plaintext with length $n$ such that $P$ is invertible and we know $P$ and the corresponding $C$, then we can recover $M$, since $C = M P ==> M = C P^(-1)$.
+    - If enough blocks of ciphertext are intercepted, it is very likely that $n$ of them will produce an invertible matrix $P$.
 
 = Public key cryptography and the RSA algorithm
 
@@ -104,3 +131,20 @@
     - Alice and Bob both compute $kappa = g^(alpha beta) = (g^alpha)^beta) = (g^beta)^alpha mod p$.
 - *Diffie-Hellman problem*: given $p, g, g^alpha, g^beta$, compute $g^(alpha beta)$.
 - If discrete logarithm problem cna be solved, so can Diffie-Hellman problem (since could compute $alpha = L_g (g^a)$ or $beta = L_g (g^beta)$).
+
+- *Elgamal* public key encryption:
+    - Alice chooses prime $p$, primitive root $g$, private key $alpha med med mod (p - 1)$.
+    - Her public key is $y = g^alpha$.
+    - Bob chooses random $k mod (p - 1)$
+    - To send message $m$ (integer mod $p$), he sends the pair $(r, m') = (g^k, m y^k)$.
+    - To descript the message, Alice computes $r^alpha = g^(alpha k) = y^k$ and then $m = m' y^(-k) = m' r^(-alpha)$.
+    - If Diffie-Hellman problem is hard, then Elgamal encryption is secure against known plaintext attack.
+    - Key $k$ must be random and different each time.
+- *Decision Diffie-Hellman problem*: given $g^a, g^b, c$ in $FF_p^times$, decide whether $c = g^(a b)$.
+    - This problem is not always hard, as can tell if $g^(a b)$ is square or not. Can fix this by taking $g$ to have large prime order $q | (p - 1)$. $p = 2q + 1$ is a good choice.
+- *Elgamal signatures*:
+    - Public key is $(p, g)$, $y = g^alpha$ for private key $alpha$.
+    - *Valid Elgamal signature* on $m$ is pair $(r, s)$, $r >= 0$, $s < p - 1$ such that  $ y^r r^s = g^m quad (mod p) $
+    - Alice computes $r = g^k$, $k in (ZZ\/(p - 1))^times$ random.
+    - Then $g^(alpha r) g^(k s) equiv g^m quad mod p$ so $alpha r + k s equiv m quad (mod p - 1)$ so $s = k^(-1) (m - alpha r) quad mod p - 1$.
+- *Elgamal signature problem*: given $p, g, y, m$, find $r, s$ such that $y^r r^s = m$.

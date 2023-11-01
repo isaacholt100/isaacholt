@@ -153,3 +153,32 @@ TODO: up to here, check that all notes are made from these topics
 - *Theorem (Caratheodory extension)*: the restriction of the outer measure $mu^*$ to the $sigma$-algebra of Lebesgue measurable sets is a measure.
 - *Definition*: the measure $mu$ of $mu^*$ restricted to $cal(F)_(mu^*)$ is the *Lebesgue measure*. It satisfies $mu(I) = ell(I)$ for any interval $I$ and is translation invariant.
 - *Hahn extension theorem*: there exists unique measure $mu$ defined on $cal(F)_(mu^*)$ for which $mu(I) = ell(I)$ for any interval $I$.
+
+== Sets of measure $0$
+
+- *Exercise (todo)*: middle-third Cantor set is Lebesgue measurable and has Lebesgue measure $0$.
+- *Exercise (todo)*: any countable set is Lebesgue measurable and has Lebesgue measure $0$.
+- *Exercise (todo)*: any $E$ with $mu^*(E) = 0$ is Lebesgue measurable and has $mu(E) = 0$.
+- *Lemma*: let $E$ Lebesgue measurable set with $mu(E) = 0$, then $forall E' subset.eq E$, $E'$ is Lebesgue measurable.
+
+== An approximation result for Lebesgue measure
+
+- *Definition*: *Borel $sigma$-algebra* $cal(B)(RR)$ is smallest $sigma$-algebra containing all intervals: for any other $sigma$-algebra $cal(F)$ containing all intervals, $cal(B)(RR) subset cal(F)$. $ cal(B)(RR) = sect.big {cal(F): cal(F) " " sigma "-algebra containing all intervals"} $ $E in cal(B)(RR)$ is *Borel* or *Borel measurable*.
+- Every open subset of $RR$, every closed subset of $RR$, every $G_delta$ set, every $F_sigma$ set is Borel.
+- *Proposition*: the following are equivalent:
+    - $E$ is Lebesgue measurable
+    - $forall epsilon > 0, exists "open" G: E subset.eq G and mu^*(G - E) < epsilon$
+    - $forall epsilon > 0, exists "closed" F: F subset.eq E and mu^*(E - F) < epsilon$
+    - $exists G in G_delta: E subset.eq G and mu^*(G - E) = 0$
+    - $exists F in F_sigma: F subset.eq E and mu^*(E - F) = 0$
+
+= Measurable functions
+
+== Definition of a measurable function
+
+- *Lemma*: let $f: E -> RR union {plus.minus oo}$ with $E$ Lebesgue measurable. The following are equivalent:
+    - $forall c in RR, {x in E: f(x) > c}$ is Lebesgue measurable.
+    - $forall c in RR, {x in E: f(x) >= c}$ is Lebesgue measurable.
+    - $forall c in RR, {x in E: f(x) < c}$ is Lebesgue measurable.
+    - $forall c in RR, {x in E: f(x) <= c}$ is Lebesgue measurable.
+- *Definition*: $f: E -> RR$ is *(Lebesgue) measurable* if it satisfies any one of the above properties.

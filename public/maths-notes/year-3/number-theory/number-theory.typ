@@ -68,3 +68,16 @@
 - *Lemma*: let $alpha$ algebraic over $F$. Then $[F(alpha): F] = deg(p_alpha)$.
 - *Definition*: let $K\/F$ and $L\/K$ field extensions, then $F subset.eq K subset.eq L$ are *tower of fields*.\
 - *Tower theorem*: let $F subset.eq K subset.eq L$ tower of fields. Then $ [L: F] = [L: K] dot.op [K: F] $
+- *Example*: let $L = QQ(sqrt(2), sqrt(3))$. Show $[L: QQ] = 4$.
+    - Let $K = QQ(sqrt(2))$. Let $sqrt(3) = a + b sqrt(2)$, $a, b in QQ$ so $3 = a^2 + 2b^2 + 2a b sqrt(2)$. So $0 in {a, b}$, otherwise $sqrt(2) in QQ$. But if $a = 0$, then $sqrt(6) = 2b in QQ$, if $b = 0$ then $sqrt(3) = a in QQ$: contradiction. So $x^2 - 3$ has no roots in $K$ so is irreducible over $K$ so $p_(sqrt(3), K)(x) = x^2 - 3$.
+    - So $[L: K] = 2$ so by the tower theorem, $[L: QQ] = [L: K] dot.op [K: QQ] = 4$.
+
+== Norm and trace
+
+- Let $L\/F$ finite field extension, $n = [L: F]$. For any $alpha in L$, there is $F$-linear map $ hat(alpha): L -> L, quad x -> alpha x $
+- With basis ${alpha_1, ..., alpha_n}$ of $L$ over $F$, then let $T_alpha = T_(alpha, L\/F) in M_n (F)$ be the corresponding matrix of the linear map $alpha$ with respect to the basis ${a_i}$: $ hat(alpha)(alpha_1) & = alpha alpha_1 = a_(1, 1) alpha_1 + dots.h.c + a_(1, n) alpha_n, \ & dots.v \ hat(alpha)(alpha_n) & = alpha alpha_n = a_(n, 1) alpha_1 + dots.h.c + alpha_(n, n) alpha_n $ with $a_(i, j) in F$, $T_alpha = (a_(i, j))$, i.e. $ alpha vec(alpha_1, dots.v, alpha_n) = T_alpha vec(alpha_1, dots.v, alpha_n) $
+- *Definition*: *norm* of $alpha$ is $ N_(L\/F)(alpha) := det(T_alpha) $
+- *Definition*: *trace* of $alpha$ is $ tr_(L\/F)(alpha) := tr(T_alpha) $
+- *Remark*: norm and trace are independent of choice of basis so are well-defined (uniquely determined by $alpha$).
+- *Example*: let $L = QQ(sqrt(m))$, $m in ZZ$ non-square, let $alpha = a + b sqrt(m)$, $a, b in QQ$. Fix basis ${1, sqrt(m)}$. Now $ hat(alpha)(1) & = alpha dot.op 1 = a + b sqrt(m), \ hat(alpha)(sqrt(m)) & = alpha sqrt(m) = b m + a sqrt(m), \ T_alpha & = mat(a, b; b m, a) $ So $N_(L\/F)(alpha) = a^2 - b^2 m$, $tr_(L\/F)(alpha) = 2a$.
+- *Lemma*: the map $L -> M_n(F)$ given by $alpha -> T_alpha$ is injective ring homomorphism. So if $f(x) in F[x]$, $T_(f(alpha)) = f(T_alpha)$ ($f(T_alpha)$ is a polynomial in $T_alpha$, not $f$ applied to each entry).
