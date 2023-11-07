@@ -148,3 +148,10 @@
     - Alice computes $r = g^k$, $k in (ZZ\/(p - 1))^times$ random.
     - Then $g^(alpha r) g^(k s) equiv g^m quad mod p$ so $alpha r + k s equiv m quad (mod p - 1)$ so $s = k^(-1) (m - alpha r) quad mod p - 1$.
 - *Elgamal signature problem*: given $p, g, y, m$, find $r, s$ such that $y^r r^s = m$.
+- *Discrete logarithm problem*: given prime $p$, primitive root $g thick mod p$, $x in FF_p^times$, calculate $L_g (x)$.
+- *Baby-step giant-step algorithm* for solving DLP:
+  - Let $N = ceil(sqrt(p - 1))$.
+  - Baby-steps: compute $g^j thick mod p$ for $0 <= j < N$.
+  - Giant-steps: compute $x g^(-N k) thick mod p$ for $0 <= k < N$.
+  - Look for a match between baby-steps and giant-steps lists: $g^j = x g^(-N k) ==> x = g^(j + N k)$.
+  - Always works since if $x = g^L$ for $0 <= L < p - 1 <= N^2$, so $L$ can be written as $j + N k$ with $j, k in {0, ..., N - 1}$.

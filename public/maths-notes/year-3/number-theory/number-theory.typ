@@ -81,3 +81,16 @@
 - *Remark*: norm and trace are independent of choice of basis so are well-defined (uniquely determined by $alpha$).
 - *Example*: let $L = QQ(sqrt(m))$, $m in ZZ$ non-square, let $alpha = a + b sqrt(m)$, $a, b in QQ$. Fix basis ${1, sqrt(m)}$. Now $ hat(alpha)(1) & = alpha dot.op 1 = a + b sqrt(m), \ hat(alpha)(sqrt(m)) & = alpha sqrt(m) = b m + a sqrt(m), \ T_alpha & = mat(a, b; b m, a) $ So $N_(L\/F)(alpha) = a^2 - b^2 m$, $tr_(L\/F)(alpha) = 2a$.
 - *Lemma*: the map $L -> M_n(F)$ given by $alpha -> T_alpha$ is injective ring homomorphism. So if $f(x) in F[x]$, $T_(f(alpha)) = f(T_alpha)$ ($f(T_alpha)$ is a polynomial in $T_alpha$, not $f$ applied to each entry).
+- *Proposition*: let $L\/F$ finite field extension. $forall alpha, beta in L$,
+  - $N_(L\/F)(alpha) = 0 <==> alpha = 0$.
+  - $N_(L\/F)(alpha beta) = N_(L\/F)(alpha) N_(L\/F)(beta)$.
+  - $forall a in F, N_(L\/F)(a) = a^([L: F])$ and $tr_(L\/F)(a) = [L: F] alpha$.
+  - $forall a, b in F, tr_(L\/F)(a alpha + b beta) = a tr_(L\/F)(alpha) + b tr_(L\/F)(beta)$ (hence $tr_(L\/F)$ is $F$-linear map).
+
+== Characterstic polynomials
+
+- Let $A in M_n (F)$, then characteristic polynomial is $chi_A (x) = det(x I - A) in F[x]$ and is monic, $deg(chi_A) = n$. If $chi_A (x) = x^n + sum_(i = 0)^(n = 1) c_i x^i$ then $det(A) = (-1)^n det(0 - A) = (-1)^n chi_A (0) = (-1)^n c_0$ and $tr(A) = -c_(n - 1)$, since if $alpha_1, ..., a_n$ are eigenvalues of $A$ (in some field extension of $F$), then $tr(A) = alpha_1 + dots.h.c + alpha_n$, $chi_A (x) = (x - alpha_1) dots.h.c (x - alpha_n) = x^n - (alpha_1 + dots.h.c alpha_n) x^(n - 1) + dots.h.c$.
+- For finite field extension $L\/F$, $n = [L: F]$, $alpha in L$, *characteristic polynomial* $chi_alpha (x) = chi_(alpha, L\/F)(x)$ is characterstic polynomial of $T_alpha$. So $N_(L\/F)(alpha) = (-1)^n c_0$, $tr_(L\/F)(alpha) = -c_(n - 1)$. By the Cayley-Hamilton theorem, $chi_alpha (T_alpha) = 0$ so $T_(chi_alpha (alpha)) = chi_alpha (T_alpha) = 0$. Since $alpha -> T_alpha$ is injective, $chi_alpha (alpha) = 0$.
+- *Lemma*: let $L\/F$ finite field extension, $alpha in L$ with $L = F(alpha)$. Then $chi_alpha (x) = p_alpha (x)$.
+- *Proposition*: consider tower $F subset.eq F(alpha) subset.eq L$, let $m = [L: F(alpha)]$. Then $chi_alpha (x) = p_alpha (x)^m$.
+- *Corollary*: let $L\/F$, $alpha in L$ as above, $p_alpha (x) = x^d + a_(d - 1) x^(d - 1) + dots.h.c + a_0$, $a_i in F$. Then $ N_(L\/F)(alpha) = (-1)^n a_0^m, quad tr_(L\/F)(alpha) = -m a_(d - 1) $

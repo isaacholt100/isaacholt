@@ -181,4 +181,28 @@ TODO: up to here, check that all notes are made from these topics
     - $forall c in RR, {x in E: f(x) >= c}$ is Lebesgue measurable.
     - $forall c in RR, {x in E: f(x) < c}$ is Lebesgue measurable.
     - $forall c in RR, {x in E: f(x) <= c}$ is Lebesgue measurable.
-- *Definition*: $f: E -> RR$ is *(Lebesgue) measurable* if it satisfies any one of the above properties.
+- *Definition*: $f: E -> RR$ is *(Lebesgue) measurable* if it satisfies any one of the above properties and if $E$ is Lebesgue measurable.
+- *Proposition*: let $f: RR -> RR$. $f$ continuous iff $forall "open" U subset.eq, f^(-1)(U) subset.eq RR$ is open.
+- *Definition*: *indicator function* on set $A$, $bb(1)_A: RR -> {0, 1}$ is $ bb(1)_A (x) := cases(1 & "if" x in A, 0 & "if" x in.not A) $
+- *Definition*: $phi: RR -> RR$ is *simple (measurable) function* if $phi$ is measurable function that has finite codomain.
+
+== Fundamental aspects of measurable functions
+
+- *Definition*: let $E subset.eq F subset.eq RR$, let $f: F -> RR$. *Restriction* $f_E$ is function with domain $E$ and for which $forall x in E, f_E (x) = f(x)$.
+- *Definition*: real-valued function which is increasing or decreasing is *monotone*.
+- *Definition*: sequence $(f_n)$ on domain $E$ is increasing if $f_n <= f_(n + 1)$ on $E$ for all $n in NN$.
+- *Example*: continuous functions are measurable.
+- *Definition*: for $f_1: E -> RR, ..., f_n: E -> RR$, $max {f_1, ..., f_n}: E -> RR$ is $ max{f_1, ..., f_n}(x) = max{f_1 (x), ..., f_n (x)} $ $min{f_1, ..., f_n}$ is defined similarly.
+- *Proposition*: for finite family ${f_k}_(k = 1)^n$ of measurable functions with common domain $E$, $max{f_1, ..., f_n}$ and $min{f_1, ..., f_n}$ are measurable.
+- *Definition*: for $f: E -> RR$, functions $|f|, f^+, f^-$ defined on $E$ are $ |f|(x) := max{f(x), -f(x)}, quad f^+ (x) := max{f(x), 0}, quad f^- (x) := max{-f(x), 0} $
+- *Corollary*: if $f$ measurable on $E$, so are $|f|$, $f^+$ and $f^-$.
+- *Proposition*: let $f: E -> RR union {plus.minus oo}$. For measurable $D subset.eq E$, $f$ measurable on $E$ iff restrictions of $f$ to $D$ and $E - D$ are measurable.
+- *Theorem*: let $f, g$ real-valued measurable functions with domain $E$.
+    - *Linearity*: $forall alpha, beta in RR, alpha f + beta g$ is measurable.
+    - *Products*: $f g$ is measurable.
+- *Proposition*: let $(f_n)$ be sequence of measurable functions on $E$ that converges pointwise to $f$ on $E$. Then $f$ is measurable.
+- *Simple approximation lemma*: let $f: E -> RR$ measurable and bounded, so $exists M >= 0: forall x in E, |f|(x) < M$. Then $ forall epsilon > 0, exists phi_epsilon, psi_epsilon: E -> RR: forall x in E, phi_epsilon (x) <= f(x) <= psi_epsilon (x) and 0 <= psi_epsilon (x) - phi_epsilon (x) < epsilon $
+- *Definition*: let $f, g: E -> RR union {plus.minus oo}$. Then $f = g$ *almost everywhere* if ${x in E: f(x) != g(x)}$ has measure $0$.
+- *Proposition*: let $f_1, f_2, f_3: E -> RR union {plus.minus oo}$ measurable. If $f_1 = f_2$ almost everywhere and $f_2 = f_3$ almost everywhere then $f_1 = f_3$ almost everywhere.
+- Let $f, g: E -> RR union {plus.minus oo}$ finite almost everywhere on $E$. Let $D_f$ and $D_g$ be sets for which $f$ and $g$ are finite. Then $f + g$ is finite and well-defined on $D_f sect D_g$ and complement of $D_f sect D_g$ has measure $0$.
+- *Remark*: Lebesgue measurable functions can be modified arbitrarily on a set of measure $0$ without affecting measurability.

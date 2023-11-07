@@ -129,3 +129,22 @@ These imply $phi(0) = 0$, $phi(-a) = -phi(a)$, $phi(a^(-1)) = phi(a)^(-1)$.
     - Let $K$ field, $char(K) != 2$, $sqrt(2) in.not K$, so $x^2 - 2$ is minimal polynomial of $sqrt(2)$ over $K$, then $K(sqrt(2)) tilde.equiv K[x] \/ ideal(x^2 - 2)$ is field extension of $K$ and $a + b sqrt(2) -> a - b sqrt(2)$ is $K$-automorphism.
 - *Proposition*: let $L\/K$ field extension, $tau in L$ with $m(tau) = 0$ and $K_L (tau)$ be minimal subfield of $L$ containing $K$ and $tau$. Then exists unique $K$-isomorphism $phi: K_m -> K_L (tau)$ such that $phi(theta) = tau$.
 - *Proposition*: let $theta$ transcendental over $K$, then exists unique $K$-isomorphism $phi: K(t) -> K(theta)$ such that $phi(t) = theta$: $ phi(f(g)/g(t)) = phi(f(theta)/g(theta)) $
+
+== Explicit examples of simple extensions
+
+- Let $r in K^times$ non-square in $K$, then $x^2 - r$ irreducible in $K[x]$. E.g. for $K = QQ(t)$, $x^2 - t in K[x]$ irreducible. Then $K\(sqrt(t)\) = QQ\(sqrt(t)\) = tilde.equiv K[x] \/ ideal(x^2 - t)$. Then for $s = sqrt(3)$, we have an extension $QQ(s) \/ QQ(s^2)$.
+- Define $FF_9 = FF_3 [x] \/ ideal(x^2 - 2) tilde.equiv FF_3 (theta) = {a + b theta: a, b in FF_3}$ for $theta$ a root of $x^2 - 2$.
+- *Proposition*: let $K(theta)\/K$ where $theta$ has minimal polynomial $m(x) in K[x]$ of degree $n$. Then $ K[x] \/ ideal(m(x)) tilde.equiv = K(theta) = {c_0 + c_1 theta + dots.h.c + c_(n - 1) theta^(n - 1): c_i in K} $ and its elements are written uniquely: $K(theta)$ is vector space over $K$ of dimension $n$ with basis ${1, theta, ..., theta^(n - 1)}$.
+- *Example*: $QQ(cbrt(2)) = {a + b cbrt(2) + c cbrt(4): a, b, c in QQ} tilde.equiv QQ[x] \/ ideal(x^3 - 2)$. $QQ(omega cbrt(2))$ and $QQ(w^2 cbrt(2))$ where $omega = e^(2pi i \/ 3)$ are isomorphic to $QQ(cbrt(2))$ as $omega cbrt(2)$, $omega cbrt(4)$ have same minimal polynomial.
+
+== Degrees of field extensions
+
+- *Definition*: *degree* of field extension $L\/K$ is $ [L: K] := dim_L (F) $ Write $[L: K] < oo$ if degree is finite.
+- *Example*:
+  - When $theta$ algebraic over $K$ of degree $n$, $[K(theta): K] = n$.
+  - Let $theta$ transcendental over $K$, then $[K(theta): K] = oo$, so $[K(t): K] = oo$, $[QQ(pi): QQ]$, $[RR: QQ] = oo$.
+- *Proposition*: let $[L: K] < oo$, then every element in $L\/K$ is algebraic over $K$ (in this case, $L\/K$ is *algebraic extension*).
+- *Tower theorem*: let $K subset.eq M subset.eq L$ *tower* of field extensions. Then
+  - $[L: K] < oo <==> [L: M] < oo and [M: K] < oo$.
+  - $[L: K] = [L: M] [M: K]$.
+- *Example*: $K = QQ subset M = QQ\(sqrt(2)\) subset L = QQ\(sqrt(2), sqrt(7)\)$. $M\/K$ has basis ${1, sqrt(2)}$ so $[M: K]$. Let $sqrt(7) in QQ(sqrt(2))$, then $sqrt(7) = c + d sqrt(2)$, $c, d in QQ$ so $7 = (c^2 + 2d^2) + 2c d sqrt(2)$ so $7 = c^2 + 2d^2$, $0 = 2c d$ so $d^2 = 7/2$ or $c^2 = 7$, which are both contradictions. So $[L: K] = 4$.

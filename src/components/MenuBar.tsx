@@ -65,7 +65,7 @@ export default function MenuBar() {
     console.log(pathname);
     return (
         <>
-            <Navbar bg="black" expand="sm" variant="dark" className="py-0" /*fixed="top"*/ expanded={expanded} onSelect={() => setExpanded(false)} onToggle={e => setExpanded(e)}>
+            <Navbar bg="body" expand="sm" variant="dark" className="py-0" /*fixed="top"*/ expanded={expanded} onSelect={() => setExpanded(false)} onToggle={e => setExpanded(e)}>
                 <div className="mx-auto px-2 px-md-3 container-xxl">
                     <ImageHomeLink />
                     <div className="ms-auto my-2 my-md-3 d-flex align-items-center">
