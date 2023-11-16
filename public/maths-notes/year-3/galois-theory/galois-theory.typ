@@ -147,4 +147,52 @@ These imply $phi(0) = 0$, $phi(-a) = -phi(a)$, $phi(a^(-1)) = phi(a)^(-1)$.
 - *Tower theorem*: let $K subset.eq M subset.eq L$ *tower* of field extensions. Then
   - $[L: K] < oo <==> [L: M] < oo and [M: K] < oo$.
   - $[L: K] = [L: M] [M: K]$.
-- *Example*: $K = QQ subset M = QQ\(sqrt(2)\) subset L = QQ\(sqrt(2), sqrt(7)\)$. $M\/K$ has basis ${1, sqrt(2)}$ so $[M: K]$. Let $sqrt(7) in QQ(sqrt(2))$, then $sqrt(7) = c + d sqrt(2)$, $c, d in QQ$ so $7 = (c^2 + 2d^2) + 2c d sqrt(2)$ so $7 = c^2 + 2d^2$, $0 = 2c d$ so $d^2 = 7/2$ or $c^2 = 7$, which are both contradictions. So $[L: K] = 4$.
+- *Example*:
+    - $K = QQ subset M = QQ\(sqrt(2)\) subset L = QQ\(sqrt(2), sqrt(7)\)$. $M\/K$ has basis ${1, sqrt(2)}$ so $[M: K] = 2$. Let $sqrt(7) in QQ(sqrt(2))$, then $sqrt(7) = c + d sqrt(2)$, $c, d in QQ$ so $7 = (c^2 + 2d^2) + 2c d sqrt(2)$ so $7 = c^2 + 2d^2$, $0 = 2c d$ so $d^2 = 7/2$ or $c^2 = 7$, which are both contradictions. So $[L: K] = 4$ with basis $\{1, sqrt(2), sqrt(7), sqrt(14)\}$.
+    - Let $K = QQ subset M = QQ(i) subset QQ\(i, sqrt(2)\)$. We know $[QQ(i): QQ] = 2$, and $\[QQ\(sqrt(2)\): QQ\] = 2$, $\[QQ\(i, sqrt(2)\): QQ\] = 2$ (since $i in.not RR$) so $\[QQ\(i, sqrt(2)\): QQ\(sqrt(2)\)\] = 2$.
+    - Let $K = QQ subset M = QQ\(sqrt(2)\) subset L = QQ\(sqrt(2), cbrt(3)\)$. Then $\[QQ\(sqrt(2)\): QQ\] = 2$, $\[QQ\(cbrt(3)\): QQ\] = 3$ so $2 | [L: K]$ and $3 | [L: K]$ so $6 | [L: K]$ so $[L: K] >= 6$. But $[L: M] <= 3$ and $[M: K] <= 2$ so $[L: K] <= 6$ hence $[L: K] = 6$.
+- More generally, we have $[K(alpha, beta): K] <= [K(alpha): K] [K(beta): K]$.
+- *Example*:
+    - Let $theta = cbrt(4) + 1$. $QQ(theta) = QQ\(cbrt(4)\)$ so minimal polynomial over $QQ$, $m$, has $deg(m) = 3$. $(theta - 1)^3 = 4$ so minimal polynomial is $x^3 - 3x^2 + 3x - 5$.
+    - Let $theta = sqrt(2) + sqrt(3)$. $QQ\(sqrt(2), theta\) = QQ\(sqrt(2), sqrt(3)\)$ which has degree $2$ over $QQ\(sqrt(2)\)$ so minimal polynomial of $theta$ over $QQ\(sqrt(2)\)$ has degree $2$, $(theta - sqrt(2)) = sqrt(3)$ so minimal polynomial is $x^2 - 2 sqrt(2) x - 1$.
+    - Let $theta = sqrt(2) + sqrt(3)$. $QQ subset QQ(theta) subset QQ\(sqrt(2), sqrt(7)\)$ so $[QQ(theta): QQ] | \[QQ\(sqrt(2), sqrt(3)\): QQ\] = 4$ so $[QQ(theta): QQ] in {1, 2, 4}$. Can't be $1$ as $theta in.not QQ$. If it was $2$ then $1, theta, theta^2$ are linearly dependent over $QQ$ which leads to a contradiction. So degree of minimal polynomial of $theta$ over $QQ$ is $4$. $theta^2 = 5 + 2 sqrt(6) => (theta^2 - 5)^2 = 24$ so minimal polynomial is $x^4 - 10x^2 + 1$.
+
+= Galois extensions
+
+== Splitting fields
+
+- *Definition*: for field $K$, $0 != f(x) in K[x]$, $L\/K$ is *splitting field* of $f(x)$ over $K$ if
+    - $exists c in K^times, theta_1, ..., theta_n in L: f(x) = c (x - theta_1) thin dots.h.c thin (x - theta_n)$ ($f(x)$ *splits over $L$*).
+    - $L = K(theta_1, ..., theta_n)$.
+- *Example*:
+    - $CC$ is splitting field of $x^2 + 1$ over $RR$, since $x^2 + 1 = (x + i)(x - i)$ and $CC = RR(i, -i) = RR(i)$.
+    - $CC$ is not splitting field of $x^2 + 1$ over $QQ$ as $CC != QQ(i, -i)$.
+    - $QQ$ is splitting field of $x^2 - 36$ over $QQ$.
+    - $CC$ is splitting of $x^4 + 1$ over $RR$.
+    - $QQ\(i, sqrt(2)\)$ is splitting field of $x^4 - x^2 - 2$ over $QQ$.
+    - $FF_2 (theta)$ where $theta^3 + theta + 1 = 0$ is splitting field of $x^3 + x + 1$ over $FF_2$.
+    - Consider splitting field of $x^3 - 2$ over $QQ$. Let $omega = e^(2pi i\/3) = (-1 + sqrt(-3))\/2$ then $QQ\(cbrt(2), omega\)$ is splitting field since it must contain $cbrt(2)$, $omega cbrt(2)$, $omega^2 cbrt(2)$.
+- *Theorem*: let $0 != f(x) in K[x]$, $deg(f) = n$. Then there exists a splitting field $L$ of $f(x)$ over $K$ with $ [L: K] <= n! $
+- *Notation*: for field homomorphism $phi: K -> K'$ and $f(x) = a_0 + dots.h.c + a_n x^n in K[x]$, write $ phi_* (f(x)) := phi(a_0) + dots.h.c + phi(a_n) x^n in K'[x] $
+- *Lemma*: let $sigma: K -> K'$ isomorphism and $K(theta)\/K$, $theta$ has minimal polynomial $m(x) in K[x]$, $theta'$ be root of $sigma_* (m(x))$. Then there exists unique field isomorphism $tau: K(theta) -> K'(theta')$ such that $tau(theta) = theta'$ and $forall a in K, tau(a) = sigma(a)$.
+- *Theorem*: for field isomorphism $sigma: K -> K'$ and $0 != f(x) in K[x]$, let $L$ be splitting field of $f(x)$ over $K$, $L'$ be splitting field of $sigma_* (f(x))$ over $K'$. Then there exists a field isomorphism $tau: L -> L'$ such that $forall a in K, tau(a) = sigma(a)$.
+- *Corollary*: setting $K = K'$ and $sigma = id$ implies that splitting fields are unique.
+
+== Normal extensions
+
+- *Definition*: $L\/K$ is *normal* if: if $f(x) in K[x]$ is irreducible and has a root in $L$ then all its roots are in $L$. In particular, $f(x)$ splits completely as product of linear factors in $L[x]$. So the minimal polynomial of $theta in L$ over $K$ has all its roots in $L$ and can be written as product of linear factors in $L[x]$.
+- *Example*:
+    - If $[L: K] = 1$ then $L\/K$ is normal.
+    - If $[L: K] = 2$ then $L\/K$ is normal: let $theta in L$ have minimal polynomial $m(x) in K[x]$, then $K subset.eq K(theta) subset.eq L$ so $deg(m(x)) = [K(theta): K] in {1, 2}$:
+        - If $deg(m(x)) = 1$ then $m(x)$ is already linear.
+        - If $deg(m(x)) = 2$ then $m(x) = (x - theta) m_1 (x)$, $m_1 (x) in L[x]$ is linear so $m(x)$ splits completely in $L[x]$.
+    - If $[L: K] = 3$ then $L\/K$ is not necessarily normal. Let $theta$ be root of $x^3 - 2 in QQ[x]$. Other two roots are $omega theta$, $omega^2 theta$ where $omega = e^(2pi i\/3)$. If $omega theta in QQ(theta)$ then $omega = (omega theta)/theta in L$ so $QQ subset QQ(omega) subset QQ(theta)$ but $[QQ(omega): QQ] = 2$ which doesn't divide $[QQ(theta): QQ] = 3$.
+    - Let $theta in CC$ be root of irreducible $f(x) = x^3 - 3x - 1 in QQ[x]$. Let $theta = u + v$, then $(u + v)^3 - 3 u v(u + v) - (u^3 + v^3) equiv 0$ implies $u v = 1 = u^3 v^3$, $u^3 + v^3 = 1$. So $(y - u^3)(y - v^3) = y^2 - y + 1$ has roots $u^3$ and $v^3$. So the three roots of $f$ are $ u + v = e^(pi i\/9) + e^(-pi i\/9) & = 2 cos(pi\/9) \ omega u + omega^2 v = e^(7pi i\/9) + e^(-7 pi i\/9) & = 2 cos(7 pi \/ 9) \ omega^2 u + omega v = e^(13 pi i\/9) + e^(-13pi i\/9) & = 2 cos(13pi\/9) $ Furthermore, for each $i, j$, $theta_i in QQ(theta_j)$, e.g. $ theta_2 = 2 cos(pi - (2pi)/9) = -2cos((2pi)/9) = -2(2cos(pi/9)^2 - 1) = 2 - theta_1^2 $ So $QQ(theta)$ contains all roots of $f(x)$.
+- *Theorem (normality criterion)*: $L\/K$ is finite and normal iff $L$ is splitting field for some $0 != f(x) in K[x]$ over $K$.
+- *Example*:
+    - $QQ\(sqrt(2), sqrt(3), sqrt(5), sqrt(7)\)\/Q$ is normal as it is the splitting field of $f(x) = (x^2 - 2)(x^2 - 3)(x^2 - 5)(x^2 - 7) in QQ[x]$.
+    - $QQ\(cbrt(2)\)\/QQ$ is not normal but $QQ\(cbrt(2), omega\)\/QQ$ is normal as it is the splitting field of $x^3 - 2 in QQ$.
+    - $QQ\(root(4, 2)\)\/QQ$ is not normal but $QQ\(root(4, 2), i\)\/QQ$ is normal.
+    - Let $theta$ root of $f(x) = x^3 - 3x - 1 in QQ[x]$. Then $QQ(theta)\/QQ$ is normal as is splitting field of $f(x)$ over $QQ$.
+    - $FF_2 (theta)\/FF_2$ where $theta^3 + theta^2 + 1 = 0$ is normal.
+    - $FF_p (theta)\/FF_p (t)$ where $theta^p = t$ is normal as it is the splitting field of $x^p - t = x^p - theta^p = (x - theta)^p$ so $f(x)$ splits into linear factors in $L[x]$.

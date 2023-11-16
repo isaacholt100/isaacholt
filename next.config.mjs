@@ -3,6 +3,7 @@ import remarkMath from "remark-math";
 import remarkGfm from "remark-gfm";
 import rehypeKatex from "rehype-katex";
 import rehypeHighlight from "rehype-highlight";
+import remarkFlattenListItem from "mdast-flatten-listitem-paragraphs";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {

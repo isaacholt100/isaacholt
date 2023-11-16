@@ -162,3 +162,40 @@ If $f$ satisfies these, it is *continuous at $a$*.
     - $pi_X$ and $pi_Y$ are continuous.
     - $pi_X$ and $pi_Y$ map open sets to open sets.
     - Product topology is smallest topology for which $pi_X$ and $pi_Y$ are continuous.
+- *Proposition*: let $X, Y, Z$ topological spaces, then $f: Z -> X times Y$ (with product topology on $X times Y$) continuous iff both $pi_X compose f: Z -> X$ and $pi_Y compose f: Z -> Y$ are continuous.
+- *Exercise (todo)*: prove above proposition.
+- *Example*: let $f: X -> RR^n$, $pi_i: RR^n -> RR$, $pi_i (x) = x_i$, $f_i = pi_i compose f$, then $f$ is continuous iff all $f_i$ are continuous.
+- *Proposition*: let $X, Y$ nonempty topological spaces. Then $X times Y$ is Hausdorff iff $X$ and $Y$ are both Hausdorff.
+
+= Connectedness
+
+== Clopen sets and examples
+
+- *Definition*: let $X$ topological space, then $A subset.eq X$ is *clopen* if $A$ is open and closed.
+- *Definition*: $X$ is *connected* if the only clopen sets in $X$ are $X$ and $nothing$.
+- *Example*:
+    - $RR$ with standard topology is connected.
+    - $QQ$ with induced topology from $RR$ is not connected (consider $L = QQ sect \(-oo, sqrt(2)\)$ and $QQ - L = QQ sect \(sqrt(2), oo\)$).
+    - The connected subsets of $RR$ are the intervals.
+- $A subset.eq RR$ is an interval iff $forall x, y in A, x < z < y ==> z in A$.
+- *Example*:
+    - $X = {0, 1}$ with discrete topology is not connected (${1}$ and ${0}$ both open so both closed).
+    - $X = {0, 1}$ with $tau = {nothing, {1}, {0, 1}}$ is connected.
+    - $ZZ$ with Furstenberg topology is not connected.
+- *Theorem (continuity preserves connectedness)*: if $h: X -> Y$ continuous and $X$ connected, then $h(X) subset.eq Y$ is connected.
+- *Corollary*: if $h: X -> Y$ is homeomorphism and $X$ is connected then $Y$ is connected.
+- *Theorem*: let $X$ topological space. The following are equivalent:
+    - $X$ is connected.
+    - $X$ cannot be written as disjoint union of two non-empty sets.
+    - There exists no continuous surjective function from $X$ to a discrete space with more than one point.
+- *Example*:
+    - $"GL"_n (RR)$ is not connected (since $det: "GL"_n (RR) -> RR - {0}$ is continuous and surjective and $RR - {0} = (-oo, 0) union (0, oo)$).
+    - $O(n)$ is not connected.
+    - $(0, 1)$ is connected (since $RR tilde.equiv (0, 1)$ and $RR$ is connected).
+    - $X = lr((0, 1])$ and $Y = (0, 1)$ are not homeomorphic (if they are, then $lr((0, 1])$ is connected since $(0, 1)$ is).
+- *Definition*: let $A = B union C$, $B sect C = emptyset$, then $B$ and $C$ are *complementary subsets* of $A$.
+- *Remark*: if $B$ and $C$ are open in $A$, then $B$ and $C$ are clopen in $A$. So if $B, C != emptyset$ then $A$ is not connected.
+
+== Constructing more connected sets, components, path-connectedness
+
+*Proposition*: let $X$ topological space, $Z subset.eq X$ connected. If $Z subset.eq Y subset.eq overline(Z)$ then $Y$ is connected. In particular, with $Y = overline(Z)$, the closure of a connected set is connected.

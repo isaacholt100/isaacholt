@@ -1,7 +1,7 @@
 #import "../../template.typ": template
 #show: template
 
-#let ideal(gens) = $angle.l #gens angle.r$
+#let ideal(..gens) = $angle.l #gens.pos().join(",") angle.r$
 #let pm = $plus.minus$
 
 == Prerequisites
@@ -26,7 +26,7 @@
 - Examples of EDs:
     - $ZZ$ with $phi(n) = |n|$.
     - $F[x]$ for field $F$ with $phi(f) = deg(f)$.
-- *Lemma*: $ZZ[-sqrt(2)]$ is an ED with Euclidean function with $ phi(a + b sqrt(-2)) = N(a + b sqrt(-2)) =: a^2 + 2b^2. $
+- *Lemma*: $ZZ[-sqrt(2)]$ is an ED with Euclidean function with $ phi(a + b sqrt(-2)) = N(a + b sqrt(-2)) =: a^2 + 2b^2 $
 - *Proposition*: every ED is a PID.
 
 == Every PID is a UFD
@@ -87,10 +87,46 @@
   - $forall a in F, N_(L\/F)(a) = a^([L: F])$ and $tr_(L\/F)(a) = [L: F] alpha$.
   - $forall a, b in F, tr_(L\/F)(a alpha + b beta) = a tr_(L\/F)(alpha) + b tr_(L\/F)(beta)$ (hence $tr_(L\/F)$ is $F$-linear map).
 
-== Characterstic polynomials
+== Characteristic polynomials
 
 - Let $A in M_n (F)$, then characteristic polynomial is $chi_A (x) = det(x I - A) in F[x]$ and is monic, $deg(chi_A) = n$. If $chi_A (x) = x^n + sum_(i = 0)^(n = 1) c_i x^i$ then $det(A) = (-1)^n det(0 - A) = (-1)^n chi_A (0) = (-1)^n c_0$ and $tr(A) = -c_(n - 1)$, since if $alpha_1, ..., a_n$ are eigenvalues of $A$ (in some field extension of $F$), then $tr(A) = alpha_1 + dots.h.c + alpha_n$, $chi_A (x) = (x - alpha_1) dots.h.c (x - alpha_n) = x^n - (alpha_1 + dots.h.c alpha_n) x^(n - 1) + dots.h.c$.
 - For finite field extension $L\/F$, $n = [L: F]$, $alpha in L$, *characteristic polynomial* $chi_alpha (x) = chi_(alpha, L\/F)(x)$ is characterstic polynomial of $T_alpha$. So $N_(L\/F)(alpha) = (-1)^n c_0$, $tr_(L\/F)(alpha) = -c_(n - 1)$. By the Cayley-Hamilton theorem, $chi_alpha (T_alpha) = 0$ so $T_(chi_alpha (alpha)) = chi_alpha (T_alpha) = 0$. Since $alpha -> T_alpha$ is injective, $chi_alpha (alpha) = 0$.
 - *Lemma*: let $L\/F$ finite field extension, $alpha in L$ with $L = F(alpha)$. Then $chi_alpha (x) = p_alpha (x)$.
 - *Proposition*: consider tower $F subset.eq F(alpha) subset.eq L$, let $m = [L: F(alpha)]$. Then $chi_alpha (x) = p_alpha (x)^m$.
-- *Corollary*: let $L\/F$, $alpha in L$ as above, $p_alpha (x) = x^d + a_(d - 1) x^(d - 1) + dots.h.c + a_0$, $a_i in F$. Then $ N_(L\/F)(alpha) = (-1)^n a_0^m, quad tr_(L\/F)(alpha) = -m a_(d - 1) $
+- *Corollary*: let $L\/F$, $alpha in L$ as above, $p_alpha (x) = x^d + a_(d - 1) x^(d - 1) + dots.h.c + a_0$, $a_i in F$. Then $ N_(L\/F)(alpha) = (-1)^(m d) a_0^m, quad tr_(L\/F)(alpha) = -m a_(d - 1) $
+
+= Algebraic number fields and algebraic integers
+
+== Algebraic numbers
+
+- *Definition*: $alpha in CC$ is *algebraic number* if algebraic over $QQ$.
+- *Definition*: $K$ is *(algebraic) number field* if $Q subset.eq K subset.eq CC$ and $[K: QQ] < oo$.
+- Every element of an algebraic number field is an algebraic number.
+- *Example*: let $theta = sqrt(2) + sqrt(3)$, then $QQ(theta) subset.eq QQ\(sqrt(2), sqrt(3)\)$ but also $theta^3 = 11 sqrt(2) + 9 sqrt(3)$ so $ sqrt(2) = (theta^3 - 9 theta)/2, quad sqrt(3) = (-theta^3 + 11 theta)/2 $ so $QQ\(sqrt(2), sqrt(3)\) subset.eq QQ(theta)$ hence $QQ\(sqrt(2), sqrt(3)\) = QQ(theta)$.
+- *Simple extension theorem*: every number field $K$ has form $K = QQ(theta)$ for some $theta in K$.
+- Set of all algebraic numbers (union of all number fields) is denoted $overline(QQ)$ and is a field, since if $alpha != 0$ algebraic over $QQ$, $[QQ(alpha): QQ] = deg(p_alpha) < oo$ so $QQ(alpha)\/QQ$ algebraic, so $-alpha, alpha^(-1) in QQ(alpha)$ algebraic, so $alpha^(-1), -alpha in overline(QQ)$, and if $alpha, beta in overline(QQ)$ then $QQ(alpha, beta) = QQ(alpha)(beta)$ is finite extension of $QQ$ by tower theorem so $alpha + beta$, $alpha beta in QQ(alpha, beta)$ so are algebraic.
+- $[overline(QQ): QQ] = oo$ since if $[overline(QQ): QQ] = d in NN$ then every algebraic number would have degree $<= d$, but $root(d + 1, 2)$ has degree $d + 1$ since it is a root of $x^(d + 1) - 2$ which is irreducible by Eisenstein's criterion with $p = 2$.
+- *Definition*: let $alpha in overline(QQ)$. *Conjugates* of $alpha$ are roots of $p_alpha (x)$ in $CC$.
+- *Example*:
+    - Conjugate of $a + b i in QQ(i)$ is $a - b i$.
+    - Conjugate of $a + b sqrt(2) in QQ\(sqrt(2)\)$ is $a - b sqrt(2)$.
+    - Conjugates of $theta$ do not always lie in $QQ(theta)$, e.g. for $theta = root(3, 2)$, $p_theta (x) = x^3 - 2$ has two non-real roots not in $QQ(theta) subset RR$.
+- *Notation*: when base field is $QQ$, $N_K$ and $tr_K$ denote $N_(K\/QQ)$ and $tr_(K\/QQ)$.
+- *Lemma*: let $K\/QQ$ number field, $alpha in K$, $alpha_1, ..., alpha_n$ conjugates of $alpha$. Then $ N_K (alpha) = (alpha_1 thin dots.h.c thin alpha_n)^([K: QQ(alpha)]), quad tr_K (alpha) = (alpha_1 + dots.h.c + alpha_n) [K: QQ(alpha)] $
+
+== Algebraic integers
+
+- *Definition*: $alpha in overline(QQ)$ is *algebraic integer* if it is root of a monic polynomial in $ZZ[x]$. The set of algebraic integers is denoted $overline(ZZ)$. If $K\/QQ$ is number field, set of algebraic integers in $K$ is denoted $cal(O)_K$.
+- *Example*: $i, (1 + sqrt(3))\/2 in overline(ZZ)$ since they are roots of $x^2 + 1$ and $x^2 - x + 1$ respectively.
+- *Theorem*: let $alpha in overline(QQ)$. The following are equivalent:
+    - $alpha in overline(ZZ)$.
+    - $p_alpha (x) in ZZ[x]$.
+    - $ZZ[alpha] = {sum_(i = 0)^(d - 1) a_i alpha^i: a_i in ZZ}$ where $d = deg(p_alpha)$.
+    - There exists non-trivial finitely generated abelian additive subgroup $G subset CC$ such that $ alpha G subset.eq G "i.e." forall g in G, alpha g in G $ ($alpha g$ is complex multiplication).
+- *Remark*:
+    - For third statement, generally we have $ZZ[alpha] = {f(alpha: f(x) in ZZ[x])}$ and in this case, $ZZ[alpha] = {f(alpha): f(x) in ZZ[x], deg(f) < d}$.
+    - Fourth statement means that $ G = {a_1 gamma_1 + dots.h.c + a_r gamma_r: a_i in ZZ} = gamma_1 ZZ + dots.h.c + gamma_r ZZ = ideal(gamma_1, ..., gamma_r)_ZZ $ $G$ is typically $ZZ[alpha]$. E.g. if $alpha = sqrt(2)$, $ZZ\[sqrt(2)\]$ is generated by $1, sqrt(2)$ and $sqrt(2) dot.op ZZ\[sqrt(2)\] subset.eq ZZ\[sqrt(2)\]$.
+- *Proposition*: $overline(ZZ)$ is a ring. Also, for every number field $K$, $cal(O)_K$ is a ring.
+- *Lemma*: let $alpha in overline(ZZ)$. For every number field $K$ with $alpha in K$, $ N_K (alpha) in ZZ, quad tr_K (alpha) in ZZ $
+- *Lemma*: let $K$ number field. Then $ K = {alpha / m: alpha in cal(O)_K, m in ZZ, m != 0} $
+- *Lemma*: let $alpha in overline(ZZ)$, $K$ number field, $alpha in K$. Then $ alpha in cal(O)_K^times <==> N_K (alpha) = plus.minus 1. $

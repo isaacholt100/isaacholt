@@ -75,13 +75,10 @@ h3 {
 $container-max-widths: map.set($container-max-widths, "xxl", map.get($grid-breakpoints, "xxl"));
 
 ::selection {
-	background: $primary; /* WebKit/Blink Browsers */
-	color: color-contrast($primary);
+	background: rgba(255, 255, 255, 128);
 }
 ::-moz-selection {
-	background: $primary; /* WebKit/Blink Browsers */
-	color: color-contrast($primary);
-	text-decoration-color: color-contrast($primary);
+	background: rgba(255, 255, 255, 128);
 }
 
 // 5. Include remainder of required parts

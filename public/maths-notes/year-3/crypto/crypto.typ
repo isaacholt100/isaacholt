@@ -155,3 +155,15 @@
   - Giant-steps: compute $x g^(-N k) thick mod p$ for $0 <= k < N$.
   - Look for a match between baby-steps and giant-steps lists: $g^j = x g^(-N k) ==> x = g^(j + N k)$.
   - Always works since if $x = g^L$ for $0 <= L < p - 1 <= N^2$, so $L$ can be written as $j + N k$ with $j, k in {0, ..., N - 1}$.
+
+= Elliptic curves
+
+- *Definition*: *abelian group* $(G, compose)$ satisfies:
+    - *Associativity*: $forall a, b, c, in G, a compose (b compose c) = (a compose b) compose c$.
+    - *Identity*: $exists e in G: forall g in G, e times g = g$.
+    - *Inverses*: $forall g in G, exists h in G: g compose h = h compose g = e$
+    - *Commutativity*: $forall a, b in G, a compose b = b compose a$.
+- *Notation*: for $g in G$, write $[n] g$ for $g compose dots.h.c compose g$ $n$ times if $n > 0$, $e$ if $n = 0$, $[-n] g$ if $n < 0$.
+- *DLP for abelian groups*: given $G$ a cyclic abelian group, $g in G$ a generator of $G$, $x in G$, find $L$ such that $[L]g = x$. $L$ is well-defined modulo $|G|$.
+- *Fundamental theorem of finite abelian groups*: let $G$ finite abelian group, then there exist unique integers $2 <= n_1, ..., n_r$ with $n_i | n_(i + 1)$ for all $i$, such that $ G tilde.eq (ZZ \/ n_1) times dots.h.c times (ZZ \/ n_r) $ In particular, $G$ is isomorphic to a product of cyclic groups.
+- 

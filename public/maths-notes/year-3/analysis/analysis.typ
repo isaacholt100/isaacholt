@@ -1,6 +1,8 @@
 #import "../../template.typ": template
 #show: template
 
+#let indicator(arg) = $bb(1)_arg$
+
 == Integration and measure
 
 - Dirichlet's function: $f: [0, 1] -> RR$, $ f(x) = cases(1 & " if" x in QQ, 0 & " otherwise") $
@@ -93,6 +95,7 @@ TODO: up to here, check that all notes are made from these topics
 
 == The middle-third Cantor set
 
+- *Proposition*: let ${F_n: n in N}$ be collection of non-empty nested closed sets, one of which is bounded, so $F_(n + 1) subset.eq F_n$. Then $ sect.big_(n in NN) F_n != emptyset $
 - *Middle third Cantor set*:
     - Define $C_0 := [0, 1]$
     - Given $C_n = union_(i = 1)^(2^n) [a_i, b_i]$, $a_i < b_1 < a_2 < dots.h.c$, with $|b_i - a_i| = 3^(-n)$, define $ C_(n + 1) := union_(i = 1)^(2^n) [a_i, a_i + 3^(-(n + 1))] union [b_i - 3^(-(n + 1)), b_i] $ which is a union of $2^(n + 1)$ disjoint intervals, with difference in endpoints equalling $3^(-(n + 1))$.
@@ -161,6 +164,13 @@ TODO: up to here, check that all notes are made from these topics
 - *Exercise (todo)*: any $E$ with $mu^*(E) = 0$ is Lebesgue measurable and has $mu(E) = 0$.
 - *Lemma*: let $E$ Lebesgue measurable set with $mu(E) = 0$, then $forall E' subset.eq E$, $E'$ is Lebesgue measurable.
 
+== Continuity of measure
+
+- *Definition*: countable collection ${E_k}_(k = 1)^oo$ is *ascending* if $forall k in NN, E_k subset.eq E_(k + 1)$ and *descending* if $forall k in NN, E_(k + 1) subset.eq E_k$.
+- *Theorem*: every measure $m$ satisfies:
+    - If ${A_k}_(k = 1)^oo$ is ascending collection of measurable sets, then $ m(union.big_(k = 1)^oo A_k) = lim_(k -> oo) m(A_k) $
+    - If ${B_k}_(k = 1)^oo$ is descending collection of measurable sets and $m(B_1) < oo$, then $ m(sect.big_(k = 1)^oo B_k) = lim_(k -> oo) m(B_k) $
+
 == An approximation result for Lebesgue measure
 
 - *Definition*: *Borel $sigma$-algebra* $cal(B)(RR)$ is smallest $sigma$-algebra containing all intervals: for any other $sigma$-algebra $cal(F)$ containing all intervals, $cal(B)(RR) subset cal(F)$. $ cal(B)(RR) = sect.big {cal(F): cal(F) " " sigma "-algebra containing all intervals"} $ $E in cal(B)(RR)$ is *Borel* or *Borel measurable*.
@@ -201,8 +211,37 @@ TODO: up to here, check that all notes are made from these topics
     - *Linearity*: $forall alpha, beta in RR, alpha f + beta g$ is measurable.
     - *Products*: $f g$ is measurable.
 - *Proposition*: let $(f_n)$ be sequence of measurable functions on $E$ that converges pointwise to $f$ on $E$. Then $f$ is measurable.
-- *Simple approximation lemma*: let $f: E -> RR$ measurable and bounded, so $exists M >= 0: forall x in E, |f|(x) < M$. Then $ forall epsilon > 0, exists phi_epsilon, psi_epsilon: E -> RR: forall x in E, phi_epsilon (x) <= f(x) <= psi_epsilon (x) and 0 <= psi_epsilon (x) - phi_epsilon (x) < epsilon $
+- *Simple approximation lemma*: let $f: E -> RR$ measurable and bounded, so $exists M >= 0: forall x in E, |f|(x) < M$. Then $forall epsilon > 0$, there exist simple measurable functions $phi_epsilon, psi_epsilon: E -> RR$ such that $ forall x in E, phi_epsilon (x) <= f(x) <= psi_epsilon (x) and 0 <= psi_epsilon (x) - phi_epsilon (x) < epsilon $
 - *Definition*: let $f, g: E -> RR union {plus.minus oo}$. Then $f = g$ *almost everywhere* if ${x in E: f(x) != g(x)}$ has measure $0$.
 - *Proposition*: let $f_1, f_2, f_3: E -> RR union {plus.minus oo}$ measurable. If $f_1 = f_2$ almost everywhere and $f_2 = f_3$ almost everywhere then $f_1 = f_3$ almost everywhere.
 - Let $f, g: E -> RR union {plus.minus oo}$ finite almost everywhere on $E$. Let $D_f$ and $D_g$ be sets for which $f$ and $g$ are finite. Then $f + g$ is finite and well-defined on $D_f sect D_g$ and complement of $D_f sect D_g$ has measure $0$.
 - *Remark*: Lebesgue measurable functions can be modified arbitrarily on a set of measure $0$ without affecting measurability.
+- *Simple approximation theorem*: let $f: E -> RR union {plus.minus oo}$, $E$ measurable. Then $f$ is measurable iff there exists sequence $(phi_n)$ of simple functions on $E$ which converge pointwise on $E$ to $f$ and satisfy $ forall n in NN, forall x in E, |phi_n(x)| <= |f|(x) $ If $f$ is nonnegative, $(phi_n)$ can be chosen to be increasing.
+
+= The Lebesgue integral
+
+== The integral of a simple measurable function
+
+- *Definition*: let $phi$ be real-valued function taking finitely many values $alpha_1 < dots.h.c < alpha_n$, then *standard representation* of $phi$ is $ phi = sum_(i = 1)^n alpha bb(1)_(A_i), quad A_i = phi^(-1)({alpha_i}) $
+- *Lemma*: let $phi = sum_(i = 1)^m beta_i indicator(B_i)$, $B_i$ disjoint mesauble collection, $beta_i in RR$, then $phi$ is simple measurable. If $phi$ takes values $0$ outside a finite set then $ sum_(i = 1)^n alpha_i mu(A_i) = sum_(i = 1)^m beta_i mu(B_i) $ where $A_i$ in standard representation.
+- *Definition*: let $phi$ be simple nonnegative measurable function. *Integral* of $phi$ with respect to $mu$ is $ integral phi = sum_(i = 1)^n alpha_i mu(A_i) $ where $phi = sum_(i = 1)^n alpha_i bb(1)_(A_i)$ is the standard representation. Here we use the convention $0 dot.op oo = 0$.
+- *Example*:
+    - Let $phi_2 = indicator([0, 2]) + indicator([1, 3]) = indicator(lr([0, 1) union lr((2, 3]))) + 2 indicator([1, 2])$ so $integral phi_2 = 4$.
+    - Let $phi_3 = indicator(RR)$, then $integral phi_3 = 1 dot.op oo = oo$.
+    - Let $phi_4 = bb(1)_((0, oo)) + (-1) indicator((-oo, 0))$. This can't be integrated.
+    - Let $phi_5 = indicator((-1, 0)) + (-1) indicator((0, 1))$.
+- *Lemma*: let $B_1, ..., B_m$ be collection of measurable sets, $beta_1, ..., beta_m in RR - {0}$. Then $phi = sum_(i = 1)^m beta_i indicator(B_i)$ is simple measurable function. If measurable of $union_(i = 1)^m B_i$ is finite, then $ sum_(i = 1)^n alpha_i mu(A_i) = sum_(i = 1)^m beta_i mu(B_i) $ where $A_i$ in standard representation.
+- *Proposition (linearity and monotonicity of integration for simple funtions)*: let $phi, psi$ be simple measurable functions:
+    - If $phi, psi$ take value $0$ outside a set of finite measure, then $forall alpha, beta in RR$, $ integral (alpha phi + beta psi) = alpha integral phi + beta integral psi $
+    - $ 0 <= phi <= psi ==> 0 <= integral phi <= integral psi $
+- *Corollary*: let $phi$ nonnegative simple function, then $ integral phi = sup{integral psi: 0 <= psi <= phi, thick psi "simple measurable"} $
+- *Lemma*: let $phi$ simple measurable nonnegative function. $phi$ takes value $0$ outside a set of finite measure iff $integral phi < oo$. Also, $integral phi = oo$ iff there exist $alpha > 0$, measurable $A$ with $mu(A) = oo$ with $phi(x) >= alpha$ on $A$.
+- *Lemma*: let ${E_n}$ be ascending collection of measurable sets, $union_(n = 1)^oo E_n = RR$. Let $phi$ be simple nonnegative measurable function. Then $ integral_(E_n) phi -> integral phi quad "as" n -> oo $
+
+== The integral of a nonnegative function
+
+- *Notation*: let $cal(M)^+$ denote collection of nonnegative measurable functions $f: RR -> RR_(>= 0) union {oo}$.
+- *Definition*: *support* of measurable function $f$ with domain $E$ is ${x in E: f(x) != 0}$.
+- *Definition*: let $f in cal(M)^+$. *Integral of $f$ with respect to $mu$* is $ integral f := sup{integral phi: 0 <= phi <= f, phi "simple measurable"} in RR union {oo} $ For measurable set $E$, define $ integral_E f := integral indicator(E) f $
+- *Proposition*: let $f, g$ measurable. If $g <= f$ then $integral g <= integral f$. Let $E, F$ measurable. If $E subset.eq F$ then $integral_E f <= integral_F f$.
+- *Monotone convergence theorem*: let $(f_n)$ be sequence in $cal(M)^+$. If $(f_n)$ is increasing on measurable set $E$ and converges pointwise to $f$ on $E$ then $ integral_E f_n -> integral_E f quad "as" n -> oo $
