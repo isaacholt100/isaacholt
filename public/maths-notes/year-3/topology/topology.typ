@@ -198,4 +198,13 @@ If $f$ satisfies these, it is *continuous at $a$*.
 
 == Constructing more connected sets, components, path-connectedness
 
-*Proposition*: let $X$ topological space, $Z subset.eq X$ connected. If $Z subset.eq Y subset.eq overline(Z)$ then $Y$ is connected. In particular, with $Y = overline(Z)$, the closure of a connected set is connected.
+- *Proposition*: let $X$ topological space, $Z subset.eq X$ connected. If $Z subset.eq Y subset.eq overline(Z)$ then $Y$ is connected. In particular, with $Y = overline(Z)$, the closure of a connected set is connected.
+- *Proposition*: let $A_i subset.eq X$ connected, $i in I$, $A_i sect A_j != emptyset$ and $union_(i in I) A_i = X$. Then $X$ is connected.
+- *Theorem*: if $X$ and $Y$ are connected then $X times Y$ is connected.
+- *Example*:
+    - $RR^n$ is connected.
+    - $B^n = {x in RR^n: d_2 (0, x) < 1}$ ($B^n$ is homeomorphic to $RR^n$).
+    - $D^n = {x in RR^n: d_2 (0, x) <= 1} = overline(B^n)$ is connected.
+- *Example*:
+    - $forall n >= 1$, $S^n$ is connected.
+    - $forall n >= 1$, $T^n := (S^1)^n$ is connected.
