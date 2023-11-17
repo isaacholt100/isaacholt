@@ -22,7 +22,7 @@
     "highlight.js": "^11.9.0",
     "katex": "^0.16.9",
     "mdast-flatten-listitem-paragraphs": "^1.0.0",
-    "next": "^13.4.12",
+    "next": "^13.5.0",
     "react": "^18.2.0",
     "react-bootstrap": "2.8.0",
     "react-dom": "^18.2.0",
