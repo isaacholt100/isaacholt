@@ -3,6 +3,7 @@
 
 #let modulo(n) = $thick mod #n$
 #let lmodulo(n) = $quad mod #n$
+#let PAI = $overline(O)$
 
 = Introduction
 
@@ -166,4 +167,23 @@
 - *Notation*: for $g in G$, write $[n] g$ for $g compose dots.h.c compose g$ $n$ times if $n > 0$, $e$ if $n = 0$, $[-n] g$ if $n < 0$.
 - *DLP for abelian groups*: given $G$ a cyclic abelian group, $g in G$ a generator of $G$, $x in G$, find $L$ such that $[L]g = x$. $L$ is well-defined modulo $|G|$.
 - *Fundamental theorem of finite abelian groups*: let $G$ finite abelian group, then there exist unique integers $2 <= n_1, ..., n_r$ with $n_i | n_(i + 1)$ for all $i$, such that $ G tilde.eq (ZZ \/ n_1) times dots.h.c times (ZZ \/ n_r) $ In particular, $G$ is isomorphic to a product of cyclic groups.
-- 
+- *Definition*: let $K$ field, $"char"(K) > 3$. An *elliptic curve* over $K$ is defined by the equation $ y^2 = x^3 + a x + b $ where $a, b in K$, $Delta_E = 4a^3 + 27b^2 != 0$.
+- *Remark*: elliptic curve over $QQ$ is also elliptic curve over $RR$ or $CC$.
+- *Remark*: $Delta_E != 0$ is equivalent to $x^3 + a x + b$ having no repeated roots (i.e. $E$ is smooth).
+- *Definition*: for elliptic curve $E$ defined over $K$, a *$K$-point* (*point*) on $E$ is either:
+    - A *normal point*: $(x, y) in K^2$ satisfying the equation defining $E$.
+    - The *point at infinity* $PAI$ which can be thought of as infinitely far along the $y$-axis (in either direction).
+    Denote set of all $K$-points on $E$ as $E(K)$.
+- Any elliptic curve $E(K)$ is an abelian group, with group operation $plus.circle$ is defined as:
+    - We should have $P plus.circle Q plus.circle R = PAI$ iff $P, Q, R$ lie on straight line.
+    - In this case, $P plus.circle Q = -R$.
+    - To find line $ell$ passing through $P = (x_0, y_0)$ and $Q = (x_1, y_1)$:
+        - If $x_0 != x_1$, then equation of $ell$ is $y = lambda x + mu$, where $ lambda = (y_1 - y_0)/(x_1 - x_0), quad mu = y_0 - lambda x_0 $ Now $ y^2 & = x^3 + a x + b = (lambda x + mu)^2 \ ==> 0 & = x^3 - lambda^2 x^2 + (a - 2 lambda mu)x + (b - mu^2) $ Since sum of roots of monic polynomial is equal to minus the coefficient of the second highest power, and two roots are $x_0$ and $x_1$, the third root is $x_2 = lambda^2 - x_0 - x_1$. Then $y_2 = lambda x_2 + mu$ and $R = (x_2, y_2)$.
+        - If $x_0 = x_1$, then using implicit differentiation: $ & y^2 = x^3 + a x + b \ ==> & (dif y)/(dif x) = (3x^2 + a)/(2y) $ and the rest is as above, but instead with $lambda = (3x_0^2 + a)/(2y_0)$.
+- *Definition*: *group law* of elliptic curves: let $E: y^2 = x^3 + a x + b$. For all normal points $P = (x_0, y_0), Q = (x_1, y_1) in E(K)$, define
+    - $PAI$ is group identity: $P plus.circle PAI = PAI plus.circle P = P$.
+    - If $P = -Q$, $P plus.circle Q = PAI$.
+    - Otherwise, $P plus.circle Q = (x_2, -y_2)$, where $ x_2 & = lambda^2 - (x_0 + x_1), \ y_2 & = lambda x_2 + mu, \ lambda & = cases((y_1 - y_0)/(x_1 - x_0) & "if" x_0 != x_1, (3x_0^2 + a)/(2y_0) & "if" x_0 = x_1), \ mu & = y_0 - lambda x_0 $
+- *Example*:
+    - Let $E$ be given by $y^2 = x^3 + 17$ over $QQ$, $P = (-1, 4) in E(QQ)$, $Q = (2, 5) in E(QQ)$. To find $P plus.circle Q$, $ lambda = (5 - 4)/(2 - (-1)) = 1/3, quad mu = 4 - lambda(-1) = 13/3 $ So $x_2 = lambda^2 - (-1) -2 = -8/9$ and $y_2 = -(lambda x_2 + mu) = -109/27$ hence $ P plus.circle Q = (-8/9, -109/27) $ To find $[2]P$, $ lambda = (3(-1)^2 + 0)/(2 dot.op 4) = 3/8, quad mu = 4 - 3/8 dot.op (-1) = 35/8 $ so $x_3 = lambda^2 - 2 dot.op (-1) 137/64$, $y_3 = -(lambda x_3 + mu) = -2651/512$ hence $ [2]P = (x_3, y_3) = (137/64, -2651/512) $
+- *Hasse's theorem*: let $|E(FF_p)| = N$, then $ |N - (p + 1)| <= 2 sqrt(p) $

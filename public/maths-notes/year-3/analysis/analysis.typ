@@ -25,6 +25,7 @@
 - $f: X -> Y$ *surjective* if $Y = f(X)$.
 - *Limit inferior* of sequence $x_n$: $ liminf_(n -> oo) x_n := lim_(n -> oo) (inf_(m >= n) x_m) = sup_(n >= 0) inf_(m >= n) x_m $
 - *Limit superior* of sequence $x_n$: $ limsup_(n -> oo) x_n := lim_(n -> oo) (sup_(m >= n) x_m) = inf_(n >= 0) sup_(m >= n) x_m $
+- *Definition*: $f: E -> RR$ is *bi-Lipschitz* if $ exists C > 0: forall x, y in E, quad C^(-1)|x - y| <= |f(x) - f(y)| <= C|x - y| $
 
 == Open and closed sets
 
@@ -195,6 +196,7 @@ TODO: up to here, check that all notes are made from these topics
 - *Proposition*: let $f: RR -> RR$. $f$ continuous iff $forall "open" U subset.eq, f^(-1)(U) subset.eq RR$ is open.
 - *Definition*: *indicator function* on set $A$, $bb(1)_A: RR -> {0, 1}$ is $ bb(1)_A (x) := cases(1 & "if" x in A, 0 & "if" x in.not A) $
 - *Definition*: $phi: RR -> RR$ is *simple (measurable) function* if $phi$ is measurable function that has finite codomain.
+- *Definition*: sequence of functions $(f_n)$ with domain $E$ *converge in measure* to $f$ if $ forall epsilon > 0, quad mu({x in E: |f_n (x) - f(x)| > epsilon}) -> 0 "as" n -> oo $
 
 == Fundamental aspects of measurable functions
 
@@ -216,7 +218,7 @@ TODO: up to here, check that all notes are made from these topics
 - *Proposition*: let $f_1, f_2, f_3: E -> RR union {plus.minus oo}$ measurable. If $f_1 = f_2$ almost everywhere and $f_2 = f_3$ almost everywhere then $f_1 = f_3$ almost everywhere.
 - Let $f, g: E -> RR union {plus.minus oo}$ finite almost everywhere on $E$. Let $D_f$ and $D_g$ be sets for which $f$ and $g$ are finite. Then $f + g$ is finite and well-defined on $D_f sect D_g$ and complement of $D_f sect D_g$ has measure $0$.
 - *Remark*: Lebesgue measurable functions can be modified arbitrarily on a set of measure $0$ without affecting measurability.
-- *Simple approximation theorem*: let $f: E -> RR union {plus.minus oo}$, $E$ measurable. Then $f$ is measurable iff there exists sequence $(phi_n)$ of simple functions on $E$ which converge pointwise on $E$ to $f$ and satisfy $ forall n in NN, forall x in E, |phi_n(x)| <= |f|(x) $ If $f$ is nonnegative, $(phi_n)$ can be chosen to be increasing.
+- *Simple approximation theorem*: let $f: E -> RR union {plus.minus oo}$, $E$ measurable. Then $f$ is measurable iff there exists sequence $(phi_n)$ of simple functions on $E$ which converge pointwise on $E$ to $f$ and satisfy $ forall n in NN, forall x in E, |phi_n (x)| <= |f|(x) $ If $f$ is nonnegative, $(phi_n)$ can be chosen to be increasing.
 
 = The Lebesgue integral
 
@@ -245,3 +247,20 @@ TODO: up to here, check that all notes are made from these topics
 - *Definition*: let $f in cal(M)^+$. *Integral of $f$ with respect to $mu$* is $ integral f := sup{integral phi: 0 <= phi <= f, phi "simple measurable"} in RR union {oo} $ For measurable set $E$, define $ integral_E f := integral indicator(E) f $
 - *Proposition*: let $f, g$ measurable. If $g <= f$ then $integral g <= integral f$. Let $E, F$ measurable. If $E subset.eq F$ then $integral_E f <= integral_F f$.
 - *Monotone convergence theorem*: let $(f_n)$ be sequence in $cal(M)^+$. If $(f_n)$ is increasing on measurable set $E$ and converges pointwise to $f$ on $E$ then $ integral_E f_n -> integral_E f quad "as" n -> oo $
+- *Corollary*: restriction of integral to nonnegative functions is linear: $forall f, g in cal(M)^+$, $forall alpha >= 0$, $ integral (f + g) & = integral f + integral g \ integral alpha f & = alpha integral f $
+- *Fatou's lemma*: let $(f_n)$ be sequence in $cal(M)^+$, then $ integral liminf_(n -> oo) f_n <= liminf_(n -> oo) integral f_n $
+- *Lemma*: let $(f_n) subset cal(M)^+$, then $ integral sum_(n = 1)^oo f_n = sum_(n = 1)^oo integral f_n $
+- *Proposition (Chebyshev's inequality)*: let $f$ be nonnegative measurable function on $E$. Then $ forall lambda > 0, quad mu({x in E: f(x) >= lambda}) <= 1/lambda integral_E f $
+- *Proposition*: let $f$ be nonnegative measurable function on $E$. Then $ integral_E f = 0 <==> f = 0 "almost everywhere on" E $
+
+== Integration of measurable functions
+
+- *Notation*: let $cal(M)$ denote set of measurable functions.
+- *Definition*: $f in cal(M)^+$ is *integrable* if $integral f < oo$.
+- *Definition*: let $f: RR -> RR union {plus.minus oo}$ measurable function. $f$ is *integrable* if $integral f^+$ and $integral f^-$ are finite. In this case, for any measurable set $E$, define $ integral_E f := integral_E f^+ - integral_E f^- $ If $f$ integrable then $f^+ - f^-$ is well-defined.
+- *Definition*: $f in cal(M)$ is *integrable over $E$* ($E$ is measurable) if $integral_E f^+$ and $integral_E f^-$ are finite (i.e. $f dot.op indicator(E)$ is integrable).
+- *Theorem*: $f in cal(M)$ is integrable iff $|f|$ is integrable. If $f$ integrable, then $ abs(integral f) <= integral abs(f) $
+- *Corollary*: let $f, g in cal(M)$, $|f| <= |g|$. If $g$ integrable then $|f|$ is integrable, and $integral |f| <= integral |g|$.
+- *Theorem (Linearity of Integration)*: let $f, g$ integrable. Then $f + g$ is integrable and $forall alpha in RR$, $alpha f$ is integrable. The integral is linear: $ integral (f + g) & = integral f + integral g \ integral alpha f & = alpha integral f $
+- *Dominated Convergence Theorem*: let $(f_n)$ be sequence of integrable functions. If there exists an integrable $g$ with $forall n in NN, |f_n| <= g$, and $f_n -> f$ pointwise almost everywhere then $f$ is integrable and $ integral f = lim_(n -> oo) integral f_n $
+- *Example*: $sin$ is not integrable over $RR$, but is integrable over $[0, 2pi]$, since $|f_([0, 2pi])| <= indicator([0, 2pi])$.

@@ -35,14 +35,14 @@
 
 == Summary
 
-Highly capable mathematician, with average mark 90% at undergraduate, who excels at tackling difficult and technical problems. Strong skills in a variety of programming languages and owner of a popular Rust library with over 200,000 downloads. Experience in mathematical research, soon-to-be co-author of a paper on tropical geometry. Focussed and driven, with a passion for setting challenging goals and achieving them.
+Highly capable mathematician, with average mark 91% at undergraduate, who excels at tackling difficult and technical problems. Strong skills in a variety of programming languages and owner of a popular Rust library with over 200,000 downloads. Experience in mathematical research, soon-to-be co-author of a paper on tropical geometry. Focussed and driven, with a passion for setting challenging goals and achieving them.
 
 == Education
 
 *Durham University* #date("09/2021", "06/2024") \
 MMath Mathematics \
 - Third year modules: Analysis, Cryptography and Codes, Galois Theory, Number Theory, Quantum Computing, Topology.
-- Grade: predicted 1st (average mark 90%).
+- Grade: predicted 1st (average mark 91%).
 
 *Colchester Royal Grammar School* #date("09/2019", "06/2021") \
 - A Levels: Mathematics (A\*), Further Mathematics (A\*), Physics (A\*), Latin (A\*).

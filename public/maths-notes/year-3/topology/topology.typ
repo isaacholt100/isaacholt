@@ -208,3 +208,36 @@ If $f$ satisfies these, it is *continuous at $a$*.
 - *Example*:
     - $forall n >= 1$, $S^n$ is connected.
     - $forall n >= 1$, $T^n := (S^1)^n$ is connected.
+- *Definition*: *component* of topological space $X$ is maximal connected subset of $X$.
+- *Proposition*: in a topological space $X$:
+    - Every $p in X$ is in a unique component.
+    - If $C_1 != C_2$ are components, then $C_1 sect C_2 = emptyset$.
+    - $X$ is the union of its components.
+    - Every component is closed in $X$.
+- *Example*:
+    - If $X$ connected, then its only component is itself.
+    - If $X$ discrete, then each singleton in $tau_X$ is a component.
+    - In $QQ$ with induced standard topology from $RR$, every singleton is a component.
+- *Definition*: *path* in topological space $X$ is continuous function $gamma: [0, 1] -> X$. $gamma$ is said to be path from $gamma(0)$ to $gamma(1)$.
+- *Definition*: $X$ is *path-connected* if for every $p, q in X$, there is a path from $p$ to $q$.
+- *Proposition*: every path-connected topological space is connected.
+- *Example*: let $ Z = {(x, sin(1\/x)) in RR^2: 0 < x <= 1} $ $Z$ is path-connected, as a path from $(x_1, sin(1\/x_1))$ to $(x_2, sin(1\/x_2))$ is given by $ gamma(t) = (x_1 + (x_2 - x_1)t, sin(1/(x_1 + (x_2 - x_1)t))) $ So then $Z$ is connected by the above proposition, and since the closure of a connected set is connected, $overline(Z)$ is connected. 
+
+    Every point $(0, y)$, $y in [-1, 1]$ is a limit point of $Z$. Assume $overline(Z)$ is path-connected. Then there is a path $gamma: [0, 1] -> overline(Z)$ from $(0, 0)$ to $(1, sin(1))$. Since $(pi_X compose gamma)(0) = 0$ and $(pi_X compose gamma)(1) = 1$ and $pi_X compose gamma$ is continuous, by the Intermediate Value Theorem, $exists t_1 in [0, 1]: (pi_X compose gamma)(t_1) = 2\/pi$. By IVT again, $exists t_2 in [0, t_1]: (pi_X compose gamma)(t_2) = 2/(2pi)$. We obtain a strictly decreasing sequence $(t_n) subset.eq [0, 1]$ where $(pi_X compose gamma)(t_n) = 2/(n pi)$ which is bounded below by $0$, so must converge with limit $t^*$.
+    
+    Now $pi_Y compose gamma$ is continuous, so $lim_(n -> oo) (pi_Y compose gamma)(t_n) = (pi_Y compose gamma)(t^*)$. But $(pi_Y compose gamma)(t_n) = sin((n pi)/2)$, and as $n -> oo$, this oscillates between $-1$ and $1$ and does not converge, so contradiction.
+
+= Compactness
+
+- *Definition*: let $X$ topological space, *cover* is collection $(U_i)_(i in I)$ of subsets of $X$ with $ union.big_(i in I) U_i = X $ If every $U_i$ is open, it is an *open cover*. If $J subset.eq I$, then $(U_i)_(i in J)$ is a *subcover* of $(U_i)_(i in I)$ if it is also a cover.
+- *Definition*: $X$ is *compact* if every open cover admits a finite subcover.
+- *Example*:
+    - If $X$ is finite then $X$ is compact.
+    - $RR$ is not compact.
+    - If $X$ infinite with $tau = {U subset.eq X: X - U "is finite"} union emptyset$, then $X$ is compact.
+- *Proposition*: let $X$ have topology with basis $cal(B)$. Then $X$ is compact iff every cover $(B_i)_(i in I)$ of $X$, $B_i in cal(B)$, admits a finite subcover of $X$.
+- *Remark*: to determine compactness of $Y subset.eq X$, consider open covers $Y = union_(i in I) (U_i sect y)$ for $U_i$ open in $X$, which is equivalent to $Y subset.eq union_(i in I) U_i$.
+- *Example*: $[0, 1]$ is compact.
+- *Proposition*: if $f: X -> Y$ continuous, $X$ compact, then $f(X)$ is compact.
+- *Proposition*: if $X$ compact, $A subset.eq X$ closed in $X$, then $A$ is compact.
+- *Theorem*: if $X$ is Hausdorff and $A subset.eq X$ is compact then $A$ is closed.

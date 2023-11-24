@@ -80,7 +80,7 @@
 - *Definition*: *trace* of $alpha$ is $ tr_(L\/F)(alpha) := tr(T_alpha) $
 - *Remark*: norm and trace are independent of choice of basis so are well-defined (uniquely determined by $alpha$).
 - *Example*: let $L = QQ(sqrt(m))$, $m in ZZ$ non-square, let $alpha = a + b sqrt(m)$, $a, b in QQ$. Fix basis ${1, sqrt(m)}$. Now $ hat(alpha)(1) & = alpha dot.op 1 = a + b sqrt(m), \ hat(alpha)(sqrt(m)) & = alpha sqrt(m) = b m + a sqrt(m), \ T_alpha & = mat(a, b; b m, a) $ So $N_(L\/F)(alpha) = a^2 - b^2 m$, $tr_(L\/F)(alpha) = 2a$.
-- *Lemma*: the map $L -> M_n(F)$ given by $alpha -> T_alpha$ is injective ring homomorphism. So if $f(x) in F[x]$, $T_(f(alpha)) = f(T_alpha)$ ($f(T_alpha)$ is a polynomial in $T_alpha$, not $f$ applied to each entry).
+- *Lemma*: the map $L -> M_n (F)$ given by $alpha -> T_alpha$ is injective ring homomorphism. So if $f(x) in F[x]$, $T_(f(alpha)) = f(T_alpha)$ ($f(T_alpha)$ is a polynomial in $T_alpha$, not $f$ applied to each entry).
 - *Proposition*: let $L\/F$ finite field extension. $forall alpha, beta in L$,
   - $N_(L\/F)(alpha) = 0 <==> alpha = 0$.
   - $N_(L\/F)(alpha beta) = N_(L\/F)(alpha) N_(L\/F)(beta)$.
@@ -89,7 +89,7 @@
 
 == Characteristic polynomials
 
-- Let $A in M_n (F)$, then characteristic polynomial is $chi_A (x) = det(x I - A) in F[x]$ and is monic, $deg(chi_A) = n$. If $chi_A (x) = x^n + sum_(i = 0)^(n = 1) c_i x^i$ then $det(A) = (-1)^n det(0 - A) = (-1)^n chi_A (0) = (-1)^n c_0$ and $tr(A) = -c_(n - 1)$, since if $alpha_1, ..., a_n$ are eigenvalues of $A$ (in some field extension of $F$), then $tr(A) = alpha_1 + dots.h.c + alpha_n$, $chi_A (x) = (x - alpha_1) dots.h.c (x - alpha_n) = x^n - (alpha_1 + dots.h.c alpha_n) x^(n - 1) + dots.h.c$.
+- Let $A in M_n (F)$, then characteristic polynomial is $chi_A (x) = det(x I - A) in F[x]$ and is monic, $deg(chi_A) = n$. If $chi_A (x) = x^n + sum_(i = 0)^(n = 1) c_i x^i$ then $det(A) = (-1)^n det(0 - A) = (-1)^n chi_A (0) = (-1)^n c_0$ and $tr(A) = -c_(n - 1)$, since if $alpha_1, ..., alpha_n$ are eigenvalues of $A$ (in some field extension of $F$), then $tr(A) = alpha_1 + dots.h.c + alpha_n$, $chi_A (x) = (x - alpha_1) dots.h.c (x - alpha_n) = x^n - (alpha_1 + dots.h.c alpha_n) x^(n - 1) + dots.h.c$.
 - For finite field extension $L\/F$, $n = [L: F]$, $alpha in L$, *characteristic polynomial* $chi_alpha (x) = chi_(alpha, L\/F)(x)$ is characterstic polynomial of $T_alpha$. So $N_(L\/F)(alpha) = (-1)^n c_0$, $tr_(L\/F)(alpha) = -c_(n - 1)$. By the Cayley-Hamilton theorem, $chi_alpha (T_alpha) = 0$ so $T_(chi_alpha (alpha)) = chi_alpha (T_alpha) = 0$. Since $alpha -> T_alpha$ is injective, $chi_alpha (alpha) = 0$.
 - *Lemma*: let $L\/F$ finite field extension, $alpha in L$ with $L = F(alpha)$. Then $chi_alpha (x) = p_alpha (x)$.
 - *Proposition*: consider tower $F subset.eq F(alpha) subset.eq L$, let $m = [L: F(alpha)]$. Then $chi_alpha (x) = p_alpha (x)^m$.
@@ -130,3 +130,35 @@
 - *Lemma*: let $alpha in overline(ZZ)$. For every number field $K$ with $alpha in K$, $ N_K (alpha) in ZZ, quad tr_K (alpha) in ZZ $
 - *Lemma*: let $K$ number field. Then $ K = {alpha / m: alpha in cal(O)_K, m in ZZ, m != 0} $
 - *Lemma*: let $alpha in overline(ZZ)$, $K$ number field, $alpha in K$. Then $ alpha in cal(O)_K^times <==> N_K (alpha) = plus.minus 1. $
+
+== Quadratic fields and their integers
+
+- *Definition*: $d in ZZ$ is *squarefree* if $d in.not {0, 1}$ and there is no prime $p$ such that $p^2 | d$.
+- *Definition*: $K = QQ\(sqrt(d)\)$ is a *quadratic field* if $d$ is squarefree. If $d > 0$ then it is *real quadratic*. If $d < 0$ it is *imaginary quadratic*.
+- *Proposition*: let $K\/QQ$ have degree $2$. Then $K = QQ\(sqrt(d)\)$ for some squarefree $d in ZZ$.
+- *Lemma*: let $K = QQ\(sqrt(d)\)$, $d equiv 1 thick (mod 4)$. Then $ ZZ\[ (1 + sqrt(d))/2 \] = {(r + s sqrt(d))/2: r, s in ZZ, r equiv s thick (mod 2)} $
+- *Theorem*: let $K = QQ\(sqrt(d)\)$ quadratic field, then $ cal(O)_K = cases(ZZ\[sqrt(d)\] & "if" d equiv.not 1 thick (mod 4), ZZ\[ (1 + sqrt(d))/2\] & "if" d equiv 1 thick (mod 4)) $
+
+= Units in quadratic rings
+
+- *Notation*: in this section, let $K = QQ\(sqrt(d)\)$ be quadratic number field, $d in ZZ - {0}$, $|d|$ is not a square. Let $cal(O)_d = cal(O)_K$. Let $overline(a + b sqrt(d)) = a - b sqrt(d)$. The map $x -> overline(x)$ is a $QQ$-automorphism from $K$ to $K$.
+- *Definition*: $S$ is *quadratic number ring of $K$* if $S = cal(O)_d$ or $S = ZZ\[sqrt(d)\]$.
+- We have $ alpha in S^times ==> exists x in S: alpha x = 1 ==> N_K (alpha) N_K (x) = 1 ==> N_K (alpha) = plus.minus 1 $ and for $alpha in S - ZZ$, since $[QQ(alpha): QQ] = 2$ and so $[K: QQ(alpha)] = 1$ by the Tower Theorem, $ N_K (alpha) = plus.minus 1 ==> alpha overline(alpha) = plus.minus 1 ==> alpha in S^times $
+- *Theorem*: to determine the group of units for imaginary quadratic fields:
+    - \
+        - For $d < -1$, $ZZ\[sqrt(d)\]^times = {plus.minus 1}$.
+        - $cal(O)_(-1)^times = ZZ[i]^times = {plus.minus 1, plus.minus i}$.
+    - \
+        - For $d equiv 1 thick (mod 4)$ and $d < -3$, $ZZ\[ (1 + sqrt(d))/2\]^times = {plus.minus 1}$.
+        - $ZZ\[ (1 + sqrt(-3))/2\]^times = {plus.minus 1, plus.minus omega, plus.minus omega^2}$ where $omega = (1 + sqrt(-3))/2 = e^(pi i\/3)$.
+- *Main theorem*: let $d > 1$, $d$ non-square, $S$ be quadratic number ring of $K = QQ\(sqrt(d)\)$ (i.e. $S = cal(O)_d$ or $S = ZZ\[sqrt(d)\]$). Then
+    - $S$ has a smallest unit $u > 1$ (smaller than all units except $1$).
+    - $S^times = {plus.minus u^r: r in ZZ} = ideal(-1, u)$.
+- *Definition*: the smallest unit $u > 1$ above is the *fundamental unit* of $S$ (or of $K$, in the case $S = cal(O)_d$).
+
+== Proof of the main theorem
+
+- *Remark*: if $alpha = a + b sqrt(d)$ is unit in $ZZ\[sqrt(d)\]$, $a, b > 0$, then $N_K (alpha) = alpha overline(alpha) = plus.minus 1$, so $ |overline(alpha)| = |a - b sqrt(d)| = (|N_K (alpha)|)/(|alpha|) = 1/(|alpha|) < 1/(b sqrt(d)) < 1/b $ Define $ A = {alpha = a + b sqrt(d): a, b in NN_0, |overline(alpha)| < 1/b} $ If $alpha$ is a unit, then one of $plus.minus alpha, plus.minus overline(alpha)$ has $a, b >= 0$, so $A$ is non-empty.
+- *Lemma*: $|A| = oo$.
+- *Lemma*: if $alpha in A$, then $|N_K (alpha)| < 1 + 2 sqrt(d)$.
+- *Lemma*: $exists alpha = a + b sqrt(d), alpha' = a' + b' sqrt(d) in A: alpha > alpha'$, $|N_K (alpha)| = |N_K (alpha')| =: n$ and $ alpha equiv alpha' thick (mod n), quad b equiv b' thick (mod n) $

@@ -4,6 +4,8 @@
 #let char = $op("char")$
 #let cbrt(arg) = $root(3, #arg)$
 #let ideal(gens) = $angle.l gens angle.r$
+#let Aut = $"Aut"$
+#let Gal = $"Gal"$
 
 = Introduction
 
@@ -44,7 +46,7 @@ These imply $phi(0) = 0$, $phi(-a) = -phi(a)$, $phi(a^(-1)) = phi(a)^(-1)$.
 - The above lemma shows the image of $phi: K -> L$ is a subfield of $L$.
 - *Lemma*: intersections of subfields are subfields.
 - *Prime subfield* of $L$: intersection of all subfields of field $L$.
-- *Definition*: *characteristic* $char(K)$ of field $K$ is $ char(K) := min({0} union {n in NN: chi(n) = 0}) $ where $chi: ZZ -> K$, $chi(m) = 1 + dots.h.c + 1$ ($m$ times).
+- *Definition*: *characteristic* $char(K)$ of field $K$ is $ char(K) := min{n in NN: chi(n) = 0} $ (or $0$ if this does not exist) where $chi: ZZ -> K$, $chi(m) = 1 + dots.h.c + 1$ ($m$ times).
 - *Example*: $char(QQ) = char(RR) = char(CC) = 0$, $char(FF_p) = p$ for $p$ prime.
 - *Lemma*: for any field $K$, $char(K)$ is either $0$ or a prime.
 - *Theorem*:
@@ -123,7 +125,7 @@ These imply $phi(0) = 0$, $phi(-a) = -phi(a)$, $phi(a^(-1)) = phi(a)^(-1)$.
     - Let $theta = pi(x)$ where $pi: K[x] -> K_m$ is canonical projection, then $theta$ has minimal polynomial $m(x)$ and $K_m = K(theta)$.
 - *Definition*: let $L_1 \/ K$, $L_2 \/ K$ field extensions, $phi: L_1 -> L_2$ field homomorphism. $phi$ is *$K$-homomorphism* if $forall a in K, phi(a) = a$ ($phi$ fixes elements of $K$).
     - If $phi$ is isomorphism then it is *$K$-isomorphism*.
-    - If $L_1 = L_2$ then $phi$ is *$K$-automorphism*.
+    - If $L_1 = L_2$ and $phi$ is bijective then $phi$ is *$K$-automorphism*.
 - *Example*:
     - Complex conjugation $CC -> CC$ is $RR$-automorphism.
     - Let $K$ field, $char(K) != 2$, $sqrt(2) in.not K$, so $x^2 - 2$ is minimal polynomial of $sqrt(2)$ over $K$, then $K(sqrt(2)) tilde.equiv K[x] \/ ideal(x^2 - 2)$ is field extension of $K$ and $a + b sqrt(2) -> a - b sqrt(2)$ is $K$-automorphism.
@@ -180,7 +182,7 @@ These imply $phi(0) = 0$, $phi(-a) = -phi(a)$, $phi(a^(-1)) = phi(a)^(-1)$.
 
 == Normal extensions
 
-- *Definition*: $L\/K$ is *normal* if: if $f(x) in K[x]$ is irreducible and has a root in $L$ then all its roots are in $L$. In particular, $f(x)$ splits completely as product of linear factors in $L[x]$. So the minimal polynomial of $theta in L$ over $K$ has all its roots in $L$ and can be written as product of linear factors in $L[x]$.
+- *Definition*: $L\/K$ is *normal* if: for all $f(x) in K[x]$, if $f$ is irreducible and has a root in $L$ then all its roots are in $L$. In particular, $f(x)$ splits completely as product of linear factors in $L[x]$. So the minimal polynomial of $theta in L$ over $K$ has all its roots in $L$ and can be written as product of linear factors in $L[x]$.
 - *Example*:
     - If $[L: K] = 1$ then $L\/K$ is normal.
     - If $[L: K] = 2$ then $L\/K$ is normal: let $theta in L$ have minimal polynomial $m(x) in K[x]$, then $K subset.eq K(theta) subset.eq L$ so $deg(m(x)) = [K(theta): K] in {1, 2}$:
@@ -196,3 +198,49 @@ These imply $phi(0) = 0$, $phi(-a) = -phi(a)$, $phi(a^(-1)) = phi(a)^(-1)$.
     - Let $theta$ root of $f(x) = x^3 - 3x - 1 in QQ[x]$. Then $QQ(theta)\/QQ$ is normal as is splitting field of $f(x)$ over $QQ$.
     - $FF_2 (theta)\/FF_2$ where $theta^3 + theta^2 + 1 = 0$ is normal.
     - $FF_p (theta)\/FF_p (t)$ where $theta^p = t$ is normal as it is the splitting field of $x^p - t = x^p - theta^p = (x - theta)^p$ so $f(x)$ splits into linear factors in $L[x]$.
+- *Definition*: field $N$ is *normal closure* of $L\/K$ if $K subset.eq L subset.eq N$, $N\/K$ is normal, and if $K subset.eq L subset.eq N' subset.eq N$ with $N'\/K$ normal then $N = N'$.
+- *Theorem*: every finite extension $L\/K$ has normal closure $N$.
+- *Definition*: $Aut(L\/K)$ is group of $K$-automorphisms of $L\/K$ with composition the group operation.
+- *Example*:
+    - $Aut(CC\/RR)$ contains at least two elements: complex conjugation: $sigma(a + b i) = a - b i$ and the identity map $id = sigma^2$. If $tau in Aut(CC\/RR)$ then $tau(a + b i) = a + b tau(i)$. But $tau(i)^2 = tau(i^2) = tau(-1) = -1$ hence $tau(i) = plus.minus i$. So there are only two choices for $tau$. So $Aut(CC\/RR) = {id, sigma}$.
+    - Let $f(x) = x^2 + p x + q in QQ[x]$ irreducible with roots $theta, theta'$. Then $Aut(QQ(theta)\/QQ) = {id, sigma} tilde.equiv ZZ\/2$ where $sigma(a + b theta) = a + b theta'$.
+    - Let $theta$ root of $x^3 - 2$, let $sigma in Aut(QQ(theta)\/QQ)$. Now $sigma(theta)^3 = sigma(theta^3) = sigma(2) = 2$ so $sigma(theta) in {theta, omega theta, omega^2 theta}$ but $omega theta, omega^2 theta in.not QQ(theta)$ so $sigma(theta) = theta ==> sigma = id$.
+    - Let $theta^p = t$, $sigma in Aut(FF_p (theta)\/ FF_p (t))$. Then $ sigma(theta)^p = sigma(theta^p) = sigma(t) = t = theta^p $ so $(sigma(theta) - theta))^p = sigma(theta)^p - theta^p = 0 ==> sigma(theta) = theta ==> sigma = id$.
+    - Let $sigma in Aut(RR\/QQ)$. Then $alpha <= beta in RR ==> beta - alpha = gamma^2$, $gamma in RR$, so $sigma(beta) - sigma(a) = sigma(gamma)^2 >= 0$ so $sigma(alpha) <= sigma(beta)$. Given $alpha in RR$, there exist sequences $(r_n), (s_n) subset QQ$ with $r_n <= alpha <= s_n$ and $r_n -> alpha$, $s_n -> alpha$ as $n -> oo$. Hence $r_n = sigma(r_n) <= sigma(alpha) <= sigma(s_n) = s_n$ so $sigma(alpha) = alpha$ by squeezing. Hence $Aut(RR\/QQ) = {id}$.
+- *Theorem*: let $L = K(theta)$, $theta$ root of irreducible $f(x) in K[x]$, $deg(f) = n$. Then $|Aut(L\/K)| <= n$, with equality iff $f(x)$ has $n$ distinct rotos in $L$.
+- *Theorem*: let $L\/K$ be finite extension. Then $|Aut(L\/K)| <= [L: K]$, with equality iff $L\/K$ is normal and minimal polynomial of every $theta in L$ over $K$ has no repeated roots (in a splitting field).
+
+== Separable extensions
+
+- *Definition*: let $L\/K$ finite extension.
+    - $theta in L$ is *separable over $K$* if its minimal polynomial over $K$ has no repeated roots (in its splitting field).
+    - $L\/K$ is *separable* if every $theta in L$ is separable over $K$.
+- *Example*:
+    - Let $theta^3 = 2$, the minimal polynomial of $theta$ over $QQ$ is $x^3 - 2 = (x - theta)(x - omega theta)(x - omega^2 theta)$, so $QQ(theta)\/QQ$ is not normal.
+    - Let $theta^3 = t$, so minimal polynomial of $theta$ over $FF_3 (t)$ is $x^3 - t = (x - theta)^3$, so $FF_3 (theta)\/FF_3 (t)$ is not separable but is normal.
+- *Definition*: let $f(x) = sum_(i = 0)^n a_i x^i in K[x]$. *Formal derivative* of $f(x)$ is $ D f(x) = D(f) := sum_(i = 1)^n i a_i x^(i - 1) in K[x] $
+- Formal derivative satisfies: $ D(f + g) = D(f) + D(g), quad D(f g) = f dot.op D(g) + D(f) dot.op g, quad forall a in K, D(a) = 0 $ Also $deg(D(f)) < deg(f)$. But if $char(K) = p$, then $D(x^p) = p x^(p - 1) = 0$ so it is not always true that $deg(D(f)) = deg(f) - 1$.
+- *Theorem (sufficient conditions for separability)*: finite extension $L\/K$ is separable if any of the following hold:
+    - $char(K) = 0$,
+    - $char(K) = p$ and $K = {b^p: b in K}$ for prime $p$,
+    - $char(K) = p$ and $p divides.not [L: K]$.
+- *Definition*: $K$ is a *perfect field* if the first two of the above properties hold.
+- *Remark*: all finite extensions of any perfect extension (e.g. $QQ, FF_p$) are separable (recall Fermat's little theorem: $forall a in FF_p, a = a^p$). So to find a non-separable extension $L\/K$, we need $char(K) = p > 0$, $K$ infinite and $p | [L: K]$. For example, $L = FF_p (theta)$, $K = FF_p (t)$ where $theta^p = t$.
+- *Theorem*: let $alpha_1, ..., alpha_n$ algebraic over $K$, then $K(alpha_1, ..., alpha_n)\/K$ is separable iff every $alpha_i$ is separable over $K$.
+- *Remark*: for tower $K subset.eq M subset.eq L$, $L\/K$ is separable iff $L\/M$ and $M\/K$ are separable. However, the same statement for normality does not hold.
+- *Theorem of the Primitive Element*: let $L\/K$ finite and separable. Then $L\/K$ is simple, i.e. $exists alpha in L: L = K(alpha)$.
+
+== The fundamental theorem of Galois theory
+
+- *Definition*: finite extension $L\/K$ is *Galois extension* if it is normal and separable. Equivalently, $|Aut(L\/K)| = [L: K]$. When $L\/K$ is Galois, the *Galois group* is $Gal(L\/K) := Aut(L\/K)$.
+- *Definition*: let $cal(F) := {"intermediate fields of" L\/K}$ and $cal(G) := {"subgroups of" Gal(L\/K)}$. Define the map $Gamma: cal(F) -> cal(G)$, $Gamma(M) = Gal(L\/M)$.
+- *Definition*: let $L$ field, $G$ a group of automorphisms of $L$. *Fixed field* $L^G$ of $G$ is set of elements in $L$ which are invariant under all automorphisms in $G$: $ L^G := {alpha in L: forall alpha in G, thick sigma(alpha) = alpha} $
+- *Theorem*: if $G$ is fintie group of automorphisms of $L$ then $L^G$ is subfield of $L$ and $[L: L^G] = |G|$.
+- *Corollary*: if $L\/K$ is Galois then
+    - $L^(Gal(L\/K)) = K$.
+    - If $L^G = K$ for some group $G$ of $K$-automorphisms of $L$, then $G = Gal(L\/K)$.
+- *Remark*: if $L\/K$ is Galois and $alpha in L$ but $alpha in.not K$, then there exists an automorphism $sigma in Gal(L\/K)$ such that $sigma(alpha) != alpha$.
+- *Definition*: for $H$ subgroup of $Gal(L\/K)$, set $L^H := {alpha in L: forall sigma in H, thick sigma(alpha) = alpha}$, then $K subset.eq L^H subset.eq L$. Define $Phi: cal(G) -> cal(F)$, $Phi(H) = L^H$.
+- *Theorem A*: for Galois extension $L\/K$,
+    - $Gamma: cal(F) -> cal(G)$ and $Phi: cal(F) -> cal(F)$ are mutually inverse bijections (the *Galois correspondence*).
+    - 
