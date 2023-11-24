@@ -33,13 +33,13 @@ const PROJECTS: Project[] = [
 		description: "A simple single page application which tests knowledge of Latin grammar. It features a \"Live\" mode where users from the same school can challenge each other to a timed test. I created this while I was studying Latin A Level to help with my revision.",
 		image: ""
 	},
-	{
-		name: "AoC 2022",
-		url: "https://replit.com/@isaacholt1/aoc2022",
-		source: "https://github.com/isaacholt100/aoc2022",
-		description: "Solutions written in Python for Advent of Code 2022.",
-		image: ""
-	},
+	// {
+	// 	name: "AoC 2022",
+	// 	url: "https://replit.com/@isaacholt1/aoc2022",
+	// 	source: "https://github.com/isaacholt100/aoc2022",
+	// 	description: "Solutions written in Python for Advent of Code 2022.",
+	// 	image: ""
+	// },
 	{
 		name: "My Personal Website",
 		url: "/",
