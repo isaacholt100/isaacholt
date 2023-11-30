@@ -241,6 +241,14 @@ These imply $phi(0) = 0$, $phi(-a) = -phi(a)$, $phi(a^(-1)) = phi(a)^(-1)$.
     - If $L^G = K$ for some group $G$ of $K$-automorphisms of $L$, then $G = Gal(L\/K)$.
 - *Remark*: if $L\/K$ is Galois and $alpha in L$ but $alpha in.not K$, then there exists an automorphism $sigma in Gal(L\/K)$ such that $sigma(alpha) != alpha$.
 - *Definition*: for $H$ subgroup of $Gal(L\/K)$, set $L^H := {alpha in L: forall sigma in H, thick sigma(alpha) = alpha}$, then $K subset.eq L^H subset.eq L$. Define $Phi: cal(G) -> cal(F)$, $Phi(H) = L^H$.
-- *Theorem A*: for Galois extension $L\/K$,
+- $Gamma$ and $Phi$ are inclusion-reversing: $M_1 subset.eq M_2 ==> Gamma(M_2) subset.eq Gamma(M_1)$, and $H_1 subset.eq H_2 ==> Phi(H_2) subset.eq Phi(H_1)$.
+- *Theorem A*: for finite Galois extension $L\/K$,
     - $Gamma: cal(F) -> cal(G)$ and $Phi: cal(F) -> cal(F)$ are mutually inverse bijections (the *Galois correspondence*).
-    - 
+    - For $M in cal(F)$, $L\/M$ is Galois and $|Gal(L\/M)| = [L: M]$.
+    - For $H in cal(G)$, $L\/L^H$ is Galois and $Gal(L\/L^H) = H$.
+- *Remark*: $Gal(L\/K)$ acts on $cal(F)$: given $sigma in Gal(L\/K)$ and $K subset.eq M subset.eq L$, consider $sigma(M) = {sigma(alpha): alpha in M}$ which is a subfield of $L$ and contains $K$, since $sigma$ fixes elements of $K$. Given another automorphism $tau: L -> L$, $ tau in Gal(L\/sigma(M)) & <==> forall alpha in M, tau(sigma(alpha)) = sigma(alpha) \ & <==> forall alpha in M, sigma^(-1) (tau (sigma(alpha))) = alpha \ & <==> sigma^(-1) tau sigma in Gal(L\/M) \ & <==> tau in sigma Gal(L\/M) sigma^(-1) $ Hence $sigma Gal(L\/M) sigma^(-1)$ and $Gal(L\/M)$ are conjugate subgroups of $Gal(L\/K)$. Now $ [M: K] = ([L: K]) / ([L: M]) = abs(Gal(L\/K)) / abs(Gal(L\/M)) $
+- *Theorem B*: for finite Galois extension $L\/K$, $G = Gal(L\/K)$ and $K subset.eq M subset.eq L$. Then the following are equivalent:
+    - $M\/K$ is Galois.
+    - $forall sigma in G, quad sigma(M) = M$.
+    - $H = Gal(L\/M)$ is normal subgroup of $G = Gal(L\/K)$.
+    When these conditions hold, we have $Gal(M\/K) tilde.equiv G\/H$.

@@ -3,6 +3,7 @@
 
 #let powset(X) = $cal(P)(X)$
 #let inv(x) = $#x^(-1)$
+#let vd(v) = $bold(#v)$
 
 = Metric spaces
 
@@ -230,7 +231,7 @@ If $f$ satisfies these, it is *continuous at $a$*.
 = Compactness
 
 - *Definition*: let $X$ topological space, *cover* is collection $(U_i)_(i in I)$ of subsets of $X$ with $ union.big_(i in I) U_i = X $ If every $U_i$ is open, it is an *open cover*. If $J subset.eq I$, then $(U_i)_(i in J)$ is a *subcover* of $(U_i)_(i in I)$ if it is also a cover.
-- *Definition*: $X$ is *compact* if every open cover admits a finite subcover.
+- *Definition*: $X$ is *compact* if every open cover of $X$ admits a finite subcover.
 - *Example*:
     - If $X$ is finite then $X$ is compact.
     - $RR$ is not compact.
@@ -241,3 +242,13 @@ If $f$ satisfies these, it is *continuous at $a$*.
 - *Proposition*: if $f: X -> Y$ continuous, $X$ compact, then $f(X)$ is compact.
 - *Proposition*: if $X$ compact, $A subset.eq X$ closed in $X$, then $A$ is compact.
 - *Theorem*: if $X$ is Hausdorff and $A subset.eq X$ is compact then $A$ is closed.
+- *Corollary*: if $X$ compact, $Y$ is Hausdorff, $f: X -> Y$ continuous bijection, then $f$ is homeomorphism.
+- *Theorem*: if $X$, $Y$ compact, then $X times Y$ is compact.
+- *Definition*: $S subset.eq RR^n$ is *bounded* if $ exists r in R: S subset.eq B(0; r) $
+- *Theorem (Heine-Borel)*: $A subset.eq RR^n$ is compact iff it is closed and bounded.
+- *Example*:
+    - $S^n$ is compact.
+    - $T^n$ is compact.
+    - $X = {vd(x) in RR^3: x_1^2 + x_2^2 - x_3^3 = 1}$ is not compact, since $forall n in NN$, $\(n, 0, \(n^2 - 1\)^(1\/3) \) in X$, so $X subset.eq.not B(n)$, so is unbouded, so not compact by Heine-Borel.
+- *Corollary*: let $f: X -> RR$, $X$ compact, $f$ continuous. Then $f$ attains its maximum and minimum.
+- *Theorem (Bolzano-Weierstrass)*: an infinite subset $A$ of a compact space $X$ has a limit point in $X$.

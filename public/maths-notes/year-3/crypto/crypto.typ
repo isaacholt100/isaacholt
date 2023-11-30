@@ -187,3 +187,21 @@
 - *Example*:
     - Let $E$ be given by $y^2 = x^3 + 17$ over $QQ$, $P = (-1, 4) in E(QQ)$, $Q = (2, 5) in E(QQ)$. To find $P plus.circle Q$, $ lambda = (5 - 4)/(2 - (-1)) = 1/3, quad mu = 4 - lambda(-1) = 13/3 $ So $x_2 = lambda^2 - (-1) -2 = -8/9$ and $y_2 = -(lambda x_2 + mu) = -109/27$ hence $ P plus.circle Q = (-8/9, -109/27) $ To find $[2]P$, $ lambda = (3(-1)^2 + 0)/(2 dot.op 4) = 3/8, quad mu = 4 - 3/8 dot.op (-1) = 35/8 $ so $x_3 = lambda^2 - 2 dot.op (-1) 137/64$, $y_3 = -(lambda x_3 + mu) = -2651/512$ hence $ [2]P = (x_3, y_3) = (137/64, -2651/512) $
 - *Hasse's theorem*: let $|E(FF_p)| = N$, then $ |N - (p + 1)| <= 2 sqrt(p) $
+- *Elliptic curve Elgamal signatures*:
+    - Use agreed elliptic curve $E$ over $FF_p$, point $P in E(FF_p)$ of prime order $n$.
+    - Alice wants to sign message $m$, encoded as integer mod $n$.
+    - Alice generates private key $alpha in ZZ\/n$ and public key $Q = [alpha] P$.
+    - A valid signature is $(R, s)$ where $R = (x_R, y_R) in E(FF_p)$, $s in ZZ\/n$, $[tilde(x_R)] Q plus.circle [s] R = [m] P$.
+    - To generate a valid signature, Alice chooses random $k in ZZ\/n$ and sets $R = [k] P$, $s = k^(-1) (m - tilde(x_R) alpha)$.
+    - $k$ must be randomly generated for each message.
+- *Baby-step giant-step algorithm for elliptic curve DLP*: given $P$ and $Q = [alpha] P$, find $alpha$:
+    - Let $N = ceil(sqrt(n))$, $n$ is order of $P$.
+    - Compute $P, [2] P, ..., [N - 1]P$.
+    - Compute $Q plus.circle [-N]P, Q plus.circle [-2N]P, ..., Q plus.circle [-(N - 1)N]P$ and find a match between these two lists: $[i]P = Q plus.circle [-j N]P$, then $[i + j N]P = Q$ so $alpha = i + j N$.
+- For well-chosen elliptic curves, the best algorithm is the baby-step giant-step algorithm, with run time $O(sqrt(n)) approx O(sqrt(p))$. This is much slower than the index-calculus method for the DLP in $FF_p^times$.
+- *Pollard's $p - 1$ algorithm* to factorise $n$:
+    - Choose smoothness bound $B$.
+    - Choose random $2 <= a <= n - 2$. Set $a_1 = a$, $i = 1$.
+    - Compute $a_(i + 1) = a_i^i thick mod n$, increment $i$ by $1$. Find $d = gcd(a_(i + 1) - 1, n)$. If $1 < d < n$, we have found a nontrivial factor of $n$. If $d = n$, pick new $a$ and retry. If $d = 1$, repeat this step.
+    - A variant is instead of computing $a_(i + 1) = a_i^i$, compute $a_(i + 1) = a_i^(m_i)$ where $m_1, ..., m_r$ are the prime powers $<= B$.
+    - The algorithm works if $p - 1$ is $B$-powersmooth (all prime power factors are $<= B$).

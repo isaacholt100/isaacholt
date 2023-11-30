@@ -9,6 +9,7 @@
 #let conj(arg) = $arg^*$
 #let expected(arg) = $angle.l arg angle.r$
 #let vd(vector) = $bold(vector)$
+#let End = $"End"$
 
 = Quantum mechanics essentials
 
@@ -87,7 +88,7 @@
 - All density matrices are density operators.
 - After taking a measurement of a pure or mixed state:  
     - The measurement is $lambda$ with probability $p_lambda = tr(hat(P)_lambda hat(rho) hat(P)_lambda) = tr(hat(P)_lambda hat(rho))$.
-    - Density matrix after measuring value of $lambda$ is $ hat(rho) -> 1/p_lambda hat(P)_lambda hat(rho) hat(P)_lambda = 1/tr(hat(P)_lambda hat(rho) hat(P)_lambda) = hat(P)_lambda hat(rho) hat(P)_lambda $
+    - Density matrix after measuring value of $lambda$ is $ hat(rho) -> 1/p_lambda hat(P)_lambda hat(rho) hat(P)_lambda = 1/tr(hat(P)_lambda hat(rho) hat(P)_lambda) hat(P)_lambda hat(rho) hat(P)_lambda $
 - *Theorem*: let $hat(rho)$ be a density operator on a Hilbert space, then $hat(rho)$ corresponds to a pure state iff $tr(hat(rho)^2) = 1$.
 
 = Qubits and the Bloch sphere
@@ -160,4 +161,81 @@ ket(1) <-> vec(0, 1): & quad vd(r) = vec(0, 0, -1), quad (theta, phi) = (pi, dot
 - Inner products of $H_1$ and $H_2$ induce an inner product on $H_1 times.circle H_2$: for $ket(psi_1), ket(psi_2) in H_1$, $ket(phi_1), ket(phi_2) in H_2$, $ (bra(psi_1) times.circle bra(phi_1))(ket(psi_2) times.circle ket(phi_2)) = braket(psi_1, psi_2) braket(phi_1, phi_2) $
 - For bases ${ket(i)}$ for $H_1$ and ${ket(j)}$ for $H_2$, ${ket(i) times.circle ket(j)}$ is basis for $H_1 times.circle H_2$: for $ket(psi) in H_1$, $ket(phi) in H_2$, $ ket(psi) times.circle ket(phi) = (sum_i a_i ket(i)) times.circle (sum_j b_j ket(j)) = sum_(i, j) a_i b_j ket(i) times.circle ket(j) $
 - The most general vector $ket(psi) in H_1 times.circle H_2$ is $ ket(psi) = sum_(i, j) c_(i, j) ket(i) times.circle ket(j) $ Generally, this cannot be written as a tensor product $ket(psi) times.circle ket(phi)$. If it can be, it is a *separable* state. If not, it is *entangled* (e.g. a linear combination of separable states is generally entangled).
-- If ${ket(i)}$, ${ket(j)}$ orthonormal then the inner product in $H_1 times.circle H_2$ is given by $ braket(phi, psi) & = (sum_(i, j) d_(i, j)^* bra(i) times.circle bra(j))(sum_(m, n) c_(m, m) ket(m) times.circle ket(n)) \ & = sum_(i, j, m, n) d_(i, j)^* c_(m, n) braket(i, m) braket(j, n) = sum_(i, j) c_(i, j)^* d_(i, j) $
+- If ${ket(i)}$, ${ket(j)}$ orthonormal then the inner product in $H_1 times.circle H_2$ is given by $ braket(phi, psi) & = (sum_(i, j) d_(i, j)^* bra(i) times.circle bra(j))(sum_(m, n) c_(m, m) ket(m) times.circle ket(n)) \ & = sum_(i, j, m, n) d_(i, j)^* c_(m, n) braket(i, m) braket(j, n) = sum_(i, j) d_(i, j)^* c_(i, j) $
+- The Hilbert space of an $N$-qubit system is the $2^N$-dimensional Hilbert space $cal(H)_N = cal(H)_q^(times.circle N)$ where $cal(H)_q$ is a single qubit Hilbert space.
+- *Example*: let $cal(H)_3 = cal(H)_q times.circle cal(H)_q times.circle cal(H)_q$. Operator $hat(I) times.circle hat(sigma_1) times.circle hat(I)$ acts on the second qubit and leaves the other two invariant. $hat(sigma_1) ket(0) = ket(1)$ and $hat(sigma_1) ket(1) = ket(0)$ so in this basis, $sigma_1$ acts the logical NOT gate $overline((dot.op))$, where $overline(0) = 1$, $overline(1) = 0$. So $ \(hat(I) times.circle hat(sigma)_1 times.circle hat(I)\) ket(x y z) = ket(x overline(y) z) $
+
+== Linear operators and local unitary operations
+
+- Linear operators on $cal(H)$ can be written as linear combinations of $hat(A) times.circle hat(B)$, where $ (hat(A) times.circle hat(B)) (ket(psi) times.circle ket(phi)) = (hat(A) ket(psi)) times.circle (hat(B) ket(phi)) $
+- Properties of tensor product of linear operators:
+    - $hat(A) times.circle hat(B) + hat(C) times.circle hat(B) = (hat(A) + hat(C)) times.circle hat(B)$.
+    - $hat(A) times.circle hat(B) + hat(A) times.circle hat(D) = hat(A) times.circle (hat(B) + hat(D))$.
+    - $(hat(A) times.circle hat(B))^dagger = hat(A)^dagger times.circle hat(B)^dagger$.
+    - $\(hat(A) times.circle hat(B)\)\(hat(C) times.circle hat(D)\) = \(hat(A) hat(C) times.circle hat(B) hat(D)\)$.
+    - $tr_(cal(H)_A times.circle cal(H)_B) \(hat(A) times.circle hat(B)\) = tr_(cal(H)_A) \(hat(A)\) tr_(cal(H)_B) \(hat(B)\)$.
+    So tensor product of linear operators preserves unitarity, Hermiticity, positivity, and tensor product of two projectors is a projector.
+- For bipartite system, *local unitary operations (LO)* are of the form $hat(U)_A times.circle hat(I)$ (for Alice) or $hat(I) times.circle hat(U)_B$ (for Bob). This means Alice and Bob can only act on their own qubit (assuming they have one each).
+- $hat(U)_A times.circle hat(I)$ and $hat(I) times.circle hat(U)_B$ commute: $\[hat(U)_A times.circle hat(I), hat(I) times.circle hat(U)_B\] = 0$, and their product is $hat(U)_A times.circle hat(U)_B$.
+- *Note*: any unitary transformation $hat(U)_A times.circle hat(U)_B$ performed using LO acting on a separable state $ket(psi) times.circle ket(phi)$ produces another separable state: $hat(U)_A ket(psi) times.circle hat(U)_B ket(phi)$. In particular, an entangled state cannot be created from a separable state.
+- *Example*: $ e^(hat(A) times.circle hat(I)) & = sum_(k = 0)^oo (hat(A) times.circle hat(I)) / (k!) = sum_(k = 0)^oo (hat(A) times.circle hat(I)) / (k!) = e^(hat(A)) times.circle hat(I), \ e^(hat(I) times.circle hat(B)) & = sum_(k = 0)^oo (hat(I) times.circle hat(B))^k / (k!) = sum_(k = 0)^oo (hat(I) times.circle hat(B)^k) / (k!) = hat(I) times.circle e^(hat(B)) $ Note that generally, $e^(hat(A)) times.circle e^(hat(B)) != e^(hat(A) times.circle hat(B))$ since $ e^(hat(A) times.circle hat(B)) & = sum_(k = 0)^oo (hat(A)^n times.circle hat(B)^k) / (k!), \ e^(hat(A)) times.circle e^(hat(B)) & = (sum_(i = 0)^oo hat(A)^i / (i!)) times.circle (sum_(j = 0)^oo hat(B)^j / (j!)) = sum_(i, j = 0)^oo (hat(A)^i times.circle hat(B)^j) / (i! j!) $
+- *Definition*: a mixed state is *separable* iff it is an ensemble of separable states, and *entangled* otherwise.
+- *Definition*: *density matrix* of separable pure state $ket(Psi) = ket(psi) times.circle ket(phi)$ is $ hat(rho) = ket(Psi) bra(Psi) = (ket(psi) times.circle ket(phi)) (bra(psi) times.circle bra(phi)) = (ket(psi) bra(psi)) times.circle (ket(phi) bra(phi)) = hat(rho)_A times.circle hat(rho)_B $ where $hat(rho)_A = ket(psi) bra(psi)$ and $hat(rho)_B = ket(phi) bra(phi)$.
+- *Definition*: *density matrix* of separable mixed state is $ hat(rho) = sum_i p_i hat(rho)_A^((i)) times.circle hat(rho)_B^((i)) $ where ${hat(rho)_A^((i))}$ are mixed or pure states of first system, ${hat(rho)_B^((i))}$ are mixed or pure states of second system.
+
+== Matrix representation
+
+- *Tensor product* of two vectors is given by e.g. $ vec(1, 2, 3) times.circle vec(4, 5) = vec(1 vec(4, 5), 2 vec(4, 5), 3 vec(4, 5)) = vec(4, 5, 8, 10, 12, 15) $ The expression is similar for matrices: $ mat(1, 2; 3, 4) times.circle mat(5, 6; 7, 8) = mat(1 mat(5, 6; 7, 8), 2 mat(5, 6; 7, 8); 3 mat(5, 6; 7, 8), 4 mat(5, 6; 7, 8)) = mat(5, 6, 10, 12; 7, 8, 14, 16; 15, 18, 20, 24; 21, 24, 28, 36) $
+- If ${ket(i): i in [n]}$ is orthonormal basis for $cal(H)_A$, ${ket(j): j in [m]}$ is orthonormal basis for $cal(H)_B$, then ${ket(i) times.circle ket(j): i in [n], j in [m]}$ is orthonormal basis for $cal(H)_A times.circle cal(H)_B$.
+- *Note*: general vector in tensor product of Hilbert spaces is linear combination of tensor products (of vectors), general linear operator acting on tensor product of Hilbert spaces is linear combination of tensor products (of linear operators).
+- *Controlled NOT (CNOT)* operator acts on $cal(H)_2 = cal(H)_q times.circle cal(H)_q$ and is defined as $ U = (I_2 + sigma_3) / 2 times.circle I_2 + (I_2 - sigma_3) / 2 times.circle sigma_1 $ We have $U ket(00) = ket(00)$, $U ket(01) = ket(01)$, $U ket(10) = ket(11)$, $U ket(11) = ket(10)$.
+
+== Local measurements
+
+- Alice and Bob can perform measurements on their own systems using self-adjoint operators of the form $hat(F) = hat(F)_A times.circle hat(I)$ for Alice and $hat(G) = hat(I) times.circle hat(G)_B$ for Bob. If $hat(F)_A$ and $hat(G)_B$ both have non-degenerate systems, these operators have projection operators $hat(F)_(A i) = ket(i) bra(i)$ and $hat(G)_(B j) = ket(j) bra(j)$.
+- In the full system, $hat(F)$ and $hat(G)$ are degenerate, with degeneracy given by dimension of other subsystem, so $dim(cal(H)_B)$ for Alice's observable and $dim(cal(H)_A)$ for Bob's. Corresponding projection operators in full system are $hat(F)_i = hat(F)_(A i) times.circle hat(I)$ and $hat(G)_j = hat(I) times.circle hat(G)_(B j)$.
+- Since $\[hat(F), hat(G)\] = 0$, these measurements are compatible so Alice and bob can both measure, the final state is eigenstate of both $hat(F)$ and $hat(G)$. Probability of an outcome occuring is not affected by whether Alice or Bob measures first (or simultaneously).
+- Let $ket(Psi)$ be pure separable state: $ ket(Psi) = ket(psi) times.circle ket(phi) = sum_(i, j) alpha_i beta_j ket(i) times.circle ket(j) = sum_(i, j) gamma_(i j) ket(i) times.circle ket(j) $ where ${ket(i)}$ and ${ket(j)}$ are orthonormal bases for $cal(H)_A$ and $cal(H)_B$ respectively. If Alice measures $hat(F)$ and obtains $f_m$ with probability $|alpha_m|^2 = sum_j |gamma_(m j)|^2$, system collapses to state $ sum_j beta_j ket(m) times.circle ket(j) = ket(m) times.circle ket(phi) $ If Bob then measures $hat(G)$ and obtains $g_n$ with probability $|beta_n|^2 = sum_i |gamma_(i n)|^2$ then final state is $ket(m) times.circle ket(n)$. This is the same final state as when Bob measures first, except intermediate state is $ket(psi) times.circle ket(n)$. The probabiity of measuring $(f_m, g_n)$ is $|gamma_(m n)|^2 = |alpha_m beta_n|^2$.
+- Probability of Alice measuring $f_i$ is $|braket(i, psi)|^2 = tr(hat(rho)_A hat(F)_(A i))$ where $hat(F)_(A i) = ket(i) bra(i)$. After measuring $hat(F)_A$ and finding $f_i$, Alice's state collapses to $ ket(psi) & -> ket(i) = 1/(|braket(i, psi)|) hat(F)_(A i) ket(psi) = 1/sqrt(tr(hat(rho)_A hat(F)_(A i))) hat(F)_(A i) ket(psi) \ hat(rho)_A & -> 1/tr(hat(rho)_A hat(F)_(A i)) hat(F)_(A i) hat(rho)_A hat(F)_(A i) $
+- For bipartite system with separable state $ket(Psi)$, when Alice measures $hat(F)_A$, she does not operate on Bob's system, so $hat(F)_i = hat(F)_(A i) times.circle hat(I)$ and density matrix is $ hat(rho) = ket(Psi) bra(Psi) = (ket(psi) bra(psi)) times.circle (ket(phi) bra(phi)) = hat(rho)_A times.circle hat(rho)_B $ If Alice measures $hat(F) = hat(F)_A times.circle hat(I)$, outcome is $f_i$ with probability $tr\(hat(rho) hat(F)_i\) = tr\(hat(rho)_A hat(F)_(A i)\)$ and density matrix collapses to $ hat(rho) -> 1/tr(hat(rho)_A hat(F)_(A i)) hat(F)_(A i) hat(rho)_A hat(F)_(A i) times.circle hat(rho)_B = 1/tr(hat(rho) hat(F)_i) = hat(F)_i hat(rho) hat(F)_i $ Note that the eigenspace corresponding to eigenvalue $f_i$ is non-degenerate in $cal(H)_A$ but any $ket(i) times.circle ket(phi)$ with $ket(phi) in cal(H)_B$ is an eigenvector of $hat(F) times.circle hat(I)$ with eigenvalue $f_i$, so eigenspace is degenerate in $cal(H)_A times.circle cal(H)_B$. It does not matter if Alice or Bob measures first: if $hat(F) = hat(F)_A times.circle hat(I)$ and $hat(G) = hat(I) times.circle hat(G)_B$ are measured, outcome is $(f_i, g_m)$ with probability $tr(hat(rho) hat(P)_(i j))$ where $hat(P)_(i j) = hat(F)_(A i) times.circle hat(G)_(B j) = ket(i) bra(i) times.circle ket(j) bra(j)$, and state collapses to $ hat(rho) -> 1/tr(hat(rho) hat(P)_(i j)) hat(P)_(i j) hat(rho) hat(P)_(i j) = ket(i) times.circle ket(j) $
+- For bipartite system with entangled state $ket(Psi) = sum_(i, j) gamma_(i j) ket(i) times.circle ket(j)$, define coefficients $ alpha_m := (sum_j |gamma_(m j)|^2)^(1\/2), quad beta_n := (sum_i |gamma_(i n)|^2)^(1\/2) $ and define auxiliary states (excluding values of $m$ and $n$ when $beta_n = 0$ or $alpha_m = 0$) $ ket(psi_n) & := 1/beta_n sum_i gamma_(i n) ket(i) in cal(H)_A, \ ket(phi_m) & := 1/alpha_m sum_j gamma_(m j) ket(j) in cal(H)_B $ Then $ ket(Psi) = sum_i alpha_i ket(i) times.circle ket(phi_i) = sum_j beta_j ket(psi_j) times.circle ket(j) $ If Alice measures $hat(F)$ with $f_i$, state collapses to $ ket(Psi) -> hat(F)_i ket(Psi) = (hat(F)_(A i) times.circle hat(I)) ket(Psi) tilde ket(i) times.circle ket(phi_i) $ i.e. the entangled state collapses to a separable state. So Bob's state depends on the result of Alice's measurement.
+
+== Reduced density matrix
+
+- *Definition*: for operator $hat(C) times.circle hat(D)$ acting on $cal(H)_A times.circle cal(H)_B$, *partial trace* over $cal(H)_A$ and $cal(H)_B$, $tr_A: End(cal(H)_A times.circle cal(H)_B) -> End(cal(H)_B)$ and $tr_A: End(cal(H)_A times.circle cal(H)_B) -> End(cal(H)_A)$, are respectively $ tr_A \(hat(C) times.circle hat(D)\) := tr\(hat(C)\) hat(D), quad tr_B \(hat(C) times.circle hat(D)\) := tr\(hat(D)\) hat(C) $
+- *Definition*: for a given system, the *reduced density matrix* of a subsystem is partial trace of density matrix over other subsystems. So for bipartite system, $ hat(rho)_A := tr_B \(hat(rho)\), quad hat(rho)_B := tr_A \(hat(rho)\) $
+- *Note*: a reduced matrix describes one subsystem, assuming no knowledge of the other system. Therefore, generally, reduced density matrices describe mixed states, even if full system is in a pure state.
+- *Example*: consider state $ket(beta_00)$: $ hat(rho) & = ket(beta_00) bra(beta_00) = 1/2 (ket(0) bra(0) times.circle ket(0) bra(0) + ket(0) bra(1) times.circle ket(0) bra(1) + ket(1) bra(0) times.circle ket(1) bra(0) + ket(1) bra(1) times.circle ket(1) bra(1)) \
+hat(rho)_A & = tr_B \(hat(rho)\) \
+& = 1/2 (ket(0) bra(0) tr_B (ket(0) bra(0)) + ket(0) bra(1) tr_B (ket(0) bra(1)) + ket(1) bra(0) tr_B (ket(1) bra(0)) + ket(1) bra(1) tr_B (ket(1) bra(1))) \
+& = 1/2 (ket(0) bra(0) + ket(1) + bra(1)) = 1/2 hat(I)
+$ Can also obtain reduced density matrix by writing matrices: $ & ket(beta_00) -> vd(v) = 1/sqrt(2) vec(1, 0, 0, 1) \ hat(rho) & = vd(v) vd(v)^dagger = 1/2 mat(1, 0, 0, 1; 0, 0, 0, 0; 0, 0, 0, 0; 1, 0, 0, 1) \ & = 1/2 mat(1, 0; 0, 0) times.circle mat(1, 0; 0, 0) + 1/2 mat(0, 1; 0, 0) times.circle mat(0, 1; 0, 0) + 1/2 mat(0, 0; 1, 0) times.circle mat(0, 0; 1, 0) + 1/2 mat(0, 0; 0, 1) times.circle mat(0, 0; 0, 1) \ rho_A & = 1/2 mat(1, 0; 0, 0) tr mat(1, 0; 0, 0) + 1/2 mat(0, 1; 0, 0) tr mat(0, 1; 0, 0) + 1/2 mat(0, 0; 1, 0) tr mat(0, 0; 1, 0) + 1/2 mat(0, 0; 0, 1) tr mat(0, 0; 0, 1) \ & = 1/2 mat(1, 0; 0, 0) + 1/2 mat(0, 0; 0, 1) = 1/2 I_2 $
+- Properties of reduced density matrix $hat(rho)_A$:
+    - Invariant under all local operations in system $B$.
+    - Under unitary transformations $hat(U)$ in system $A$, $hat(rho)_A$ transforms as normal: $hat(rho)_A -> hat(U) hat(rho)_A hat(U)^dagger$.
+    - Local measurements in system $A$ can be described by $hat(rho)_A$ and operators acting on $cal(H)_A$: $tr_B \(hat(F)_i hat(rho) hat(F)_i\) = hat(F)_(A i) hat(rho)_A hat(F)_(A i)$.
+- *Theorem*: if $ket(Psi) in cal(H)_A times.circle cal(H)_B$ is pure state, then $hat(rho)_A$ is pure iff $ket(Psi)$ is separable.
+- *Corollary*: if spectrum of $hat(F)_A$ is non-degenerate then measuring $hat(F)_A$ in system $cal(H)_A$ produces separable state on system $cal(H)_A times.circle cal(H)_B$, i.e. measurements destroys entanglement.
+- Entanglement does not violate causality (does not allow communication faster than the speed of light). I.e., if Alice makes a local measurement on an entangled system, Bob cannot detect this, even those the reduced density matrix for his system has changed.
+
+== Classical communication
+
+- Alice and Bob can use classical communication (CC) to communicate results of measurements of their own subsystem. If the state was initially entangled, Bob communicating a measurement to Alice would give Alice information about her subsystem.
+- If Alice and Bob can use local operations (LO) and classical communication (CC), they can use LOCC.
+
+= Entanglement applications
+
+== Bell states
+
+- Checks for entangled state:
+    - If $ket(psi) times.circle ket(psi') = a ket(0) times.circle ket(phi) + b ket(1) times.circle ket(phi)$ for some $a, b in CC$, $ket(phi)$, then $ket(psi) times.circle ket(psi')$ is separable, otherwise entangled.
+    - If reduced density matrix of either subsystem gives a pure state ($tr(rho^2) = 1$) then state is separable. If it gives a mixed state ($tr(rho^2) < 1$), state is entangled.
+- *Bell states*: for $x, y in {0, 1}$, $ ket(beta_(x y)) = 1/sqrt(2) (ket(0) times.circle ket(y) + (-1)^x ket(1) times.circle ket(overline(y))) $ where $overline(0) = 1$, $overline(1) = 0$.
+- Bell states are maximally entangled (trace of reduced density matrix of both sides is $1/2$) and form an orthonormal basis.
+- Bell state basis is related to standard basis by unitary transformation, but Bell states can't be created from the separable standard basis by any LOCC process, since the unitary transformations between them are not of form $hat(U)_A times.circle hat(U)_B$ (since this preserves separability), and measurements always produce a separable state.
+- Alice and Bob can individually transform any Bell state to any other Bell state by the unitary operators $hat(U)_(x y) times.circle hat(I)$ and $hat(I) times.circle hat(U)_(x y)$ respectively: $ (hat(U)_(x y) times.circle hat(I)) ket(beta_(0 0)) = (hat(I) times.circle hat(U)_(x y)) ket(beta_(0 0)) = ket(beta_(x y)) $ where $ U_(0 0) := I_2 & = mat(1, 0; 0, 1), quad U_(0 1) := sigma_1 = mat(0, 1; 1, 0), \ U_(1 0) := sigma_3 & = mat(1, 0; 0, -1), quad U_(1 1) := i sigma_2 = mat(0, 1; -1, 0) $
+
+== Superdense coding
+
+- Qubit can be used instead of classical bit: $ket(0)$ corresponds to the bit $0$, $ket(1)$ corresponds to the bit $1$. In this case, the qubit can be measured with probability $1$ with the measurement operator $1/2 (I_2 - sigma_3)$, since $ 1/2 (I_2 - sigma_3) ket(0) = 0 ket(0), quad 1/2 (I_2 - sigma_3) ket(1) = 1 ket(1) $ so measurement with outcome $0$ means state is $ket(0)$ with probability $1$, measurement with outcome $1$ means state is $ket(1)$ with probability $1$.
+- Alice can prepare the qubit to represent the classical bit to send to Bob: prepare any state $ket(psi)$ and measure on it with operator $1/2 (I_2 - sigma_3)$. Outcome is $0$ or $1$ - if outcome is equal to the bit $x$ she wants to send, $ket(psi)$ has been projected to $ket(x)$, so send this state to Bob. Otherwise, perform unitary transformation $sigma_1 ket(overline(x)) = ket(x)$ and send this state to Bob.

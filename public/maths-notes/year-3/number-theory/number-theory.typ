@@ -158,7 +158,21 @@
 
 == Proof of the main theorem
 
-- *Remark*: if $alpha = a + b sqrt(d)$ is unit in $ZZ\[sqrt(d)\]$, $a, b > 0$, then $N_K (alpha) = alpha overline(alpha) = plus.minus 1$, so $ |overline(alpha)| = |a - b sqrt(d)| = (|N_K (alpha)|)/(|alpha|) = 1/(|alpha|) < 1/(b sqrt(d)) < 1/b $ Define $ A = {alpha = a + b sqrt(d): a, b in NN_0, |overline(alpha)| < 1/b} $ If $alpha$ is a unit, then one of $plus.minus alpha, plus.minus overline(alpha)$ has $a, b >= 0$, so $A$ is non-empty.
+- *Remark*: if $alpha = a + b sqrt(d)$ is unit in $ZZ\[sqrt(d)\]$, $a, b > 0$, then $N_K (alpha) = alpha overline(alpha) = plus.minus 1$, so $ |overline(alpha)| = |a - b sqrt(d)| = (|N_K (alpha)|)/(|alpha|) = 1/(|alpha|) < 1/(b sqrt(d)) < 1/b $ Define $ A = {alpha = a + b sqrt(d): a, b in NN_0, |overline(alpha)| < 1/b} $
 - *Lemma*: $|A| = oo$.
 - *Lemma*: if $alpha in A$, then $|N_K (alpha)| < 1 + 2 sqrt(d)$.
 - *Lemma*: $exists alpha = a + b sqrt(d), alpha' = a' + b' sqrt(d) in A: alpha > alpha'$, $|N_K (alpha)| = |N_K (alpha')| =: n$ and $ alpha equiv alpha' thick (mod n), quad b equiv b' thick (mod n) $
+- *Lemma*: there exists a unit $u$ in $ZZ\[sqrt(d)\]$ such that $u > 1$.
+- *Lemma*: let $0 != alpha = a + b sqrt(d) in QQ\(sqrt(d)\)$. Then $alpha > sqrt(|N_K (alpha)|)$ iff $a, b > 0$.
+
+== Computing fundamental units
+
+- *Theorem*: let $d > 1$ non-square.
+    - If $S = ZZ\[sqrt(d)\]$ and $a + b sqrt(d) in S^times$, $a, b > 0$ such that $b$ is minimal, then $a + b sqrt(d)$ is the fundamental unit in $S$.
+    - If $S = ZZ\[ (1 + sqrt(d))/2 \]$ (so $d equiv 1 thick (mod 4)$), then
+        - $(1 + sqrt(5))/2$ is the fundamental unit in $cal(O)_5$.
+        - If $d > 5$ and $(s + t sqrt(d))/2 in cal(O)_d^times$ with $s, t > 0$ such that $t$ is minimal, then $(s + t sqrt(d))/2$ is the fundamental unit in $cal(O)_d$.
+- *Remark*: both $u = (1 + sqrt(5))/2$ and $u^2 = (3 + sqrt(5))/2$ have $t$ minimal (equal to $1$), which is why a separate case is needed for $d = 5$.
+- *Example*:
+    - $1 + sqrt(2)$ is fundamental unit in $ZZ\[sqrt(2)\] = cal(O)_2$, since $N_K (1 + sqrt(2)) = -1$ so is a unit, and here $b = 1$, so is minimal (as $b > 0$).
+    - $2 + sqrt(5)$ is the fundamental unit in $ZZ\[sqrt(5)\]$ (since $b = 1$ is minimal) but is not the fundamental unit in $cal(O)_5$.

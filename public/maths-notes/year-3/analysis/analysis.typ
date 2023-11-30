@@ -102,8 +102,12 @@ TODO: up to here, check that all notes are made from these topics
     - Given $C_n = union_(i = 1)^(2^n) [a_i, b_i]$, $a_i < b_1 < a_2 < dots.h.c$, with $|b_i - a_i| = 3^(-n)$, define $ C_(n + 1) := union_(i = 1)^(2^n) [a_i, a_i + 3^(-(n + 1))] union [b_i - 3^(-(n + 1)), b_i] $ which is a union of $2^(n + 1)$ disjoint intervals, with difference in endpoints equalling $3^(-(n + 1))$.
     - The *middle third Cantor set* is $ C := union.big_(n in NN) C_n $ Observe that if $a$ is an endpoint of an interval in $C_n$, it is contained in $C$.
 - *Proposition*: the middle third Cantor set is closed, non-empty and equal to its set of accumulation points. Hence it is perfect and uncountable.
+- *Definition*: let $k in NN - {1}$, $x in lr([0, 1))$. $0.a_1 a_2 ...$, $a_i in {0, ..., k - 1}$, is a *$k$-ary expansion* of $x$ if $ x = sum_(i = 1)^oo a_i / k^i $
+- *Remark*: the $k$-ary expansion may not be unique, but there is a countable set $E subset.eq lr([0, 1))$ such that every $x in lr([0, 1)) - E$ has a unique $k$-ary expansion.
+- *Remark*: for every $x in C$, the ternary ($k = 3$) expansion of $x$ is unique and $ x = sum_(i = 1)^oo a_i / 3^i, quad a_i in {0, 2} $ Moreover, every choice of sequence $(a_i)$, $a_i in {0, 2}$, gives $x in sum_(i = 1)^oo a_i / 3^i in C$.
+- *Example*: define $g: [0, 1] -> [0, 1]$ by $ g(x) := cases(sum_(i = 1)^oo (a_i\/2) / 2^i & "if" x = sum_(i = 1)^oo a_i / 3^i \, a_i in {0, 2}, sup_(x in C, x <= y) f(x) & "if" x in.not C) $ $g$ is a surjection, monotone and continuous.
 
-== $G_s, F_sigma$
+== $G_delta, F_sigma$
 
 - Set $E$ is *$G_delta$* if $E = sect_(n in NN) U_n$ with $U_n$ open.
 - Set $E$ is *$F_sigma$* if $E = union_(n in NN) F_n$ with $F_n$ closed.
@@ -264,3 +268,15 @@ TODO: up to here, check that all notes are made from these topics
 - *Theorem (Linearity of Integration)*: let $f, g$ integrable. Then $f + g$ is integrable and $forall alpha in RR$, $alpha f$ is integrable. The integral is linear: $ integral (f + g) & = integral f + integral g \ integral alpha f & = alpha integral f $
 - *Dominated Convergence Theorem*: let $(f_n)$ be sequence of integrable functions. If there exists an integrable $g$ with $forall n in NN, |f_n| <= g$, and $f_n -> f$ pointwise almost everywhere then $f$ is integrable and $ integral f = lim_(n -> oo) integral f_n $
 - *Example*: $sin$ is not integrable over $RR$, but is integrable over $[0, 2pi]$, since $|f_([0, 2pi])| <= indicator([0, 2pi])$.
+
+== Integrability: Riemann vs Lebesgue
+
+- *Proposition*: let $f$ bounded function on bounded domain. Then $f$ is measurable and $integral |f| < oo$ iff $ sup{integral phi: phi <= f, phi "simple measurable"} = inf{integral psi: f <= psi: psi "simple measurable"} $
+- *Definition*: bounded function $f$ is *Lebesgue integrable* if it satisfies either of the equivalences in the above proposition.
+- *Definition*: let $P = {x_0 < dots.h.c < x_n}$ be partition of $[a, b]$, let $f: [a, b] -> RR$ bounded. *Lower and upper Darboux sums* for $f$ with respect to $P$ are $ L(f, P) := sum_(i = 1)^n m_i (x_i - x_(i - 1)), quad U(f, P) := sum_(i = 1)^n M_i (x_i - x_(i - 1)) $ where $ m_i := inf{f(x): x in (x_(i - 1), x_i)}, quad M_i := sup{f(x): x in (x_(i - 1), x_i)} $ If $P subset.eq Q$ ($Q$ is a *refinement of $P$*), then $ L(f, P) <= L(f, Q) <= U(f, Q) <= U(f, P) $
+- *Definition*: *lower and upper Riemann integrals* of $f$ over $[a, b]$ are $ underline(cal(I))_a^b (f) & := sup{L(f, P): P "partition of" [a, b]} \ overline(cal(I))_a^b (f) & := inf{U(f, P): P "partition of" [a, b]} $
+- *Definition*: let $f: [a, b] -> RR$ bounded, then $f$ is *Riemann integrable* ($f in cal(R)$), if $ underline(cal(I))_a^b (f) = overline(cal(I))_a^b (f) $ and the common value $cal(I)_a^b$ is the *Riemann integral* of $f$.
+- *Theorem*: let $f: [a, b] -> RR$ bounded. If $f$ is Riemann integrable over $[a, b]$ then it is Lebesgue integrable over $[a, b]$ and the two integrals are equal: $ cal(I)_a^b (f) = integral_([a, b]) f $
+- *Theorem*: let $f: [a, b] -> RR$ bounded. Then $f$ is Riemann integrable on $[a, b]$ iff $f$ is continuous on $[a, b]$ except on a set of measure zero.
+- *Lemma*: let $(phi_n)$, $(psi_n)$ be sequences of functions, all integrable over $E$, $(phi_n)$ increasing on $E$, $(psi_n)$ decreasing on $E$. Let $f: E -> RR$ with $ forall n in NN, phi_n <= f <= psi_n "on" E, quad lim_(n -> oo) integral_E (psi_n - phi_n) = 0 $ Then $phi_n -> f$ pointwise almost everywhere on $E$, $psi_n -> f$ pointwise almost everywhere on $E$, $f$ is integrable over $E$ and $ lim_(n -> oo) integral_E phi_n = lim_(n -> oo) integral_E psi_n = integral_E f $
+- *Proposition*: let $f: [a, b] -> RR$ bounded. If $f$ is Riemann integrable then it is continuous on a set $E$ whose complement $[a, b] - E$ has measure $0$.
