@@ -4,6 +4,7 @@
 #let powset(X) = $cal(P)(X)$
 #let inv(x) = $#x^(-1)$
 #let vd(v) = $bold(#v)$
+#let ideal(..gens) = $angle.l #gens.pos().join(",") angle.r$
 
 = Metric spaces
 
@@ -252,3 +253,35 @@ If $f$ satisfies these, it is *continuous at $a$*.
     - $X = {vd(x) in RR^3: x_1^2 + x_2^2 - x_3^3 = 1}$ is not compact, since $forall n in NN$, $\(n, 0, \(n^2 - 1\)^(1\/3) \) in X$, so $X subset.eq.not B(n)$, so is unbouded, so not compact by Heine-Borel.
 - *Corollary*: let $f: X -> RR$, $X$ compact, $f$ continuous. Then $f$ attains its maximum and minimum.
 - *Theorem (Bolzano-Weierstrass)*: an infinite subset $A$ of a compact space $X$ has a limit point in $X$.
+
+= Quotient spaces
+
+- Let $X$ topologial space, $tilde$ equivalence relation on $X$. Write $X\/tilde$ for the set of equivalence classes of $tilde$: for $x in X$, $ [x] := {y in X: y tilde x}, quad X\/tilde thick := {[x]: x in X} $ There is a surjective map $pi: X -> X\/tilde$, $pi(x) = [x]$.
+- *Example*: let $X = RR^3$, define equivalence relation $ (x_1, y_1, z_1) tilde (x_2, y_2, z_2) <=> z_1 = z_2 $ Then $pi(a, b, c) = [(a, b, c)] = {(x, y, z) in RR^3: z = c}$. The elements of $RR^3\/tilde$ are horizontal planes.
+- *Definition*: let $X$ topological space, $tilde$ equivalence relation on $X$. Then $X\/tilde$ is given *quotient topology* defined by $ U subset.eq X\/tilde "open" <==> pi^(-1)(U) "open in" X $
+- *Proposition*: the quotient topology defines a topology on $X\/tilde$.
+- *Proposition*: the topology on $X\/tilde$ is the largest such that $pi$ is continuous.
+- *Proposition*: let $X$ topology space with equivalence relation $tilde$, $Y$ topology space. Then $f: X\/tilde thick -> Y$ continuous iff $f compose pi: X -> Y$ is continuous.
+- *Example*: in $RR$, let $x tilde y <==> x - y in ZZ$. Define $exp: RR -> S^1 subset.eq CC$, $exp(t) = e^(2pi i t)$) and $overline(exp): RR\/tilde thick -> S^1$, $overline(exp)([t]) = exp(t)$. Then $ [s] = [t] <==> s - t = k in ZZ <==> overline(exp)(s) = e^(2pi i k) e^(2pi i t) = e^(2pi i t) = overline(exp)(t) $ Hence $overline(exp)$ is well-defined and injective, and is surjective since $exp$ is. Also, $overline(exp)$ is continuous since $exp = overline(exp) compose pi$ is. $R^2$ is a metric space and so is Hausdorff, so $S^1 subset RR^2$ with the induced topology is Hausdorff. Now e.g. $pi([-10, 10]) = RR\/tilde$, $[-10, 10]$ is compact and $pi$ continuous so $RR\/tilde$ is compact. Since $overline(exp)$ is a continuous bijection, these three properties imply $overline(exp)$ is a homeomorphism. Hence $RR\/tilde thick tilde.equiv S^1$.
+- *Definition*: let $A subset.eq X$, define $x tilde y <==> x = y$ or $x, y in A$. Then define $X\/A := X\/tilde$.
+- *Example*: $S^n tilde.equiv D^n \/ S^(n - 1)$. Any point in $D^n$ can be written as $t dot.op phi$, $t in [0, 1]$, $phi in S^(n - 1)$. Define $ f: D^n -> S^n, quad f(t dot.op phi) & = (cos(pi t), phi sin(pi t)) in RR times RR^n = RR^(n + 1) \ ==> f(0 dot.op phi) & = (1, vd(0)), thick f(1\/2 dot.op phi) = (0, phi), thick f(1 dot.op phi) = (-1, 0) $ Define $overline(f): D^n \/ S^(n - 1) -> S^n$, $overline(f)([t dot.op phi]) = f(t dot.op phi)$. If $t_1 dot.op phi_1 != t_2 dot.op phi_2$, then $ [t_1 dot.op phi_1] = [t_2 dot.op phi_2] <==> t_1 dot.op phi_1, t_2 dot.op phi_2 in S^(n - 1) & <==> t_1 = t_2 = 1 \ & <==> f(t_1 dot.op phi_1) = (-1, vd(0)) = f(t_2 dot.op phi_2) \ & <==> overline(f)([t_1 dot.op phi_1]) = overline(f)([t_2 dot.op phi_2]) $
+
+= Topological groups
+
+== Examples
+
+- *Definition*: a *topological group* $G$ is Hausdorff space $G$ which is also a group such that $ circle.filled.small: G times G -> G, thick thick circle.filled.small (g, h) = g h quad "and" quad i: G -> G, thick thick i(g) = g^(-1) $ are continuous.
+- *Example*:
+    - $RR^n$ with addition is a topological group.
+    - $"GL"_n (RR)$ with multiplication and its subgroups $O(n)$ and $"SO"(n)$ are topological groups.
+- *Proposition*:
+    - Any group with the discrete topology is a topological group.
+    - Any subgroup of a topological group is also a topological group.
+- *Example*:
+    - $CC - {0}$ with multiplication has topological subgroup $S^1 subset CC - {0}$.
+    - Define *quaternions* as $HH := ideal(1, i, j, k)$, with topology taken from $RR^4$. $HH - {0}$ is a multiplicative group with $S^3$ a topological subgroup. For $q = a + b i + c j + d k in HH$, $a, b, c, d in RR$, we have $i j := k$, $j k := i$, $k i := j$, $j i := -k$, $k j := -i$, $i k := -j$. For $q != 0$, $ q^(-1) = (a - b i - c j - d k)/(a^2 + b^2 + c^2 + d^2) $
+    - Note however that $S^2$ is not a topological group.
+- *Definition*: for topological group $G$, $x in G$, define *left translation by $x$* as $ L_x: G -> G, quad L_x (g) := x g $ Similarly, *right translation by $x$* is $ R_x: G -> G, quad R_x (g) := g x $
+- *Proposition*: $L_x$ has inverse $(L_x)^(-1) = L_(x^(-1))$ and is a homeomorphism. Similarly for $R_x$.
+- *Notation*: a specified inclusion $G limits(arrow.hook)^x G times G$ is the map $G -> {x} times G$ composed with the inclusion map ${x} times G -> G times G$. (similarly for $G times {x}$).
+- *Proposition*: Let $G$ topological group, $K$ the component containing identity of $G$. Then $K$ is a normal subgroup.

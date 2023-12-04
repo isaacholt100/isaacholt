@@ -176,3 +176,17 @@
 - *Example*:
     - $1 + sqrt(2)$ is fundamental unit in $ZZ\[sqrt(2)\] = cal(O)_2$, since $N_K (1 + sqrt(2)) = -1$ so is a unit, and here $b = 1$, so is minimal (as $b > 0$).
     - $2 + sqrt(5)$ is the fundamental unit in $ZZ\[sqrt(5)\]$ (since $b = 1$ is minimal) but is not the fundamental unit in $cal(O)_5$.
+- *Example*: find fundamental unit in $cal(O)_7$. $7 equiv.not 1 thick (mod 4)$ so $cal(O)_7 = ZZ\[sqrt(7)\]$. $a + b sqrt(7)$ is a unit iff $a^2 - 7b^2 = plus.minus 1$. Also, by the above theorem, it is the fundamental unit if $a, b > 0$ and $b$ is minimal. We use trial and error: for each $b = 1, 2, ..., $ check whether $7b^2 plus.minus 1$ is a square #align(center)[#table(
+  columns: (auto, auto, auto, auto),
+  inset: 6pt,
+  align: center,
+  [$b$], [$7b^2 - 1$], [$7b^2 + 1$], [$a^2$],
+  $1$, $6$, $8$, $-$,
+  $2$, $27$, $29$, $-$,
+  $3$, $62$, $64$, $64 = 8^2$
+)] So the unit with minimal $b$ and $a, b > 0$ is $8 + 3 sqrt(7)$, so is the fundamental unit.
+
+== Pell's equation and norm equations
+
+- *Definition*: *Pell's equation* is $x^2 - d y^2 = 1$ for nonsquare $d$, where solutions are $x, y in ZZ$. Since LHS is norm of $x + y sqrt(d)$, solutions are given by $x + y sqrt(d) in ZZ\[sqrt(d)\]$ with norm $1$.
+- *Example*: consider $x^2 - 2y^2 = plus.minus 1$. Fundamental unit in $ZZ\[sqrt(2)\]$ is $u = 1 + sqrt(2)$, with norm $-1$. So if $x + y sqrt(2) in ZZ\[sqrt(2)\]$ is such that $N_(ZZ\(sqrt(2)\))(x + y sqrt(2)) = 1$, then $x + y sqrt(2)$ is an even power of $u$. Thus elements of norm $plus.minus 1$ are $ plus.minus u^(2n) thick ("RHS" = 1), quad plus.minus u^(2n + 1) thick ("RHS" = -1) $ To extract solutions $x, y$, note that if $x + y sqrt(2) = plus.minus u^r$, then $x - y sqrt(2) = plus.minus overline(u)^r$, hence $ x = plus.minus (u^r + overline(u)^r)/2, quad y = plus.minus (u^r - overline(u)^r)/(2 sqrt(2)) $ Solutions when RHS $= 1$ are given by even $r$, solutions when RHS $= -1$ are given by odd $r$.

@@ -3,7 +3,7 @@
 
 #let char = $op("char")$
 #let cbrt(arg) = $root(3, #arg)$
-#let ideal(gens) = $angle.l gens angle.r$
+#let ideal(..gens) = $angle.l #gens.pos().join(",") angle.r$
 #let Aut = $"Aut"$
 #let Gal = $"Gal"$
 
@@ -242,13 +242,45 @@ These imply $phi(0) = 0$, $phi(-a) = -phi(a)$, $phi(a^(-1)) = phi(a)^(-1)$.
 - *Remark*: if $L\/K$ is Galois and $alpha in L$ but $alpha in.not K$, then there exists an automorphism $sigma in Gal(L\/K)$ such that $sigma(alpha) != alpha$.
 - *Definition*: for $H$ subgroup of $Gal(L\/K)$, set $L^H := {alpha in L: forall sigma in H, thick sigma(alpha) = alpha}$, then $K subset.eq L^H subset.eq L$. Define $Phi: cal(G) -> cal(F)$, $Phi(H) = L^H$.
 - $Gamma$ and $Phi$ are inclusion-reversing: $M_1 subset.eq M_2 ==> Gamma(M_2) subset.eq Gamma(M_1)$, and $H_1 subset.eq H_2 ==> Phi(H_2) subset.eq Phi(H_1)$.
-- *Theorem A*: for finite Galois extension $L\/K$,
+- *Fundamental theorem of Galois theory - Theorem A*: for finite Galois extension $L\/K$,
     - $Gamma: cal(F) -> cal(G)$ and $Phi: cal(F) -> cal(F)$ are mutually inverse bijections (the *Galois correspondence*).
     - For $M in cal(F)$, $L\/M$ is Galois and $|Gal(L\/M)| = [L: M]$.
     - For $H in cal(G)$, $L\/L^H$ is Galois and $Gal(L\/L^H) = H$.
 - *Remark*: $Gal(L\/K)$ acts on $cal(F)$: given $sigma in Gal(L\/K)$ and $K subset.eq M subset.eq L$, consider $sigma(M) = {sigma(alpha): alpha in M}$ which is a subfield of $L$ and contains $K$, since $sigma$ fixes elements of $K$. Given another automorphism $tau: L -> L$, $ tau in Gal(L\/sigma(M)) & <==> forall alpha in M, tau(sigma(alpha)) = sigma(alpha) \ & <==> forall alpha in M, sigma^(-1) (tau (sigma(alpha))) = alpha \ & <==> sigma^(-1) tau sigma in Gal(L\/M) \ & <==> tau in sigma Gal(L\/M) sigma^(-1) $ Hence $sigma Gal(L\/M) sigma^(-1)$ and $Gal(L\/M)$ are conjugate subgroups of $Gal(L\/K)$. Now $ [M: K] = ([L: K]) / ([L: M]) = abs(Gal(L\/K)) / abs(Gal(L\/M)) $
-- *Theorem B*: for finite Galois extension $L\/K$, $G = Gal(L\/K)$ and $K subset.eq M subset.eq L$. Then the following are equivalent:
+- *Fundamental theorem of Galois theory - Theorem B*: for finite Galois extension $L\/K$, $G = Gal(L\/K)$ and $K subset.eq M subset.eq L$. Then the following are equivalent:
     - $M\/K$ is Galois.
     - $forall sigma in G, quad sigma(M) = M$.
     - $H = Gal(L\/M)$ is normal subgroup of $G = Gal(L\/K)$.
     When these conditions hold, we have $Gal(M\/K) tilde.equiv G\/H$.
+- *Example*:
+    - Note if $[L: K] = p$ for $p$ prime, then by the tower law, any intermediate $K subset.eq M subset.eq L$ has $[L: M] in {1, p}$, $[M: K] in {p, 1}$, so $M = L$ or $K$.
+    - If $|Gal(L\/K)| = p$, then $Gal(L\/M) tilde.equiv ZZ\/p$, so the only subgroups are $Gal(L\/K)$ and ${id}$.
+
+== Computations with Galois groups
+
+- *Example - quadratic extension*: $QQ\(sqrt(2)\)\/QQ$ is normal (since degree is $2$) and separable (since characteristic is zero). Any element of $phi in G = Gal(QQ\(sqrt(2)\)\/Q)$ is determined by the image of $sqrt(2)$. But $phi(sqrt(2))^2 = phi(2) = 2$ so $phi(sqrt(2)) = plus.minus sqrt(2)$. This gives two automorphisms $id\(sqrt(2)\) = sqrt(2)$ and $sigma\(sqrt(2)\) = -sqrt(2)$. So $G = {id, sigma} = ideal(sigma) tilde.equiv ZZ\/2$. Subgroup ${id}$ corresponds to $QQ\(sqrt(2)\)$, $G$ corresponds to $QQ$.
+- *Example - biquadratic extension*: consider $L = QQ\(sqrt(2), sqrt(3)\)$ over $QQ$ is normal (as splitting field of $(x^2 - 2)(x^2 - 3)$ over $QQ$) and separable (as $char(QQ) = 0$), so is Galois extension. Let $sigma$ be given as before.
+    - Suppose $sqrt(3) in QQ\(sqrt(2)\)$, then $sigma\(sqrt(3)\)^2 = sigma(3) = 3$, so $sigma\(sqrt(3)\) = plus.minus sqrt(3)$.
+    - If $sigma\(sqrt(3)\) = sqrt(3)$, then $sqrt(3) in QQ\(sqrt(2)\)^({id, sigma}) = QQ$: contradiction.
+    - If $sigma\(sqrt(3)\) = -sqrt(3)$, then $sigma\(sqrt(2)\) sigma\(sqrt(3)\) = sigma\(sqrt(6)\) = \(-sqrt(2)\)\(-sqrt(3)\) = sqrt(6)$, so $sqrt(6) in QQ\(sqrt(2)\)^({id, sigma}) = QQ$: contradiction.
+    - So $sqrt(3) in.not QQ\(sqrt(2)\)$, hence $[L: QQ] = [L: QQ\(sqrt(2)\)] [QQ\(sqrt(2)): QQ] = 4$.
+    - Now $G = Gal(L\/QQ)$ has order $[L: QQ] = 4$, so $G tilde.equiv ZZ\/4$ or $ZZ\/2 times ZZ\/2$.
+    - For $phi in G$, $phi\(sqrt(2)\)^2 = 2 ==> phi\(sqrt(2)\) = plus.minus sqrt(2)$, $phi\(sqrt(3)\)^2 = 3 ==> phi\(sqrt(3)\) = plus.minus sqrt(3)$. So there are four choices, corresponding to choices of $plus.minus$ signs.
+    - Define $sigma, tau$ by $sigma\(sqrt(2)\) = -sqrt(2)$, $sigma\(sqrt(3)\) = sqrt(3)$, $tau\(sqrt(2)\) = sqrt(2)$, $tau\(sqrt(3)\) = -sqrt(3)$. Now $sigma^2 = tau^2 = id$, $sigma tau \(sqrt(2)\) = - sqrt(2)$, $sigma tau \(sqrt(3)\) = -sqrt(3)$ and $sigma tau = tau sigma$.
+    - So $G = angle.l sigma, tau: sigma^2 = tau^2 = id, sigma tau = tau sigma angle.r = ideal(sigma) times ideal(tau) tilde.equiv ZZ\/2 times ZZ\/2$.
+    - $G$ has proper subgroups $H_1 = ideal(sigma)$, $H_2 = ideal(tau)$, $H_3 = ideal(sigma tau)$.
+    - So the intermediate fields are $L^(H_1), L^(H_2), L^(H_3)$.
+    - $sigma\(sqrt(3)\) = sqrt(3) ==> sqrt(3) in L^(H_1)$ so $QQ\(sqrt(3)\) subset.eq L^(H_1)$, but $\[L: QQ\(sqrt(3)\)\] = 2 = |H_1| = [L: L^(H_1)]$. Hence $L^(H_1) = QQ\(sqrt(3)\)$. Similarly $L^(H_2) = QQ\(sqrt(2)\)$.
+    - $sigma tau \(sqrt(6)\) = sqrt(6) ==> sqrt(6) in L^(H_3)$, so $L^(H_3) = QQ\(sqrt(6)\)$.
+- *Remark*: can generalise above example to arbitrary $K\(sqrt(a), sqrt(b)\)\/K$ where $char(K) != 2$, and $a, b in K$, $a, b, a b in.not (K^times)^2$ where $(K^times)^2$ is set of squares of $K^times$.
+- *Example - degree $8$ extension*:
+    - Consider $L = QQ\(sqrt(2), sqrt(3), sqrt(5)\)$ over $QQ$. $L$ is splitting field of $(x^2 - 2)(x^2 - 3)(x^2 - 5)$, so is normal, and $char(QQ) = 0$, so is separable, so is Galois.
+    - Let $M = QQ\(sqrt(2), sqrt(3)\)$. By above, $Gal(M\/Q) = ideal(sigma) times ideal(tau) tilde.equiv ZZ\/2 times ZZ\/2$.
+    - Suppose $sqrt(5) in M$. Then $sigma\(sqrt(5)\)^2 = tau\(sqrt(5)\)^2 = 5$, so $sigma\(sqrt(5)\) = plus.minus sqrt(5)$, $tau\(sqrt(5)\) = plus.minus sqrt(5)$.
+    - If $sigma\(sqrt(5)\) = sqrt(5)$, then $sqrt(5) in M^(ideal(sigma)) = QQ\(sqrt(3)\)$.
+        - If $tau\(sqrt(5)\) = sqrt(5)$, $sqrt(5) in M^(ideal(sigma, tau)) = QQ$: contradiction.
+        - If $tau\(sqrt(5)\) = -sqrt(5)$, then since $sqrt(15) in M^(ideal(sigma))$, $tau\(sqrt(15)\) = sqrt(15)$, so $sqrt(15) in M^(ideal(sigma, tau)) = QQ$: contradiction.
+    - If $sigma\(sqrt(5)\) = -sqrt(5)$, then $sigma\(sqrt(10)\) = sigma\(sqrt(2)\) sigma\(sqrt(5)\) = \(-sqrt(2)\)\(-sqrt(5)\) = sqrt(10)$, so $sqrt(10) in M^(ideal(sigma)) = QQ\(sqrt(3)\)$.
+        - If $tau\(sqrt(5)\) = sqrt(5)$, $tau\(sqrt(10)\) = sqrt(10) in M^(ideal(sigma, tau)) = QQ$: contradiction.
+        - If $tau\(sqrt(5)\) = -sqrt(5)$, $tau\(sqrt(30)\) = tau\(sqrt(5)\) tau\(sqrt(3)\) tau\(sqrt(2)\) = sqrt(30) in M^(ideal(sigma, tau)) = QQ$: contradiction.
+    - More generally, write $sigma\(sqrt(5)\) = (-1)^j sqrt(5)$, $tau\(sqrt(5)\) = (-1)^k sqrt(5)$, $j, k in {0, 1}$. Define $m = 2^j 3^k$, then $sigma\(sqrt(m)\) = (-1)^j sqrt(m) => sigma\(sqrt(5 m)\) = sqrt(5m)$ and $tau\(sqrt(m)\) = (-1)^k sqrt(m) => tau\(sqrt(5m)\) = sqrt(5m)$, so $sqrt(5 m) in M^ideal(sigma, tau) = QQ$: contradiction.

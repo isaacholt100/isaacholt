@@ -205,3 +205,20 @@
     - Compute $a_(i + 1) = a_i^i thick mod n$, increment $i$ by $1$. Find $d = gcd(a_(i + 1) - 1, n)$. If $1 < d < n$, we have found a nontrivial factor of $n$. If $d = n$, pick new $a$ and retry. If $d = 1$, repeat this step.
     - A variant is instead of computing $a_(i + 1) = a_i^i$, compute $a_(i + 1) = a_i^(m_i)$ where $m_1, ..., m_r$ are the prime powers $<= B$.
     - The algorithm works if $p - 1$ is $B$-powersmooth (all prime power factors are $<= B$).
+- *Lenstra's algorithm* to factorise $n$:
+    - Choose smoothness bound $B$.
+    - Choose random elliptic curve $E$ over $ZZ\/n$ and $P = (x, y)$ a point on $E$.
+    - Set $P_1 = P$, attempt to compute $P_i$, $2 <= i <= B$ by $P_i = [i] P_(i - 1)$. If this fails, a divisor of $n$ has been found (by failing to compute an inverse $mod n$). If this divisor is trivial, restart with new curve and point.
+    - If $i = B$ is reached, restart with new curve and point.
+- Lenstra's algorithm works if $|E(ZZ\/p)|$ is $B$-powersmooth. Since we can vary $E$, it is very likely to work eventually.
+- Running time depends on $p$: $ O(exp(sqrt(2 log(p) log log (p)))) $ Compare this to the general number field sieve running time: $ O(exp(C (log n)^(2\/3) (log log n)^(2\/3))) $
+
+== Torsion points
+
+- *Definition*: let $G$ abelian group. $g in G$ is a *torsion* if it has finite order. If order divides $n$, then $[n]g = e$ and $g$ is *$n$-torsion*.
+- *Definition*: *$n$-torsion subgroup* is $ G[n] := {g in G: [n]g = e} $
+- *Definition*: *torsion subgroup* of $G$ is $ G_"tors" = {g in G: g "is torsion"} = union.big_(n in NN) G[n] $
+- *Example*:
+    - In $ZZ$, only $0$ is torsion.
+    - In $(ZZ\/10)^times$, by Lagrange's theorem, every point is $4$-torsion.
+    - For finite groups $G$, $G_"tors" = G = G[ |G| ]$ by Lagrange's theorem.
