@@ -176,7 +176,7 @@ ket(1) <-> vec(0, 1): & quad vd(r) = vec(0, 0, -1), quad (theta, phi) = (pi, dot
     - $\(hat(A) tp hat(B)\)\(hat(C) tp hat(D)\) = \(hat(A) hat(C) tp hat(B) hat(D)\)$.
     - $tr_(cal(H)_A tp cal(H)_B) \(hat(A) tp hat(B)\) = tr_(cal(H)_A) \(hat(A)\) tr_(cal(H)_B) \(hat(B)\)$.
     So tensor product of linear operators preserves unitarity, Hermiticity, positivity, and tensor product of two projectors is a projector.
-- For bipartite system, *local unitary operations (LO)* are of the form $hat(U)_A tp hat(I)$ (for Alice) or $hat(I) tp hat(U)_B$ (for Bob). This means Alice and Bob can only act on their own qubit (assuming they have one each).
+- For bipartite system, *local operations (LO)* are of the form $hat(U)_A tp hat(I)$ (for Alice) or $hat(I) tp hat(U)_B$ (for Bob). This means Alice and Bob can only act on their own qubit (assuming they have one each) where $hat(U)_A$ and $hat(U)_B$ are unitary operators or measurement operators.
 - $hat(U)_A tp hat(I)$ and $hat(I) tp hat(U)_B$ commute: $\[hat(U)_A tp hat(I), hat(I) tp hat(U)_B\] = 0$, and their product is $hat(U)_A tp hat(U)_B$.
 - *Note*: any unitary transformation $hat(U)_A tp hat(U)_B$ performed using LO acting on a separable state $ket(psi) tp ket(phi)$ produces another separable state: $hat(U)_A ket(psi) tp hat(U)_B ket(phi)$. In particular, an entangled state cannot be created from a separable state.
 - *Example*: $ e^(hat(A) tp hat(I)) & = sum_(k = 0)^oo (hat(A) tp hat(I)) / (k!) = sum_(k = 0)^oo (hat(A) tp hat(I)) / (k!) = e^(hat(A)) tp hat(I), \ e^(hat(I) tp hat(B)) & = sum_(k = 0)^oo (hat(I) tp hat(B))^k / (k!) = sum_(k = 0)^oo (hat(I) tp hat(B)^k) / (k!) = hat(I) tp e^(hat(B)) $ Note that generally, $e^(hat(A)) tp e^(hat(B)) != e^(hat(A) tp hat(B))$ since $ e^(hat(A) tp hat(B)) & = sum_(k = 0)^oo (hat(A)^n tp hat(B)^k) / (k!), \ e^(hat(A)) tp e^(hat(B)) & = (sum_(i = 0)^oo hat(A)^i / (i!)) tp (sum_(j = 0)^oo hat(B)^j / (j!)) = sum_(i, j = 0)^oo (hat(A)^i tp hat(B)^j) / (i! j!) $
@@ -247,3 +247,23 @@ $ Can also obtain reduced density matrix by writing matrices: $ & ket(beta_00) -
     - Alice and Bob share state $ket(beta_00)$.
     - Alice applies operation $hat(U)_(x y) tp hat(I)$ to whole system where $(x y)_2$ is the two bit message she wants to send (this just acts on her qubit). Note that this does not transmit any information to Bob, as his reduced density matrix is $rho_B = 1/2 I$ before and after the transformation.
     - Alice sends her qubit to Bob. Then Bob has the full Bell state $ket(beta_(x y))$ (he has both qubits). Bob then applies a measurement which has the four Bell states as eigenstates, which gives him the eigenvalue with probability $1$, e.g. he measures $ hat(B) = 0 ket(beta_00) bra(beta_00) + 1 ket(beta_01) bra(beta_01) + 2 ket(beta_10) bra(beta_10) + 3 ket(beta_11) bra(beta_11) $
+
+= Information theory
+
+== Classical information and Shannon entropy
+
+- *Definition*: *Shannon entropy* is $ H(X) := -sum_x p(x) log_2 (p(x)) $
+- *Definition*: *joint entropy* is $ H(X, Y) := -sum_(x, y) p(x, y) log_2 (p(x, y)) $
+- *Proposition*: joint entropy obeys *subadditivity*: $ H(X, Y) <= H(X) + H(Y) $ with equality iff $X$ and $Y$ are independent variables, i.e. when $p(x, y) = PP(X = x) PP(Y = y)$.
+- *Definition*: *relative entropy* is defined for two random variables which take same values but with different distributions $p(x)$ and $q(x)$: $ H(p(x) || q(x)) & := sum_x (p(x) log_2 (p(x)) - p(x) log_2 (q(x))) \ & = -H(X) - sum_x p(x) log_2 (q(x)) $
+- *Proposition*: relative entropy is non-negative and $ H(p(x) || q(x)) = 0 <==> forall x, p(x) = q(x) $
+- *Remark*: relative entropy can diverge if for some $x$, $q(x) = 0$ and $p(x) != 0$
+- *Definition*: *conditional entropy* is $ H(X|Y) := H(X, Y) - H(Y) $
+- *Definition*: *mutual information* of $X$ and $Y$ is $ H(X : Y) = H(X : Y) := H(X) + H(Y) - H(X, Y) >= 0 $
+
+== Quantum entropy
+
+- *Definition*: *von Neumann entropy* of quantum state with density operator $hat(rho)$ is $ S\(hat(rho)\) = -tr(hat(rho) log_2 (hat(rho))) = -sum_i p_i log_2 (p_i) $ where $log_2$ is applied entry-wise to $hat(rho)$ and $hat(rho) = sum_i p_i ket(i) bra(i)$.
+- *Remark*: for pure state, $S\(hat(rho)\) = -1 log_2 (1) = 0$.
+- *Definition*: *relative entropy* is measure of distance between two mixed states: $ S\(hat(rho)_1 || hat(rho)_2\) := tr\(hat(rho)_1 log_2 (hat(rho)_1)\) - tr\(hat(rho)_1 log_2 (hat(rho)_2)\) $
+- *IGNORE SCMIDT DECOMPOSITION AND SCHMIDT NUMBER SECTION*

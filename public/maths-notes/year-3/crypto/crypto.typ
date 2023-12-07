@@ -222,3 +222,14 @@
     - In $ZZ$, only $0$ is torsion.
     - In $(ZZ\/10)^times$, by Lagrange's theorem, every point is $4$-torsion.
     - For finite groups $G$, $G_"tors" = G = G[ |G| ]$ by Lagrange's theorem.
+
+== Rational points
+
+- *Nagell-Lutz theorem*: let $E$ elliptic curve, let $P = (x, y) in E(QQ)_"tors"$. Then $x, y in ZZ$, and either $y = 0$ (in which case $P$ is $2$-torsion) or $y^2 divides Delta_E$.
+- *Corollary*: $E(QQ)_"tors"$ is finite.
+- *Example*: can use Nagell-Lutz to show a point is not torsion.
+    - $P = (0, 1)$ lies on elliptic curve $y^2 = x^3 -x + 1$. $[2]P = (1/4, -7/8) in.not ZZ^2$. Then $[2]P$ is not torsion, hence $P$ is not torsion. So $E(QQ)$ contains $..., [-2]P, -P, PAI, P, [2]P, ...$, hence $E$ has infinitely many solutions in $QQ$.
+- *Mazur's theorem*: let $E$ be elliptic curve over $QQ$. Then $E(QQ)_"tors"$ is either:
+    - cyclic of order $1 <= N <= 10$ or order $12$, or
+    - of the form $ZZ\/2 times ZZ\/2N$ for $1 <= N <= 4$.
+

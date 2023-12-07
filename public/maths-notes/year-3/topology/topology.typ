@@ -285,3 +285,30 @@ If $f$ satisfies these, it is *continuous at $a$*.
 - *Proposition*: $L_x$ has inverse $(L_x)^(-1) = L_(x^(-1))$ and is a homeomorphism. Similarly for $R_x$.
 - *Notation*: a specified inclusion $G limits(arrow.hook)^x G times G$ is the map $G -> {x} times G$ composed with the inclusion map ${x} times G -> G times G$. (similarly for $G times {x}$).
 - *Proposition*: Let $G$ topological group, $K$ the component containing identity of $G$. Then $K$ is a normal subgroup.
+- *Example*: $O(n)$ is not connected, but $"SO"(n)$ is connected and contains $I_n$, so is a normal subgroup of $O(n)$
+
+== Actions, orbits, orbit spaces
+
+- *Definition*: *action* of group $G$ on topological space $X$ is map $circle.filled.small: G times X -> X$ such that $forall g, h in G$, $forall x in X$,
+    - $(h g) circle.filled.small = h circle.filled.small (g circle.filled.small x)$.
+    - $1 circle.filled.small x = x$.
+    - $g: X -> X$ defined by $g(x) = g circle.filled.small x$ is continous. Note: $g$ has inverse map $g^(-1)$ which is also continuous, so both are homeomorphisms.
+- *Definition*: *action* of topological group $G$ on topological space $X$ is continuous map $circle.filled.small: G times X -> X$ such that $forall g, h in G$, $forall x in X$,
+    - $(h g) circle.filled.small x = h circle.filled.small (g circle.filled.small x)$.
+    - $1 circle.filled.small x = x$.
+- *Remark*: for the above definition, the condition $g(x) = g circle.filled.small x$ being continuous isn't required since $g$ is the comoposition of continuous maps: $ X limits(arrow.hook)^g G times X limits(-->)^circle.filled.small X, quad x -> (g, x) -> g circle.filled.small x $
+- *Example*:
+    - Let $G = "GL"_n (RR)$, $X = RR^n$, let the action be matrix multiplication: $(A, vd(x)) -> A circle.filled.small vd(x) = A vd(x)$. This induces an action of subgroups $O(n)$ or $"SO"(n)$ on $X = RR^n$.
+    - Let $H$ subgroup of topological group $G$, *left translation action* of $H$ on $G$ is $circle.filled.small: H times G -> G$, $h circle.filled.small g = h g$. Equivalently, $phi(h) = L_h$, so the action is left translation.
+    - Let $N$ normal subgroup of topological group $G$, *conjugation action* of $G$ on $N$ is $circle.filled.small: G times N -> N$, $g circle.filled.small n = g n g^(-1)$.
+- *Definition*: let $G$ act on topological space $X$, define equivalence relation $tilde$ on $X$ by $ x tilde y <==> exists g in G: g(x) = g circle.filled.small x = y $ An equivalence class for this relation is an *orbit*, denoted $G x$. *Orbit space*, $X\/G$, is quotient space $X\/tilde$. Action is *transitive* if $X\/G$ is a singleton (i.e. if there is only one orbit).
+- *Example*:
+    - $|RR^n\/"GL"_n (RR)|$, and $|tau| = 3$.
+    - Action of $O(n)$ on $S^(n - 1)$ is transitive for $n in NN$. Action of $"SO"(n)$ on $S^(n - 1)$ is transitive for $n >= 2$.
+- *Lemma*: if connected topological group $G$ acts on topological space $X$, then the orbits are connected.
+- *Theorem*: let $G$ connected topological group act on topological space $X$. If $X\/G$ is connected, then $X$ is connected.
+- *Notation*: define specified inclusion $i_1: M_n (RR) limits(arrow.hook)^1 M_(n + 1) (RR)$ by $A -> mat(1, 0; 0, A)$. So $M_n (RR)$ can be regarded as subspace of $M_(n + 1) (RR)$.
+- *Proposition*:
+    - Using the inclusion $limits(arrow.hook)^1$, $"SO"(n)$ is subgroup of $"SO"(n + 1)$.
+    - Viewing these as topological groups, if subgroup $"SO"(n)$ acts on $"SO"(n + 1)$, orbit space is $"SO"(n + 1)\/"SO"(n) tilde.equiv S^n$.
+- *Corollary*: the topological group $"SO"(n)$ is connected for $n in NN$.

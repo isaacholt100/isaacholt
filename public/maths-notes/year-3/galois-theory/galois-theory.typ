@@ -284,3 +284,13 @@ These imply $phi(0) = 0$, $phi(-a) = -phi(a)$, $phi(a^(-1)) = phi(a)^(-1)$.
         - If $tau\(sqrt(5)\) = sqrt(5)$, $tau\(sqrt(10)\) = sqrt(10) in M^(ideal(sigma, tau)) = QQ$: contradiction.
         - If $tau\(sqrt(5)\) = -sqrt(5)$, $tau\(sqrt(30)\) = tau\(sqrt(5)\) tau\(sqrt(3)\) tau\(sqrt(2)\) = sqrt(30) in M^(ideal(sigma, tau)) = QQ$: contradiction.
     - More generally, write $sigma\(sqrt(5)\) = (-1)^j sqrt(5)$, $tau\(sqrt(5)\) = (-1)^k sqrt(5)$, $j, k in {0, 1}$. Define $m = 2^j 3^k$, then $sigma\(sqrt(m)\) = (-1)^j sqrt(m) => sigma\(sqrt(5 m)\) = sqrt(5m)$ and $tau\(sqrt(m)\) = (-1)^k sqrt(m) => tau\(sqrt(5m)\) = sqrt(5m)$, so $sqrt(5 m) in M^ideal(sigma, tau) = QQ$: contradiction.
+    - *TODO*: finish this example
+- *Example - cubic extension and its normal closure*:
+    - Let $L = QQ(theta)$, $theta^3 - 2 = 0$. $L\/QQ$ isn't Galois since not normal. Take the normal closure $N = QQ(theta, omega) = QQ\(theta, sqrt(-3)\)$.
+    - Let $M = QQ(omega)$ so $[M: QQ] = 2$, $[L: QQ] = 3$ and $[N: QQ] = 6$. Consider $G = Gal(N\/QQ)$.
+    - Since $|G| = [N: QQ] = 6$, $G tilde.equiv ZZ\/6$ or $G tilde.equiv D_3 tilde.equiv S_3$.
+    - $G$ contains $Gal(N\/L)$. Since $N = L(omega)$, $ Gal(N\/L) = {id, tau} = ideal(tau) tilde.equiv ZZ\/2 $ where $tau\(sqrt(-3)\) = -sqrt(-3)$ (i.e. $tau(w) = omega^2$) and $tau(theta) = theta$ as $theta in L$.
+    - $G$ contains $H = Gal(N\/M)$. $N = M(theta)$, $|H| = [N: M] = 3$ so $Gal(N\/M)$ is cyclic so $ H = {id, sigma, sigma^2} = ideal(sigma) $ where $sigma(theta) = omega theta$, also $sigma(omega) = omega$ as $omega in M$ and $sigma^2 (theta) = omega^2 theta$, so $H$ permutes the three roots of $x^3 - 2$.
+    - $tau in.not H$ so $H = {id, sigma, sigma^2}$ and $tau H = {tau, tau sigma, tau sigma^2}$ are disjoint cosets. So $G = H union tau H = ideal(tau, sigma)$ so $|G| = 6$. $tau^2 = sigma^3 = id$ and $sigma tau = tau sigma^2$. So $G tilde.equiv S_3 tilde.equiv D_3$.
+    - $G$ has one subgroup of order $3$, $H = ideal(sigma)$. Fixed field is $N^H = M$. $H$ is only proper normal subgroup of $G$. Correspondingly, $M$ is only normal extension of $Q$ in $N$.
+    - There are $3$ order $2$ subgroups: $ideal(tau)$, $ideal(tau sigma)$, $ideal(tau sigma^2)$. $N^ideal(tau) = QQ(theta) = L$, $N^ideal(tau sigma) = QQ(omega theta)$, $N^ideal(tau sigma^2) = QQ(omega^2 theta)$.
