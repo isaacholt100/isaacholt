@@ -232,4 +232,3 @@
 - *Mazur's theorem*: let $E$ be elliptic curve over $QQ$. Then $E(QQ)_"tors"$ is either:
     - cyclic of order $1 <= N <= 10$ or order $12$, or
     - of the form $ZZ\/2 times ZZ\/2N$ for $1 <= N <= 4$.
-

@@ -294,3 +294,26 @@ These imply $phi(0) = 0$, $phi(-a) = -phi(a)$, $phi(a^(-1)) = phi(a)^(-1)$.
     - $tau in.not H$ so $H = {id, sigma, sigma^2}$ and $tau H = {tau, tau sigma, tau sigma^2}$ are disjoint cosets. So $G = H union tau H = ideal(tau, sigma)$ so $|G| = 6$. $tau^2 = sigma^3 = id$ and $sigma tau = tau sigma^2$. So $G tilde.equiv S_3 tilde.equiv D_3$.
     - $G$ has one subgroup of order $3$, $H = ideal(sigma)$. Fixed field is $N^H = M$. $H$ is only proper normal subgroup of $G$. Correspondingly, $M$ is only normal extension of $Q$ in $N$.
     - There are $3$ order $2$ subgroups: $ideal(tau)$, $ideal(tau sigma)$, $ideal(tau sigma^2)$. $N^ideal(tau) = QQ(theta) = L$, $N^ideal(tau sigma) = QQ(omega theta)$, $N^ideal(tau sigma^2) = QQ(omega^2 theta)$.
+- *Example*: show $cbrt(3) in.not QQ\(cbrt(2)\)$.
+    - Assume $cbrt(3) in QQ\(cbrt(2)\)$. Then $cbrt(5) in N = QQ\(omega, cbrt(2)\)$, the normal closure.
+    - As above, $sigma in Gal(N\/QQ)$ has $sigma\(cbrt(2)\) = omega cbrt(2)$ and $N^ideal(sigma) = QQ(omega)$. Also, $ sigma\(cbrt(3)\)^3 = sigma(3) = 3 ==> sigma\(cbrt(3)\) in \{cbrt(3), omega cbrt(3), omega^2 cbrt(3)\} $
+    - If $sigma\(cbrt(3)\) = cbrt(3)$, then $cbrt(3) in N^ideal(sigma) = QQ(omega)$, so $QQ\(cbrt(3)\) subset.eq QQ(omega)$: contradiction.
+    - If $sigma\(cbrt(3)\) = omega cbrt(3)$, then $sigma\(cbrt(3)\/cbrt(2)\) = cbrt(3)\/cbrt(2)$ hence $cbrt(3\/2) in N^ideal(sigma) = QQ(omega)$, so $QQ\(cbrt(3\/2)\) = QQ\(cbrt(12)\) subset.eq QQ(omega)$: contradiction.
+    - If $sigma\(cbrt(3)\) = omega^2 cbrt(3)$, $QQ\(cbrt(3\/4)\) = QQ\(cbrt(6)\) subset.eq QQ(omega)$: contradiction.
+- *Remark*: in the above example, $N = QQ(theta_1, theta_2, theta_3) = QQ\(cbrt(2), omega\)$ where $theta_i$ are the roots of $x^3 - 2$. Plotting this roots on Argand diagram gives the symmetry group $S_3 tilde.equiv D_3$ of an equilateral triangle. $tau$ reflects the $theta_i$ (complex conjugation), $sigma$ rotates the roots (but *doesn't* rotate all of $N$, as it fixes $QQ$). For $g in G$, $g(theta_j) = theta_(pi(j))$ where $pi$ is permutation of ${1, 2, 3}$. So there is a group homomorphism $phi: G -> S_3$, $phi(g) = pi$. So $ker(phi) = {id}$, so $phi$ is injective and also surjective, since $|G| = |S_3| = 6$, so $phi$ is isomorphism.
+- *Definition*: for $f(x) in K[x]$, $deg(f) = n >= 1$, with $n$ distinct roots, the *Galois group* of $f(x)$, $G_f$, is Galois group of splitting field of $f(x)$ over $K$.
+- *Remark*: elements of $G_f$ permute roots of $f$, so $G_f$ is subgroup of $S_n$. If $f(x)$ irreducible over $K$, then $G_f$ is *transitive* subgroup, i.e. given $2$ roots $alpha, beta$ of $f$, there is a $g in G_f$ with $g(alpha) = beta$. This gives a general pattern $ "polynomial" --> "field extension" --> "permutation group" $
+- *Example*: consider $QQ subset L = QQ(theta) subset N = QQ(theta, i)$ where $theta = root(4, 2)$. $N$ is normal closure of $QQ(theta)$, $[N: QQ] = 8$ so $|Gal(N\/QQ)| = 8$.
+    - Define $sigma(theta) = i theta$, $sigma(i) = i$, $tau(theta) = theta$, $tau(i) = -i$. Then $tau^2 = sigma^4 = id$. We have $
+    #table(
+    columns: (auto, auto, auto, auto, auto, auto, auto, auto, auto),
+    inset: 10pt,
+    align: horizon,
+    [], $id$, $sigma$, $sigma^2$, $sigma^3$, $tau$, $tau sigma$, $tau sigma^2$, $tau sigma^3$,
+    $theta$, $theta$, $i theta$, $-theta$, $-i theta$, $theta$, $-i theta$, $-theta$, $i theta$,
+    $i$, $i$, $i$, $i$, $i$, $-i$, $-i$, $-i$, $-i$
+    ) $ so $G = Gal(N\/QQ) = angle.l sigma, tau: sigma^4 = tau^2 = id, sigma tau = tau sigma^3 angle.r tilde.equiv D_4$.
+    - Order $2$ subgroups are $ideal(tau)$, $ideal(tau sigma^2)$, $ideal(sigma^2)$, $ideal(tau sigma)$, $ideal(tau sigma^3)$.
+    - Order $4$ subgroups are $ideal(sigma^2, tau) tilde.equiv (ZZ\/2)^2$, $ideal(sigma) tilde.equiv ZZ\/4$, $ideal(sigma^2, tau sigma) tilde.equiv (ZZ\/2)^2$.
+    - Respectively, intermediate field extensions of degree $2$ are $QQ\(sqrt(2)\)$, $QQ(i)$, $QQ\(i sqrt(2)\)$.
+    - Respectively, intermediate field extensions of degree $4$ are $QQ\(root(4, 2)\)$, $QQ\(i root(4, 2)\)$, $QQ\(sqrt(2), i\)$, $QQ\((1 - i) root(4, 2)\)$, $QQ\((1 + i) root(4, 2)\)$.
