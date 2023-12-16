@@ -1,6 +1,6 @@
 import Icon from "@mdi/react";
 // import discord from "./discord.svg";
-import { mdiChessPawn, mdiDisc as mdiDiscord, mdiEmail, mdiGithub, mdiGitlab, mdiInstagram, mdiLinkedin, mdiReddit, mdiStackExchange, mdiStackOverflow } from "@mdi/js";
+import { mdiChessPawn, mdiEmail, mdiGithub, mdiGitlab, mdiLinkedin, mdiReddit, mdiStackExchange, mdiStackOverflow } from "@mdi/js";
 //import styles from "@/styles/contact.module.scss";
 import PageTitle from "../../components/PageTitle";
 
@@ -32,11 +32,6 @@ const SOCIALS: Social[] = [
 		name: "Discord",
 		url: "https://discordapp.com/users/652929649747296266",
 		icon: discordSvgPath,
-	},
-	{
-		name: "Instagram",
-		url: "https://www.instagram.com/isaacholt100/",
-		icon: mdiInstagram,
 	},
 	{
 		name: "Reddit",
