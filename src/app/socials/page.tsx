@@ -71,7 +71,7 @@ export default function Socials() {
 			<PageTitle title="Socials" />
 			<div className="row g-2 g-md-3">
 				{SOCIALS.map(social => (
-					<div className="col col-xs-12 col-sm-6 col-xl-4" key={social.name}>
+					<div className="col col-12 col-sm-6 col-xl-4" key={social.name}>
 						<a
 							href={social.url}
 							className={"btn btn-outline-light btn-lg w-100 position-relative d-flex justify-content-center align-items-center"}

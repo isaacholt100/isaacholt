@@ -10,11 +10,11 @@ interface MainLink {
 }
 
 const MAIN_LINKS: MainLink[] = [{
-    name: "About Me",
-    path: "/about"
+    name: "Maths Notes",
+    path: "/maths"
 }, {
-    name: "My Projects",
-    path: "/projects",
+    name: "Coding Projects",
+    path: "/code",
 }, {
     name: "Contact Me",
     path: "/socials"
@@ -34,7 +34,6 @@ export default function Home() {
                     </div>
                 ))}
             </div>
-            <a className="btn btn-light mt-2 mt-md-3 btn-lg w-100" href="/cv/isaac-holt-cv.pdf" target="_blank"><Icon path={mdiFile} size={"36px"} /> My CV</a>
         </div>
     );
 }

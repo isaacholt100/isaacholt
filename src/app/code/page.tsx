@@ -14,7 +14,7 @@ interface Project {
 const PROJECTS: Project[] = [
 	{
 		name: "bnum",
-		url: "https://docs.rs/bnum/latest/bnum",
+		url: "https://crates.io/crates/bnum",
 		source: "https://github.com/isaacholt100/bnum",
 		description: "A Rust library that provides arbitrary, fixed size signed and unsigned integer types that extend the functionality of Rust's primitive integers, using const generics. It is the first library that I have published, and my biggest coding project so far.",
 		image: ""
@@ -30,7 +30,7 @@ const PROJECTS: Project[] = [
 		name: "Latin Grammar Test",
 		url: "https://latingrammartest.vercel.app",
 		source: "https://github.com/isaacholt100/latin-grammar-test",
-		description: "A simple single page application which tests knowledge of Latin grammar. It features a \"Live\" mode where users from the same school can challenge each other to a timed test. I created this while I was studying Latin A Level to help with my revision.",
+		description: "A simple single page application which tests knowledge of Latin grammar. I created this while I was studying Latin A Level to help with my revision.",
 		image: ""
 	},
 	// {
@@ -55,7 +55,7 @@ export default function Projects() {
 			<PageTitle title="Projects" />
 			<div className="row g-2 g-md-3">
 				{PROJECTS.map(project => (
-					<div className="col col-xs-12 col-sm-6 col-lg-4 col-xl-3" key={project.name}>
+					<div className="col col-12 col-sm-6 col-lg-4 col-xl-3" key={project.name}>
 						<div className="card border-light h-100 bg-transparent">
 							{/*<img src="..." className="card-img-top" alt="" />*/}
 							<div className="card-body d-flex flex-column">

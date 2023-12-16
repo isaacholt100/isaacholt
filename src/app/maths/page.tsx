@@ -31,7 +31,7 @@ export default async function Maths() {
 				<div className="row g-2 g-md-3 pt-3" key={y.year}>
 					<h2>{capitalizeName(y.year)}</h2>
 					{y.notes.map(note => (
-						<div className="col col-xs-12 col-sm-6 col-lg-4 col-xl-3" key={note.name}>
+						<div className="col col-12 col-sm-6 col-lg-4 col-xl-3" key={note.name}>
 							<div className="card border-light bg-transparent h-100">
 								<div className="card-body d-flex flex-column">
 									<h3 className="card-title text-primary">
