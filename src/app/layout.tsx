@@ -1,6 +1,6 @@
 import MenuBar from "../components/MenuBar";
 import "../styles/globals.scss";
-import { Metadata } from "next";
+import { Metadata, Viewport } from "next";
 
 export const metadata: Metadata = {
     title: {
@@ -9,10 +9,13 @@ export const metadata: Metadata = {
     },
     generator: "Isaac Holt",
     applicationName: "Isaac Holt",
-    colorScheme: "dark",
-    themeColor: "#000",
     keywords: ["Isaac Holt", "personal website", "portfolio"],
     description: "Isaac Holt's personal website",
+};
+
+export const viewport: Viewport = {
+    colorScheme: "dark",
+    themeColor: "#000",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
