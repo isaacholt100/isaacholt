@@ -11,3 +11,5 @@
 	)
 	#doc
 ]
+
+#let hdots = $dot.op dot.op dot.op$
