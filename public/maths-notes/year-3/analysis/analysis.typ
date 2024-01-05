@@ -3,55 +3,90 @@
 
 #let indicator(arg) = $bb(1)_arg$
 
-== Integration and measure
-
-- Dirichlet's function: $f: [0, 1] -> RR$, $ f(x) = cases(1 & " if" x in QQ, 0 & " otherwise") $
-
 = The real numbers
-
-- $a in RR$ is an *upper bound* of $E subset.eq RR$ if $forall x in E, x <= a$.
-- $c in RR$ is a *least upper bound (supremum)* if $c <= a$ for every upper bound $a$.
-- $a in RR$ is an *lower bound* of $E subset.eq RR$ if $forall x in E, x >= a$.
-- $c in RR$ is a *greatest lower bound (supremum)* if $c >= a$ for every upper bound $a$.
-- *Completeness axiom of the real numbers*: every subset $E$ with an upper bound has a least upper bound. Every subset $E$ with a lower bound has a greatest lower bound.
-- *Archimedes' principle*: $ forall x in RR, exists n in NN: n > x $
-- Every non-empty subset of $NN$ has a minimum.
-- *The rationals are dense in the reals*: $ forall x < y in RR, exists r in QQ: r in (x, y) $
 
 == Conventions on sets and functions
 
-- For $f: X -> Y$, *preiamge* of $Z subset.eq Y$ is $ f^(-1) (Z) := {x in X: f(x) in Z} $
-- $f: X -> Y$ *injective* if $ forall y in f(X), exists! x in X: y = f(x) $
-- $f: X -> Y$ *surjective* if $Y = f(X)$.
-- *Limit inferior* of sequence $x_n$: $ liminf_(n -> oo) x_n := lim_(n -> oo) (inf_(m >= n) x_m) = sup_(n >= 0) inf_(m >= n) x_m $
-- *Limit superior* of sequence $x_n$: $ limsup_(n -> oo) x_n := lim_(n -> oo) (sup_(m >= n) x_m) = inf_(n >= 0) sup_(m >= n) x_m $
-- *Definition*: $f: E -> RR$ is *bi-Lipschitz* if $ exists C > 0: forall x, y in E, quad C^(-1)|x - y| <= |f(x) - f(y)| <= C|x - y| $
+- *Definition*: for $f: X -> Y$, *preimage* of $Z subset.eq Y$ is $ f^(-1) (Z) := {x in X: f(x) in Z} $
+- *Definition*: $f: X -> Y$ *injective* if $ forall y in f(X), exists! x in X: y = f(x) $
+- *Definition*: $f: X -> Y$ *surjective* if $Y = f(X)$.
+- *Proposition*: let $f: X -> Y$, $A, B subset.eq X$, then $ f(A sect B) & subset.eq f(A) sect f(B), \ f(A union B) & = f(A) union f(B), \ f(X) - f(A) & subset.eq f(X - A) $
+- *Proposition*: let $f: X -> Y$, $C, D subset.eq Y$, then $ f^(-1)(C sect D) & = f^(-1) (C) sect f^(-1)(D), \ f^(-1)(C union D) & = f^(-1)(C) union f^(-1)(D), \ f^(-1)(Y - C) & = X - f^(-1)(C) $
+
+== The real numbers
+
+- *Definition*: $a in RR$ is an *upper bound* of $E subset.eq RR$ if $forall x in E, x <= a$.
+- *Definition*: $c in RR$ is a *least upper bound (supremum)* of $E$, $c = sup(E)$, if $c <= a$ for every upper bound $a$.
+- *Definition*: $a in RR$ is an *lower bound* of $E subset.eq RR$ if $forall x in E, x >= a$.
+- *Definition*: $c in RR$ is a *greatest lower bound (supremum)*, $c = inf(E)$, if $c >= a$ for every upper bound $a$.
+- *Completeness axiom of the real numbers*: every $E subset.eq RR$ with an upper bound has a least upper bound. Every $E subset.eq RR$ with a lower bound has a greatest lower bound.
+- *Archimedes' principle*: $ forall x in RR, exists n in NN: n > x $
+- *Remark*: every non-empty subset of $NN$ has a minimum.
+- *Proposition*: $QQ$ is dense in $RR$: $ forall x < y in RR, exists r in QQ: r in (x, y) $
+
+== Sequences, limits and series
+
+- *Definition*: $l in RR$ is *limit* of $(x_n)$ ($(x_n)$ converges to $l$) if $ forall epsilon > 0, exists N in NN: forall n >= N, quad |x_n - l| < epsilon $ A sequence *converges in $RR$ (is convergent)* if it has a limit $l in RR$. Limit $l = lim_(n -> oo) x_n$ is unique.
+- *Definition*: $(x_n)$ *tends to infinity* if $ forall K > 0, exists N in NN: forall n >= N, quad x_n > K $
+- *Definition*: *subsequence* of $(x_n)$ is sequence $\(x_(n_j)\)$, $n_1 < n_2 < dots.h.c$.
+- *Definition*: *limit inferior* of sequence $x_n$ is $ liminf_(n -> oo) x_n := lim_(n -> oo) (inf_(m >= n) x_m) = sup_(n in NN) inf_(m >= n) x_m $
+- *Definition*: *limit superior* of sequence $x_n$ is $ limsup_(n -> oo) x_n := lim_(n -> oo) (sup_(m >= n) x_m) = inf_(n in NN) sup_(m >= n) x_m $
+- *Proposition*: let $(x_n)$ bounded, $l in RR$. The following are equivalent:
+    - $l = limsup x_n$.
+    - $forall epsilon > 0, exists N in NN: forall n >= N, x_n < l + epsilon$.
+    - $forall epsilon > 0, forall N in NN: exists n in NN: x_n > l - epsilon$.
+- *Proposition*: let $(x_n)$ bounded, $l in RR$. The following are equivalent:
+    - $l = liminf x_n$.
+    - $forall epsilon > 0, exists N in NN: forall n >= N, x_n > l - epsilon$.
+    - $forall epsilon > 0, forall N in NN: exists n in NN: x_n < l + epsilon$.
+- *Theorem (Bolzano-Weierstrass)*: every bounded sequence has a convergent subsequence.
+- *Proposition*: let $(x_n)$ bounded. There exists convergent subsequence with limit $limsup x_n$ and convergent subsequence with limit $liminf x_n$.
+- *Proposition*: let $(x_n)$ bounded, then $(x_n)$ is convergent iff $limsup x_n = liminf x_n$.
+- *Monotone convergence theorem for sequences*: monotone sequence converges in $RR$ or tends to either $oo$ or $-oo$.
+- *Definition*: $(x_n)$ is *Cauchy sequence* if $ forall epsilon > 0, exists N in NN: forall n, m >= N, quad |x_n - x_m| < epsilon $
+- *Theorem*: every Cauchy sequence in $RR$ is convergent.
 
 == Open and closed sets
 
-- $U subset.eq RR$ is *open* if $ forall x in U, exists epsilon: (x - epsilon, x + epsilon) subset.eq U $
-- Arbitrary unions of open sets are open.
-- Finite intersections of open sets are open.
-- $x in RR$ is *point of closure (limit point)* for $E subset.eq RR$ if $ forall delta > 0, exists y in E: |x - y| < delta $ Equivalently, $x$ is point of closure if every open interval containing $x$ contains another point of $E$.
-- *Closure* of $E$, $overline(E)$, is set of points of closure.
-- $F$ is *closed* if $F = overline(F)$.
-- If $A subset B subset.eq RR$ then $overline(A) subset overline(B)$.
-- $overline(A union B) = overline(A) union overline(B)$.
-- For any set $E$, $overline(E)$ is closed.
-- Let $E subset.eq RR$. The following are equivalent:
+- *Definition*: $U subset.eq RR$ is *open* if $ forall x in U, exists epsilon > 0: (x - epsilon, x + epsilon) subset.eq U $
+- *Proposition*: arbitrary unions of open sets are open. Finite intersections of open sets are open.
+- *Definition*: $x in RR$ is *point of closure (limit point)* for $E subset.eq RR$ if $ forall epsilon > 0, exists y in E: |x - y| < epsilon $ Equivalently, $x$ is point of closure of $E$ if every open interval containing $x$ contains another point of $E$.
+- *Definition*: *closure* of $E$, $overline(E)$, is set of points of closure. Note $E subset.eq overline(E)$.
+- *Definition*: $F$ is *closed* if $F = overline(F)$.
+- *Proposition*: $overline(A union B) = overline(A) union overline(B)$. If $A subset B subset.eq RR$ then $overline(A) subset overline(B)$.
+- *Proposition*: for any set $E$, $overline(E)$ is closed, i.e. $overline(E) = overline(overline(E))$.
+- *Proposition*: let $E subset.eq RR$. The following are equivalent:
     - $E$ is closed.
     - $RR - E$ is open.
-- Arbitrary intersections of closed sets are closed. Finite unions of closed sets are closed.
-- *Definition*: collection $C$ of subsets of $RR$ *covers* (is a *covering* of) $F subset.eq RR$ if $F subset.eq union_(S in C) S$. If each $S$ in $C$ open, $G$ is *open covering*. If $C$ is finite, $C$ is *finite cover*.
-- Covering $C$ of $F$ *contains a finite subcover* if exists ${S_1, ..., S_n} subset.eq C$ with $F subset.eq union_(i = 1)^n S_i$ (i.e. a finite subset of $C$ covers $F$). $F$ is *compact* if any open covering $U$ contains a finite subcover.
+- *Proposition*: arbitrary intersections of closed sets are closed. Finite unions of closed sets are closed.
+- *Definition*: collection $C$ of subsets of $RR$ *covers* (is a *covering* of) $F subset.eq RR$ if $F subset.eq union_(S in C) S$. If each $S$ in $C$ open, $C$ is *open covering*. If $C$ is finite, $C$ is *finite covering*.
+- *Definition*: covering $C$ of $F$ *contains a finite subcover* if exists ${S_1, ..., S_n} subset.eq C$ with $F subset.eq union_(i = 1)^n S_i$ (i.e. a finite subset of $C$ covers $F$).
+- *Definition*: $F$ is *compact* if any open covering of $F$ contains a finite subcover.
 - *Example*: $RR$ is not compact, $[a, b]$ is compact.
-- *Heine-Borel theorem*: if $F subset RR$ closed and bounded then any open covering of $F$ has finite subcovering (so $F$ is compact). If $F$ compact then $F$ closed and bounded.
+- *Heine-Borel theorem*: $F$ compact iff $F$ closed and bounded.
+
+== Continuity, pointwise and uniform convergence of functions
+
+- *Definition*: let $E subset.eq RR$. $f: E -> RR$ is *continuous at $a in E$* if $ forall epsilon > 0, exists delta > 0: forall x in E, |x - a| < delta ==> |f(x) - f(a)| < epsilon $ $f$ is *continuous* if continuous at all $y in E$.
+- *Definition*: $lim_(x -> a) f(x) = l$ if $ forall epsilon > 0, exists delta > 0: forall x in E, |x - a| < delta ==> |f(x) - l| < epsilon $
+- *Proposition*: $lim_(x -> a) f(x) = l$ iff for every sequence $(a_n)$ with $lim_(n -> oo) a_n = a$, $lim_(n -> oo) f(a_n) = l$.
+- *Proposition*: $f$ is continuous at $a in E$ iff $lim_(x -> a) f(x) = f(a)$ (and this limit exists).
+- *Definition*: $f: E -> RR$ is *uniformly continuous* if $ forall epsilon > 0, exists delta > 0: forall x, y in E, |x - y| < delta ==> |f(x) - f(y)| < epsilon $
+- *Proposition*: let $F$ closed and bounded, $f: F -> RR$ continuous. Then $f$ is uniformly continuous.
+- *Definition*: let $f_n: E -> RR$ sequence of functions, $f: E -> RR$. $(f_n)$ *converges pointwise* to $f$ if $ forall epsilon > 0, forall x in E, exists N in NN: forall n >= N, |f_n (x) - f(x)| < epsilon $ $(f_n)$ *converges uniformly* to $f$ is $ forall epsilon > 0, exists N in NN: forall n >= N, forall x in E, |f_n (x) - f(x)| < epsilon $
+- *Theorem*: let $f_n: E -> RR$ sequence of continuous functions converging uniformly to $f: E -> RR$. Then $f$ is continuous.
+- *Definition*: $P = {x_0, ..., x_n}$ is *partition* of $[a, b]$ if $a = x_0 < dots.h.c < x_n = b$.
+- *Definition*: $f: [a, b] -> RR$ is *piecewise linear* if there exists partition $P = {x_0, ..., x_n}$ and $m_i, c_i in RR$ such that $ forall i in [n], forall x in \(x_(i - 1), x_i\), quad f(x) = m_i x + c_i $ $f$ is continuous on $[a, b] - P$.
+- *Definintion*: $g: [a, b] -> RR$ is *step function* if there exists partition $P = {x_0, ..., x_n}$ and $m_i in RR$ such that $ forall i in [n], forall x in \(x_(i - 1), x_i)\), quad g(x) = m_i $ $g$ is continuous on $[a, b] - P$.
+- *Theorem*: let $f: E -> RR$ continuous, $E$ closed and bounded. Then there exist continuous piecewise linear $f_n$ with $f_n -> f$ uniformly, and step functions $g_n$ with $g_n -> f$ uniformly.
+- *Definition*: $f: E -> RR$ is *Lipschitz* if $ exists C > 0: forall x, y in E, quad |f(x) - f(y)| <= C|x - y| $
+- *Definition*: $f: E -> RR$ is *bi-Lipschitz* if $ exists C > 0: forall x, y in E, quad C^(-1)|x - y| <= |f(x) - f(y)| <= C|x - y| $
 
 == The extended real numbers
 
 - *Definition*: *extended reals* are $RR union {-oo, oo}$ with the order relation $-oo < oo$ and $forall x in RR, -oo < x < oo$. $oo$ is an upper bound and $-oo$ is a lower bound for every $x in RR$, so $sup(RR) = oo$, $inf(RR) = -oo$.
     - Addition: $forall a in RR, a + oo = oo and a + (-oo) = -oo$. $oo + oo = oo - (-oo) = oo$. $oo - oo$ is undefined.
-    - Multiplication: $forall a in RR_(>0), a dot.op oo = oo$, $forall a in RR_(<0), a dot.op = -oo$. $oo dot.op oo = oo$ and $0 dot.op oo = oo$.
+    - Multiplication: $forall a > 0, a dot.op oo = oo$, $forall a < 0, a dot.op oo = -oo$. Also $oo dot.op oo = oo$.
     - $limsup$ and $liminf$ are defined as $ limsup x_n := inf_(n in NN) {sup_(k >= n) x_k}, quad liminf x_n := sup_(n in NN) {inf_(k >= n) x_k} $
 - *Definition*: extended real number $l$ is *limit* of $(x_n)$ if either
     - $forall epsilon > 0, exists N in NN: forall n >= N, |x_n - l| < epsilon$. Then $(x_n)$ *converges to $l$*. or
@@ -61,22 +96,17 @@
 
 = Further analysis of subsets of $RR$
 
-TODO: up to here, check that all notes are made from these topics
-
 == Countability and uncountability
 
-- $A$ is *countable* if $A = nothing$, $A$ is finite or there is a bijection $phi: NN -> A$ (in which case $A$ is *countably infinite*). Otherwise $A$ is *uncountable*. $phi$ is called an *enumeration*.
-- If surjection from $NN$ to $A$, or injection from $A$ to $NN$, then $A$ is countable.
-- Examples of countable sets:
-    - $NN$ ($phi(n) = n$)
-    - $2 NN$ ($phi(n) = 2n$)
-- $QQ$ is countable.
-- *Exercise (todo)*: show that $NN^k$ is countable for any $k in NN$.
-- *Exercise (todo)*: show that if $a_n$ is a nonnegative sequence and $phi: NN -> NN$ is a bijection then $ sum_(n = 1)^infinity a_n = sum_(n = 1)^infinity a_(phi(n)) $
-- *Exercise (todo)*: show that if $a_(n, k)$ is a nonnegative sequence and $phi: NN times NN -> NN$ is a bijection then $ sum_(n = 1)^infinity sum_(n = 1)^infinity a_(n, k) = sum_(n = 1)^infinity a_(phi(n)) $
-- $f: X -> Y$ is *monotone* if $x >= y => f(x) >= f(y)$ or $x <= y => f(x) >= f(y)$.
-- Let $f$ be monotone on $(a, b)$. Then it is discountinuous on a countable set.
-- Set of sequences in ${0, 1}$, $\{((x_n))_(n in NN): forall n in NN, x_n in {0, 1}\}$ is uncountable.
+- *Definition*: $A$ is *countable* if $A = nothing$, $A$ is finite or there is a bijection $phi: NN -> A$ (in which case $A$ is *countably infinite*). Otherwise $A$ is *uncountable*. *Enumeration* is bijection from $A$ to $[n]$ or $NN$.
+- *Proposition*: if surjection from countable set to $A$, or injection from $A$ to countable set, then $A$ is countable.
+- *Proposition*: any subset of $NN$ is countable.
+- *Proposition*: $QQ$ is countable.
+- *Proposition*: show that if $(a_n)$ is a nonnegative sequence and $phi: NN -> NN$ is a bijection then $ sum_(n = 1)^infinity a_n = sum_(n = 1)^infinity a_(phi(n)) $
+- *Proposition*: show that if $\(a_(n, k)\)$ is a nonnegative sequence and $phi: NN -> NN times NN$ is a bijection then $ sum_(n = 1)^infinity sum_(n = 1)^infinity a_(n, k) = sum_(n = 1)^infinity a_(phi(n)) $
+- *Definition*: $f: X -> Y$ is *monotone* if $x >= y => f(x) >= f(y)$ or $x <= y => f(x) >= f(y)$.
+- *Proposition*: let $f$ be monotone on $(a, b)$. Then it is discountinuous on a countable set.
+- *Lemma*: set of sequences in ${0, 1}$, $\{(x_n)_(n in NN): forall n in NN, x_n in {0, 1}\}$ is uncountable.
 - *Theorem*: $RR$ is uncountable.
 
 == The structure theorem for open sets
@@ -86,31 +116,31 @@ TODO: up to here, check that all notes are made from these topics
 
 == Accumulation points and perfect sets
 
-- $x in RR$ is *accumulation point* of $E subset.eq RR$ if $x$ is point of closure of $E - {x}$. Equivalently, $x$ is a point of closure if $ forall delta > 0, exists y in E: y != x and |x - y| < delta $ Equivalently, there exists a sequence of distinct $y_n in E$ with $y_n -> x$ as $n -> oo$.
-- *Exercise*: set of accumulation points of $QQ$ is $RR$.
-- $E subset.eq RR$ is *isolated* if $ forall x in E, exists epsilon > 0: (x - epsilon, x + epsilon) sect E = {x} $
+- *Definition*: $x in RR$ is *accumulation point* of $E subset.eq RR$ if $x$ is point of closure of $E - {x}$. Equivalently, $x$ is a point of closure if $ forall epsilon > 0, exists y in E: y != x and |x - y| < epsilon $ Equivalently, there exists a sequence of distinct $y_n in E$ with $y_n -> x$ as $n -> oo$.
+- *Proposition*: set of accumulation points of $QQ$ is $RR$.
 - *Proposition*: set of accumulation points $E'$ of $E$ is closed.
-- Bounded set $E$ is *perfect* if it equals its set of accumulation points.
-- *Exercise (todo)*: what is the set of accumulation points of an isolated set?
-- Every non-empty perfect set is uncountable.
+- *Definition*: $E subset.eq RR$ is *isolated* if $ forall x in E, exists epsilon > 0: (x - epsilon, x + epsilon) sect E = {x} $
+- *Proposition*: $E$ is isolated iff it has no accumulation points.
+- *Definition*: bounded set $E$ is *perfect* if it equals its set of accumulation points.
+- *Theorem*: every non-empty perfect set is uncountable.
 
 == The middle-third Cantor set
 
-- *Proposition*: let ${F_n: n in N}$ be collection of non-empty nested closed sets, one of which is bounded, so $F_(n + 1) subset.eq F_n$. Then $ sect.big_(n in NN) F_n != emptyset $
-- *Middle third Cantor set*:
+- *Proposition*: let ${F_n: n in NN}$ be collection of non-empty nested closed sets (so $F_(n + 1) subset.eq F_n$), one of which is bounded. Then $ sect.big_(n in NN) F_n != emptyset $
+- *Definition*: the *middle third Cantor set* is defined by:
     - Define $C_0 := [0, 1]$
-    - Given $C_n = union_(i = 1)^(2^n) [a_i, b_i]$, $a_i < b_1 < a_2 < dots.h.c$, with $|b_i - a_i| = 3^(-n)$, define $ C_(n + 1) := union_(i = 1)^(2^n) [a_i, a_i + 3^(-(n + 1))] union [b_i - 3^(-(n + 1)), b_i] $ which is a union of $2^(n + 1)$ disjoint intervals, with difference in endpoints equalling $3^(-(n + 1))$.
+    - Given $C_n = union_(i = 1)^(2^n) [a_i, b_i]$, $a_i < b_1 < a_2 < dots.h.c < a_(2^n) < b_(2^n)$, with $|b_i - a_i| = 3^(-n)$, define $ C_(n + 1) := union_(i = 1)^(2^n) [a_i, a_i + 3^(-(n + 1))] union [b_i - 3^(-(n + 1)), b_i] $ which is a union of $2^(n + 1)$ disjoint intervals, with all differences in endpoints equalling $3^(-(n + 1))$.
     - The *middle third Cantor set* is $ C := union.big_(n in NN) C_n $ Observe that if $a$ is an endpoint of an interval in $C_n$, it is contained in $C$.
-- *Proposition*: the middle third Cantor set is closed, non-empty and equal to its set of accumulation points. Hence it is perfect and uncountable.
-- *Definition*: let $k in NN - {1}$, $x in lr([0, 1))$. $0.a_1 a_2 ...$, $a_i in {0, ..., k - 1}$, is a *$k$-ary expansion* of $x$ if $ x = sum_(i = 1)^oo a_i / k^i $
+- *Proposition*: the middle third Cantor set is closed, non-empty and equal to its set of accumulation points. Hence it is perfect and so uncountable.
+- *Definition*: let $k in NN - {1}$, $x in lr([0, 1))$. $0.a_1 a_2 ...$, $a_i in {0, ..., k - 1}$, is a *$k$-ary expansion* of $x$ if $ x = sum_(i in NN) a_i / k^i $
 - *Remark*: the $k$-ary expansion may not be unique, but there is a countable set $E subset.eq lr([0, 1))$ such that every $x in lr([0, 1)) - E$ has a unique $k$-ary expansion.
-- *Remark*: for every $x in C$, the ternary ($k = 3$) expansion of $x$ is unique and $ x = sum_(i = 1)^oo a_i / 3^i, quad a_i in {0, 2} $ Moreover, every choice of sequence $(a_i)$, $a_i in {0, 2}$, gives $x in sum_(i = 1)^oo a_i / 3^i in C$.
-- *Example*: define $g: [0, 1] -> [0, 1]$ by $ g(x) := cases(sum_(i = 1)^oo (a_i\/2) / 2^i & "if" x = sum_(i = 1)^oo a_i / 3^i \, a_i in {0, 2}, sup_(x in C, x <= y) f(x) & "if" x in.not C) $ $g$ is a surjection, monotone and continuous.
+- *Remark*: for every $x in C$, the ternary ($k = 3$) expansion of $x$ is unique and $ x = sum_(i in NN) a_i / 3^i, quad a_i in {0, 2} $ Moreover, every choice of sequence $(a_i)$, $a_i in {0, 2}$, gives $x = sum_(i in NN) a_i / 3^i in C$.
+- *Definition*: *Cantor-Lebesgue function*, $g: [0, 1] -> [0, 1]$, is defined by $ g(x) := cases(sum_(i in NN) (a_i\/2) / 2^i & "if" x = sum_(i in NN) a_i / 3^i \, a_i in {0, 2}, sup{f(y): y in C, y <= x} & "if" x in.not C) $ $g$ is a surjection, monotone and continuous.
 
 == $G_delta, F_sigma$
 
-- Set $E$ is *$G_delta$* if $E = sect_(n in NN) U_n$ with $U_n$ open.
-- Set $E$ is *$F_sigma$* if $E = union_(n in NN) F_n$ with $F_n$ closed.
+- *Definition*: $E subset.eq RR$ is *$G_delta$* if $E = sect_(n in NN) U_n$ with $U_n$ open.
+- *Definition*: $E subset.eq RR$ is *$F_sigma$* if $E = union_(n in NN) F_n$ with $F_n$ closed.
 - *Lemma*: set of points where $f: RR -> RR$ is continuous is $G_delta$.
 
 = Construction of Lebesgue measure
@@ -118,37 +148,36 @@ TODO: up to here, check that all notes are made from these topics
 == Lebesgue outer measure
 
 - *Definition*: let $I$ non-empty interval with endpoints $a = inf(I) in {-oo} union RR$ and $b = sup(I) in RR union {oo}$. The *length* of $I$ is $ ell(I) := b - a $ and set $ell(nothing) = 0$.
-- *Example*: if $I = lr((-oo, b]) = lr((-oo, a]) union [a, b]$ then $ell(I) = oo = ell(lr(-oo, a])) + ell([a, b])$
-- *Definition*: let $A subset.eq RR$. *Lebesgue outer measure* of $A$ is infimum of all sums of lengths of intervals covering $A$: $ mu^*(A) := inf{sum_(k = 1)^oo ell(I_k): A subset.eq union.big_(k = 1)^oo I_k, I_k "intervals"} $ It satisfies *monotonicity*: $A subset.eq B ==> mu^*(A) <= mu^*(B)$.
-- *Proposition*: outer measure is *countably subadditive*: if ${E_k}_(k = 1)^oo$ is any countable collection of sets then $ mu^*(union.big_(k = 1)^oo E_k) <= sum_(k = 1)^oo mu^*(E_k) $
-- *Lemma*: we have $ mu^*(A) = inf{sum_(k = 1)^oo ell(I_k): A subset union.big_(k = 1)^oo I_k, I_k != nothing "open intervals"} $
-- Lebesgue outer measure of interval is its length: $mu^*(I) = ell(I)$.
+- *Definition*: let $A subset.eq RR$. *Lebesgue outer measure* of $A$ is infimum of all sums of lengths of intervals covering $A$: $ mu^*(A) := inf{sum_(k in NN) ell(I_k): A subset.eq union.big_(k in NN) I_k, I_k "intervals"} $ It satisfies *monotonicity*: $A subset.eq B ==> mu^*(A) <= mu^*(B)$.
+- *Proposition*: outer measure is *countably subadditive*: $ mu^*(union.big_(k in NN) E_k) <= sum_(k in NN) mu^*(E_k) $ This implies *finite subadditivity*: $ mu^*(union.big_(k = 1)^n E_k) <= sum_(k = 1)^n mu^*(E_k) $
+- *Lemma*: we have $ mu^*(A) = inf{sum_(k in NN) ell(I_k): A subset union.big_(k in NN) I_k, I_k != nothing "open intervals"} $
+- *Proposition*: outer measure of interval is its length: $mu^*(I) = ell(I)$.
 
 == Measurable sets
 
 - *Notation*: $E^c = RR - E$.
-- *Proposition*: let $E = (a, oo)$. Then $ forall A subset.eq RR, quad mu^*(A sect E) + mu^*(A sect E^c) $
-- *Definition*: $E subset.eq RR$ is *Lebesgue measurable* if $ forall A subset.eq RR, mu^*(A) = mu^*(A sect E) + mu^*(A sect E^c) $ Collection of such sets is $cal(F)_(mu^*)$.
+- *Proposition*: let $E = (a, oo)$. Then $ forall A subset.eq RR, quad mu^*(A) = mu^*(A sect E) + mu^*(A sect E^c) $
+- *Definition*: $E subset.eq RR$ is *Lebesgue measurable* if $ forall A subset.eq RR, quad mu^*(A) = mu^*(A sect E) + mu^*(A sect E^c) $ Collection of such sets is $cal(F)_(mu^*)$.
 - *Lemma (excision property)*: let $E$ Lebesgue measurable set with finite measure and $E subset.eq B$, then $ mu^*(B - E) = mu^*(B) - mu^*(E) $
+- *Proposition*: if $E_1, ..., E_n$ Lebesgue measurable then $union_(k = 1)^n E_k$ is Lebesgue measurable. If $E_1, ..., E_n$ disjoint then $ mu^*(A sect union.big_(k = 1)^n E_k) = sum_(k = 1)^n mu^*(A sect E_k) $ for any $A subset.eq RR$. In particular, for $A = RR$, $ mu^*(union.big_(k = 1)^n E_k) = sum_(k = 1)^n mu^*(E_k) $
 - *Remark*: not every set is Lebesgue measurable.
 - *Definition*: collection of subsets of $RR$ is an *algebra* if contains $nothing$ and closed under taking complements and finite unions: if $A, B in cal(A)$ then $RR - A, A union B in cal(A)$.
-- *Remark*: if a union of a countable collection of Lebesgue measurable sets is also the union of a countable disjoint collection of Lebesgue measurable sets: if ${A_k}_(k = 1)^oo$ is countable collection of Lebesgue measurable sets, then let $A_1' = A_1$ and for $k > 1$, define $ A_k' = A_k - union_(i = 1)^(k - 1) A_i $ then ${A_k'}_(k = 1)^oo$ is disjoint union of Lebesgue measurable sets.
-- *Proposition*: if $E_1, ..., E_n$ Lebesgue measurable then $union_(k = 1)^n E_k$ is Lebesgue measurable. If $E_1, ..., E_n$ disjoint then $ mu^*(A sect union.big_(k = 1)^n E_k) = sum_(k = 1)^n mu^*(A sect E_k) $ for any $A subset.eq RR$. In particular, for $A = RR$, $ mu^*(union.big_(k = 1)^n E_k) = sum_(k = 1)^n mu^*(E_k) $
-- *Proposition*: if $E$ is countable union of Lebesgue measurable sets, then $E$ is Lebesgue measurable. Also, if ${E_k}_(k in NN)$ is countable disjoint collection of Lebesgue measurable sets then $ mu^* (union.big_(k = 1)^oo E_k) = sum_(k = 1)^oo mu^* (E_k) $
+- *Remark*: a union of a countable collection of Lebesgue measurable sets is also the union of a countable disjoint collection of Lebesgue measurable sets: if ${A_k}_(k in NN)$ is countable collection of Lebesgue measurable sets, then let $A_1' := A_1$ and for $k > 1$, define $ A_k' := A_k - union_(i = 1)^(k - 1) A_i $ then ${A_k'}_(k in NN)$ is disjoint union of Lebesgue measurable sets.
+- *Proposition*: if $E$ is countable union of Lebesgue measurable sets, then $E$ is Lebesgue measurable. Also, if ${E_k}_(k in NN)$ is countable disjoint collection of Lebesgue measurable sets then $ mu^* (union.big_(k in NN) E_k) = sum_(k in NN) mu^* (E_k) $
 
 == Abstract definition of a measure
 
 - *Definition*: let $X subset.eq RR$. Collection of subsets of $cal(F)$ of $X$ is *$sigma$-algebra* if
-    - $nothing in F$
-    - $E in F ==> E^c in F$
-    - $E_1, ..., E_n in F ==> union_(k = 1)^oo E_k in cal(F)$.
+    - $nothing in cal(F)$
+    - $E in cal(F) ==> E^c in cal(F)$
+    - $E_1, ..., E_n in cal(F) ==> union_(k in NN) E_k in cal(F)$.
 - *Example*:
     - Trivial examples are $cal(F) = {nothing, RR}$ and $cal(F) = cal(P)(RR)$.
-    - Arbitrary intersections of $sigma$-algebras are $sigma$-algebras.
+    - Countable intersections of $sigma$-algebras are $sigma$-algebras.
 - *Definition*: let $cal(F)$ $sigma$-algebra of $X$. $nu: cal(F) -> RR union {plus.minus oo}$ is *measure* satisfying
     - $nu(nothing) = 0$
     - $forall E in cal(F), nu(E) >= 0$
-    - *Countable additivity*: if $E_1, E_2, ... in cal(F)$ are disjoint then $ nu(union.big_(k = 1)^oo E_k) = sum_(k = 1)^oo nu(E_k) $
+    - *Countable additivity*: if $E_1, E_2, ... in cal(F)$ are disjoint then $ nu(union.big_(k in NN) E_k) = sum_(k in NN) nu(E_k) $
     Elements of $cal(F)$ are *measurable* (as they are the only sets on which the measure $nu$ is defined).
 - *Proposition*: if $nu$ is measure then it satisfies:
     - *Monotonicity*: $A subset.eq B ==> nu(A) <= nu(B)$.
@@ -157,29 +186,29 @@ TODO: up to here, check that all notes are made from these topics
 
 == Lebesgue measure
 
-- *Lemma*: the Lebesgue measurable sets form a $sigma$-algebra and contain every interval.
-- *Theorem (Caratheodory extension)*: the restriction of the outer measure $mu^*$ to the $sigma$-algebra of Lebesgue measurable sets is a measure.
-- *Definition*: the measure $mu$ of $mu^*$ restricted to $cal(F)_(mu^*)$ is the *Lebesgue measure*. It satisfies $mu(I) = ell(I)$ for any interval $I$ and is translation invariant.
+- *Lemma*: $F_(mu^*)$ is $sigma$-algebra and contains every interval.
+- *Theorem (Carathéodory extension)*: restriction of the $mu^*$ to $F_(mu^*)$ is a measure.
 - *Hahn extension theorem*: there exists unique measure $mu$ defined on $cal(F)_(mu^*)$ for which $mu(I) = ell(I)$ for any interval $I$.
+- *Definition*: the measure $mu$ of $mu^*$ restricted to $cal(F)_(mu^*)$ is the *Lebesgue measure*. It satisfies $mu(I) = ell(I)$ for any interval $I$ and is translation invariant.
 
 == Sets of measure $0$
 
-- *Exercise (todo)*: middle-third Cantor set is Lebesgue measurable and has Lebesgue measure $0$.
-- *Exercise (todo)*: any countable set is Lebesgue measurable and has Lebesgue measure $0$.
-- *Exercise (todo)*: any $E$ with $mu^*(E) = 0$ is Lebesgue measurable and has $mu(E) = 0$.
+- *Proposition*: middle-third Cantor set is Lebesgue measurable and has Lebesgue measure $0$.
+- *Proposition*: any countable set is Lebesgue measurable and has Lebesgue measure $0$.
+- *Proposition*: any $E$ with $mu^*(E) = 0$ is Lebesgue measurable and has $mu(E) = 0$.
 - *Lemma*: let $E$ Lebesgue measurable set with $mu(E) = 0$, then $forall E' subset.eq E$, $E'$ is Lebesgue measurable.
 
 == Continuity of measure
 
-- *Definition*: countable collection ${E_k}_(k = 1)^oo$ is *ascending* if $forall k in NN, E_k subset.eq E_(k + 1)$ and *descending* if $forall k in NN, E_(k + 1) subset.eq E_k$.
+- *Definition*: countable collection ${E_k}_(k in NN)$ is *ascending* if $forall k in NN, E_k subset.eq E_(k + 1)$ and *descending* if $forall k in NN, E_(k + 1) subset.eq E_k$.
 - *Theorem*: every measure $m$ satisfies:
-    - If ${A_k}_(k = 1)^oo$ is ascending collection of measurable sets, then $ m(union.big_(k = 1)^oo A_k) = lim_(k -> oo) m(A_k) $
-    - If ${B_k}_(k = 1)^oo$ is descending collection of measurable sets and $m(B_1) < oo$, then $ m(sect.big_(k = 1)^oo B_k) = lim_(k -> oo) m(B_k) $
+    - If ${A_k}_(k in NN)$ is ascending collection of measurable sets, then $ m(union.big_(k in NN) A_k) = lim_(k -> oo) m(A_k) $
+    - If ${B_k}_(k in NN)$ is descending collection of measurable sets and $m(B_1) < oo$, then $ m(sect.big_(k in NN) B_k) = lim_(k -> oo) m(B_k) $
 
 == An approximation result for Lebesgue measure
 
-- *Definition*: *Borel $sigma$-algebra* $cal(B)(RR)$ is smallest $sigma$-algebra containing all intervals: for any other $sigma$-algebra $cal(F)$ containing all intervals, $cal(B)(RR) subset cal(F)$. $ cal(B)(RR) = sect.big {cal(F): cal(F) " " sigma "-algebra containing all intervals"} $ $E in cal(B)(RR)$ is *Borel* or *Borel measurable*.
-- Every open subset of $RR$, every closed subset of $RR$, every $G_delta$ set, every $F_sigma$ set is Borel.
+- *Definition*: *Borel $sigma$-algebra* $cal(B)(RR)$ is smallest $sigma$-algebra containing all intervals: for any other $sigma$-algebra $cal(F)$ containing all intervals, $cal(B)(RR) subset.eq cal(F)$. $ cal(B)(RR) := sect.big {cal(F): cal(F) " " sigma "-algebra containing all intervals"} $ $E in cal(B)(RR)$ is *Borel* or *Borel measurable*.
+- *Lemma*: all open subsets of $RR$, closed subsets of $RR$, $G_delta$ sets and $F_sigma$ sets are Borel.
 - *Proposition*: the following are equivalent:
     - $E$ is Lebesgue measurable
     - $forall epsilon > 0, exists "open" G: E subset.eq G and mu^*(G - E) < epsilon$
@@ -191,16 +220,17 @@ TODO: up to here, check that all notes are made from these topics
 
 == Definition of a measurable function
 
+- *Proposition*: let $f: RR -> RR$. $f$ continuous iff $forall "open" U subset.eq RR, f^(-1)(U) subset.eq RR$ is open.
 - *Lemma*: let $f: E -> RR union {plus.minus oo}$ with $E$ Lebesgue measurable. The following are equivalent:
     - $forall c in RR, {x in E: f(x) > c}$ is Lebesgue measurable.
     - $forall c in RR, {x in E: f(x) >= c}$ is Lebesgue measurable.
     - $forall c in RR, {x in E: f(x) < c}$ is Lebesgue measurable.
     - $forall c in RR, {x in E: f(x) <= c}$ is Lebesgue measurable.
-- *Definition*: $f: E -> RR$ is *(Lebesgue) measurable* if it satisfies any one of the above properties and if $E$ is Lebesgue measurable.
-- *Proposition*: let $f: RR -> RR$. $f$ continuous iff $forall "open" U subset.eq, f^(-1)(U) subset.eq RR$ is open.
-- *Definition*: *indicator function* on set $A$, $bb(1)_A: RR -> {0, 1}$ is $ bb(1)_A (x) := cases(1 & "if" x in A, 0 & "if" x in.not A) $
+    The same statement holds for Borel measurable sets.
+- *Definition*: $f: E -> RR union {plus.minus oo}$ is *(Lebesgue) measurable* if it satisfies any of the above properties and if $E$ is Lebesgue measurable. $f$ being *Borel measurable* is defined similarly.
+- *Corollary*: if $f$ is measurable then for every $B in cal(B)(RR)$, $f^(-1)(B)$ is measurable. In particular, if $f$ is measurable, preimage of any interval is measurable.
+- *Definition*: *indicator function* on set $A$, $indicator(A): RR -> {0, 1}$, is $ indicator(A)(x) := cases(1 & "if" x in A, 0 & "if" x in.not A) $
 - *Definition*: $phi: RR -> RR$ is *simple (measurable) function* if $phi$ is measurable function that has finite codomain.
-- *Definition*: sequence of functions $(f_n)$ with domain $E$ *converge in measure* to $f$ if $ forall epsilon > 0, quad mu({x in E: |f_n (x) - f(x)| > epsilon}) -> 0 "as" n -> oo $
 
 == Fundamental aspects of measurable functions
 
@@ -208,52 +238,57 @@ TODO: up to here, check that all notes are made from these topics
 - *Definition*: real-valued function which is increasing or decreasing is *monotone*.
 - *Definition*: sequence $(f_n)$ on domain $E$ is increasing if $f_n <= f_(n + 1)$ on $E$ for all $n in NN$.
 - *Example*: continuous functions are measurable.
-- *Definition*: for $f_1: E -> RR, ..., f_n: E -> RR$, $max {f_1, ..., f_n}: E -> RR$ is $ max{f_1, ..., f_n}(x) = max{f_1 (x), ..., f_n (x)} $ $min{f_1, ..., f_n}$ is defined similarly.
+- *Definition*: for $f_1: E -> RR, ..., f_n: E -> RR$, define $ max{f_1, ..., f_n}(x) := max{f_1 (x), ..., f_n (x)} $ $min{f_1, ..., f_n}$ is defined similarly.
 - *Proposition*: for finite family ${f_k}_(k = 1)^n$ of measurable functions with common domain $E$, $max{f_1, ..., f_n}$ and $min{f_1, ..., f_n}$ are measurable.
 - *Definition*: for $f: E -> RR$, functions $|f|, f^+, f^-$ defined on $E$ are $ |f|(x) := max{f(x), -f(x)}, quad f^+ (x) := max{f(x), 0}, quad f^- (x) := max{-f(x), 0} $
 - *Corollary*: if $f$ measurable on $E$, so are $|f|$, $f^+$ and $f^-$.
 - *Proposition*: let $f: E -> RR union {plus.minus oo}$. For measurable $D subset.eq E$, $f$ measurable on $E$ iff restrictions of $f$ to $D$ and $E - D$ are measurable.
-- *Theorem*: let $f, g$ real-valued measurable functions with domain $E$.
+- *Theorem*: let $f, g: E -> RR$ measurable.
     - *Linearity*: $forall alpha, beta in RR, alpha f + beta g$ is measurable.
     - *Products*: $f g$ is measurable.
-- *Proposition*: let $(f_n)$ be sequence of measurable functions on $E$ that converges pointwise to $f$ on $E$. Then $f$ is measurable.
-- *Simple approximation lemma*: let $f: E -> RR$ measurable and bounded, so $exists M >= 0: forall x in E, |f|(x) < M$. Then $forall epsilon > 0$, there exist simple measurable functions $phi_epsilon, psi_epsilon: E -> RR$ such that $ forall x in E, phi_epsilon (x) <= f(x) <= psi_epsilon (x) and 0 <= psi_epsilon (x) - phi_epsilon (x) < epsilon $
+- *Proposition*: let $f_n: E -> RR union {plus.minus oo}$ be sequence of measurable functions that converges pointwise to $f: E -> RR union {plus.minus oo}$. Then $f$ is measurable.
+- *Simple approximation lemma*: let $f: E -> RR$ measurable and bounded, so $exists M >= 0: forall x in E, |f|(x) < M$. Then $forall epsilon > 0$, there exist simple measurable functions $phi_epsilon, psi_epsilon: E -> RR$ such that $ forall x in E, quad phi_epsilon (x) <= f(x) <= psi_epsilon (x) and 0 <= psi_epsilon (x) - phi_epsilon (x) < epsilon $
+- *Simple approximation theorem*: let $f: E -> RR union {plus.minus oo}$, $E$ measurable. Then $f$ is measurable iff there exists sequence $(phi_n)$ of simple functions on $E$ which converge pointwise on $E$ to $f$ and satisfy $ forall n in NN, forall x in E, |phi_n|(x) <= |f|(x) $ If $f$ is nonnegative, $(phi_n)$ can be chosen to be increasing.
 - *Definition*: let $f, g: E -> RR union {plus.minus oo}$. Then $f = g$ *almost everywhere* if ${x in E: f(x) != g(x)}$ has measure $0$.
 - *Proposition*: let $f_1, f_2, f_3: E -> RR union {plus.minus oo}$ measurable. If $f_1 = f_2$ almost everywhere and $f_2 = f_3$ almost everywhere then $f_1 = f_3$ almost everywhere.
-- Let $f, g: E -> RR union {plus.minus oo}$ finite almost everywhere on $E$. Let $D_f$ and $D_g$ be sets for which $f$ and $g$ are finite. Then $f + g$ is finite and well-defined on $D_f sect D_g$ and complement of $D_f sect D_g$ has measure $0$.
 - *Remark*: Lebesgue measurable functions can be modified arbitrarily on a set of measure $0$ without affecting measurability.
-- *Simple approximation theorem*: let $f: E -> RR union {plus.minus oo}$, $E$ measurable. Then $f$ is measurable iff there exists sequence $(phi_n)$ of simple functions on $E$ which converge pointwise on $E$ to $f$ and satisfy $ forall n in NN, forall x in E, |phi_n (x)| <= |f|(x) $ If $f$ is nonnegative, $(phi_n)$ can be chosen to be increasing.
+- *Proposition*: let $f_n: E -> RR union {plus.minus oo}$ sequence of measurable functions, $f: E -> RR union {plus.minus oo}$ measurable. Set of points where $(f_n)$ converges pointwise to $f$ is measurable.
+- *Proposition*: let $f, g: E -> RR union {plus.minus oo}$ measurable and finite almost everywhere on $E$.
+    - *Linearity*: $forall alpha, beta in RR$, there exists function equal to $alpha f + beta g$ almost everywhere on $E$ (any such function is measurable).
+    - *Products*: there exists function equal to $f g$ almost everywhere on $E$ (any such function is measurable).
+- *Definition*: sequence of functions $(f_n)$ with domain $E$ *converge in measure* to $f$ if $(f_n)$ and $f$ are finite almost everywhere and $ forall epsilon > 0, quad mu({x in E: |f_n (x) - f(x)| > epsilon}) -> 0 "as" n -> oo $
 
 = The Lebesgue integral
 
 == The integral of a simple measurable function
 
-- *Definition*: let $phi$ be real-valued function taking finitely many values $alpha_1 < dots.h.c < alpha_n$, then *standard representation* of $phi$ is $ phi = sum_(i = 1)^n alpha bb(1)_(A_i), quad A_i = phi^(-1)({alpha_i}) $
-- *Lemma*: let $phi = sum_(i = 1)^m beta_i indicator(B_i)$, $B_i$ disjoint mesauble collection, $beta_i in RR$, then $phi$ is simple measurable. If $phi$ takes values $0$ outside a finite set then $ sum_(i = 1)^n alpha_i mu(A_i) = sum_(i = 1)^m beta_i mu(B_i) $ where $A_i$ in standard representation.
-- *Definition*: let $phi$ be simple nonnegative measurable function. *Integral* of $phi$ with respect to $mu$ is $ integral phi = sum_(i = 1)^n alpha_i mu(A_i) $ where $phi = sum_(i = 1)^n alpha_i bb(1)_(A_i)$ is the standard representation. Here we use the convention $0 dot.op oo = 0$.
+- *Definition*: let $phi$ be real-valued function taking finitely many values $alpha_1 < dots.h.c < alpha_n$, then *standard representation* of $phi$ is $ phi = sum_(i = 1)^n alpha_i bb(1)_(A_i), quad A_i = phi^(-1)({alpha_i}) $
+- *Lemma*: let $phi = sum_(i = 1)^m beta_i indicator(B_i)$, $B_i$ disjoint measurable collection, $beta_i in RR$, then $phi$ is simple measurable. If $phi$ takes value $0$ outside a set of finite measure then $ sum_(i = 1)^n alpha_i mu(A_i) = sum_(i = 1)^m beta_i mu(B_i) $ where $A_i$ in standard representation.
+- *Definition*: let $phi$ be simple nonnegative measurable function or simple measurable function taking value $0$ outside set of finite measure. *Integral* of $phi$ with respect to $mu$ is $ integral phi = sum_(i = 1)^n alpha_i mu(A_i) $ where $phi = sum_(i = 1)^n alpha_i bb(1)_(A_i)$ is standard representation. Here, use convention $0 dot.op oo = 0$. For measurable $E subset.eq RR$, define $ integral_E phi = integral indicator(E) phi $
 - *Example*:
     - Let $phi_2 = indicator([0, 2]) + indicator([1, 3]) = indicator(lr([0, 1) union lr((2, 3]))) + 2 indicator([1, 2])$ so $integral phi_2 = 4$.
     - Let $phi_3 = indicator(RR)$, then $integral phi_3 = 1 dot.op oo = oo$.
     - Let $phi_4 = bb(1)_((0, oo)) + (-1) indicator((-oo, 0))$. This can't be integrated.
     - Let $phi_5 = indicator((-1, 0)) + (-1) indicator((0, 1))$.
-- *Lemma*: let $B_1, ..., B_m$ be collection of measurable sets, $beta_1, ..., beta_m in RR - {0}$. Then $phi = sum_(i = 1)^m beta_i indicator(B_i)$ is simple measurable function. If measurable of $union_(i = 1)^m B_i$ is finite, then $ sum_(i = 1)^n alpha_i mu(A_i) = sum_(i = 1)^m beta_i mu(B_i) $ where $A_i$ in standard representation.
-- *Proposition (linearity and monotonicity of integration for simple funtions)*: let $phi, psi$ be simple measurable functions:
+- *Lemma*: let $B_1, ..., B_m$ be measurable sets, $beta_1, ..., beta_m in RR - {0}$. Then $phi = sum_(i = 1)^m beta_i indicator(B_i)$ is simple measurable function. Also, $ mu(union.big_(i = 1)^m B_i) < oo ==> sum_(i = 1)^n alpha_i mu(A_i) = sum_(i = 1)^m beta_i mu(B_i) $ where $A_i$ in standard representation.
+- *Proposition*: let $phi, psi$ be simple measurable functions:
     - If $phi, psi$ take value $0$ outside a set of finite measure, then $forall alpha, beta in RR$, $ integral (alpha phi + beta psi) = alpha integral phi + beta integral psi $
-    - $ 0 <= phi <= psi ==> 0 <= integral phi <= integral psi $
+    - If $phi, psi$ nonnegative, then $forall alpha, beta >= 0$, $ integral (alpha phi + beta psi) = alpha integral phi + beta integral psi $
+    - *Monotonicity*: $ 0 <= phi <= psi ==> 0 <= integral phi <= integral psi $
 - *Corollary*: let $phi$ nonnegative simple function, then $ integral phi = sup{integral psi: 0 <= psi <= phi, thick psi "simple measurable"} $
-- *Lemma*: let $phi$ simple measurable nonnegative function. $phi$ takes value $0$ outside a set of finite measure iff $integral phi < oo$. Also, $integral phi = oo$ iff there exist $alpha > 0$, measurable $A$ with $mu(A) = oo$ with $phi(x) >= alpha$ on $A$.
-- *Lemma*: let ${E_n}$ be ascending collection of measurable sets, $union_(n = 1)^oo E_n = RR$. Let $phi$ be simple nonnegative measurable function. Then $ integral_(E_n) phi -> integral phi quad "as" n -> oo $
+- *Lemma*: let $phi$ simple measurable nonnegative function. $phi$ takes value $0$ outside a set of finite measure iff $integral phi < oo$. Also, $integral phi = oo$ iff there exist $alpha > 0$, measurable $A$ with $mu(A) = oo$ and $forall x in A, phi(x) >= alpha$.
+- *Lemma*: let ${E_n}$ be ascending collection of measurable sets, $union_(n in NN) E_n = RR$. Let $phi$ be simple nonnegative measurable function. Then $ integral_(E_n) phi -> integral phi quad "as" n -> oo $
 
 == The integral of a nonnegative function
 
 - *Notation*: let $cal(M)^+$ denote collection of nonnegative measurable functions $f: RR -> RR_(>= 0) union {oo}$.
-- *Definition*: *support* of measurable function $f$ with domain $E$ is ${x in E: f(x) != 0}$.
+- *Definition*: *support* of measurable function $f$ with domain $E$ is $"supp"(f) := {x in E: f(x) != 0}$.
 - *Definition*: let $f in cal(M)^+$. *Integral of $f$ with respect to $mu$* is $ integral f := sup{integral phi: 0 <= phi <= f, phi "simple measurable"} in RR union {oo} $ For measurable set $E$, define $ integral_E f := integral indicator(E) f $
 - *Proposition*: let $f, g$ measurable. If $g <= f$ then $integral g <= integral f$. Let $E, F$ measurable. If $E subset.eq F$ then $integral_E f <= integral_F f$.
 - *Monotone convergence theorem*: let $(f_n)$ be sequence in $cal(M)^+$. If $(f_n)$ is increasing on measurable set $E$ and converges pointwise to $f$ on $E$ then $ integral_E f_n -> integral_E f quad "as" n -> oo $
 - *Corollary*: restriction of integral to nonnegative functions is linear: $forall f, g in cal(M)^+$, $forall alpha >= 0$, $ integral (f + g) & = integral f + integral g \ integral alpha f & = alpha integral f $
 - *Fatou's lemma*: let $(f_n)$ be sequence in $cal(M)^+$, then $ integral liminf_(n -> oo) f_n <= liminf_(n -> oo) integral f_n $
-- *Lemma*: let $(f_n) subset cal(M)^+$, then $ integral sum_(n = 1)^oo f_n = sum_(n = 1)^oo integral f_n $
+- *Lemma*: let $(f_n) subset cal(M)^+$, then $ integral sum_(n in NN) f_n = sum_(n in NN) integral f_n $
 - *Proposition (Chebyshev's inequality)*: let $f$ be nonnegative measurable function on $E$. Then $ forall lambda > 0, quad mu({x in E: f(x) >= lambda}) <= 1/lambda integral_E f $
 - *Proposition*: let $f$ be nonnegative measurable function on $E$. Then $ integral_E f = 0 <==> f = 0 "almost everywhere on" E $
 
@@ -261,29 +296,33 @@ TODO: up to here, check that all notes are made from these topics
 
 - *Notation*: let $cal(M)$ denote set of measurable functions.
 - *Definition*: $f in cal(M)^+$ is *integrable* if $integral f < oo$.
-- *Definition*: let $f: RR -> RR union {plus.minus oo}$ measurable function. $f$ is *integrable* if $integral f^+$ and $integral f^-$ are finite. In this case, for any measurable set $E$, define $ integral_E f := integral_E f^+ - integral_E f^- $ If $f$ integrable then $f^+ - f^-$ is well-defined.
+- *Definition*: let $f: RR -> RR union {plus.minus oo}$ measurable function. $f$ is *integrable* if $integral f^+$ and $integral f^-$ are finite. In this case, for any measurable set $E$, define $ integral_E f := integral_E f^+ - integral_E f^- $ Note that if $f$ integrable then $f^+ - f^-$ is well-defined.
+- *Proposition*: if $f = f_1 - f_2$, $f_1, f_2 in cal(M)^+$, $f_1, f_2$ integrable, then $ integral f^+ - integral f^- = integral f_1 - integral f_2 $
 - *Definition*: $f in cal(M)$ is *integrable over $E$* ($E$ is measurable) if $integral_E f^+$ and $integral_E f^-$ are finite (i.e. $f dot.op indicator(E)$ is integrable).
 - *Theorem*: $f in cal(M)$ is integrable iff $|f|$ is integrable. If $f$ integrable, then $ abs(integral f) <= integral abs(f) $
 - *Corollary*: let $f, g in cal(M)$, $|f| <= |g|$. If $g$ integrable then $|f|$ is integrable, and $integral |f| <= integral |g|$.
-- *Theorem (Linearity of Integration)*: let $f, g$ integrable. Then $f + g$ is integrable and $forall alpha in RR$, $alpha f$ is integrable. The integral is linear: $ integral (f + g) & = integral f + integral g \ integral alpha f & = alpha integral f $
-- *Dominated Convergence Theorem*: let $(f_n)$ be sequence of integrable functions. If there exists an integrable $g$ with $forall n in NN, |f_n| <= g$, and $f_n -> f$ pointwise almost everywhere then $f$ is integrable and $ integral f = lim_(n -> oo) integral f_n $
 - *Example*: $sin$ is not integrable over $RR$, but is integrable over $[0, 2pi]$, since $|f_([0, 2pi])| <= indicator([0, 2pi])$.
+- *Theorem (Linearity of Integration)*: let $f, g in cal(M)$ integrable. Then $f + g$ is integrable and $forall alpha in RR$, $alpha f$ is integrable. The integral is linear: $ integral (f + g) & = integral f + integral g \ integral alpha f & = alpha integral f $
+- *Dominated Convergence Theorem*: let $(f_n)$ be sequence of integrable functions. If there exists an integrable $g$ with $forall n in NN, |f_n| <= g$, and $f_n -> f$ pointwise almost everywhere then $f$ is integrable and $ integral f = lim_(n -> oo) integral f_n $
 
 == Integrability: Riemann vs Lebesgue
 
-- *Proposition*: let $f$ bounded function on bounded domain. Then $f$ is measurable and $integral |f| < oo$ iff $ sup{integral phi: phi <= f, phi "simple measurable"} = inf{integral psi: f <= psi: psi "simple measurable"} $
+- *Proposition*: let $f$ bounded function on bounded measurable domain $E$. Then $f$ is measurable and $integral_E |f| < oo$ iff $ sup{integral_E phi: phi <= f, phi "simple measurable"} = inf{integral_E psi: f <= psi: psi "simple measurable"} $ (If $f$ satisfies either condition then $integral_E f$ is equal to the two above expressions).
 - *Definition*: bounded function $f$ is *Lebesgue integrable* if it satisfies either of the equivalences in the above proposition.
-- *Definition*: let $P = a = x_0 < dots.h.c < x_n = b$ be partition of $[a, b]$, let $f: [a, b] -> RR$ bounded. *Lower and upper Darboux sums* for $f$ with respect to $P$ are $ L(f, P) := sum_(i = 1)^n m_i (x_i - x_(i - 1)), quad U(f, P) := sum_(i = 1)^n M_i (x_i - x_(i - 1)) $ where $ m_i := inf{f(x): x in (x_(i - 1), x_i)}, quad M_i := sup{f(x): x in (x_(i - 1), x_i)} $ If $P subset.eq Q$ ($Q$ is a *refinement of $P$*), then $ L(f, P) <= L(f, Q) <= U(f, Q) <= U(f, P) $
+- *Definition*: let $P = {x_1, ..., x_n}$ partition of $[a, b]$, $f: [a, b] -> RR$ bounded. *Lower and upper Darboux sums* for $f$ with respect to $P$ are $ L(f, P) := sum_(i = 1)^n m_i (x_i - x_(i - 1)), quad U(f, P) := sum_(i = 1)^n M_i (x_i - x_(i - 1)) $ where $ m_i := inf{f(x): x in (x_(i - 1), x_i)}, quad M_i := sup{f(x): x in (x_(i - 1), x_i)} $ If $P subset.eq Q$ ($Q$ is a *refinement of $P$*), then $ L(f, P) <= L(f, Q) <= U(f, Q) <= U(f, P) $
 - *Definition*: *lower and upper Riemann integrals* of $f$ over $[a, b]$ are $ underline(cal(I))_a^b (f) & := sup{L(f, P): P "partition of" [a, b]} \ overline(cal(I))_a^b (f) & := inf{U(f, P): P "partition of" [a, b]} $
-- *Definition*: let $f: [a, b] -> RR$ bounded, then $f$ is *Riemann integrable* ($f in cal(R)$), if $ underline(cal(I))_a^b (f) = overline(cal(I))_a^b (f) $ and the common value $cal(I)_a^b$ is the *Riemann integral* of $f$.
-- *Theorem*: let $f: [a, b] -> RR$ bounded. If $f$ is Riemann integrable over $[a, b]$ then it is Lebesgue integrable over $[a, b]$ and the two integrals are equal: $ cal(I)_a^b (f) = integral_([a, b]) f $
-- *Theorem*: let $f: [a, b] -> RR$ bounded, $a, b != oo$. Then $f$ is Riemann integrable on $[a, b]$ iff $f$ is continuous on $[a, b]$ except on a set of measure zero.
-- *Lemma*: let $(phi_n)$, $(psi_n)$ be sequences of functions, all integrable over $E$, $(phi_n)$ increasing on $E$, $(psi_n)$ decreasing on $E$. Let $f: E -> RR$ with $ forall n in NN, phi_n <= f <= psi_n "on" E, quad lim_(n -> oo) integral_E (psi_n - phi_n) = 0 $ Then $phi_n -> f$ pointwise almost everywhere on $E$, $psi_n -> f$ pointwise almost everywhere on $E$, $f$ is integrable over $E$ and $ lim_(n -> oo) integral_E phi_n = lim_(n -> oo) integral_E psi_n = integral_E f $
-- *Definition*: *gap* of partition $P = x_0 < dots.h.c < x_n$, *gap* of $P$ is $ "gap"(P) := max{|x_i - x_(i - 1)|: i in {1, ..., n}} $
-- *Lemma*: let $f: [a, b] -> RR$, $E subset.eq [a, b]$ be set where $f$ is continuous. Let $(P_n)$ be sequence of partitions with $P_(n + 1) subset.eq P_n$ and $"gap"(P_n) -> 0$ as $n -> oo$. Let $phi_n, psi_n: [a, b] -> RR$ step functions with $ phi_n (x) := inf{f(x): x in (x_i, x_(i + 1))}, quad psi_n (x) := sup{f(x): x in (x_i, x_(i + 1))} $ for $P_n = x_0 < dots.h.c < x_n$. Then $forall x in E - union_(n in NN) P_n$, $ phi_n (x) -> f(x), psi_n (x) -> f(x) quad "as" n -> oo $
+- *Definition*: let $f: [a, b] -> RR$ bounded, then $f$ is *Riemann integrable* ($f in cal(R)$), if $ underline(cal(I))_a^b (f) = overline(cal(I))_a^b (f) $ and common value $cal(I)_a^b (f) = integral_a^b f(x) dif x$ is *Riemann integral* of $f$.
+- Let $g: [a, b] -> RR$ step function with discontinuities at $P = {x_0, ..., x_n}$, so $g = sum_(i = 1)^n alpha_i indicator((x_(i - 1), x_i))$ almost everywhere. So $g$ is simple measurable and $ L(g, P) = sum_(i = 1)^n alpha_i (x_i - x_(i - 1)) = U(g, P) = integral g = cal(I)_a^b (g) $ Hence for any bounded $f: [a, b] -> RR$, $ underline(cal(I))_a^b (f) & = sup{integral phi: phi <= f, phi "step function"}, \ overline(cal(I))_a^b (f) & = inf{integral psi: f <= psi, psi "step function"} $
+- *Theorem*: let $f: [a, b] -> RR$ bounded, $a, b != plus.minus oo$. If $f$ Riemann integrable over $[a, b]$ then $f$ Lebesgue integrable over $[a, b]$ and the two integrals are equal.
+- *Theorem*: let $f: [a, b] -> RR$ bounded, $a, b != plus.minus oo$. Then $f$ is Riemann integrable on $[a, b]$ iff $f$ is continuous on $[a, b]$ except on a set of measure zero.
+- *Lemma*: let $(phi_n)$, $(psi_n)$ be sequences of functions, all integrable over $E$, $(phi_n)$ increasing on $E$, $(psi_n)$ decreasing on $E$. Let $f: E -> RR$ with $ forall n in NN, phi_n <= f <= psi_n "on" E, quad lim_(n -> oo) integral_E (psi_n - phi_n) = 0 $ Then $phi_n, psi_n -> f$ pointwise almost everywhere on $E$, $f$ is integrable over $E$ and $ lim_(n -> oo) integral_E phi_n = lim_(n -> oo) integral_E psi_n = integral_E f $
+- *Definition*: for partition $P = {x_0, ..., x_n}$, *gap* of $P$ is $ "gap"(P) := max{|x_i - x_(i - 1)|: i in {1, ..., n}} $
+- *Lemma*: let $f: [a, b] -> RR$, $E subset.eq [a, b]$ be set where $f$ is continuous. Let $(P_n)$ be sequence of partitions of $[a, b]$ with $P_(n + 1) subset.eq P_n$ and $"gap"(P_n) -> 0$ as $n -> oo$. Let $phi_n, psi_n: [a, b] -> RR$ step functions with $ phi_n (x) := inf{f(x): x in (x_(i - 1), x_i)}, quad psi_n (x) := sup{f(x): x in (x_(i - 1), x_i)} $ for $P_n = {x_0, ..., x_n}$. Then $forall x in E - union_(n in NN) P_n$, $ phi_n (x), psi_n (x) -> f(x) quad "as" n -> oo $
 - *Definition*: let $f: lr((a, b]) -> RR$, $-oo <= a < b < oo$, $f$ bounded and Riemann integrable on all closed bounded sub-intervals of $lr((a, b])$. If $ lim_(t -> a, t > a) cal(I)_t^b (f) $ exists then this is defined as the *improper Riemann integral* $cal(I)_a^b (f)$. Similar definitions exist for $f: (a, b) -> RR$ and $f: lr([a, b)) -> RR$.
-- *Exericse (todo)*: if $f$ is integrable, the improper Riemann integral is equal to the Lebesgue integral whenever the former exists.
-- *Definition*: let $alpha: [a, b] -> RR$ monotonically increasing (and so bounded). For partition $P = a = x_0 < dots.h.c < x_n = b$ and bounded $f: [a, b] -> RR$, define $ L(f, P, alpha) := sum_(i = 1)^n m_i (alpha(x_i) - alpha(x_(i - 1))), quad U(f, P, alpha) := sum_(i = 1)^n M_i (alpha(x_i) - alpha(x_(i - 1))) $ where $m_i := inf{f(x): x in (x_(i - 1), x_i)}$, $M_i := sup{f(x): x in (x_(i - 1), x_i)}$. Then $f$ is *integrable with respect to $alpha$*, $f in cal(R)(alpha)$, if $ inf{U(f, P, alpha): P "partition of" [a, b]} = sup{L(f, P, alpha): P "partition of" [a, b]} $ and the common value $integral_a^b f dif alpha$ is the *Riemann-Stieltjes integral* of $f$ with respect to $alpha$.
+- *Note*: improper Riemann integral may exist without function being Lebesgue integral.
+- *Proposition*: if $f$ is integrable, the improper Riemann integral is equal to the Lebesgue integral whenever the former exists.
+- *Definition*: let $alpha: [a, b] -> RR$ monotonically increasing (and so bounded). For partition $P = {x_0, ..., x_n}$ of $[a, b]$ and bounded $f: [a, b] -> RR$, define $ L(f, P, alpha) := sum_(i = 1)^n m_i (alpha(x_i) - alpha(x_(i - 1))), quad U(f, P, alpha) := sum_(i = 1)^n M_i (alpha(x_i) - alpha(x_(i - 1))) $ where $m_i := inf{f(x): x in (x_(i - 1), x_i)}$, $M_i := sup{f(x): x in (x_(i - 1), x_i)}$. Then $f$ is *integrable with respect to $alpha$*, $f in cal(R)(alpha)$, if $ inf{U(f, P, alpha): P "partition of" [a, b]} = sup{L(f, P, alpha): P "partition of" [a, b]} $ and the common value $integral_a^b f dif alpha$ is the *Riemann-Stieltjes integral* of $f$ with respect to $alpha$.
+- *Proposition*: let $f: (a, b) -> RR$, then set of points where $f$ is differentiable is measurable.
 - *Remark*: if $alpha: [0, 1] -> [a, b]$ bijection, then $ integral_0^1 f compose alpha dif alpha = integral_a^b f(x) dif x $
 - *Proposition*: let $alpha$ be monotonically increasing and differentiable with $alpha' in cal(R)$. Then $g in cal(R)(alpha)$ iff $g alpha' in cal(R)$, and in that case, $ integral_a^b g dif alpha = integral_a^b g(x) alpha'(x) dif x $
 - *Remark*: when $g = 1$, this says $integral_a^b 1 dif alpha = alpha(b) - alpha(a) = integral alpha'(x) dif x$, similar to the fundamental theorem of calculus.

@@ -22,10 +22,10 @@
 - *Definition*: let $R$ integral domain. $phi: R - {0} -> NN_0$ is *Euclidean function (norm)* on $R$ if:
     - $forall x, y in R - {0}, phi(x) <= phi(x y)$.
     - $forall x in R, y in R - {0}, exists q, r in R: x = q y + r$ with either $r = 0$ or $phi(r) < phi(y)$.
-- $R$ is *Euclidan domain (ED)* if a Euclidean function is defined on it.
-- Examples of EDs:
-    - $ZZ$ with $phi(n) = |n|$.
-    - $F[x]$ for field $F$ with $phi(f) = deg(f)$.
+    $R$ is *Euclidan domain (ED)* if a Euclidean function is defined on it.
+- *Example*:
+    - $ZZ$ is ED with $phi(n) = |n|$.
+    - $F[x]$ is ED for field $F$ with $phi(f) = deg(f)$.
 - *Lemma*: $ZZ[-sqrt(2)]$ is an ED with Euclidean function with $ phi(a + b sqrt(-2)) = N(a + b sqrt(-2)) =: a^2 + 2b^2 $
 - *Proposition*: every ED is a PID.
 
