@@ -132,7 +132,7 @@
 - *Proposition*: $overline(ZZ)$ is a ring. Also, for every number field $K$, $cal(O)_K$ is a ring.
 - *Lemma*: let $alpha in overline(ZZ)$. For every number field $K$ with $alpha in K$, $ N_K (alpha) in ZZ, quad tr_K (alpha) in ZZ $
 - *Lemma*: let $K$ number field. Then $ K = {alpha / m: alpha in cal(O)_K, m in ZZ, m != 0} $
-- *Lemma*: let $alpha in overline(ZZ)$, $K$ number field, $alpha in K$. Then $ alpha in cal(O)_K^times <==> N_K (alpha) = plus.minus 1. $
+- *Lemma*: let $alpha in overline(ZZ)$, $K$ number field, $alpha in K$. Then $ alpha in cal(O)_K^times <==> N_K (alpha) = plus.minus 1 $
 
 == Quadratic fields and their integers
 
@@ -186,7 +186,7 @@
   [$b$], [$7b^2 - 1$], [$7b^2 + 1$], [$a^2$],
   $1$, $6$, $8$, $-$,
   $2$, $27$, $29$, $-$,
-  $3$, $62$, $64$, $64 = 8^2$
+  $3$, $62$, $64$, $64 = 8^2$,
 )] So the unit with minimal $b$ such that $a, b > 0$ is $8 + 3 sqrt(7)$, so is the fundamental unit.
 
 == Pell's equation and norm equations
