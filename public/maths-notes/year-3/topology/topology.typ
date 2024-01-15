@@ -316,3 +316,23 @@
     - Using the inclusion $limits(arrow.hook)^1$, $"SO"(n)$ is subgroup of $"SO"(n + 1)$.
     - Viewing these as topological groups, if subgroup $"SO"(n)$ acts on $"SO"(n + 1)$, orbit space is $"SO"(n + 1)\/"SO"(n) tilde.equiv S^n$.
 - *Corollary*: the topological group $"SO"(n)$ is connected for $n in NN$.
+
+= Introduction
+
+- *Notation*: let $I = [0, 1]$.
+- *Definition*: *closed $n$-disc* is $ D^n := {vd(x) in RR^n: norm(x) <= 1} $
+- *Definition*: *open $n$-disc* is $ E^n := {vd(x) in RR^n: norm(x) < 1} $
+- *Definition*: *$n$-sphere* is $ S^n := {vd(x) in RR^(n + 1): norm(x) = 1} $
+- *Definition*: *cylinder* is $S^1 times I$.
+- *Definition*: the *$2$-torus (torus)* can be defined as $TT := S^1 times S^1$ or $TT := (I times I) \/ tilde$ where $ forall x in I, (x, 0) tilde (x, 1), quad forall y in I, (0, y) tilde (1, y) $
+- *Definition*: *Klein bottle* is given by $KK := (I times I) \/ tilde$ where $ forall x in I, (x, 0) tilde (x, 1), quad forall y in I, (0, y) tilde (1, 1 - y) $
+- *Definition*: *map* is continuous $f: X -> Y$ where $X, Y$ are topological spaces.
+
+= Simplicial complexes
+
+== Simplicial complexes and triangulations
+
+- *Definition*: let $v_0, ..., v_n in RR^N$, $n <= N$.
+    - $v_0, ..., v_n$ are in *general position* if ${v_1 - v_0, ..., v_n - v_0}$ are linearly independent.
+    - *Convex hull* of $v_0, ..., v_n$ is set of all *convex linear combinations* of $v_0, ..., v_n$: $ ideal(v_0, ..., v_n) := {sum_(i = 0)^n lambda_i v_i: sum_(i = 0)^n lambda_i = 1, forall i in {0, ..., n}, lambda_i >= 0 } $
+    - An *$n$-simplex* $sigma^n = ideal(v_0, ..., v_n)$, is convex hull of $v_0, ..., v_n$ in general position. $v_0, ..., v_n$ *span* $sigma^n$ and $sigma^n$ is *$n$-dimensional*.

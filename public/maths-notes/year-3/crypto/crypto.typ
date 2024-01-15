@@ -271,3 +271,27 @@
 - *Theorem*: let $E: y^2 = x^3 + a x + b$ defined over $QQ$, $a, b in ZZ$, $p$ be odd prime of good reduction for $E$. Then $f: E(QQ)_"tors" -> overline(E)(FF_p)$ defined by $ f(x, y) := (overline(x), overline(y)), quad f\(PAI\) := PAI $ is injective (note $x, y in ZZ$ by Nagell-Lutz).
 - So $E(QQ)_"tors"$ can be thought of as subgroup of $E(FF_p)$ for any prime $p$ of good reduction, so by Lagrange's theorem, $|E(QQ)_"tors"|$ divides $|E(FF_p)|$.
 - *Mordell's theorem*: if $E$ is elliptic curve over $QQ$, then $ E(QQ) tilde.equiv E(QQ)_"tors" times ZZ^r $ for some $r >= 0$ the *rank* of $E$. So for some $P_1, ..., P_r in E(QQ)$, $ E(QQ) = \{n_1 P_1 + dots.h.c + n_r P_r + T: n_i in ZZ, T in E(QQ)_"tors"\} $ $P_1, ..., P_r, T$ are *generators* for $E(QQ)$.
+
+= Basic coding theory
+
+== First definitions
+
+- *Definition*:
+    - *Alphabet* $A$ is finite set of symbols.
+    - $A^n$ is set of all lists of $n$ symbols from $A$ - these are *words of length $n$*.
+    - *Code of block length $n$ on $A$* is subset of $A^n$.
+    - *Codeword* is element of a code.
+- *Definition*: if $|A| = 2$, codes on $A$ are *binary* codes. If $|A| = 3$, codes on $A$ are *ternary codes*. If $|A| = q$, codes on $A$ are *$q$-ary* codes. Generally, use $A = {0, 1, ..., q - 1}$.
+- *Definition*: let $x = x_1 ... x_n, y = y_1 ... y_n in A^n$. *Hamming distance* between $x$ and $y$ is number of indices where $x$ and $y$ differ: $ d: A^n times A^n -> {0, ..., n}, quad d(x, y) := |{i in [n]: x_i != y_i}| $ So $d(x, y)$ is minimum number of changes needed to change $x$ to $y$. If $x$ transmitted and $y$ received, then $d(x, y)$ *symbol-errors* have occurred.
+- *Proposition*: let $x, y$ words of length $n$.
+    - $0 <= d(x, y) <= n$.
+    - $d(x, y) = 0 <==> x = y$.
+    - $d(x, y) = d(y, x)$.
+    - $forall z in A^n, d(x, y) <= d(x, z) + d(z, y)$.
+- *Definition*: *minimum distance* of code $C$ is $ d(C) := min{d(x, y): x, y in C, x != y} in NN $
+- *Notation*: code of block length $n$ with $M$ codewords and minimum distance $d$ is called $(n, M, d)$ (or $(n, M)$) code. A $q$-ary code is called an $\(n, M, d\)_q$ code.
+- *Definition*: let $C subset.eq A^n$ code, $x$ word of length $n$. A *nearest neighbour* of $x$ is codeword $c in C$ such that $d(x, c) = min{d(x, y): y in C}$.
+
+== Nearest-neighbour decoding
+
+- *Definition*: *nearest-neighbour decoding (NND)* means if word $x$ received, it is decoded to a nearest neighbour of $x$ in a code $C$.

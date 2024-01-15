@@ -129,8 +129,8 @@
 - *Proposition*: let ${F_n: n in NN}$ be collection of non-empty nested closed sets (so $F_(n + 1) subset.eq F_n$), one of which is bounded. Then $ sect.big_(n in NN) F_n != emptyset $
 - *Definition*: the *middle third Cantor set* is defined by:
     - Define $C_0 := [0, 1]$
-    - Given $C_n = union_(i = 1)^(2^n) [a_i, b_i]$, $a_i < b_1 < a_2 < dots.h.c < a_(2^n) < b_(2^n)$, with $|b_i - a_i| = 3^(-n)$, define $ C_(n + 1) := union_(i = 1)^(2^n) [a_i, a_i + 3^(-(n + 1))] union [b_i - 3^(-(n + 1)), b_i] $ which is a union of $2^(n + 1)$ disjoint intervals, with all differences in endpoints equalling $3^(-(n + 1))$.
-    - The *middle third Cantor set* is $ C := union.big_(n in NN) C_n $ Observe that if $a$ is an endpoint of an interval in $C_n$, it is contained in $C$.
+    - Given $C_n = union_(i = 1)^(2^n) [a_i, b_i]$, $a_1 < b_1 < a_2 < dots.h.c < a_(2^n) < b_(2^n)$, with $|b_i - a_i| = 3^(-n)$, define $ C_(n + 1) := union_(i = 1)^(2^n) [a_i, a_i + 3^(-(n + 1))] union [b_i - 3^(-(n + 1)), b_i] $ which is a union of $2^(n + 1)$ disjoint intervals, with all differences in endpoints equalling $3^(-(n + 1))$.
+    - The *middle third Cantor set* is $ C := sect.big_(n in NN) C_n $ Observe that if $a$ is an endpoint of an interval in $C_n$, it is contained in $C$.
 - *Proposition*: the middle third Cantor set is closed, non-empty and equal to its set of accumulation points. Hence it is perfect and so uncountable.
 - *Definition*: let $k in NN - {1}$, $x in lr([0, 1))$. $0.a_1 a_2 ...$, $a_i in {0, ..., k - 1}$, is a *$k$-ary expansion* of $x$ if $ x = sum_(i in NN) a_i / k^i $
 - *Remark*: the $k$-ary expansion may not be unique, but there is a countable set $E subset.eq lr([0, 1))$ such that every $x in lr([0, 1)) - E$ has a unique $k$-ary expansion.
@@ -326,3 +326,38 @@
 - *Remark*: if $alpha: [0, 1] -> [a, b]$ bijection, then $ integral_0^1 f compose alpha dif alpha = integral_a^b f(x) dif x $
 - *Proposition*: let $alpha$ be monotonically increasing and differentiable with $alpha' in cal(R)$. Then $g in cal(R)(alpha)$ iff $g alpha' in cal(R)$, and in that case, $ integral_a^b g dif alpha = integral_a^b g(x) alpha'(x) dif x $
 - *Remark*: when $g = 1$, this says $integral_a^b 1 dif alpha = alpha(b) - alpha(a) = integral alpha'(x) dif x$, similar to the fundamental theorem of calculus.
+
+= Lebesgue spaces
+
+== Normed linear spaces
+
+- *Definition*: let $X$ be *complex linear space* (vector space over $CC$). $norm(dot.op): X -> RR_(>=0)$ is *norm on $X$* if
+    - $forall x in X, norm(x) = 0 <==> x = 0$.
+    - $forall x in X, forall lambda in CC, norm(lambda x) = |lambda| norm(x)$.
+    - $forall x, y in X, norm(x + y) <= norm(x) + norm(y)$.
+    $X$ equipped with norm $norm(dot.op)$, $(X, norm(dot.op))$, is called *complex normed linear space*.
+- *Example*:
+    - $norm(x) = sqrt(x overline(x))$ is norm on $CC$.
+    - Let $C[a, b]$ denote linear space of continuous real-valued functions on $[a, b]$. Then $ norm(f)_max := max{|f(x)|: x in [a, b]} $ is norm on $C[a, b]$.
+- *Proposition*: norm induces metric on $X$: $d(x, y) = norm(x - y)$.
+- *Definition*: let $(X, norm(dot.op))$ be normed linear space.
+    - Sequence $(f_n)$ in $X$ is *Cauchy sequence* in $X$ if $ forall epsilon > 0, exists N in NN: forall n, m >= N, quad norm(f_n - f_m) < epsilon $
+    - Sequence $(f_n)$ in $X$ *converges in $X$*, $norm(f_n - f) -> 0$ as $n -> oo$, if $ exists f in X: forall epsilon > 0, exists N in NN: forall n >= N, quad norm(f_n - f) < epsilon $
+    - $(X, norm(dot.op))$ is *complete* if every Cauchy sequence converges in $X$.
+    - *Banach space* is complete normed linear space.
+- *Proposition*: let $(X, norm(dot.op))$ be normed linear space.
+    - If $(x_n)$ converges in $X$, $(x_n)$ is Cauchy sequence in $X$.
+    - Let $(x_n)$ be Cauchy sequence in $X$. If $(x_n)$ has convergent subsequence in $X$ then $(x_n)$ converges in $X$.
+
+== Lebesgue spaces
+
+- *Definition*: let $p in lr([1, oo))$, $E subset.eq RR$.
+    - Linear space $L^p (E)$ is defined as $ L^p (E) := {f: E -> CC: f "is measurable and" integral_E |f|^p < oo} \/ tilde.equiv $ where $f tilde.equiv g$ iff $f = g$ almost everywhere: $ f tilde.equiv g <==> exists F subset.eq E: mu(F) = 0 and forall x in E - F, f(x) = g(x) $
+    - Define $norm(dot.op)_(L^p): L^p (E) -> RR$ as $ norm(f)_(L^p) := (integral_E |f|^p)^(1\/p) $
+- *Remark*:
+    - We often consider space $L^p (E)$ of real-valued measurable functions $f: E -> RR$ such that $integral_E |f|^p < oo$.
+    - For $f: E -> CC$, $f = f_1 + i f_2$, $f$ is measurable iff $f_1: E -> RR$ and $f_2: E -> RR$ are measurable. Also, $ integral_E |f|^p < oo <==> (integral_E |f_1|^p < oo and integral_E |f_2|^p < oo) $
+- *Example*: let $E = RR$, $f(x) = indicator(RR - QQ)(x) + i indicator(QQ)(x)$ and $g(x) = 1$. Then $mu(QQ) = 0$ so $f tilde.equiv g$.
+- *Proposition*: let $(f_n), (g_n)$ sequences of measurable functions, $forall n in NN, f_n tilde.equiv g_n$, $lim_(n -> oo) f_n = f$ and $lim_(n -> oo) g_n = g$. Then $f tilde.equiv g$.
+- *Definition*: $p, q in RR$ are *conjugate exponents* if $p > 1$ and $1/p + 1/q = 1$.
+- *Lemma (Young's inequality)*: let $p, q$ conjugate exponents, then $ forall A, B in RR_(>=0), quad A B <= A^p / p + B^q / q $ with equality iff $A^p = B^q$.

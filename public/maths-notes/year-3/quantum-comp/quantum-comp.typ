@@ -1,6 +1,6 @@
 #import "../../template.typ": template
 #show: template
-
+#outline()
 #let hbar = $planck.reduce$
 #let ip(a, b) = $angle.l #a, #b angle.r$
 #let ket(arg) = $lr(| #h(1pt) arg #h(1pt) angle.r)$
@@ -69,7 +69,7 @@
 - A *pure state* is definite, i.e. the state of the system is completely known, and the only uncertainties are due to the uncertain nature of quantum mechanics.
 - The *density matrix* of a pure state $ket(psi)$ is $ hat(rho) := ket(psi) bra(psi) $
 - There is a bijective correspondence between density matrices and the associated pure states: $ hat(M) ket(psi) = lambda ket(psi) quad & <--> quad hat(M) hat(rho) = lambda hat(rho) \ ket(psi) -> hat(U) ket(psi) quad & <--> quad hat(rho) -> hat(U) hat(rho) hat(U)^dagger $ i.e. transforming a state $ket(psi)$ by unitary operator $hat(U)$ is equivalent to transforming the density matrix $hat(rho)$ to $hat(U) hat(rho) hat(U)^dagger$.
-- For orthonormal basis states $ket(n)$, *trace* of $hat(A)$ is $ tr(hat(A)) = sum_n braket(n, hat(A), n) $
+- *Definition*: for orthonormal basis states $ket(n)$, *trace* of $hat(A)$ is $ tr\(hat(A)\) = sum_n braket(n, hat(A), n) $
 - *Cyclicity of trace*: $ tr(A B C) = tr(B C A) = tr(C A B) $
 - For a density matrix describing a pure state $hat(rho) = ket(psi) bra(psi)$, $ tr(hat(rho)) & = sum_n braket(n, hat(rho), n) = sum_n braket(n, psi) braket(psi, n) \ & = sum_n braket(psi, n) braket(n, psi) = bra(psi) (sum_n ket(n) bra(n)) ket(psi) = braket(psi, hat(I), psi) = braket(psi, psi) = 1 $ Also $tr(hat(rho)^2) = 1$ since $hat(rho)$ is a projector and hence $hat(rho)^2 = hat(rho)$.
 - A *mixed state* is one where the state of the system is not known. It is an ensemble of pure states each with an associated probability of the system being in that state: ${(p_i, ket(i))}$, where the $ket(i)$ are normalised (not necessarily orthogonal). This is classical uncertainty rather than quantum uncertainty.
@@ -205,7 +205,7 @@ $
 - *Note*: since $\[hat(F), hat(G)\] = 0$, these measurements are compatible so Alice and Bob can both measure, the final state is eigenstate of both $hat(F)$ and $hat(G)$. Probability of an outcome occuring is not affected by whether Alice or Bob measures first (or simultaneously).
 - Let $ket(Psi)$ be pure separable state: $ ket(Psi) = ket(psi) tp ket(phi) = sum_(i, j) alpha_i beta_j ket(i) tp ket(j) = sum_(i, j) gamma_(i j) ket(i) tp ket(j) $ where ${ket(i)}$ and ${ket(j)}$ are orthonormal bases for $cal(H)_A$ and $cal(H)_B$ respectively. If Alice measures $hat(F)$ and obtains $f_m$ with probability $|alpha_m|^2 = sum_j |gamma_(m j)|^2$, system collapses to state $ sum_j beta_j ket(m) tp ket(j) = ket(m) tp ket(phi) $ If Bob then measures $hat(G)$ and obtains $g_n$ with probability $|beta_n|^2 = sum_i |gamma_(i n)|^2$ then final state is $ket(m) tp ket(n)$. This is the same final state as when Bob measures first, except intermediate state is $ket(psi) tp ket(n)$. The probabiity of measuring $(f_m, g_n)$ is $|gamma_(m n)|^2 = |alpha_m beta_n|^2$.
 - Probability of Alice measuring $f_i$ is $|braket(i, psi)|^2 = tr(hat(rho)_A hat(F)_(A i))$ where $hat(F)_(A i) = ket(i) bra(i)$. After measuring $hat(F)_A$ and finding $f_i$, Alice's state collapses to $ ket(psi) & -> ket(i) = 1/(|braket(i, psi)|) hat(F)_(A i) ket(psi) = 1/sqrt(tr(hat(rho)_A hat(F)_(A i))) hat(F)_(A i) ket(psi) \ hat(rho)_A & -> 1/tr(hat(rho)_A hat(F)_(A i)) hat(F)_(A i) hat(rho)_A hat(F)_(A i) $
-- For bipartite system with separable state $ket(Psi)$, when Alice measures $hat(F)_A$, she does not operate on Bob's system, so $hat(F)_i = hat(F)_(A i) tp hat(I)$ and density matrix is $ hat(rho) = ket(Psi) bra(Psi) = (ket(psi) bra(psi)) tp (ket(phi) bra(phi)) = hat(rho)_A tp hat(rho)_B $ If Alice measures $hat(F) = hat(F)_A tp hat(I)$, outcome is $f_i$ with probability $tr\(hat(rho) hat(F)_i\) = tr\(hat(rho)_A hat(F)_(A i)\)$ and density matrix collapses to $ hat(rho) -> 1/tr(hat(rho)_A hat(F)_(A i)) hat(F)_(A i) hat(rho)_A hat(F)_(A i) tp hat(rho)_B = 1/tr(hat(rho) hat(F)_i) = hat(F)_i hat(rho) hat(F)_i $ Note that the eigenspace corresponding to eigenvalue $f_i$ is non-degenerate in $cal(H)_A$ but any $ket(i) tp ket(phi)$ with $ket(phi) in cal(H)_B$ is an eigenvector of $hat(F) tp hat(I)$ with eigenvalue $f_i$, so eigenspace is degenerate in $cal(H)_A tp cal(H)_B$. It does not matter if Alice or Bob measures first: if $hat(F) = hat(F)_A tp hat(I)$ and $hat(G) = hat(I) tp hat(G)_B$ are measured, outcome is $(f_i, g_m)$ with probability $tr(hat(rho) hat(P)_(i j))$ where $hat(P)_(i j) = hat(F)_(A i) tp hat(G)_(B j) = ket(i) bra(i) tp ket(j) bra(j)$, and state collapses to $ hat(rho) -> 1/tr(hat(rho) hat(P)_(i j)) hat(P)_(i j) hat(rho) hat(P)_(i j) = ket(i) tp ket(j) $
+- For bipartite system with separable state $ket(Psi)$, when Alice measures $hat(F)_A$, she does not operate on Bob's system, so $hat(F)_i = hat(F)_(A i) tp hat(I)$ and density matrix is $ hat(rho) = ket(Psi) bra(Psi) = (ket(psi) bra(psi)) tp (ket(phi) bra(phi)) = hat(rho)_A tp hat(rho)_B $ If Alice measures $hat(F) = hat(F)_A tp hat(I)$, outcome is $f_i$ with probability $tr_(A tp B)\(hat(rho) hat(F)_i\) = tr_A\(hat(rho)_A hat(F)_(A i)\)$ and density matrix collapses to $ hat(rho) -> 1/tr(hat(rho)_A hat(F)_(A i)) hat(F)_(A i) hat(rho)_A hat(F)_(A i) tp hat(rho)_B = 1/tr(hat(rho) hat(F)_i) hat(F)_i hat(rho) hat(F)_i $ Note that the eigenspace corresponding to eigenvalue $f_i$ is non-degenerate in $cal(H)_A$ but any $ket(i) tp ket(phi)$ with $ket(phi) in cal(H)_B$ is an eigenvector of $hat(F) tp hat(I)$ with eigenvalue $f_i$, so eigenspace is degenerate in $cal(H)_A tp cal(H)_B$. It does not matter if Alice or Bob measures first: if $hat(F) = hat(F)_A tp hat(I)$ and $hat(G) = hat(I) tp hat(G)_B$ are measured, outcome is $(f_i, g_m)$ with probability $tr(hat(rho) hat(P)_(i j))$ where $hat(P)_(i j) = hat(F)_(A i) tp hat(G)_(B j) = ket(i) bra(i) tp ket(j) bra(j)$, and state collapses to $ hat(rho) -> 1/tr(hat(rho) hat(P)_(i j)) hat(P)_(i j) hat(rho) hat(P)_(i j) = ket(i) tp ket(j) $
 - For bipartite system with entangled state $ket(Psi) = sum_(i, j) gamma_(i j) ket(i) tp ket(j)$, define coefficients $ alpha_m := (sum_j |gamma_(m j)|^2)^(1\/2), quad beta_n := (sum_i |gamma_(i n)|^2)^(1\/2) $ and define auxiliary states (excluding values of $m$ and $n$ when $beta_n = 0$ or $alpha_m = 0$) $ ket(psi_n) & := 1/beta_n sum_i gamma_(i n) ket(i) in cal(H)_A, \ ket(phi_m) & := 1/alpha_m sum_j gamma_(m j) ket(j) in cal(H)_B $ Then $ ket(Psi) = sum_i alpha_i ket(i) tp ket(phi_i) = sum_j beta_j ket(psi_j) tp ket(j) $ If Alice measures $hat(F)$ with $f_i$, state collapses to $ ket(Psi) -> hat(F)_i ket(Psi) = (hat(F)_(A i) tp hat(I)) ket(Psi) tilde ket(i) tp ket(phi_i) $ i.e. the entangled state collapses to a separable state. So Bob's state depends on the result of Alice's measurement.
 
 == Reduced density matrix
@@ -216,7 +216,7 @@ $
 - *Example*: consider state $ket(beta_00)$: $ hat(rho) & = ket(beta_00) bra(beta_00) = 1/2 (ket(0) bra(0) tp ket(0) bra(0) + ket(0) bra(1) tp ket(0) bra(1) + ket(1) bra(0) tp ket(1) bra(0) + ket(1) bra(1) tp ket(1) bra(1)) \
 hat(rho)_A & = tr_B \(hat(rho)\) \
 & = 1/2 (ket(0) bra(0) tr_B (ket(0) bra(0)) + ket(0) bra(1) tr_B (ket(0) bra(1)) + ket(1) bra(0) tr_B (ket(1) bra(0)) + ket(1) bra(1) tr_B (ket(1) bra(1))) \
-& = 1/2 (ket(0) bra(0) + ket(1) + bra(1)) = 1/2 hat(I)
+& = 1/2 (ket(0) bra(0) + ket(1) bra(1)) = 1/2 hat(I)
 $ Can also obtain reduced density matrix by writing matrices: $ & ket(beta_00) -> vd(v) = 1/sqrt(2) vec(1, 0, 0, 1) \ hat(rho) & = vd(v) vd(v)^dagger = 1/2 mat(1, 0, 0, 1; 0, 0, 0, 0; 0, 0, 0, 0; 1, 0, 0, 1) \ & = 1/2 mat(1, 0; 0, 0) tp mat(1, 0; 0, 0) + 1/2 mat(0, 1; 0, 0) tp mat(0, 1; 0, 0) + 1/2 mat(0, 0; 1, 0) tp mat(0, 0; 1, 0) + 1/2 mat(0, 0; 0, 1) tp mat(0, 0; 0, 1) \ rho_A & = 1/2 mat(1, 0; 0, 0) tr mat(1, 0; 0, 0) + 1/2 mat(0, 1; 0, 0) tr mat(0, 1; 0, 0) + 1/2 mat(0, 0; 1, 0) tr mat(0, 0; 1, 0) + 1/2 mat(0, 0; 0, 1) tr mat(0, 0; 0, 1) \ & = 1/2 mat(1, 0; 0, 0) + 1/2 mat(0, 0; 0, 1) = 1/2 I_2 $
 - *Proposition*:
     - $hat(rho)_A$ is invariant under all local operations in system $B$.
@@ -242,8 +242,7 @@ $ Can also obtain reduced density matrix by writing matrices: $ & ket(beta_00) -
 - *Definition*: *Bell states* are defined as, for $x, y in {0, 1}$, $ ket(beta_(x y)) := 1/sqrt(2) (ket(0) tp ket(y) + (-1)^x ket(1) tp ket(overline(y))) $
 - *Proposition*: Bell states are maximally entangled (trace of reduced density matrix of both sides is $1/2$) and form an orthonormal basis.
 - Bell state basis is related to standard basis by unitary transformation, but Bell states can't be created from the separable standard basis by any LOCC process, since the unitary transformations between them are not of form $hat(U)_A tp hat(U)_B$ (since this preserves separability), and measurements always produce a separable state.
-- Alice and Bob can individually transform any Bell state to any other Bell state by the unitary operators $hat(U)_(x y) tp hat(I)$ and $hat(I) tp hat(U)_(x y)$ respectively: $ (hat(U)_(x y) tp hat(I)) ket(beta_(0 0)) = (hat(I) tp hat(U)_(x y)) ket(beta_(0 0)) = ket(beta_(x y)) $ where $ U_(0 0) := I_2 & = mat(1, 0; 0, 1), quad U_(0 1) := sigma_1 = mat(0, 1; 1, 0), \ U_(1 0) := sigma_3 & = mat(1, 0; 0, -1), quad U_(1 1) := i sigma_2 = mat(0, 1; -1, 0) $
-- *TODO*: notes for rest of this chapter
+- Alice and Bob can individually transform any Bell state to any other Bell state by the unitary operators $hat(U)_(x y) tp hat(I)$ and $hat(I) tp hat(U)_(x y)$ respectively: $ (hat(U)_(x y) tp hat(I)) ket(beta_(0 0)) = (hat(I) tp hat(U)_(x y)) ket(beta_(0 0)) = ket(beta_(x y)) $ where $ U_(0 0) = I_2, quad U_(0 1) = sigma_1, quad U_(1 0) = sigma_3, quad U_(1 1) = i sigma_2 $
 
 == Superdense coding
 
@@ -257,7 +256,7 @@ $ Can also obtain reduced density matrix by writing matrices: $ & ket(beta_00) -
 
 == No-cloning theorem
 
-- *No-cloning theorem*: in quantum mechanics, it is impossible to clone an known state $ket(psi)$. More precisely, it is impossible to perform transformation $ket(psi) tp ket(phi) -> ket(psi) tp ket(psi)$ for an arbitrary unknown state $ket(psi)$ and fixed initial state $ket(phi)$.
+- *No-cloning theorem*: in quantum mechanics, it is impossible to clone an unknown state $ket(psi)$. More precisely, it is impossible to perform transformation $ket(psi) tp ket(phi) -> ket(psi) tp ket(psi)$ for an arbitrary unknown state $ket(psi)$ and fixed initial state $ket(phi)$.
 
 == Teleportation
 
@@ -311,8 +310,6 @@ $ We have $hat(U)_H ket(0) = ket(+)$, $hat(U)_H ket(1) = ket(-)$.
     - These give $EE(Q S) = EE(R S) = EE(Q T) = -EE(R T) = 1/sqrt(2)$, giving $EE(Q S) + EE(R S) + EE(Q T) - EE(R T) = 2 sqrt(2) > 2$, violating CHSH inequality.
     - Experimental data confirms this violation, showing nature isn't described by theory obeying local realism, and nature is consistent with quantum mechanics.
 
-- *TODO*: finish notes for this chapter
-
 = Information theory
 
 == Classical information and Shannon entropy
@@ -327,18 +324,18 @@ $ where conventionally $0 log 0 = 0$.
 - *Proposition*: relative entropy is non-negative and $ H(p(x) || q(x)) = 0 <==> forall x, p(x) = q(x) $
 - *Remark*: relative entropy can diverge if for some $x$, $q(x) = 0$ and $p(x) != 0$
 - *Definition*: *conditional entropy* is $ H(X|Y) := H(X, Y) - H(Y) <= H(X) $
-- *Definition*: *mutual information* of $X$ and $Y$ is $ H(X : Y) = H(X : Y) := H(X) + H(Y) - H(X, Y) >= 0 $
+- *Definition*: *mutual information* of $X$ and $Y$ is $ H(X : Y) := H(X) + H(Y) - H(X, Y) >= 0 $
 
 == Quantum entropy
 
-- *Definition*: *von Neumann entropy* of quantum state with density operator $hat(rho)$ is $ S\(hat(rho)\) := -tr(hat(rho) log_2 (hat(rho))) = -sum_i p_i log_2 (p_i) $ where $log_2$ is applied diagonal entry-wise to $hat(rho)$ and $hat(rho) = sum_i p_i ket(i) bra(i)$. $S\(hat(rho)\)$ is Shannon entropy of ensemble of pure states described by $hat(rho)$.
+- *Definition*: *von Neumann entropy* of quantum state with density operator $hat(rho)$ is $ S\(hat(rho)\) := -tr(hat(rho) log_2 (hat(rho))) = -sum_i p_i log_2 (p_i) $ where $hat(rho) = sum_i p_i ket(i) bra(i)$, $ket(i)$ are eigenstates of $hat(rho)$. $S\(hat(rho)\)$ is Shannon entropy of ensemble of pure states described by $hat(rho)$.
 - *Remark*: for pure state, $S\(hat(rho)\) = -1 log_2 (1) = 0$.
 - *Definition*: *(quantum) relative entropy* is measure of distance between two states: $
 S\(hat(rho)_1 || hat(rho)_2\) := tr\(hat(rho)_1 log_2 \(hat(rho)_1\)\) - tr\(hat(rho)_1 log_2 \(hat(rho)_2\)\)
 $
 - *Proposition*: $S\(hat(rho)_1 || hat(rho)_2\) >= 0$ with equality iff $hat(rho)_1 = hat(rho)_2$.
 - *Definition*: for bipartite system $cal(H) = cal(H)_A tp cal(H)_B$ described by density matrix $hat(rho)$ and reduced density matrices $hat(rho)_A$ and $hat(rho)_B$, define $ S(A) := S\(hat(rho)_A\), quad S(B) := S\(hat(rho)_B\), quad S(A, B) := S\(hat(rho)\) $ where $S(A, B)$ is *(quantum) joint entropy* of $A$ and $B$.
-- *Definition*: *(quantum) conditional entropy* of $A$ and $B$ is $ S(A | B) = S(A, B) - S(B) $
+- *Definition*: *(quantum) conditional entropy* of $A$ and $B$ is $ S(A | B) := S(A, B) - S(B) $
 - *Remark*: unlike classical conditional entropy, quantum conditional entropy can be negative, e.g. if $hat(rho)$ describes pure state, $S(A, B) = 0$ but if entangled, $hat(rho)_B$ is not pure state so $S(B) > 0$.
 - *Definition*: *(quantum) mutual information* is $ I(A: B) = S(A: B) := S(A) + S(B) - S(A, B) $
 - *Remark*: entanglement can be interpreted as mutual information: information shared by $A$ and $B$ and not in either one alone.

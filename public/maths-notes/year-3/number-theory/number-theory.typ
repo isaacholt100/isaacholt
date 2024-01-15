@@ -1,6 +1,6 @@
 #import "../../template.typ": *
 #show: template
-
+#outline()
 #let ideal(..gens) = $angle.l #gens.pos().join(",") angle.r$
 #let pm = $plus.minus$
 
