@@ -349,7 +349,7 @@
     - If $(x_n)$ converges in $X$, $(x_n)$ is Cauchy sequence in $X$.
     - Let $(x_n)$ be Cauchy sequence in $X$. If $(x_n)$ has convergent subsequence in $X$ then $(x_n)$ converges in $X$.
 
-== Lebesgue spaces
+== Lebesgue spaces $L^p$, $p in lr([1, oo))$
 
 - *Definition*: let $p in lr([1, oo))$, $E subset.eq RR$.
     - Linear space $L^p (E)$ is defined as $ L^p (E) := {f: E -> CC: f "is measurable and" integral_E |f|^p < oo} \/ tilde.equiv $ where $f tilde.equiv g$ iff $f = g$ almost everywhere: $ f tilde.equiv g <==> exists F subset.eq E: mu(F) = 0 and forall x in E - F, f(x) = g(x) $
@@ -361,3 +361,8 @@
 - *Proposition*: let $(f_n), (g_n)$ sequences of measurable functions, $forall n in NN, f_n tilde.equiv g_n$, $lim_(n -> oo) f_n = f$ and $lim_(n -> oo) g_n = g$. Then $f tilde.equiv g$.
 - *Definition*: $p, q in RR$ are *conjugate exponents* if $p > 1$ and $1/p + 1/q = 1$.
 - *Lemma (Young's inequality)*: let $p, q$ conjugate exponents, then $ forall A, B in RR_(>=0), quad A B <= A^p / p + B^q / q $ with equality iff $A^p = B^q$.
+- *Lemma (Hölder's inequality)*: let $p, q$ conjugate exponents. If $f in L^p (E)$, $g in L^q (E)$, then $ integral_E |f g| <= norm(f)_(L^p) norm(g)_(L^q) $
+- *Corollary (Cauchy-Schwarz inequality for $L^2 (E)$)*: if $f, g in L^2 (E)$, then $ abs(integral_E f overline(g)) <= integral_E |f g| <= norm(f)_(L^2) norm(g)_(L^2) $
+- *Lemma (Minkowski's inequality)*: let $p in lr([1, oo))$. If $f, g in L^p (E)$ then $f + g in L^p (E)$ and $ norm(f + g)_(L^p) <= norm(f)_(L^p) + norm(g)_(L^p) $
+- *Theorem*: for $p in lr([1, oo))$, $\(L^p (E), norm(dot.op)_(L^p)\)$ is normed linear space.
+- *Proposition*: let $1 <= p < q < oo$. If $mu(E) < oo$ then $L^q (E) subset.eq L^p (E)$ and $ norm(f)_(L^p) <= mu(E)^(1/p - 1/q) norm(f)_(L^q) $
