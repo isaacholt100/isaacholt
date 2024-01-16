@@ -321,3 +321,21 @@
     - Order $4$ subgroups are $ideal(sigma^2, tau) tilde.equiv (ZZ\/2)^2$, $ideal(sigma) tilde.equiv ZZ\/4$, $ideal(sigma^2, tau sigma) tilde.equiv (ZZ\/2)^2$.
     - Respectively, intermediate field extensions of degree $4$ are $QQ\(root(4, 2)\)$, $QQ\(i root(4, 2)\)$, $QQ\(sqrt(2), i\)$, $QQ\((1 - i) root(4, 2)\)$, $QQ\((1 + i) root(4, 2)\)$.
     - Respectively, intermediate field extensions of degree $2$ are $QQ\(sqrt(2)\)$, $QQ(i)$, $QQ\(i sqrt(2)\)$.
+
+= Cyclotomic field extensions
+
+== Roots of unity
+
+- *Definition*: if $L\/K$ is Galois, $Gal(L\/K) tilde.equiv ZZ_n$, then $L$ is *cyclic extension* of $K$ of degree $n$.
+- *Definition*: $zeta in K^*$ is *$n$-th primitive root of unity* if $zeta^n = 1$ and $forall 0 < m < n$, $zeta^m != 1$, i.e. order of $zeta$ in $K^*$ is $n$.
+- *Example*:
+    - $zeta$ is primitive $1$-st root of unity iff $zeta = 1$.
+    - $-1$ is primitive $2$-nd root of unity iff $char(K) != 2$.
+    - If $char(K) = p$ prime, then $K$ contains no $p$-th primitive roots of unity (since $zeta^p = 1 <==> (zeta - 1)^p = 0 <==> zeta = 1$).
+    - If $K = CC$, $exp(2pi i\/n)$ is $n$-th primitive root of unity.
+- *Proposition*: let $zeta in K^*$ primitive $n$-th root of unity, let $d = gcd(m, n)$. Then $zeta^m$ is primitive $(n\/d)$-th root of unity.
+- *Corollary*: let $zeta in K^*$ primitive $n$-th root of unity.
+    - $zeta^m = 1 <==> m equiv 0 mod n$.
+    - $zeta^m$ is primitive $n$-th root of unity iff $gcd(m, n) = 1$.
+- *Definition*: let $mu(K)$ denote subgroup of all roots of unity in $K^*$.
+- *Theorem*: let $K$ field, $H$ finite subgroup of $K^*$, then $H$ is cyclic.
