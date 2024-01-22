@@ -295,3 +295,28 @@
 == Nearest-neighbour decoding
 
 - *Definition*: *nearest-neighbour decoding (NND)* means if word $x$ received, it is decoded to a nearest neighbour of $x$ in a code $C$.
+- *Proposition*: let $C$ be code with minimum distance $d$, let word $x$ be received with $t$ symbol errors. Then
+    - If $t <= d - 1$, then we can detect that $x$ has some errors.
+    - If $t <= floor((d - 1)/2)$, then NND will correct the errors.
+
+== Probabilities
+
+- *Definition*: *$q$-ary symmetric channel with symbol-error probability $p$* is channel for $q$-ary alphabet $A$ such that:
+    - For every $a in A$, probability that $a$ is changed in channel is $p$.
+    - For every $a != b in A$, probability that $a$ is changed to $b$ in channel is $ PP(b "received" | a "sent") = p/(q - 1) $
+    i.e. symbol-errors in different positions are independent events.
+- *Proposition*: let $c$ codeword in $q$-ary code $C subset.eq A^n$ sent over $q$-ary symmetric channel with symbol-error probability $p$. Then $ PP(x "received" | c "sent") = (p/(q - 1))^t (1 - p)^(n - t), quad "where" t = d(c, x) $
+- *Example*: let $C = {000, 111} subset {0, 1}^3$.
+#figure(table(
+    columns: (auto, auto, auto, auto, auto),
+    $x$, $t = d(000, x)$, [chance $000$ received as $x$], [chance if $p = 0.01$], [NND decodes correctly?],
+    $000$, $0$, $(1 - p)^3$, $0.970299$, "yes",
+    $100$, $1$, $p(1 - p)^2$, $0.009801$, "yes",
+    $010$, $1$, $p(1 - p)^2$, $0.009801$, "yes",
+    $001$, $1$, $p(1 - p)^2$, $0.009801$, "yes",
+    $110$, $2$, $p^2(1 - p)$, $0.000099$, "no",
+    $101$, $2$, $p^2(1 - p)$, $0.000099$, "no",
+    $011$, $2$, $p^2(1 - p)$, $0.000099$, "no",
+    $111$, $3$, $p^3$, $0.000001$, "no",
+))
+- *Corollary*: if $p < (q - 1)/q$ then $P(x "received" | c "sent")$ increases as $d(x, c)$ decreases.

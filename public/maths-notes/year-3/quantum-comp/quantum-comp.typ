@@ -365,12 +365,12 @@ $
 == Basic gates
 
 - *Convention*: input for circuit diagrams has most significant bit at the top, circuits are read left to right, with last operation on the right.
-- *Definition*: *(logical) gate* is function acting on bits.
+- *Definition*: *(logical) gate* is function mapping bits to bits.
 - *Definition*: simplest gates are $f: {0, 1} -> {0, 1}$:
     - *Identity gate*: $id(x) := x$.
     - $c_0(x) := 0$.
     - $c_1(x) := 1$.
-    - *#NOT gate*: $NOT(x): overline(x)$.
+    - *#NOT gate*: $NOT(x) = overline(x)$.
 - *Definition*: *#FANOUT gate* is defined as $
 FANOUT: {0, 1} -> {0, 1}^2, quad FANOUT(x) := (x, x)
 $
@@ -391,16 +391,40 @@ $
 ))
 - *Definition*: *OR gate* is given by its *truth table*: $ #table(columns: (auto, auto, auto), inset: 5pt, [], $0$, $1$, $0$, $0$, $1$, $1$, $1$, $1$) $
 - *Remark*: #AND and #OR are not reversible (invertible) so cannot be implemented by unitary operators.
-- *Landauer's principle*: energy $E$ required to erase one bit satisfies $ E >= k_B T log(2) $ where $K_B$ is Boltzmann's constant, $T$ is temperature at which system operates.
+- *Landauer's principle*: energy $E$ required to erase one bit satisfies $ E >= k_B T log(2) $ where $k_B$ is Boltzmann's constant, $T$ is temperature at which system operates.
 - *Definition*: *controlled #NOT (#CNOT) gate*, $CNOT: {0, 1}^2 -> {0, 1}^2$, is $ CNOT(x, y) := cases((x, y) & "if" x = 0, (x, NOT(y)) & "if" x = 1) quad = (x, x xor y) = (x, x + y mod 2) $ Inverse of #CNOT is #CNOT. $x$ is *control bit*, $y$ is *target bit*.
 #figure(quantum-circuit(
     lstick($y$), 2, targ(), 2, rstick($x xor y$), [\ ],
     lstick($x$), 2, ctrl(-1), 2, rstick($x$)
 ))
-- *Definition*: *#CnNOT(1) gate* is defined as $ CnNOT(1)(x_1, ..., x_n, y) := (x_1, ..., x_n, y xor "AND"(x_1, ..., x_n)) $ For $n = 2$, #CCNOT gate is called a *Toffoli gate*. #CnNOT($n$) is reversible for all $n in NN$ and $(CnNOT(n))^(-1) = CnNOT(n)$.
+- *Definition*: *#CnNOT(1) gate* is defined as $ CnNOT(1)(x_1, ..., x_n, y) := (x_1, ..., x_n, y xor "AND"(x_1, ..., x_n)) $ #CnNOT($n$) is reversible for all $n in NN$ and $(CnNOT(n))^(-1) = CnNOT(n)$. For $n = 2$, #CCNOT gate is called a *Toffoli gate*.
 #figure(quantum-circuit(
     lstick($y$), 2, targ(), 2, rstick($AND(x_1, x_2) xor y$), [\ ],
     lstick($x_2$), 2, ctrl(-1), 2, rstick($x_2$), [\ ],
     lstick($x_1$), 2, ctrl(-1), 2, rstick($x_1$)
 ))
 - *Definition*: *#NAND gate* is defined as $ NAND(x, y) := NOT(AND(x, y)) $
+- *Example*: circuit diagram for $f: ZZ\/8 -> ZZ\/8$, $f(x) = x + overline(1)$.
+#figure(quantum-circuit(
+    lstick($x_2$), 1, targ(), 4, [\ ],
+    lstick($x_1$), 1, ctrl(-1), 1, targ(), 2, [\ ],
+    lstick($x_0$), 1, ctrl(-1), 1, ctrl(-1), 1, gate("NOT")
+))
+
+== Universal gate sets
+
+- *Notation*: for $f: {0, 1}^m -> {0, 1}^n$, can write as $ f(x_(n - 1), ..., x_0) = (f_(m - 1)(x_(n - 1), ..., x_0), ..., f_0 (x_(n - 1), ..., x_0)) $
+- *Remark*: can "copy" bits by introducing extra "ancillary" bits and using #CNOT gates:
+#figure(quantum-circuit(
+    lstick($0$), 1, targ(), 1, rstick($x xor 0 = x$), [\ ],
+    lstick($x$), 1, ctrl(-1), 1, rstick($x$)
+))
+- *Definition*: a *universal gate set (UGS)* is finite set of gates which can construct an arbitrary function $f: {0, 1}^n -> {0, 1}^m$.
+- *Proposition*: ${NOT, AND, OR, CNOT}$ is a universal gate set.
+- *Corollary*: ${CNOT, AND}$ is a universal gate set.
+- *Proposition*: ${CCNOT}$ is a minimal ($1$-gate) UGS.
+- *Remark*: there is an infinte set of UGSs.
+
+== Computational resources and complexity
+
+- *Definition*: an *algorithm* is a set of instructions (systematic procedure) for computing some output for a given input.

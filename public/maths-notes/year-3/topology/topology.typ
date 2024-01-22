@@ -317,6 +317,56 @@
     - Viewing these as topological groups, if subgroup $"SO"(n)$ acts on $"SO"(n + 1)$, orbit space is $"SO"(n + 1)\/"SO"(n) tilde.equiv S^n$.
 - *Corollary*: the topological group $"SO"(n)$ is connected for $n in NN$.
 
+#import "@preview/cetz:0.2.0": canvas
+#import "@preview/cetz:0.2.0"
+
+#let polygon(points, labels: (), show-vertices: true, color: black, centre: (0, 0), ..other) = {
+    let circ = circle
+    let c = centre
+    let (cx, cy) = (0, 0)
+    import cetz.draw: *
+    // translate(x: centre.at(0), y: centre.at(1))
+    for (x, y) in points {
+        (cx, cy) = (cx + x, cy + y)
+    }
+    (cx, cy) = (cx / points.len(), cy / points.len())
+    // (cx, cy) = (cx + c.at(0), cy + c.at(1))
+    // circle((cx, cy), radius: 0.1)
+    // let (cx, cy) = centre
+    points.push(points.first())
+    cetz.draw.merge-path(..other, stroke: color + 1.5pt, {
+    // translate(x: centre.at(0), y: centre.at(1))
+        for i in range(points.len() - 1) {
+            let (x1, y1) = points.at(i)
+            let (x2, y2) = points.at(i + 1)
+            cetz.draw.line((x1 + c.at(0), y1 + c.at(1)), (x2 + c.at(0), y2 + c.at(1)))
+        }
+    })
+    for i in range(points.len() - 1) {
+        if show-vertices {
+            let (x, y) = points.at(i)
+            circle((x + c.at(0), y + c.at(1)), radius: 0.05, fill: color, stroke: none)
+        }
+        if labels.len() > 0 {
+            let (x, y) = points.at(i)
+            let (dx, dy) = (x - cx, y - cy)
+            let anchor = (x + dx / 6, y + dy / 6)
+            cetz.draw.content((anchor.at(0) + c.at(0), anchor.at(1) + c.at(1)), circ(fill: none, stroke: none, inset: 0.2em)[#labels.at(i)])
+        }
+    }
+}
+
+#let ngon(n, centre: (0, 0), radius: 1, show-vertices: true, color: black, ..other) = {
+    let top = (radius, 0)
+    let points = ()
+    for i in range(n) {
+        let x = top.at(0) * calc.cos(2*calc.pi*i/n) - top.at(1) * calc.sin(2*calc.pi*i/n)
+        let y = top.at(0) * calc.sin(2*calc.pi*i/n) + top.at(1) * calc.cos(2*calc.pi*i/n)
+        points.push((x, y))
+    }
+    return polygon(points, centre: centre, show-vertices: show-vertices, color: color, ..other)
+}
+
 = Introduction
 
 - *Notation*: let $I = [0, 1]$.
@@ -335,4 +385,67 @@
 - *Definition*: let $v_0, ..., v_n in RR^N$, $n <= N$.
     - $v_0, ..., v_n$ are in *general position* if ${v_1 - v_0, ..., v_n - v_0}$ are linearly independent.
     - *Convex hull* of $v_0, ..., v_n$ is set of all *convex linear combinations* of $v_0, ..., v_n$: $ ideal(v_0, ..., v_n) := {sum_(i = 0)^n lambda_i v_i: sum_(i = 0)^n lambda_i = 1, forall i in {0, ..., n}, lambda_i >= 0 } $
-    - An *$n$-simplex* $sigma^n = ideal(v_0, ..., v_n)$, is convex hull of $v_0, ..., v_n$ in general position. $v_0, ..., v_n$ *span* $sigma^n$ and $sigma^n$ is *$n$-dimensional*.
+    - An *$n$-simplex*, $sigma^n = ideal(v_0, ..., v_n)$, is convex hull of $v_0, ..., v_n$ in general position. The *vertices* $v_0, ..., v_n$ *span* $sigma^n$ and $sigma^n$ is *$n$-dimensional*.
+- *Example*:
+    - $0$-simplex is a point.
+    - $1$-simplex is a closed line segment.
+    - $2$-simplex is closed triangle including its interior.
+    - $3$-simplex is closed tetrahedron including its interior.
+- *Definition*: if $sigma^n = ideal(v_0, ..., v_n)$ is $n$-simplex and ${i_0, ..., i_r} subset.eq {0, ..., n}$, then $ideal(v_(i_0), ..., v_(i_r))$ is $r$-simplex and $ideal(v_(i_0), ..., v_(i_r)) subset.eq sigma^n$. Any such sub-simplex is called *$r$-face* of $sigma^n$. A *proper face* is an $(n - 1)$-face. The *$i$th face* of $sigma^n$ is the $(n - 1)$-simplex $ideal(v_0, ..., v_(i - 1), v_(i + 1), ..., v_n)$.
+- *Definition*: a *finite simplicial complex* $K subset RR^N$ is finite union of simplices in $RR^N$ such that
+    - If $sigma^n$ is simplex in $K$ and $tau^r$ is $r$-face of $sigma^n$, then $tau^r$ is simplex in $K$.
+    - If $sigma_1^n$ and $sigma_2^m$ are simplices in $K$ with $sigma_1^n sect sigma_2^m != nothing$, then there exists $r in {0, ..., min(n, m)}$ and $r$-simplex $tau^r$ in $K$ such that $tau^r$ is $r$-face of both $sigma_1^n$ and $sigma_2^m$ and $sigma_1^n sect sigma_2^m = tau^r$.
+    *Dimension* of $K$ is maximum value of $n$ for which there is an $n$-simplex in $K$.
+- *Remark*: a finite simplicial complex $K subset RR^N$ is a topological space when equipped with subspace topology from $RR^N$.
+- *Remark*: second condition implies that two simplices can meet in at most one common face (this is important when considering quotient topologies and identifying edges with each other).
+- *Definition*: *triangulation* of topological space $X$ is homeomorphism $h: X -> K$ for some finite simplicial complex $K$. We say $K$ *triangulates* $X$. $X$ is *triangulable* if it has at least one triangulation.
+- *Remark*: if a triangulation exists, it is not unique.
+- *Example*: the black and blue figures are simplicial complexes that triangulate $S^1$:
+#canvas(length: 2cm, {
+    ngon(3, radius: 0.7, stroke: 1.5pt)
+    ngon(4, radius: 0.7, centre: (3, 0), color: blue)
+})
+
+== Simplicial maps
+
+- *Definition*: a map $f: K -> L$ between finite simplicial complexes $K$ and $L$ is *simplicial* if
+    - For every vertex $v$ of $K$, $f(v)$ is a vertex of $L$.
+    - If $sigma = ideal(v_0, ..., v_n)$ is simplex $sigma$ in $K$, $f(sigma)$ is simplex of $L$ with vertices $f(v_0), ..., f(v_n)$, where map $f|_sigma$ is defined as $ f(sum_(i = 0)^n lambda_i v_i) = sum_(i = 0)^n lambda_i f(v_i) $
+- *Remark*: vertices $f(v_0), ..., f(v_n)$ of simplex $f(sigma)$ may not be distinct, so $f(sigma)$ may be simplex of lower dimension than $sigma$.
+- *Remark*: for triangulations $h_X: X -> K_X$ and $h_Y: Y -> K_Y$ of topological spaces $X$ and $Y$, a simplicial map $f: K_X -> K_Y$ induces a map $F: X -> Y$ by $F = h_Y^(-1) compose f compose h_X$.
+- *Example*: $F: S^1 -> S^1$, $F(e^(i pi t)) = e^(2 i pi t)$ is the *2 times* map. Let $f: K_1 -> K_2$, $f(v_i) = w_(i mod 3)$, $f$ is simplicial map. Then $F$ is induced by $f$, where $K_1$ and $K_2$ are as below:
+#canvas(length: 2cm, {
+    ngon(6, centre: (0, 0), labels: ($v_0$, $v_1$, $v_2$, $v_3$, $v_4$, $v_5$))
+    ngon(3, centre: (3, 0), labels: ($w_0$, $w_1$, $w_2$))
+})
+
+== Barycentric subdivision and simplicial approximation
+
+- *Definition*: *barycentre* of $sigma^k = ideal(v_0, ..., v_k) subset RR^N$ is $ overline(sigma^k) = 1/(k + 1) (v_0 + dots.h.c + v_k) in RR^N $
+- *Example*:
+    - Barycentre of $0$-simplex is itself.
+    - Barycentre of $1$-simplex is midpoint of the line.
+#canvas(length: 2cm, {
+    ngon(3, centre: (0, 0))
+    cetz.draw.circle((0, 0), radius: 0.05, stroke: none, fill: red)
+})
+- *Definition*: let $K subset RR^N$ be finite simplicial complex. *First barycentric subdivision* of $K$ is the simplicial complex $K^((1))$ such that:
+    - The vertices of $K^((1))$ are the barycentres of $overline(sigma^k)$ for every simplex $sigma^k$ in $K$.
+    - The vertices $overline(sigma^(k_0)), ..., overline(sigma^(k_m)) in K^((1))$ span an $m$-simplex in $K^((1))$ if the original simplices $sigma^(k_0), ..., sigma^(k_m)$ in $K$ are (up to relabelling) strictly nested: $ sigma^(k_0) lt.curly dots.h.c lt.curly sigma^(k_m) $ where $sigma^i lt.curly sigma^j$ iff $sigma^i$ is $i$-face of $sigma^j$ with $i < j$ (thus $k_0 < dots.h.c < k_m$).
+- *Definition*: the $r$th barycentric subdivision of $K$ is defined inductively for $r > 1$ by $K^((r)) := (K^((r - 1)))^((1))$.
+- *Remark*: let $K$ be finite simplicial complex.
+    - If $K$ is triangulation of topological space $X$, then so is $K^((r))$ for all $r in NN$.
+    - Each simplex in $K^((1))$ is contained in a simplex of $K$.
+- *Simplicial approximation theorem*: for each $i in {1, 2}$, let $h_i: X_i -> K_i$ be triangulation of topological space $X_i$ by finite simplicial complex $K_i$. Let $f: X_1 -> X_2$ be map. Then $forall epsilon > 0$ there exist $n, m in NN$ and a simplicial map $s: K_1^((n)) -> K_2^((m))$ such that $ s tilde.eq f = h_2 compose f compose h_1^(-1) quad "and" quad forall x in K_1, quad |f(x) - s(x)| < epsilon $
+
+= Surfaces
+
+== Surfaces
+
+- *Definition*: let $S$ be Hausdorff, compact, connected topological space.
+    - $S$ is *surface* if for all $x in S$, there exists $U subset.eq S$ such that $x in U$ and $U tilde.equiv E^2$ or $U tilde.equiv E^2 sect RR times RR_(>=0)$.
+    - *Boundary* of $S$, $diff S$, is set of all $x in S$ such that there is not a $U subset.eq S$ with $x in U$ and $U tilde.equiv E^2$.
+    - *Interior* of $S$ is $"int"(S) = S - diff S$.
+    - $S$ is *closed surface* if $diff S = emptyset$ ($S$ is *locally Euclidean of dimension 2*).
+    - $S$ is *surface with boundary* if $diff S != emptyset$.
+- *Definition*: let $K$ be finite simplicial complex, $x in K$. *Open star* of $x$ in $K$, $"St"(x, K)$ is union of ${x}$ and interiors of all simplices containing $x$.

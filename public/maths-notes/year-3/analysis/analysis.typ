@@ -366,3 +366,19 @@
 - *Lemma (Minkowski's inequality)*: let $p in lr([1, oo))$. If $f, g in L^p (E)$ then $f + g in L^p (E)$ and $ norm(f + g)_(L^p) <= norm(f)_(L^p) + norm(g)_(L^p) $
 - *Theorem*: for $p in lr([1, oo))$, $\(L^p (E), norm(dot.op)_(L^p)\)$ is normed linear space.
 - *Proposition*: let $1 <= p < q < oo$. If $mu(E) < oo$ then $L^q (E) subset.eq L^p (E)$ and $ norm(f)_(L^p) <= mu(E)^(1/p - 1/q) norm(f)_(L^q) $
+- *Remark*:
+    - Convergence in $L^p$ is also called convergence in the mean of order $p$.
+    - This notion of convergence is different to pointwise convergence, uniform convergence and convergence in measure.
+- *Riesz-Fischer theorem*: for $p in lr([1, oo))$, $\(L^p (E), norm(dot.op)_(L^p)\)$ is complete.
+
+== Lebesgue space $L^oo$
+
+- *Definition*:
+    - Let $f: E -> CC$ measurable. $f$ is *essentially bounded* if $ exists M >= 0: |f(x)| <= M quad "almost everywhere on" E $
+    - $L^oo (E)$ is collection of equivalence classes of essentially bounded functions where $f tilde.equiv g$ iff $f = g$ almost everywhere.
+    - For $f in L^oo (E)$, define $ norm(f)_(L^oo) := "ess" sup |f| := inf{M in RR: mu({x in E: |f(x)| > M}) = 0} $
+- *Proposition*:
+    - $0 <= |f(x)| <= norm(f)_(L^oo)$ almost everywhere.
+    - $norm(f)_(L^oo)$ is norm on $L^oo (E)$.
+    - If $f in L^1 (E)$, $g in L^oo (E)$, then $ integral_E |f g| <= norm(f)_(L^1) norm(g)_(L^oo) $
+- *Proposition*: let $(f_n)$ sequence of functions in $L^oo (E)$. Then $(f_n)$ converges to $f in L^oo (E)$ iff there exists $G subset.eq E$ with $mu(G) = 0$ and $(f_n)$ converges to $f$ uniformly on $E - G$.

@@ -1,6 +1,6 @@
 #import "../../template.typ": *
 #show: template
-#outline()
+
 #let ideal(..gens) = $angle.l #gens.pos().join(",") angle.r$
 #let pm = $plus.minus$
 
@@ -194,3 +194,29 @@
 - *Definition*: *Pell's equation* is $x^2 - d y^2 = 1$ for nonsquare $d$, where solutions are $x, y in ZZ$. Since LHS is norm of $x + y sqrt(d)$, solutions are given by $x + y sqrt(d) in ZZ\[sqrt(d)\]$ with norm $1$.
 - *Example*: consider $x^2 - 2y^2 = plus.minus 1$. Fundamental unit in $ZZ\[sqrt(2)\]$ is $u = 1 + sqrt(2)$, with norm $-1$. So if $x + y sqrt(2) in ZZ\[sqrt(2)\]$ is such that $N_(ZZ\(sqrt(2)\))(x + y sqrt(2)) = 1$, then $x + y sqrt(2)$ is an even power of $u$. Thus elements of norm $plus.minus 1$ are $ plus.minus u^(2n) thick ("RHS" = 1), quad plus.minus u^(2n + 1) thick ("RHS" = -1) $ To extract solutions $x, y$, note that if $x + y sqrt(2) = plus.minus u^r$, then $x - y sqrt(2) = plus.minus overline(u)^r$, hence $ x = plus.minus (u^r + overline(u)^r)/2, quad y = plus.minus (u^r - overline(u)^r)/(2 sqrt(2)) $ Solutions when RHS $= 1$ are given by even $r$, solutions when RHS $= -1$ are given by odd $r$.
 - *Example*: consider $x^2 - 75 y^2 = 1$. $75 = 3 dot.op 5^2$ is not square-free, so rewrite as $ x^2 - 3z^2 = 1 $ where $z = 5y$. Fundamental unit in $ZZ\[sqrt(3)\]$ is $u = 2 + sqrt(3)$ of norm $1$ so solutions are $ x = plus.minus (u^n + overline(u)^n)/2, quad z = plus.minus (u^n - overline(u)^n)/(2 sqrt(3)), quad n in ZZ $ To get solution for $(x, y)$, we need $5 | z$ (which doesn't always hold). Note that $ u^2 = 7 + 4 sqrt(3) in.not ZZ\[sqrt(75)\] = ZZ\[5 sqrt(3)\], quad u^3 = 26 + 3 sqrt(75) in ZZ\[sqrt(75)\] $ Thus when $n = 2$, $(x, z)$ is not solution, but is when $n = 3$, and hence when $n = 3k$ for $k in ZZ$: $ x = plus.minus (u^(3k) + overline(u)^(3k))/2, quad y = plus.minus (u^(3k) - overline(u)^(3k))/(5 dot.op 2 sqrt(3)), quad k in ZZ $ $u^(3k + 1)$ and $u^(3k + 2)$ never give solutions, since if $u^(3k + 1) in ZZ\[sqrt(75)\]$, then $u in ZZ\[sqrt(75)\]$ (since $u^(-3k) in ZZ\[sqrt(75)\]$). Similarly, if $u^(3k + 2) in ZZ\[sqrt(75)\]$, then $u^2 in ZZ\[sqrt(75)\]$: contradiction. Note $ZZ\[sqrt(75)\] subset ZZ\[sqrt(3)\]$ and any unit in $ZZ\[sqrt(75)\]$ is unit in $ZZ\[sqrt(3)\]$, so is $plus.minus u^r$ for some $r in ZZ$. So by taking powers of $u$, eventually we find the fundamental unit in $ZZ\[sqrt(75)\]$ (as it will be smallest unit $> 1$ assuming we increment powers from $1$).
+
+
+#let jack = false
+
+
+#show: a => if jack { smallcaps(a) } else { a }
+= Discriminants and integral bases
+
+== Discriminant of an $n$-tuple
+
+
+- *Definition*: let $K$ number field of degree $n$. *Discriminant* of $gamma = (gamma_1, ..., gamma_n) in K^n$ is $ Delta_K (gamma) := det(Q(gamma)) $ where $Q(gamma) = \(tr_K \(gamma_i gamma_j\)\)_(1 <= i, j <= n) in M_n (QQ)$.
+- *Example*: let $K = QQ\(sqrt(d)\)$, $d != 1$ squarefree. $
+gamma & = \(1, sqrt(d)\) ==> Q(gamma) = mat(2, 0; 0, 2d) ==> Delta_K (gamma) = 4d \
+gamma & = \(1, (1 + sqrt(d))/2) ==> Q(gamma) = mat(2, 1; 1, (1 + d)/2) ==> Delta_K (gamma) = d
+$
+- *Proposition*:
+    - $Delta_K (gamma) in QQ$ and if every $gamma_i in cal(O)_K$, then $Delta_K (gamma) in ZZ$.
+    - Let $M in M_n (QQ)$, then $Delta_K (M gamma) = det(M)^2 Delta_K (gamma)$.
+    - $Delta_K (gamma)$ is invariant under permutations of $gamma_1, ..., gamma_n$.
+- *Theorem*: let $K = QQ(theta)$ be number field. Let $theta_1, ..., theta_n$ be roots of $p_theta (x)$, let $gamma = (1, ..., theta^(n - 1))$. Then $
+Delta_K (gamma) = product_(1 <= i < j <= n) \(theta_i - theta_j\)^2 = (-1)^binom(2, n) product_(i = 1)^n p'_theta (theta_i) = (-1)^binom(n, 2) N_K (p'_theta (theta))
+$
+- *Example*:
+    - Let $K = QQ\(sqrt(d)\)$, $d$ square-free, $theta = (1 + sqrt(d))/2$, then $ Delta_K ((1, theta)) = ((1 + sqrt(d))/2 - (1 - sqrt(d))/2)^2 = d $
+    - Let $K = QQ(theta)$, $theta$ root of $x^3 + 2x - 1$.
