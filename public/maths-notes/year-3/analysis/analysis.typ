@@ -382,3 +382,13 @@
     - $norm(f)_(L^oo)$ is norm on $L^oo (E)$.
     - If $f in L^1 (E)$, $g in L^oo (E)$, then $ integral_E |f g| <= norm(f)_(L^1) norm(g)_(L^oo) $
 - *Proposition*: let $(f_n)$ sequence of functions in $L^oo (E)$. Then $(f_n)$ converges to $f in L^oo (E)$ iff there exists $G subset.eq E$ with $mu(G) = 0$ and $(f_n)$ converges to $f$ uniformly on $E - G$.
+- *Theorem*: $\(L^oo (E), norm(dot.op)_(L^oo)\)$ is complete.
+- *Remark*: if $mu(E) < oo$, then $L^oo (E) subset L^p (E)$ for $p in lr([1, oo))$ and $ norm(f)_(L^p) <= mu(E)^(1\/p) norm(f)_(L^oo) $ since $ norm(f)_(L^p)^p = integral_E |f|^p <= integral_E norm(f)_(L^oo)^p dot.op indicator(E) = norm(f)_(L^oo)^p mu(E) $
+
+== Approximation and separability
+
+- *Definition*: let $(X, norm(dot.op))$ be normed linear space. Let $F subset.eq G subset.eq X$. $F$ is *dense in $G$* if $ forall g in G, forall epsilon > 0, exists f in F: quad norm(f - g) < epsilon $
+- *Proposition*:
+    - $F$ is dense in $G$ iff for every $g in G$, there exists sequence $(f_n)$ in $F$ such that $lim_(n -> oo) f_n = g$ in $X$.
+    - For $F subset.eq G subset.eq H subset.eq X$, if $F$ dense in $G$ and $G$ dense in $H$, then $F$ dense in $H$.
+- *Proposition*: let $p in [1, oo]$. Then subspace of simple functions in $\(L^p (E), norm(dot.op)_(L^p)\)$ is dense in $\(L^p (E), norm(dot.op)_(L^p)\)$.

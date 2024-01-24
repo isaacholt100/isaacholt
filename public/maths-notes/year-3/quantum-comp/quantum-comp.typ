@@ -423,8 +423,24 @@ $
 - *Proposition*: ${NOT, AND, OR, CNOT}$ is a universal gate set.
 - *Corollary*: ${CNOT, AND}$ is a universal gate set.
 - *Proposition*: ${CCNOT}$ is a minimal ($1$-gate) UGS.
-- *Remark*: there is an infinte set of UGSs.
+- *Remark*: there is an infinte number of UGSs.
 
 == Computational resources and complexity
 
 - *Definition*: an *algorithm* is a set of instructions (systematic procedure) for computing some output for a given input.
+- Resources considered in complexity:
+    - *Time*: corresponds to numbers of gates in any UGS needed for implementing the circuit.
+    - *Space*: corresponds to number of bits (lines) in the circuit.
+    - $n$ denotes size in bits of input.
+- *Example*: computing $gcd(a, b)$ (assuming WLOG $a >= b$, $2^(n - 1) <= b < 2^n$ so $b$ has $n$ bits).
+    - Brute-force algorithm: try all $1 <= c <= b$, check if $c | a$ and $c | b$, return largest such $c$. Time complexity: $O(2^n)$.
+    - Euclid's algorithm has time complexity $O(n^3)$ (since $r_(i + 2) < r_i\/2$).
+- *Definition*:
+    - *P* is complexity class of algorithms whose run time is at most polynomial time in $n$.
+    - *EXP* is complexity class of algorithms whose run time is at most exponential time in $n$. $"P" subset.eq "EXP"$.
+    - *PSPACE* is class of algorithms which require space at most polynomial in $n$.
+    - *NP* is complexity class of algorithms whose output can be verified to be correct in polynomial time, e.g. integer factorisation. Clearly $P subset.eq "NP"$.
+    - *NP-hard* problem is one such that, if you have an oracle for solving them, you can solve any NP problem in polynomial time (NP problems reduce polynomially to NP-hard problems).
+    - *NP-complete* is complexity class of problems which are NP-hard, e.g. travelling salesman.
+    - *PP* is class of algorithms which require time at most polynomial in $n$ to return correct answer with probability $> 1\/2$.
+    - *BPP* is class of algorithms which require time at most polynomial in $n$ to return correct answer with probability $> c > 1\/2$. $"P" subset.eq "BPP"$.

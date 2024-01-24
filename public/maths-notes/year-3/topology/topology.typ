@@ -425,18 +425,18 @@
 - *Example*:
     - Barycentre of $0$-simplex is itself.
     - Barycentre of $1$-simplex is midpoint of the line.
-#canvas(length: 2cm, {
-    ngon(3, centre: (0, 0))
-    cetz.draw.circle((0, 0), radius: 0.05, stroke: none, fill: red)
-})
+// #canvas(length: 2cm, {
+//     ngon(3, centre: (0, 0))
+//     cetz.draw.circle((0, 0), radius: 0.05, stroke: none, fill: red)
+// })
 - *Definition*: let $K subset RR^N$ be finite simplicial complex. *First barycentric subdivision* of $K$ is the simplicial complex $K^((1))$ such that:
-    - The vertices of $K^((1))$ are the barycentres of $overline(sigma^k)$ for every simplex $sigma^k$ in $K$.
+    - The vertices of $K^((1))$ are the barycentres $overline(sigma^k)$ for every simplex $sigma^k$ in $K$.
     - The vertices $overline(sigma^(k_0)), ..., overline(sigma^(k_m)) in K^((1))$ span an $m$-simplex in $K^((1))$ if the original simplices $sigma^(k_0), ..., sigma^(k_m)$ in $K$ are (up to relabelling) strictly nested: $ sigma^(k_0) lt.curly dots.h.c lt.curly sigma^(k_m) $ where $sigma^i lt.curly sigma^j$ iff $sigma^i$ is $i$-face of $sigma^j$ with $i < j$ (thus $k_0 < dots.h.c < k_m$).
 - *Definition*: the $r$th barycentric subdivision of $K$ is defined inductively for $r > 1$ by $K^((r)) := (K^((r - 1)))^((1))$.
 - *Remark*: let $K$ be finite simplicial complex.
     - If $K$ is triangulation of topological space $X$, then so is $K^((r))$ for all $r in NN$.
     - Each simplex in $K^((1))$ is contained in a simplex of $K$.
-- *Simplicial approximation theorem*: for each $i in {1, 2}$, let $h_i: X_i -> K_i$ be triangulation of topological space $X_i$ by finite simplicial complex $K_i$. Let $f: X_1 -> X_2$ be map. Then $forall epsilon > 0$ there exist $n, m in NN$ and a simplicial map $s: K_1^((n)) -> K_2^((m))$ such that $ s tilde.eq f = h_2 compose f compose h_1^(-1) quad "and" quad forall x in K_1, quad |f(x) - s(x)| < epsilon $
+- *Simplicial approximation theorem*: for each $i in {1, 2}$, let $h_i: X_i -> K_i$ be triangulation of topological space $X_i$ by finite simplicial complex $K_i$. Let $f: X_1 -> X_2$ be map. Then $forall epsilon > 0$ there exist $n, m in NN$ and a simplicial map $s: K_1^((n)) -> K_2^((m))$ such that for $F := h_2 compose f compose h_1^(-1)$, $ s tilde.eq F quad "and" quad forall x in K_1, quad |F(x) - s(x)| < epsilon $
 
 = Surfaces
 
@@ -445,7 +445,7 @@
 - *Definition*: let $S$ be Hausdorff, compact, connected topological space.
     - $S$ is *surface* if for all $x in S$, there exists $U subset.eq S$ such that $x in U$ and $U tilde.equiv E^2$ or $U tilde.equiv E^2 sect RR times RR_(>=0)$.
     - *Boundary* of $S$, $diff S$, is set of all $x in S$ such that there is not a $U subset.eq S$ with $x in U$ and $U tilde.equiv E^2$.
-    - *Interior* of $S$ is $"int"(S) = S - diff S$.
+    - *Interior* of $S$ is $"int"(S) := S - diff S$.
     - $S$ is *closed surface* if $diff S = emptyset$ ($S$ is *locally Euclidean of dimension 2*).
-    - $S$ is *surface with boundary* if $diff S != emptyset$.
-- *Definition*: let $K$ be finite simplicial complex, $x in K$. *Open star* of $x$ in $K$, $"St"(x, K)$ is union of ${x}$ and interiors of all simplices containing $x$.
+    - $S$ is *surface with boundary* if $diff S != emptyset$. Surface with boundary is closed surface from which interiors of finite number of pairwise disjoint closed discs have been removed.
+- *Definition*: let $K$ be finite simplicial complex, $x in K$. *Open star* of $x$ in $K$, $"St"(x, K)$, is union of ${x}$ and interiors of all simplices containing $x$.

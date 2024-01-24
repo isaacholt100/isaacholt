@@ -320,3 +320,20 @@
     $111$, $3$, $p^3$, $0.000001$, "no",
 ))
 - *Corollary*: if $p < (q - 1)/q$ then $P(x "received" | c "sent")$ increases as $d(x, c)$ decreases.
+- *Remark*: by Bayes' theorem, $ PP(c "sent" | x "received") = PP(c "sent and" x "received") / PP(x "received") = (PP(c "sent") PP(x "received" | c "sent"))/PP(x "received") $
+- *Proposition*: let $C$ be $q$-ary $(n, M, d)$ code used over $q$-ary symmetric channel with symbol-error probability $p < (q - 1)\/q$, and each codeword $c in C$ is equally likely to be sent. Then for any word $x$, $PP(c "sent" | x "received")$ increases as $d(x, c)$ decreases.
+
+== Bounds on codes
+
+- *Proposition (singleton bound)*: for $q$-ary code $(n, M, d)$ code, $M <= q^(n - d + 1)$.
+- *Definition*: code which saturates singleton bound is called *maximum distance separable (MDS)*.
+- *Example*: let $C_n$ be *binary repetition code* of block length $n$, $ C_n := \{underbrace(00...0, n), underbrace(11...1, n)\} subset {0, 1}^n $ $C_n$ is $(n, 2, n)_2$ code, and $2 = 2^(n - n + 1)$ so $C_n$ is MDS code.
+- *Definition*: let $A$ be alphabet, $|A| = q$. Let $n in NN$, $0 <= t <= n$, $t in NN$, $x in A^n$.
+    - *Ball of radius $t$ around $x$* is $ S(x, t) := {y in A^n: d(y, x) <= t} $
+    - Code $C subset.eq A^n$ is *perfect* if $ exists t in NN: A^n = product.co_(c in C) S(c, t) $ where $product.co$ is disjoint union.
+- *Example*: for $C = {000, 111} subset {0, 1}^3$, $S(000, 1) = {000, 100, 010, 001}$ and $S(111, 1) = {111, 011, 101, 110}$. These are disjoint and $S(000, 1) union S(111, 1) = {0, 1}^3$, so $C$ is perfect.
+- *Example*: let $C = {111, 020, 202} subset {0, 1, 2}^3$. $forall c in C, d(c, 012) = 2$. So $012$ is not in any $S(c, 1)$ but is in every $S(c, 2)$, so $C$ is not perfect.
+- *Lemma*: let $|A| = q$, $x in AA^n$, then $ |S(x, t)| = sum_(k = 0)^t binom(n, k) (q - 1)^k $
+- *Example*: let $C = {111, 020, 202} subset {0, 1, 2}^3$, so $q = 3$, $n = 3$. So $|S(x, 1)| = binom(3, 0) + binom(3, 1) (3 - 1) = 7$, $|S(x, 2)| = binom(3, 0) + binom(3, 1)(3 - 1) + binom(3, 2) (3 - 1)^2 = 19$. But $|{0, 1, 2}|^3 = 27$ and $7 divides.not 27$, $19 divides.not 27$, so ${0, 1, 2}^3$ can't be partioned by balls of either size. So $C$ can't be perfect. $|S(x, 3)| = 27$, but then $C$ must contain only one codeword to be perfect, and $|S(x, 0)| = 1$, but then $C = A^n$ to be perfect. These are trivial, useless codes.
+- *Proposition (Hamming/sphere-packing bound)*: $q$-ary $(n, M, d)$ code satisfies $ M sum_(k = 0)^t binom(n, k) (q - 1)^k <= q^n, quad "where" t = floor((d - 1)/2) $
+- *Corollary*: code saturates Hamming bound iff it is perfect.
