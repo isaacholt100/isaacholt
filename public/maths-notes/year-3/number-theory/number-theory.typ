@@ -198,8 +198,8 @@
 
 #let jack = false
 
-
 #show: a => if jack { smallcaps(a) } else { a }
+
 = Discriminants and integral bases
 
 == Discriminant of an $n$-tuple
@@ -214,9 +214,47 @@ $
     - $Delta_K (gamma) in QQ$ and if every $gamma_i in cal(O)_K$, then $Delta_K (gamma) in ZZ$.
     - Let $M in M_n (QQ)$, then $Delta_K (M gamma) = det(M)^2 Delta_K (gamma)$.
     - $Delta_K (gamma)$ is invariant under permutations of $gamma_1, ..., gamma_n$.
+- *Lemma*: let $theta_1, ..., theta_n in CC$, let $ D = mat(1, theta_1, ..., theta_1^(n - 1); dots.v, dots.v, dots.down, dots.v; 1, theta_n, ..., theta_n^(n - 1)) $ then $ det(D) = (-1)^binom(n, 2) product_(1 <= r < s <= n) (theta_r - theta_s) $
 - *Theorem*: let $K = QQ(theta)$ be number field. Let $theta_1, ..., theta_n$ be roots of $p_theta (x)$, let $gamma = (1, ..., theta^(n - 1))$. Then $
-Delta_K (gamma) = product_(1 <= i < j <= n) \(theta_i - theta_j\)^2 = (-1)^binom(2, n) product_(i = 1)^n p'_theta (theta_i) = (-1)^binom(n, 2) N_K (p'_theta (theta))
+Delta_K (gamma) = product_(1 <= i < j <= n) \(theta_i - theta_j\)^2 = (-1)^binom(n, 2) product_(i = 1)^n p'_theta (theta_i) = (-1)^binom(n, 2) N_K (p'_theta (theta))
 $
 - *Example*:
     - Let $K = QQ\(sqrt(d)\)$, $d$ square-free, $theta = (1 + sqrt(d))/2$, then $ Delta_K ((1, theta)) = ((1 + sqrt(d))/2 - (1 - sqrt(d))/2)^2 = d $
-    - Let $K = QQ(theta)$, $theta$ root of $x^3 + 2x - 1$.
+    - Let $theta = sqrt(d)$, so $p_theta (x) = x^2 - d$, $p'_theta (x) = 2x$, so $ Delta_K (1, theta) = (-1)^binom(2, 2) N_K (2 theta) = -4 N_k (theta) = 4d $
+    - Let $theta = root(d, 3)$, so $p_theta (x) = x^3 - d$, $p'_theta (x) = 3x^2$ so $ Delta_K (1, theta, theta^2) = (-1)^binom(3, 2) N_K (3 theta^2) = -27 d^2 $
+    - Let $theta$ be root of $p_theta (x) = x^3 - x + 2$, so $p'_theta (x) = 3x^2 - 1$. $ Delta_K (1, theta, theta^2) = (-1)^binom(3, 2) N_K (3 theta^2 - 1) $ Now $theta^3 = theta - 2$ so $ N_K (3 theta^2 - 1) = (N_K (2) N_K (theta - 3))/(N_K (theta)) = 8/2 N_K (3 - theta) = 4(3 - theta_1)(3 - theta_2)(3 - theta_3) = 4 p_theta (3) = 104 $ so $Delta_K (1, theta, theta^2) = -104$. Note: in general, this method doesn't work, and generally we have to compute matrix $T_theta$ and $det(f(T_theta))$. *As a generalisation*, $ N_(QQ(theta)) (a - b theta) = b^n p_theta (a\/b) $
+- *Lemma*:
+    - Roots $theta_1, ..., theta_n$ of $p_theta (x)$ are distinct.
+    - $forall f in QQ[x], tr_K (f(theta)) = sum_(i = 1)^n f(theta_i)$.
+    - $forall f in QQ[x], N_K (f(theta)) = product_(i = 1)^n f(theta_i)$.
+- *Proposition*: let $K = QQ(theta)$ number field. Then $Delta_K (gamma) != 0$ iff $gamma$ is $QQ$-basis of $K$.
+
+== Full lattices and integral bases
+
+- *Definition*: let $A$ subgroup of $QQ$-vector space $V$. $A$ is *full lattice* in $V$ if there are $gamma_1, ..., gamma_n in V$ such that
+    - ${gamma_1, ..., gamma_n}$ is basis for $V$.
+    - $A = {a_1 gamma_i + dots.h.c + a_n gamma_n: a_i in ZZ}$ (i.e. $gamma_1, ..., gamma_n$ generate $A$ as a group). Note $a_1, ..., a_n$ are uniquely determined for each $a in A$.
+    ${gamma_1, ..., gamma_n}$ is *generating basis* for $A$.
+- *Example*: let $K = QQ(theta)$, $theta in cal(O)_K$, $[K: QQ] = n$, then $ZZ[theta]$ has generating basis ${1, ..., theta^(n - 1)}$ and is full lattice in $K$.
+- *Example*: $ZZ$, $ZZ\[sqrt(2)\/2\]$ are not full lattices in $QQ\(sqrt(2)\)$.
+- *Proposition*: let $K$ number field. Every non-zero ideal $I subset.eq cal(O)_K$ is full lattice in $K$.
+- *Definition*: generating basis for $cal(O)_K$ is *integral basis* for $K$.
+- *Example*: let $K = QQ\(sqrt(d)\)$, then an integral basis for $K$ is $\{1, sqrt(d)\}$ if $d equiv.not 1 mod 4$, $\{1, \(1 + sqrt(d)\)\/2\}$ if $d equiv 1 mod 4$.
+- *Theorem*: if $V$ is $QQ$-vector space, $dim(V) = n$, and $B subset A subset V$, $A$ and $B$ full lattices, ${beta_1, ..., beta_n}$ is generating basis for $B$, ${alpha_1, ..., alpha_n}$ is generating basis for $A$, where $beta = M alpha$, $M in M_n (ZZ)$, then
+    - $|A\/B| = |det(M)|$ (in particular, $A\/B$ is finite)
+    - If $V = K$ is number field, these satisfy *index-discriminant formula*: $Delta_K (B) = |A\/B|^2 Delta_K (A)$.
+    (Note $M$ exists since $alpha$ is generating basis for $A$ so spans $B$ over $ZZ$).
+- *Lemma*: if $A subset K$ is full lattice and ${gamma_1, ..., gamma_n}$, ${delta_1, ..., delta_n}$ are generating bases for $A$, then $Delta_K (gamma_1, ..., gamma_n) = Delta_K (delta_1, ..., delta_n)$. We define discriminant of $A$ to be $Delta_K (A) = Delta_K (gamma_1, ..., gamma_n)$ for any generating basis ${gamma_1, ..., gamma_n}$.
+- *Definition*: *disciminant* of number field $K$ is $ Delta_K = Delta_K (cal(O)_K) = Delta_K (gamma_1, ..., gamma_n) $ for any integral basis ${gamma_1, ..., gamma_n}$.
+
+== When is $R = ZZ[theta]$?
+
+- *Proposition*: if $S subset.eq cal(O)_K$ is full lattice in $K = QQ(theta)$, ${gamma_1, ..., gamma_n}$ is generating basis for $S$, and $p$ prime, $p | |cal(O)_K\/S|$, then
+    - $p^2 | Delta_K (S)$
+    - There exists $alpha = m_1 gamma_1 + dots.h.c + m_n gamma_n in S$, $m_i in ZZ$, such that $alpha\/p in cal(O)_K - S$ and $ cases(0 <= |m_i| < p\/2 & "if" p "is odd", m_i in {0, 1} & "if" p = 2) $
+- *Example*: if $K = QQ\(sqrt(d)\)$, $ Delta_K = cases(4d & "if" d equiv.not 1 mod 4, d & "if" d equiv 1 mod 4) $
+- *Example*: let $theta$ be root of $x^3 + 4x + 1$, $K = QQ\(theta\)$. We have $ZZ[theta] subset.eq cal(O)_K$ and $Delta_K (ZZ[theta]) = Delta_K (1, theta, theta^2) = 281 = |cal(O)_K \/ ZZ[theta]|^2 Delta_K (cal(O)_K)$. As 281 is squarefree, $|cal(O)_K \/ ZZ[theta]| = 1$ so $cal(O)_K = ZZ[theta]$.
+- *Example*: let $K = QQ(theta)$, $theta = root(3, 5)$. let $R = cal(O)_K$, $S = ZZ[theta]$. $Delta_K (S) = -3^3 dot.op 5^2$. If $p$ prime and $p | |R\/S|$, then $p in {3, 5}$ and there is $alpha = a + b theta + c theta^2$ such that $alpha\/p in R - S$, $|a|, |b|, |c| < p\/2$. Note $alpha != 0$, as otherwise $alpha in S$.
+    - If $5 | |R\/S|$, then $|a|, |b|, |c| in {0, 1, 2}$. Then $tr_(K\/QQ)(alpha\/5) = 3a\/5 in ZZ$ so $5 | a$ so $a = 0$. $theta alpha = c + (b theta^2)\/5 in cal(O)_K$ so $(b theta^2)\/5 in cal(O)_K$ so $ N_K ((b theta^2)\/5) = (N_K (b) N_K (theta)^2)/(N_K (5)) = b^3 / 5 in ZZ $ so $5 | b$, so $b = 0$. Finally, $ N_K (alpha/5) = N_K ((c theta^2)/5) = (c^3 (-5)^2)/5^3 = c^3/5 in ZZ ==> c = 0 $ Contradiction.
+    - If $3 | |R\/S|$, then $|a|, |b|, |c| in {0, 1}$ and can assume $a >= 0$ (by possibly multiplying by $-1$). Then $ N_K ((a + b theta + c theta^2) / 3) in ZZ ==> a^3 + 5b^3 + 25c^3 - 15a b c equiv 0 (mod 3^3) $ If $a = 0$, then $5b^3 + 25c^3 equiv 2b + c equiv 0 (mod 3)$ (as $b, c in {0, 1, -1}$), so if $b = 0$, then $c equiv 0 (mod 3) ==> c = 0$: contradiction. So $b = 1$ (by possibly multiplying by $-1$) hence $c = 1$. But then $ N_K (alpha\/3) = N_K ((theta + theta^2)/3) = (N_K (theta) N_K (1 + theta))/3^3 = (5 dot.op 6)/27 in.not ZZ $ Contradiction. If $a = 1$, then $ 1 + 5b^3 + 25c^3 equiv 1 + 2b + c equiv 0 (mod 3) $ which also leads to a contradiction.
+    - So $5 divides.not |R\/S|$, $3 divides.not |R\/S|$, so $|R\/S| = 1$, so $ZZ[theta] = cal(O)_K$.

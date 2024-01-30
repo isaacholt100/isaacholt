@@ -5,6 +5,8 @@
 #let inv(x) = $#x^(-1)$
 #let vd(v) = $bold(#v)$
 #let ideal(..gens) = $angle.l #gens.pos().join(",") angle.r$
+#let St = $op("St")$
+#let int = $op("int")$
 
 = Metric spaces
 
@@ -449,3 +451,42 @@
     - $S$ is *closed surface* if $diff S = emptyset$ ($S$ is *locally Euclidean of dimension 2*).
     - $S$ is *surface with boundary* if $diff S != emptyset$. Surface with boundary is closed surface from which interiors of finite number of pairwise disjoint closed discs have been removed.
 - *Definition*: let $K$ be finite simplicial complex, $x in K$. *Open star* of $x$ in $K$, $"St"(x, K)$, is union of ${x}$ and interiors of all simplices containing $x$.
+- *Example*: let $K$ be 2d finite simplicial complex, $x in K$.
+    - If there exists a $2$-simplex $sigma^2 subset.eq K$ such that $x in "int"(sigma^2)$, then $St(x, K) = int(sigma^2) tilde.equiv E^2$.
+    - If there exists a $1$-simplex $sigma^1 subset.eq K$ such that $x in int(sigma^1)$, then $ St(x, K) = int(sigma^1) union {int(sigma^2): sigma^1 "is face of" sigma^2 subset.eq K, sigma^2 "is 2-simplex"} $ Here, $St(x, K) tilde.equiv E^2$ iff there are exactly two $2$-simplices meeting along $sigma^1$.
+    - If $x in K$ is vertex, then $ St(x, K) = {x} & union {int(sigma^1): x "vertex of" sigma^1 subset.eq K, sigma^1 "is 1-simplex"} \ & union {int(sigma^2): x "vertex of" sigma^2 subset.eq K, sigma^2 "is 2-simplex"} $ Here $St(x, K) tilde.equiv E^2$ iff $x$ is vertex of $n >= 3$ $2$-simplices, and along any of its edges containing $x$, each of these $2$-simplices meets precisely one other $2$-simplex (from the remaining $n - 1$).
+- *Lemma*: let $M$ be topological space triangulated by connected, finite simplicial complex $K$. Then $M$ is closed surface iff $ forall x in K, quad St(x, K) tilde.equiv E^2 $ and the ways that this can happen are as listed above, with exactly two $2$-simplices meeting along each $1$-simplex.
+- *Remark*: if $h: M -> K$ is triangulation of topological space $M$ and $dim(K) != 2$, then $M$ is not closed surface. It is enough to check the open star condition (in above example) at all vertices of $K$: if there is $x in K$ such that $St(x, K) tilde.equiv.not E^2$, then there exists vertex $v$ of $K$ such that $St(v, K) tilde.equiv.not E^2$.
+- *Corollary*: let $X$ topological space, triangulated by connected finite simplicial complex $K$, $dim(K) = 2$. Then $X$ is closed surface iff for every vertex $v in K$, $St(v, K) tilde.equiv E^2$.
+- *Definition*: *real projective plane* is closed surface arising from identifying the edges of the unit square with the following: $ PP := (I times I)\/tilde, quad (x, 0) tilde (1 - x, 1), quad (0, y) tilde (1, 1 - y) $
+
+== Orientations on surfaces
+
+- *Definition*: an *orientation on $RR^2$* is choice of direction in which to travserse circles around the origin. There are exactly two choices.
+- *Definition*: *simple closed curve* in topological space is subspace homeomorphic to circle, i.e. connected curve with no self-intersections and ends where it begins.
+- *Definition*: surface $S$ is *orientable* if for all $x in int(S)$, any choice of local orientation at $x$ is preserved after translation along any simple closed curve in $int(S)$ containing $x$. $S$ is *non-orientable* if there exists $x in int(S)$ and simple closed curve $C subset.eq int(S)$ through $x$ such that translation along $C$ reverses any choice of local orientation at $x$. Every surface is either orientable or non-orientable.
+- *Example*: $S^2, TT$ are orientable. Mobius band and Klein bottle are non-orientable.
+- *Lemma*: $S$ is non-orientable iff it contains subspace homeomorphic to Mobius band.
+- *Theorem*: let $S_1, S_2$ be homeomorphic surfaces. $S_1$ is orientable iff $S_2$ is orientable.
+- *Remark*: $2$-simplex can be given orientation by drawing a direction around it (anticlockwise or clockwise) or by drawing direction around its boundary. A $2$-simplex can be oriented in 2 ways, which can be represented by ordering of the vertices: $ideal(v_0, v_1, v_2)$, $ideal(v_1, v_2, v_0)$ and $ideal(v_2, v_0, v_1)$ represent same orientation, $ideal(v_1, v_0, v_2)$ represents different orientation.
+- *Definition*: let $K$ finite simplicial complex that triangulates surface $S$ such that all $2$-simplices in $K$ are oriented.
+    - The orientations of two $2$-simplices in $K$ which share an edge are *compatible* if they induce opposite orientations on the shared edge.
+    - $K$ is *$Delta$-orientable* if there exists choice of orientations on its $2$-simplices such that any two $2$-simplices which share an edge have compatible orientations. Such a choice, if it exists, is a *$Delta$-orientation* on $K$.
+- *Theorem*: surface is orientable iff one (and so every) finite simplicial complex which triangulates it is $Delta$-orientable.
+
+== Constructions on surfaces
+
+- *Definition*: for surfaces $S_1, S_2$, their *connected sum*, $S_1 \# S_2$, is obtained by removing the interiors of one small open disc from interior of each surface, and identifying the two newly formed boundary circles. If $S_1, S_2$ oriented, directions around the boundary circles must be identified such that their induced orientations are opposite to each other. Then $S_1 \# S_2$ inherits an orientation which agrees (upon restriction) with those of the original surfaces $S_1$ and $S_2$.
+- *Proposition*:
+    - Since $S_1$, $S_2$ connected, it does not matter which two open discs are removed, the result is the same up to homeomorphism.
+    - $\#$ is commutative and associative.
+    - $S^2$ is the identity for $\#$ operation: $M \# S^2 tilde.equiv M$.
+- *Definition*: for $g in NN_0$, *closed orientable surface of genus $g$ ($g$-holed torus)* is $ M_g = S^2 \# underbrace(T \# dots.h.c \# T, g "times") $
+- *Example* the Klein bottle is given by $KK tilde.equiv PP \# PP$.
+- *Definition*: *adding handle* to surface $S$ is as follows: remove two open discs from $S$. Attach the ends of cylinder $S^1 times I$ to the resulting boundary circles. If $S$ (and cylinder) are oriented, require that the two resulting boundary circles are glued to those of the cylinder with opposite orientations, which ensures the new surface is still oriented. But if $S$ is not orientable, this doesn't matter, as all possible results are homeomorphic.
+- *Example*:
+    - $S^2$ with handle added is homeomorphic to the torus.
+    - $S^2$ with $g$ handles added is homeomorphic to $M_g$.
+    - $M_n$ with handle added is homeomorphic to $M_(n + 1)$.
+- *Definition*: *attaching a cross cap (Mobius band)* to surface $S$ is as follows: remove open disc from $S$, and identify resulting boundary circle with boundary circle of Mobius band. Attaching a cross-cap always makes the surface non-orientable.
+- *Example*: adding cross-cap to $S^2$ gives real projective plane $PP$.

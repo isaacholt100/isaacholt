@@ -4,6 +4,9 @@
 #let modulo(n) = $thick mod #n$
 #let lmodulo(n) = $quad mod #n$
 #let PAI = $overline(O)$
+#let vd(v) = $bold(#v)$
+#let span = $op("span")$
+#let ideal(..args) = $angle.l #args.pos().join(",") angle.r$
 
 = Introduction
 
@@ -337,3 +340,12 @@
 - *Example*: let $C = {111, 020, 202} subset {0, 1, 2}^3$, so $q = 3$, $n = 3$. So $|S(x, 1)| = binom(3, 0) + binom(3, 1) (3 - 1) = 7$, $|S(x, 2)| = binom(3, 0) + binom(3, 1)(3 - 1) + binom(3, 2) (3 - 1)^2 = 19$. But $|{0, 1, 2}|^3 = 27$ and $7 divides.not 27$, $19 divides.not 27$, so ${0, 1, 2}^3$ can't be partioned by balls of either size. So $C$ can't be perfect. $|S(x, 3)| = 27$, but then $C$ must contain only one codeword to be perfect, and $|S(x, 0)| = 1$, but then $C = A^n$ to be perfect. These are trivial, useless codes.
 - *Proposition (Hamming/sphere-packing bound)*: $q$-ary $(n, M, d)$ code satisfies $ M sum_(k = 0)^t binom(n, k) (q - 1)^k <= q^n, quad "where" t = floor((d - 1)/2) $
 - *Corollary*: code saturates Hamming bound iff it is perfect.
+
+= Linear codes
+
+== Finite vector spaces
+
+- *Definition*: *linear code* of block length $n$ is subspace of $FF_q^n$.
+- *Example*: let $vd(x) = (0, 1, 2, 0)$, $vd(y) = (1, 1, 1, 1)$, $vd(z) = (0, 2, 1, 0) in FF_3^4$. $C_1 = {vd(x), vd(y), vd(0)}$ is not linear code since e.g. $vd(x) + vd(y) = (1, 2, 0, 1) in.not C_1$. $C_2 = {vd(x), vd(z), vd(0)}$ is linear code.
+- *Notation*: spanning set of $S$ is $ideal(S)$.
+- *Proposition*: if linear code $C subset.eq FF_q^n$ has $dim(C) = k$, then $|C| = q^k$.

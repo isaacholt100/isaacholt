@@ -392,3 +392,20 @@
     - $F$ is dense in $G$ iff for every $g in G$, there exists sequence $(f_n)$ in $F$ such that $lim_(n -> oo) f_n = g$ in $X$.
     - For $F subset.eq G subset.eq H subset.eq X$, if $F$ dense in $G$ and $G$ dense in $H$, then $F$ dense in $H$.
 - *Proposition*: let $p in [1, oo]$. Then subspace of simple functions in $\(L^p (E), norm(dot.op)_(L^p)\)$ is dense in $\(L^p (E), norm(dot.op)_(L^p)\)$.
+- *Definition*: $psi: RR -> RR$ is *step function* if it can be written as $ psi = sum_(k = 1)^N tilde(a)_k indicator((a_k, b_k)) $ where the intervals $(a_k, b_k)$ are disjoint.
+- *Proposition*: let $[a, b]$ be bounded, $p in [1, oo)$. Then subspace of step functions on $[a, b]$ is dense in $\(L^p ([a, b]), norm(dot.op)_(L^p)\)$.
+- *Definition*: normed linear space $(X, norm(dot.op))$ is *separable* if there exists countable, dense subset $X' subset.eq X$.
+- *Example*: $RR$ is separable, since $QQ$ is countable and dense in $RR$.
+- *Theorem*: let $E subset.eq RR$ measurable, $p in [1, oo)$. Then $\(L^p (E), norm(dot.op)_(L^p)\)$ is separable.
+- *Proposition*: let $epsilon > 0$, $f in L^p (E)$, $p in [1, oo)$. There exists continuous $g in L^p (E)$ such that $norm(f - g)_(L^p) < epsilon$.
+- *Remark*: linear space of continuous functions that vanish outside bounded set is dense in $\(L^p (E), norm(dot.op)_(L^p)\)$ for $p in [1, oo)$.
+- *Remark*: differentiable functions are also dense in $\(L^p (E), norm(dot.op)_(L^p)\)$ for $p in [1, oo)$.
+- *Remark*: step functions and continuous functions are not dense in $\(L^oo (E), norm(dot.op)_(L^oo)\)$.
+- *Example*: in general, $\(L^oo (E), norm(dot.op)_(L^oo)\)$ is not separable. Let $[a, b]$ be bounded, $a != b$. Assume there is countable ${f_n: n in NN}$ which is dense in $\(L^oo ([a, b]), norm(dot.op)_(L^oo)\)$. Then for every $x in [a, b]$, can choose $g(x) in NN$ such that $ norm(indicator([a, x]) - f_(g(x)))_(L^oo) < 1/2 $ Also, $ norm(indicator([a, x_1]) - indicator([a, x_2]))_(L^oo) = cases(1 & quad "if" a <= x_1 < x_2 <= b, 0 & quad "if" x_1 = x_2) $ and $ norm(indicator([a, x_1]) - indicator([a, x_2]))_(L^oo) & <= norm(indicator([a, x_1]) - f_(g(x_1)))_(L^oo) + norm(f_(g(x_1)) - f_(g(x_2)))_(L^oo) + norm(f_(g(x_2)) - indicator([a, x_2]))_(L^oo) \ & < 1 + norm(f_(g(x_1)) - f_(g(x_2)))_(L^oo) $ If $g(x_1) = g(x_2)$ then $norm(indicator([a, x_1]) - indicator([a, x_2]))_(L^oo) = 0$ so $g: [a, b] -> NN$ is injective. But $NN$ is countable and $[a, b]$ is not countable: contradiction.
+
+== Riesz representation theorem for $L^p (E)$, $p in [1, oo)$
+
+- *Definition*: let $X$ be linear space. $T: X -> RR$ is *linear functional* if $ forall f, g in X, forall a, b in RR, quad T(a f + b g) = a T(f) + b T(g) $ Any linear combination of linear functionals is linear, so set of linear functionals on linear space is also linear space.
+- *Definition*: let $(X, norm(dot.op))$ be normed linear space. $T: X -> RR$ is *bounded functional* if $ exists M >= 0: forall f in X, quad |T(f)| <= M norm(f) $ *Norm* of $T$, $norm(T)_*$, is the smallest such $M$.
+- *Remark*: for bounded linear functional $T$ on normed linear space $(X, norm(dot.op))$, $ |T(f) - T(g)| <= norm(T)_* norm(f - g) $ This gives the following continuity property: if $f_n -> f in X$, then $T(f_n) -> T(f)$.
+- *Example*: let $E subset.eq RR$ measurable, $p in [1, oo)$, $q$ conjugate to $p$. Let $h in L^q (E)$. Define $T: L^p (E) -> RR$ by $ T(f) = integral_E h dot.op f $ By Holder's inequality, $ |T(f)| = abs(integral_E h f) <= integral_E abs(h f) <= norm(h)_(L^q) norm(f)_(L^p) $ So $T$ is bounded linear functional.

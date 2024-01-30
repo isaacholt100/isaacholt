@@ -288,7 +288,7 @@ $ We have $hat(U)_H ket(0) = ket(+)$, $hat(U)_H ket(1) = ket(-)$.
     - Drawback is that $K$ might be very long, and must be transmitted securely prior to communication.
 - *Definition*: *BB84* protocol for transmitting secret key is as follows:
     - Alice chooses random bit $x in {0, 1}$ with equal probability, makes random choice of $X$ or $Z$ with equal probability, then prepares qubit state according to the outcome: $ (0, Z) |-> ket(0), quad (1, Z) |-> ket(1), quad (0, X) |-> ket(+), quad (1, X) |-> ket(-) $ and sends this qubit to Bob using quantum communication.
-    - Bob randomly chooses $X$ or $Z$ with equal probability, then measures qubit with this measurement operator.
+    - Bob randomly chooses $X$ or $Z$ with equal probability, then measures qubit with measurement operator $1/2 (I - sigma_X)$ or $1/2 (I - sigma_Z)$.
     - This process is repeated enough to generate a sufficiently long key.
     - Alice and Bob publicly reveal their choices of $X$ or $Z$ for each qubit (must be after Bob receives the qubit), discarding all qubits for which same choice was not made. When same choice is made for qubit, Alice's choice of qubit will match with Bob's measurement.
 - *Security of BB84*:
@@ -444,3 +444,40 @@ $
     - *NP-complete* is complexity class of problems which are NP-hard, e.g. travelling salesman.
     - *PP* is class of algorithms which require time at most polynomial in $n$ to return correct answer with probability $> 1\/2$.
     - *BPP* is class of algorithms which require time at most polynomial in $n$ to return correct answer with probability $> c > 1\/2$. $"P" subset.eq "BPP"$.
+
+= Quantum circuits
+
+- *Definition*: a *qubit* is a quantum system whose Hilbert space $H_1$ is $2$-dimensional, with basis ${ket(0), ket(1)}$. An $n$-qubit system has $2^n$-dimensional Hilbert space $H_n = H_1 tp dots.h.c tp H_1$. The *computational basis* for $H_n$ is $ {ket(0), ..., ket(2^n - 1)} $ where $ket(k) = ket((k_(n - 1)...k_0)_2)$ corresponds to $ket(k_(n - 1)) tp dots.h.c tp ket(k_0)$.
+- *Definition*: *quantum gate* is unitary map from $H_n$ to $H_n$.
+- *Notation*: let $X, Y, Z$ denote Pauli matrices $sigma_1, sigma_2, sigma_3$ respectively.
+- *Notation*: a unitary $U: H_1 -> H_1$ is denoted
+#quantum-circuit(
+    1, gate($U$), 1
+)
+- *Definition*: define the gates $ S := mat(1, 0; 0, i), quad T := mat(1, 0; 0, e^(i pi\/4)), quad H := 1/sqrt(2) mat(1, 1; 1, -1) $ where $H$ is *Hadamard gate*. $S^2 = Z$, $T^2 = S$, $H^2 = I$. $H ket(0) = ket(+)$, $H ket(1) = ket(-)$.
+- *Example*: Hadamard gate is useful when constructing uniform superpositions of all basis states: $ (H ket(0)) tp (H ket(0)) = 1/2 (ket(00) + ket(01) + ket(10) + ket(11)) $ and in general, $ (H ket(0)) tp dots.h.c tp (H ket(0)) = 1/(2^(n\/2)) sum_(k = 0)^(2^n - 1) ket(k) $
+- *Definition*: *#CNOT* gate is $mat(I, 0; 0, X)$. Most significant bit is control bit, least significant bit is target bit.
+#figure(quantum-circuit(
+    1, ctrl(1), 1, [\ ],
+    1, targ(), 1
+))
+- *Definition*: *controlled-$U$* gate, $C$-$U$ maps $ket(0) tp ket(psi) = ket(0) tp ket(psi)$ and $ket(1) tp ket(psi) = ket(1) tp (U ket(psi))$.
+#figure(quantum-circuit(
+    1, ctrl(1), 1, [\ ],
+    1, gate($U$), 1
+))
+- *Definition*: *CCNOT (Toffoli) gate* is $ mat(I, 0, 0, 0; 0, I, 0, 0; 0, 0, I, 0; 0, 0, 0, X) $
+#figure(quantum-circuit(
+    1, ctrl(1), 1, [\ ],
+    1, ctrl(1), 1, [\ ],
+    1, targ(), 1
+))
+Note: Toffoli gate maps computational basis elements to computational basis elements, and computational basis elements are orthonormal.
+- *Notation*: measurement and classical bits are shown as e.g.
+#figure(quantum-circuit(
+    1, meter(), setwire(2), 1, rstick($001$)
+))
+
+== Universal quantum computation
+
+- *Proposition*: every $N times N$ unitary can be written in terms of $U_(i j)$: unitaries acting on $(i, i)$, $(i, j)$, $(j, i)$ and $(j, j)$ entries only. 
