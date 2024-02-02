@@ -390,17 +390,19 @@
 == Cyclic extensions of degree $2$
 
 - *Definition*: $L\/K$ is *cyclic of degree 2* if it is Galois and $Gal(L\/K) tilde.equiv ZZ\/2$.
-- *Example*: let $L\/K$ cyclic of degree $2$, so $Gal(L\/K) = {e, tau}$, $tau^2 = e$. Let $theta in L - K$, then $tau(theta) != theta$ (as otherwise $theta in L^ideal(tau) = K$). Let $theta_1 = tau(theta) - theta$, so $tau(theta_1) = tau^2 (theta) - tau(theta) = -theta_1$. If $char(K) != 2$, then $theta_1 != -theta_1$ and $theta_1 in.not K$, $L = K(theta_1)$. $theta_1$ is "better" than $theta$, since $tau(theta_1) = -theta_1$. Now if $a = theta_1^2$, then $tau(a) = a$, so $L = K\(sqrt(a)\)$.
+- *Example*: let $L\/K$ cyclic of degree $2$, so $Gal(L\/K) = {e, tau}$, $tau^2 = e$. Let $theta in L - K$, then $tau(theta) != theta$ (as otherwise $theta in L^ideal(tau) = K$). Let $theta_1 = tau(theta) - theta$, so $tau(theta_1) = tau^2 (theta) - tau(theta) = -theta_1$. If $char(K) != 2$, then $theta_1 != -theta_1$ and so $theta_1 in.not K$, $L = K(theta_1)$. $theta_1$ is "better" than $theta$, since $tau(theta_1) = -theta_1$. Now if $a = theta_1^2$, then $tau(a) = a$, so $L = K\(sqrt(a)\)$.
 - *Theorem*: if $char(K) != 2$ and $L\/K$ is cyclic quadratic extension, then $ exists a in K^times - K^times^2: quad L = K\(sqrt(a)\) $
 - *Definition*: $a_1, ..., a_n$ are *independent modulo $K^times^2$ (independent modulo squares)* if $ a_1^(epsilon_1) dots.h.c a_n^(epsilon_n) in K^times^2 <==> "all" epsilon_i "are even" $
 - *Proposition*: if $char(K) != 2$:
     - $K\(sqrt(a_1)\) = K\(sqrt(a_2)\) <==> a_1 equiv a_2 mod K^times^2$, i.e. $a_1 = a_2 dot.op b^2$, $b in K^times$.
     - If $a_1, ..., a_n in K^times$ are independent modulo $K^times^2$ then $K\(sqrt(a_1), ..., sqrt(a_n)\)$ has degree $2^n$ over $K$ with Galois group $tilde.equiv (ZZ\/2)^n$.
     - If $L\/K$ Galois with Galois group $(ZZ\/2)^n$, then $ exists a_1, ..., a_n in K^times: quad L = K\(sqrt(a_1), ..., sqrt(a_n)\) $
-- *Remark*: let $char(K) = 2$, then $forall a in K^times$, $L = K\(sqrt(a)\)$ is normal but not separable.
+- *Remark*: let $char(K) = 2$, then $forall a in K^times$, $L = K\(sqrt(a)\)$ is normal but not separable (since minimal polynomial of e.g. $sqrt(a)$ is $x^2 - a = (x + sqrt(a))(x - sqrt(a)) = (x - sqrt(a))^2$ so has repeated roots).
 
 == Cyclic extensions of degree $n$ (the Kummer theory)
 
 - *Definition*: $L\/K$ is *cyclic of degree $n$* if it is Galois and $Gal(L\/K)$ is cyclic of order $n$.
 - *Theorem*: if $K$ contains primitive $n$-th root of unity and for all divisors $d > 1$ of $n$, $a in K^times$ is not $d$-th power in $K$, then $L = K\(root(n, a)\)$ is cyclic extension of $K$ of degree $n$. In particular, $x^n - a in K[x]$ is irreducible.
-- *Remark*: for $n = 2$, $-1 in K^times$ is $2$-nd primitive root of unity iff $char(K) != 2$. So this theorem generalises the previous one.
+- *Proposition*: if $zeta_p in K$, $a in K^times - K^times^p$, then $K(root(p, a))\/K$ is cyclic of degree $p$. In particular, $x^p - a in K[x]$ is irreducible.
+- *Theorem*: let $K$ contain $n$-th primitive root of unity, $L\/K$ is cyclic extension of degree $n$. Then $ exists a in K^times: L = K\(root(n, a)\) $
+- *Artin's lemma*: there exists $b_0 in L$ such that $theta_(b_0) != 0$, where $ theta_(b_0) = b_0 + zeta_n^(-1) b_1 + dots.h.c + zeta_n^(-(n - 1)) b_(n - 1) $ is *Lagrange resolvent* for $b_0$, and $b_i := tau^i (b_0)$.

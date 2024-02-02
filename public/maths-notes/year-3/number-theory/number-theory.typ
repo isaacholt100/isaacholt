@@ -258,3 +258,20 @@ $
     - If $5 | |R\/S|$, then $|a|, |b|, |c| in {0, 1, 2}$. Then $tr_(K\/QQ)(alpha\/5) = 3a\/5 in ZZ$ so $5 | a$ so $a = 0$. $theta alpha = c + (b theta^2)\/5 in cal(O)_K$ so $(b theta^2)\/5 in cal(O)_K$ so $ N_K ((b theta^2)\/5) = (N_K (b) N_K (theta)^2)/(N_K (5)) = b^3 / 5 in ZZ $ so $5 | b$, so $b = 0$. Finally, $ N_K (alpha/5) = N_K ((c theta^2)/5) = (c^3 (-5)^2)/5^3 = c^3/5 in ZZ ==> c = 0 $ Contradiction.
     - If $3 | |R\/S|$, then $|a|, |b|, |c| in {0, 1}$ and can assume $a >= 0$ (by possibly multiplying by $-1$). Then $ N_K ((a + b theta + c theta^2) / 3) in ZZ ==> a^3 + 5b^3 + 25c^3 - 15a b c equiv 0 (mod 3^3) $ If $a = 0$, then $5b^3 + 25c^3 equiv 2b + c equiv 0 (mod 3)$ (as $b, c in {0, 1, -1}$), so if $b = 0$, then $c equiv 0 (mod 3) ==> c = 0$: contradiction. So $b = 1$ (by possibly multiplying by $-1$) hence $c = 1$. But then $ N_K (alpha\/3) = N_K ((theta + theta^2)/3) = (N_K (theta) N_K (1 + theta))/3^3 = (5 dot.op 6)/27 in.not ZZ $ Contradiction. If $a = 1$, then $ 1 + 5b^3 + 25c^3 equiv 1 + 2b + c equiv 0 (mod 3) $ which also leads to a contradiction.
     - So $5 divides.not |R\/S|$, $3 divides.not |R\/S|$, so $|R\/S| = 1$, so $ZZ[theta] = cal(O)_K$.
+
+= Unique factorisation of ideals
+
+- *Definition*: *product* of ideals $I, J subset.eq R$ is $ I J := {sum_(i = 1)^k x_i y_i: k in NN, x_i in I, y_i in J} $ If $I = ideal(a_1, ..., a_m)$, $J = (b_1, ..., b_n)$ then $ I J = ideal(a_i b_j | i in [m], j in [n]) $
+- *Definition*: $I$ *divides* $J$, $I | J$, if there is ideal $K$ such that that $I K = J$.
+- *Note*: _to divide is to contain_: $I | J ==> J subset.eq I$.
+- *Example*: let $R = ZZ\[sqrt(-6)\]$, $I = ideal(5, 1 + 3 sqrt(-6))$, $J = (5, 1 - 3 sqrt(-6))$, then $ I J = ideal(25, 5\(1 + 3 sqrt(-6)\), 5\(1 - 3 sqrt(-6)\), 55) subset.eq ideal(5) $ But also $5 = 55 - 2 dot.op 25 in I$, $ideal(5) subset.eq I J$, so $I J = ideal(5)$.
+- *Lemma*: let $I, J$ ideals, $P$ prime ideal. Then $ I J subset.eq P <==> (I subset.eq P or J subset.eq P) $
+- *Example*: $ideal(5, 1 + 3 sqrt(-6)) subset ZZ\[sqrt(-6)\]$ is prime: define $phi: ZZ\[sqrt(-6)\] -> FF_5$, $phi\(a + b sqrt(-6)\) = a - 2b$. $phi$ is surjective homomorphism. Also, $5, 1 + 3 sqrt(-6) in ker(phi)$, and $ a + b sqrt(-6) in ker(phi) & ==> b equiv 3a mod 5 \ & ==> \(a + b sqrt(-6)\) - a\(1 + 3 sqrt(-6)\) = (b - 3a) sqrt(-6) in ideal(5) $ so $ker(phi) = \(5, 1 + 3 sqrt(-6)\)$. So by first isomorphism theorem, $R\/ideal(5, 1 + sqrt(-6)) tilde.equiv FF_5$ which is field, so $ideal(5, 3 + sqrt(-6))$ is maximal, so prime.
+- *Definition*: let $K$ number field, $R = cal(O)_K$. *Fractional ideal* of $R$ is subset of $K$ of the form $ lambda I = {lambda x: x in I} $ where $ideal(0) != I subset.eq R$ and $lambda in K^times$. If $I = R$, $lambda I$ is *principal fractional ideal*. Set of fractional ideals in $R$ is denoted $cal(I)(R)$, set of principal fractional ideals is dented $cal(P)(R)$.
+- *Example*:
+    - $n/m ZZ$ is fractional ideal in $QQ$ for all $m, n in ZZ - {0}$.
+    - Every non-zero ideal is fractional ideal (take $lambda = 1$).
+    - If $lambda I$ is fractional ideal, then $lambda^(-1) lambda I = I$ is ideal.
+- *Definition*: a fractional ideal $A$ is *invertible* if there is fractional ideal $B$ such that $A B = cal(O)_K$. $B$ is the *inverse* of $A$. The invertible fractional ideals form a group.
+- *Example*: in $ZZ\[sqrt(-6)\] = cal(O)_K$, $ideal(5, 1 + 3 sqrt(-6)) ideal(5, 1 - 3 sqrt(-6)) = ideal(5)$ so $ ideal(5, 1 + 3 sqrt(-6)) dot.op 1/5 ideal(5, 1 - 3 sqrt(-6)) = cal(O)_K $ so inverse of $ideal(5, 1 + 3 sqrt(-6))$ is $1/5 ideal(5, 1 - 3 sqrt(-6))$.
+- *Definition*: the *class group* of $K$ is the quotient group $F\/P$ where $F$ is abelian group of fractional ideals of $K$, $P$ is subgroup of principal fractional ideals of $K$.

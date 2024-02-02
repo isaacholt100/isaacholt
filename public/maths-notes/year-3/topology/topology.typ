@@ -489,4 +489,54 @@
     - $S^2$ with $g$ handles added is homeomorphic to $M_g$.
     - $M_n$ with handle added is homeomorphic to $M_(n + 1)$.
 - *Definition*: *attaching a cross cap (Mobius band)* to surface $S$ is as follows: remove open disc from $S$, and identify resulting boundary circle with boundary circle of Mobius band. Attaching a cross-cap always makes the surface non-orientable.
-- *Example*: adding cross-cap to $S^2$ gives real projective plane $PP$.
+- *Example*: adding cross-cap to $S^2$ gives real projective plane $PP$.\
+
+= Homotopy and the fundamental group
+
+== Homotopy
+
+- *Definition*: let $X, Y$ topological spaces. *Homotopy* between $f$ and $g$ is map $H: X times [0, 1] -> Y$ with $ forall x in X, quad H(x, 0) = f(x) and H(x, 1) = g(x) $ $f$ and $g$ are *homotopic*, $f tilde.eq g$, if there is a homotopy between them. We can think of homotopy as "path of maps" starting at $f: X -> Y$ and ending at $g: X -> Y$: for $t in [0, 1]$, define $h_t: X -> Y$, $h_t (x) = H(x, t)$, which varies continuously from $f$ at $t = 0$ to $g$ at $t = 1$.
+- *Example*: let $f, g: RR -> RR$ maps, then $ H: RR times [0, 1] -> RR, quad (x, t) |-> (1 - t) f(x) + t g(x) $ is homotopy between $f$ and $g$.
+
+
+#import "@preview/cetz:0.2.0": canvas, plot
+
+#let f(x) = (x - 2) * (x - 1) * (x + 3)
+#let g(x) = -(x + 3) * (x - 0.5) * (x - 2.5) + 10
+
+#canvas(length: 1cm, {
+    plot.plot(
+        axis-style: "school-book",
+        size: (12, 6),
+        x-tick-step: none,
+        // x-ticks: ((-2, $-2$), (4, $4$)),
+        y-tick-step: none,
+        // y-ticks: ((2, $2$), (-4, $-4$)),
+        {plot.add(
+            style: (stroke: red + 2pt),
+            domain: (-3, 3), x => f(x),
+            // mark: "o",
+            label: $ f(x) $
+        )
+        plot.add(
+            style: (stroke: blue + 2pt),
+            domain: (-3, 3), x => g(x),
+            label: $ g(x) $
+        )
+        plot.add(
+            style: (stroke: color.mix((red, 30%), (blue, 70%)) + 2pt),
+            domain: (-3, 3), x => f(x) * (1 - 0.7) + g(x) * 0.7,
+            label: $ 0.3 f(x) + 0.7 g(x) $
+        )
+        plot.add(
+            style: (stroke: color.mix((red, 80%), (blue, 20%)) + 2pt),
+            domain: (-3, 3), x => f(x) * (1 - 0.2) + g(x) * 0.2,
+            label: $ 0.8 f(x) + 0.2 g(x) $
+        )}
+    )
+})
+- *Lemma*: Homotopy is equivalence relation between maps.
+- *Definition*: map $f: X -> Y$ is *null homotopic* if it is homotopic to a constant map, i.e. to map $c: X -> Y$ with $c(x) = y_0$, $y_0 in Y$ fixed.
+- *Example*: identity map $id_(D^2): D^2 -> D^2$ is null homotopic: let $c: D^2 -> D^2$, $c(x) = 0$. Consider $H: D^2 times [0, 1] -> D^2$, $H(x, t) = (1 - t)x$, then $H$ is homotopy between $id_(D^2)$ and $c$, since $H$ is continuous and $H(x, 0) = x = id_(D^2)(x)$, $H(x, 1) = 0 = c(x)$.
+- *Definition*: map $f: X -> Y$ is *homotopy equivalence* if there exists a map $g: Y -> X$ (a *homotopy inverse*) such that $g compose f tilde.eq id_X$ and $f compose g tilde.eq id_Y$. $X$ and $Y$ are *homotopy equivalent*, $X tilde.eq Y$ if there exists homotopy equivalence between them. If $X tilde.eq Y$, we say they have the same *homotopy type*.
+- *Theorem*: homotopy equivalence is equivalence relation on topological spaces.
