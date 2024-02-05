@@ -535,8 +535,27 @@
         )}
     )
 })
+- *Example*: consider $S^1 subset CC$, so $S^1 = {e^(i pi s): s in [0, 2)}$. Let $a: S^1 -> S^1$ be the *antipodal map*, $a(e^(i pi s)) = e^(-i pi s)$. Then $a tilde.eq id$, with homotopy given by $H: S^1 times I -> S^1$, $H(e^(i pi s)) = e^(i pi (s + t))$.
 - *Lemma*: Homotopy is equivalence relation between maps.
 - *Definition*: map $f: X -> Y$ is *null homotopic* if it is homotopic to a constant map, i.e. to map $c: X -> Y$ with $c(x) = y_0$, $y_0 in Y$ fixed.
 - *Example*: identity map $id_(D^2): D^2 -> D^2$ is null homotopic: let $c: D^2 -> D^2$, $c(x) = 0$. Consider $H: D^2 times [0, 1] -> D^2$, $H(x, t) = (1 - t)x$, then $H$ is homotopy between $id_(D^2)$ and $c$, since $H$ is continuous and $H(x, 0) = x = id_(D^2)(x)$, $H(x, 1) = 0 = c(x)$.
 - *Definition*: map $f: X -> Y$ is *homotopy equivalence* if there exists a map $g: Y -> X$ (a *homotopy inverse*) such that $g compose f tilde.eq id_X$ and $f compose g tilde.eq id_Y$. $X$ and $Y$ are *homotopy equivalent*, $X tilde.eq Y$ if there exists homotopy equivalence between them. If $X tilde.eq Y$, we say they have the same *homotopy type*.
 - *Theorem*: homotopy equivalence is equivalence relation on topological spaces.
+- *Example*: let $P = {vd(p)}$ be the one point space, then $D^2 tilde.eq P$: let $f: D^2 -> P$, $f(x) = vd(p)$, $g: P -> D^2$, $g(vd(p)) = 0$. Then $f compose g = id_P tilde.eq id_P$. Now $forall x in D^2$, $(g compose f) (x) = 0$ so $g compose f tilde.eq id_(D^2)$ as $g compose g$ is constant map.
+- *Definition*: topological space $X$ is *contractible* if it is homotopy equivalent to a one-point space.
+- *Example*: let $X$ topological space. The *cone on $X$* is $ C X = (X times [0, 1])\/tilde $ where $tilde$ identifies all points of the form $(x, 0)$ with each other, i.e. it collapses the end $X times {0}$ to a single point. We have $D^n tilde.equiv C S^(n - 1)$.
+- *Exercise*: show that for all topological spaces $X$, the cone $C X$ is contractible.
+- *Lemma*: every contractible space is path connected.
+- *Lemma*: if $X$ and $Y$ are homeomorphic, they are homotopy equivalent (converse does not hold).
+- *Definition*:
+    - It is useful to assume that every topological space $X$ has a particular distinguished *base point* $x_0 in X$.
+    - We then require that all maps and homotopies between spaces map base points to base points.
+    - The pair $(X, x_0)$ is a *based space*.
+    - A *based map* $f: (X, x_0) -> (Y, y_0)$ is a map $X -> Y$ and satisfies $f(x_0) = y_0$.
+    - A *based homotopy* $H: (X, x_0) times [0, 1] -> (Y, y_0)$ between based maps $f, g: (X, x_0) -> (Y, y_0)$ is homotopy $H: X times [0, 1] -> Y$ with $forall t in [0, 1]$, $H(x_0, t) = y_0$.
+    - All results shown for homotopies are true for based homotopies.
+
+== The fundamental group
+
+- *Remark*: we consider circle $S^1$ as unit circle in $CC$ and give it base point $1$.
+- *Definition*: a *loop* in based space $(X, x_0)$ is based map $ lambda: (S^1, 1) -> (X, x_0) $ Equivalently, a loop in $(X, x_0)$ is path in $X$ beginning and ending at $x_0$: $ lambda: [0, 1] -> (X, x_0), quad lambda(0) = lambda(1) = x_0 $

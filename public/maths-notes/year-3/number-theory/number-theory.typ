@@ -264,10 +264,10 @@ $
 - *Definition*: *product* of ideals $I, J subset.eq R$ is $ I J := {sum_(i = 1)^k x_i y_i: k in NN, x_i in I, y_i in J} $ If $I = ideal(a_1, ..., a_m)$, $J = (b_1, ..., b_n)$ then $ I J = ideal(a_i b_j | i in [m], j in [n]) $
 - *Definition*: $I$ *divides* $J$, $I | J$, if there is ideal $K$ such that that $I K = J$.
 - *Note*: _to divide is to contain_: $I | J ==> J subset.eq I$.
-- *Example*: let $R = ZZ\[sqrt(-6)\]$, $I = ideal(5, 1 + 3 sqrt(-6))$, $J = (5, 1 - 3 sqrt(-6))$, then $ I J = ideal(25, 5\(1 + 3 sqrt(-6)\), 5\(1 - 3 sqrt(-6)\), 55) subset.eq ideal(5) $ But also $5 = 55 - 2 dot.op 25 in I$, $ideal(5) subset.eq I J$, so $I J = ideal(5)$.
+- *Example*: let $R = ZZ\[sqrt(-6)\]$, $I = ideal(5, 1 + 3 sqrt(-6))$, $J = ideal(5, 1 - 3 sqrt(-6))$, then $ I J = ideal(25, 5\(1 + 3 sqrt(-6)\), 5\(1 - 3 sqrt(-6)\), 55) subset.eq ideal(5) $ But also $5 = 55 - 2 dot.op 25 in I$, $ideal(5) subset.eq I J$, so $I J = ideal(5)$.
 - *Lemma*: let $I, J$ ideals, $P$ prime ideal. Then $ I J subset.eq P <==> (I subset.eq P or J subset.eq P) $
 - *Example*: $ideal(5, 1 + 3 sqrt(-6)) subset ZZ\[sqrt(-6)\]$ is prime: define $phi: ZZ\[sqrt(-6)\] -> FF_5$, $phi\(a + b sqrt(-6)\) = a - 2b$. $phi$ is surjective homomorphism. Also, $5, 1 + 3 sqrt(-6) in ker(phi)$, and $ a + b sqrt(-6) in ker(phi) & ==> b equiv 3a mod 5 \ & ==> \(a + b sqrt(-6)\) - a\(1 + 3 sqrt(-6)\) = (b - 3a) sqrt(-6) in ideal(5) $ so $ker(phi) = \(5, 1 + 3 sqrt(-6)\)$. So by first isomorphism theorem, $R\/ideal(5, 1 + sqrt(-6)) tilde.equiv FF_5$ which is field, so $ideal(5, 3 + sqrt(-6))$ is maximal, so prime.
-- *Definition*: let $K$ number field, $R = cal(O)_K$. *Fractional ideal* of $R$ is subset of $K$ of the form $ lambda I = {lambda x: x in I} $ where $ideal(0) != I subset.eq R$ and $lambda in K^times$. If $I = R$, $lambda I$ is *principal fractional ideal*. Set of fractional ideals in $R$ is denoted $cal(I)(R)$, set of principal fractional ideals is dented $cal(P)(R)$.
+- *Definition*: let $K$ number field, $R = cal(O)_K$. *Fractional ideal* of $R$ is subset of $K$ of the form $ lambda I = {lambda x: x in I} $ where $ideal(0) != I subset.eq R$ and $lambda in K^times$. If $I = R$, $lambda I$ is *principal fractional ideal*. Set of fractional ideals in $R$ is denoted $cal(I)(R)$, set of principal fractional ideals is denoted $cal(P)(R)$. Multiplication of fractional ideals is defined similarly to that of ideals.
 - *Example*:
     - $n/m ZZ$ is fractional ideal in $QQ$ for all $m, n in ZZ - {0}$.
     - Every non-zero ideal is fractional ideal (take $lambda = 1$).

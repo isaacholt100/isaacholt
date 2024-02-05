@@ -349,3 +349,21 @@
 - *Example*: let $vd(x) = (0, 1, 2, 0)$, $vd(y) = (1, 1, 1, 1)$, $vd(z) = (0, 2, 1, 0) in FF_3^4$. $C_1 = {vd(x), vd(y), vd(0)}$ is not linear code since e.g. $vd(x) + vd(y) = (1, 2, 0, 1) in.not C_1$. $C_2 = {vd(x), vd(z), vd(0)}$ is linear code.
 - *Notation*: spanning set of $S$ is $ideal(S)$.
 - *Proposition*: if linear code $C subset.eq FF_q^n$ has $dim(C) = k$, then $|C| = q^k$.
+- *Definition*: a $q$-ary $[n, k, d]$ code is linear code: a subspace of $FF_q^n$ of dimension $k$ with minimum distance $d$. Note: a $q$-ary $[n, k, d]$ code is a $q$-ary $(n, q^k, d)$ code.
+
+== Weight and minimum distance
+
+- *Definition*: *weight* of $vd(x) in FF_q^n$, $w(vd(x))$, is number of non-zero entries in $vd(x)$: $ w(vd(x)) = |{i in [n]: x_i != 0}| $
+- *Lemma*: $forall vd(x), vd(y) in FF_q^n$, $d(vd(x), vd(y)) = w(vd(x) - vd(y))$. In particular, $w(vd(x)) = d(vd(x), vd(0))$.
+- *Proposition*: let $C subset.eq FF_q^n$ linear code, then $ d(C) = min{w(vd(c)): vd(c) in C, vd(c) != vd(0)} $
+- *Remark*: to find $d(C)$ for linear code with $q^k$ words, only need to consider $q^k$ weights instead of $binom(q^k, 2)$ distances.
+
+= Codes as images
+
+== Generator-matrices
+
+- *Definition*: let $C subset.eq FF_q^n$ be linear code. Let $G in M_(k, n)(FF_q)$, $f_G: FF_q^k -> FF_q^n$ be linear map defined by $f_G (vd(x)) = vd(x) G$. Then $G$ is *generator-matrix* for $C$ if
+    - $C = im(f) = \{vd(x) G: vd(x) in FF_q^k\} subset.eq FF_q^n$.
+    - The rows of $G$ are linearly independent.
+    i.e. $G$ is generator-matrix for $C$ iff rows of $G$ form basis for $C$ (note $vd(x) G = x_1 vd(g_1) + dots.h.c + x_k vd(g_k)$ where $vd(g_i)$ are rows of $G$).
+- *Remark*: given linear code $C = ideal(vd(a)_1, ..., vd(a)_m)$, a generator-matrix can be found for $C$ by constructing the matrix $A$ with rows $vd(a)_i$, then performing elementary row operations to bring $A$ into RREF. Once the $m - k$ bottom zero rows have been removed, the resulting matrix is a generator-matrix.

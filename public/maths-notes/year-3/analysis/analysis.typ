@@ -409,3 +409,10 @@
 - *Definition*: let $(X, norm(dot.op))$ be normed linear space. $T: X -> RR$ is *bounded functional* if $ exists M >= 0: forall f in X, quad |T(f)| <= M norm(f) $ *Norm* of $T$, $norm(T)_*$, is the smallest such $M$.
 - *Remark*: for bounded linear functional $T$ on normed linear space $(X, norm(dot.op))$, $ |T(f) - T(g)| <= norm(T)_* norm(f - g) $ This gives the following continuity property: if $f_n -> f in X$, then $T(f_n) -> T(f)$.
 - *Example*: let $E subset.eq RR$ measurable, $p in [1, oo)$, $q$ conjugate to $p$. Let $h in L^q (E)$. Define $T: L^p (E) -> RR$ by $ T(f) = integral_E h dot.op f $ By Holder's inequality, $ |T(f)| = abs(integral_E h f) <= integral_E abs(h f) <= norm(h)_(L^q) norm(f)_(L^p) $ So $T$ is bounded linear functional.
+- *Remark*: we can write $norm(dot.op)_*$ as $ norm(T)_* := inf{M in RR: forall f in X, |T(f)| <= M norm(f)} = sup{|T(f)|: f in X, norm(f) <= 1} $
+- *Definition*: *dual space* of $X$, $X^*$, is set of bounded linear functionals on $X$ with norm $norm(dot.op)_*$.
+- *Proposition*: let $(X, norm(dot.op))$ be normed linear space, then dual space of $X$ is linear space.
+- *Remark*: bounded linear functional is special case of *bounded linear transformation* between normed spaces. $T: X -> Y$ is bounded linear transformation if $T(a f + b g) = a T(f) + b T(g)$ and $exists M >= 0: norm(T(f))_Y <= M norm(f)_X$.
+- *Proposition*: let $E subset.eq RR$ measurable, $p in [1, oo)$, $q$ conjugate to $p$, $h in L^q (E)$. Define $T: L^p (E) -> RR$ by $ T(f) = integral_E h f $ Then $norm(T)_* = norm(h)_(L^q)$.
+- *Riesz representation theorem for $L^p$*: let $p in [1, oo)$, $q$ conjugate to $p$, $E subset.eq RR$ measurable. For $h in L^q (E)$, define bounded linear functional $R_h: L^p (E) -> RR$ by $ R_h (f) = integral_E h f $ Then for every bounded linear functional $T: L_p (E) -> RR$, there is unique $h in L^q (E)$ such that $ R_h = T quad and quad norm(T)_* = norm(h)_(L^q) $
+- *Theorem*: let $[a, b]$ be non-degenerate, bounded interval, $p in [1, oo)$, $q$ conjugate to $p$. If $T$ is bounded linear functional on $L^p ([a, b])$ then there exists $h in L^q ([a, b])$ such that $ T(f) = integral_a^b h f $ 
