@@ -1,6 +1,12 @@
 #import "../../template.typ": template
 #show: template
 
+#import "@preview/lemmify:0.1.5": *
+
+#let (
+    theorem, lemma, corollary, definition, remark, proposition, example, proof, rules: thm-rules
+) = default-theorems("thm-group", lang: "en")
+
 #let modulo(n) = $thick mod #n$
 #let lmodulo(n) = $quad mod #n$
 #let PAI = $overline(O)$
@@ -367,3 +373,25 @@
     - The rows of $G$ are linearly independent.
     i.e. $G$ is generator-matrix for $C$ iff rows of $G$ form basis for $C$ (note $vd(x) G = x_1 vd(g_1) + dots.h.c + x_k vd(g_k)$ where $vd(g_i)$ are rows of $G$).
 - *Remark*: given linear code $C = ideal(vd(a)_1, ..., vd(a)_m)$, a generator-matrix can be found for $C$ by constructing the matrix $A$ with rows $vd(a)_i$, then performing elementary row operations to bring $A$ into RREF. Once the $m - k$ bottom zero rows have been removed, the resulting matrix is a generator-matrix.
+- *Example*: let $C = ideal({(0, 0, 3, 1, 4), (2, 4, 1, 4, 0), (5, 3, 0, 1, 6)}) subset.eq FF_7^5$. $
+    A = mat(2, 4, 1, 4, 0; 5, 3, 0, 1, 6; 0, 0, 3, 1, 4) limits(->_(A_(12)(1))) mat(2, 4, 1, 4, 0; 0, 0, 1, 5, 6; 0, 0, 3, 1, 4) limits(->_(M_1 (4))) mat(1, 2, 4, 2, 0; 0, 0, 1, 5, 6; 0, 0, 3, 1, 4) limits(->_(A_(21)(3), A_(23)(4))) mat(1, 2, 0, 3, 4; 0, 0, 1, 5, 6; 0, 0, 0, 0, 0)
+$ So $G = mat(1, 2, 0, 3, 4; 0, 0, 1, 5, 6)$ is generator matrix for $C$ and $dim(C) = 2$.
+
+== Encoding and channel decoding
+
+== Equivalence and standard form
+
+- *Definition*: codes $C_1, C_2$ of block length $n$ over alphabet $A$ are *equivalent* if we can transform one to the other by applying sequence of the following two kinds of changes to all codewords:
+    - Permute the $n$ positions.
+    - In a particular position, permuting the $|A| = q$ symbols.
+- *Proposition*: equivalent codes have the same parameters $(n, M, d)$.
+- *Definition*: linear codes $C_1, C_2 subset.eq FF_q^n$ are *monomially equivalent* if we can obtain one from the other by applying sequence of the following two kinds of changes to all codewords:
+    - Permuting the $n$ positions.
+    - In particular position, multiply by $lambda in FF_q^times$.
+    If only the first change is used, the codes are *permutation equivalent*.
+- *Definition*: $P in M_n (FF_q)$ is *permutation matrix* if it has a single $1$ in each row and column, and zeros elsewhere. Any permutation of $n$ positions of row vector in $FF_q^n$ can be described as right multiplication by permutation matrix.
+- *Proposition*: permutation matrices are orthogonal: $P^T = P^(-1)$.
+- *Proposition*: let $C_1, C_2 subset.eq FF_q^n$ linear codes with generator matrices $G_1, G_2$. Then if $G_1 = G_2 P$ for permutation matrix $P$, then $C_1$ and $C_2$ are permutation equivalent.
+- *Definition*: $M in M_m (FF_q)$ is *monomial matrix* if it has exactly one non-zero element in each row and column.
+- *Proposition*: monomial matrix $M$ can always be written as $M = D P$ or $M = P D'$ where $P$ is permutation matrix and $D, D'$ are diagonal matrices. $P$ is *permutation part*, $D$ and $D'$ are *diagonal parts* of $M$.
+- *Proposition*: let $C_1, C_2 subset.eq FF_q^n$ be linear codes with generator-matrices $G_1, G_2$. Then if $G_2 = G_1 M$ for some monomial matrix $M$, then $C_1$ and $C_2$ are monomially equivalent.

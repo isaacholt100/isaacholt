@@ -489,7 +489,8 @@
     - $S^2$ with $g$ handles added is homeomorphic to $M_g$.
     - $M_n$ with handle added is homeomorphic to $M_(n + 1)$.
 - *Definition*: *attaching a cross cap (Mobius band)* to surface $S$ is as follows: remove open disc from $S$, and identify resulting boundary circle with boundary circle of Mobius band. Attaching a cross-cap always makes the surface non-orientable.
-- *Example*: adding cross-cap to $S^2$ gives real projective plane $PP$.\
+- *Example*: adding cross-cap to $S^2$ gives real projective plane $PP$.
+- *Remark*: connected sums of surfaces, surfaces with handles and surfaces with cross caps are always surfaces.
 
 = Homotopy and the fundamental group
 
@@ -541,10 +542,10 @@
 - *Example*: identity map $id_(D^2): D^2 -> D^2$ is null homotopic: let $c: D^2 -> D^2$, $c(x) = 0$. Consider $H: D^2 times [0, 1] -> D^2$, $H(x, t) = (1 - t)x$, then $H$ is homotopy between $id_(D^2)$ and $c$, since $H$ is continuous and $H(x, 0) = x = id_(D^2)(x)$, $H(x, 1) = 0 = c(x)$.
 - *Definition*: map $f: X -> Y$ is *homotopy equivalence* if there exists a map $g: Y -> X$ (a *homotopy inverse*) such that $g compose f tilde.eq id_X$ and $f compose g tilde.eq id_Y$. $X$ and $Y$ are *homotopy equivalent*, $X tilde.eq Y$ if there exists homotopy equivalence between them. If $X tilde.eq Y$, we say they have the same *homotopy type*.
 - *Theorem*: homotopy equivalence is equivalence relation on topological spaces.
-- *Example*: let $P = {vd(p)}$ be the one point space, then $D^2 tilde.eq P$: let $f: D^2 -> P$, $f(x) = vd(p)$, $g: P -> D^2$, $g(vd(p)) = 0$. Then $f compose g = id_P tilde.eq id_P$. Now $forall x in D^2$, $(g compose f) (x) = 0$ so $g compose f tilde.eq id_(D^2)$ as $g compose g$ is constant map.
+- *Example*: let $P = {vd(p)}$ be the one point space, then $D^2 tilde.eq P$: let $f: D^2 -> P$, $f(x) = vd(p)$, $g: P -> D^2$, $g(vd(p)) = 0$. Then $f compose g = id_P tilde.eq id_P$. Now $forall x in D^2$, $(g compose f) (x) = 0$ so $g compose f tilde.eq id_(D^2)$ as $g compose f$ is constant map.
 - *Definition*: topological space $X$ is *contractible* if it is homotopy equivalent to a one-point space.
 - *Example*: let $X$ topological space. The *cone on $X$* is $ C X = (X times [0, 1])\/tilde $ where $tilde$ identifies all points of the form $(x, 0)$ with each other, i.e. it collapses the end $X times {0}$ to a single point. We have $D^n tilde.equiv C S^(n - 1)$.
-- *Exercise*: show that for all topological spaces $X$, the cone $C X$ is contractible.
+- *Proposition*: for all topological spaces $X$, the cone $C X$ is contractible.
 - *Lemma*: every contractible space is path connected.
 - *Lemma*: if $X$ and $Y$ are homeomorphic, they are homotopy equivalent (converse does not hold).
 - *Definition*:

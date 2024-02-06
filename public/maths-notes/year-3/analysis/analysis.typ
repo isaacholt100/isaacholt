@@ -2,6 +2,7 @@
 #show: template
 
 #let indicator(arg) = $bb(1)_arg$
+#let ip(a, b) = $angle.l #a, #b angle.r$
 
 = The real numbers
 
@@ -416,3 +417,26 @@
 - *Proposition*: let $E subset.eq RR$ measurable, $p in [1, oo)$, $q$ conjugate to $p$, $h in L^q (E)$. Define $T: L^p (E) -> RR$ by $ T(f) = integral_E h f $ Then $norm(T)_* = norm(h)_(L^q)$.
 - *Riesz representation theorem for $L^p$*: let $p in [1, oo)$, $q$ conjugate to $p$, $E subset.eq RR$ measurable. For $h in L^q (E)$, define bounded linear functional $R_h: L^p (E) -> RR$ by $ R_h (f) = integral_E h f $ Then for every bounded linear functional $T: L_p (E) -> RR$, there is unique $h in L^q (E)$ such that $ R_h = T quad and quad norm(T)_* = norm(h)_(L^q) $
 - *Theorem*: let $[a, b]$ be non-degenerate, bounded interval, $p in [1, oo)$, $q$ conjugate to $p$. If $T$ is bounded linear functional on $L^p ([a, b])$ then there exists $h in L^q ([a, b])$ such that $ T(f) = integral_a^b h f $ 
+
+= Hilbert spaces
+
+== Inner product spaces
+
+- *Definition*: let $H$ be complex linear space. *Inner product* on $H$ is function $ip(dot.op, dot.op): H times H -> CC$ such that $forall a, b in CC, forall x, y, z in H$,
+    - *Linear in first variable*: $ip(a x + b y, z) = a ip(x, z) + b ip(y, z)$.
+    - *Conjugate symmetric*: $ip(x, y) = overline(ip(y, x))$.
+    - *Positive*: $x != 0 ==> ip(x, x) in (0, oo)$
+    - $ip(x, x) = 0 <==> x = 0$.
+    These imply that $ip(0, x) = 0$ and inner product is conjugate linear in second variable: $ip(z, a x + b y) = overline(a) ip(z, x) + overline(b) ip(z, y)$.
+- *Example*:
+    - $RR^n$ has inner product $ip(x, y) = sum_(i = 1)^n x_i y_i$.
+    - $CC^n$ has inner product $ip(x, y) = sum_(i = 1)^n x_i overline(y_i)$.
+    - Inner product induces metric on $H$: $ d(x, y) = ip(x - y, x - y)^(1\/2) $
+- *Definition*: complex linear space $H$ with inner product $ip(dot.op, dot.op)$ is called *pre-Hilbert space* or *inner product space*.
+- *Definition*: let $H$ inner product space. For $x in H$, define the norm $ norm(x) = sqrt(ip(x, x)) $
+- *Proposition*: $norm(x plus.minus y)^2 = norm(x)^2 plus.minus 2 "Re"(ip(x, y)) + norm(y)^2$.
+- *Theorem (Cauchy-Schwarz inequality)*: let $(H, ip(dot.op, dot.op))$ be pre-Hilbert space. Then $ forall x, y in H, quad |ip(x, y)| <= norm(x) norm(y) $ with equality iff $x$ and $y$ linearly dependent.
+- *Theorem (Parallelogram Identity)*: a normed linear space $X$ is an inner product space with norm derived from the inner product (i.e. $norm(dot.op) = sqrt(ip(dot.op, dot.op))$) iff $ forall x, y in X, quad norm(x + y)^2 + norm(x - y)^2 = 2 norm(x)^2 + 2 norm(y)^2 $
+- *Definition*: let $(X, ip(dot.op, dot.op)_X)$, $(Y, ip(dot.op, dot.op)_Y)$ be inner product spaces.
+    - An inner product on $X times Y$ is $ ip((x_1, y_1), (x_2, y_2))_(X times Y) = ip(x_1, x_2)_X + ip(y_1, y_2)_Y $
+    - The associated norm on $X times Y$ is $ norm((x, y))_(X times Y) = sqrt(ip((x_1, y_1), (x_2, y_2))_(X times Y)) = sqrt(norm(x)_X^2 + norm(y)_Y^2) $

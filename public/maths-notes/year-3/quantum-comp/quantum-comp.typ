@@ -487,3 +487,9 @@ Note: Toffoli gate maps computational basis elements to computational basis elem
 - *Example*: if $i - 1$ and $j - 1$ differ in multiple bits (e.g. $U_(i, j) = U_(3, 6)$, $i - 1 = 2 = (010)_2$, $j - 1 = 5 = (101)_2$), then we use a change of basis to case $2$ or case $1$, then write circuit in new basis, then change basis back.
 - *Definition*: *Gray code* between $(p_(n - 1)...p_0)$ and $(q_(n - 1)...q_0)$ is sequence of single bit flips that maps from $(p_(n - 1)...p_0)$ to $(q_(n - 1)...q_0)$, e.g. Gray code for $111$ and $000$ is $111, 110, 100, 000$.
 - *Remark*: Gray codes are not unique. (For practical reasons, it is easier to preserve order between first and last, and penultimate and last items in the code.)
+- *Lemma*: any single qubit unitary $U$ can be written as $e^(i alpha) A X B X C$ with $A, B, C$ single-qubit ($2 times 2$) unitaries, $A B C = 1$, $alpha in RR$.
+- *Definition*: *BQP (bounded-error quantum polynomial)* refers to unitaries with polynomial growth in resources (i.e. number of CNOT and single-qubit unitary gates) as $n$ (number of qubits) is increased, which solve a decision problem (compute a classical function ${0, 1}^n -> {0, 1}$) with success $p > c$, with $c > 1/2$ a fixed constant (conventionally, $c = 2/3$).
+- *Note*: $"BPP" subset.eq "BQP"$, since any classical computation can be written in terms of CCNOT and CCNOT has fixed quantum cost. A source of randomness is the following circuit:
+#figure(quantum-circuit(
+    lstick(ket(0)), 2, gate($H$), 2, 
+))
