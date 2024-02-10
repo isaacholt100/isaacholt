@@ -381,11 +381,11 @@ $ So $G = mat(1, 2, 0, 3, 4; 0, 0, 1, 5, 6)$ is generator matrix for $C$ and $di
 
 == Equivalence and standard form
 
-- *Definition*: codes $C_1, C_2$ of block length $n$ over alphabet $A$ are *equivalent* if we can transform one to the other by applying sequence of the following two kinds of changes to all codewords:
+- *Definition*: codes $C_1, C_2$ of block length $n$ over alphabet $A$ are *equivalent* if we can transform one to the other by applying sequence of the following two kinds of changes to all the codewords (simultaneously):
     - Permute the $n$ positions.
     - In a particular position, permuting the $|A| = q$ symbols.
 - *Proposition*: equivalent codes have the same parameters $(n, M, d)$.
-- *Definition*: linear codes $C_1, C_2 subset.eq FF_q^n$ are *monomially equivalent* if we can obtain one from the other by applying sequence of the following two kinds of changes to all codewords:
+- *Definition*: linear codes $C_1, C_2 subset.eq FF_q^n$ are *monomially equivalent* if we can obtain one from the other by applying sequence of the following two kinds of changes to all codewords (simultaneously):
     - Permuting the $n$ positions.
     - In particular position, multiply by $lambda in FF_q^times$.
     If only the first change is used, the codes are *permutation equivalent*.
@@ -394,4 +394,35 @@ $ So $G = mat(1, 2, 0, 3, 4; 0, 0, 1, 5, 6)$ is generator matrix for $C$ and $di
 - *Proposition*: let $C_1, C_2 subset.eq FF_q^n$ linear codes with generator matrices $G_1, G_2$. Then if $G_1 = G_2 P$ for permutation matrix $P$, then $C_1$ and $C_2$ are permutation equivalent.
 - *Definition*: $M in M_m (FF_q)$ is *monomial matrix* if it has exactly one non-zero element in each row and column.
 - *Proposition*: monomial matrix $M$ can always be written as $M = D P$ or $M = P D'$ where $P$ is permutation matrix and $D, D'$ are diagonal matrices. $P$ is *permutation part*, $D$ and $D'$ are *diagonal parts* of $M$.
+- *Example*: $ mat(0, 2, 0; 0, 0, 3; 1, 0, 0) = mat(2, 0, 0; 0, 3, 0; 0, 0, 1) mat(0, 1, 0; 0, 0, 1; 1, 0, 0) = mat(0, 1, 0; 0, 0, 1; 1, 0, 0) mat(1, 0, 0; 0, 2, 0; 0, 0, 3) $
 - *Proposition*: let $C_1, C_2 subset.eq FF_q^n$ be linear codes with generator-matrices $G_1, G_2$. Then if $G_2 = G_1 M$ for some monomial matrix $M$, then $C_1$ and $C_2$ are monomially equivalent.
+- *Definition*: let $C subset.eq FF_q^n$ linear code. If $G = (I_k | A)$, with $A in M_(k, n - k)(FF_q)$, is generator-matrix for $C$, then $G$ is in *standard form*.
+- *Note*: not every linear code has generator-matrix in standard form.
+- *Proposition*: every linear code is permutation equivalent to a linear code with generator-matrix in standard form.
+- *Example*: let $C_1 subset.eq FF_7^5$ have generator matrix $G_1 = mat(1, 2, 0, 3, 4; 0, 0, 1, 5, 6)$. Then applying permutation matrix $ P = mat(1, 0, 0, 0, 0; 0, 0, 1, 0, 0; 0, 1, 0, 0, 0; 0, 0, 0, 1, 0; 0, 0, 0, 0, 1) ==> G_1 P = mat(1, 0, 2, 3, 4; 0, 1, 0, 5, 6) = (I_2 | A) $
+
+= Codes as kernels
+
+== Dual codes
+
+- *Definition*: let $C subset.eq FF_q^n$ linear code. *Dual* of $C$ is $ C^perp := {vd(v) in FF_q^n: forall vd(u) in C, vd(v) dot.op vd(u) = 0} $
+- *Proposition*: if $G$ is generator matrix for linear code $C$ then $ C^perp = \{vd(v) in FF_q^n : vd(v) G^T = vd(0)\} = ker(f_(G^T)) $ where $f_(G^T): FF_q^n -> FF_q^k$, $f(x) = x G^T$ is linear map.
+- *Proposition*: let $C subset.eq FF_q^n$ linear code. Then $C^perp$ is also linear code and $dim(C) + dim(C^perp) = n$.
+- *Proposition*: let $C subset.eq FF_q^n$ linear code, then $(C^perp)^perp = C$.
+- *Proposition*: let $C subset.eq FF_q^n$ have generator-matrix in standard form, $G = (I_k | A)$, then $H = (-A^T | I_(n - k))$ is generator-matrix for $C^perp$.
+- *Proposition*: let $G$ be generator matrix of $C subset.eq FF_q^n$, let $P in M_n (FF_q)$ permutation matrix such that $G P = (I_k | A)$ for some $A in M_(k, n - k)(FF_q)$. Then $H = (-A^T | I_(n - k)) P^T$ is generator matrix for $C^perp$.
+- *Algorithm*: to find basis for dual code $C^perp$, given generator matrix $G = (g_(i j)) in M_(k, n)(FF_q)$ for $C$ in RREF:
+    + Let $L = {1 <= j <= n: G "has leading" 1 "in column" j}$.
+    + For each $1 <= j <= n$, $j in.not L$, construct $vd(v)_j$ as follows:
+        + For $m in.not L$, $m$th entry of $vd(j)$ is $1$ if $m = j$ and $0$ otherwise.
+        + Fill in the other entries of $vd(v)_j$ (left to right) as $-g_(1 j), ..., -g_(k j)$.
+    + The $n - k$ vectors $vd(j)$ are basis for $C^perp$.
+- *Example*: let $C subset.eq FF_5^7$ be linear code with generator-matrix $ G = mat(1, 2, 0, 3, 4, 0, 0; 0, 0, 1, 1, 2, 0, 3; 0, 0, 0, 0, 0, 1, 4) $ Then $L = {1, 3, 6}$.
+    - $v_2 = (3, 1, 0, 0, 0, 0, 0)$
+    - $v_4 = (2, 0, 4, 1, 0, 0, 0)$
+    - $v_5 = (1, 0, 3, 0, 1, 0, 0)$
+    - $v_7 = (0, 0, 2, 0, 0, 1, 1)$
+    - So generator matrix for $C^perp$ is $ H = mat(3, 1, 0, 0, 0, 0, 0; 2, 0, 4, 1, 0, 0, 0; 1, 0, 3, 0, 1, 0, 0; 0, 0, 2, 0, 0, 1, 1) $
+
+== Check-matrices
+

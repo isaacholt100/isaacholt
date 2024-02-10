@@ -499,7 +499,6 @@
 - *Definition*: let $X, Y$ topological spaces. *Homotopy* between $f$ and $g$ is map $H: X times [0, 1] -> Y$ with $ forall x in X, quad H(x, 0) = f(x) and H(x, 1) = g(x) $ $f$ and $g$ are *homotopic*, $f tilde.eq g$, if there is a homotopy between them. We can think of homotopy as "path of maps" starting at $f: X -> Y$ and ending at $g: X -> Y$: for $t in [0, 1]$, define $h_t: X -> Y$, $h_t (x) = H(x, t)$, which varies continuously from $f$ at $t = 0$ to $g$ at $t = 1$.
 - *Example*: let $f, g: RR -> RR$ maps, then $ H: RR times [0, 1] -> RR, quad (x, t) |-> (1 - t) f(x) + t g(x) $ is homotopy between $f$ and $g$.
 
-
 #import "@preview/cetz:0.2.0": canvas, plot
 
 #let f(x) = (x - 2) * (x - 1) * (x + 3)
@@ -559,4 +558,141 @@
 == The fundamental group
 
 - *Remark*: we consider circle $S^1$ as unit circle in $CC$ and give it base point $1$.
-- *Definition*: a *loop* in based space $(X, x_0)$ is based map $ lambda: (S^1, 1) -> (X, x_0) $ Equivalently, a loop in $(X, x_0)$ is path in $X$ beginning and ending at $x_0$: $ lambda: [0, 1] -> (X, x_0), quad lambda(0) = lambda(1) = x_0 $
+- *Definition*: a *loop* in based space $(X, x_0)$ is based map $ lambda: (S^1, 1) -> (X, x_0) $ Equivalently, a loop in $(X, x_0)$ is path in $X$ beginning and ending at $x_0$: $ lambda: [0, 1] -> (X, x_0), quad lambda(0) = lambda(1) = x_0 $ Two loops $lambda, mu: [0, 1] -> (X, x_0)$ are homotopic if there exists based homotopy between them, i.e. if there is map $ & H: [0, 1] times [0, 1] -> X, \ forall s in I, quad & H(s, 0) = lambda(s), \ forall s in I, quad & H(s, 1) = mu(s), \ forall t in I, quad & H(0, t) = H(1, t) = x_0 $ This corresponds with $lambda$ being continuously deformed into $mu$.
+- *Remark*: it is useful to represented based homotopy $H$ between $lambda$ and $mu$ on the unit square. Bottom edge corresponds to $lambda$, top edge corresponds to $mu$, right and left edges are mapped entirely to $x_0$. Horizontal line drawn across unit square represents loop in $(X, x_0)$ and homotopy $H$ describes path of loops from $lambda$ to $mu$. Vertical line describes path traced from $lambda(s)$ to $mu(s)$ under $H$.
+#figure(canvas(length: 2cm, {
+    import cetz.draw: *
+    cetz.draw.rect((0, 0), (1, 1), name: "my-rect")
+    set-style(mark: (end: ">"))
+    line((0, 0), (1/2 + 0.1, 0))
+    line((0, 1), (1/2 + 0.1, 1))
+
+    content("my-rect.center", box(fill: white)[$H$], anchor: "center")
+    content("my-rect.west", padding: -1.2em, box(fill: white)[$x_0$], anchor: "west")
+    content("my-rect.east", padding: -1.2em, box(fill: white)[$x_0$], anchor: "east")
+    content("my-rect.north", padding: -1.2em, box(fill: white)[$lambda$], anchor: "north")
+    content("my-rect.south", padding: -1.2em, box(fill: white)[$mu$], anchor: "south")
+}))
+- *Definition*: *homotopy class* of loop $lambda$ in $(X, x_0)$ is $ [lambda] := {mu: mu "loop in" (X, x_0), mu tilde.eq lambda} $ *Fundamental group* of $(X, x_0)$ is set of homotopy classes of loops in $(X, x_0)$: $ pi_1 (X, x_0) := {[lambda]: lambda "loop in" (X, x_0)} $ with group operation $*$ defined by $ *: pi_1 (X, x_0) times pi_1 (X, x_0) & -> p_1 (X, x_0), \ ([lambda_1], [lambda_2]) -> [lambda_1 * lambda_2] $ where *concatenation (product)* of $lambda_1$ and $lambda_2$ is the loop in $(X, x_0)$ given by $ lambda_1 * lambda_2: [0, 1] & -> X, \ s & |-> cases(lambda_1 (2s) & "if" 0 <= s <= 1/2, lambda_2 (2s - 1) & "if" 1/2 <= s <= 1) $ Group identity is $e: [0, 1] -> X$, $e(s) = x_0$, inverse of loop $lambda$ is $overline(lambda): s |-> lambda(1 - s)$, then $[overline(lambda)] = [lambda]^(-1)$ (equivalently, define $[lambda]^(-1) = [lambda compose w]$ where $w: [0, 1] -> [0, 1]$, $w(s) = 1 - s$).
+- *Remark*: group operation $*$ is well defined, since if $lambda_1 tilde.eq mu_1$ by homotopy $H_1$, $lambda_2 tilde.eq mu_2$ by homotopy $H_2$, then $lambda_1 * lambda_2 tilde.eq mu_1 * mu_2$ by homotopy $H$ where $ H(s, t) = cases(H_1 (2s, t) & "if" 0 <= s <= 1/2, H_2 (2s - 1, t) & "if" 1/2 <= s <= 1) $
+#figure(canvas(length: 2cm, {
+    import cetz.draw: *
+    cetz.draw.rect((0, 0), (1, 1), name: "H_1")
+    cetz.draw.rect((2, 0), (3, 1), name: "H_2")
+    cetz.draw.rect((4, 0), (4.5, 1), name: "H")
+    cetz.draw.rect((4.5, 0), (5, 1), name: "I")
+    set-style(mark: (end: ">"))
+    line((0, 0), (1/2 + 0.1, 0))
+    line((0, 1), (1/2 + 0.1, 1))
+    line((2, 0), (2 + 1/2 + 0.1, 0))
+    line((2, 1), (2 + 1/2 + 0.1, 1))
+    line((4, 0), (4 + 1/4 + 0.1, 0))
+    line((4, 1), (4 + 1/4 + 0.1, 1))
+    line((4.5, 0), (4.5 + 1/4 + 0.1, 0))
+    line((4.5, 1), (4.5 + 1/4 + 0.1, 1))
+
+    content("H_1.center", box(fill: white)[$H_1$], anchor: "center")
+    content("H_1.west", padding: -1.2em, box(fill: white)[$x_0$], anchor: "west")
+    content("H_1.east", padding: -1.2em, box(fill: white)[$x_0$], anchor: "east")
+    content("H_1.north", padding: -1.2em, box(fill: white)[$lambda_1$], anchor: "north")
+    content("H_1.south", padding: -1.2em, box(fill: white)[$mu_1$], anchor: "south")
+
+    content("H_2.center", box(fill: white)[$H_2$], anchor: "center")
+    content("H_2.west", padding: -1.2em, box(fill: white)[$x_0$], anchor: "west")
+    content("H_2.east", padding: -1.2em, box(fill: white)[$x_0$], anchor: "east")
+    content("H_2.north", padding: -1.2em, box(fill: white)[$lambda_2$], anchor: "north")
+    content("H_2.south", padding: -1.2em, box(fill: white)[$mu_2$], anchor: "south")
+
+    content("H.center", box(fill: white)[$H_1$], anchor: "center")
+    content("H.west", padding: -1.2em, box(fill: white)[$x_0$], anchor: "west")
+    content("H.north", padding: -1.2em, box(fill: white)[$lambda_1$], anchor: "north")
+    content("H.south", padding: -1.2em, box(fill: white)[$mu_1$], anchor: "south")
+
+    content("I.center", box(fill: white)[$H_2$], anchor: "center")
+    content("I.east", padding: -1.2em, box(fill: white)[$x_0$], anchor: "east")
+    content("I.north", padding: -1.2em, box(fill: white)[$lambda_2$], anchor: "north")
+    content("I.south", padding: -1.2em, box(fill: white)[$mu_2$], anchor: "south")
+}))
+Associativity between $(lambda * mu) * kappa$ and $(lambda * (mu * kappa))$ is shown by homotopy diagram with $(lambda * mu) * kappa$ at bottom and $lambda * (mu * kappa)$ at top. At any intermediate time, path traverses $lambda$ at between 2 and 4 times speed, and correspondingly adjusts speed of $kappa$ to finish path at $t = 1$. $mu$ is traversed at 4 times speed at all times.
+#figure(canvas(length: 3cm, {
+    import cetz.draw: *
+    cetz.draw.rect((0, 0), (1, 1), name: "my-rect")
+    line((1/4, 0), (1/2, 1))
+    line((1/2, 0), (3/4, 1))
+    set-style(mark: (end: ">"))
+    line((0, 0), (1/8 + 0.07, 0), name: "l1")
+    line((0, 1), (1/4 + 0.07, 1), name: "l2")
+    line((1/4, 0), (1/4 + 1/8 + 0.07, 0), name: "l3")
+    line((1/2, 1), (1/2 + 1/8 + 0.07, 1), name: "l4")
+    line((1/2, 0), (1/2 + 1/4 + 0.07, 0), name: "l5")
+    line((3/4, 1), (3/4 + 1/8 + 0.07, 1), name: "l6")
+
+    content("l1.end", padding: 0.4em, box(fill: white)[$lambda$], anchor: "north-east")
+    content("l2.end", padding: 0.4em, box(fill: white)[$lambda$], anchor: "south-east")
+    content("l3.end", padding: 0.4em, box(fill: white)[$mu$], anchor: "north-east")
+    content("l4.end", padding: 0.4em, box(fill: white)[$mu$], anchor: "south-east")
+    content("l5.end", padding: 0.4em, box(fill: white)[$kappa$], anchor: "north-east")
+    content("l6.end", padding: 0.4em, box(fill: white)[$kappa$], anchor: "south-east")
+
+    content("my-rect.west", padding: -1.2em, box(fill: white)[$x_0$], anchor: "west")
+    content("my-rect.east", padding: -1.2em, box(fill: white)[$x_0$], anchor: "east")
+}))
+Can show identity $e(s) = x_0$ satisfies $[lambda] * [e] = [e] * [lambda] = [lambda]$ with diagrams
+#figure(canvas(length: 3cm, {
+    import cetz.draw: *
+    rect((0, 0), (1, 1), name: "el")
+    rect((2, 0), (3, 1), name: "le")
+    line((1/2, 0), (1, 1))
+    line((2 + 1/2, 0), (2, 1))
+    set-style(mark: (end: ">"))
+    line((0, 0), (1/4 + 0.07, 0), name: "l1")
+    line((0, 0), (3/4 + 0.07, 0), name: "l2")
+    line((0, 1), (1/2 + 0.07, 1))
+    line((2, 0), (2 + 1/4 + 0.07, 0), name: "l3")
+    line((2, 0), (2 + 3/4 + 0.07, 0), name: "l4")
+    line((2, 1), (2 + 1/2 + 0.07, 1))
+
+    content("l1.end", padding: 0.4em, box(fill: white)[$lambda$], anchor: "north-east")
+    content("l2.end", padding: 0.4em, box(fill: white)[$e$], anchor: "north-east")
+    content("l3.end", padding: 0.4em, box(fill: white)[$e$], anchor: "north-east")
+    content("l4.end", padding: 0.4em, box(fill: white)[$lambda$], anchor: "north-east")
+
+    content("el.west", padding: -1.2em, box(fill: white)[$x_0$], anchor: "west")
+    content("el.east", padding: -1.2em, box(fill: white)[$x_0$], anchor: "east")
+    content("el.north", padding: -1.2em, box(fill: white)[$lambda$], anchor: "north")
+
+    content("le.west", padding: -1.2em, box(fill: white)[$x_0$], anchor: "west")
+    content("le.east", padding: -1.2em, box(fill: white)[$x_0$], anchor: "east")
+    content("le.north", padding: -1.2em, box(fill: white)[$lambda$], anchor: "north")
+}))
+Can show that $[lambda] * \[overline(lambda)\] = \[overline(lambda)\] * [lambda] = e$ by
+#figure(canvas(length: 3cm, {
+    import cetz.draw: *
+    rect((0, 0), (1, 1), name: "el")
+    rect((2, 0), (3, 1), name: "le")
+    line((1/2, 0), (1, 1))
+    line((1/2, 0), (0, 1))
+    line((2 + 1/2, 0), (2, 1))
+    line((2 + 1/2, 0), (3, 1))
+    set-style(mark: (end: ">"))
+    line((0, 0), (1/4 + 0.07, 0), name: "l1")
+    line((0, 0), (3/4 + 0.07, 0), name: "l2")
+    line((0, 1), (1/2 + 0.07, 1))
+    line((2, 0), (2 + 1/4 + 0.07, 0), name: "l3")
+    line((2, 0), (2 + 3/4 + 0.07, 0), name: "l4")
+    line((2, 1), (2 + 1/2 + 0.07, 1))
+
+    content("l1.end", padding: 0.4em, box(fill: white)[$lambda$], anchor: "north-east")
+    content("l2.end", padding: 0.4em, box(fill: white)[$overline(lambda)$], anchor: "north-east")
+    content("l3.end", padding: 0.4em, box(fill: white)[$overline(lambda)$], anchor: "north-east")
+    content("l4.end", padding: 0.4em, box(fill: white)[$lambda$], anchor: "north-east")
+
+    content("el.west", padding: -1.2em, box(fill: white)[$x_0$], anchor: "west")
+    content("el.east", padding: -1.2em, box(fill: white)[$x_0$], anchor: "east")
+    content("el.north", padding: -1.2em, box(fill: white)[$e$], anchor: "north")
+
+    content("le.west", padding: -1.2em, box(fill: white)[$x_0$], anchor: "west")
+    content("le.east", padding: -1.2em, box(fill: white)[$x_0$], anchor: "east")
+    content("le.north", padding: -1.2em, box(fill: white)[$e$], anchor: "north")
+}))
+where, for the first diagram, a horizontal path at fixed $t$ is given by $ s |-> cases(lambda(2s) & "if" 0 <= s <= (1 - t)/2, lambda(1 - t) & "if" (1 - t)/2 <= s <= (1 + t)/2, overline(lambda)(2s - 1) & "if" (1 + t)/2 <= s <= 1) $

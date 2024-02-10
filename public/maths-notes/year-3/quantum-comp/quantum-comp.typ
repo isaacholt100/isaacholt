@@ -9,9 +9,11 @@
 #let Ket(arg) = $lr(| #h(1pt) arg #h(1pt) angle.r)$
 #let Bra(arg) = $lr(angle.l #h(1pt) arg #h(1pt) |)$
 #let Braket(..args) = $lr(angle.l #h(1pt) #args.pos().join(h(1pt) + "|" + h(1pt)) #h(1pt) angle.r)$
+#let span = $op("span")$
 #let conj(arg) = $arg^*$
 #let expected(arg) = $angle.l arg angle.r$
 #let vd(vector) = $bold(vector)$
+#let nl = [\ ]
 #let End = $"End"$
 #let tp = $times.circle$ // tensor product
 
@@ -484,12 +486,55 @@ Note: Toffoli gate maps computational basis elements to computational basis elem
 - *Example*: for unitary $ U = mat(a, d, g; b, e, h; c, f, j) $ we can find unitaries $U_1, U_2, U_3$ with $U_3 U_2 U_1 U = I$. Choose $U_1$ to have upper left $2 times 2$ block non-trivial and such that $ U_1 U = mat(a', d', g'; 0, e', h'; c', f', j') $ If $b = 0$, set $U_1 = I$. If $b != 0$, set $ U_1 = mat(alpha^*, beta^*, 0; beta, -alpha, 0; 0, 0, 1), quad alpha := a/(|a|^2 + |b|^2), beta = b/sqrt(|a|^2 + |b|^2) ==> beta a - alpha b = 0 $ Then set $ gamma = (a')/sqrt(|a'|^2 + |c'|^2), delta = (c')/sqrt(|a'|^2 + |c'|^2), quad U_2 = mat(gamma^*, 0, delta^*; 0, 1, 0; delta, 0, -gamma) ==> U_2 U_1 U = mat(1, 0, 0; 0, e'', h''; 0, f'', j'') =: U_3^dagger $ If $U in U(N)$ is unitary, then can find $N - 1$ unitaries $U_1, ..., U_(N - 1)$ where $U_i$ is non-trivial in first and $(i + 1)$th row such that $U_(N - 1) dots.h.c U_1 U$ has first row and first column $(1, 0, ..., 0)$ and non-trivial bottom-right $(N - 1) times (N - 1)$ block. So it can be reduced entirely by induction, to $1/2 N (N - 1)$ unitaries.
 - *Remark*: $U$ acts of $n$ qubits so $N = 2^n$, so we need $approx 4^n$ elementary matrices, so complexity is exponential in number of qubits.
 - *Example*: any $4 times 4$ unitary can be written as product of 6 elementary unitaries: $ U = mat(*, *, 0, 0; *, *, 0, 0; 0, 0, 1, 0; 0, 0, 0, 1) mat(*, 0, *, 0; 0, 1, 0, 0; *, 0, *, 0; 0, 0, 0, 1) mat(*, 0, 0, *; 0, 1, 0, 0; 0, 0, 1, 0; *, 0, 0, *) mat(1, 0, 0, 0; 0, *, *, 0; 0, *, *, 0; 0, 0, 0, 1) mat(1, 0, 0, 0; 0, *, 0, *; 0, 0, 1, 0; 0, *, 0, *) mat(1, 0, 0, 0; 0, 1, 0, 0; 0, 0, *, *; 0, 0, *, *) $
-- *Example*: if $i - 1$ and $j - 1$ differ in multiple bits (e.g. $U_(i, j) = U_(3, 6)$, $i - 1 = 2 = (010)_2$, $j - 1 = 5 = (101)_2$), then we use a change of basis to case $2$ or case $1$, then write circuit in new basis, then change basis back.
-- *Definition*: *Gray code* between $(p_(n - 1)...p_0)$ and $(q_(n - 1)...q_0)$ is sequence of single bit flips that maps from $(p_(n - 1)...p_0)$ to $(q_(n - 1)...q_0)$, e.g. Gray code for $111$ and $000$ is $111, 110, 100, 000$.
-- *Remark*: Gray codes are not unique. (For practical reasons, it is easier to preserve order between first and last, and penultimate and last items in the code.)
-- *Lemma*: any single qubit unitary $U$ can be written as $e^(i alpha) A X B X C$ with $A, B, C$ single-qubit ($2 times 2$) unitaries, $A B C = 1$, $alpha in RR$.
-- *Definition*: *BQP (bounded-error quantum polynomial)* refers to unitaries with polynomial growth in resources (i.e. number of CNOT and single-qubit unitary gates) as $n$ (number of qubits) is increased, which solve a decision problem (compute a classical function ${0, 1}^n -> {0, 1}$) with success $p > c$, with $c > 1/2$ a fixed constant (conventionally, $c = 2/3$).
-- *Note*: $"BPP" subset.eq "BQP"$, since any classical computation can be written in terms of CCNOT and CCNOT has fixed quantum cost. A source of randomness is the following circuit:
+- *Definition*: a *multiply-controlled unitary* is an $N times N$ unitary acting on subspace $"span"{ket(1...10), ket(1...11)}$. It applies a $2 times 2$ unitary to last qubit if all other qubits are $1$ and the identity otherwise.
+- *Example*: unitary acting on subspace $span{ket(1110), ket(1111)}$ is implemented as
 #figure(quantum-circuit(
-    lstick(ket(0)), 2, gate($H$), 2, 
+    lstick($ket(q_3)$), 1, ctrl(1), 2, nl,
+    lstick($ket(q_2)$), 1, ctrl(1), 2, nl,
+    lstick($ket(q_1)$), 1, ctrl(1), 2, nl,
+    lstick($ket(q_0)$), 1, gate($U$), 2, nl,
+))
+- *Example*: if $i - 1$ and $j - 1$ differ in single bit, with all other bits $1$, this is multiply-controlled unitary with that bit as target, e.g. unitary acting on subspace $span{ket(1101), ket(1111)}$ is implemented as
+#figure(quantum-circuit(
+    lstick($ket(q_3)$), 1, ctrl(1), 2, nl,
+    lstick($ket(q_2)$), 1, ctrl(1), 2, nl,
+    lstick($ket(q_1)$), 1, gate($U$), 2, nl,
+    lstick($ket(q_0)$), 1, ctrl(-1), 2, nl,
+))
+- *Example*: if $i - 1$ and $j - 1$ differ in single bit but others are not all $1$, use NOT gates to reverse the control bits which are $0$, e.g. unitary acting on $span{ket(0100), ket(0110)}$ is implemented as
+#figure(quantum-circuit(
+    lstick($ket(q_3)$), 1, gate($X$), ctrl(1), gate($X$), 1, nl,
+    lstick($ket(q_2)$), 2, ctrl(1), 2, nl,
+    lstick($ket(q_1)$), 2, gate($U$), 2, nl,
+    lstick($ket(q_0)$), 1, gate($X$), ctrl(-1), gate($X$), 1, nl,
+))
+- *Definition*: *Gray code* between $(p_(n - 1)...p_0)$ and $(q_(n - 1)...q_0)$ is sequence of single bit flips that maps from $(p_(n - 1)...p_0)$ to $(q_(n - 1)...q_0)$, e.g. a Gray code for $111$ and $000$ is $111, 101, 001, 000$.
+- *Remark*: Gray codes are not unique. (For practical reasons, it is easier to preserve the ordering between first and last, and penultimate and last items in the code.)
+- *Example*: if $i - 1$ and $j - 1$ differ in multiple bits (e.g. $U_(i, j) = U_(8, 1)$, $i - 1 = 7 = (111)_2$, $j - 1 = 1 = (000)_2$), then use a Gray code to flip bits so that all apart from one are the same as $j - 1$. First bit flip $111 -> 101$ is implemented as #CCNOT. Second bit flip $101 -> 001$ is implemented as #CCNOT but if second qubit is $0$ instead of $1$. Then act with $U$ on subspace $span{ket(001), ket(000)}$ (i.e. on third qubit), then "undo" these CCNOT in reverse order:
+#figure(quantum-circuit(
+    lstick($ket(q_2)$), ctrl(1), 1, targ(), 1, gate($X$), ctrl(1), gate($X$), 1, targ(), 1, ctrl(1), 1, nl,
+    lstick($ket(q_1)$), targ(), gate($X$), ctrl(-1), gate($X$), gate($X$), ctrl(1), gate($X$), gate($X$), ctrl(-1), gate($X$), targ(), 1, nl,
+    lstick($ket(q_0)$), ctrl(-1), 1, ctrl(-1), 2, gate($U$), 2, ctrl(-1), 1, ctrl(-1), 1
+))
+- *Example*: we can implement any multiply-controlled unitary with controlled-unitary (single control qubit) and CCNOT gates, by introducing ancillary bits. e.g. to implemented the multiply-controlled unitary acting on $q_0$ if $q_1 = q_2 = q_3 = 1$, use ancillary qubits $ket(a_1)$, $ket(a_2)$ (initially set to $0$):
+#figure(quantum-circuit(
+    lstick($ket(q_3)$), ctrl(1), 3, ctrl(1), 1, nl,
+    lstick($ket(q_2)$), ctrl(2), 3, ctrl(2), 1, nl,
+    lstick($ket(q_1)$), 1, ctrl(1), 1, ctrl(1), 2, nl,
+    lstick($ket(a_2)$), targ(), ctrl(1), 1, ctrl(1), targ(), 1, nl,
+    lstick($ket(a_1)$), 1, targ(), ctrl(1), targ(), 2, nl,
+    lstick($ket(q_0)$), 2, gate($U$), 3
+))
+- *Proposition*: CCNOT can be implemented with $H$ (Hadamard) and $T$ gates (and their Hermitian conjugates).
+- *Lemma*: any single qubit unitary $U$ can be written as $U = e^(i alpha) A X B X C$ with $A, B, C$ single-qubit ($2 times 2$) unitaries, $A B C = 1$, $alpha in RR$. In particular, $U$ can be implemented as
+#figure(quantum-circuit(
+    lstick($ket(q_1)$), 1, ctrl(1), 1, ctrl(1), gate($mat(1, 0; 0, e^(i alpha))$), 1, nl,
+    lstick($ket(q_0)$), gate($C$), targ(), gate($B$), targ(), gate($A$), 1
+))
+- *Corollary*: any unitary can be implemented with single-qubit unitaries and CNOT.
+- *Remark*: number of elementary unitaries $U_i$ needed is $O(2^(2n))$. Gray code requires $O(n)$ $CnNOT(n - 1)$ gates, and representing these multiply-controlled unitaries as controlled-unitaries requires $O(n)$ CCNOT gates, so overall $U$ is represented as $O(n^2 2^(2n))$ operations.
+- *Definition*: *BQP (bounded-error quantum polynomial)* decision problems are those which a unitary operation solves with success $p > c$, with $c > 1/2$ a fixed constant (conventionally, $c = 2/3$), with polynomial growth in resources (i.e. number of CNOT and single-qubit unitary gates) as $n$ (number of qubits) is increased.
+- *Note*: $"BPP" subset.eq "BQP"$, since any classical computation can be written in terms of CCNOT and CCNOT has fixed quantum cost. A source of randomness is the following circuit, giving $0$ and $1$ each with probability $1\/2$:
+#figure(quantum-circuit(
+    lstick(ket(0)), 2, gate($H$), 2, meter(),
 ))

@@ -406,3 +406,25 @@
 - *Proposition*: if $zeta_p in K$, $a in K^times - K^times^p$, then $K(root(p, a))\/K$ is cyclic of degree $p$. In particular, $x^p - a in K[x]$ is irreducible.
 - *Theorem*: let $K$ contain $n$-th primitive root of unity, $L\/K$ is cyclic extension of degree $n$. Then $ exists a in K^times: L = K\(root(n, a)\) $
 - *Artin's lemma*: there exists $b_0 in L$ such that $theta_(b_0) != 0$, where $ theta_(b_0) = b_0 + zeta_n^(-1) b_1 + dots.h.c + zeta_n^(-(n - 1)) b_(n - 1) $ is *Lagrange resolvent* for $b_0$, and $b_i := tau^i (b_0)$.
+
+= Finite fields
+
+== Existence and uniqueness
+
+- *Lemma*: let $K$ finite field, then $K$ is field extension of $FF_p$ for some prime $p$ and $|K| = p^n$ where $n = \[K: FF_p\]$.
+- *Theorem*: let $p$ prime. Then $forall n in NN$, there is field $K$ with $|K| = p^n$.
+- *Theorem*: let $K$ finite field with $|K| = q = p^n$. Then
+    - $forall alpha in K, alpha^q = alpha$.
+    - $x^q - x = product_(alpha in K) (x - alpha)$
+    - $K$ is splitting field of $x^q - x$ over $FF_p$.
+- *Corollary*: if $K_1$, $K_2$ finite fields, $|K_1| = |K_2|$, then $K_1 tilde.equiv K_2$.
+- *Definition*: let $q = p^n$, then $FF_q$ is the unique (up to isomorphism) field containing $q$ elements.
+- *Definition*: for $q = p^n$, the *Frobenius automorphism* is $ sigma: FF_q -> FF_q, quad sigma(alpha) = alpha^p $ which is an $FF_p$-automorphism by Fermat's little theorem.
+- *Theorem*: let $q = p^n$, $p$ prime.
+    - $FF_q \/ FF_p$ is Galois of degree $n$.
+    - Frobenius automorphism generates $Gal(FF_q \/ FF_p)$ and there is group isomorphism $ Gal(FF_q \/ FF_p) <-> ZZ\/n, quad sigma <--> 1 mod n $
+
+== Counting irreducible polynomials over finite fields
+
+- *Notation*: let $"Irr"_(FF_p) (m)$ denote sert of all irreducible polynomials in $FF_p [x]$ of degree $N$. Let $N_p (m) = |"Irr"_(FF_p)(m)|$.
+- *Theorem*: let $q = p^m$, then $m N_p (m) = |\{alpha in FF_q: FF_p (alpha) = FF_q\}|$.

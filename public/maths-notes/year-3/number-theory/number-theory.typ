@@ -275,3 +275,29 @@ $
 - *Definition*: a fractional ideal $A$ is *invertible* if there is fractional ideal $B$ such that $A B = cal(O)_K$. $B$ is the *inverse* of $A$. The invertible fractional ideals form a group.
 - *Example*: in $ZZ\[sqrt(-6)\] = cal(O)_K$, $ideal(5, 1 + 3 sqrt(-6)) ideal(5, 1 - 3 sqrt(-6)) = ideal(5)$ so $ ideal(5, 1 + 3 sqrt(-6)) dot.op 1/5 ideal(5, 1 - 3 sqrt(-6)) = cal(O)_K $ so inverse of $ideal(5, 1 + 3 sqrt(-6))$ is $1/5 ideal(5, 1 - 3 sqrt(-6))$.
 - *Definition*: the *class group* of $K$ is the quotient group $F\/P$ where $F$ is abelian group of fractional ideals of $K$, $P$ is subgroup of principal fractional ideals of $K$.
+
+== The norm of an ideal
+
+- *Defintition*: let $ideal(0) != I$ ideal of $cal(O)_K$. *Norm* of $I$ is $ N(I) := |cal(O)_K\/I| $ We have $N(I) in NN$, $N(R) = 1$, $N(I) in I$, $N(ideal(alpha)) = |N_K (alpha)|$, and $I subset.neq J ==> N(I) > N(J)$ (in fact, $N(I) = N(J) |J\/I|$).
+- *Proposition*: every non-zero prime ideal in $cal(O)_K$ is maximal.
+- *Lemma*: every nonzero ideal in $cal(O)_K$ contains product of one or more non-zero prime ideals.
+
+== Ideals are invertible
+
+- *Theorem*: every non-zero prime ideal in $cal(O)_K$ is invertible.
+- *Lemma*: if $lambda I$ is fractional ideal and $lambda I subset.eq cal(O)_K$, then $lambda I$ is ideal in $cal(O)_K$.
+- *Lemma*: let $J subset.eq I$ ideals in $cal(O)_K$ with $I$ invertible. Then
+    - $I^(-1) J$ is ideal in $cal(O)_K$ and so $I | J$.
+    - $J subset.eq I^(-1) J$ with equality iff $I = R$.
+- *Theorem*: let $I subset.neq cal(O)_K$ be non-zero ideal. Then $I$ is unique (up to reordering) product of prime ideals.
+- *Example*: in $ZZ\[sqrt(-6)\]$, $\(1 + 3 sqrt(-6)\) \(1 - 3 sqrt(-6)\) = 55 = 5 dot.op 11$. $P_5 = ideal(5, 1 + 3 sqrt(-6))$ and $overline(P_5) = ideal(5, 1 - 3 sqrt(-6))$ are prime, as are $P_11 = ideal(11, 1 + 3 sqrt(-6))$ and $overline(P_11) = ideal(11, 1 - sqrt(-6))$. $P_5 overline(P_5) = ideal(5)$, $P_11 overline(P_11) = ideal(11)$, $P_5 P_11 = ideal(1 + 3 sqrt(-6))$, $overline(P_5) thick overline(P_11) = ideal(1 - 3 sqrt(-6))$ so $ \(P_5 P_11\) \(overline(P_5) thick overline(P_11)\) = \(P_5 overline(P_5)\) \(P_11 overline(P_11)\) $
+- *Corollary*: let $R = cal(O)_K$.
+    - Every fractional ideal (and hence every nonzero ideal) in $R$ is invertible.
+    - $cal(I)(R)$ is abelian group under multiplication, with identity element $R$.
+- *Corollary (to divide is to contain and to contain is to divide)*: $I | J <==> J subset.eq I$.
+
+= Splitting of primes and the Kummer-Dedekind theorem
+
+== Properties of the ideal norm
+
+- *Lemma*: ideal norm is multiplicative: for any non-zero ideals $I$, $J$ in $cal(O)_K$, $ N(I J) = N(I) N(J) $
