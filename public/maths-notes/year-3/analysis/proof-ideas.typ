@@ -1,0 +1,29 @@
+#let ip(x, y) = $angle.l #x, #y angle.r$
+
+- *Theorem 2.9*: use $|ip(x_n, y_n) - ip(x, y)| = |ip(x_n - x, y_n) + ip(x, y_n) - ip(x, y_n) + ip(x, y_n - y)|$ and Cauchy-Schwarz, reverse triangle inequality to show $norm(y_n) -> norm(y)$.
+- *Theorem 2.14*: use linearity of inner product and orthogonal condition.
+- *Theorem 2.15*:
+    - Subspace:
+        - For $y, z in A^perp$, $lambda, mu in CC$, show $forall x in A$, $lambda y + mu z in A^perp$.
+    - Closed:
+        - Show if $(y_n) subset.eq A^perp$, $y_n -> y$, then $y in A^perp$:
+            - Let $x in A$, then show $|ip(x, y)| -> 0$ by squeezing, triangle inequality and Cauchy-Schwarz.
+- *Theorem 2.16*:
+    - Let $d = inf{norm(x - z): z in M}$. Show that $exists y in M: norm(x - y) = d$:   
+        - There is sequence $(y_n) subset M$ with $norm(x - y_n) -> d$. Show that $(y_n)$ is Cauchy:
+            - $norm(y_m - y_n)^2 + norm(2x - y_m - y_n)^2 = 2 norm(x - y_m)^2 + 2 norm(x - y_n)^2$ by parallelogram identity.
+            - $(y_m + y_n)/2 in M$, so $norm(2x - y_m - y_n) >= 2d$.
+        - Deduce that $y_n -> y in M$ and $norm(x - y) -> d$ by squeezing.
+    - Uniqueness of $y$:
+        - Let $norm(x - y) = d = norm(x - y')$.
+        - By parallelogram identity, $2 norm(x - y)^2 + 2 norm(x - y')^2 = norm(2x - y - y')^2 + norm(y - y')^2$.
+        - Use that $(y + y')/2 in M$ to show $norm(y - y') = 0$.
+    - To show $z = x - y perp M$:
+        - For $w in M$, write $ip(z, w) = |ip(z, w)| lambda$ where $lambda = e^(i theta)$, set $u = lambda w$.
+        - Define $f(t) = norm(z + t u)^2$, show $t = 0$ is minimum of $f$ and so $0 = f'(0)$, hence $z in M^perp$.
+    - To show uniqueness of $z$:
+        - Show for $y, y' in M$ such that $x - y perp M$ and $x - y' perp M$, then $ip(y - y', w) = 0$ for any $w in M$. Set $w = y - y'$ to give $y = y'$.
+- *Corollary 2.18*: by theorem 2.16.
+- *Theorem 2.24*:
+    - Prove for any finite $J subset.eq I$, then take supremum on LHS.
+    - Show that $ norm(x - sum_(alpha in J) ip(x, u_alpha) u_alpha) = norm(x)^2 - sum_(alpha in J) |ip(x, u_alpha)|^2 $ using equation 2.2 and Pythagorean theorem.

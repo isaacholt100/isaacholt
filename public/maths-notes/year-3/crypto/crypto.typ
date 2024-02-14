@@ -1,11 +1,8 @@
-#import "../../template.typ": template
-#show: template
+#import "../../template.typ": *
+#show: doc => template(doc, hidden: ("proof", ))
 
-#import "@preview/lemmify:0.1.5": *
-
-#let (
-    theorem, lemma, corollary, definition, remark, proposition, example, proof, rules: thm-rules
-) = default-theorems("thm-group", lang: "en")
+// FIND: - \*(\w+)\*: ([\s\S]*?)(?=\n-|\n\n)\n
+// REPLACE: #$1[\n    $2\n]\n
 
 #let modulo(n) = $thick mod #n$
 #let lmodulo(n) = $quad mod #n$
@@ -290,32 +287,53 @@
     - $A^n$ is set of all lists of $n$ symbols from $A$ - these are *words of length $n$*.
     - *Code of block length $n$ on $A$* is subset of $A^n$.
     - *Codeword* is element of a code.
-- *Definition*: if $|A| = 2$, codes on $A$ are *binary* codes. If $|A| = 3$, codes on $A$ are *ternary codes*. If $|A| = q$, codes on $A$ are *$q$-ary* codes. Generally, use $A = {0, 1, ..., q - 1}$.
-- *Definition*: let $x = x_1 ... x_n, y = y_1 ... y_n in A^n$. *Hamming distance* between $x$ and $y$ is number of indices where $x$ and $y$ differ: $ d: A^n times A^n -> {0, ..., n}, quad d(x, y) := |{i in [n]: x_i != y_i}| $ So $d(x, y)$ is minimum number of changes needed to change $x$ to $y$. If $x$ transmitted and $y$ received, then $d(x, y)$ *symbol-errors* have occurred.
-- *Proposition*: let $x, y$ words of length $n$.
+Definition[
+    If $|A| = 2$, codes on $A$ are *binary* codes. If $|A| = 3$, codes on $A$ are *ternary codes*. If $|A| = q$, codes on $A$ are *$q$-ary* codes. Generally, use $A = {0, 1, ..., q - 1}$.
+]
+#definition[
+    Let $x = x_1 ... x_n, y = y_1 ... y_n in A^n$. *Hamming distance* between $x$ and $y$ is number of indices where $x$ and $y$ differ: $ d: A^n times A^n -> {0, ..., n}, quad d(x, y) := |{i in [n]: x_i != y_i}| $ So $d(x, y)$ is minimum number of changes needed to change $x$ to $y$. If $x$ transmitted and $y$ received, then $d(x, y)$ *symbol-errors* have occurred.
+]
+#proposition[
+    Let $x, y$ words of length $n$.
     - $0 <= d(x, y) <= n$.
     - $d(x, y) = 0 <==> x = y$.
     - $d(x, y) = d(y, x)$.
     - $forall z in A^n, d(x, y) <= d(x, z) + d(z, y)$.
-- *Definition*: *minimum distance* of code $C$ is $ d(C) := min{d(x, y): x, y in C, x != y} in NN $
-- *Notation*: code of block length $n$ with $M$ codewords and minimum distance $d$ is called $(n, M, d)$ (or $(n, M)$) code. A $q$-ary code is called an $\(n, M, d\)_q$ code.
-- *Definition*: let $C subset.eq A^n$ code, $x$ word of length $n$. A *nearest neighbour* of $x$ is codeword $c in C$ such that $d(x, c) = min{d(x, y): y in C}$.
+]
+#definition[
+    *Minimum distance* of code $C$ is $ d(C) := min{d(x, y): x, y in C, x != y} in NN $
+]
+#notation[
+    Code of block length $n$ with $M$ codewords and minimum distance $d$ is called $(n, M, d)$ (or $(n, M)$) code. A $q$-ary code is called an $\(n, M, d\)_q$ code.
+]
+#definition[
+    Let $C subset.eq A^n$ code, $x$ word of length $n$. A *nearest neighbour* of $x$ is codeword $c in C$ such that $d(x, c) = min{d(x, y): y in C}$.
+]
 
 == Nearest-neighbour decoding
 
-- *Definition*: *nearest-neighbour decoding (NND)* means if word $x$ received, it is decoded to a nearest neighbour of $x$ in a code $C$.
-- *Proposition*: let $C$ be code with minimum distance $d$, let word $x$ be received with $t$ symbol errors. Then
+#definition[
+    *Nearest-neighbour decoding (NND)* means if word $x$ received, it is decoded to a nearest neighbour of $x$ in a code $C$.
+]
+#proposition[
+    Let $C$ be code with minimum distance $d$, let word $x$ be received with $t$ symbol errors. Then
     - If $t <= d - 1$, then we can detect that $x$ has some errors.
     - If $t <= floor((d - 1)/2)$, then NND will correct the errors.
+]
 
 == Probabilities
 
-- *Definition*: *$q$-ary symmetric channel with symbol-error probability $p$* is channel for $q$-ary alphabet $A$ such that:
+#definition[
+    *$q$-ary symmetric channel with symbol-error probability $p$* is channel for $q$-ary alphabet $A$ such that:
     - For every $a in A$, probability that $a$ is changed in channel is $p$.
     - For every $a != b in A$, probability that $a$ is changed to $b$ in channel is $ PP(b "received" | a "sent") = p/(q - 1) $
     i.e. symbol-errors in different positions are independent events.
-- *Proposition*: let $c$ codeword in $q$-ary code $C subset.eq A^n$ sent over $q$-ary symmetric channel with symbol-error probability $p$. Then $ PP(x "received" | c "sent") = (p/(q - 1))^t (1 - p)^(n - t), quad "where" t = d(c, x) $
-- *Example*: let $C = {000, 111} subset {0, 1}^3$.
+]
+#proposition[
+    Let $c$ codeword in $q$-ary code $C subset.eq A^n$ sent over $q$-ary symmetric channel with symbol-error probability $p$. Then $ PP(x "received" | c "sent") = (p/(q - 1))^t (1 - p)^(n - t), quad "where" t = d(c, x) $
+]
+#example[
+    Let $C = {000, 111} subset {0, 1}^3$.
 #figure(table(
     columns: (auto, auto, auto, auto, auto),
     $x$, $t = d(000, x)$, [chance $000$ received as $x$], [chance if $p = 0.01$], [NND decodes correctly?],
@@ -328,101 +346,201 @@
     $011$, $2$, $p^2(1 - p)$, $0.000099$, "no",
     $111$, $3$, $p^3$, $0.000001$, "no",
 ))
-- *Corollary*: if $p < (q - 1)/q$ then $P(x "received" | c "sent")$ increases as $d(x, c)$ decreases.
-- *Remark*: by Bayes' theorem, $ PP(c "sent" | x "received") = PP(c "sent and" x "received") / PP(x "received") = (PP(c "sent") PP(x "received" | c "sent"))/PP(x "received") $
-- *Proposition*: let $C$ be $q$-ary $(n, M, d)$ code used over $q$-ary symmetric channel with symbol-error probability $p < (q - 1)\/q$, and each codeword $c in C$ is equally likely to be sent. Then for any word $x$, $PP(c "sent" | x "received")$ increases as $d(x, c)$ decreases.
+]
+#corollary[
+    If $p < (q - 1)/q$ then $P(x "received" | c "sent")$ increases as $d(x, c)$ decreases.
+]
+#remark[
+    By Bayes' theorem, $ PP(c "sent" | x "received") = PP(c "sent and" x "received") / PP(x "received") = (PP(c "sent") PP(x "received" | c "sent"))/PP(x "received") $
+]
+#proposition[
+    Let $C$ be $q$-ary $(n, M, d)$ code used over $q$-ary symmetric channel with symbol-error probability $p < (q - 1)\/q$, and each codeword $c in C$ is equally likely to be sent. Then for any word $x$, $PP(c "sent" | x "received")$ increases as $d(x, c)$ decreases.
+]
 
 == Bounds on codes
 
 - *Proposition (singleton bound)*: for $q$-ary code $(n, M, d)$ code, $M <= q^(n - d + 1)$.
-- *Definition*: code which saturates singleton bound is called *maximum distance separable (MDS)*.
-- *Example*: let $C_n$ be *binary repetition code* of block length $n$, $ C_n := \{underbrace(00...0, n), underbrace(11...1, n)\} subset {0, 1}^n $ $C_n$ is $(n, 2, n)_2$ code, and $2 = 2^(n - n + 1)$ so $C_n$ is MDS code.
-- *Definition*: let $A$ be alphabet, $|A| = q$. Let $n in NN$, $0 <= t <= n$, $t in NN$, $x in A^n$.
+#definition[
+    Code which saturates singleton bound is called *maximum distance separable (MDS)*.
+]
+#example[
+    Let $C_n$ be *binary repetition code* of block length $n$, $ C_n := \{underbrace(00...0, n), underbrace(11...1, n)\} subset {0, 1}^n $ $C_n$ is $(n, 2, n)_2$ code, and $2 = 2^(n - n + 1)$ so $C_n$ is MDS code.
+]
+#definition[
+    Let $A$ be alphabet, $|A| = q$. Let $n in NN$, $0 <= t <= n$, $t in NN$, $x in A^n$.
     - *Ball of radius $t$ around $x$* is $ S(x, t) := {y in A^n: d(y, x) <= t} $
     - Code $C subset.eq A^n$ is *perfect* if $ exists t in NN: A^n = product.co_(c in C) S(c, t) $ where $product.co$ is disjoint union.
-- *Example*: for $C = {000, 111} subset {0, 1}^3$, $S(000, 1) = {000, 100, 010, 001}$ and $S(111, 1) = {111, 011, 101, 110}$. These are disjoint and $S(000, 1) union S(111, 1) = {0, 1}^3$, so $C$ is perfect.
-- *Example*: let $C = {111, 020, 202} subset {0, 1, 2}^3$. $forall c in C, d(c, 012) = 2$. So $012$ is not in any $S(c, 1)$ but is in every $S(c, 2)$, so $C$ is not perfect.
-- *Lemma*: let $|A| = q$, $x in AA^n$, then $ |S(x, t)| = sum_(k = 0)^t binom(n, k) (q - 1)^k $
-- *Example*: let $C = {111, 020, 202} subset {0, 1, 2}^3$, so $q = 3$, $n = 3$. So $|S(x, 1)| = binom(3, 0) + binom(3, 1) (3 - 1) = 7$, $|S(x, 2)| = binom(3, 0) + binom(3, 1)(3 - 1) + binom(3, 2) (3 - 1)^2 = 19$. But $|{0, 1, 2}|^3 = 27$ and $7 divides.not 27$, $19 divides.not 27$, so ${0, 1, 2}^3$ can't be partioned by balls of either size. So $C$ can't be perfect. $|S(x, 3)| = 27$, but then $C$ must contain only one codeword to be perfect, and $|S(x, 0)| = 1$, but then $C = A^n$ to be perfect. These are trivial, useless codes.
+]
+#example[
+    For $C = {000, 111} subset {0, 1}^3$, $S(000, 1) = {000, 100, 010, 001}$ and $S(111, 1) = {111, 011, 101, 110}$. These are disjoint and $S(000, 1) union S(111, 1) = {0, 1}^3$, so $C$ is perfect.
+]
+#example[
+    Let $C = {111, 020, 202} subset {0, 1, 2}^3$. $forall c in C, d(c, 012) = 2$. So $012$ is not in any $S(c, 1)$ but is in every $S(c, 2)$, so $C$ is not perfect.
+]
+#lemma[
+    Let $|A| = q$, $x in AA^n$, then $ |S(x, t)| = sum_(k = 0)^t binom(n, k) (q - 1)^k $
+]
+#example[
+    Let $C = {111, 020, 202} subset {0, 1, 2}^3$, so $q = 3$, $n = 3$. So $|S(x, 1)| = binom(3, 0) + binom(3, 1) (3 - 1) = 7$, $|S(x, 2)| = binom(3, 0) + binom(3, 1)(3 - 1) + binom(3, 2) (3 - 1)^2 = 19$. But $|{0, 1, 2}|^3 = 27$ and $7 divides.not 27$, $19 divides.not 27$, so ${0, 1, 2}^3$ can't be partioned by balls of either size. So $C$ can't be perfect. $|S(x, 3)| = 27$, but then $C$ must contain only one codeword to be perfect, and $|S(x, 0)| = 1$, but then $C = A^n$ to be perfect. These are trivial, useless codes.
+]
 - *Proposition (Hamming/sphere-packing bound)*: $q$-ary $(n, M, d)$ code satisfies $ M sum_(k = 0)^t binom(n, k) (q - 1)^k <= q^n, quad "where" t = floor((d - 1)/2) $
-- *Corollary*: code saturates Hamming bound iff it is perfect.
+#corollary[
+    Code saturates Hamming bound iff it is perfect.
+]
 
 = Linear codes
 
 == Finite vector spaces
 
-- *Definition*: *linear code* of block length $n$ is subspace of $FF_q^n$.
-- *Example*: let $vd(x) = (0, 1, 2, 0)$, $vd(y) = (1, 1, 1, 1)$, $vd(z) = (0, 2, 1, 0) in FF_3^4$. $C_1 = {vd(x), vd(y), vd(0)}$ is not linear code since e.g. $vd(x) + vd(y) = (1, 2, 0, 1) in.not C_1$. $C_2 = {vd(x), vd(z), vd(0)}$ is linear code.
-- *Notation*: spanning set of $S$ is $ideal(S)$.
-- *Proposition*: if linear code $C subset.eq FF_q^n$ has $dim(C) = k$, then $|C| = q^k$.
-- *Definition*: a $q$-ary $[n, k, d]$ code is linear code: a subspace of $FF_q^n$ of dimension $k$ with minimum distance $d$. Note: a $q$-ary $[n, k, d]$ code is a $q$-ary $(n, q^k, d)$ code.
+#definition[
+    *Linear code* of block length $n$ is subspace of $FF_q^n$.
+]
+#example[
+    Let $vd(x) = (0, 1, 2, 0)$, $vd(y) = (1, 1, 1, 1)$, $vd(z) = (0, 2, 1, 0) in FF_3^4$. $C_1 = {vd(x), vd(y), vd(0)}$ is not linear code since e.g. $vd(x) + vd(y) = (1, 2, 0, 1) in.not C_1$. $C_2 = {vd(x), vd(z), vd(0)}$ is linear code.
+]
+#notation[
+    Spanning set of $S$ is $ideal(S)$.
+]
+#proposition[
+    If linear code $C subset.eq FF_q^n$ has $dim(C) = k$, then $|C| = q^k$.
+]
+#definition[
+    A $q$-ary $[n, k, d]$ code is linear code: a subspace of $FF_q^n$ of dimension $k$ with minimum distance $d$. Note: a $q$-ary $[n, k, d]$ code is a $q$-ary $(n, q^k, d)$ code.
+]
 
 == Weight and minimum distance
 
-- *Definition*: *weight* of $vd(x) in FF_q^n$, $w(vd(x))$, is number of non-zero entries in $vd(x)$: $ w(vd(x)) = |{i in [n]: x_i != 0}| $
-- *Lemma*: $forall vd(x), vd(y) in FF_q^n$, $d(vd(x), vd(y)) = w(vd(x) - vd(y))$. In particular, $w(vd(x)) = d(vd(x), vd(0))$.
-- *Proposition*: let $C subset.eq FF_q^n$ linear code, then $ d(C) = min{w(vd(c)): vd(c) in C, vd(c) != vd(0)} $
-- *Remark*: to find $d(C)$ for linear code with $q^k$ words, only need to consider $q^k$ weights instead of $binom(q^k, 2)$ distances.
+#definition[
+    *Weight* of $vd(x) in FF_q^n$, $w(vd(x))$, is number of non-zero entries in $vd(x)$: $ w(vd(x)) = |{i in [n]: x_i != 0}| $
+]
+#lemma[
+    $forall vd(x), vd(y) in FF_q^n$, $d(vd(x), vd(y)) = w(vd(x) - vd(y))$. In particular, $w(vd(x)) = d(vd(x), vd(0))$.
+]
+#proposition[
+    Let $C subset.eq FF_q^n$ linear code, then $ d(C) = min{w(vd(c)): vd(c) in C, vd(c) != vd(0)} $
+]
+#remark[
+    To find $d(C)$ for linear code with $q^k$ words, only need to consider $q^k$ weights instead of $binom(q^k, 2)$ distances.
+]
 
 = Codes as images
 
 == Generator-matrices
 
-- *Definition*: let $C subset.eq FF_q^n$ be linear code. Let $G in M_(k, n)(FF_q)$, $f_G: FF_q^k -> FF_q^n$ be linear map defined by $f_G (vd(x)) = vd(x) G$. Then $G$ is *generator-matrix* for $C$ if
+#definition[
+    Let $C subset.eq FF_q^n$ be linear code. Let $G in M_(k, n)(FF_q)$, $f_G: FF_q^k -> FF_q^n$ be linear map defined by $f_G (vd(x)) = vd(x) G$. Then $G$ is *generator-matrix* for $C$ if
     - $C = im(f) = \{vd(x) G: vd(x) in FF_q^k\} subset.eq FF_q^n$.
     - The rows of $G$ are linearly independent.
     i.e. $G$ is generator-matrix for $C$ iff rows of $G$ form basis for $C$ (note $vd(x) G = x_1 vd(g_1) + dots.h.c + x_k vd(g_k)$ where $vd(g_i)$ are rows of $G$).
-- *Remark*: given linear code $C = ideal(vd(a)_1, ..., vd(a)_m)$, a generator-matrix can be found for $C$ by constructing the matrix $A$ with rows $vd(a)_i$, then performing elementary row operations to bring $A$ into RREF. Once the $m - k$ bottom zero rows have been removed, the resulting matrix is a generator-matrix.
-- *Example*: let $C = ideal({(0, 0, 3, 1, 4), (2, 4, 1, 4, 0), (5, 3, 0, 1, 6)}) subset.eq FF_7^5$. $
+]
+#remark[
+    Given linear code $C = ideal(vd(a)_1, ..., vd(a)_m)$, a generator-matrix can be found for $C$ by constructing the matrix $A$ with rows $vd(a)_i$, then performing elementary row operations to bring $A$ into RREF. Once the $m - k$ bottom zero rows have been removed, the resulting matrix is a generator-matrix.
+]
+#example[
+    Let $C = ideal({(0, 0, 3, 1, 4), (2, 4, 1, 4, 0), (5, 3, 0, 1, 6)}) subset.eq FF_7^5$. $
     A = mat(2, 4, 1, 4, 0; 5, 3, 0, 1, 6; 0, 0, 3, 1, 4) limits(->_(A_(12)(1))) mat(2, 4, 1, 4, 0; 0, 0, 1, 5, 6; 0, 0, 3, 1, 4) limits(->_(M_1 (4))) mat(1, 2, 4, 2, 0; 0, 0, 1, 5, 6; 0, 0, 3, 1, 4) limits(->_(A_(21)(3), A_(23)(4))) mat(1, 2, 0, 3, 4; 0, 0, 1, 5, 6; 0, 0, 0, 0, 0)
 $ So $G = mat(1, 2, 0, 3, 4; 0, 0, 1, 5, 6)$ is generator matrix for $C$ and $dim(C) = 2$.
+]
 
 == Encoding and channel decoding
 
 == Equivalence and standard form
 
-- *Definition*: codes $C_1, C_2$ of block length $n$ over alphabet $A$ are *equivalent* if we can transform one to the other by applying sequence of the following two kinds of changes to all the codewords (simultaneously):
+#definition[
+    Codes $C_1, C_2$ of block length $n$ over alphabet $A$ are *equivalent* if we can transform one to the other by applying sequence of the following two kinds of changes to all the codewords (simultaneously):
     - Permute the $n$ positions.
     - In a particular position, permuting the $|A| = q$ symbols.
-- *Proposition*: equivalent codes have the same parameters $(n, M, d)$.
-- *Definition*: linear codes $C_1, C_2 subset.eq FF_q^n$ are *monomially equivalent* if we can obtain one from the other by applying sequence of the following two kinds of changes to all codewords (simultaneously):
+]
+#proposition[
+    Equivalent codes have the same parameters $(n, M, d)$.
+]
+#definition[
+    Linear codes $C_1, C_2 subset.eq FF_q^n$ are *monomially equivalent* if we can obtain one from the other by applying sequence of the following two kinds of changes to all codewords (simultaneously):
     - Permuting the $n$ positions.
     - In particular position, multiply by $lambda in FF_q^times$.
     If only the first change is used, the codes are *permutation equivalent*.
-- *Definition*: $P in M_n (FF_q)$ is *permutation matrix* if it has a single $1$ in each row and column, and zeros elsewhere. Any permutation of $n$ positions of row vector in $FF_q^n$ can be described as right multiplication by permutation matrix.
-- *Proposition*: permutation matrices are orthogonal: $P^T = P^(-1)$.
-- *Proposition*: let $C_1, C_2 subset.eq FF_q^n$ linear codes with generator matrices $G_1, G_2$. Then if $G_1 = G_2 P$ for permutation matrix $P$, then $C_1$ and $C_2$ are permutation equivalent.
-- *Definition*: $M in M_m (FF_q)$ is *monomial matrix* if it has exactly one non-zero element in each row and column.
-- *Proposition*: monomial matrix $M$ can always be written as $M = D P$ or $M = P D'$ where $P$ is permutation matrix and $D, D'$ are diagonal matrices. $P$ is *permutation part*, $D$ and $D'$ are *diagonal parts* of $M$.
-- *Example*: $ mat(0, 2, 0; 0, 0, 3; 1, 0, 0) = mat(2, 0, 0; 0, 3, 0; 0, 0, 1) mat(0, 1, 0; 0, 0, 1; 1, 0, 0) = mat(0, 1, 0; 0, 0, 1; 1, 0, 0) mat(1, 0, 0; 0, 2, 0; 0, 0, 3) $
-- *Proposition*: let $C_1, C_2 subset.eq FF_q^n$ be linear codes with generator-matrices $G_1, G_2$. Then if $G_2 = G_1 M$ for some monomial matrix $M$, then $C_1$ and $C_2$ are monomially equivalent.
-- *Definition*: let $C subset.eq FF_q^n$ linear code. If $G = (I_k | A)$, with $A in M_(k, n - k)(FF_q)$, is generator-matrix for $C$, then $G$ is in *standard form*.
-- *Note*: not every linear code has generator-matrix in standard form.
-- *Proposition*: every linear code is permutation equivalent to a linear code with generator-matrix in standard form.
-- *Example*: let $C_1 subset.eq FF_7^5$ have generator matrix $G_1 = mat(1, 2, 0, 3, 4; 0, 0, 1, 5, 6)$. Then applying permutation matrix $ P = mat(1, 0, 0, 0, 0; 0, 0, 1, 0, 0; 0, 1, 0, 0, 0; 0, 0, 0, 1, 0; 0, 0, 0, 0, 1) ==> G_1 P = mat(1, 0, 2, 3, 4; 0, 1, 0, 5, 6) = (I_2 | A) $
+]
+#definition[
+    $P in M_n (FF_q)$ is *permutation matrix* if it has a single $1$ in each row and column, and zeros elsewhere. Any permutation of $n$ positions of row vector in $FF_q^n$ can be described as right multiplication by permutation matrix.
+]
+#proposition[
+    Permutation matrices are orthogonal: $P^T = P^(-1)$.
+]
+#proposition[
+    Let $C_1, C_2 subset.eq FF_q^n$ linear codes with generator matrices $G_1, G_2$. Then if $G_1 = G_2 P$ for permutation matrix $P$, then $C_1$ and $C_2$ are permutation equivalent.
+]
+#definition[
+    $M in M_m (FF_q)$ is *monomial matrix* if it has exactly one non-zero element in each row and column.
+]
+#proposition[
+    Monomial matrix $M$ can always be written as $M = D P$ or $M = P D'$ where $P$ is permutation matrix and $D, D'$ are diagonal matrices. $P$ is *permutation part*, $D$ and $D'$ are *diagonal parts* of $M$.
+]
+#example[
+    $ mat(0, 2, 0; 0, 0, 3; 1, 0, 0) = mat(2, 0, 0; 0, 3, 0; 0, 0, 1) mat(0, 1, 0; 0, 0, 1; 1, 0, 0) = mat(0, 1, 0; 0, 0, 1; 1, 0, 0) mat(1, 0, 0; 0, 2, 0; 0, 0, 3) $
+]
+#proposition[
+    Let $C_1, C_2 subset.eq FF_q^n$ be linear codes with generator-matrices $G_1, G_2$. Then if $G_2 = G_1 M$ for some monomial matrix $M$, then $C_1$ and $C_2$ are monomially equivalent.
+]
+#definition[
+    Let $C subset.eq FF_q^n$ linear code. If $G = (I_k | A)$, with $A in M_(k, n - k)(FF_q)$, is generator-matrix for $C$, then $G$ is in *standard form*.
+]
+#note[
+    Not every linear code has generator-matrix in standard form.
+]
+#proposition[
+    Every linear code is permutation equivalent to a linear code with generator-matrix in standard form.
+]
+#example[
+    Let $C_1 subset.eq FF_7^5$ have generator matrix $G_1 = mat(1, 2, 0, 3, 4; 0, 0, 1, 5, 6)$. Then applying permutation matrix $ P = mat(1, 0, 0, 0, 0; 0, 0, 1, 0, 0; 0, 1, 0, 0, 0; 0, 0, 0, 1, 0; 0, 0, 0, 0, 1) ==> G_1 P = mat(1, 0, 2, 3, 4; 0, 1, 0, 5, 6) = (I_2 | A) $
+]
 
 = Codes as kernels
 
 == Dual codes
 
-- *Definition*: let $C subset.eq FF_q^n$ linear code. *Dual* of $C$ is $ C^perp := {vd(v) in FF_q^n: forall vd(u) in C, vd(v) dot.op vd(u) = 0} $
-- *Proposition*: if $G$ is generator matrix for linear code $C$ then $ C^perp = \{vd(v) in FF_q^n : vd(v) G^T = vd(0)\} = ker(f_(G^T)) $ where $f_(G^T): FF_q^n -> FF_q^k$, $f(x) = x G^T$ is linear map.
-- *Proposition*: let $C subset.eq FF_q^n$ linear code. Then $C^perp$ is also linear code and $dim(C) + dim(C^perp) = n$.
-- *Proposition*: let $C subset.eq FF_q^n$ linear code, then $(C^perp)^perp = C$.
-- *Proposition*: let $C subset.eq FF_q^n$ have generator-matrix in standard form, $G = (I_k | A)$, then $H = (-A^T | I_(n - k))$ is generator-matrix for $C^perp$.
-- *Proposition*: let $G$ be generator matrix of $C subset.eq FF_q^n$, let $P in M_n (FF_q)$ permutation matrix such that $G P = (I_k | A)$ for some $A in M_(k, n - k)(FF_q)$. Then $H = (-A^T | I_(n - k)) P^T$ is generator matrix for $C^perp$.
-- *Algorithm*: to find basis for dual code $C^perp$, given generator matrix $G = (g_(i j)) in M_(k, n)(FF_q)$ for $C$ in RREF:
+#definition[
+    Let $C subset.eq FF_q^n$ linear code. *Dual* of $C$ is $ C^perp := {vd(v) in FF_q^n: forall vd(u) in C, vd(v) dot.op vd(u) = 0} $
+]
+#proposition[
+    If $G$ is generator matrix for linear code $C$ then $ C^perp = \{vd(v) in FF_q^n : vd(v) G^T = vd(0)\} = ker(f_(G^T)) $ where $f_(G^T): FF_q^n -> FF_q^k$, $f(x) = x G^T$ is linear map.
+]
+#proposition[
+    Let $C subset.eq FF_q^n$ linear code. Then $C^perp$ is also linear code and $dim(C) + dim(C^perp) = n$.
+]
+#proposition[
+    Let $C subset.eq FF_q^n$ linear code, then $(C^perp)^perp = C$.
+]
+#proof[
+    Show $dim((C^perp)^perp) = dim(C)$ and $C subset.eq (C^perp)^perp$.
+]
+#proposition[
+    Let $C subset.eq FF_q^n$ have generator-matrix in standard form, $G = (I_k | A)$, then $H = (-A^T | I_(n - k))$ is generator-matrix for $C^perp$.
+]
+#proof[
+    Show $forall y in FF_q^(n - k)$, $y H in C^perp$, let $f_H (y) = y H$ so $"im"(f_H) subset.eq C^perp$ and show $dim("im"(f_H)) = dim(C^perp)$.
+]
+#proposition[
+    Let $G$ be generator matrix of $C subset.eq FF_q^n$, let $P in M_n (FF_q)$ permutation matrix such that $G P = (I_k | A)$ for some $A in M_(k, n - k)(FF_q)$. Then $H = (-A^T | I_(n - k)) P^T$ is generator matrix for $C^perp$.
+]
+#proof[
+    Similar to previous proposition, use that $P^T = P^(-1)$.
+]
+#algorithm[
+    To find basis for dual code $C^perp$, given generator matrix $G = (g_(i j)) in M_(k, n)(FF_q)$ for $C$ in RREF:
     + Let $L = {1 <= j <= n: G "has leading" 1 "in column" j}$.
     + For each $1 <= j <= n$, $j in.not L$, construct $vd(v)_j$ as follows:
-        + For $m in.not L$, $m$th entry of $vd(j)$ is $1$ if $m = j$ and $0$ otherwise.
+        + For $m in.not L$, $m$th entry of $vd(v)_j$ is $1$ if $m = j$ and $0$ otherwise.
         + Fill in the other entries of $vd(v)_j$ (left to right) as $-g_(1 j), ..., -g_(k j)$.
     + The $n - k$ vectors $vd(j)$ are basis for $C^perp$.
-- *Example*: let $C subset.eq FF_5^7$ be linear code with generator-matrix $ G = mat(1, 2, 0, 3, 4, 0, 0; 0, 0, 1, 1, 2, 0, 3; 0, 0, 0, 0, 0, 1, 4) $ Then $L = {1, 3, 6}$.
+]
+#example[
+    Let $C subset.eq FF_5^7$ be linear code with generator-matrix $ G = mat(1, 2, 0, 3, 4, 0, 0; 0, 0, 1, 1, 2, 0, 3; 0, 0, 0, 0, 0, 1, 4) $ Then $L = {1, 3, 6}$.
     - $v_2 = (3, 1, 0, 0, 0, 0, 0)$
     - $v_4 = (2, 0, 4, 1, 0, 0, 0)$
     - $v_5 = (1, 0, 3, 0, 1, 0, 0)$
     - $v_7 = (0, 0, 2, 0, 0, 1, 1)$
     - So generator matrix for $C^perp$ is $ H = mat(3, 1, 0, 0, 0, 0, 0; 2, 0, 4, 1, 0, 0, 0; 1, 0, 3, 0, 1, 0, 0; 0, 0, 2, 0, 0, 1, 1) $
+]
 
 == Check-matrices
 
