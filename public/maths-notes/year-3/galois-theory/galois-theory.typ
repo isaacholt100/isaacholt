@@ -9,6 +9,7 @@
 #let ideal(..gens) = $angle.l #gens.pos().join(",") angle.r$
 #let Aut = $"Aut"$
 #let Gal = $"Gal"$
+#let gtlex = $scripts(>)_"lex"$
 
 = Introduction
 
@@ -760,4 +761,38 @@
 #example[
     - When $n = 2$, $x_1^2 + x_2^2 = e_1^2 - 2e_2$ and $x_1^3 + x_2^3 = e_1^3 - 3e_1 e_2$.
     - When $n = 3$, $x_1^2 x_2 + x_1 x_2^2 + x_2^2 x_3 + x_2 x_3^2 + x_3^2 x_1 + x_3 x_1^2 = e_1 e_2 - 3e_3$.
+]
+#definition[
+    *Lexicographic ordering of monomials*, $gtlex$ (or $scripts(gt.curly)_L$), is $ x_1^(a_1) dots.h.c x_n^(a_n) gtlex x_1^(b_1) dots.h.c x_n^(b_n) $ iff $exists 0 <= j <= n - 1$ such that $a_1 = b_1, ..., a_j = b_j$ and $a_(j + 1) > b_(j + 1)$.
+]
+#example[
+    $x_1^2 x_2^3 x_3 gtlex x_1^2 x_2^2 x_3^4$.
+]
+#definition[
+    *Leading term* of $f(x_1, ..., x_n) in k[x_1, ..., x_n]$ is largest monomial $c x_1^(a_1) dots.h.c x_n^(a_n)$ with $c != 0$, $a_i != 0$ for some $i$, appearing in $f$ with respect to lexicographic ordering.
+]
+#note[
+    If $f$ is symmetric, then $a_1 >= dots.h.c >= a_n$.
+]
+#algorithm[
+    Given $f(x_1, ..., x_n) in k[x_1, ..., x_n]^(S_n)$, express $f$ as polynomial in elementary symmetric polynomials:
+    + Find leading term $c x_1^(a_1) dots.h.c x_n^(a_n)$ of $f$, compute $ f_1 = f - c e_1^(a_1 - a_2) dots.h.c e_(n - 1)^(a_(n - 1) - a_n) e_n^(a_n) $ Note leading term of $c e_1^(a_1 - a_2) dots.h.c e_(n - 1)^(a_(n - 1) - a_n) e_n^(a_n)$ is also $c x_1^(a_1) dots.h.c x_n^(a_n)$ so leading term of $f_1$ is strictly smaller than leading term of $f$. Also, $f_1$ is symmetric.
+    + If $f_1 != 0$, apply step $1$ to get $f_2$, $f_3$, .... Since leading term of $f_1, f_2, ...$ is strictly decreasing, eventually $f_i = 0$.
+]
+#example[
+    Express $f(x_1, x_2) = x_1^3 + x_2^3$ in elementary symmetric polynomials:
+    - Leading term of $f$ is $x_1^3 = x_1^3 x_2^0$, so $ f_1 = f - e_1^(3 - 0) e_2^0 = -3x_1^2 x_2 - 3x_1 x_2^2 $
+    - Leading term of $f_1$ is $-3x_1^2 x_2$, so $ f_2 = f_1 - (-3) e_1^(2 - 1) e_2^1 = -3x_1^2 x_2 - 3x_1 x_2^2 + 3(x_1 + x_2) x_1 x_2 = 0 $
+    - So $f_1 = f_2 + (-3) e_1^(2 - 1) e_2^1 = -3e_1 e_2$ and $f = e_1^3 + f_1 = e_1^3 - 3e_1 e_2$.
+]
+#example[
+    - Let $theta_1 = x_1 + rho x_2 + rho^2 x_3$, $theta_2 = x_1 + rho^2 x_2 + rho x_3$, where $rho = zeta_3$.
+    - Let $sigma = (1 thick 2 thick 3) in S_3$, then $sigma (theta_1) = rho theta_1$, $sigma (theta_2) = rho^2 theta_2$, hence $ sigma(theta_1^3 + theta_2^3) = rho^3 theta_1^3 + rho^6 theta_2^3 = theta_1^3 + theta_2^3 $
+    - Let $tau = (2 thick 3) in S_3$, then $tau(theta_1) = theta_2$, $tau(theta_2) = theta_1$ so $tau(theta_1^3 + theta_2^3) = theta_1^3 + theta_2^3$.
+    - Since $S_3 = ideal(sigma, tau)$, $f(x_1, x_2, x_3) = theta_1^3 + theta_2^3 in QQ[x_1, x_2, x_3]^(S_3)$. Applying the algorithm:
+        - $f_1 = f - 2 e_1^3 = 9 (x_1^2 x_2 + dots.h.c)$.
+        - $f_2 = f_1 - (-9) e_1 e_2 = 27 x_1 x_2 x_3$.
+        - $f_3 = f_2 - 27 e_3 = 0$.
+        - So $f = 2 e_1^3 - 9 e_1 e_2 + 27 e_3$.
+    - By a similar process, $9 theta_1 theta_2 = e_1^2 - 3 e_2$.
 ]

@@ -1,5 +1,5 @@
 #import "../../template.typ": *
-#show: doc => template(doc, hidden: ("proof", ))
+#show: doc => template(doc, hidden: ())
 
 // FIND: - \*(\w+)\*: ([\s\S]*?)(?=\n-|\n\n)\n
 // REPLACE: #$1[\n    $2\n]\n
@@ -975,14 +975,13 @@
 ]
 #remark[
     It is useful to represented based homotopy $H$ between $lambda$ and $mu$ on the unit square. Bottom edge corresponds to $lambda$, top edge corresponds to $mu$, right and left edges are mapped entirely to $x_0$. Horizontal line drawn across unit square represents loop in $(X, x_0)$ and homotopy $H$ describes path of loops from $lambda$ to $mu$. Vertical line describes path traced from $lambda(s)$ to $mu(s)$ under $H$.
+]
 #figure(canvas(length: 2cm, {
     import cetz.draw: *
     cetz.draw.rect((0, 0), (1, 1), name: "my-rect")
     set-style(mark: (end: ">"))
     line((0, 0), (1/2 + 0.1, 0))
     line((0, 1), (1/2 + 0.1, 1))
-}))
-]
 
     content("my-rect.center", box(fill: white)[$H$], anchor: "center")
     content("my-rect.west", padding: -1.2em, box(fill: white)[$x_0$], anchor: "west")
@@ -995,6 +994,7 @@
 ]
 #remark[
     Group operation $*$ is well defined, since if $lambda_1 tilde.eq mu_1$ by homotopy $H_1$, $lambda_2 tilde.eq mu_2$ by homotopy $H_2$, then $lambda_1 * lambda_2 tilde.eq mu_1 * mu_2$ by homotopy $H$ where $ H(s, t) = cases(H_1 (2s, t) & "if" 0 <= s <= 1/2, H_2 (2s - 1, t) & "if" 1/2 <= s <= 1) $
+]
 #figure(canvas(length: 2cm, {
     import cetz.draw: *
     cetz.draw.rect((0, 0), (1, 1), name: "H_1")
@@ -1010,8 +1010,6 @@
     line((4, 1), (4 + 1/4 + 0.1, 1))
     line((4.5, 0), (4.5 + 1/4 + 0.1, 0))
     line((4.5, 1), (4.5 + 1/4 + 0.1, 1))
-}))
-]
 
     content("H_1.center", box(fill: white)[$H_1$], anchor: "center")
     content("H_1.west", padding: -1.2em, box(fill: white)[$x_0$], anchor: "west")
@@ -1155,4 +1153,38 @@ where, for the first diagram, a horizontal path at fixed $t$ is given by $ s |->
     - Define $overline(p)(s) = p(1 - s)$, define loop $lambda_p$ in $X$ based at $x_1$ by $ lambda_p (s) = cases(overline(p(3s)) & "if" s in [0, 1\/3], lambda(3s - 1) & "if" s in [1\/3, 2\/3], p(3s - 2) & "if" s in [2\/3, 1]) $
     - Claim: $ Phi_p: pi_1 (X, x_0) -> pi_1 (X, x_1), quad Phi([lambda]) = [lambda_p] $ is isomorphism.
         - Well-defined: show if $lambda, mu$ loops based at $x_0$, $lambda tilde.eq mu ==> lambda_p tilde.eq mu_p$ by homotopy diagram (merge $overline(p), lambda, p$ on bottom and $overline(p), mu, p$ on top).
+        - Homomorphism: show $(lambda times mu)_p tilde.eq lambda_p * mu_p$ using homotopy diagram (for each $t in [0, 1]$, we want to partially traverse $p$ (until $s = 1/2$) then back along $overline(p)$, before traversing $mu$).
+        - Isomorphism: show that $Phi_(overline(p))$ defined analogously satisfies $Phi_(overline(p)) = \(Phi_p\)^(-1)$, i.e. $\(lambda_p\)_(overline(p)) tilde.eq lambda$ and $\(mu_(overline(p))\)_p tilde.eq mu$ for all loops $lambda$ based at $x_0$, $mu$ based at $x_1$. (As $t -> 1$, want to retract the spurs $p * overline(p)$ of the loop back to $x_0$).
+]
+#notation[
+    Write $pi_1 (X)$ for fundamental group of path-connected space $X$ (although isomorphism between $pi_1 (X, x_0)$ and $pi_1 (X, x_1)$ is not canonical).
+]
+#proposition[
+    Let $X$ contractible space, then $pi_1 (X) tilde.equiv bb(1)$, the trivial group with one element.
+]
+#proof[
+    - Show we can omit based point in notation.
+    - Reason that there is only loop in one point space.
+    - Use definition of contractibility and above corollary.
+]
+#definition[
+    Topological space $X$ is *simply connected* if path-connected and $pi_1 (X) = bb(1)$ (i.e. its fundamental group is trivial).
+]
+#example[
+    - $pi_1 (S^1) tilde.equiv ZZ$ where $n in ZZ$ corresponds to homotopy class of *$n$ times* map $phi_n: S^1 -> S^1$, $phi_n (z) = z^n$.
+    - $pi_1 (S^n) tilde.equiv bb(1)$ for all $n >= 2$.
+    - $pi_1 (T) tilde.equiv ZZ^2$.
+    - $pi_1 (PP) tilde.equiv ZZ_2$.
+]
+
+== Brouwer's fixed point theorem
+
+#theorem[
+    Every $f: D^2 -> D^2$ has a fixed point: $ exists x in D^2: f(x) = x $
+]
+#proof[
+    - Assume no fixed point, so every $x, f(x) in D^2$ defines straight line $L_x$ passing through $D^2$.
+    - Define $g(x)$ as point of intersection of boundary and $L_x$ (the one closer to $x$ than $f(x)$). Note $g(x) = x$ if $x in diff D^2$.
+    - Let $i: S^1 -> D^2$ be inclusion map of boundary circle to disc, then $g compose i = id_(S^1)$, and $g_* compose i_* = (g compose i)_* = id_(pi_1 (S^1))$.
+    - Contradiction, since $pi_1 (S^1) tilde.equiv ZZ$, $pi_1 (D^2) tilde.equiv bb(1)$ and $g_* (i_* (pi_1 (S^1))) = g_* (bb(1)) tilde.equiv.not ZZ tilde.equiv pi_1 (S^1)$.
 ]

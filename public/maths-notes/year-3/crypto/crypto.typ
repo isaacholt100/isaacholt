@@ -1,5 +1,5 @@
 #import "../../template.typ": *
-#show: doc => template(doc, hidden: ("proof", ))
+#show: doc => template(doc, hidden: ())
 
 // FIND: - \*(\w+)\*: ([\s\S]*?)(?=\n-|\n\n)\n
 // REPLACE: #$1[\n    $2\n]\n
@@ -418,7 +418,7 @@ Definition[
 ]
 #proposition[
     Let $C subset.eq FF_q^n$ linear code, then $ d(C) = min{w(vd(c)): vd(c) in C, vd(c) != vd(0)} $
-]
+]<min-dist-as-weight>
 #remark[
     To find $d(C)$ for linear code with $q^k$ words, only need to consider $q^k$ weights instead of $binom(q^k, 2)$ distances.
 ]
@@ -503,7 +503,7 @@ $ So $G = mat(1, 2, 0, 3, 4; 0, 0, 1, 5, 6)$ is generator matrix for $C$ and $di
 ]
 #proposition[
     If $G$ is generator matrix for linear code $C$ then $ C^perp = \{vd(v) in FF_q^n : vd(v) G^T = vd(0)\} = ker(f_(G^T)) $ where $f_(G^T): FF_q^n -> FF_q^k$, $f(x) = x G^T$ is linear map.
-]
+]<dual-as-kernel>
 #proposition[
     Let $C subset.eq FF_q^n$ linear code. Then $C^perp$ is also linear code and $dim(C) + dim(C^perp) = n$.
 ]
@@ -544,3 +544,36 @@ $ So $G = mat(1, 2, 0, 3, 4; 0, 0, 1, 5, 6)$ is generator matrix for $C$ and $di
 
 == Check-matrices
 
+#definition[
+    Let $C$ be $[n, k]_q$ code, assume there exists $H in M_(n - k, n)(FF_q)$ with linearly independent rows, such that $ C = {vd(v) in FF_q^n: vd(v) H^t = vd(0)} $ Then $H$ is *check-matrix* for $C$.
+]
+#proposition[
+    If code $C$ has generator-matrix $G$ and check-matrix $H$, then $C^perp$ has check-matrix $G$ and generator-matrix $H$.
+]
+#proof[
+    Use @dual-as-kernel to show $G$ is check-matrix for $C^perp$. Show rows of $H$ form basis for $C^perp$.
+]
+#remark[
+    We can use above algorithm for the $G <--> H$ algorithm: obtain a generator-matrix for $C$ from a check-matrix for $C$, or vice versa.
+]
+
+== Minimum distance from a check-matrix
+
+#lemma[
+    Let $C$ be $[n, k]_q$ code, $C = {vd(x) in FF_q^n: vd(x) A^T = vd(0)}$ for some $A in M_(m, n) (FF_q)$. The following are equivalent:
+    - There are $d$ linearly dependent columns of $A$.
+    - $exists vd(c) in C: 0 < w(vd(c)) <= d$.
+]
+#proof[
+    - $==>$: use definition of linear dependence, construct a _word_ $vd(c)$ with $d$ at most non-zero symbols, based on the definition. Show that $vd(c) A^T = vd(0)$.
+    - $<==$: use non-zero entries of $vd(c)$ as coefficients for linear dependence between $d$ corresponding columns of $A$.
+]
+#example[
+    Let $C = {vd(x) in FF_7^5: vd(x) A^T = vd(0)}$ where $ A = mat(3, 1, 1, 4, 1; 2, 2, 5, 1, 4; 6, 3, 5, 0, 2) in M_(3, 5)(FF_7) $ We have $(0, 1, 2, 0, 4) A^T = vd(0)$. So $(0, 1, 2, 0, 4) in C$, so $C$ has codeword of weight $3$. Also, $1 (1, 2, 3) + 2 (1, 5, 5) + 4 (1, 2, 4) = (0, 0, 0)$ so $A$ has $3$ linearly independent columns.
+]
+#theorem[
+    Let $C = {vd(x) in FF_q^n: vd(x) A^T = vd(0)}$ for some $A in M_(m, n)(FF_q)$. Then there is a linearly dependent set of $d(C)$ columns of $A$, but any set of $d(C) - 1$ columns of $A$ is linearly independent.
+]
+#proof[
+    Use @min-dist-as-weight and above lemma.
+]
