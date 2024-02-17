@@ -579,7 +579,7 @@ $
 == The Kummer-Dedekind theorem
 
 #definition[
-    If $p in ZZ$ prime, and $ideal(p)_(O_K) = P_1^(e_1) dots.h.c P_r^(e_r)$ then $P_1, ..., P_r$ are the prime ideals *lying over* $p$.
+    If $p in ZZ$ prime, and $ideal(p)_(O_K) = P_1^(e_1) dots.h.c P_r^(e_r)$ then $P_1, ..., P_r$ are the prime ideals *lying above* $p$.
 ]
 #remark[
     If $P subset cal(O)_K$ nonzero prime ideal, then $N(P) in P sect ZZ$ so $P sect ZZ != ideal(0)$. But $P sect ZZ$ is prime ideal of $ZZ$ so $P sect ZZ = ideal(p)_ZZ$ for some prime $p in ZZ$. Hence $p in P$, $ideal(p)_(cal(O)_K) subset.eq P$ so $P | ideal(p)_(cal(O)_K)$. Hence every $P$ lies over some prime $p$.
@@ -594,11 +594,11 @@ $
     Let $p$ prime. Suppose $cal(O)_K = ZZ[theta]$ for some $theta in cal(O)_K$ with minimal polynomial $p_theta$. Let $overline(f)(x)$ be reduction of $f(x) in ZZ[x]$ $mod p$, so $overline(f)(x) in FF_p [x]$. Let $ overline(p_theta)(x) = overline(f_1)(x)^(e_1) dots.h.c overline(f_r)(x)^(e_r) $ be factorisation of $overline(p_theta)$ where $overline(f_i)$ are distinct, monic, irreducible. For each $i$, let $f_i (x) in ZZ[x]$ be monic polynomial whose reduction $mod p$ is $overline(f_i)(x)$. Let $P_i = (p, f_i (theta))_(cal(O)_K)$. Then $P_i$ are distinct prime ideals, $N(P_i) = p^(deg(f_i))$ and $ ideal(p)_(cal(O)_K) = P_1^(e_1) dots.h.c P_r^(e_r) $
 ]
 #proof[
-    - Let $phi: ZZ[x] -> cal(O)_K \/ P_i$ be composition of evaluation map $g: ZZ[x] -> cal(O)_K$ and canonical map $cal(O)_K -> cal(O)_K \/ P_i$. Show that $ ZZ[x] \/ ideal(p_theta (x), p, f_i (x)) tilde.equiv cal(O)_K\/P_i $
+    - Let $phi: ZZ[x] -> cal(O)_K \/ P_i$ be composition of evaluation map $ZZ[x] -> cal(O)_K$, $g(x) |-> g(theta)$, and canonical map $cal(O)_K -> cal(O)_K \/ P_i$. Show that $ ZZ[x] \/ ideal(p_theta (x), p, f_i (x)) tilde.equiv cal(O)_K\/P_i $
     - Deduce another isomorphism given by reduction mod $p$ map $g(x) + ideal(p_theta (x), p, f_i (x)) |-> overline(g)(x) + ideal(overline(p_theta)(x), overline(f_i)(x))$.
     - To show $P_i$ prime, deduce that $cal(O)_K\/P_i tilde.equiv FF_p [x] \/ ideal(overline(f_i)(x))$.
-    - Deduce that $N(Pi) = p^(deg(f_i))$.
-    - Use that $P_1^(e_1) dots.h.c P_r^(e_r) subset.eq ideal(p, f_1 (theta)^(e_1), ..., f_r (theta)^(e_r))$ and $f_1 (theta)^(e_1) dots.h.c f_r (theta)^(e_r) = p_theta (theta)$ and $N(P_1^(e_1) dots.h.c P_r^(e_r)) = N(P)$ to show $P_1^(e_1) dots.h.c P_r^(e_r) = ideal(p)_(cal(O)_K)$.
+    - Deduce that $N(P_i) = p^(deg(f_i))$.
+    - Use that $P_1^(e_1) dots.h.c P_r^(e_r) subset.eq ideal(p, f_1 (theta)^(e_1) dots.h.c f_r (theta)^(e_r))$ and $f_1 (theta)^(e_1) dots.h.c f_r (theta)^(e_r) equiv p_theta (theta) mod p$ and $N(P_1^(e_1) dots.h.c P_r^(e_r)) = N(p)$ to show $P_1^(e_1) dots.h.c P_r^(e_r) = ideal(p)_(cal(O)_K)$.
 ]
 #example[
     Let $K = QQ\(sqrt(6)\)$, so $cal(O)_K = ZZ\[sqrt(6)\]$. $p_theta (x) = x^2 - 6$ factorises modulo small primes as: $
@@ -634,5 +634,5 @@ $
     In all cases, $P overline(P) = ideal(N(P))_(cal(O)_K)$.
 ]
 #example[
-    Let $theta^3 + 3 theta - 1 = 0$, $K = QQ(theta)$. We have $cal(O)_K = ZZ[theta]$. To factorise $ideal(5)_(cal(O)_K)$ and $ideal(11)_(cal(O)_K)$: $-1$ and $2$ are roots of $x^3 + 3x - 1 mod 5$, so we get $x^3 + 3x - 1 equiv (x + 1)(x + 2)^2 mod 5$. So by Kummer-Dedekind, $ ideal(5)_(cal(O)_K) = ideal(5, theta + 1) ideal(5, theta + 2)^2 $ Only root in $overline(p_theta)$ in $FF_11$ is $-4$, so $overline(p_theta)(x) = (x + 4)(x^2 - 4x - 8) mod 11$ and $x^2 - 4x - 8 = (x - 2)^2 + 4$ is irreducible as $-4$ is not square $mod 11$. So by Kummer-Dedekind, $ ideal(11)_(cal(O)_K) = ideal(11, theta + 4) ideal(11, theta^2 - 4 theta + 8) $ To factorise $ideal(2 theta - 3)_(cal(O)_K)$: $ N_K (2 theta - 3) = -N_K (2) N_K (3/2 - theta) = -8 dot.op p_theta (3/2) = -8(27/8 + 9/2 - 1) = -55 $ So $ideal(2 theta - 3) = P_5 P_11$ where $N(P_5) = 5$, $N(P_11) = 11$, $P_5, P_11$ prime. So $P_5 | ideal(5)$, so $P_5 = (5, theta + 1)$ or $(5, theta + 2)$. Now $2 theta - 3 = 2(theta + 1) - 5 in ideal(5, theta + 1)$, so $ideal(5, theta + 1) | ideal(2 theta - 3)$, hence $P_5 = ideal(5, theta + 1)$. Now $P_11 | ideal(11)$ so $P_11 = ideal(11, theta + 4)$ or $ideal(11, theta^2 - 4theta + 8)$. But by Kummer-Dedekind, the latter has norm $11^2$ which is a contradiction. So $P_11 = ideal(11, theta + 4)$.
+    Let $theta^3 + 3 theta - 1 = 0$, $K = QQ(theta)$. We have $cal(O)_K = ZZ[theta]$. To factorise $ideal(5)_(cal(O)_K)$ and $ideal(11)_(cal(O)_K)$: $-1$ and $2$ are roots of $x^3 + 3x - 1 mod 5$, so we get $x^3 + 3x - 1 equiv (x + 1)(x + 2)^2 mod 5$. So by Kummer-Dedekind, $ ideal(5)_(cal(O)_K) = ideal(5, theta + 1) ideal(5, theta + 2)^2 $ Only root in $overline(p_theta)$ in $FF_11$ is $-4$, so $overline(p_theta)(x) = (x + 4)(x^2 - 4x + 8) mod 11$ and $x^2 - 4x + 8 = (x - 2)^2 + 4$ is irreducible as $-4$ is not square $mod 11$. So by Kummer-Dedekind, $ ideal(11)_(cal(O)_K) = ideal(11, theta + 4) ideal(11, theta^2 - 4 theta + 8) $ To factorise $ideal(2 theta - 3)_(cal(O)_K)$: $ N_K (2 theta - 3) = -N_K (2) N_K (3/2 - theta) = -8 dot.op p_theta (3/2) = -8(27/8 + 9/2 - 1) = -55 $ So $ideal(2 theta - 3) = P_5 P_11$ where $N(P_5) = 5$, $N(P_11) = 11$, $P_5, P_11$ prime. So $P_5 | ideal(5)$, so $P_5 = ideal(5, theta + 1)$ or $ideal(5, theta + 2)$. Now $2 theta - 3 = 2(theta + 1) - 5 in ideal(5, theta + 1)$, so $ideal(5, theta + 1) | ideal(2 theta - 3)$, hence $P_5 = ideal(5, theta + 1)$. Now $P_11 | ideal(11)$ so $P_11 = ideal(11, theta + 4)$ or $ideal(11, theta^2 - 4theta + 8)$. But by Kummer-Dedekind, the latter has norm $11^2$ which is a contradiction (since $11^2 divides.not N(ideal(2 theta - 3)) = 55$). So $P_11 = ideal(11, theta + 4)$.
 ]

@@ -6,8 +6,8 @@
 
 #let hbar = $planck.reduce$
 #let ip(a, b) = $angle.l #a, #b angle.r$
-#let ket(arg) = $| #h(1pt) arg #h(1pt) angle.r$
-#let bra(arg) = $angle.l #h(1pt) arg #h(1pt) |$
+#let ket(arg) = $#h(0.2pt) | #h(0.2pt) arg #h(0.2pt) angle.r$
+#let bra(arg) = $angle.l #h(0.2pt) arg #h(0.2pt) | #h(0.2pt)$
 #let braket(..args) = $angle.l #h(1pt) #args.pos().join(h(1pt) + "|" + h(1pt)) #h(1pt) angle.r$
 #let Ket(arg) = $lr(| #h(1pt) arg #h(1pt) angle.r)$
 #let Bra(arg) = $lr(angle.l #h(1pt) arg #h(1pt) |)$
@@ -894,12 +894,31 @@ Note: Toffoli gate maps computational basis elements to computational basis elem
 ]
 #example[
     Let $U$ be single-qubit operator, Hermitian and unitary, so eigenvalues are $plus.minus 1$. Measuring $U$ can be achieved with the following circuit:
-#figure(quantum-circuit(
-    lstick($ket(0)$), 1, gate($H$), 1, ctrl(1), 1, gate($H$), 1, meter(), setwire(2), 1, nl,
-    lstick($ket(psi)$), 3, gate($U$), 5
-))
-Acting with $H$ maps $ket(0) tp ket(psi) |-> 1/sqrt(2) (ket(0) + ket(1)) tp ket(psi)$. Acting with controlled-$U$ gives $1/sqrt(2) (ket(0) tp ket(psi) + ket(1) tp U ket(psi))$. Acting with $H$ again gives output $ 1/2 ((ket(0) + ket(1)) tp ket(psi) + (ket(0) - ket(1)) tp U ket(psi)) = 1/2 ket(0) tp (I + U) ket(psi) + 1/2 ket(1) tp (I - U) ket(psi) $ But $1/2 (I + U)$ is projector to $+1$ eigenspace of $U$, $1/2 (1 - U)$ is projector to $-1$ eigenspace of $U$, so if $ket(psi) = alpha ket(U_+) + beta ket(U_-)$, with $U ket(U_(plus.minus)) = plus.minus U_(plus.minus)$ then output is $ alpha ket(0) tp ket(U_+) + beta ket(1) tp ket(U_-) $ So result of measurement is $0$ with probability $|alpha|^2$, which collapses state to $ket(0) tp ket(U_+)$, and $1$ with probability $|beta|^2$, which collapses state to $ket(1) tp ket(U_-)$.
+    #figure(quantum-circuit(
+        lstick($ket(0)$), 1, gate($H$), 1, ctrl(1), 1, gate($H$), 1, meter(), setwire(2), 1, nl,
+        lstick($ket(psi)$), 3, gate($U$), 5
+    ))
+    Acting with $H$ maps $ket(0) tp ket(psi) |-> 1/sqrt(2) (ket(0) + ket(1)) tp ket(psi)$. Acting with controlled-$U$ gives $1/sqrt(2) (ket(0) tp ket(psi) + ket(1) tp U ket(psi))$. Acting with $H$ again gives output $ 1/2 ((ket(0) + ket(1)) tp ket(psi) + (ket(0) - ket(1)) tp U ket(psi)) = 1/2 ket(0) tp (I + U) ket(psi) + 1/2 ket(1) tp (I - U) ket(psi) $ But $1/2 (I + U)$ is projector to $+1$ eigenspace of $U$, $1/2 (1 - U)$ is projector to $-1$ eigenspace of $U$, so if $ket(psi) = alpha ket(U_+) + beta ket(U_-)$, with $U ket(U_(plus.minus)) = plus.minus U_(plus.minus)$ then output is $ alpha ket(0) tp ket(U_+) + beta ket(1) tp ket(U_-) $ So result of measurement is $0$ with probability $|alpha|^2$, which collapses state to $ket(0) tp ket(U_+)$, and $1$ with probability $|beta|^2$, which collapses state to $ket(1) tp ket(U_-)$.
 ]
 
 = Quantum error correction
 
+#note[
+    We assume that an error only affects a single qubit.
+]
+#example[
+    Assume only error that can occur is flip of single qubit (same as classical case), i.e. each qubit has probability $p$ of $X$ gate being applied. We encode the state in a *code subspace*. Each qubit is encoded as 3 qubits: the *logical qubit* $ket(overline(0))$ is encoded as the _physical_ state $ket(000)$, $ket(overline(1))$ is encoded as $ket(111)$. So $ket(psi) = alpha ket(0) + beta ket(1)$ is mapped to $alpha ket(000) + beta ket(111)$, in the subspace $span{ket(000), ket(111)}$ of the Hilbert space of 3 qubits. The embedding is implemented as
+    #figure(quantum-circuit(
+        lstick($ket(q_2) = ket(psi)$), ctrl(1), ctrl(2), 1, nl,
+        lstick($ket(q_1) = ket(0)$), targ(), 2, nl,
+        lstick($ket(q_0) = ket(0)$), 1, targ(), 1
+    ))
+    Single bit flip can map this state to $ alpha ket(001) + beta ket(110), quad alpha ket(010) + beta ket(101), quad alpha ket(100) + beta ket(011) $ which are all orthogonal to original state and each other. So different errors map to different orthogonal subspaces, hence we can make measurement to determine which subspace it is without affecting the $alpha$, $beta$ coefficients.
+
+    *Error syndromes* are operators with eigenspaces as the different subspaces, each with distinct eigenvalue. In this case, choose syndromes formed from $Z$ operator (this has eigenvalue $1$ for $ket(0)$, $-1$ for $ket(1)$). Let $Z_0 = I tp I tp Z$, $Z_1 = I tp Z tp I$, $Z_2 = Z tp I tp I$, then $
+        Z_0 Z_1 ket(000) = ket(000), quad Z_0 Z_1 ket(111) = ket(111), & quad Z_0 Z_2 ket(000) = ket(000), quad Z_0 Z_2 ket(111) = ket(111) \
+        Z_0 Z_1 ket(001) = -ket(001), quad Z_0 Z_1 ket(110) = -ket(110), & quad Z_0 Z_2 ket(001) = -ket(001), quad Z_0 Z_2 ket(110) = -ket(110) \
+        Z_0 Z_1 ket(010) = -ket(010), quad Z_0 Z_1 ket(101) = -ket(101), & quad Z_0 Z_2 ket(010) = ket(010), quad Z_0 Z_2 ket(101) = ket(101) \
+        Z_0 Z_1 ket(100) = ket(100), quad Z_0 Z_1 ket(011) = ket(011), & quad Z_0 Z_2 ket(100) = -ket(100), quad Z_0 Z_2 -ket(011) = -ket(011)
+    $ So $span{ket(000), ket(111)}$ is $(1, 1)$ eigenspace, $span{ket(001), ket(110)}$ is $(-1, -1)$ eigenspace, $span{ket(010), ket(101)}$ is $(-1, 1)$ eigenspace, $span{ket(100), ket(011)}$ is $(1, -1)$ eigenspace. So if $ket(psi)$ is mapped to $ (1 - epsilon) ket(psi) + delta_2 X_2 ket(psi) + delta_1 X_1 ket(psi) + delta_0 X_0 ket(psi) $ then we measure $Z_0 Z_1$ and $Z_0 Z_2$, which collapses state to either $ ket(psi), quad X_2 ket(psi), quad X_1 ket(psi), quad X_0 ket(psi) $ Since the eigenvalues for this combination of measurements are distinct, they tell us which state $ket(psi)$ has been projected to. So can apply $I, X_2, X_1$ or $X_0$ to map back to $ket(psi)$.
+]
