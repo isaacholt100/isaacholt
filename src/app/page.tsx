@@ -17,7 +17,7 @@ const MAIN_LINKS: MainLink[] = [{
     path: "/code",
 }, {
     name: "Contact Me",
-    path: "/socials"
+    path: "/profiles"
 }];
 
 export default function Home() {

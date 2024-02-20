@@ -1200,7 +1200,7 @@ where, for the first diagram, a horizontal path at fixed $t$ is given by $ s |->
     If $k in ZZ$, then define $ x_j^k = cases(e & "if" k = 0, x_j ... x_j & "if" k > 0, x_j^(-1) ... x_j^(-1) & "if" k < 0) $
 ]
 #note[
-    $F^n$ is not abelian forall $n >= 2$ since e.g. $x_1 x_2 != x_2 x_1$. $forall n in NN$, $F^n$ is infinite group.
+    $F^n$ is not abelian for all $n >= 2$ since e.g. $x_1 x_2 != x_2 x_1$. $forall n in NN$, $F^n$ is infinite group.
 ]
 #example[
     - $F^1 = ideal(x) tilde.equiv ZZ$ since every element is of the form $x^k$, $k in ZZ$. There is isomorphism $phi: F^1 -> ZZ$ given by $phi(x) = 1$.
@@ -1225,7 +1225,7 @@ where, for the first diagram, a horizontal path at fixed $t$ is given by $ s |->
 ]
 #example[
     - If $H tilde.equiv bb(1)$, then $G_1 *_H G_2 = G_1 * G_2$.
-    - If $F^n$, $F^k$ are free groups, then $F^n * F^k tilde.equiv F^(n + k)$.
+    - If $F^n$, $F^k$ are free groups, then $F^n * F^k = F^(n + k)$.
     - $F^n = F^1 * dots.h.c * F^1 tilde.equiv ZZ * dots.h.c * ZZ$ (not this is $tilde.equiv.not ZZ^n$ for $n >= 2$).
     - If $G_1 tilde.equiv bb(1)$, then $ G_1 *_H G_2 = ideal(y_1, ..., y_k | s_1, ..., s_ell, i_2 (h) thick forall h in H) tilde.equiv G_2 \/ i_2 (H) $
 ]

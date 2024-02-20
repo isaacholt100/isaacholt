@@ -27,8 +27,8 @@ const LINKS = [
         path: "/code",
     },
     {
-        name: "Socials",
-        path: "/socials",
+        name: "Profiles",
+        path: "/profiles",
     },
 ];
 

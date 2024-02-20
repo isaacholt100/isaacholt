@@ -5,6 +5,8 @@ import PageTitle from "../../components/PageTitle";
 import { getMathsNotes } from "../../lib/mathsNotes";
 import { capitalizeName } from "../../lib/capitalizeName";
 import { AnchorHTMLAttributes } from "react";
+import InfoText from "./info.md";
+import "highlight.js/styles/github-dark.css";
 
 function downloadLinkProps(github: boolean, year: string, name: string, extension: string): Partial<AnchorHTMLAttributes<HTMLAnchorElement>> {
 	return {
@@ -26,7 +28,8 @@ export default async function Maths() {
 	return (
 		<>
 			<PageTitle title="Maths Notes" />
-			<p className="mb-0">These are summary notes I wrote for my undergraduate maths modules at Durham. The notes were made with <Link className="link-primary" href={"https://typst.app/docs/"}>Typst</Link>. If you notice a mistake in any of these notes, feel free to create an issue or submit a pull request on this website{"'"}s <Link className="link-primary" href={GITHUB_REPO_URL}>GitHub repository</Link>.</p>
+            <InfoText />
+            <div className="mt-n4" />
 			{mathsNotes.map((y, i) => (
 				<div className="row g-2 g-md-3 pt-3" key={y.year}>
 					<h2>{capitalizeName(y.year)}</h2>

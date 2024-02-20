@@ -4,7 +4,7 @@ import { mdiChessPawn, mdiEmail, mdiGithub, mdiGitlab, mdiLinkedin, mdiReddit, m
 //import styles from "@/styles/contact.module.scss";
 import PageTitle from "../../components/PageTitle";
 
-interface Social {
+interface Profile {
 	name: string;
 	url: string;
 	icon: string;
@@ -17,7 +17,7 @@ const LINKEDIN_URL = "https://www.linkedin.com/in/isaacholt100/";
 
 const EMAIL = "isaacholt100@icloud.com";
 
-const SOCIALS: Social[] = [
+const PROFILES: Profile[] = [
 	{
 		name: "Email",
 		url: "mailto:" + EMAIL,
@@ -65,12 +65,12 @@ const SOCIALS: Social[] = [
 	}
 ];
 
-export default function Socials() {
+export default function Profiles() {
 	return (
 		<>
-			<PageTitle title="Socials" />
+			<PageTitle title="Profiles" />
 			<div className="row g-2 g-md-3">
-				{SOCIALS.map(social => (
+				{PROFILES.map(social => (
 					<div className="col col-12 col-sm-6 col-xl-4" key={social.name}>
 						<a
 							href={social.url}

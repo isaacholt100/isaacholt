@@ -1037,10 +1037,10 @@
     $U$ is *maximal orthonormal set* if $forall V subset.eq H$ such that $U subset.neq V$, $V$ is not orthonormal.
 ]
 #lemma[
-    First condition of @parseval is equivalent to $U$ being maximal orthonormal set.
+    $U$ is maximal orthonormal set iff it is an orthonormal basis.
 ]<maximal-orthonormal-iff-basis>
 #remark[
-    If $x = sum_(alpha in NN) c_alpha u_alpha$ and $x = sum_(alpha in NN) d_alpha u_alpha$ then $forall alpha in NN, c_alpha = d_alpha$ (consider $ip(x - x, u_beta) = lim_(n -> oo) ip(sum_(alpha = 1)^n (c_alpha - d_alpha) u_alpha, u_beta)$).
+    For orthonormal basis ${u_alpha: alpha in NN}$, representation $x = sum_(alpha in NN) c_alpha u_alpha$ is unique (consider $ip(x - x, u_beta) = lim_(n -> oo) ip(sum_(alpha = 1)^n (c_alpha - d_alpha) u_alpha, u_beta)$).
 ]
 #theorem[
     Every Hilbert space $H$ has orthonormal basis. If $V subset.eq H$ is orthonormal set, then $H$ has orthonormal basis containing $V$.
