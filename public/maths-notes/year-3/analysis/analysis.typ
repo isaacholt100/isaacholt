@@ -1,5 +1,5 @@
 #import "../../template.typ": *
-#show: doc => template(doc, hidden: ("proof", ))
+#show: doc => template(doc, hidden: ())
 
 // FIND: - \*(\w+)\*: ([\s\S]*?)(?=\n-|\n\n)\n
 // REPLACE: #$1[\n    $2\n]\n
@@ -1005,7 +1005,7 @@
 ]
 #proposition[
     Unordered sum in Banach space converges unconditionally iff it is Cauchy.
-]
+]<unordered-sum-converges-iff-cauchy>
 #definition[
     Let ${c_alpha: alpha in I} subset.eq [0, oo]$. Define $ sum_(alpha in I) c_alpha = sup{sum_(alpha in J) c_alpha: J subset.eq I, J "finite"} $
 ]
@@ -1024,4 +1024,63 @@
     - If $forall alpha in I, ip(x, u_alpha) = 0$, then $x = 0$.
     - $forall x in H$, $x = sum_(alpha in I) ip(x, u_alpha) u_alpha$ where sum converges unconditionally in $H$ and only has countably many non-zero terms.
     - *Parseval's identity*: $ forall x in H, quad norm(x)^2 = sum_(alpha in I) |ip(x, u_alpha)|^2 $
+]<parseval>
+#proof[
+    - (i) $==>$ (ii): let ${alpha_j: j in NN}$ be set of indices where $ip(x, u_(alpha_j)) != 0$. Show the partial sums of $sum_(j in NN) ip(x, u_(alpha_j)) u_(alpha_j)$ are Cauchy using Pythagorean theorem and so show converges.
+    - Set $ y = x - sum_(j in NN) ip(x, u_(alpha_j)) u_(alpha_j) $ and show $ip(y, u_alpha) = 0$.
+    - (ii) $==>$ (iii): let $epsilon > 0$. Use definition of unconditional convergence of $x$ and Pythagorean theorem to show $norm(x)^2 - sum_(alpha in I) |ip(x, u_alpha)|^2 < epsilon$.
+]
+#definition[
+    Orthonormal subset $U = {u_alpha: alpha in I}$ of Hilbert space $H$ is *complete* if it satisfies any of the conditions in @parseval. An *orthonormal basis* of $H$ is a complete orthonormal subset of $H$.
+]
+#definition[
+    $U$ is *maximal orthonormal set* if $forall V subset.eq H$ such that $U subset.neq V$, $V$ is not orthonormal.
+]
+#lemma[
+    First condition of @parseval is equivalent to $U$ being maximal orthonormal set.
+]<maximal-orthonormal-iff-basis>
+#remark[
+    If $x = sum_(alpha in NN) c_alpha u_alpha$ and $x = sum_(alpha in NN) d_alpha u_alpha$ then $forall alpha in NN, c_alpha = d_alpha$ (consider $ip(x - x, u_beta) = lim_(n -> oo) ip(sum_(alpha = 1)^n (c_alpha - d_alpha) u_alpha, u_beta)$).
+]
+#theorem[
+    Every Hilbert space $H$ has orthonormal basis. If $V subset.eq H$ is orthonormal set, then $H$ has orthonormal basis containing $V$.
+]
+#proof[
+    - Assume $H != {0}$. Use partial ordering $subset.eq$.
+    - Let ${U_alpha: alpha in I}$ be totally ordered collection of orthonormal sets. Find upper bound of ${U_alpha: alpha in I}$ which is orthonormal.
+    - Show result using @zorn and @maximal-orthonormal-iff-basis.
+    - To show orthonormal sets $V$ can be extended to orthonormal bases, use same argument on family of all orthonormal subsets of $H$ containing $V$.
+]
+#definition[
+    A set $X$ is *partially ordered* if it is equipped with relation $<=$ satisfying:
+    - *Reflexivity*: $forall x in X, x <= x$.
+    - *Transitivity*: $(x <= y and y <= z) ==> x <= z$.
+    - *Anti-symmetry*: $(x <= y and y <= x) ==> x = y$.
+    $X$ is *totally ordered* if partially ordered and $forall x, y in X$, either $x <= y$ or $y <= x$.
+]
+#definition[
+    Let $X$ totally ordered set with relation $<=$. $x in X$ is *upper bound* for $Y subset.eq X$ if $forall y in Y, y <= x$. $x in X$ is *maximal* if $forall y in X$, $x <= y ==> y = x$.
+]
+#example[
+    Let $X$ be non-empty collection of sets. Then $subset.eq$ is partial ordering on $X$. $A in X$ is upper bound for $X' subset.eq X$ if every set in $X'$ is subset of $A$. $M in X$ is maximal if it is not proper subset of any set in $X$.
+]
+#theorem(name: "Zorn's Lemma")[
+    A partially ordered set $X$ that has upper bounds for its totally ordered subsets has a maximal element.
+]<zorn>
+#proposition[
+    Hilbert space is separable iff it has countable orthonormal basis.
+]
+#proof[
+    - $==>$: let $U = {u_n: n in NN}$ countable, dense in $H$. Recursively discard any $u_n$ in linear span of $u_1, ..., u_(n - 1)$ to obtain linearly independent set $V = {v_n: n in NN}$ whose linear span is dense in $H$. Applying Gram-Schmidt, set $ w_1 = v_1 / norm(v_1), ..., w_(n + 1) = c_(n + 1) (v_(n + 1) - sum_(k = 1)^n ip(w_k, v_(n + 1) w_k)) $ where $c_n in CC$ chosen so that $norm(w_n) = 1$. ${w_n: n in NN}$ is countable orthonormal basis.
+    - $<==$: let ${w_n: n in NN}$ be orthonormal basis, show that $ S_m = {sum_(k = 1)^m c_k w_k: c_k in QQ + i QQ} $ is countable and $union_(m in NN) S_m$ dense in $H$.
+]
+#theorem(name: "Riesz Representation Theorem for Hilbert Spaces")[
+    Let $H$ Hilbert space with inner product $ip(dot.op, dot.op)$, $T: H -> RR$ bounded linear functional. Then $ exists! y in H: forall x in H, quad T(x) = ip(x, y) $ Note RHS gives bounded linear functional by Cauchy-Schwarz.
+]
+#proof[
+    - Existence:
+        - Show $N = {x in H: T(x) = 0}$ is closed subspace of $H$, use that $H = N xor N^perp$.
+        - Assume $N^perp$ contains $v$ with $norm(v) = 1$. For $x in H$, define $u = T(x) v - T(v) x$.
+        - Show that $ip(u, v) = 0$, deduce a value for $y$ from this.
+    - Uniqueness: straightforward.
 ]

@@ -797,6 +797,9 @@ Note: Toffoli gate maps computational basis elements to computational basis elem
 #proposition[
     Every $N times N$ unitary can be written in terms of $U_(i j)$: "elementary" unitaries acting on $(i, i)$, $(i, j)$, $(j, i)$ and $(j, j)$ entries only, i.e. they are non-trivial in only one $2 times 2$ block (they act non-trivially on a two-dimensional subspace of the Hilbert space, spanned by two basis states $ket(i - 1)$ and $ket(j - 1)$).
 ]
+#proposition[
+    $U$ is unitary iff its rows are orthonormal iff its columns are orthonormal (with respect to Hermitian inner product).
+]
 #example[
     For unitary $ U = mat(a, d, g; b, e, h; c, f, j) $ we can find unitaries $U_1, U_2, U_3$ with $U_3 U_2 U_1 U = I$. Choose $U_1$ to have upper left $2 times 2$ block non-trivial and such that $ U_1 U = mat(a', d', g'; 0, e', h'; c', f', j') $ If $b = 0$, set $U_1 = I$. If $b != 0$, set $ U_1 = mat(alpha^*, beta^*, 0; beta, -alpha, 0; 0, 0, 1), quad alpha := a/(|a|^2 + |b|^2), beta = b/sqrt(|a|^2 + |b|^2) ==> beta a - alpha b = 0 $ Then set $ gamma = (a')/sqrt(|a'|^2 + |c'|^2), delta = (c')/sqrt(|a'|^2 + |c'|^2), quad U_2 = mat(gamma^*, 0, delta^*; 0, 1, 0; delta, 0, -gamma) ==> U_2 U_1 U = mat(1, 0, 0; 0, e'', h''; 0, f'', j'') =: U_3^dagger $ If $U in U(N)$ is unitary, then can find $N - 1$ unitaries $U_1, ..., U_(N - 1)$ where $U_i$ is non-trivial in first and $(i + 1)$th row such that $U_(N - 1) dots.h.c U_1 U$ has first row and first column $(1, 0, ..., 0)$ and non-trivial bottom-right $(N - 1) times (N - 1)$ block. So it can be reduced entirely by induction, to $1/2 N (N - 1)$ unitaries.
 ]
@@ -920,5 +923,21 @@ Note: Toffoli gate maps computational basis elements to computational basis elem
         Z_0 Z_1 ket(001) = -ket(001), quad Z_0 Z_1 ket(110) = -ket(110), & quad Z_0 Z_2 ket(001) = -ket(001), quad Z_0 Z_2 ket(110) = -ket(110) \
         Z_0 Z_1 ket(010) = -ket(010), quad Z_0 Z_1 ket(101) = -ket(101), & quad Z_0 Z_2 ket(010) = ket(010), quad Z_0 Z_2 ket(101) = ket(101) \
         Z_0 Z_1 ket(100) = ket(100), quad Z_0 Z_1 ket(011) = ket(011), & quad Z_0 Z_2 ket(100) = -ket(100), quad Z_0 Z_2 -ket(011) = -ket(011)
-    $ So $span{ket(000), ket(111)}$ is $(1, 1)$ eigenspace, $span{ket(001), ket(110)}$ is $(-1, -1)$ eigenspace, $span{ket(010), ket(101)}$ is $(-1, 1)$ eigenspace, $span{ket(100), ket(011)}$ is $(1, -1)$ eigenspace. So if $ket(psi)$ is mapped to $ (1 - epsilon) ket(psi) + delta_2 X_2 ket(psi) + delta_1 X_1 ket(psi) + delta_0 X_0 ket(psi) $ then we measure $Z_0 Z_1$ and $Z_0 Z_2$, which collapses state to either $ ket(psi), quad X_2 ket(psi), quad X_1 ket(psi), quad X_0 ket(psi) $ Since the eigenvalues for this combination of measurements are distinct, they tell us which state $ket(psi)$ has been projected to. So can apply $I, X_2, X_1$ or $X_0$ to map back to $ket(psi)$.
+    $ So $span{ket(000), ket(111)}$ is $(1, 1)$ eigenspace, $span{ket(001), ket(110)}$ is $(-1, -1)$ eigenspace, $span{ket(010), ket(101)}$ is $(-1, 1)$ eigenspace, $span{ket(100), ket(011)}$ is $(1, -1)$ eigenspace. So if $ket(psi)$ is mapped to $ (1 - epsilon) ket(psi) + delta_2 X_2 ket(psi) + delta_1 X_1 ket(psi) + delta_0 X_0 ket(psi) $ then we measure $Z_0 Z_1$ and $Z_0 Z_2$, which collapses state to either $ ket(psi), quad X_2 ket(psi), quad X_1 ket(psi), quad X_0 ket(psi) $ Since the eigenvalues for this combination of measurements are distinct, they tell us which state $ket(psi)$ has been projected to. So can apply $I, X_2, X_1$ or $X_0$ to map back to $ket(psi)$. This can be implemented as
+    #figure(quantum-circuit(
+        lstick($ket(q_2)$), 3, ctrl(4), 5, targ(), targ(), 2, nl,
+        lstick($ket(q_1)$), 1, ctrl(2), 4, targ(), targ(), 5, nl,
+        lstick($ket(q_0)$), ctrl(1), 1, ctrl(2), 1, targ(), 8, nl,
+        lstick($ket(0)$), targ(), targ(), 2, ctrl(-1), 1, ctrl(-2), ctrl(-2), 2, ctrl(-3), meter(), setwire(2), rstick($Z_1 Z_0$), nl,
+        lstick($ket(0)$), 2, targ(), targ(), ctrl(-1), 2, ctrl(-1), 1, ctrl(-4), ctrl(-4), meter(), setwire(2), rstick($Z_2 Z_0$)
+    ))
+]
+
+== Correcting general single qubit errors
+
+#remark[
+    In terms of errors, $X$ is a single bit flip, $Z$ is a phase flip ($alpha ket(0) + beta ket(1) -> alpha ket(0) - beta ket(1)$), $Y = i X Z$ is composition of both.
+]
+#definition[
+    We define a *coding* $c: H_1 -> H_n$, $ket(overline(0)) = c(ket(0))$, $ket(overline(1)) = c(ket(1))$.
 ]

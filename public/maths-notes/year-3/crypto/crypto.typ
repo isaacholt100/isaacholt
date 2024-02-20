@@ -565,7 +565,7 @@ $ So $G = mat(1, 2, 0, 3, 4; 0, 0, 1, 5, 6)$ is generator matrix for $C$ and $di
     - $exists vd(c) in C: 0 < w(vd(c)) <= d$.
 ]
 #proof[
-    - $==>$: use definition of linear dependence, construct a _word_ $vd(c)$ with $d$ at most non-zero symbols, based on the definition. Show that $vd(c) A^T = vd(0)$.
+    - $==>$: use definition of linear dependence, construct a _word_ $vd(c)$ with $d$ at most non-zero symbols, based on the definition. Show that $vd(c) in C$.
     - $<==$: use non-zero entries of $vd(c)$ as coefficients for linear dependence between $d$ corresponding columns of $A$.
 ]
 #example[
@@ -576,4 +576,12 @@ $ So $G = mat(1, 2, 0, 3, 4; 0, 0, 1, 5, 6)$ is generator matrix for $C$ and $di
 ]
 #proof[
     Use @min-dist-as-weight and above lemma.
+]
+
+= Polynomials and cyclic codes
+
+== Non-prime finite fields
+
+#theorem[
+    Let $f(x) in FF_q [x]$, then $FF_q [x] \/ ideal(f(x))$ is ring. $FF_q [x] \/ ideal(f(x))$ is field iff $f(x)$ irreducible in $FF_q [x]$.
 ]

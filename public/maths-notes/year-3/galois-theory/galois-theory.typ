@@ -786,13 +786,13 @@
     - So $f_1 = f_2 + (-3) e_1^(2 - 1) e_2^1 = -3e_1 e_2$ and $f = e_1^3 + f_1 = e_1^3 - 3e_1 e_2$.
 ]
 #example[
-    - Let $theta_1 = x_1 + rho x_2 + rho^2 x_3$, $theta_2 = x_1 + rho^2 x_2 + rho x_3$, where $rho = zeta_3$.
-    - Let $sigma = (1 thick 2 thick 3) in S_3$, then $sigma (theta_1) = rho theta_1$, $sigma (theta_2) = rho^2 theta_2$, hence $ sigma(theta_1^3 + theta_2^3) = rho^3 theta_1^3 + rho^6 theta_2^3 = theta_1^3 + theta_2^3 $
+    - Let $theta_1 = x_1 + omega x_2 + omega^2 x_3$, $theta_2 = x_1 + omega^2 x_2 + omega x_3$, where $omega = zeta_3$.
+    - Let $sigma = (1 thick 2 thick 3) in S_3$, then $sigma (theta_1) = omega^2 theta_1$, $sigma (theta_2) = omega theta_2$, hence $ sigma(theta_1^3 + theta_2^3) = omega^6 theta_1^3 + omega^3 theta_2^3 = theta_1^3 + theta_2^3 $
     - Let $tau = (2 thick 3) in S_3$, then $tau(theta_1) = theta_2$, $tau(theta_2) = theta_1$ so $tau(theta_1^3 + theta_2^3) = theta_1^3 + theta_2^3$.
     - Since $S_3 = ideal(sigma, tau)$, $f(x_1, x_2, x_3) = theta_1^3 + theta_2^3 in QQ[x_1, x_2, x_3]^(S_3)$. Applying the algorithm:
         - $f_1 = f - 2 e_1^3 = 9 (x_1^2 x_2 + dots.h.c)$.
         - $f_2 = f_1 - (-9) e_1 e_2 = 27 x_1 x_2 x_3$.
         - $f_3 = f_2 - 27 e_3 = 0$.
         - So $f = 2 e_1^3 - 9 e_1 e_2 + 27 e_3$.
-    - By a similar process, $9 theta_1 theta_2 = e_1^2 - 3 e_2$.
+    - By a similar process, $theta_1 theta_2 = e_1^2 - 3 e_2$.
 ]

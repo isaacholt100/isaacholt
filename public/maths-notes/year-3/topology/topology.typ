@@ -1188,3 +1188,44 @@ where, for the first diagram, a horizontal path at fixed $t$ is given by $ s |->
     - Let $i: S^1 -> D^2$ be inclusion map of boundary circle to disc, then $g compose i = id_(S^1)$, and $g_* compose i_* = (g compose i)_* = id_(pi_1 (S^1))$.
     - Obtain contradiction using @induced-homo-preserves-composition-identity and @fundamental-group-examples.
 ]
+
+= Computing the fundamental group
+
+== Finitely presented groups
+
+#definition[
+    *Free group on $n$ letters* $x_1, ..., x_n$, $F^n = ideal(x_1, ..., x_n)$, is the group whose elements are finite words in the generators $x_1, ..., x_n$ and their formal inverses $x_1^(-1), ..., x_n^(-1)$, where the group operation $*$ is given by concatenation of words: $x_i * x_j = x_i x_j$. Identity element is the empty word $e$. We assume $forall i in [n], thick thick x_i x_i^(-1) = x_i^(-1) x_i = e$.
+]
+#notation[
+    If $k in ZZ$, then define $ x_j^k = cases(e & "if" k = 0, x_j ... x_j & "if" k > 0, x_j^(-1) ... x_j^(-1) & "if" k < 0) $
+]
+#note[
+    $F^n$ is not abelian forall $n >= 2$ since e.g. $x_1 x_2 != x_2 x_1$. $forall n in NN$, $F^n$ is infinite group.
+]
+#example[
+    - $F^1 = ideal(x) tilde.equiv ZZ$ since every element is of the form $x^k$, $k in ZZ$. There is isomorphism $phi: F^1 -> ZZ$ given by $phi(x) = 1$.
+    - $F^2 = ideal(x, y) tilde.equiv.not ZZ^2 = ZZ xor ZZ$ since $x y != y x$.
+]
+#definition[
+    *Finitely presented group* is group which isomorphic to a group denoted by the *group presentation* $ ideal(x_1, ..., x_n | r_1, ..., r_m) $ consisting of finite words in *generators* $x_1, ..., x_n$ and their formal inverses $x_1^(-1), ..., x_n^(-1)$, subject to *relations* $r_1, ..., r_m in F^n = ideal(x_1, ..., x_n)$ (i.e. $forall j in [m], thick thick r_j = r_j^(-1) = e$), and group operation is concatenation of words.
+]
+#note[
+    - A finitely presented group is a quotient of a free group.
+    - Free groups on $n$ letters are finitely presented (with no relations).
+    - Group presentations are *not unique*.
+]
+#example[
+    - $ideal(x, y | x y^(-1)) tilde.equiv ideal(a) = F^1 tilde.equiv ZZ$ via isomorphism $phi: ideal(x, y | x y^(-1)) -> ideal(a)$ defined by $phi(x) = phi(y) = a$ since $x y^(-1) = e <==> x = y$ so can replace every $y$ in words of $ideal(x, y | x y^(-1))$ with $x$, yielding an element of $ideal(x)$.
+    - $ZZ\/2 tilde.equiv ideal(x | x^2)$ since $x = x^(-1)$ and $forall n in NN$, $x^(-n) = x^n = e$ if $n$ even, $x$ if $n$ odd.
+    - $ideal(x, y | x y x^(-1) y^(-1)) tilde.equiv ZZ^2$ since $x y = y x$ so the group is abelian. Isomorphism given by $phi(x) = (1, 0)$, $phi(y) = (0, 1)$.
+    - $ideal(x, y | x y x^(-1) y^(-1), y^2) tilde.equiv ZZ times ZZ\/2$.
+]
+#definition[
+    Let $G_1, G_2$ finitely presented groups, $G_1 sect G_2 = emptyset$, given by $ G_1 = ideal(x_1, ..., x_n | r_1, ..., r_m), quad G_2 = ideal(y_1, ..., y_k | s_1, ..., s_ell) $ *Free product* of $G_1$ and $G_2$ is the finitely presented group $ G_1 * G_2 := ideal(x_1, ..., x_n, y_1, ..., y_m | r_1, ..., r_k, s_1, ..., s_ell) $ If $H$ is another group and there exist homomorphisms $i_1: H -> G_1$, $i_2: H -> G_2$, then *amalgamated product* of $G_1$ and $G_2$ with respect to $H$ is $ G_1 *_H G_2 := ideal(x_1, ..., x_n, y_1, ..., y_k | r_1, ..., r_m, s_1, ..., s_ell, i_1 (h) i_2 (h)^(-1) thick forall h in H) $ i.e. we impose the additional relations $i_1 (h) = i_2 (h)$ for all $h in H$, on $G_1 * G_2$. $G_1 *_H G_2$ is finitely presented iff $H$ is finitely generated.
+]
+#example[
+    - If $H tilde.equiv bb(1)$, then $G_1 *_H G_2 = G_1 * G_2$.
+    - If $F^n$, $F^k$ are free groups, then $F^n * F^k tilde.equiv F^(n + k)$.
+    - $F^n = F^1 * dots.h.c * F^1 tilde.equiv ZZ * dots.h.c * ZZ$ (not this is $tilde.equiv.not ZZ^n$ for $n >= 2$).
+    - If $G_1 tilde.equiv bb(1)$, then $ G_1 *_H G_2 = ideal(y_1, ..., y_k | s_1, ..., s_ell, i_2 (h) thick forall h in H) tilde.equiv G_2 \/ i_2 (H) $
+]
