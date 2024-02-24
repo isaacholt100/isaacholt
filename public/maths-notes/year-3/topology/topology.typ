@@ -1227,5 +1227,36 @@ where, for the first diagram, a horizontal path at fixed $t$ is given by $ s |->
     - If $H tilde.equiv bb(1)$, then $G_1 *_H G_2 = G_1 * G_2$.
     - If $F^n$, $F^k$ are free groups, then $F^n * F^k = F^(n + k)$.
     - $F^n = F^1 * dots.h.c * F^1 tilde.equiv ZZ * dots.h.c * ZZ$ (not this is $tilde.equiv.not ZZ^n$ for $n >= 2$).
-    - If $G_1 tilde.equiv bb(1)$, then $ G_1 *_H G_2 = ideal(y_1, ..., y_k | s_1, ..., s_ell, i_2 (h) thick forall h in H) tilde.equiv G_2 \/ i_2 (H) $
+    - If $G_1 tilde.equiv bb(1)$, then $ G_1 *_H G_2 = ideal(y_1, ..., y_k | s_1, ..., s_ell, i_2 (h) thick forall h in H) $
 ]
+
+== The fundamental group of a triangulated surface
+
+#definition[
+    *Tree* is finite, connected graph with no cycles.
+]
+#definition[
+    Let $K$ be connected, finite simplicial complex of dimension $<= 2$.
+    - A *maximal tree* in $K$ is tree formed out of the $0$ and $1$-simplices in $K$ which cannot be extended to any larger tree (and necessarily contains all $0$-simplices).
+    - If $L$ is maximal tree in $K$, *maximal simply connected subcomplex* $M$ of $K$ (associated to $L$) is constructed as follows: let $M_0 = L$ and for each $j in NN$, let $M_j$ be subcomplex of $K$ given by $ M_j = M_(j - 1) union {"2-simplices in" K "with two edges contained in" M_(j - 1)} $ Since $K$ is finite simplicial complex, this process must stabilise after finite number of steps. Let $M$ be final subcomplex obtained.
+]
+#algorithm[
+    Let $K$ be connected, finite simplicial complex of dimension $<= 2$, let $x_0 in K$ be $0$-simplex. To compute $pi_1 (K, x_0)$:
+    + Find a maximal tree $L$ in $K$.
+    + Extend $L$ to maximal simply connected subcomplex $M$ of $K$.
+    + Assign a direction and a label to each $1$-simplex in $K$ which is not contained in $M$. The labels give the generators of a group presentation for $pi_1 (K, x_0)$.
+    + Impose relations on the labels as follows:
+        + For $2$-simplices with exactly one edge in $M$: if the directions of the other two edges, $a$ and $b$, either both point towards or both point away from the edge in $M$, impose the relation $a = b$. If one points towards and the other away, then impose the relation $a = b^(-1)$.
+        + For $2$-simplices with no edges in $M$ and with labels $a, b, c$: (up to permutation of $a, b, c$) if the directions of $b$ and $c$ point towards a common vertex and the directions of $a$ and $c$ point away from a common vertex, then impose the relation $c = a b$, otherwise impose $c = (a b)^(-1)$.
+    + We have $pi_1 (K, x_0) tilde.equiv ideal("labels" | "relations")$.
+]
+#note[
+    We can use step 4 to more efficiently choose labels and directions in step 3.
+]
+#example[
+    Consider $S^1$ triangulated with three $1$-simplices and no $2$-simplices. A maximal tree consists of two edges, the maximal connected subcomplex $M$ is already the maximal tree. There is one $1$-simplex not in $M$  and there are no relations (since no $2$-simplices). Hence $pi_1 (S^1, x_0) tilde.equiv ideal(a) = F^1 tilde.equiv ZZ$.
+]
+TODO: add diagrams.
+#canvas(length: 1cm, {
+    ngon(3)
+})

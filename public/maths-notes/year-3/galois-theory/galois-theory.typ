@@ -675,10 +675,10 @@
     If $zeta_p in K$, $a in K^times - K^times^p$, then $K(root(p, a))\/K$ is cyclic of degree $p$. In particular, $x^p - a in K[x]$ is irreducible.
 ]
 #theorem[
-    Let $K$ contain $n$-th primitive root of unity, $L\/K$ is cyclic extension of degree $n$. Then $ exists a in K^times: L = K\(root(n, a)\) $
-]
+    Let $K$ contain $n$-th primitive root of unity, $L\/K$ is cyclic extension of degree $n$. Then $ exists a in K^times: L = K\(root(n, a)\) $ Such an $a$ is given by $theta_(b_0)^n$ for some $b_0 in L$, where $ theta_b = b + zeta_n^(-1) sigma(b) + dots.h.c + zeta_n^(-(n - 1)) sigma^(n - 1)(b) $ is *Lagrange resolvent* for $b$, i.e. $L = K(theta_b)$.
+]<lagrange-resolvent>
 #lemma(name: "Artin's lemma")[
-    There exists $b_0 in L$ such that $theta_(b_0) != 0$, where $ theta_(b_0) = b_0 + zeta_n^(-1) b_1 + dots.h.c + zeta_n^(-(n - 1)) b_(n - 1) $ is *Lagrange resolvent* for $b_0$, and $b_i := tau^i (b_0)$. $a = theta_(b_0)^n$ in the above theorem is valid.
+    There exists $b_0 in L$ such that $theta_(b_0) != 0$.
 ]
 
 = Finite fields
@@ -743,7 +743,7 @@
 ]
 #theorem[
     $K = L^(S_n)$ and $L\/K$ is Galois with $Gal(L\/K) tilde.equiv S_n$.
-]
+]<symmetric-polynomial-extension-galois-group-is-symmetric-group>
 #proof[
     - Note that $f(x) = (x - x_1) dots.h.c (x - x_n) = x^n - e_1 x^(n - 1) + dots.h.c + (-1)^n e_n$.
     - Show $L$ splitting field of $f(x)$ over $K$ and $[L: K] <= n!$.
@@ -786,13 +786,59 @@
     - So $f_1 = f_2 + (-3) e_1^(2 - 1) e_2^1 = -3e_1 e_2$ and $f = e_1^3 + f_1 = e_1^3 - 3e_1 e_2$.
 ]
 #example[
-    - Let $theta_1 = x_1 + omega x_2 + omega^2 x_3$, $theta_2 = x_1 + omega^2 x_2 + omega x_3$, where $omega = zeta_3$.
+    - Let $theta_1 = 1/3(x_1 + omega x_2 + omega^2 x_3)$, $theta_2 = 1/3(x_1 + omega^2 x_2 + omega x_3)$, where $omega = zeta_3$.
     - Let $sigma = (1 thick 2 thick 3) in S_3$, then $sigma (theta_1) = omega^2 theta_1$, $sigma (theta_2) = omega theta_2$, hence $ sigma(theta_1^3 + theta_2^3) = omega^6 theta_1^3 + omega^3 theta_2^3 = theta_1^3 + theta_2^3 $
     - Let $tau = (2 thick 3) in S_3$, then $tau(theta_1) = theta_2$, $tau(theta_2) = theta_1$ so $tau(theta_1^3 + theta_2^3) = theta_1^3 + theta_2^3$.
-    - Since $S_3 = ideal(sigma, tau)$, $f(x_1, x_2, x_3) = theta_1^3 + theta_2^3 in QQ[x_1, x_2, x_3]^(S_3)$. Applying the algorithm:
+    - Since $S_3 = ideal(sigma, tau)$, $f(x_1, x_2, x_3) = 27(theta_1^3 + theta_2^3) in QQ[x_1, x_2, x_3]^(S_3)$. Applying the algorithm:
         - $f_1 = f - 2 e_1^3 = 9 (x_1^2 x_2 + dots.h.c)$.
         - $f_2 = f_1 - (-9) e_1 e_2 = 27 x_1 x_2 x_3$.
         - $f_3 = f_2 - 27 e_3 = 0$.
         - So $f = 2 e_1^3 - 9 e_1 e_2 + 27 e_3$.
-    - By a similar process, $theta_1 theta_2 = e_1^2 - 3 e_2$.
+    - By a similar process, $9 theta_1 theta_2 = e_1^2 - 3 e_2$.
+]<example:theta_i-for-cubic>
+
+== Galois theory for cubic polynomials
+
+#example(name: "Solving quadratic")[
+    Let $char(k) != 2$. General quadratic polynomial can be written as $ f(x) = x^2 - e_1 x + e_2 = (x - x_1)(x - x_2) in K[x] $ where $e_1 = x_1 + x_2, e_2 = x_1 x_2 in K = k(e_1, e_2)$. Let $L = k(x_1, x_2) = K(x_1)$, then $L\/K$ is Galois and $Gal(L\/K) = {id, sigma} tilde.equiv S_2 tilde.equiv ZZ\/2$ where $sigma(x_1) = x_2$, $sigma(x_2) = x_1$. Since $L\/K$ cyclic and $zeta_2 = -1 in K$, by @lagrange-resolvent, Lagrange resolvent of $x_1$ is $ theta = theta_(x_1) = x_1 + zeta_2^(-1) sigma(x_1) = x_1 - x_2 $ So $sigma(theta) = -theta$ and $theta^2 = e_1^2 - 4e_2$. $Delta = theta^2$ is *discriminant* of $f(x)$. So we have $x_1 = \(e_1 + sqrt(Delta)\)\/2$, $x_2 = \(e_1 - sqrt(Delta)\)\/2$. If $f(x)$ is irreducible, it has distinct roots, and so Galois group $G_f tilde.equiv ZZ\/2$.
+]
+#example(name: "Solving cubic")[
+    - Let $char(k) != 2, 3$, let $ f(x) = x^3 - e_1 x^2 + e_2 x - e_3 = (x - x_1)(x - x_2)(x - x_3) in K[x] $ where $e_1 = x_1 + x_2 + x_3$, $e_2 = x_1 x_2 + x_1 x_3 + x_2 x_3$, $e_3 = x_1 x_2 x_3 in K = k(e_1, e_2, e_3) subset L = K(x_1, x_2, x_3)$.
+    - By @symmetric-polynomial-extension-galois-group-is-symmetric-group, $Gal(L\/K) = S_3$ with normal subgroup $A_3 tilde.equiv ZZ\/3$. We have tower $K subset M = L^(A_3) subset L$. So $Gal(L\/M) tilde.equiv A_3 tilde.equiv ZZ\/2$, $Gal(M\/K) tilde.equiv S_3 \/ A_3 tilde.equiv ZZ\/2$.
+    - Assume $k$ contains primitive $3$rd root of unity $omega$, so $w^2$ is also primitive $3$rd root of unity. Define $
+        theta_1 & = 1/3(x_1 + omega x_2 + omega^2 x_3), quad t_1 = theta_1^3, \
+        theta_2 & = 1/3(x_1 + omega^2 x_2 + omega x_3), quad t_2 = theta_2^3
+    $ then $t_1, t_2 in M$ and $L = M(theta_1) = M(theta_2)$. By @example:theta_i-for-cubic, $27(theta_1^3 + theta_2^3) = 2e_1^3 - 9e_1 e_2 + 27e_3$, $9 theta_1 theta_2 = e_1^2 - 3e_2$, so $t_1, t_2$ are roots of *quadratic resolvent* of $f(x)$: $ (t - t_1)(t - t_2) = t^2 - ((2e_1^3 - 9e_1 e_2 + 27e_3)/27) t + ((e_1^2 - 3e_2)/9)^3 $
+    - To find roots $x_1, x_2, x_3$ of $f$:
+        - Solve quadratic resolvent to find $t_1, t_2$.
+        - Choose $theta_1 = cbrt(t_1)$, find $theta_2$ from $9 theta_1 theta_2 = e_1^2 - 3e_2$.
+        - Solve the linear system $
+            cases(x_1 + x_2 + x_3 = e_1, x_1 + omega x_2 + omega^2 x_3 = 3 theta_1, x_1 + omega^2 x_2 + omega x_3 = 3 theta_2) quad ==> quad cases(x_1 = e_1\/3 + theta_1 + theta_2, x_2 = e_1\/3 + omega^2 theta_1 + omega theta_2, x_3 = e_1\/3 + omega theta_1 + omega^2 theta_2)
+        $
+]
+#remark[
+    To solve general cubic $f(x) = x^3 + a x^2 + b x + c$, first perform shift: $ f(x - a\/3) = x^3 + p x + q $ then quadratic resolvent is  (_memorise_) *$ t^2 + q t - p^3 / 27 $* with roots $t_1 = theta_1^3$, $t_2 = theta_2^3$, choose $theta_1, theta_2$ such that $theta_1 theta_2 = -p/3$, then roots of $f(x - a\/3)$ are $x_1 = theta_1 + theta_2$, $x_2 = omega^2 theta_1 + omega theta_2$, $omega theta_1 + omega^2 theta_2$.
+]
+#example(name: "Galois groups of cubic polynomials")[
+    Let $char(K) != 2, 3$, $f(x) = x^3 + a x^2 + b x + c in K[x]$, let $L$ be splitting field for $f(x)$ over $K$, then $G_f = Gal(L\/K)$. Let $alpha_1, alpha_2, alpha_3$ be roots of $f(x)$ in $L$.
+    - If $alpha_1, alpha_2, alpha_3 in K$, then $L = K$, $G_f = {id}$.
+    - If $f(x) = (x - alpha_j) g(x)$ where $alpha_j in K$, $g(x) in K[x]$ irreducible quadratic, then $[L: K] = 2$, $G_f tilde.equiv ZZ\/2$.
+    - If $f(x)$ irreducible in $K[x]$, then $K subset K(alpha_1) subset.eq K(alpha_1, alpha_2, alpha_3) = L$, then either $[L: K(alpha_1)] = 1$, so $[L: K] = 3$ and $G_f tilde.equiv A_3 tilde.equiv ZZ\/3$, or $[L: K(alpha_1)] = 2$, so $[L: K] = 6$ and $G_f tilde.equiv S_3$.
+]
+#definition[
+    *Discriminant* of $f(x) = (x - alpha_1)(x - alpha_2)(x - alpha_3)$ is $Delta = delta^2$ where $ delta = (alpha_1 - alpha_2)(alpha_2 - alpha_3)(alpha_3 - alpha_1) $ Note $Delta != 0$ if $f$ has distinct roots.
+]
+#note[
+    If $G_f tilde.equiv A_3$, then $G_f = ideal(tau)$ where $tau: alpha_1 |-> alpha_2$, $alpha_2 |-> alpha_3$, $alpha_3 |-> alpha_1$, then $tau(delta) = delta$ so $delta in L^(G_f) = K$ and $Delta in K^times^2$. But if $G_f tilde.equiv S_3$, then if $tau in A_3$, $tau(delta) = delta$ and if $tau in S_3 - A_3$, then $tau(delta) = -delta$ so $delta in.not K$ but $Delta in K$.
+]
+#theorem[
+    Let $f(x) in K[x]$ irreducible, $deg(f) = 3$. Then
+    - $G_f tilde.equiv A_3 <==> Delta in K^times^2$,
+    - $G_f tilde.equiv S_3 <==> Delta in K^times - K^times^2$.
+]
+#theorem[
+    Let $f(x) = x^3 + a x^2 + b x + c in K[x]$, then $ Delta = 18 a b c - 4a^3 c + a^2 b^2 - 4b^3 - 27c^2 $ For reduced cubic $f(x) = x^3 + p x + q$,  (_memorise_) *$ Delta = -4p^3 - 27q^2 $*
+]
+#note[
+    The reduced form of $f(x)$ has same discriminant as $f(x)$.
 ]

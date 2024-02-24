@@ -909,6 +909,9 @@ Note: Toffoli gate maps computational basis elements to computational basis elem
 #note[
     We assume that an error only affects a single qubit.
 ]
+
+== Correcting single bit flips
+
 #example[
     Assume only error that can occur is flip of single qubit (same as classical case), i.e. each qubit has probability $p$ of $X$ gate being applied. We encode the state in a *code subspace*. Each qubit is encoded as 3 qubits: the *logical qubit* $ket(overline(0))$ is encoded as the _physical_ state $ket(000)$, $ket(overline(1))$ is encoded as $ket(111)$. So $ket(psi) = alpha ket(0) + beta ket(1)$ is mapped to $alpha ket(000) + beta ket(111)$, in the subspace $span{ket(000), ket(111)}$ of the Hilbert space of 3 qubits. The embedding is implemented as
     #figure(quantum-circuit(
@@ -925,19 +928,64 @@ Note: Toffoli gate maps computational basis elements to computational basis elem
         Z_0 Z_1 ket(100) = ket(100), quad Z_0 Z_1 ket(011) = ket(011), & quad Z_0 Z_2 ket(100) = -ket(100), quad Z_0 Z_2 -ket(011) = -ket(011)
     $ So $span{ket(000), ket(111)}$ is $(1, 1)$ eigenspace, $span{ket(001), ket(110)}$ is $(-1, -1)$ eigenspace, $span{ket(010), ket(101)}$ is $(-1, 1)$ eigenspace, $span{ket(100), ket(011)}$ is $(1, -1)$ eigenspace. So if $ket(psi)$ is mapped to $ (1 - epsilon) ket(psi) + delta_2 X_2 ket(psi) + delta_1 X_1 ket(psi) + delta_0 X_0 ket(psi) $ then we measure $Z_0 Z_1$ and $Z_0 Z_2$, which collapses state to either $ ket(psi), quad X_2 ket(psi), quad X_1 ket(psi), quad X_0 ket(psi) $ Since the eigenvalues for this combination of measurements are distinct, they tell us which state $ket(psi)$ has been projected to. So can apply $I, X_2, X_1$ or $X_0$ to map back to $ket(psi)$. This can be implemented as
     #figure(quantum-circuit(
-        lstick($ket(q_2)$), 3, ctrl(4), 5, targ(), targ(), 2, nl,
-        lstick($ket(q_1)$), 1, ctrl(2), 4, targ(), targ(), 5, nl,
-        lstick($ket(q_0)$), ctrl(1), 1, ctrl(2), 1, targ(), 8, nl,
-        lstick($ket(0)$), targ(), targ(), 2, ctrl(-1), 1, ctrl(-2), ctrl(-2), 2, ctrl(-3), meter(), setwire(2), rstick($Z_1 Z_0$), nl,
-        lstick($ket(0)$), 2, targ(), targ(), ctrl(-1), 2, ctrl(-1), 1, ctrl(-4), ctrl(-4), meter(), setwire(2), rstick($Z_2 Z_0$)
+        lstick($ket(q_2)$), 3, ctrl(4), 6, targ(), targ(), 2, nl,
+        lstick($ket(q_1)$), 1, ctrl(2), 5, targ(), targ(), 5, nl,
+        lstick($ket(q_0)$), ctrl(1), 1, ctrl(2), 2, targ(), 8, nl,
+        lstick($ket(a_1) = ket(0)$), targ(), targ(), 3, ctrl(-1), 1, ctrl(-2), ctrl(-2), 2, ctrl(-3), meter(), setwire(2), rstick($Z_1 Z_0$), nl,
+        lstick($ket(a_0) = ket(0)$), 2, targ(), targ(), 1, ctrl(-1), 2, ctrl(-1), 1, ctrl(-4), ctrl(-4), meter(), setwire(2), rstick($Z_2 Z_0$)
     ))
+]
+#note[
+    We cannot use less than 3 qubits, since to encode with $n$ qubits, we need $n + 1$ orthogonal two-dimensional subspaces, which is possible in $2^n$-dimensional $n$ qubit Hilbert space iff $2^n >= 2(n + 1)$.
 ]
 
 == Correcting general single qubit errors
 
 #remark[
+    General error consists of acting with unitary operation $U_i$ on single physical qubit. Can use Bloch sphere rotation representation to write $ U_i = e_i I + a_i X_i + b_i Y_i + c_i Z_i $ So if state $ket(psi)$ is single logical qubit encoded in $n$-qubit Hilbert space, action of single qubit error on qubit $i$ transforms $ket(psi)$ to $ (1 - epsilon) ket(psi) + sum_(i = 1)^n a_i X_i ket(psi) + b_i Y_i ket(psi) + c_i Z_i ket(psi) $ If error depends of state of environment, state after errors occurs is entangled: $ ket(e_1) tp ket(psi) + sum_(i = 1)^n ket(e_(2i)) tp X_i ket(psi) + ket(e_(3i)) tp Y_i ket(psi) + ket(e_(4i)) tp Z_i ket(psi) $ Measuring chosen error syndromes projects qubits to one of the subspaces, so state becomes one of $ ket(psi), quad X_i ket(psi), quad Y_i ket(psi), quad Z_i ket(psi) $ $3n + 1$ 2d subspaces are needed (corresponding to $3n$ single-qubit errors and original state), so we require $ 2^n >= 2(3n + 1) $ which is saturated by $n = 5$.
+]
+#remark[
     In terms of errors, $X$ is a single bit flip, $Z$ is a phase flip ($alpha ket(0) + beta ket(1) -> alpha ket(0) - beta ket(1)$), $Y = i X Z$ is composition of both.
 ]
 #definition[
     We define a *coding* $c: H_1 -> H_n$, $ket(overline(0)) = c(ket(0))$, $ket(overline(1)) = c(ket(1))$.
+]
+#definition[
+    *Steane code* is coding using $7$ qubits, which uses the syndromes $ M_0 := X_0 X_4 X_5 X_6, quad M_1 & := X_1 X_3 X_5 X_6, quad M_2 := X_2 X_3 X_4 X_6, \ N_0 := Z_0 Z_4 Z_5 Z_6, quad N_1 & := Z_1 Z_3 Z_5 Z_6, quad N_2 := Z_2 Z_3 Z_4 Z_6 $ which all commute, so have simultaneous eigenvalues. Code subspace is spanned by $
+        ket(overline(0)) & = 1/(2^(3\/2)) (1 + M_0)(1 + M_1)(1 + M_2) ket(0000000), \
+        ket(overline(1)) & = 1/(2^(3\/2)) (1 + M_0)(1 + M_1)(1 + M_2) ket(1111111)
+    $
+]
+#remark[
+    $M_j^2 = I$ so $M_j (1 + M_j) = 1 + M_j$ so $ket(overline(0)), ket(overline(1))$ are eigenstates of each $M_j$ with eigenvalue $1$. $ket(overline(0)), ket(overline(1))$ are also eigenstates of each $N_k$ with eigenvalue $1$. Each $M_j$ commutes with each $X_i$, and $ X_i Z_j = cases(Z_j X_i & "if" i != j, -Z_j X_i & "if" i = j) quad ==> quad X_i N_j = cases(N_j X_i & "if" N_j "does not contain" Z_i, -N_j X_i & "if" N_j "contains" Z_i) $ Hence $M_j X_i (alpha ket(overline(0)) + beta ket(overline(1))) = X_i M_j (alpha ket(overline(0)) + beta ket(overline(1))) = X_i (alpha ket(overline(0)) + beta ket(overline(1)))$ so this has eigenvalue $1$ for all $M_j$, and $ N_j X_i (alpha ket(overline(0)) + beta ket(overline(1))) = cases(X_i N_j (alpha ket(overline(0)) + beta ket(overline(1))) = X_i (alpha ket(overline(0)) + beta ket(overline(1))) & "if" Z_i in.not N_j ==> "eigenvalue" 1, -X_i N_j (alpha ket(overline(0)) + beta ket(overline(1))) = -X_i (alpha ket(overline(0)) + beta ket(overline(1))) & "if" Z_i in N_j ==> "eigenvalue" -1) $
+    For bit flips $X_i$:
+    #figure(table(
+        columns: (auto, auto, auto, auto, auto, auto, auto, auto),
+        $i$, $0$, $1$, $2$, $3$, $4$, $5$, $6$,
+        $(M_0, M_1, M_2)$, $(1, 1, 1)$, $(1, 1, 1)$, $(1, 1, 1)$, $(1, 1, 1)$, $(1, 1, 1)$, $(1, 1, 1)$, $(1, 1, 1)$,
+        $(N_0, N_1, N_2)$, $(-1, 1, 1)$, $(1, -1, 1)$, $(1, 1, -1)$, $(1, -1, -1)$, $(-1, 1, -1)$, $(-1, -1, 1)$, $(-1, -1, -1)$
+    ))
+    For phase flips (sign errors) $Z_i$:
+    #figure(table(
+        columns: (auto, auto, auto, auto, auto, auto, auto, auto),
+        $i$, $0$, $1$, $2$, $3$, $4$, $5$, $6$,
+        $(M_0, M_1, M_2)$, $(-1, 1, 1)$, $(1, -1, 1)$, $(1, 1, -1)$, $(1, -1, -1)$, $(-1, 1, -1)$, $(-1, -1, 1)$, $(-1, -1, -1)$,
+        $(N_0, N_1, N_2)$, $(1, 1, 1)$, $(1, 1, 1)$, $(1, 1, 1)$, $(1, 1, 1)$, $(1, 1, 1)$, $(1, 1, 1)$, $(1, 1, 1)$,
+    ))
+    Since $X Y = -Y X$, $Z Y = -Y Z$, $ M_j Y_i = cases(Y_i M_j & "if" X_i in.not M_j, -Y_i M_j & "if" X_i in M_j), quad cases(Y_i N_j & "if" Z_i in.not M_j, -Y_i M_j & "if" Z_i in M_j) $ For errors $Y_i$:
+    #figure(table(
+        columns: (auto, auto, auto, auto, auto, auto, auto, auto),
+        $i$, $0$, $1$, $2$, $3$, $4$, $5$, $6$,
+        $(M_0, M_1, M_2)$, $(-1, 1, 1)$, $(1, -1, 1)$, $(1, 1, -1)$, $(1, -1, -1)$, $(-1, 1, -1)$, $(-1, -1, 1)$, $(-1, -1, -1)$,
+        $(N_0, N_1, N_2)$, $(-1, 1, 1)$, $(1, -1, 1)$, $(1, 1, -1)$, $(1, -1, -1)$, $(-1, 1, -1)$, $(-1, -1, 1)$, $(-1, -1, -1)$,
+    ))
+]
+#example[
+    If $(M_j, N_j)$ measured and eigenvalues are $(1, 1, 1)$, $(1, -1, -1)$ then error is $X_3$, and we correct it by applying $X_3^(-1) = X_3$.
+]
+
+== Fault tolerant gates
+
+#definition[
+    A logical gate $overline(G)$ is *transversal* if it is a tensor product of single qubit gates.
 ]

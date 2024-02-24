@@ -6,6 +6,7 @@
 
 #let ideal(..gens) = $angle.l #gens.pos().join(",") angle.r$
 #let pm = $plus.minus$
+#let Cl = $op("Cl")$
 
 == Prerequisites
 
@@ -556,7 +557,7 @@ $
 
 #lemma[
     For every non-zero ideal $I$ of $cal(O)_K$, $N(I) in I$, hence $I sect ZZ != ideal(0)$.
-]
+]<ideal-contains-its-norm>
 #notation[
     For $0 != alpha in cal(O)_K$, define $N(alpha) := N\(ideal(alpha)_(cal(O)_K)\)$.
 ]
@@ -632,7 +633,90 @@ $
     - If $p$ ramifies, then $P = overline(P)$ and $N(P) = p$.
     - If $p$ splits, then $ideal(p)_(cal(O)_K) = P overline(P)$, $P != overline(P)$ and $N(P) = N\(overline(P)\) = p$.
     In all cases, $P overline(P) = ideal(N(P))_(cal(O)_K)$.
-]
+]<quadratic-field-kd-cases>
 #example[
     Let $theta^3 + 3 theta - 1 = 0$, $K = QQ(theta)$. We have $cal(O)_K = ZZ[theta]$. To factorise $ideal(5)_(cal(O)_K)$ and $ideal(11)_(cal(O)_K)$: $-1$ and $2$ are roots of $x^3 + 3x - 1 mod 5$, so we get $x^3 + 3x - 1 equiv (x + 1)(x + 2)^2 mod 5$. So by Kummer-Dedekind, $ ideal(5)_(cal(O)_K) = ideal(5, theta + 1) ideal(5, theta + 2)^2 $ Only root in $overline(p_theta)$ in $FF_11$ is $-4$, so $overline(p_theta)(x) = (x + 4)(x^2 - 4x + 8) mod 11$ and $x^2 - 4x + 8 = (x - 2)^2 + 4$ is irreducible as $-4$ is not square $mod 11$. So by Kummer-Dedekind, $ ideal(11)_(cal(O)_K) = ideal(11, theta + 4) ideal(11, theta^2 - 4 theta + 8) $ To factorise $ideal(2 theta - 3)_(cal(O)_K)$: $ N_K (2 theta - 3) = -N_K (2) N_K (3/2 - theta) = -8 dot.op p_theta (3/2) = -8(27/8 + 9/2 - 1) = -55 $ So $ideal(2 theta - 3) = P_5 P_11$ where $N(P_5) = 5$, $N(P_11) = 11$, $P_5, P_11$ prime. So $P_5 | ideal(5)$, so $P_5 = ideal(5, theta + 1)$ or $ideal(5, theta + 2)$. Now $2 theta - 3 = 2(theta + 1) - 5 in ideal(5, theta + 1)$, so $ideal(5, theta + 1) | ideal(2 theta - 3)$, hence $P_5 = ideal(5, theta + 1)$. Now $P_11 | ideal(11)$ so $P_11 = ideal(11, theta + 4)$ or $ideal(11, theta^2 - 4theta + 8)$. But by Kummer-Dedekind, the latter has norm $11^2$ which is a contradiction (since $11^2 divides.not N(ideal(2 theta - 3)) = 55$). So $P_11 = ideal(11, theta + 4)$.
+]
+
+= The ideal class group
+
+#notation[
+    Let $R = cal(O)_K$ for number field $K$.
+]
+#definition[
+    *(Ideal) class group* of $R$ (or of $K$) is $"Cl"(R) := cal(I)(R)/cal(P)(R)$. For fractional ideal $I in cal(I)(R)$, let $[I] = I dot.op cal(P)(R) = {ideal(lambda)_R I: lambda in K^times} = {lambda I: lambda in K^times}$ denote *class* of $I$ in $"Cl"(R)$.
+]
+#proposition[
+    - $[I] = e$ iff $I in cal(P)(R)$ $I$ is principal.
+    - $[I] = [J]$ iff $I = ideal(lambda)_R J$ for some $lambda in K^times*$ iff $alpha I = beta J$ for some $alpha, beta in R - {0}$.
+    - $[I] dot.op [J] = I J dot.op cal(P)(R) = [I J]$.
+    - $[I]^(-1) = [I^(-1)]$.
+]
+#proposition[
+    $Cl(R)$ is the trivial group ($Cl(R) = e$) iff $R$ is a UFD iff $R$ is a PID.
+]
+#proof[
+    - To show PID $==>$ UFD, enough to show every prime ideal is principal.
+    - Use that prime ideal $P$ lies over some prime $p in ZZ$.
+    - Use that in $R$, $p = pi_1 dots.h.c pi_r$ is factorisation into irreducibles.
+]
+#remark[
+    If $ideal(alpha)_R = P Q$ then $e = [ideal(alpha)_R] = [P Q] = [P] [Q]$ so $[P] = [Q]^(-1)$.
+]
+#proposition[
+    If $K$ is quadratic number field, $I$, $J$ ideals, then $\[overline(I)\] = [I]^(-1)$ and $I overline(J)$ is principal iff $[I] = [J]$.
+]
+#proof[
+    Use @quadratic-field-kd-cases for first part.
+]
+#example[
+    - Let $K = QQ\(sqrt(-29)\)$ so $cal(O)_K = ZZ\[sqrt(-29)\] = R$. $p_(sqrt(-29))(x) = x^2 + 29$ so by Kummer-Dedekind and @quadratic-field-kd-cases, $
+        ideal(2)_R & = P_2^2, quad P_2 = ideal(2, 1 + sqrt(-29))_R, quad N(P_2) = 2, \
+        ideal(3)_R & = P_3 overline(P_3), quad P_3 = ideal(3, 1 - sqrt(-29))_R, quad N(P_3) = 3, \
+        ideal(5)_R & = P_5 overline(P_5), quad P_5 = ideal(5, 1 - sqrt(-29))_R, quad N(P_5) = 5
+    $
+    - If $P_2$ were principal, then $P_2 = ideal(a + b sqrt(-29))$ but $N(P_2) = 2 = a^2 + 29b^2$: contradiction. So $[P_2] != e$ but $[P_2]^2 = e$ as $P_2^2 = ideal(2)_R$ is principal.
+    - Similarly, $P_5$ is not principal, but also $P_5^2$ is not principal, as if it was, then $P_5^2 = ideal(a + b sqrt(-29))$ so $25 = a^2 + 29b^2 ==> a = plus.minus 5$, but then $P_5^2 = ideal(5) = P_5 overline(P_5)$, but $P_5 != overline(P_5)$.
+    - But $N\(3 + 2 sqrt(-29)\) = 5^3$, so $ideal(3 + 2 sqrt(-29))_R | (5^3)_R$ by @ideal-contains-its-norm, so $ideal(3 + 2 sqrt(-29)) = P_5^a overline(P_5)^(3 - a)$; but $5 divides.not 3 + 2 sqrt(-29)$, so we can't have $P_5 overline(P_5) | ideal(3 + 2 sqrt(-29))$. So $ideal(3 + 2 sqrt(-29)) = P_5^3$ or $overline(P_5)^3$, and $3 + 2 sqrt(-29) in P_5$ so $ideal(3 + 2 sqrt(-29)) = P_5^3$, hence $[P_5]^3 = e$, so $[P_5]$ has order $3$.
+    - Again, $[P_3] != e$. As $N\(1 + sqrt(-29)\) = 30$, $ideal(1 + sqrt(-29)) | ideal(30) = ideal(2) ideal(3) ideal(5)$, so we see $ideal(1 + sqrt(-29)) = P_2 overline(P_3)overline(P_5)$, hence $e = [P_2] [P_3]^(-1) [P_5]^(-1)]$ and so $[P_3] = [P_2] [P_5]^(-1)$. Since product of two elements of coprime orders $m, n$ in abelian group has order $m n$, we have $ "ord"([P_3]) = "ord"([P_2] \[overline(P_5)\]) = 2 dot.op 3 = 6 $ Also, $[P_3]^2 = \[overline(P_5)\]^2 = [P_5]$ so $[P_3]^3 = [P_2]$ and $[P_3]^4 = [P_5]^(-1)$. Hence $Cl(R)$ contains a cyclic subgroup of order $6$ generated by $[P_3]$.
+]
+
+== Finiteness of the class group
+
+#lemma[
+    Let $C > 0$, then there are finitely many ideals of $R$ of norm $<= C$.
+]
+#proof[
+    Show if $N(I) = m$, then $I divides ideal(m)_R$, consider prime factorisation of $ideal(m)_R$.
+]
+#lemma[
+    For any number field $K$, there is $C_K in NN$ such that for any nonzero ideal $J subset.eq R$, $ exists 0 != s in J: N(s) <= C_K dot.op N(J) $
+]
+#proof[
+    - Let ${x_1, ..., x_n}$ be integral basis, define $f(c_1, ..., c_n) = N_K (c_1 x_1 + dots.h.c + c_n x_n)$ which is homogenous polynomial in $c_1, ..., c_n$ of degree $n$.
+    - Let $C_K = max\{|f(c_1, ..., c_n)|: |c_1|, ..., |c_n| <= 1\}$, then $|f(c_1, ..., c_n)| <= max(|c_1|, ..., |c_n|)^n C_K$.
+    - Let $c_i$ run through $0, ..., floor(N(I)^(1\/n))$, then there are $ (1 + floor(N(I)^(1\/n)))^n > N(I) = |R\/I| $ possibilities for $c_1, ..., c_n$.
+    - By pigeonhole principle, there are $c_1, ..., c_n$ and $c'_1, ..., c'_n$ such that $ c_1 x_1 + dots.h.c + c_n x_n + I = c'_1 x_1 + dots.h.c + c'_n x_n + I $
+    - Set $s = (c_1 - c'_1) x_1 + dots.h.c + (c_n - c'_n) x_n in I$, then $N(s) <= C_K N(I)$.
+]
+#corollary[
+    Let $underline(c) in Cl(R)$, then there is ideal $I subset.eq R$ with $[I] = underline(c)$ and $N(I) <= C_K$.
+]
+#proof[
+    Let $J subset.eq R$ such that $[J] = underline(c)^(-1)$, then there is $s in J$ with $N(s) <= C_K N_J$, so $ideal(s) = I J$ for some $I subset.eq R$, then use multiplicativity of norm.
+]
+#theorem[
+    Let $K$ number field, $R = cal(O)_K$, then $Cl(R)$ is finite.
+]
+#definition[
+    *Class number* of $K$ is $h_K := abs(Cl(R))$.
+]
+
+== The Minkowski bound
+
+#theorem(name: "Minkowski bound")[
+    If $K = QQ(theta)$ and $p_theta$ has $s$ real roots, $2t$ complex roots, $n := s + 2t$, then for every $underline(c) in Cl(R)$, we can find a (non-fractional) ideal $I$ with $[I] = underline(c)$ and $ N(I) <= B_K := (4/pi)^t (n!)/(n^n) sqrt(abs(Delta_K)) $ i.e. we can take $C_K = B_K$.
+]
+#example[
+    Let $K = QQ\(sqrt(-29)\)$, so $R = ZZ\[sqrt(-29)\]$, then every ideal class has representative of norm $<= (4\/pi) sqrt(29) < 7$ so of norm $1, 2, ..., 6$, so is product of $P_2$, $P_3$, $overline(P_3)$, $P_5$, $overline(P_5)$, so $Cl(R) = ideal([P_3])$ is cyclic of order $6$.
 ]

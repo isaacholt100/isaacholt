@@ -569,7 +569,7 @@ $ So $G = mat(1, 2, 0, 3, 4; 0, 0, 1, 5, 6)$ is generator matrix for $C$ and $di
     - $<==$: use non-zero entries of $vd(c)$ as coefficients for linear dependence between $d$ corresponding columns of $A$.
 ]
 #example[
-    Let $C = {vd(x) in FF_7^5: vd(x) A^T = vd(0)}$ where $ A = mat(3, 1, 1, 4, 1; 2, 2, 5, 1, 4; 6, 3, 5, 0, 2) in M_(3, 5)(FF_7) $ We have $(0, 1, 2, 0, 4) A^T = vd(0)$. So $(0, 1, 2, 0, 4) in C$, so $C$ has codeword of weight $3$. Also, $1 (1, 2, 3) + 2 (1, 5, 5) + 4 (1, 2, 4) = (0, 0, 0)$ so $A$ has $3$ linearly independent columns.
+    Let $C = {vd(x) in FF_7^5: vd(x) A^T = vd(0)}$ where $ A = mat(3, 1, 1, 4, 1; 2, 2, 5, 1, 4; 6, 3, 5, 0, 2) in M_(3, 5)(FF_7) $ We have $(0, 1, 2, 0, 4) A^T = vd(0)$. So $(0, 1, 2, 0, 4) in C$, so $C$ has codeword of weight $3$. Also, $1 (1, 2, 3) + 2 (1, 5, 5) + 4 (1, 2, 4) = (0, 0, 0)$ so $A$ has $3$ linearly dependent columns.
 ]
 #theorem[
     Let $C = {vd(x) in FF_q^n: vd(x) A^T = vd(0)}$ for some $A in M_(m, n)(FF_q)$. Then there is a linearly dependent set of $d(C)$ columns of $A$, but any set of $d(C) - 1$ columns of $A$ is linearly independent.
@@ -584,4 +584,28 @@ $ So $G = mat(1, 2, 0, 3, 4; 0, 0, 1, 5, 6)$ is generator matrix for $C$ and $di
 
 #theorem[
     Let $f(x) in FF_q [x]$, then $FF_q [x] \/ ideal(f(x))$ is ring. $FF_q [x] \/ ideal(f(x))$ is field iff $f(x)$ irreducible in $FF_q [x]$.
+]
+#proposition[
+    If $f(x) = lambda m(x) in FF_q [x]$, with $0 != lambda in FF_q$, then $ FF_q [x] \/ ideal(f(x)) = FF_q [x] \/ ideal(m(x)) $ In particular, we only need to consider monic polynomials.
+]
+#definition[
+    $alpha in FF_q$ is *primitive* if $ FF_q^times = {alpha^j: j in {0, ..., q - 2}} $ Every finite field has a primitive element.
+]
+#definition[
+    Let $f(x) in FF_q [x]$ irreducible. If $x$ is primitive in $FF_q [x] \/ ideal(f(x))$, then $f(x)$ is *primitive polynomial* over $FF_q$.
+]
+#theorem[
+    Let $q = p^r$, $p$ prime, $r >= 2$ integer. Then there exists monic, irreducible $f(x) in FF_p [x]$ with $deg(f) = r$. In particular, $FF_q = FF_p [x] \/ ideal(f(x))$ is field with $q = p^r$ elements. Moreover, we can choose $f(x)$ to be primitive.
+]
+
+== Cyclic codes
+
+#definition[
+    Code $C$ is *cyclic* if it is linear and $ (a_0, ..., a_(n - 1)) in C <==> (a_(n - 1), a_0, ..., a_(n - 2)) in C $ i.e. any cyclic shift of a codeword is also a codeword.
+]
+#notation[
+    Let $R_n = FF_q [x] \/ (x^n - 1)$. Note $R_n$ is not field. There is correspondence between elements in $R_n$ and vectors in $FF_q^n$: $ a(x) = a_0 + dots.h.c + a_(n - 1) x^(n - 1) <--> vd(a) = (a_0, ..., a_(n - 1)) $
+]
+#lemma[
+    If $a(x) <--> vd(a)$, then $x a(x) <--> (a_(n - 1), a_0, ..., a_(n - 2))$.
 ]
