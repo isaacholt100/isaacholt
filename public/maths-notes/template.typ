@@ -45,6 +45,7 @@
         font: "New Computer Modern",
 		size: 12pt,
 	)
+    set par(justify: true)
 	set math.mat(delim: "[")
     set math.vec(delim: "[")
 	set heading(numbering: "1.")

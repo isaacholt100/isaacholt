@@ -925,7 +925,7 @@ Note: Toffoli gate maps computational basis elements to computational basis elem
         Z_0 Z_1 ket(000) = ket(000), quad Z_0 Z_1 ket(111) = ket(111), & quad Z_0 Z_2 ket(000) = ket(000), quad Z_0 Z_2 ket(111) = ket(111) \
         Z_0 Z_1 ket(001) = -ket(001), quad Z_0 Z_1 ket(110) = -ket(110), & quad Z_0 Z_2 ket(001) = -ket(001), quad Z_0 Z_2 ket(110) = -ket(110) \
         Z_0 Z_1 ket(010) = -ket(010), quad Z_0 Z_1 ket(101) = -ket(101), & quad Z_0 Z_2 ket(010) = ket(010), quad Z_0 Z_2 ket(101) = ket(101) \
-        Z_0 Z_1 ket(100) = ket(100), quad Z_0 Z_1 ket(011) = ket(011), & quad Z_0 Z_2 ket(100) = -ket(100), quad Z_0 Z_2 -ket(011) = -ket(011)
+        Z_0 Z_1 ket(100) = ket(100), quad Z_0 Z_1 ket(011) = ket(011), & quad Z_0 Z_2 ket(100) = -ket(100), quad Z_0 Z_2 ket(011) = -ket(011)
     $ So $span{ket(000), ket(111)}$ is $(1, 1)$ eigenspace, $span{ket(001), ket(110)}$ is $(-1, -1)$ eigenspace, $span{ket(010), ket(101)}$ is $(-1, 1)$ eigenspace, $span{ket(100), ket(011)}$ is $(1, -1)$ eigenspace. So if $ket(psi)$ is mapped to $ (1 - epsilon) ket(psi) + delta_2 X_2 ket(psi) + delta_1 X_1 ket(psi) + delta_0 X_0 ket(psi) $ then we measure $Z_0 Z_1$ and $Z_0 Z_2$, which collapses state to either $ ket(psi), quad X_2 ket(psi), quad X_1 ket(psi), quad X_0 ket(psi) $ Since the eigenvalues for this combination of measurements are distinct, they tell us which state $ket(psi)$ has been projected to. So can apply $I, X_2, X_1$ or $X_0$ to map back to $ket(psi)$. This can be implemented as
     #figure(quantum-circuit(
         lstick($ket(q_2)$), 3, ctrl(4), 6, targ(), targ(), 2, nl,
@@ -984,8 +984,101 @@ Note: Toffoli gate maps computational basis elements to computational basis elem
     If $(M_j, N_j)$ measured and eigenvalues are $(1, 1, 1)$, $(1, -1, -1)$ then error is $X_3$, and we correct it by applying $X_3^(-1) = X_3$.
 ]
 
-== Fault tolerant gates
+== Fault-tolerant gates
 
 #definition[
+    A gate $overline(U)$ is *fault-tolerant* if, when there is error $U_i$ on single physical qubit before the unitary operation, acting with the unitary produces state which differs from desired state only by a single-qubit error $V_j$, i.e. $ overline(U) U_i ket(psi) = V_j overline(U) ket(psi) $ This equivalent to $overline(U)$ mapping each eigenspace of the error syndromes to some eigenspace of the error syndromes.
+]
+#definition[
     A logical gate $overline(G)$ is *transversal* if it is a tensor product of single qubit gates.
+]
+#proposition[
+    Every transversal gate is fault tolerant.
+]
+#example[
+    The operation $overline(X)$, acting on the logical Hilbert space $H_7$, acts as the #NOT operator on the code subspace $span{ket(0), ket(1)}$: $ overline(X) = X_6 X_5 X_4 X_3 X_2 X_1 X_0, quad ==> overline(X) ket(overline(0)) = ket(overline(1)), quad overline(X) ket(overline(1)) = ket(overline(0)) $
+]
+#example[
+    The operation $overline(Z) = Z_6 Z_5 Z_4 Z_3 Z_2 Z_1 Z_0$ commutes with each $M_i$ and leaves $ket(0000000)$ invaraint so leaves $ket(overline(0))$ invariant. $overline(Z)$ anti-commutes with $overline(X)$ so acts within the code subspace and $overline(Z) ket(overline(0)) = ket(overline(1))$, $overline(Z) ket(overline(1)) = -ket(overline(1))$, so acts as Pauli $Z$ on logical qubits.
+]
+#example[
+    $overline(H) = H_6 H_5 H_4 H_3 H_2 H_1 H_0$ realises the Hadamard gate on logical qubits: $ overline(H) ket(overline(0)) = 1/sqrt(2) (ket(overline(0)) + ket(overline(1))), quad overline(H) ket(overline(1)) = 1/sqrt(2) (ket(overline(0)) - ket(overline(1))) $ We have $H X H = Z$ so $H_i X_i = Z_i H_i$, thus $ M_j overline(H) ket(psi) = overline(H) N_j ket(psi), quad N_j overline(H) ket(psi) = overline(H) M_j ket(psi) $ Hence if $ket(psi)$ is in an eigenspace of $M_j$ and $N_j$, $overline(H) ket(psi)$ also lies in an eigenspace of $M_j$ and $N_j$ but with the eigenvalues of $M_j$ and $N_j$ swapped. This means $overline(H)$ preserves the code subspace, so $overline(H) ket(overline(0))$ and $overline(H) ket(overline(1))$ lie in the code subspace. Now $ overline(H) ket(overline(0)) = overline(H) 1/2^(3\/2) (1 + M_0)(1 + M_1)(1 + M_2) ket(0000000) = 1/2^(3\/2) (1 + N_0)(1 + N_1)(1 + N_2) overline(H) ket(0000000) $ $overline(H)$ maps $ket(0000000)$ to uniform superposition of all computational basis states, and $1 + N_j$ is projector onto $+1$ eigenspace of $N_j$, so we have the component of the uniform superposition which lies in the code subspace, i.e. $ overline(H) ket(overline(0)) = 1/sqrt(2) (ket(overline(0)) + ket(overline(1))) $ Similarly, $ overline(H) ket(overline(1)) = overline(H) 1/2^(3\/2) (1 + M_0)(1 + M_1)(1 + M_2) ket(1111111) = 1/2^(3\/2) (1 + N_0)(1 + N_1)(1 + N_2) overline(H) ket(1111111) $ $overline(H)$ maps $ket(1111111)$ to uniform superposition of all computational basis states, with each state with an odd number of $1$'s negated, hence $ overline(H) ket(overline(1)) = 1/sqrt(2) (ket(overline(0)) - ket(overline(1))) $ as all computational basis states in $ket(overline(1))$ have odd number of $1$'s.
+]
+#example[
+    If two logical qubits are encoded with 14 physical qubits using Steane code, a logical #CNOT can be implemented as $ overline(CNOT) = product_(i = 1)^7 C_i "NOT"_i $ where $C_i "NOT"_i$ is #CNOT with $i$th qubit in first logical qubit as control and $i$th qubit in second logical qubit as target.
+]
+#theorem(name: "Eastin, Knill")[
+    Not all gates in a UGS can be transversal.
+]
+
+= Quantum algorithms
+
+== Simon's algorithm
+
+#definition[
+    *Bitwise addition* of $a$ and $b$ is $a xor b = c$ where $c_i = a_i + b_i mod 2$.
+]
+#definition[
+    *Simon's problem* is: given an $n$-bit function $f: {0, 1}^n -> {0, 1}^n$, with $f(x xor a) = f(x)$ for all $x$ and $f(x) != f(y)$ otherwise, determine the period $a$.
+]
+#example[
+    Let $f: {0, 1}^n -> {0, 1}^n$ be $n$-bit function with period $a != 0$, so $f(x xor a) = f(x)$ and $f(x) != f(y)$ otherwise. To determine $a$ classically, we compute $f(x_i)$ until we find two values with $f(x_i) = f(x_j)$, then $a = x_i xor x_j$. After $m$ values are computed, we know $a != x_i xor x_j$ for all $i, j <= m$, so at most $1/2 m(m - 1)$ values are eliminated. There are $2^n - 1$ values for $a$, so this has complexity $O(2^(n\/2))$.
+]
+#definition[
+    *Bitwise product* of $x = (x_(n - 1)...x_0)_2$ and $y = (y_(n - 1)...y_0)_2$ is $ x dot.op y = x_(n - 1) y_(n - 1) dots.h.c + x_0 y_0 quad mod 2 $
+]
+#proposition[
+    $ H^(tp n) ket(0) & = 1/2^(n\/2) sum_(k = 0)^(2^n - 1) ket(k) quad "and" \ H^(tp n) ket(x) & = times.circle.big_(i = 0)^(n - 1) 1/sqrt(2) ((-1)^(0 dot.op x_i) ket(0) + (-1)^(1 dot.op x_i) ket(1)) = 1/2^(n\/2) sum_(k = 0)^(2^n - 1) (-1)^(k dot x) ket(k) $
+]
+#algorithm(name: "Simon's algorithm")[
+    Define the unitary operator $U_f$ acting on $n$ input qubits $ket(x)$ and $n$ output qubits $ket(m)$: $ U_f ket(x) ket(m) = ket(x) ket(m xor f(x)) $
+    + Start with system in state $ket(0)_n tp ket(0)_n$ where $ket(0)_n = ket(00...0)$.
+    + Apply $H^(tp n) tp I$ (i.e. acting on input qubits) to give $ 1/(2^(n\/2)) sum_(k = 0)^(2^n - 1) ket(k) tp ket(0)_n $
+    + Apply $U_f$ where $U_f (ket(x) tp ket(m)) = ket(x) tp (ket(m xor f(x)))$ to give $ 1/2^(n\/2) sum_(k = 0)^(2^n - 1) ket(0) tp ket(0 tp f(k)) = 1/2^(n\/2) sum_(k = 0)^(2^n - 1) ket(k) tp ket(f(k)) $
+    + Measure the ancillary bits (the $ket(f(k))$) in the computational basis, yielding a random $f(x_0)$. The state collapses to $ 1/sqrt(2) (ket(x_0) + ket(x_0 xor a)) tp ket(f(x_0)) $
+    + Discard ancillary bits and apply $H^(tp n)$ to input bits $1/sqrt(2) (ket(x_0) + ket(x_0 xor a))$ to give $
+        H^(tp n) 1/sqrt(2) (ket(x_0) + ket(x_0 xor a)) & = 1/sqrt(2) (H^(tp n) ket(x_0) + H^(tp n) ket(x_0 xor a)) \
+        & = 1/sqrt(2) 1/2^(n\/2) (sum_(k = 0)^(2^n - 1) (-1)^(k dot.op x_0) ket(k) + sum_(k = 0)^(2^n - 1) (-1)^(k dot.op (x_0 xor a)) ket(k)) \
+        & = 1/2^((n + 1)\/2) sum_(k = 0)^(2^n - 1) (-1)^(k dot.op x_0) (1 + (-1)^(k dot.op a)) ket(k) \
+        & = 1/2^((n - 1)\/2) sum_(k = 0: \ k dot a = 0)^(2^n - 1) (-1)^(k dot.op x_0) ket(k)
+    $
+    + Measure the state in the computational basis, which gives $k in {0, ..., 2^n - 1}$ such that $k dot a = 0 thick mod 2$.
+    + $a$ satisfies $n$ linearly independent equations of the form $k dot a = 0 thick mod 2$, so $O(n)$ measurements ($O(n)$ values of $k$) are needed to obtain all bits of $a$.
+    This can be implemented as
+    #figure(quantum-circuit(
+        lstick($ket(q_1)$), gate($H$), mqgate($U_f$, n: 2), gate($H$), meter(), setwire(2), 1, nl,
+        lstick($ket(q_0) = ket(0)$), 2, meter(), setwire(2), 2
+    ))
+]
+#example[
+    Let $f: {0, 1}^3 -> {0, 1}^3$, $a = 010$, and $ f(000) & = f(010) = x, quad f(001) = f(011) = y, \ f(100) & = f(110) = z, quad f(101) = f(111) = w $ Using Simon's algorithm:
+    - Applying $H^(tp 3)$ to $ket(000) tp ket(000)$ gives $ 1/(2 sqrt(2)) (ket(000) + ket(001) + ket(010) + ket(011) + ket(100) + ket(101) + ket(110) + ket(111)) tp ket(000) $
+    - Applying $U_f$ gives $ 1/(2 sqrt(2)) ((ket(000) + ket(010)) tp ket(x) + (ket(001) + ket(011)) tp ket(y) + (ket(100) + ket(110)) tp ket(z) + (ket(101) + ket(111)) tp ket(w)) $
+    - Measure the ancillary bits, assuming it yields value corresponding to $ket(x)$, so state has collapsed to $ 1/sqrt(2) (ket(000) + ket(010)) tp ket(x) $
+    - Apply $H^(tp 3)$ to the input bits, giving $ 1/2^((3 - 1)\/2) sum_(k = 0: \ k dot a = 0)^(2^3 - 1) ket(k) = 1/2 (ket(000) + ket(001) + ket(101) + ket(100)) $
+    - Measuring $000$ gives no information. Measuring $001$ implies that $a_0 = 0$. Measuring $010$ implies that $a_1 = 0$. Measuring $101$ implies that $a_0 + a_2 = 0$. So measuring the last three imply $a = 010$ (since $a != 000$).
+]
+
+== Quantum Fourier transform
+
+#definition[
+    *Quantum Fourier transform* is unitary operation $U_"FT"$ acting on the $n$ qubit space $H_n$, given by action on computational basis states: $ U_"FT" ket(x) = 1/2^(n\/2) sum_(y = 0)^(2^n - 1) e^(2 pi i x y \/ 2^n) ket(y) $ It is quantum version of the discrete Fourier transform: by linearity, if $ket(psi) = sum_(x = 0)^(2^n - 1) psi_x ket(x)$ and $ket(phi) = U_"FT" ket(psi) = sum_(y = 0)^(2^n - 1) phi_y ket(y)$, then $ phi_y = 1/2^(n\/2) sum_(x = 0)^(2^n - 1) e^(2pi i x y \/2^n) psi_x $
+]
+#note[
+    Can check $U_"FT"$ is unitary by checking $U_"FT" ket(x)$ has norm $1$ and $U_"FT" ket(x)$ orthogonal to $U_"FT" ket(x')$ for $x != x'$.
+]
+#example[
+    Note that classically, computing $phi_y$ requires $2^n$ additions. If $y = y_(n - 1)...y_0$, i.e. $y = y_(n - 1) 2^(n - 1) + dots.h.c + y_0$, then $ e^(2 pi i x y\/2^n) = product_(l = 0)^(n - 1) e^(2pi i x y_l \/ 2^(n - l)) $ which gives $ U_"FT" ket(x) = 1/2^(n\/2) sum_(y = 0)^(2^n - 1) e^(2pi i x y\/2^n) ket(y) = 1/2^(n\/2) times.circle.big_(l = 0)^(n - 1) (ket(0) + e^(2pi i x \/2^(n - l)) ket(1)) $ Note this is similar to $ H^(tp n) ket(x) = times.circle.big_(i = 0)^(n - 1) 1/sqrt(2) (ket(0)_i + (-1)^(x_i) ket(1)_i) = sum_(y = 0)^(2^n - 1) (-1)^(x dot y) ket(y) $ However, for $U_"FT"$, phases in individual qubit states depend on $x$, not just $x_l$, so $U_"FT"$ cannot be realised only by single-qubit operations. Now also $ e^(2pi x \/2^(n - l)) = e^(2pi i(x_(n - 1) 2^(l - 1) + dots.h.c + x_0 2^(l - n))) = product_(m = 0)^(n - 1) e^(2pi i x_m \/2^(n - l - m)) = product_(m = 0)^(n - l - 1) e^(2pi i x_m\/2^(n - l - m)) $ since $e^(2pi i r) = 1$ for $r in ZZ$. So phase for $l = n - 1$ only depends on $x_0$, phase for $l = n - 2$ only depends on $x_0$ and $x_1$: $ U_"FT" ket(x) = 1/2^(n\/2) (ket(0) + e^(i pi x_0) ket(1)) tp (ket(0) + e^(i pi x_1) e^(i pi x_0 \/2)) tp dots.c $ When $U_"FT"$ is realised, order of qubits is reversed. QFT can be implemented of controlled-phase gates, where we apply unitaries $ R_k = mat(1, 0; 0, e^(i pi\/2^k)) $ Each qubit $i$ has controlled-$R_k$ applied, controlled by each qubit $j < i$, where $k = i - j$. E.g. for $n = 3$,
+    #figure(quantum-circuit(
+        lstick($ket(q_2)$), gate($H$), gate($S$), gate($T$), 3, swap(2), 1, nl,
+        lstick($ket(q_1)$), 1, ctrl(-1), 1, gate($H$), gate($S$), 3, nl,
+        lstick($ket(q_0)$), 2, ctrl(-2), 1, ctrl(-1), gate($H$), swap(-2), 1
+    ))
+    where $times$ indicates swapping qubits. One gate is applied to qubit $0$, two gates applied to qubit $1$, ..., $n$ gates applied to qubit $n - 1$, so total number of gates required to implemented QFT is $O(n^2)$
+]
+
+== Shor's algorithm
+
+#example[
+    Given $N in NN$, pick random $1 < y < N$. If $gcd(y, N) != 1$, we can find a divisor of $N$. If $gcd(y, N) = 1$, define $ f_y: ZZ -> ZZ\/N, quad f_y (a) = y^a quad mod N $ Period of $f$ is smallest $r in NN$ such that $f(r) = 1$. We have $f(a) = f(b)$ iff $a - b = 0 mod r$. Let $r$ be even (if $r$ odd, start again with different $y$). Now $ y^r - 1 = 0 mod N ==> (y^(r\/2) - 1)(y^(r\/2) + 1) = 0 mod N $ If either factor on LHS is multiple of $N$, start again with different $y$. Otherwise, we know $y^(r\/2)$ and $N$ have common factor $< N$, and so use Euclid's algorithm to find $gcd(y^(r\/2) - 1, N)$.
 ]

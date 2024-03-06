@@ -416,7 +416,7 @@
 - $Gamma$ and $Phi$ are inclusion-reversing: $M_1 subset.eq M_2 ==> Gamma(M_2) subset.eq Gamma(M_1)$, and $H_1 subset.eq H_2 ==> Phi(H_2) subset.eq Phi(H_1)$.
 #theorem(name: "Fundamental theorem of Galois theory - Theorem A")[
     For finite Galois extension $L\/K$,
-    - $Gamma: cal(F) -> cal(G)$ and $Phi: cal(F) -> cal(F)$ are mutually inverse bijections (the *Galois correspondence*).
+    - $Gamma: cal(F) -> cal(G)$ and $Phi: cal(G) -> cal(F)$ are mutually inverse bijections (the *Galois correspondence*).
     - For $M in cal(F)$, $L\/M$ is Galois and $|Gal(L\/M)| = [L: M]$.
     - For $H in cal(G)$, $L\/L^H$ is Galois and $Gal(L\/L^H) = H$.
 ]
@@ -720,6 +720,9 @@
 #theorem[
     Let $q = p^m$, then $m N_p (m) = |\{alpha in FF_q: FF_p (alpha) = FF_q\}|$.
 ]
+#remark[
+    To use above theorem, note that $FF_p (alpha) != FF_(p^m)$ iff $alpha$ belongs to proper subfield of $FF_(p^m)$.
+]
 #example[
     We construct $L = FF_(3^16)$ by finding irreducible polynomial of degree $16$ in $FF_3 [x]$.
     - $FF_9 = FF_3 (theta)$ where $theta^2 + 1 = 0$, $FF_9 = {a + b theta: a, b in FF_3}$. $K := FF_9$ contains primitive $8$-th root of unity since $FF_9^times tilde.equiv ZZ\/8$.
@@ -841,4 +844,62 @@
 ]
 #note[
     The reduced form of $f(x)$ has same discriminant as $f(x)$.
+]
+
+== Galois theory for quartic polynomials
+
+#example[
+    Let $char(k) != 2, 3$, $K = k(e_1, e_2, e_3, e_4) subset.eq L = k(x_1, x_2, x_3, x_4)$, so $L$ is splitting field over $K$ of $f(x) = x^4 - e_1 x^3 + e_2 x^2 - e_3 x + x_4$ and $Gal(L\/K) tilde.equiv S_4$.
+]
+#remark[
+    $S_4$ can be visualised as symmetries of regular tetrahedron with vertices labelled ${1, 2, 3, 4}$. Consider three pairs of opposite edges $ P_1 = {(1, 2), (3, 4)}, quad P_2 = {(1, 3), (2, 4)}, quad P_3 = {(1, 4), (2, 3)} $ Any permutation in $S_4$ of the four vertices permutes $P_1$, $P_2$, $P_3$, which gives map $pi: S_4 -> S_3$.
+    - $pi$ is surjective group homomorphism.
+    - $pi$ has kernel $ker(pi) = {id, (1 thick 2)(3 thick 4), (1 thick 3)(2 thick 4), (1 thick 4)(2 thick 3)} = V_4 tilde.equiv ZZ\/2 times ZZ\/2$.
+    - $A_4 subset S_4$ is subgroup of even permutations (orientation-preserving symmetries). Restriction of $pi$ to $A_4$ gives another surjective homomorphism $A_4 -> A_3$ (and $pi^(-1) (A_3) = A_4$) also with kernel $V_4$.
+    - $V_4$ is kernel so is normal subgroup of $S_4$ and of $A_4$. Note that $V_4$ is only subgroup of $A_4$ isomorphic to $ZZ\/2 times ZZ\/2$, but there are four subgroups of $S_4$, isomorphic to $ZZ\/2 times ZZ\/2$, with $V_4$ the only normal one.
+    - This gives increasing sequence of subgroups in $S_4$ $ {id} subset ZZ\/2 subset V_4 subset A_4 subset S_4 $ and $V_4 tilde.equiv ZZ\/2 times ZZ\/2$, $A_4 \/ V_4 tilde.equiv A_3 tilde.equiv ZZ\/3$, $S_4 \/ A_4 tilde.equiv ZZ\/2$.
+    - Each $G_i$ in this sequence is normal subgroup of $G_(i + 1)$ and $G_(i + 1)\/G_i$ is cyclic, meaning that $S_4$ is *solvable (soluble) group*.
+    - We have tower $ K = L^(S_4) subset L^(V_4) subset L = L^({e}) $ By fundamental theorem, $Gal(L\/L^(V_4)) = V_4 tilde.equiv ZZ\/2 times ZZ\/2$, so $L\/L^(V_4)$ appears as biquadratic extension.
+    - $V_4$ is normal in $S_4$ so by fundamental theorem, $Gal(L^(V_4)\/K) tilde.equiv S_4 \/ V_4 tilde.equiv S_3$ by first isomorphism theorem. Hence $L^(V_4)$ appears as splitting field of a cubic polynomial over $K$.
+]
+#example(name: "Solving quartic equations")[
+    Define $ theta_1 & = 1/2 (x_1 + x_2 - x_3 - x_4), \ theta_2 & = 1/2 (x_1 - x_2 + x_3 - x_4), \ theta_3 & = 1/2 (x_1 - x_2 - x_3 + x_4) $ Then $forall j in [3], forall sigma in V_4$, $sigma (theta_j) = plus.minus theta_j$. The $theta_j$ arise from Lagrange resolvents for the three quadratic subextensions of $L^(V_4)$ in $L$. They behave like $sqrt(2)$, $sqrt(3)$, $sqrt(6)$ in $QQ\(sqrt(2), sqrt(3)\)$. Each $t_i = theta_i^2$ is fixed by $V_4$ and are permuted by $S_4 \/ V_4 tilde.equiv S_3$. They are roots of *cubic resolvent* of $f(x)$: $ (t - t_1)(t - t_2)(t - t_3) = t^3 + s_1 t^2 + s_2 t + s_3 $ which has coefficients in $\(L^(V_4)\)^(S_3) = L^(S_4) = K$. To find roots $x_1, x_2, x_3, x_4$ of $f(x)$:
+    - Solve cubic resolvent to find $t_1$, $t_2$, $t_3$.
+    - Set $theta_j = plus.minus sqrt(t_j)$ where signs are chosen so that $theta_1 theta_2 theta_3 = (e_1^3 - 4e_1 e_2 + 8 e_3)\/8$.
+    - Solve the linear system $
+        cases(x_1 + x_2 + x_3 + x_4 & = e_1, x_1 + x_2 - x_3 + x_4 & = 2theta_1, x_1 - x_2 + x_3 - x_4 & = 2theta_2, x_1 - x_2 - x_3 + x_4 & = 2theta_3) quad ==> quad cases(x_1 & = e_1\/4 + (theta_1 + theta_2 + theta_3)\/2, x_2 & = e_1\/4 + (theta_1 - theta_2 - theta_3)\/4, x_3 & = e_1\/4 + (-theta_1 + theta_2 - theta_3)\/2, x_4 & = e_1\/4 + (-theta_1 - theta_2 + theta_3)\/2)
+    $
+]
+#remark[
+    In practice, perform shift to kill $x^3$ coefficient to obtain *reduced quartic*: $ f(x - a\/4) = x^4 + p x^2 + q x + r $
+    - Cubic resolvent is _(memorise)_ *$ t^3 + 2 p t^2 + (p^2 - 4r)t - q^2 $*
+    - Choose $theta_1, theta_2, theta_3$ such that _(memorise)_ *$ theta_1 theta_2 theta_3 = -q $*
+    - Roots of $f(x - a\/4)$ are _(memorise)_ *$ x_1 & = 1/2 (theta_1 + theta_2 + theta_3), \ x_2 & = 1/2 (theta_1 - theta_2 - theta_3), \ x_3 & = 1/2 (-theta_1 + theta_3 - theta_3), \ x_4 & = 1/2 (-theta_1 - theta_2 + theta_3) $*
+    - Recover roots of $f(x)$ by subtracting $a\/4$.
+]
+#example[
+    Find all complex roots of $f(x) = x^4 + 6x^3 + 18x^2 + 30x + 25$.
+    - Eliminate $x^3$ term: $ f(x - 6\/4) = x^4 + 9/2 x^2 + 3x + 85/16 $
+    - $p = 9\/2$, $q = 3$, $r = 85\/16$, so cubic resolvent is $ t^3 + 2p t^2 + (p^2 - 4r)t - q^2 = t^3 + 9t^2 - t - 9 = (t - 1)(t + 1)(t + 9) $ So roots are $t_1 = 1$, $t_2 = -1$, $t_3 = -9$. Set $theta_1 = sqrt(t_1) = 1$, $theta_2 = sqrt(t_2) = i$, $theta_3 = plus.minus sqrt(t_3) = plus.minus 3i$ so that $theta_1 theta_2 theta_3 = -q = -3$, i.e. $theta_3 = 3i$.
+    - So roots of $f(x - 3\/2)$ are $ x_1 & = 1/2 (theta_1 + theta_2 + theta_3) = 1/2 (1 + 4i), \ x_2 & = 1/2 (theta_1 - theta_2 - theta_3) = 1/2 (1 - 4i), \ x_3 & = 1/2 (-theta_1 + theta_3 - theta_3) = 1/2 (-1 - 2i), \ x_4 & = 1/2 (-theta_1 - theta_2 + theta_3) = 1/2 (-1 + 2i) $
+    - So roots of $f(x)$ are $-1 plus.minus 2i$, $-2 plus.minus i$.
+]
+#example(name: "Galois groups of quartic polynomials")[
+    - Let $char(K) != 2, 3$, $f(x) = x^4 + a x^3 + b x^2 + c x + d in K[x]$. Galois group is $G_f = Gal(L\/K)$ where $L$ is splitting field for $f(x)$ over $K$, and $G_f$ is subgroup of $S_4$.
+    - Assume that $f(x)$ irreducible in $K[x]$. It can be shown there are five possible isomorphism classes of Galois groups: $S_4, A_4, V_4, ZZ\/4$ or $D_4$.
+    - Let $R(t) in K[t]$ be cubic resolvent of $f(x)$ with roots $t_1 = theta_1^2$, $t_2 = theta_2^2$, $t_3 = theta_3^2$. Let $M$ be splitting field of $R(t)$ over $K$, so $ K subset K(t_1, t_2, t_3) subset M subset L = M(theta_1, theta_2, theta_3) $
+]
+#theorem[
+    Let $f(x) in K[x]$ irreducible and have irreducible cubic resolvent $R(t) in K[t]$ with roots $t_1 = theta_1^2$, $t_2 = theta_2^2$, $t_3 = theta_2^3$. Let $L$ be splitting field of $f(x)$ over $K$ (so $G_f = Gal(L\/K)$) and let $M$ be splitting field of $R(t)$ over $K$ (so $G_R = Gal(M\/K)$).
+    - If $Delta_R in K^times^2$ (i.e. $G_R tilde.equiv A_3$ and $[M: K] = 3$), then $G_f tilde.equiv A_4$.
+    - If $Delta_R in K^times - K^times^2$ (i.e. $G_R tilde.equiv S_3$ and $[M: K] = 6$), then $G_f tilde.equiv S_4$.
+]
+#proof[
+    - Sufficient to prove $[L: M] = 4$ since then $[L: K] = 12$ or $24$ by Tower Law.
+    - Show $M$ does not contain $theta_1, theta_2$ or $theta_3$.
+        - Suppose it does, so WLOG $theta_1 in M$. $Gal(M\/K) tilde.equiv A_3$ or $S_3$, so must be order 3 element $sigma in Gal(M\/K)$. $sigma(theta_1)$ and $sigma^2 (theta_1)$ are the other two roots $theta_2$ and $theta_3$ since $R(t)$ is irreducible and $theta_1, theta_2, theta_3 in M$. But this implies $M = L$ so $[L: K] = 3$ or $6$, but $4 | [L: K]$ since $L$ contains roots of irreducible quartic.
+    - $M(theta_1)\/M$ is degree $2$. Assume $theta_2 in M(theta_1)$. $Gal(M(theta_1)\/M) = {id, tau}$ for some $tau: theta_1 |-> -theta_1$. Also $theta_2^2 in M$ so $tau(theta_2) = plus.minus theta_2$.
+        - If $tau(theta_2) = theta_2$, then $theta_2 in M$: contradiction.
+        - If $tau(theta_2) = -theta_2$, then $tau(theta_1 theta_2) = (-theta_1)(-theta_2) = theta_1 theta_2$ hence $theta_1 theta_2 in M$. But $theta_1 theta_2 theta_3 in K$ and $theta_1 theta_2 != 0$ since $R(t)$ irreducible. But then $theta_3 in M$: contradiction.
+    - Hence $[M(theta_1, theta_2): M] >= 4$, and $theta_1 theta_2 theta_3 in M$ so $L = M(theta_1, theta_2)$ and $[L: M] = 4$.
 ]

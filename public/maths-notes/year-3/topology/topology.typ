@@ -801,7 +801,7 @@
     Let $X$ topological space, triangulated by connected finite simplicial complex $K$, $dim(K) = 2$. Then $X$ is closed surface iff for every vertex $v in K$, $St(v, K) tilde.equiv E^2$.
 ]
 #definition[
-    *Real projective plane* is closed surface arising from identifying the edges of the unit square with the following: $ PP := (I times I)\/tilde, quad (x, 0) tilde (1 - x, 1), quad (0, y) tilde (1, 1 - y) $
+    *Real projective plane* is closed surface arising from identifying the edges of the unit square with the following: $ PP := (I times I)\/tilde, quad (x, 0) tilde (1 - x, 1), quad (0, y) tilde (1, 1 - y) $ It may also be defined as quotient of $S^2$ by identifying diametrically opposite points: $ PP = S^2 \/ tilde, quad forall x in S^2, quad x tilde -x $
 ]
 
 == Orientations on surfaces
@@ -888,7 +888,7 @@
 #let f(x) = (x - 2) * (x - 1) * (x + 3)
 #let g(x) = -(x + 3) * (x - 0.5) * (x - 2.5) + 10
 
-#canvas(length: 1cm, {
+#figure(canvas(length: 1cm, {
     plot.plot(
         axis-style: "school-book",
         size: (12, 6),
@@ -918,7 +918,7 @@
             label: $ 0.8 f(x) + 0.2 g(x) $
         )}
     )
-})
+}))
 #example[
     Consider $S^1 subset CC$, so $S^1 = {e^(i pi s): s in [0, 2)}$. Let $a: S^1 -> S^1$ be the *antipodal map*, $a(e^(i pi s)) = e^(-i pi s)$. Then $a tilde.eq id$, with homotopy given by $H: S^1 times I -> S^1$, $H(e^(i pi s)) = e^(i pi (s + t))$.
 ]
@@ -1247,11 +1247,29 @@ where, for the first diagram, a horizontal path at fixed $t$ is given by $ s |->
     + Assign a direction and a label to each $1$-simplex in $K$ which is not contained in $M$. The labels give the generators of a group presentation for $pi_1 (K, x_0)$.
     + Impose relations on the labels as follows:
         + For $2$-simplices with exactly one edge in $M$: if the directions of the other two edges, $a$ and $b$, either both point towards or both point away from the edge in $M$, impose the relation $a = b$. If one points towards and the other away, then impose the relation $a = b^(-1)$.
-        + For $2$-simplices with no edges in $M$ and with labels $a, b, c$: (up to permutation of $a, b, c$) if the directions of $b$ and $c$ point towards a common vertex and the directions of $a$ and $c$ point away from a common vertex, then impose the relation $c = a b$, otherwise impose $c = (a b)^(-1)$.
+        + For $2$-simplices with no edges in $M$ and with labels $a, b, c$: (up to permutation of $a, b, c$) if the directions of $b$ and $c$ point towards a common vertex and the directions of $a$ and $c$ point away from a common vertex, then impose the relation $c = a b$, otherwise (in this case, the directions form a cycle), if $a$ has direction pointing away from $c$ and $b$ has direction pointing towards $c$, impose $c = (a b)^(-1)$.
     + We have $pi_1 (K, x_0) tilde.equiv ideal("labels" | "relations")$.
 ]
 #note[
     We can use step 4 to more efficiently choose labels and directions in step 3.
+]
+#definition[
+    Each directed $1$-simplex in $M^c$ gives a *basic loop* (opposite choice of direction yields the inverse loop).
+]
+#proof(name: "Proof of algorithm")[
+    Let $K$ be connected finite simplicial complex, $v_0$ be $0$-simplex in $K$, $L$ be maximal tree in $K$, $M$ be maximal simply connected subcomplex in $K$ associated to $L$.
+    - Simplices are convex, so every path in $K$ is homotopic to one which passes through only $0$- and $1$-simplices (with no doubling back). In particular, every element of $pi_1 (K, v_0)$ can be represented by a loop based at $v_0$ which passes through only $0$- and $1$-simplices.
+    - If $v$ is $0$-simplex then $v in L subset.eq M$, and $L$ has no cycles, so there exists unique path from $v$ to $v_0$ in $L$ with no doubling back.
+    - For all $0$-simplices $v in K$, there exists unique homotopy class of paths in $M$ from $v$ to $v_0$ and this class can be represented by a unique path in $L$ that doesn't double back on itself.
+    - Trees are contractible and so $L$ is simply connected, hence $M$ is simply connected.
+    - Thus, if there is another path in $M$ from $v$ to $v_0$, there is a loop in $M$, which must be null-homotopic. Hence, the paths must be homotopic in $M$.
+    - If $M^c = K - M != emptyset$, it consists of $1$- and $2$-simplices (minus points on boundaries) and every $1$-simplex in $M^c$ with a choice of direction yields a homotopically non-trivial loop in $(K, v_0)$. Each vertex of a $1$-simplex in $M^c$ can be connected back to $v_0$ by a unique (up to homotopy) path in $L$. So each directed $1$-simplex in $M^c$ gives a *basic loop* (opposite choice of direction yields the inverse loop).
+    - Every non-trivial loop in $K$ is homotopic to a product of basic loops:
+        - If $lambda$ is loop in $(K, v_0)$, we have $lambda tilde.eq mu$, where $mu$ is loop through only $0$- and $1$-simplices (so $mu$ consists of a sequence of directed $1$-simplices, with some in $M$ and others not).
+        - Every time $mu$ enters/exists $M$ (necessarily at a vertex), draw a path through $L$ back to $v_0$. This shows that $mu$ is homotopic to product of basic loops.
+    - Therefore, by assigning labels to directed $1$-simplices in $M^c$, we obtain a list of generators of $pi_1 (K, v_0)$.
+    - Also, $2$-simplices in $M^c$ give relations between the generators of $pi_1 (K, v_0)$.
+    - So we have surjective homomorphism $ ideal("labels of directed 1-simplices in " M^c | "2-simplex relations") --> pi_1 (K, v_0) $ and this can be shown to be injective.
 ]
 #example[
     Consider $S^1$ triangulated with three $1$-simplices and no $2$-simplices. A maximal tree consists of two edges, the maximal connected subcomplex $M$ is already the maximal tree. There is one $1$-simplex not in $M$  and there are no relations (since no $2$-simplices). Hence $pi_1 (S^1, x_0) tilde.equiv ideal(a) = F^1 tilde.equiv ZZ$.
@@ -1260,3 +1278,109 @@ TODO: add diagrams.
 #canvas(length: 1cm, {
     ngon(3)
 })
+
+== Van Kampen's theorem
+
+#theorem(name: "van Kampen's theorem")[
+    Let $(K, v_0)$ be based, connected finite simplicial complex. Suppose there exists connected simplicial subcomplexes $A, B subset.eq K$ such that:
+    - $K = A union B$
+    - $A sect B$ is path-connected simplicial subcomplex.
+    - $v_0 in A sect B$.
+    Then $ pi_1 (K, v_0) tilde.equiv pi_1 (A, v_0) *_(pi_1 (A sect B, x_0)) pi_1 (B, x_0) $ where the homomorphisms $(i_A)_*: pi_1 (A sect B, v_0) -> pi_1 (A, v_0)$, $(i_B)_*: pi_1 (A sect B, v_0) -> pi_1 (B, v_0)$ are those induced from the respective inclusion maps $i_A: A sect B -> A$, $i_B: A sect B -> B$.
+]
+#proof[
+    - Find maximal tree $L_(A sect B)$ in $A sect B$. Extend to maximal trees $L_A$ in $A$, $L_B$ in $B$. Then $L = L_A union L_B$ is maximal tree in $K$.
+    - Extend $L_(A sect B)$, $L_A$, $L_B$ to maximal simply connected subcomplexes to $M_(A sect B)$, $M_A$, $M_B$. Then $M = M_A union M_B$ is maximal simply connected subcomplex in $K$.
+    - By the algorithm, $pi_1 (K, v_0) tilde.equiv ideal("directed 1-simplices in" M^c | "relations from 2-simplices in" M^c)$ where $ {"directed 1-simplices in" M^c} = & D_A union D_B \ := & {"directed 1-simplices in" A - M_A} \ union & {"directed 1-simplices in" B - M_B} $ and $ {"2-simplices in" M^c} = & {"2-simplices in" A - M_A} \ union & {"2-simplices in" B - M_B} $
+    - However, $D_A sect D_B = {"directed 1-simplices in" (A sect B) - M_(A sect B)}$. So to avoid counting homotopy classes of twice, we identify corresponding generators in thre free product $pi_1 (A, v) * pi_1 (B, v_0)$, which gives the amalgamated product.
+]
+#example[
+    Let $W_2$ be *figure 8 space* - the one-point union of two copies of $S^1$, i.e. two copies of $S^1$ joined at single point (the base point) $w_0$. So $W_2 = A union B$ where $A = B = S^1$, $A sect B = {p}$, the one-point space, is path-connected. $pi_1 ({p}, w_0) tilde.equiv bb(1)$. So $ pi_1 (W_2, w_0) & tilde.equiv pi_1 (S^1, w_0) *_(bb(1)) pi_1 (S^1, w_0) \ & = pi_1 (S^1, w_0) * pi_1 (S^1, w_0) \ & tilde.equiv ideal(x) * ideal(y) \ & = ideal(x, y) = F^2 $
+]
+#example[
+    - Decompose torus as $TT = A union B$ where $A$ is small closed disc in $TT$, $B$ is closure of the remainder (i.e. remainder together with circle boundary of the disc) so $A sect B = S^1$.
+    - $B$ is homotopy equivalent to the figure-eight space so $pi_1 (B) tilde.equiv ideal(x, y)$. $A$ is contractible so $pi_1 (A) tilde.equiv bb(1)$, and $pi_1 (A sect B) tilde.equiv ideal(x)$. But the loop going once around $A sect B$ is homotopy equivalent to the loop going along the boundary of unit square whose quotient gives $TT$, which corresponds to $x y x^(-1) y^(-1)$.
+    - So by van Kampen's theorem, $ pi_1 (TT) & tilde.equiv pi_1 (A) *_(pi_1 (A sect B)) pi_1 (B) \ & tilde.equiv bb(1) *_(ideal(z)) ideal(x, y) \ & = ideal(x, y | z) \ & = ideal(x, y | x y x^(-1) y^(-1)) tilde.equiv ZZ^2 $ since the image of $z$ under the homomorphism $h_1: pi_1 (A sect B) -> A$ must be $e$.
+]
+
+= Euler characteristics and the classification of closed surfaces
+
+== The Euler characteristic of a graph
+
+#definition[
+    Let $G$ be finite graph with $v$ vertices and $e$ edges. *Euler characteristic* of $G$ is $ chi(G) := v - e $
+]
+#definition[
+    *Degree* of vertex in graph of number of edge ends with that vertex as endpoint (so degree of vertex with loop is $2$).
+]
+#lemma[
+    A non-trivial finite tree contains a vertex of degree $1$.
+]
+#lemma[
+    Let $G$ be finite tree, then $chi(G) = 1$.
+]
+#proof[
+    Induction of number of vertices.
+]
+#lemma[
+    If $G$ is finite connected graph, then $chi(G) <= 1$ with equality iff $G$ is tree.
+]
+#proof[
+    Remove edges from cycles until $G$ is a tree, note what happens to Euler characteristic each time.
+]
+#remark[
+    $chi(G)$ is a homotopy invariant, i.e. $G_1 tilde.eq G_2$, then $chi(G_1) = chi(G_2)$.
+]
+#theorem(name: "Euler's Theorem")[
+    Let $G$ be finite, connected graph drawn on $S^2$. Then $S^2 - G$ consists of $f = 2 - chi(G)$ *faces* (connected regions homeomorphic to open discs).
+]
+#proof[
+    - Assume first that $S^2 - G$ consists of $f$ connected regions homeomorphic to open discs.
+    - If $G$ has cycle, remove edge to obtain new connected graph $G'$. This means two of the $f$ regions are joined into one region, and $chi(G') = chi(G) + 1$. Hence $chi(G') + f' = chi(G) + f$.
+    - Remove edges until resulting graph is tree $T$. Then $S^2 - T tilde.equiv E^2$, a single connected region. Deduce that $chi(G) + f = 2$.
+    - Assumption was correct, since if $T$ is tree then $S^2 - T$ is always homeomorphic to open disc. With reverse of above argument, every edge added to $T$ creates cycle and divides disc into two sub-discs.
+]
+#corollary[
+    Let $K$ be finite simplicial complex which triangulates $S^2$, with $v$ $0$-simplices, $e$ $1$-simplices and $f$ $2$-simplices. Then $ v - e + f = 2 $
+]
+#proof[
+    Let $G = {"0-simplices"} union {"1-simplices"}$, then $G$ is finite connected graph and $S^2 - G = {"interiors of 2-simplices"}$.
+]
+
+== The Euler characteristic of a surface
+
+#definition[
+    Let $S$ be surface.
+    - Finite connected graph $G subset S$ is *good* if every connected component of $S - G$ is homeomorphic to an open disc.
+    - Let $G subset S$ be a good graph. The *$G$-Euler characteristic* of $S$ is $ chi_G (S) := chi(G) + ("number of components of" S - G) $
+]
+#note[
+    - If $diff S != nothing$ and $G subset S$ is a good graph, then $diff S subset G$ as a subgraph.
+    - Not every graph in a surface is good, e.g. if $G$ is single vertex in the torus, then $TT - G$ is homotopy equivalent to the figure $8$ space.
+]
+#lemma[
+    Let $G$, $G'$ be good graphs on surface $S$, with $G$ subgraph of $G'$ ($G'$ is an *enlargement* of $G$). Then $ chi_G (S) = chi_(G')(S) $
+]
+#proof[
+    - $G'$ can be constructed from $G$ by sequence of one or more of the following operations, none of which change $chi_G (S)$:
+        - Add new vertex to interior of existing edge. This adds one vertex, one edge, number of components in complement does not change.
+        - Add new edge between existing vertices. Number of components in complement increases by $1$.
+        - Add new edge and new vertex by attaching new edge at one to existing vertex and at other end to new vertex. Number of components in complement does not change.
+]
+#theorem[
+    The $G$-Euler characteristic of surface $S$ does not depend on choice of good graph $G$.
+]
+#proof[
+    - Let $G_1, G_2$ be good graphs on $S$. If $diff S != nothing$, consider $diff S$ as (possibly) disconnected graph with ${"vertices"} = {"all vertices in" (G_1 union G_2) sect diff S}$.
+    - Position $G_1$ such that it crosses $G_2$ in only isolated points in $int(S) = S - diff S$. Add new vertices at these interior intersection points.
+    - Now $G_1 union G_2$ is common enlargment of $G_1$ and $G_2$ and a good graph, so result follows by above lemma.
+]
+#definition[
+    *Euler characteristic* of surface $S$, is $chi(S) := chi_G (S)$ where $G$ is any good graph on $S$.
+]
+#theorem[
+    Euler characteristic is homeomorphism-invariant: i.e. if $S_1$, $S_2$ homeomorphic surfaces, then $chi(S_1) = chi(S_2)$.
+]
+#example[
+    If surface $S$ is triangulated by finite simplicial complex $K$ with $v$ $0$-simplices, $e$ $1$-simplices and $f$ $2$-simplices, then $ chi(S) = v - e + f $
+]

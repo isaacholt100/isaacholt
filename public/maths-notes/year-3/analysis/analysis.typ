@@ -13,7 +13,6 @@
 
 #definition[
     For $f: X -> Y$, *preimage* of $Z subset.eq Y$ is $ f^(-1) (Z) := {x in X: f(x) in Z} $
-    - asdf
 ]
 #definition[
     $f: X -> Y$ *injective* if $ forall y in f(X), exists! x in X: y = f(x) $
@@ -67,20 +66,18 @@
     *Subsequence* of $(x_n)$ is sequence $\(x_(n_j)\)$, $n_1 < n_2 < dots.h.c$.
 ]
 #definition[
-    *Limit inferior* of sequence $x_n$ is $ liminf_(n -> oo) x_n := lim_(n -> oo) (inf_(m >= n) x_m) = sup_(n in NN) inf_(m >= n) x_m $
+    *Limit inferior* of sequence $x_n$ is $ liminf_(n -> oo) x_n := sup_(n in NN) {inf_(m >= n) x_m} = lim_(n -> oo) (inf_(m >= n) x_m) $
 ]
 #definition[
-    *Limit superior* of sequence $x_n$ is $ limsup_(n -> oo) x_n := lim_(n -> oo) (sup_(m >= n) x_m) = inf_(n in NN) sup_(m >= n) x_m $
+    *Limit superior* of sequence $x_n$ is $ limsup_(n -> oo) x_n := inf_(n in NN) {sup_(m >= n) x_m} = lim_(n -> oo) (sup_(m >= n) x_m) $
 ]
 #proposition[
-    Let $(x_n)$ bounded, $l in RR$. The following are equivalent:
-    - $l = limsup x_n$.
+    Let $(x_n)$ bounded, $l in RR$. Then $l = limsup x_n$ iff both of the following hold:
     - $forall epsilon > 0, exists N in NN: forall n >= N, x_n < l + epsilon$.
     - $forall epsilon > 0, forall N in NN: exists n in NN: x_n > l - epsilon$.
 ]
 #proposition[
-    Let $(x_n)$ bounded, $l in RR$. The following are equivalent:
-    - $l = liminf x_n$.
+    Let $(x_n)$ bounded, $l in RR$. Then $l = liminf x_n$ iff both of the following hold:
     - $forall epsilon > 0, exists N in NN: forall n >= N, x_n > l - epsilon$.
     - $forall epsilon > 0, forall N in NN: exists n in NN: x_n < l + epsilon$.
 ]
@@ -112,7 +109,7 @@
     Arbitrary unions of open sets are open. Finite intersections of open sets are open.
 ]
 #definition[
-    $x in RR$ is *point of closure (limit point)* for $E subset.eq RR$ if $ forall epsilon > 0, exists y in E: |x - y| < epsilon $ Equivalently, $x$ is point of closure of $E$ if every open interval containing $x$ contains another point of $E$.
+    $x in RR$ is *point of closure (limit point)* for $E subset.eq RR$ if $ forall epsilon > 0, exists y in E: |x - y| < epsilon $ Equivalently, $x$ is point of closure of $E$ if every open interval containing $x$ contains a point of $E$.
 ]
 #definition[
     *Closure* of $E$, $overline(E)$, is set of points of closure. Note $E subset.eq overline(E)$.
@@ -127,9 +124,7 @@
     For any set $E$, $overline(E)$ is closed, i.e. $overline(E) = overline(overline(E))$.
 ]
 #proposition[
-    Let $E subset.eq RR$. The following are equivalent:
-    - $E$ is closed.
-    - $RR - E$ is open.
+    $E subset.eq RR$ is closed iff $R - E$ is open.
 ]
 #proposition[
     Arbitrary intersections of closed sets are closed. Finite unions of closed sets are closed.
@@ -183,7 +178,7 @@
     $f: [a, b] -> RR$ is *piecewise linear* if there exists partition $P = {x_0, ..., x_n}$ and $m_i, c_i in RR$ such that $ forall i in [n], forall x in \(x_(i - 1), x_i\), quad f(x) = m_i x + c_i $ $f$ is continuous on $[a, b] - P$.
 ]
 #definition[
-    $g: [a, b] -> RR$ is *step function* if there exists partition $P = {x_0, ..., x_n}$ and $m_i in RR$ such that $ forall i in [n], forall x in \(x_(i - 1), x_i)\), quad g(x) = m_i $ $g$ is continuous on $[a, b] - P$.
+    $g: [a, b] -> RR$ is *step function* if there exists partition $P = {x_0, ..., x_n}$ and $m_i in RR$ such that $ forall i in [n], forall x in \(x_(i - 1), x_i\), quad g(x) = m_i $ $g$ is continuous on $[a, b] - P$.
 ]
 #theorem[
     Let $f: E -> RR$ continuous, $E$ closed and bounded. Then there exist continuous piecewise linear $f_n$ with $f_n -> f$ uniformly, and step functions $g_n$ with $g_n -> f$ uniformly.
@@ -198,10 +193,10 @@
 == The extended real numbers
 
 #definition[
-    *Extended reals* are $RR union {-oo, oo}$ with the order relation $-oo < oo$ and $forall x in RR, -oo < x < oo$. $oo$ is an upper bound and $-oo$ is a lower bound for every $x in RR$, so $sup(RR) = oo$, $inf(RR) = -oo$.
+    *Extended reals* are $RR union {-oo, oo}$ with the order relation $-oo < oo$ and $forall x in RR, -oo < x < oo$. $oo$ is an upper bound and $-oo$ is a lower bound for every $x in RR$, so $sup(RR) = oo$, $inf(RR) = -oo$, $sup(nothing) = -oo$, $inf(nothing) = oo$.
     - Addition: $forall a in RR, a + oo = oo and a + (-oo) = -oo$. $oo + oo = oo - (-oo) = oo$. $oo - oo$ is undefined.
     - Multiplication: $forall a > 0, a dot.op oo = oo$, $forall a < 0, a dot.op oo = -oo$. Also $oo dot.op oo = oo$.
-    - $limsup$ and $liminf$ are defined as $ limsup x_n := inf_(n in NN) {sup_(k >= n) x_k}, quad liminf x_n := sup_(n in NN) {inf_(k >= n) x_k} $
+    - $limsup$ and $liminf$ are defined as $ limsup x_n := inf{sup{x_k: k >= n}: n in NN}, quad liminf x_n := sup{inf{x_k: k >= n}: n in NN} $
 ]
 #definition[
     Extended real number $l$ is *limit* of $(x_n)$ if either
@@ -216,10 +211,10 @@
 == Countability and uncountability
 
 #definition[
-    $A$ is *countable* if $A = nothing$, $A$ is finite or there is a bijection $phi: NN -> A$ (in which case $A$ is *countably infinite*). Otherwise $A$ is *uncountable*. *Enumeration* is bijection from $A$ to $[n]$ or $NN$.
+    $A$ is *countable* if $A = nothing$, $A$ is finite or there is a bijection $phi: NN -> A$ (in which case $A$ is *countably infinite*). Otherwise $A$ is *uncountable*. *Enumeration* is bijection to $A$ from $[n]$ or $NN$.
 ]
 #proposition[
-    If surjection from countable set to $A$, or injection from $A$ to countable set, then $A$ is countable.
+    If there is surjection from countable set to $A$, or injection from $A$ to countable set, then $A$ is countable.
 ]
 #proposition[
     Any subset of $NN$ is countable.
@@ -228,16 +223,16 @@
     $QQ$ is countable.
 ]
 #proposition[
-    Show that if $(a_n)$ is a nonnegative sequence and $phi: NN -> NN$ is a bijection then $ sum_(n = 1)^infinity a_n = sum_(n = 1)^infinity a_(phi(n)) $
+    If $(a_n)$ is a nonnegative sequence and $phi: NN -> NN$ is a bijection then $ sum_(n = 1)^infinity a_n = sum_(n = 1)^infinity a_(phi(n)) $
 ]
 #proposition[
-    Show that if $\(a_(n, k)\)$ is a nonnegative sequence and $phi: NN -> NN times NN$ is a bijection then $ sum_(n = 1)^infinity sum_(n = 1)^infinity a_(n, k) = sum_(n = 1)^infinity a_(phi(n)) $
+    If $\(a_(n, k)\)$ is a nonnegative sequence and $phi: NN -> NN times NN$ is a bijection then $ sum_(n = 1)^infinity sum_(n = 1)^infinity a_(n, k) = sum_(n = 1)^infinity a_(phi(n)) $
 ]
 #definition[
     $f: X -> Y$ is *monotone* if $x >= y => f(x) >= f(y)$ or $x <= y => f(x) >= f(y)$.
 ]
 #proposition[
-    Let $f$ be monotone on $(a, b)$. Then it is discountinuous on a countable set.
+    Let $f$ be monotone on $(a, b)$. Then it is discontinuous on a countable set.
 ]
 #lemma[
     Set of sequences in ${0, 1}$, $\{(x_n)_(n in NN): forall n in NN, x_n in {0, 1}\}$ is uncountable.
@@ -303,7 +298,7 @@
     For every $x in C$, the ternary ($k = 3$) expansion of $x$ is unique and $ x = sum_(i in NN) a_i / 3^i, quad a_i in {0, 2} $ Moreover, every choice of sequence $(a_i)$, $a_i in {0, 2}$, gives $x = sum_(i in NN) a_i / 3^i in C$.
 ]
 #definition[
-    *Cantor-Lebesgue function*, $g: [0, 1] -> [0, 1]$, is defined by $ g(x) := cases(sum_(i in NN) (a_i\/2) / 2^i & "if" x = sum_(i in NN) a_i / 3^i \, a_i in {0, 2}, sup{f(y): y in C, y <= x} & "if" x in.not C) $ $g$ is a surjection, monotone and continuous.
+    *Cantor-Lebesgue function*, $g: [0, 1] -> [0, 1]$, is defined by $ g(x) := cases(sum_(i in NN) (a_i\/2) / 2^i & "if" x = sum_(i in NN) a_i / 3^i \, a_i in {0, 2}, sup{g(y): y in C, y <= x} & "if" x in.not C) $ $g$ is a surjection, monotone and continuous.
 ]
 
 == $G_delta, F_sigma$
@@ -783,7 +778,7 @@
 ]
 #theorem(name: "Riesz-Fischer")[
     For $p in lr([1, oo))$, $\(L^p (E), norm(dot.op)_(L^p)\)$ is complete.
-]
+]<riesz-fischer>
 
 == Lebesgue space $L^oo$
 
@@ -1083,4 +1078,130 @@
         - Assume $N^perp$ contains $v$ with $norm(v) = 1$. For $x in H$, define $u = T(x) v - T(v) x$.
         - Show that $ip(u, v) = 0$, deduce a value for $y$ from this.
     - Uniqueness: straightforward.
+]
+
+= Convergence of Fourier series
+
+#note[
+    We can view $f: [-pi, pi] -> CC$ as being $2pi$-periodic by extending it on the real line.
+]
+#definition[
+    $m$-th *partial Fourier sum* of $2pi$-periodic integrable function $f: [-pi, pi] -> CC$ is given by $ (S_m f)(x) = sum_(k = -m)^m a_k (f) e^(i k x) $ where $ a_k (f) = 1/(2 pi) integral_(-pi)^pi f(y) e^(-i k y) dif y $ are *Fourier coefficients* of $f$.
+]
+#definition[
+    Let $f, g: [-pi, pi] -> CC$ be $2pi$-periodic integrable functions. *Convolution* $f * g$ is $ (f * g)(x) = 1/(2pi) integral_(-pi)^pi f(y) g(x - y) dif y $
+]
+#proposition[
+    Let $f, g, h: [-pi, pi] -> CC$ be $2pi$-periodic integrable functions, $c in CC$. Then $*$ satisfies:
+    - *Commutativity*: $f * g = g * f$.
+    - *Distributivity*: $f * (g + h) = (f * g) + (f * h)$.
+    - *Homogeneity*: $(c f) * g = c(f * g) = f * (c g)$.
+    - *Associativity*: $(f * g) * h = f * (g * h)$.
+]
+
+== Pointwise convergence of Fourier series via Dirichlet kernel
+
+#definition[
+    Let $m in NN_0$. The *$m$-th Dirichlet kernel* is $ D_m (x) := sum_(k = -m)^m e^(i k x) $
+]
+#proposition[
+    - $D_m$ is trigonometric polynomial of degree $m$ with coefficients equal to $1$ for $k in [-m, m]$ and $0$ otherwise.
+    - $D_m$ is real-valued and $2pi$-periodic.
+    - $ 1/(2pi) integral_(-pi)^pi D_m (x) dif x = 1 $
+]<dirichlet-kernel-properties>
+#proposition[
+    Let $f: [-pi, pi] -> CC$ be $2pi$-periodic integrable function. Then $ (D_m * f)(x)= sum_(k = -m)^m a_k (f) e^(i k x) = (S_m f)(x) $ where $a_k (f) = 1/(2pi) integral_(-pi)^pi f(y) e^(-i k y) dif y$.
+]
+#proposition[
+    $ D_m (x) = sin((m + 1/2) x)/sin(x/2) $
+]<dirichlet-kernel-explicit>
+#remark[
+    RHS in @dirichlet-kernel-explicit has removable singularity at $x = 0$, and $D_m (0) = 2m + 1$. Applying l'Hopital's rule to RHS gives $ lim_(x -> 0) sin((m + 1/2) x)/sin(x/2) = 2m + 1 $
+]
+#theorem(name: "Riemann-Lebesgue Lemma")[
+    Let $E subset.eq RR$ measurable, $f in L^1 (E)$. Then $ lim_(n -> oo) integral_E f(x) sin(n x) = lim_(n -> oo) integral_E f(x) cos(n x) = lim_(n -> oo) integral_E f(x) e^(-i n x) = 0 $
+]
+#proof[
+    - First consider when $f(x) = indicator((a, b))(x)$. Define $I_j = ((2pi j)/n, (2pi(j + 1))/n)$, so integral of $sin(n x)$ over each $I_j$ is $0$.
+    - Write $ (a, b) = L union union.big_(j = 1)^N I_j union R $ so that $"length"(L), "length"(R) < (2pi)/n$.
+    - Show that $ abs(integral_E f(x) sin(n x)) < (4pi)/n $
+    - Deduce the $sin$ result for step functions.
+    - Use that step functions are dense in $L^1$ to show $sin$ result for $f in L^1 (E)$ by writing $f = (f - psi) + psi$ and finally take $limsup$.
+    - Same argument works for $cos$.
+    - Conclude $exp$ result.
+]
+#theorem[
+    Let $f in L^1 ([-pi, pi])$ be $2pi$-periodic, assume $f$ differentiable at $b in [-pi, pi]$. Then $
+        f(b) = lim_(m -> oo) 1/(2pi) integral_(-pi)^pi f(y) D_m (b - y) dif y = lim_(m -> oo) (f * D_m)(b)
+    $
+]
+#proof[
+    - First assume $b = 0$. Let $0 < epsilon < 1$, show that $f(y)\/sin(y\/2)$ is integrable on $[epsilon, pi]$ and show $ lim_(m -> oo) integral_epsilon^pi f(y)/sin(y/2) sin((m + 1/2)y) dif y = 0 $ Conclude the same for $integral_(-pi)^(-epsilon)$.
+    - Write $f(y) = f(0) + s(y)$ and split the integral $integral_(-pi)^pi$ as such.
+    - Use @dirichlet-kernel-properties and split integral of $s(y)$ to show $ lim_(m -> oo) 1/(2pi) integral_(-pi)^pi f(y) D_m (y) dif y = f(0) + lim_(m -> oo) 1/(2pi) integral_(-epsilon)^epsilon s(y) D_m (y) dif y $
+    - Use differentiability at $0$ to show for $epsilon$ small and $y in [-epsilon, epsilon]$, $|s(y)| <= C|y|$.
+    - Show that $|x|\/|sin(x)| <= 2$ for $x$ small (for $cos(x) >= 1/2$) by considering $g(x) = 2 sin(x) - x$, and then that $ 0 <= abs(lim_(m -> oo) 1/(2pi) integral_(-epsilon)^epsilon s(y) D_m (y) dif y) <= (4 C epsilon)/pi $
+    - Conclude the result for $b = 0$.
+    - To show for $b in [-pi, pi]$, define $G(y) = f(b - y)$ and use commutativity of convolution.
+]
+
+== Uniform convergence of Cesàro mean Fourier series via Fejér kernel
+
+#definition[
+    Let $x in RR$, $N in NN$. *Fejér kernel* is $ F_N (x) = 1/N sum_(m = 0)^(N - 1) D_m (x) = 1/N sum_(m = 0)^(N - 1) sum_(k = -m)^m e^(i k x) $
+]
+#proposition[
+    - $ 1/(2pi) integral_(-pi)^pi F_N (x) dif x = 1 $
+    - $ F_N (x) = 1/N (sin(N x\/2)/sin(x\/2))^2 $
+    - Fejér kernel is non-negative, so $ F_N (x) = |F_N (x)| ==> integral_(-pi)^pi |F_N (x)| dif x = 2pi $
+    - For $epsilon > 0$ and $epsilon < |x| < pi$, there exists $C_epsilon > 0$ such that $(sin(x\/2))^(-2) <= C_epsilon$, hence $ integral_epsilon^pi |F_N (x)| dif x = 1/N integral_epsilon^pi abs(sin(N x\/2)/sin(x\/2))^2 dif x <= 1/N integral C_epsilon <= (pi C_epsilon) / N -> 0 quad "as" N -> oo $ and similarly for $-pi < x < -epsilon$.
+]<fejer-kernel-properties>
+#definition[
+    The *$N$-th Cesàro mean* is the average of the first $N$ partial Fourier sums of $f$: $ 1/N sum_(m = 0)^(N - 1) (S_m f)(x) $
+]
+#proposition[
+    Let $f: [-pi, pi] -> CC$ integrable, then convolution of $f$ with Fejér kernel is the Cesàro mean: $ (f * F_N)(x) = 1/N sum_(m = 0)^(N - 1) (S_m f)(x) $
+]
+#theorem[
+    Let $f: [-pi, pi] -> CC$ continuous and $2pi$-periodic, then $ forall x in [-pi, pi], quad f(x) = lim_(N -> oo) (f * F_N)(x) = lim_(N -> oo) 1/N sum_(m = 0)^(N - 1) (S_m f)(x) $ and the convergence is uniform.
+]<fejer-convolution-approximation>
+#proof[
+    - Reason that $f$ is bounded: $|f| <= B$ on $[-pi, pi]$.
+    - Let $rho > 0$. Show that $forall x, y in [-pi, pi]$, for some $epsilon > 0$, $|y| < epsilon ==> |f(x - y) - f(x)| < rho$.
+    - Show that $ & |(f * F_N)(x) - f(x)| \ & <= 1/(2pi) (integral_(-pi)^(-epsilon) + integral_epsilon^pi) |F_N (y)| |f(x - y) - f(x)| dif y + 1/(2pi) integral_(-epsilon)^epsilon |F_N (y)| |f(x - y) - f(x)| dif y $
+    - Show that first terms of RHS tend to zero as $N -> oo$.
+    - Show last term on RHS is $< rho$.
+    - Conclude the result.
+]
+#remark[
+    - By above theorem, any $2pi$-periodic continuous function on $[-pi, pi]$ can be uniformly approximated by trigonometric polynomials, i.e. if $epsilon > 0$, then there exists trigonometric polynomial $p$ such that $forall x in [-pi, pi], |f(x) - p(x)| < epsilon$.
+    - This is analogue of Weierstrass Approximation Theorem for $2pi$-periodic functions. Weierstrass Approximation Theorem states that for continuous function $f: [a, b] -> RR$ and $epsilon > 0$, there exists polynomial $p$ such that $forall x in [a, b]$, $|f(x) - p(x)| < epsilon$.
+    - Continuous functions are dense in $L^p ([a, b])$ for $p in [1, oo)$. Let $epsilon > 0$, $f in L^p ([a, b])$ and $g: [a, b] -> RR$ continuous such that $norm(f - g)_(L^p) < epsilon$. By Weierstrass Approximation Theorem, there exists polynomial $tilde(p)$ such that $ forall x in [a, b], quad |g(x) - tilde(p)(x)| < epsilon/(b - a)^(1\/p) $ Hence $ integral_a^b |g(x) - tilde(p)(x)|^p < epsilon^p quad "i.e." quad norm(g - tilde(p))_(L^p) < epsilon $ Hence by Minkowski's inequality, $norm(f - tilde(p))_(L^p) < 2epsilon$. Hence polynomials are dense in $L^p ([a, b])$ for $p in [1, oo)$.
+    - *Note*: for $p = oo$, any continuous function in $L^oo ([a, b])$ can be approximated by polynomials, but continuous functions are not dense in $L^oo ([a, b])$.
+    - Similarly, trigonometric polynomials are dense in $L^p ([-pi, pi])$ for $p in [1, oo)$.
+]
+
+== Mean convergence of Fourier series in $L^2 ([-pi, pi])$
+
+#notation[
+    Define an inner product on $L^2 ([-pi, pi])$ by $ ip(f, g) = 1/(2pi) integral_([-pi, pi]) f overline(g) $ and denote $norm(dot) = sqrt(ip(dot, dot))$. $(L^2 ([-pi, pi]), ip(dot, dot))$ is Hilbert space by Riesz-Fischer.
+
+    For $k in ZZ$, $x in [-pi, pi]$, let $phi_k (x) = e^(i k x)$, then for $2pi$-periodic integrable function $f: [-pi, pi] -> CC$, $ a_k (f) = ip(f, phi_k), quad S_N f (x) = sum_(k = -N)^N ip(f, phi_k) phi_k $
+]
+#lemma[
+    Let $f in L^2 ([-pi, pi])$ be $2pi$-periodic, define $ cal(P)_N = {sum_(k = -n)^n c_k phi_k: c_k in CC, n <= N} $ Then:
+    - ${phi_n: n in ZZ}$ is orthonormal in $L^2 ([-pi, pi])$ with respect to $ip(dot, dot)$.
+    - $forall p in cal(P)_N$, $f - S_N f$ is orthogonal to $p$.
+    - $forall N >= 0$, $forall p in cal(P)_N$, $ norm(f - S_N f) <= norm(f - p) $ with equality iff $p = S_N f$.
+]<fourier-projection>
+#proof[
+    - Show $1/(2pi) integral_([-pi, pi]) phi_m overline(phi_n) = 0 = delta_(m n)$ (justify use of Riemann integral).
+    - Show that $(f - S_N f) perp phi_m$ for each $|m| <= N$ to show $(f - S_N f) perp p$ for $p in cal(P)_N$.
+    - Write $f - p = f - S_N f + S_N f - sum_(k = -N)^N c_k phi_k$, use Pythagoras.
+]
+#remark[
+    Above lemma is projection result, i.e. $S_N f$ is best approximation to $f$ in $cal(P)_N$.
+]
+#theorem[
+    Let $f in L^2 ([-pi, pi])$ be $2pi$-periodic function. Then Fourier series for $f$ converges to $f$ in $(L^2 ([-pi, pi]), norm(dot))$, i.e. $ lim_(N -> oo) norm(S_N f - f) = 0 $
 ]
