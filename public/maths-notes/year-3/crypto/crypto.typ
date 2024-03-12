@@ -733,7 +733,7 @@ $ So $G = mat(1, 2, 0, 3, 4; 0, 0, 1, 5, 6)$ is generator matrix for $C$ and $di
     Let $alpha in FF_q$ primitive $n$-th root of unity, $m in ZZ$, define $ vd(a)^((m)) = ((alpha^0)^m, ..., (alpha^(n - 1))^m) in FF_q^n $ Then for $0 <= k <= n$, $"RS"_k (vd(alpha)^((1)), vd(alpha)^((m)))$ is cyclic.
 ]
 #proof[
-    - Show cyclic permutation is equivalent to multiplying by $alpha^(-m) in FF_q$.
+    - Show cyclic permutation of $vd(alpha)^((m))$ is equivalent to multiplying by $alpha^(-m) in FF_q$.
     - Show rows of generator matrix of $"RS"_k (vd(alpha)^((1)), vd(alpha)^((m)))$ has rows $vd(alpha)^((m + i - 1))$ for $1 <= i <= k$.
     - Use linearity of a permutation to conclude result.
 ]
@@ -747,10 +747,10 @@ $ So $G = mat(1, 2, 0, 3, 4; 0, 0, 1, 5, 6)$ is generator matrix for $C$ and $di
 ]
 #proof[
     - First consider $k = n - 1$. Let $vd(c)$ be the $1 times n$ check-matrix for $"RS"_(n - 1)(vd(a), vd(b))$.
-        - Use that $"RS"_(n - 1)$ saturates singleton bound to show all $c_j != 0$, and so that $"RS"_1 (vd(a), vd(c))$ and $"RS"_(n - 1)(vd(a), vd(b))$ share a generator matrix (so are the same code).
+        - Use that $"RS"_(n - 1)(vd(a), vd(b))$ saturates singleton bound to show all $c_j != 0$, and so that $"RS"_1 (vd(a), vd(c))$ and $("RS"_(n - 1)(vd(a), vd(b)))^perp$ share a generator matrix (so are the same code).
         - $forall f(z) in bold(P)_(n - 1)$, since $phi_(vd(a), vd(b)) (f(z)) in "RS"_(n - 1)(vd(a), vd(b))$, and $vd(c)$ is check-matrix for $"RS"_(n - 1)(vd(a), vd(b))$, $ phi_(vd(a), vd(b)) (f(z)) dot vd(c) = 0 $
-    - Since $dim("RS"_(n - k)(vd(a), vd(c))) = n - k = dim(("RS"_k (vd(a), vd(b))))$, enough to show $"RS"_(n - k)(vd(a), vd(c)) subset.eq ("RS"_k (vd(a), vd(b)))^perp$:
-        - By considering degrees, show that for $phi_(vd(a), vd(c))(g(z)) in bold(P)_k$ and $g(z) in bold(P)_(n - k)$, $(f g)(z) in bold(P)_(n - 1)$. Deduce that $phi_(vd(a), vd(c))(g(z)) dot phi_(vd(a), vd(b))(f(z)) = 0$.
+    - Since $dim("RS"_(n - k)(vd(a), vd(c))) = n - k = dim\(("RS"_k (vd(a), vd(b)))^perp\)$, enough to show $"RS"_(n - k)(vd(a), vd(c)) subset.eq ("RS"_k (vd(a), vd(b)))^perp$:
+        - By considering degrees, show that for $g(z) in bold(P)_k$ and $g(z) in bold(P)_(n - k)$, $(f g)(z) in bold(P)_(n - 1)$. Deduce that $phi_(vd(a), vd(c))(g(z)) dot phi_(vd(a), vd(b))(f(z)) = 0$.
 ]
 
 == Hamming codes
@@ -762,5 +762,5 @@ $ So $G = mat(1, 2, 0, 3, 4; 0, 0, 1, 5, 6)$ is generator matrix for $C$ and $di
     For $r = 2, 3$, we can take $ H_2 = mat(0, 1, 1; 1, 0, 1), quad H_3 = mat(0, 0, 0, 1, 1, 1, 1; 0, 1, 1, 0, 0, 1, 1; 1, 0, 1, 0, 1, 0, 1) $
 ]
 #proposition[
-    
+
 ]

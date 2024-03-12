@@ -922,3 +922,33 @@
     - If $alpha overline(alpha) in M^times^2 - K^times^2$ then $[L: K] = 4$ and $G tilde.equiv ZZ\/4$.
     - If $alpha overline(alpha) in.not M^times^2$, then $[L: K] = 8$ and $G tilde.equiv D_4$.
 ]
+
+== A criterion for solvability by radicals
+
+#note[
+    Assume all fields in this section have characteristic $0$.
+]
+#definition[
+    $L\/K$ is *radical extension* if there is tower of field extensions $ K = K_0 subset dots.h.c subset K_m = L $ where for each $1 <= i <= m$, $K_i = K_(i - 1)(root(n_i, alpha_i))$ with $alpha_i in K_(i - 1)$ and $n_i in NN$.
+]
+#example[
+    Let $alpha = cbrt(2 + root(5, 3 - sqrt(7)))$. We have $ K_0 = QQ subset K_1 = QQ\(sqrt(7)\) subset K_2 = K_1 (root(5, 3 - cbrt(7))) subset K_3 = K_2 (alpha) $
+]
+#definition[
+    $f(x) in K[x]$ is *solvable in radicals* over $K$ if there is radical extension $L\/K$ containing at least one root of $f(x)$.
+]
+#lemma[
+    If $f(x)$ irreducible and solvable in radicals, then all its roots belong to the radical field extension $L$.
+]
+#definition[
+    A finite group $G$ is *solvable (soluble)* if there exists decreasing sequence of subgroups $ {id} = G_m supset dots.c supset G_0 = G $ where for each $1 <= i <= m$, $G_i$ is normal subgroup of $G_(i - 1)$ and $G_(i - 1)\/G_i$ is cyclic.
+]
+#lemma(name: "Properties of solvable groups")[
+    - Every subgroup of finite solvable group is solvable.
+    - Abelian groups are solvable.
+    - $S_n$ is solvable iff $n <= 4$.
+    - Let $G$ finite group with normal subgroup $H$. Then $G$ is solvable iff both $H$ and $G\/H$ are solvable.
+]
+#theorem(name: "Galois' Theorem: Criterion for solvability in radicals")[
+    Let $f(x) in K[x]$ irreducible. Then $f(x)$ is solvable in radicals over $K$ iff Galois group $G_f$ is solvable.
+]
