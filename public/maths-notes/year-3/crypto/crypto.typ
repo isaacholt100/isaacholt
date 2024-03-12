@@ -25,8 +25,8 @@
 - Cryptosystem objectives:
     - *Secrecy*: an intercepted message is not able to be decrypted
     - *Integrity*: it is impossible to alter a message without the receiver knowing
-    - *Authenticity*: receiver is certain of identity of sender
-    - *Non-repudiation*: sender cannot claim they sent a message; the receiver can prove they did.
+    - *Authenticity*: receiver is certain of identity of sender (they can tell if an impersonator sent the message)
+    - *Non-repudiation*: sender cannot claim they did not send a message; the receiver can prove they did.
 - *Kerckhoff's principle*: a cryptographic system should be secure even if the details of the system are known to an attacker.
 - Types of attack:
     - *Ciphertext-only*: the plaintext is deduced from the ciphertext.
@@ -39,7 +39,7 @@
 - *Converting letters to numbers*: treat letters as integers modulo $26$, with $A = 1$, $Z = 0 equiv 26 thick (mod 26)$. Treat string of text as vector of integers modulo $26$.
 - *Symmetric key cipher*: one in which encryption and decryption keys are equal.
 - *Key size*: $log_2 ("number of possible keys")$.
-- Caesar cipher is a *substitution cipher*. A stronger substitution cipher is this: key is permutation of ${a, ..., z}$. But vulnerable to plaintext attacks and ciphertext-only attacks, since different letters (and letter pairs) occur with different frequencies in English.
+- Caesar cipher is a *substitution cipher*. A stronger substitution cipher is this: key is permutation of ${a, ..., z}$. But vulnerable to known-plaintext attacks and ciphertext-only attacks, since different letters (and letter pairs) occur with different frequencies in English.
 - *One-time pad*: key is uniformly, independently random sequence of integers $mod 26$, $(k_1, k_2, ...)$, known to sender and receiver. If message is $(m_1, m_2, ..., m_r)$ then ciphertext is $(c_1, c_2, ..., c_r) = (k_1 + m_1, k_2 + m_2, ..., k_r + m_r)$. To decrypt the ciphertext, $m_i = c_i - k_i$. Once $(k_1, ..., k_r)$ have been used, they must never be used again.
     - One-time pad is information-theoretically secure against ciphertext-only attack: $PP(M = m | C = c) = PP(M = m)$.
     - Disadvantage is keys must never be reused, so must be as long as message.
@@ -50,11 +50,12 @@
     - Plaintext divided into blocks $P_1, ..., P_r$ of length $n$.
     - Each block represented as vector $P_i in (ZZ \/ 26 ZZ)^n$
     - Key is invertible $n times n$ matrix $M$ with elements in $ZZ \/ 26 ZZ$.
-    - Ciphertext for block $P_i$ is $ C_i = M P_i $ It can be decrypted with $P_i = M^(-1) C$.
+    - Ciphertext for block $P_i$ is $ C_i = M P_i $ It can be decrypted with $P_i = M^(-1) C_i$.
     - Let $P = (P_1, ..., P_r)$, $C = (C_1, ..., C_r)$, then $C = M P$.
 - *Confusion*: each character of ciphertext depends on many characters of key.
-- *Diffusion*: each character of ciphertext depends on many characters of plaintext. Ideal diffusion is when changing single character of plaintext changes a proportion of $(S - 1)\/S$ of the characters of the ciphertext, where $S$ is the number of possible symbols.
-- For Hill cipher, $i$th character of ciphertext depends on $i$th row of key - this is medium confusion. If $j$th character of plaintext changes and $M_(i j) != 0$ then $i$th character of ciphertext changes. $M_(i j)$ is non-zero with probability roughly $25\/26$ so good diffusion.
+- *Diffusion*: changing single character of plaintext changes many characters of ciphertext. Ideal diffusion is when changing single character of plaintext changes a proportion of $(S - 1)\/S$ of the characters of the ciphertext, where $S$ is the number of possible symbols.
+- Confusion and diffusion make ciphertext-only attacks difficult.
+- For Hill cipher, $i$th character of ciphertext depends on $i$th row of key (so depends on $n$ characters of the key $M$) - this is medium confusion. If $j$th character of plaintext changes and $M_(i j) != 0$ then $i$th character of ciphertext changes. $M_(i j)$ is non-zero with probability roughly $25\/26$ so good diffusion.
 - Hill cipher is susceptible to known plaintext attack:
     - If $P = (P_1, ..., P_n)$ are $n$ blocks of plaintext with length $n$ such that $P$ is invertible and we know $P$ and the corresponding $C$, then we can recover $M$, since $C = M P ==> M = C P^(-1)$.
     - If enough blocks of ciphertext are intercepted, it is very likely that $n$ of them will produce an invertible matrix $P$.
@@ -717,4 +718,49 @@ $ So $G = mat(1, 2, 0, 3, 4; 0, 0, 1, 5, 6)$ is generator matrix for $C$ and $di
 #proof[
     - To show dimension is $k$, show that $phi_(vd(a), vd(b))$ is injective, by showing it has trivial kernel.
     - To show minimum distance is $n - k + 1$, show for $f(z) != 0$ that $w(phi_(vd(a), vd(b))(z)) >= n - (k - 1)$.
+    - Use linearity and injectivity of $phi_(vd(a), vd(b))$ and fact that ${1, ..., z^(k - 1)}$ is basis for $bold(P)_k$ to show $G$ is generator-matrix for $"RS"_k (vd(a), vd(b))$.
+]
+#remark[
+    We have $ {0} = "RS"_0 (vd(a), vd(b)) subset "RS"_1 (vd(a), vd(b)) subset dots.c subset "RS"_n (vd(a), vd(b)) = FF_q^n $ (since a row is added to the generator matrix each time).
+]
+#example[
+    Let $q = 7$, $n = 5$, $k = 3$, $vd(a) = (0, 1, 6, 2, 3)$, $vd(b) = (5, 4, 3, 2, 1)$. Then $ phi_(vd(a), vd(b)): bold(P)_3 & -> FF_7^5, \ f(z) & |-> (5 f(0), 4 f(1), 3 f(0), 2 f(2), 1 f(3)) $ So a generator matrix for $"RS"_3 (vd(a), vd(b))$ is $ G = mat(5, 4, 3, 2, 1; 0, 4, 4, 4, 3; 0, 4, 3, 1, 2) $
+]
+#definition[
+    $alpha in FF_q$ is *primitive $n$-th root of unity* if $alpha^n = 1$ and $forall 0 < j < n$, $ alpha^j != 1$.
+]
+#proposition[
+    Let $alpha in FF_q$ primitive $n$-th root of unity, $m in ZZ$, define $ vd(a)^((m)) = ((alpha^0)^m, ..., (alpha^(n - 1))^m) in FF_q^n $ Then for $0 <= k <= n$, $"RS"_k (vd(alpha)^((1)), vd(alpha)^((m)))$ is cyclic.
+]
+#proof[
+    - Show cyclic permutation is equivalent to multiplying by $alpha^(-m) in FF_q$.
+    - Show rows of generator matrix of $"RS"_k (vd(alpha)^((1)), vd(alpha)^((m)))$ has rows $vd(alpha)^((m + i - 1))$ for $1 <= i <= k$.
+    - Use linearity of a permutation to conclude result.
+]
+#example[
+    In $FF_5$, $2^1 = 2$, $2^2 = 4$, $2^3 = 3$, $2^4 = 1$ so $2$ is primitive $4$th root of unity in $FF_5$ so $vd(alpha)^m = (1^m, 2^m, 4^m, 3^m)$. We have $vd(alpha)^((1)) = (1, 2, 4, 3)$, $vd(alpha)^((2)) = (1, 4, 1, 4)$, so a generator matrix for $"RS"_2 (vd(alpha)^((1)), vd(alpha)^((2)))$ is $ G = mat(1, 4, 1, 4; 1, 3, 4, 2) $ By performing ERO's, we obtain another generator matrix $ G' = mat(3, 1, 1, 0; 0, 3, 1, 1) $ This is generator matrix for the cyclic code with generator polynomial $g(x) = (x - 1)(x - 3) = x^2 + x + 3$. So $"RS"_2 (vd(alpha)^((1)), vd(alpha)^((2)))$ is cyclic with generator polynomial $g(x)$. Note $x^4 - 1 = (x - 1)(x - 2)(x - 3)(x - 4)$ so $g(x) | x^4 - 1$.
+]
+#proposition[
+    For $vd(a), vd(b)in FF_q^n$ with $a_j$ all distinct and $b_j$ all non-zero,
+    - There exists $vd(c)$ with all $c_j != 0$ such that $ 1 <= k <= n - 1, quad ("RS"_k (vd(a), vd(b)))^perp = "RS"_(n - k)(vd(a), vd(c)) $
+    - $vd(c)$ is given by the $1 times n$ check-matrix for $"RS"_(n - 1)(vd(a), vd(b))$.
+]
+#proof[
+    - First consider $k = n - 1$. Let $vd(c)$ be the $1 times n$ check-matrix for $"RS"_(n - 1)(vd(a), vd(b))$.
+        - Use that $"RS"_(n - 1)$ saturates singleton bound to show all $c_j != 0$, and so that $"RS"_1 (vd(a), vd(c))$ and $"RS"_(n - 1)(vd(a), vd(b))$ share a generator matrix (so are the same code).
+        - $forall f(z) in bold(P)_(n - 1)$, since $phi_(vd(a), vd(b)) (f(z)) in "RS"_(n - 1)(vd(a), vd(b))$, and $vd(c)$ is check-matrix for $"RS"_(n - 1)(vd(a), vd(b))$, $ phi_(vd(a), vd(b)) (f(z)) dot vd(c) = 0 $
+    - Since $dim("RS"_(n - k)(vd(a), vd(c))) = n - k = dim(("RS"_k (vd(a), vd(b))))$, enough to show $"RS"_(n - k)(vd(a), vd(c)) subset.eq ("RS"_k (vd(a), vd(b)))^perp$:
+        - By considering degrees, show that for $phi_(vd(a), vd(c))(g(z)) in bold(P)_k$ and $g(z) in bold(P)_(n - k)$, $(f g)(z) in bold(P)_(n - 1)$. Deduce that $phi_(vd(a), vd(c))(g(z)) dot phi_(vd(a), vd(b))(f(z)) = 0$.
+]
+
+== Hamming codes
+
+#definition[
+    Let $r >= 2$, $n = 2^r - 1$, let $H in M_(r, n)(FF_2)$ have columns corresponding to all non-zero vectors in $FF_2^r$. The *binary Hamming code of redundancy $r$* is $ "Ham"_2 (r) = {vd(x) in FF_2^n: vd(x) H^t = vd(0)} $ Note the order of columns is not specified, so we have a collection of equivalent codes.
+]
+#example[
+    For $r = 2, 3$, we can take $ H_2 = mat(0, 1, 1; 1, 0, 1), quad H_3 = mat(0, 0, 0, 1, 1, 1, 1; 0, 1, 1, 0, 0, 1, 1; 1, 0, 1, 0, 1, 0, 1) $
+]
+#proposition[
+    
 ]

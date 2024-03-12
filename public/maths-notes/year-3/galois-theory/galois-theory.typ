@@ -13,6 +13,13 @@
 
 = Introduction
 
+#definition[
+    *Epimorphism* is surjective homomorphism.
+]
+#definition[
+    *Embedding* or *monomorphism* is injective homomorphism.
+]
+
 == Cubic equations over $CC$
 
 - For a polynomial equation, a *solution by radicals* is a formula for solutions using only addition, subtraction, multiplication, division and radicals $root(m, dot.op)$ for $m in NN$.
@@ -874,7 +881,7 @@
     In practice, perform shift to kill $x^3$ coefficient to obtain *reduced quartic*: $ f(x - a\/4) = x^4 + p x^2 + q x + r $
     - Cubic resolvent is _(memorise)_ *$ t^3 + 2 p t^2 + (p^2 - 4r)t - q^2 $*
     - Choose $theta_1, theta_2, theta_3$ such that _(memorise)_ *$ theta_1 theta_2 theta_3 = -q $*
-    - Roots of $f(x - a\/4)$ are _(memorise)_ *$ x_1 & = 1/2 (theta_1 + theta_2 + theta_3), \ x_2 & = 1/2 (theta_1 - theta_2 - theta_3), \ x_3 & = 1/2 (-theta_1 + theta_3 - theta_3), \ x_4 & = 1/2 (-theta_1 - theta_2 + theta_3) $*
+    - Roots of $f(x - a\/4)$ are _(memorise)_ *$ x_1 & = 1/2 (theta_1 + theta_2 + theta_3), \ x_2 & = 1/2 (theta_1 - theta_2 - theta_3), \ x_3 & = 1/2 (-theta_1 + theta_2 - theta_3), \ x_4 & = 1/2 (-theta_1 - theta_2 + theta_3) $*
     - Recover roots of $f(x)$ by subtracting $a\/4$.
 ]
 #example[
@@ -902,4 +909,16 @@
         - If $tau(theta_2) = theta_2$, then $theta_2 in M$: contradiction.
         - If $tau(theta_2) = -theta_2$, then $tau(theta_1 theta_2) = (-theta_1)(-theta_2) = theta_1 theta_2$ hence $theta_1 theta_2 in M$. But $theta_1 theta_2 theta_3 in K$ and $theta_1 theta_2 != 0$ since $R(t)$ irreducible. But then $theta_3 in M$: contradiction.
     - Hence $[M(theta_1, theta_2): M] >= 4$, and $theta_1 theta_2 theta_3 in M$ so $L = M(theta_1, theta_2)$ and $[L: M] = 4$.
+]
+#example[
+    - If $f(x) in K[x]$ but cubic resolvent $R(t) in K[t]$ is reducible, it is possible that all roots $t_1 = theta_1^2$, $t_2 = theta_2^2$, $t_3 = theta_3^2$ are in $K$. Then $M = K$ and $L = K(theta_1, theta_2, theta_3)$. Since $theta_1 theta_2 theta_3 in K$, $L\/K$ is obtained by adjoining only two square roots to $K$. Since $f(x)$ irreducible of degree $4$, we have $[L: K] >= 4$, hence only option is biquadratic extension $G_f = Gal(L\/K) = V_4 tilde.equiv ZZ\/2 times ZZ\/2$.
+    - If only one root $t_1, t_2, t_3$ is in $K$:
+        - $M$ is splitting field of irreducible quadratic over $K$. Hence $M = K\(sqrt(d)\)$ for some $d in K^times - K^times^2$ and $Gal(M\/K) = {id, phi} tilde.equiv ZZ\/2$ where $phi\(sqrt(d)\) = -sqrt(d)$.
+        - We have $ K subset M = K\(sqrt(d)\) = K(alpha, overline(alpha)) subset L = M\(sqrt(alpha), sqrt(overline(alpha))\) $ where $alpha$ and $overline(alpha) = phi(alpha)$ are conjugate elements in $M^times - M^times^2$.
+        - In this case, $L\/K$ is normal extension, since if $alpha, overline(alpha)$ are roots of $x^2 + a x + b in K[x]$, then $plus.minus sqrt(alpha), plus.minus sqrt(overline(alpha))$ are roots of $x^4 + a x^2 + b in K[x]$. So $L$ is splitting field of $x^4 + a x^2 + b$ over $K$. For above tower of fields, we have Galois groups $ {id} subset Gal(L\/M) = H subset Gal(L\/K) = G $ and $G\/H tilde.equiv Gal(M\/K) = {id, phi} tilde.equiv ZZ\/2$.
+]
+#theorem[
+    - If $alpha overline(alpha) in K^times^2$, then $[L: K] = 4$ and $G tilde.equiv ZZ\/2 times ZZ\/2$.
+    - If $alpha overline(alpha) in M^times^2 - K^times^2$ then $[L: K] = 4$ and $G tilde.equiv ZZ\/4$.
+    - If $alpha overline(alpha) in.not M^times^2$, then $[L: K] = 8$ and $G tilde.equiv D_4$.
 ]

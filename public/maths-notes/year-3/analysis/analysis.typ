@@ -1205,3 +1205,22 @@
 #theorem[
     Let $f in L^2 ([-pi, pi])$ be $2pi$-periodic function. Then Fourier series for $f$ converges to $f$ in $(L^2 ([-pi, pi]), norm(dot))$, i.e. $ lim_(N -> oo) norm(S_N f - f) = 0 $
 ]
+#proof[
+    - First show if $g: [-pi, pi] -> CC$ continuous, then $norm(S_N g - G) -> 0$ as $N -> oo$.
+        - Let $epsilon > 0$, then for some $M$, there exists $p in cal(P)_M$ such that $ forall x in [-pi, pi], quad |g(x) - p(x)| < epsilon $
+        - Use that $g(x) = lim_(N -> oo) (g * F_N)(x)$ and $g * F_(M + 1) in cal(P)_M$.
+        - Deduce that $norm(g - p)^2 < epsilon^2$.
+        - Show if $M <= N$ then $norm(g - S_N g) <= norm(g - p) < epsilon$, conclude result for continuous functions.
+    - Let $f in L^2 ([-pi, pi])$, $epsilon > 0$. Using that continuous functions are dense in $L^2 ([-pi, pi])$, there is $g: [-pi, pi] -> CC$ such that $norm(f - g) < epsilon$.
+    - Since $g$ continuous, for large enough $M$, $norm(S_M g - g) < epsilon$ by above.
+    - Use triangle inequality, the fact that $N >= M ==> S_M g in cal(P)_N$ and projection theorem to conclude the result.
+]
+#lemma[
+    ${phi_n: n in ZZ}$ is orthonormal basis of $(L^2 ([-pi, pi])$ with respect to inner product $ ip(f, g) = 1/(2pi) integral_([-pi, pi]) f overline(g) $
+]
+#proof[
+    - Note that $(L^2 ([-pi, pi]), ip(dot, dot))$ is Hilbert space.
+    - Show Parseval's identity holds.
+    - Write $f = f - S_N f + S_N f$, use projection theorem, Pythagorean theorem and orthonormality of ${phi_n: n in ZZ}$ to show $ norm(f)^2 = norm(f - S_N f)^2 + sum_(k = -N)^N |ip(f, phi_k)|^2 $
+    - Take limit as $N -> oo$ to conclude result.
+]

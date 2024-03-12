@@ -1384,3 +1384,97 @@ TODO: add diagrams.
 #example[
     If surface $S$ is triangulated by finite simplicial complex $K$ with $v$ $0$-simplices, $e$ $1$-simplices and $f$ $2$-simplices, then $ chi(S) = v - e + f $
 ]
+#proposition[
+    Euler characteristic is also homotopy-invariant: $X tilde.eq Y ==> chi(X) = chi(Y)$.
+]
+#proof[
+    Non-examinable.
+]
+#remark[
+    For $n$-dimensional finite simplicial complex $K$, Euler characteristic is defined as $ sum_(k = 0)^n (-1)^k ("number of k-simplices in" K) $
+]
+#lemma(name: "Union Lemma")[
+    Let $K = A union B$ be $2$-dimensional finite simplicial complex with $A$, $B$, $A sect B$ simplicial sub-complexes. Then $ chi(K) = chi(A union B) = chi(A) + chi(B) - chi(A sect B) $
+]
+#proof[
+    Express number of vertices, edges and faces of $A union B$ in terms of those of $A$, $B$ and $A sect B$.
+]
+#lemma[
+    Let $X$, $Y$ surfaces. Then $ chi(X \# Y) = chi(X) + chi(Y) - 2 $
+]
+#proof[
+    - For closed surface $X$, $chi(X - "open disc") = chi(X) - 1$ (justify using triangulations).
+    - Use Union lemma with $A = X - "open disc"$, $B = Y - "open disc"$, $A sect B = S^1$.
+]
+#lemma[
+    Let $S$ be surface, let $S_M$ be $S$ with cross-cap attached. Then $ chi(S_M) = chi(S) - 1 $
+]
+#proof[
+    - $S_M = A union B$ where $A = (S - "open disc")$, $B$ is Mobius band.
+    - Use Union lemma.
+]
+#lemma[
+    Let $S$ surface, let $S_H$ be $S$ with handle added. Then $ chi(S_H) = chi(S) - 2 $
+]
+#proof[
+    - $S_H = A union B$, where $A = (S - 2 "open discs")$, $B$ is cylinder.
+    - $A sect B$ is disjoint union of $S^1$ and $S^1$, $S^1 product.co S_1$.
+    - Use Union lemma to show $chi(A sect B) = 0$.
+    - Use Union lemma again to deduce the result.
+]
+
+== The classification of closed surfaces
+
+#theorem(name: "Classification Theorem for Closed Surfaces")[
+    The complete list of closed surfaces, up to homeomorphism, is
+    - *Orientable*: for $g in NN_0$, $ M_g tilde.equiv S^2 \# underbrace(T \# dots.h.c \# T, g "times") tilde.equiv S^2 "with" g "handles attached" $
+    - *Non-orientable*: for $g in NN$, $ N_g tilde.equiv underbrace(PP \# dots.h.c \# PP, g "times") tilde.equiv S^2 "with" g "cross caps attached" $
+    Since $chi(M_g) = 2 - 2g$ and $chi(N_g) = 2 - g$, a closed surface is classified up to homeomorphism (its *homeomorphism type*) by its Euler characteristic and whether it is orientable or not.
+]
+#definition[
+    Let $K$ be finite simplicial complex that triangulates a closed surface $S$, let $L$ be sub-complex of $K$ of dimension $<= 1$. The *thickening* of $L$, $Theta(L)$, is sub-complex of $K^((2))$ given by the union of all $2$-simplices in $K^((2))$ (including all their faces) which meet in $L$.
+]
+#proposition[
+    Let $L$ be $1$-dimensional sub-complex of $2$-dimensional finite simplicial complex $K$. Then
+    - $Theta(L) tilde.eq L$.
+    - If $L$ is tree, then $Theta(L)$ is homeomorphic to closed disc $D^2$.
+    - If $L$ is simple closed curve (i.e. homeomorphic to $S^1$) then $Theta(L)$ is homeomorphic to either cylinder or Mobius band.
+]
+#lemma[
+    Let $K$ be finite simplicial complex that triangulates closed surface, let $L$ be $1$-dimensional sub-complex of $K$. Then $ chi(L) = chi(Theta(L)) $
+]
+#proof[
+    - Let $diff Theta(L)$ be boundary of $Theta(L)$ in $K$, let $C = Theta(L) - L - diff Theta(L)$ (note $C$ is not simplicial complex).
+    - By definition, $L$, $diff Theta(L)$ and $C$ are pairwise disjoint and $Theta(L) = L union diff Theta(L) union C$.
+    - By Union lemma, $chi(Theta(L)) = chi(L) + chi(diff Theta(L)) + chi(C)$.
+]
+#definition[
+    Let $K$ finite simplicial complex that triangulates closed surface.
+    - A *maximal tree* in $K$ is tree formed out of the $0$- and $1$-simplices in $K$ which cannot be extended to any larger tree (and necessarily contains all $0$-simplices).
+    - For maximal tree $L$ in $K$, *dual graph* of $L$, $L^* subset K$, is defined as follows:
+        - The vertices of $L^*$ are the barycentres of the $2$-simplices of $K$.
+        - Two vertices of $L^*$ are joined by an edge iff the corresponding two $2$-simplices meet in a $1$-simplex not in $L$.
+]
+#proposition[
+    Let $L$ be maximal tree in $K$.
+    - $L^*$ is connected.
+    - $Theta(L) union Theta(L^*) = K^((2)) tilde.equiv K$.
+    - $Theta(L) sect Theta(L^*) = "boundary of disc" Theta(L) tilde.equiv S^1$.
+]
+#theorem[
+    Let $K$ finite simplicial complex that triangulates closed surface. Then $chi(K) <= 2$ with equality iff $K tilde.equiv S^2$.
+]
+#proof[
+    - Let $L$ be maximal tree in $K$ with dual graph $L^*$. Use Union lemma and above two propositions to show $chi(K) <= 2$.
+    - Show if $chi(K) = 2$ then $L^*$ is tree, conclude that $K$ is homeomorphic to union of two closed discs glued along their boundary circles, so is copy of $S^2$.
+]
+#lemma[
+    Let $S$ be closed surface. Then $(S + "handle") tilde.equiv S \# TT$.
+]
+#proof[
+    - Up to homeomorphism, we can always arrange that a handle is attached to the interior of a region homeomorphic to a closed disc in $S$.
+    - So $S + "handle" tilde.equiv (S - "open disc") union (TT - "open disc") tilde.equiv S \# TT$.
+]
+#lemma[
+    Let $S$ be non-orientable closed surface. Then $(S + "handle") tilde.equiv S \# KK tilde.equiv S \# PP \# PP tilde.equiv (S + 2 "cross caps")$.
+]

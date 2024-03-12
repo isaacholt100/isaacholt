@@ -763,4 +763,57 @@ $
     - Assume that $P_3 = ideal(alpha)_R$, then $ P_2 P_3^3 = ideal(9 + sqrt(79)) ideal(alpha^3) = ideal(5 + sqrt(79)) $ and so $ alpha^3 = (5 + sqrt(79))/(9 + sqrt(79)) u = (-17 + 2 sqrt(79)) u quad "for some" u in R^times $
     - For any $a in R^times$, $ideal(plus.minus a alpha)_R = ideal(alpha)_R$ and $(plus.minus a alpha)^3 = \(-17 + 2 sqrt(79)\) u (plus.minus a)^3$. So without changing $P_3$, we can rescale $alpha$ by a unit and so rescale $u$ by a unit cube.
     - The fundamental unit of $R$ (by trial and error) is $v = 80 + 9 sqrt(79)$. By @main-theorem-for-units, $ R^times \/ ideal(plus.minus v^3) tilde.equiv ZZ\/3 $ (consider the map $R^times -> ZZ\/3$, $plus.minus v^r = r mod 3$ and use FIT). Thus, up to multiplication by unit cubes, there are only three possible units $1, v, v^2$ (can take $v^(-1)$ instead of $v^2$). So we can choose $alpha$ such that $u$ is $1$, $v$ or $v^(-1)$.
+    - So $alpha^3$ is one of $ -17 + 2 sqrt(79), quad \(-17 + 2 sqrt(79)\)v = 62 + 7 sqrt(79), quad \(-17 + 2 sqrt(79)\) v^(-1) = -2782 + 313 sqrt(79) $
+    - Let $alpha = a + b sqrt(79)$, $a, b in ZZ$, then $alpha^3 = a(a^2 + 3 dot 79b^2) + b(3a^2 + 79b^2) sqrt(79)$. We have $3 = N(P_3) = |N(alpha)| = |a^2 - 79b^2|$ so $a, b != 0$ so coefficient in $sqrt(79)$ in $alpha^3$ satisfies $|b(3a^2 + 79b^2)| >= 3 + 79 = 82$, hence $alpha^3 = -2782 + 313 sqrt(79)$. So $b(3a^2 + 79b^2) = 313$ which is prime, hence $b = 1$ and so $a^2 = 78$: contradiction.
+    - So $P_3$ is not principal so has order $3$, so $Cl(R) tilde.equiv ZZ\/3$.
+]
+
+= Diophantine applications
+
+== Mordell equations
+
+#definition[
+    A *Mordell equation* is of the form $x^2 + d = y^3$, $d in ZZ$, with solutions $x, y in ZZ$ sought.
+]
+#example[
+    Find all solutions to the Mordell equation $y^3 = x^2 + 5$.
+
+    - Let $K = QQ\(sqrt(-5)\)$, then $R = cal(O)_K = ZZ\[sqrt(-5)\]$. By the Minkowski bound, every element in $Cl(R)$ has representative ideal of norm at most $ (4/pi) sqrt(5) < 3 $ so as a set, $Cl(R) = {e, [P_2]}$ where $P_2 = ideal(2, 1 + sqrt(-5))$ by Kummer-Dedekind.
+    - $P_2$ is not principal as $a^2 + 5b^2 = 2$ has no solutions, hence $Cl(R) tilde.equiv ZZ\/2$.
+    - Let $ideal(alpha) = ideal(x + sqrt(-5))$, so $ideal(overline(alpha)) = ideal(x - sqrt(-5))$. If a prime ideal $P$ divides $ideal(alpha)$ and $ideal(overline(alpha))$, then $P | ideal(alpha - overline(alpha)) = ideal(2 sqrt(-5)) = ideal(2)_R ideal(sqrt(-5))_R = P_2^2 P_51$. $2$ and $5$ ramify, so $P_2 = overline(P_2)$ and $overline(P_5) = P_5$.
+    - Hence $ ideal(alpha) & = P_2^a P_5^b Q_1^(r_1) dots.c Q_n^(r_n), \ ideal(overline(alpha))_R & = P_2^a P_5^b overline(Q_1)^(r_1) dots.c overline(Q_n)^(r_n) $ where $a, b, r_i >= 0$, all $Q_i, overline(Q_i)$ are distinct and different from $P_2$, $P_5$.
+    - Then $ ideal(y)^3 = ideal(y^3) = ideal(alpha overline(alpha)) = ideal(alpha) ideal(overline(alpha)) = P_2^(2a) P_5^(2b) (Q_1 overline(Q_1))^(r_1) dots.c (Q_n overline(Q_n))^(r_n) $ By uniqueness of prime ideal factorisation, all exponents in RHS are divisible by $3$, so let $I = P_2^(a\/3) P_5^(b\/3) Q_1^(r_1\/3) dots.c Q_n^(r_n\/3)$, so that $I^3 = ideal(alpha)_R$.
+    - Since $h_K = 2$, the square of any fractional ideal of $R$ is principal, so $(I^(-1))^2$ is principal, hence $I = I^3 (I^(-1))^2 = alpha (I^(-1))^2$ is principal, so let $I = ideal(beta)_R$, for $beta = s + t sqrt(-5) in R$.
+    - Now $ideal(beta^3) = I^3 = ideal(alpha)$ so $beta^3 = u alpha$ for some $u in R^times$. But only units in $R$ are $plus.minus 1$. Since $I = ideal(-beta)$, can assume that $beta^3 = alpha$. Then $ s^3 + 3s t^2 (-5) + (3s^2 t + t^3(-5))sqrt(-5) = x + sqrt(-5) $
+    - So $s^3 - 15s t^2 = x$, $3s^2 t - 5t^3 = 1$. Hence $t = plus.minus 1$, and both possibilities yield no integer solutions to the second equation, so $x^2 + 5 = y^3$ has no integer solutions.
+]
+#example[
+    Let $K = QQ\(sqrt(-31)\)$, it can be shown with Minkowski bound that $h_K = 3$ so $Cl(R) = ideal([P_2]) tilde.equiv ZZ\/3$ where $P_2 = ideal(2, (1 + sqrt(-31))\/2)$. Show that $ x^2 + 31 = y^3 $ has no solutions $x, y in ZZ$.
+    - Assume $x, y$ is a solution. $31 divides.not x$, as otherwise $31^2 | (y^3 - x^2) = 31$ (since $31$ is prime): contradiction.
+    - $x$ is odd and $y$ is even:
+        - If $x$ even, $y$ is odd and $y^3 equiv 31 equiv -1 mod 4$ so $y equiv -1 mod 4$. Now $x^2 + 4 = y^3 - 27 = (y - 3)(y^2 + 3y + 9)$.
+        - $y^2 + 3y + 9 equiv -1 mod 4$. Hence $y^2 + 3y + 9$ is divisible by prime $p equiv 3 mod 4$ (since product two numbers of form $4n + 1$ is also of this form). So $x^2 + 4 equiv 0 mod p$. Hence $(x\/2)^2 equiv -1 mod p$ so $(x\/2)^(p - 1) equiv (-1)^((p - 1)/2) equiv -1$ as $p equiv 3 mod 4$ which contradicts Fermat's little theorem. Hence $x$ is odd so $y$ is even.
+    - Now $\(x + sqrt(-31)\)\(x - sqrt(-31)\) = y^3$. $x$ is odd, so $alpha := (x + sqrt(-31))\/2 in R$. Let $y = 2z$, $z in ZZ$, then $alpha overline(alpha) = 2z^3$ and $ideal(alpha) ideal(overline(alpha)) = ideal(2) ideal(z)^3$.
+    - If $P | ideal(alpha), ideal(overline(alpha))$, then $alpha, overline(alpha) in P$, so $sqrt(-31) = alpha - overline(alpha) in P$, hence $P = ideal(sqrt(-31))$ (this is prime since norm is $31$, a prime).
+    - But then $x = alpha + overline(alpha) in P sect ZZ = ideal(31)_ZZ$, but $31 divides.not x$, so we have a contradiction. So $ideal(alpha)$, $ideal(overline(alpha))$ are coprime ideals.
+    - WLOG, $ideal(alpha) = P_2^a Q_1^(r_1) dots.c Q_n^(r_n)$ and $ideal(overline(alpha)) = overline(P_2)^a overline(Q_1)^(r_1) dots.c overline(Q_n)^(r_n)$ with $P_2$, $overline(P_2)$, all $Q_i, overline(Q_i)$ distinct.
+    - Then $ideal(alpha) ideal(overline(alpha)) = ideal(2)^a (Q_1 overline(Q_1))^(r_1) dots.c (Q_n overline(Q_n))^(r_n) = ideal(2) ideal(z)^3$.
+    - Hence $a equiv 1 mod 3$ and for all $i$, $3 | r_i$. So $ideal(alpha) = P_2 I^3$ for some ideal $I$.
+    - Now $[ideal(alpha)] = e$ and $[I^3] = [I]^3 = e$ as $h_K = 3$. Hence $[P_2] = e$ so $P_2$ is principal.
+    - So $P_2 = ideal(\(u + v sqrt(-31)\)\/2)$, $u, v in ZZ$, $u equiv v mod 2$.
+    - Then $2 = N(P_2) = (u^2 + 31v^2)\/4$ hence $8 = u^2 + 31v^2$: contradiction.
+]
+
+== Generalised Pell equations
+
+#definition[
+    A *generalised Pell equation* is of the form $ x^2 - d y^2 = n, quad n in ZZ, d in NN "square-free" $ i.e. determine whether $n$ is a norm from $ZZ\[sqrt(d)\]$.
+]
+#definition[
+    Let $K = QQ\(sqrt(14)\)$. Solve $x^2 - 14y^2 = plus.minus 5$. We can assume $R = ZZ\[sqrt(14)\]$ is PID and so a UFD (can be proven using Minkowski bound by showing $h_K = 1$).
+    - By trial and error, fundamental unit is $u = 15 + 4 sqrt(14)$ and $N(u) = 15^2 - 14 dot 16 = 1$.
+    - We have $N\(3 - sqrt(14)\) = -5$ so $ideal(5) = ideal(3 + sqrt(14)) ideal(3 - sqrt(14))$ by Kummer-Dedekind.
+    - Now $ideal(x + y sqrt(14)) ideal(x - y sqrt(14)) = ideal(3 + sqrt(14)) ideal(3 - sqrt(14))$. The ideals on the LHS are conjugate, and ideals on RHS are prime so $ideal(x + y sqrt(14)) = ideal(3 plus.minus sqrt(14))$.
+    - Hence $x + y sqrt(14) = plus.minus \(15 + 4 sqrt(14)\)^n \(3 plus.minus sqrt(14)\)$ for some $n in ZZ$ and $x - y sqrt(14) = plus.minus \(15 - 4 sqrt(14)\)^n \(3 minus.plus sqrt(14)\)$ which gives all solutions $x, y in ZZ$.
+    - *Note*: $N\(x + y sqrt(14)\) = x^2 - 14y^2 = N(u)^n N\(3 plus.minus sqrt(14)\) = 1^n dot -5 = -5$ so all solutions must have $-5$ on RHS.
 ]

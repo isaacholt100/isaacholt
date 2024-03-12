@@ -1080,5 +1080,26 @@ Note: Toffoli gate maps computational basis elements to computational basis elem
 == Shor's algorithm
 
 #example[
-    Given $N in NN$, pick random $1 < y < N$. If $gcd(y, N) != 1$, we can find a divisor of $N$. If $gcd(y, N) = 1$, define $ f_y: ZZ -> ZZ\/N, quad f_y (a) = y^a quad mod N $ Period of $f$ is smallest $r in NN$ such that $f(r) = 1$. We have $f(a) = f(b)$ iff $a - b = 0 mod r$. Let $r$ be even (if $r$ odd, start again with different $y$). Now $ y^r - 1 = 0 mod N ==> (y^(r\/2) - 1)(y^(r\/2) + 1) = 0 mod N $ If either factor on LHS is multiple of $N$, start again with different $y$. Otherwise, we know $y^(r\/2)$ and $N$ have common factor $< N$, and so use Euclid's algorithm to find $gcd(y^(r\/2) - 1, N)$.
+    Given $N in NN$, pick random $1 < y < N$. If $gcd(y, N) != 1$, we can find a divisor of $N$. If $gcd(y, N) = 1$, define $ f_y: ZZ -> ZZ\/N, quad f_y (a) = y^a quad mod N $ Period of $f_y$ is smallest $r in NN$ such that $f_y (r) = 1$. We have $f_y (a) = f_y (b)$ iff $a - b = 0 mod r$. Let $r$ be even (if $r$ odd, start again with different $y$). Now $ y^r - 1 = 0 mod N ==> (y^(r\/2) - 1)(y^(r\/2) + 1) = 0 mod N $ If either factor on LHS is multiple of $N$, start again with different $y$. Otherwise, we know $y^(r\/2) - 1$ and $N$ have common factor $< N$, and so use Euclid's algorithm to find $gcd(y^(r\/2) - 1, N)$.
 ]
+#algorithm(name: "Shor's algorithm")[
+    - Shor's algorithm finds the smallest $r > 0$ such that $y^r equiv 1 mod N$.
+    - Start with state $ket(0)_n ket(0)_(n_0)$ where $n_0 = ceil(log_2 (N))$, $n = 2n_0$.
+    - Act with $H^(tp n)$ on input bits, giving $ 1/2^(n\/2) sum_(x = 0)^(2^n - 1) ket(x) tp ket(0) $
+    - Act with $U_f$ (where $U_f ket(x) ket(m) = ket(x) ket(m xor f(x))$), giving $ 1/2^(n\/2) sum_(x = 0)^(2^n - 1) ket(x) tp ket(f(x)) $
+    - Measure the output bits, yielding a random value $f(x_0)$, which projects the state to $ 1/sqrt(Q + 1) sum_(m = 0)^Q ket(x_0 + m r) ket(f(x_0)) $ where $Q$ is largest integer strictly less than $2^n\/r$. Shift by random $x_0$ means we can't learn anything about $r$ by measuring input bits. Discard output bits.
+    - Perform QFT on input bits, giving $ U_"FT" 1/sqrt(Q + 1) sum_(m = 0)^Q ket(x_0 + m r) & = 1/sqrt(Q + 1) sum_(m = 0)^Q 1/2^(n\/2) sum_(y = 0)^(2^n - 1) e^(2pi i(x_0 + m r)y\/2^n) ket(y) \ & = 1/2^(n\/2) sum_(y = 0)^(2^n - 1) e^(2pi i x_0 y\/2^n) (1/sqrt(Q + 1) sum_(m = 0)^Q e^(2pi i m r y\/2^n)) ket(y) $
+    - Measure input bits in the computational basis. Probability that this yields value $y$ is $ p(y) & = abs(1/sqrt(Q + 1) 1/2^(n\/2) e^(2pi i x_0 y\/2^n) (sum_(m = 0)^Q e^(2pi i m r y\/2^n)))^2 \ & = 1/(2^n (Q + 1)) abs(sum_(m = 0)^Q e^(2pi i m r y\/2^n))^2 \ & = 1/(2^n (Q + 1)) abs((e^(2 pi i r y (Q + 1)\/2^n) - 1)/(e^(2 pi i r y\/2^n) - 1))^2 \ & = 1/(2^n (Q + 1)) abs((e^(pi i r y (Q + 1)\/2^n) (e^(pi i r y (Q + 1)\/2^n) - e^(-pi i r y(Q + 1)\/2^n)))/(e^(pi i r y\/2^n) (e^(pi i r y\/2^n) - e^(-pi i r y\/2^n))))^2 \ & = 1/(2^n (Q + 1)) (sin^2 (pi r y(Q + 1)\/2^n))/(sin^2 (pi r y\/2^n)) $
+    - When $r y\/2^n in ZZ$, we have $p(y) = 1/(2^n (Q + 1)) abs(sum_(m = 0)^Q 1)^2 = (Q + 1)\/2^n$. Now $Q + 1 approx 2^n\/r$ so $p(y) approx 1\/r$.
+    - If $r y\/2^n in.not ZZ$ (and not close to being an integer), then $sum_(m = 0)^Q e^(2pi i m r y\/2^n) < 1$ (typically a small value since phases do not add coherently) and $p(y) approx 1\/(2^n (Q + 1)) approx r\/4^n$. Note $r <= N < 2^(n_0) << 2^n$ implies that summing over all the approximately $2^n$ possibly values of $y$ gives $ sum_(y: r y\/2^n in.not ZZ) p(y) approx 2^n r\/4^n approx r\/2^n << 1 $
+    - Hence it is likely to measure $y$ such that $r y\/2^n$ is approximately an integer. Equivalently, $y\/2^n = j\/r$ for some $j in ZZ$.
+]
+
+// #pagebreak()
+
+// - $f(x_0)$ is measured. Input bits collapse to superposition of states $ket(y)$ where $y equiv x_0 mod r$.
+// - Assume that $0 <= x_0 < r$ (if not, compute remainder $mod r$).
+// - The states $ket(y)$ are given by $y = x_0, x_0 + r, ..., x_0 + Q r$ where $Q$ is given by $ x_0 + Q r <= 2^n - 1 < x_0 + (Q + 1)r $
+// - In the case that $x_0 = 0$: $ Q_L r <= 2^n - 1 < (Q_L + 1)r ==> Q_L = floor((2^n - 1)/r) $
+// - In the case that $x_0 = r - 1$: $ & (Q_U + 1)r - 1 <= 2^n - 1 < (Q_U + 2)r - 1 \ ==> & Q_U + 1 <= 2^n / r < Q_U + 2 \ & ==> Q_U = floor(2^n / r) - 1 $
+// - In the notes, $Q$ is given as $ceil(2^n\/r) - 1$. $Q_L, Q_U$ and $Q$ may be different.
