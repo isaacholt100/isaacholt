@@ -15,7 +15,7 @@ export async function getMathsNotes() {
 	const contents = await fs.readdir(notesDirectory, { withFileTypes: true });
 	return await Promise.all(
 		contents
-			.filter(c => c.isDirectory() && !c.name.startsWith("."))
+			.filter(c => c.isDirectory() && !c.name.startsWith(".") && !c.name.startsWith("_"))
             .reverse()
 			.map(async f => ({ year: f.name, notes: await getMathsNotesFromYear(f.name) }))
 	);
@@ -41,6 +41,20 @@ export async function getMathsNotesFromYear(folder: string): Promise<MathsNoteFi
 				}
 			})
 	);
+}
+
+export async function generateMetadataFile() {
+    const notes = await getMathsNotes();
+    const metadata = notes.map(y => ({
+        year: y.year,
+        notes: y.notes.map(n => ({
+            name: n.name,
+            displayName: n.displayName,
+            dateModified: n.dateModified,
+            dateCreated: n.dateCreated,
+        }))
+    }));
+    await fs.writeFile(path.join(process.cwd(), "src/app/maths", "notes-metadata.json"), JSON.stringify(metadata));
 }
 
 /*export async function getMathsNotesPaths() {

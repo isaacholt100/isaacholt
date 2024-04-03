@@ -1,5 +1,5 @@
 #import "../../template.typ": *
-#show: doc => template(doc, hidden: ())
+#show: doc => template(doc, hidden: ("proof",))
 
 // FIND: - \*(\w+)\*: ([\s\S]*?)(?=\n-|\n\n)\n
 // REPLACE: #$1[\n    $2\n]\n
@@ -357,7 +357,7 @@
     Collection of subsets of $RR$ is an *algebra* if contains $nothing$ and closed under taking complements and finite unions: if $A, B in cal(A)$ then $RR - A, A union B in cal(A)$.
 ]
 #remark[
-    A union of a countable collection of Lebesgue measurable sets is also the union of a countable disjoint collection of Lebesgue measurable sets: if ${A_k}_(k in NN)$ is countable collection of Lebesgue measurable sets, then let $A_1' := A_1$ and for $k > 1$, define $ A_k' := A_k - union_(i = 1)^(k - 1) A_i $ then ${A_k'}_(k in NN)$ is disjoint union of Lebesgue measurable sets.
+    A union of a countable collection of Lebesgue measurable sets is also the union of a countable disjoint collection of Lebesgue measurable sets: if ${A_k}_(k in NN)$ is countable collection of Lebesgue measurable sets, then let $A_1 ' := A_1$ and for $k > 1$, define $ A_k ' := A_k - union_(i = 1)^(k - 1) A_i $ then ${A_k '}_(k in NN)$ is disjoint union of Lebesgue measurable sets and $union_(k in NN) A_k ' = union_(k in NN) A_k$.
 ]
 #proposition[
     If $E$ is countable union of Lebesgue measurable sets, then $E$ is Lebesgue measurable. Also, if ${E_k}_(k in NN)$ is countable disjoint collection of Lebesgue measurable sets then $ mu^* (union.big_(k in NN) E_k) = sum_(k in NN) mu^* (E_k) $
@@ -386,7 +386,7 @@
     If $nu$ is measure then it satisfies:
     - *Monotonicity*: $A subset.eq B ==> nu(A) <= nu(B)$.
     - *Countable subadditivity*: $nu(union_(k in NN) E_k) <= sum_(k in NN) nu(E_k)$.
-    - *Excision*: if $A$ has finite measure, then $A subset.eq B ==> m(B - A) = m(B) - m(A)$.
+    - *Excision*: if $B$ has finite measure, then $A subset.eq B ==> nu(B - A) = nu(B) - nu(A)$.
 ]
 
 == Lebesgue measure
@@ -449,7 +449,7 @@
 
 = Measurable functions
 
-== definition of a measurable function
+== Definition of a measurable function
 
 #proposition[
     Let $f: RR -> RR$. $f$ continuous iff $forall "open" U subset.eq RR, f^(-1)(U) subset.eq RR$ is open.
@@ -616,7 +616,7 @@
     Let $cal(M)$ denote set of measurable functions.
 ]
 #definition[
-    $f in cal(M)^+$ is *integrable* if $integral f < oo$.
+    $f in cal(M)^+$ is *integrable* if $integral f < oo$. By Chebyshev's inequality, if $f$ is integrable, then $f$ is finite almost everywhere.
 ]
 #definition[
     Let $f: RR -> RR union {plus.minus oo}$ measurable function. $f$ is *integrable* if $integral f^+$ and $integral f^-$ are finite. In this case, for any measurable set $E$, define $ integral_E f := integral_E f^+ - integral_E f^- $ Note that if $f$ integrable then $f^+ - f^-$ is well-defined.

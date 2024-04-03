@@ -201,7 +201,7 @@
     In standard topology, $(0, 1)$ is homeomorphic to $RR$. (Consider $f: (-pi/2, pi/2) -> (-oo, oo)$, $f = tan$, $g: (0, 1) -> (-pi/2, pi/2)$, $g(x) = pi (x - 1/2)$ and $f compose g$).
 ]
 #example[
-    $RR$ with standard topology $tau_"st"$ is not homoeomorphic to $RR$ with the discrete topology $tau_d$. (Consider $h^(-1) ({a}) = {h^(-1) (a)}$, ${a} in tau_"st"$ but ${h^(-1) (a)} in.not tau_"st"$).
+    $RR$ with standard topology $tau_"st"$ is not homoeomorphic to $RR$ with the discrete topology $tau_d$. (Consider $h^(-1) ({a}) = {h^(-1) (a)}$, ${a} in tau_d$ but ${h^(-1) (a)} in.not tau_"st"$).
 ]
 #example[
     Let $X = RR union \{overline(0)\}$. Define $f_0: RR -> X$, $f_0(a) = a$ and $f_(overline(0)): RR -> X$, $f_(overline(0))(a) = a$ for $a != 0$, $f_(overline(0))(0) = overline(0)$. Topology on $X$ has $A subset.eq X$ open iff $f_0^(-1)(A)$ and $f_(overline(0))^(-1)(A)$ open. Every point in $X$ lies in open set: for $a in.not \{0, overline(0)\}$, $a in \(a - (|a|)/2, a + (|a|)/2\)$ and both pre-images of this are same open interval, for $0$, set $U_0 = (-1, 0) union {0} union (0, 1) subset.eq X$ then $f_0^(-1) (U_0) = (-1, 1)$ and $f_(underline(0))^(-1) (U_0) = (-1, 0) union (0, 1)$ are both open. For $overline(0)$, set $U_(overline(0)) = (-1, 0) union {overline(0)} union (0, 1) subset.eq X$, then $f_(overline(0))^(-1)(U_(overline(0))) = (-1, 1)$ and $f_0^(-1)(U_(overline(0))) = (-1, 0) union (0, 1)$ are both open. So $U_0$ and $U_(overline(0))$ both open in $X$. $X$ is not Hausdorff since any open sets containing $0$ and $overline(0)$ must contain "open intervals" such as $U_0$ and $U_(overline(0))$.
@@ -1462,7 +1462,7 @@ TODO: add diagrams.
     - $Theta(L) sect Theta(L^*) = "boundary of disc" Theta(L) tilde.equiv S^1$.
 ]
 #theorem[
-    Let $K$ finite simplicial complex that triangulates closed surface. Then $chi(K) <= 2$ with equality iff $K tilde.equiv S^2$.
+    Let $K$ finite simplicial complex that triangulates closed surface. Then $chi(K) = 1 + chi(L^*) <= 2$ (where $L$ is maximal tree in $K$) with equality iff $K tilde.equiv S^2$.
 ]
 #proof[
     - Let $L$ be maximal tree in $K$ with dual graph $L^*$. Use Union lemma and above two propositions to show $chi(K) <= 2$.
@@ -1477,4 +1477,33 @@ TODO: add diagrams.
 ]
 #lemma[
     Let $S$ be non-orientable closed surface. Then $(S + "handle") tilde.equiv S \# KK tilde.equiv S \# PP \# PP tilde.equiv (S + 2 "cross caps")$.
+]
+#theorem[
+    Up to homeomorphism, any closed surface can be obtained from a sphere by adding a finite number of handles and/or a finite number of cross caps.
+]
+#proof[
+    - Let $S$ be closed surface, triangulated by a finite simpicial complex $K$. Let $L$ be maximal tree in $K$ with dual graph $L^*$.
+    - Then $chi(S) = chi(K) = 1 + chi(L^*)$. If $L^*$ is tree, then $chi(S) = 2$ so $S tilde.equiv S^2$.
+    - So suppose $L^*$ contains cycle $C$, i.e. a simple closed curve.
+    - We show we can always reduce to the case that the dual graph is a tree by performing "surgeries", and hence, that $S$ can be constructed from $S^2$.
+    - Claim: the cycle $C subset L^*$ is *non-separating*, i.e. $K - C$ is path-connected.
+        - Suppose not. Then each connected component of $K - C$ must contain a $0$-simplex in $K$ (since $C subset L^*$ avoids them all).
+        - Clearly, $0$-simplices in different components cannot be joined by a path in $K - C$. However, $L subset K - C$ contains all $0$-simplices by definition of the dual graph: contradiction.
+    - Since $C tilde.equiv S^1$, $Theta(C) tilde.equiv$ cylinder or Mobius band.
+    - Perform surgery along the non-separating closed curve:
+        - Remove interior of $Theta(C)$ from $K^((2)) tilde.equiv K tilde.equiv S$, giving a simplicial complex $K^((2)) - int(Theta(C))$ which has either two holes (if $Theta(C) tilde.equiv$ cylinder) or one hole (if $Theta(C) tilde.equiv$ Mobius band), with the boundary of each of these holes being a triangulated circle.
+        - Glue triangulated closed discs onto each boundary circle to "cap off" the holes.
+        - This gives a new finite simplicial complex $K'$ which triangulates a closed surface $S'$. So $ S tilde.equiv cases(S' + "handle" & "if" Theta(C) tilde.equiv "cylinder", S' + "cross cap" & "if" Theta(C) tilde.equiv "Mobius band") $
+        - So $ chi(S') = cases(chi(S) + 2 & "if" Theta(C) tilde.equiv "cylinder", chi(S) + 1 & "if" Theta(C) tilde.equiv "Mobius band") $
+    - We can repeat this surgery procedure along cycles in "the" dual graph in each such new surface obtained.
+    - This process must terminate after a finite number of surgeries in a closed surface $Z$ for which "the" dual graph (in every triangulation) has no cycles (i.e. the dual graph is a tree, i.e. $Z tilde.equiv S^2$), since each surgery increases the Euler characteristic and $chi(S) <= 2$ for all closed surfaces $S$.
+]
+#corollary[
+    Up to homeomorphism, every closed surface $S$ is given by precisely one of the closed surfaces
+    - If $S$ is orientable: $M_g = S^2 + g "handles" tilde.equiv S^2 \# T \# dots.c \# T$, $g in NN_0$.
+    - If $S$ is non-orientable: $N_g = S^2 + g "cross caps" tilde.equiv PP \# dots.c \# PP$ where $g in NN$.
+]
+#proof[
+    - If $S$ orientable, then $S$ can only be obtained by attaching handles to $S^2$ by above theorem. So $S^2 tilde.equiv S^2 + g "handles" = M_g$. But $chi(M_g) = 2 - 2g$ so homeomorphism type is determined by number of handles.
+    - If $S$ non-orientable, then $S tilde.equiv S^2 + k "handles" + ell "cross caps"$, $k >= 0$, $ell >= 1$. But attaching handle to non-orientable surface is same as attaching two cross caps, so $S^2 tilde.equiv S^2 + (2k + ell) "cross caps" = N_(2k + ell)$. But $chi(N_g) = 2 - g$ so homeomorphism type is determined by number of cross caps.
 ]

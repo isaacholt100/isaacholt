@@ -90,7 +90,7 @@
     - If $FF_p$ is subfield of $K$ for prime $p$ then $char(K) = p$.
 ]
 #remark[
-    Let $char(K) = p$, then $p | binom(p, i)$ so $(a + b)^p = a^p + b^p$ in $K$. Also in $K[x]$ for $p > 2$ prime, $x^p - 1 = (x - 1)^p$.
+    Let $char(K) = p$, then $p | binom(p, i)$ so $(a + b)^p = a^p + b^p$ in $K$. Also in $K[x]$ for $p$ prime, $x^p - 1 = (x - 1)^p$.
 ]
 #theorem(name: "Fermat's little theorem")[
     $forall a in FF_p, a^p = a$.
@@ -136,9 +136,9 @@
     Let $f(x) = a_0 + dots.h.c + a_n x^n in ZZ[x]$. If exists prime $p divides.not a_n$ such that $overline(f)(x)$ is irreducible in $FF_p [x]$, then $f(x)$ irreducible in $QQ[x]$.
 ]
 #example[
-    Let $f(x) = 8x^3 + 14x - 9$. Reducing $mod 7$, $overline(f)(x) = x^3 - 2 in FF_7 [x]$. No roots exist for this, so $f(x)$ irreducible in $QQ[x]$. For polynomials, no $p$ is suitable, e.g. $f(x) = x^4 + 1$.
+    Let $f(x) = 8x^3 + 14x - 9$. Reducing $mod 7$, $overline(f)(x) = x^3 - 2 in FF_7 [x]$. No roots exist for this, so $f(x)$ irreducible in $QQ[x]$. For some polynomials, no $p$ is suitable, e.g. $f(x) = x^4 + 1$.
 ]
-- Gauss's lemma works with any UFD $R$ instead of $ZZ$ and field of fractions $"Frac"(R)$ instead of $QQ$: e.g. let $F$ field, $R = F[t]$, $K = F(t)$, then $f(x) in R[x]$ irreducible in $K[x]$ iff $f(x)$ has no proper factors in $R[x]$.
+- Gauss's lemma works with any UFD $R$ instead of $ZZ$ and field of fractions $"Frac"(R)$ instead of $QQ$: e.g. let $F$ field, $R = F[t]$, $K = F(t)$, then $f(x) in R[x]$ irreducible in $K[x]$ if $f(x)$ is irreducible in $R[x]$.
 #proposition(name: "Eisenstein's criterion")[
     Let $f(x) = a_0 + dots.h.c + a_n x^n in ZZ[x]$, prime $p in ZZ$ such that $p | a_0, ..., p | a_(n - 1)$, $p divides.not a_n$, $p^2 divides.not a_0$. Then $f(x)$ irreducible in $QQ[x]$.
 ]
@@ -224,7 +224,7 @@
     - $K_m \/ K$ is field extension.
     - Let $theta = pi(x)$ where $pi: K[x] -> K_m$ is canonical projection, then $theta$ has minimal polynomial $m(x)$ and $K_m tilde.equiv K(theta)$.
 ]
-#proposition[
+#proposition(name: "Universal property of simple extension")[
     Let $L\/K$ field extension, $tau in L$ with $m(tau) = 0$ and $K_L (tau)$ be minimal subfield of $L$ containing $K$ and $tau$. Then exists unique $K$-isomorphism $phi: K_m -> K_L (tau)$ such that $phi(theta) = tau$.
 ]
 #example[
@@ -249,7 +249,7 @@
 == Degrees of field extensions
 
 #definition[
-    *Degree* of field extension $L\/K$ is $ [L: K] := dim_L (F) $
+    *Degree* of field extension $L\/K$ is $ [L: K] := dim_K (L) $
 ]
 #example[
   - When $theta$ algebraic over $K$ of degree $n$, $[K(theta): K] = n$.
@@ -268,14 +268,14 @@
 ]
 #example[
     - $K = QQ subset M = QQ\(sqrt(2)\) subset L = QQ\(sqrt(2), sqrt(7)\)$. $M\/K$ has basis $\{1, sqrt(2)\}$ so $[M: K] = 2$. Let $sqrt(7) in QQ\(sqrt(2)\)$, then $sqrt(7) = c + d sqrt(2)$, $c, d in QQ$ so $7 = (c^2 + 2d^2) + 2c d sqrt(2)$ so $7 = c^2 + 2d^2$, $0 = 2c d$ so $d^2 = 7/2$ or $c^2 = 7$, which are both contradictions. So $[L: K] = 4$ with basis $\{1, sqrt(2), sqrt(7), sqrt(14)\}$.
-    - Let $K = QQ subset M = QQ(i) subset QQ\(i, sqrt(2)\)$. We know $[QQ(i): QQ] = 2$, and $\[QQ\(sqrt(2)\): QQ\] = 2$, $\[QQ\(i, sqrt(2)\): QQ\] = 2$ (since $i in.not RR$) so $\[QQ\(i, sqrt(2)\): QQ\(sqrt(2)\)\] = 2$.
+    - Let $K = QQ subset M = QQ(i) subset QQ\(i, sqrt(2)\)$. We know $[QQ(i): QQ] = 2$, and $\[QQ\(sqrt(2)\): QQ\] = 2$, $\[QQ\(i, sqrt(2)\): QQ\] = 4$ (since $i in.not RR$) so $\[QQ\(i, sqrt(2)\): QQ\(sqrt(2)\)\] = 2$.
     - Let $K = QQ subset M = QQ\(sqrt(2)\) subset L = QQ\(sqrt(2), cbrt(3)\)$. Then $\[QQ\(sqrt(2)\): QQ\] = 2$, $\[QQ\(cbrt(3)\): QQ\] = 3$ so $2 | [L: K]$ and $3 | [L: K]$ so $6 | [L: K]$ so $[L: K] >= 6$. But $[L: M] <= 3$ and $[M: K] <= 2$ so $[L: K] <= 6$ hence $[L: K] = 6$.
 ]
 - More generally, we have $[K(alpha, beta): K] <= [K(alpha): K] [K(beta): K]$.
 #example[
     - Let $theta = cbrt(4) + 1$. $QQ(theta) = QQ\(cbrt(4)\)$ so minimal polynomial over $QQ$, $m$, has $deg(m) = 3$. $(theta - 1)^3 = 4$ so minimal polynomial is $x^3 - 3x^2 + 3x - 5$.
     - Let $theta = sqrt(2) + sqrt(3)$. $QQ\(sqrt(2), theta\) = QQ\(sqrt(2), sqrt(3)\)$ which has degree $2$ over $QQ\(sqrt(2)\)$ so minimal polynomial of $theta$ over $QQ\(sqrt(2)\)$ has degree $2$, $theta - sqrt(2) = sqrt(3)$ so minimal polynomial is $x^2 - 2 sqrt(2) x - 1$.
-    - Let $theta = sqrt(2) + sqrt(3)$. $QQ subset QQ(theta) subset QQ\(sqrt(2), sqrt(7)\)$ so $[QQ(theta): QQ] | \[QQ\(sqrt(2), sqrt(3)\): QQ\] = 4$ so $[QQ(theta): QQ] in {1, 2, 4}$. Can't be $1$ as $theta in.not QQ$. If it was $2$ then $1, theta, theta^2$ are linearly dependent over $QQ$ which leads to a contradiction. So degree of minimal polynomial of $theta$ over $QQ$ is $4$. $theta^2 = 5 + 2 sqrt(6) => (theta^2 - 5)^2 = 24$ so minimal polynomial is $x^4 - 10x^2 + 1$.
+    - Let $theta = sqrt(2) + sqrt(3)$. $QQ subset QQ(theta) subset QQ\(sqrt(2), sqrt(3)\)$ so $[QQ(theta): QQ] | \[QQ\(sqrt(2), sqrt(3)\): QQ\] = 4$ so $[QQ(theta): QQ] in {1, 2, 4}$. Can't be $1$ as $theta in.not QQ$. If it was $2$ then $1, theta, theta^2$ are linearly dependent over $QQ$ which leads to a contradiction. So degree of minimal polynomial of $theta$ over $QQ$ is $4$. $theta^2 = 5 + 2 sqrt(6) => (theta^2 - 5)^2 = 24$ so minimal polynomial is $x^4 - 10x^2 + 1$.
 ]
 
 = Galois extensions
@@ -935,13 +935,13 @@
     Let $alpha = cbrt(2 + root(5, 3 - sqrt(7)))$. We have $ K_0 = QQ subset K_1 = QQ\(sqrt(7)\) subset K_2 = K_1 (root(5, 3 - cbrt(7))) subset K_3 = K_2 (alpha) $
 ]
 #definition[
-    $f(x) in K[x]$ is *solvable in radicals* over $K$ if there is radical extension $L\/K$ containing at least one root of $f(x)$.
+    $f(x) in K[x]$ is *solvable in radicals* over $K$ if there is a radical extension $L$ of $K$ containing at least one root of $f(x)$.
 ]
 #lemma[
     If $f(x)$ irreducible and solvable in radicals, then all its roots belong to the radical field extension $L$.
 ]
 #definition[
-    A finite group $G$ is *solvable (soluble)* if there exists decreasing sequence of subgroups $ {id} = G_m supset dots.c supset G_0 = G $ where for each $1 <= i <= m$, $G_i$ is normal subgroup of $G_(i - 1)$ and $G_(i - 1)\/G_i$ is cyclic.
+    A finite group $G$ is *solvable (soluble)* if there exists decreasing sequence of subgroups $ G = G_0 supset dots.c subset G_m = {id} $ where for each $1 <= i <= m$, $G_i$ is normal subgroup of $G_(i - 1)$ and $G_(i - 1)\/G_i$ is cyclic.
 ]
 #lemma(name: "Properties of solvable groups")[
     - Every subgroup of finite solvable group is solvable.
@@ -951,4 +951,30 @@
 ]
 #theorem(name: "Galois' Theorem: Criterion for solvability in radicals")[
     Let $f(x) in K[x]$ irreducible. Then $f(x)$ is solvable in radicals over $K$ iff Galois group $G_f$ is solvable.
+]
+
+== Polynomials not solvable by radicals
+
+#lemma[
+    $A_n$ is generated by $3$-cycles $(i med j med k)$.
+]
+#proof[
+    - $A_1 = A_2 = {id}$.
+    - For $n >= 3$, any element in $A_n$ is product of even number of transpositions.
+    - Combine pairs of transpositions as follows:
+        - $(i j)(i j) = id$.
+        - $(i j)(i k) = (i k j)$.
+        - $(i j)(k l) = (i k)(j k)(j k)(k l) = (i j k)(j k l)$.
+]
+#theorem[
+    For $n >= 5$, $A_n$ and $S_n$ are not solvable.
+]
+#proof[
+    - Assume $A_n$ solvable, so there is decreasing sequence of subgroups $ A_n = G_0 supset dots.c subset G_m = {id} $ with $G_i$ normal in $G_(i - 1)$, $G_(i - 1)\/G_i$ cyclic and so abelian. So we have canonical projection homomorphism $pi: A_n -> Q = A_n\/G_1$, $Q$ is abelian and non-trivial.
+    - Let $g = (i_1 i_2 i_3) in A_n$. There are $i_4, i_5 in [n]$ (since $n >= 5$) such that $i_1, i_2, i_3, i_4, i_5$ distinct. Let $g_1 = (i_2 i_2 i_4)$, $g_2 = (i_1 i_3 i_5)$, then $g_1 g_2 g_1^(-1) g_2^(-1) = g$.
+    - Since $Q$ abelian, $pi(g) = pi(g_1) pi(g_2) pi(g_1)^(-1) pi(g_2)^(-1) = id$.
+    - So $pi$ sends $3$-cycles to $id$, and $A_n$ is generated by $3$-cycles, so $pi(A_n) = {id}$ which is the trivial group: contradiction.
+]
+#theorem[
+    Let $f(x) in Q[x]$ irreducible polynomial of degree $5$ with exactly $3$ real roots. Then $f(x)$ has Galois group $G_f tilde.equiv S_5$ (and so $f(x)$ is not solvable by radicals over $QQ$).
 ]

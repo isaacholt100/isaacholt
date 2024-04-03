@@ -2,11 +2,12 @@ import { mdiCodeBracesBox, mdiFile } from "@mdi/js";
 import Icon from "@mdi/react";
 import Link from "next/link";
 import PageTitle from "../../components/PageTitle";
-import { getMathsNotes } from "../../lib/mathsNotes";
+import { generateMetadataFile } from "../../lib/mathsNotes";
 import { capitalizeName } from "../../lib/capitalizeName";
 import { AnchorHTMLAttributes } from "react";
 import InfoText from "./info.md";
 import "highlight.js/styles/github-dark.css";
+import notesMetadata from "./notes-metadata.json"; // this is so we can access local metadata like date created, date edited
 
 function downloadLinkProps(github: boolean, year: string, name: string, extension: string): Partial<AnchorHTMLAttributes<HTMLAnchorElement>> {
 	return {
@@ -24,13 +25,13 @@ const DATE_FORMAT_OPTIONS: Intl.DateTimeFormatOptions = {
 }
 
 export default async function Maths() {
-    const mathsNotes = await getMathsNotes();
+    process.env.NODE_ENV === "development" && await generateMetadataFile();
 	return (
 		<>
 			<PageTitle title="Maths Notes" />
             <InfoText />
             <div className="mt-n4" />
-			{mathsNotes.map((y, i) => (
+			{notesMetadata.map((y, i) => (
 				<div className="row g-2 g-md-3 pt-3" key={y.year}>
 					<h2>{capitalizeName(y.year)}</h2>
 					{y.notes.map(note => (

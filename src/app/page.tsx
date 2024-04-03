@@ -24,7 +24,6 @@ export default function Home() {
     return (
         <div className={styles.container}>
             <h1>{"Hi, I'm Isaac"}</h1>
-            <h4>Mathematics student at Durham University</h4>
             <div className="row g-2 g-md-3 mt-auto">
                 {MAIN_LINKS.map(link => (
                     <div key={link.path} className="col col-12 col-sm-4">

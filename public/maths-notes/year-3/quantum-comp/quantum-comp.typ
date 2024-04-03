@@ -35,7 +35,7 @@
     If $V$ has inner product $ip(dot.op, dot.op)$, then an isomorphism is given by $vd(z) |-> Phi_(vd(z)) (dot.op) = ip(vd(z), dot.op)$.
 ]
 #definition[
-    *Dual* of $vd(z) in V$ is the corresponding element in $V^*$.
+    *Dual* of $vd(z) in V$ is the corresponding element in $V^*$, i.e. $Phi_(vd(z))$.
 ]
 #remark[
     If $V = CC^n$, can think of vectors in $V$ as $n times 1$ matrices and vectors in $V^*$ as $1 times n$ matrices.
@@ -70,13 +70,13 @@
 == Operators
 
 #definition[
-    $hat(A): cal(H) -> cal(H)$ is *linear operator* if $ forall a, b in CC, forall ket(psi), ket(psi) in cal(H), quad hat(A) (a ket(psi) + b ket(phi)) = a \(hat(A) ket(psi)\) + b \(hat(A) ket(phi)\) $
+    $hat(A): cal(H) -> cal(H)$ is *linear operator* if $ forall a, b in CC, forall ket(psi), ket(phi) in cal(H), quad hat(A) (a ket(psi) + b ket(phi)) = a \(hat(A) ket(psi)\) + b \(hat(A) ket(phi)\) $
 ]
 #proposition[
     Products and linear combinations of linear operators are also linear operators.
 ]
 #definition[
-    *Adjoint (Hermitian conjugate)* of $hat(A)$, $hat(A)^dagger$, is defined by $ bra(psi) hat(A)^dagger ket(phi) = conj((bra(phi) hat(A) ket(psi))) $
+    *Adjoint (Hermitian conjugate)* of $hat(A)$, $hat(A)^dagger$, is defined by $ bra(psi) hat(A)^dagger ket(phi) = conj((bra(phi) hat(A) ket(psi))) $ for all states $ket(psi)$ and $ket(phi)$.
 ]
 #definition[
     $hat(H)$ is *self-adjoint (Hermitian)* if $hat(H)^dagger = hat(H)$. Self-adjoint operators correspond to *observables* (measurable quantities) since they have real eigenvalues.
@@ -189,14 +189,14 @@
     Let $hat(A)$ observable, then expected value of measuring $hat(A)$ on $hat(rho)$ is $expected(hat(A)) = tr\(hat(rho) hat(A)\)$.
 ]
 #proposition[
-    Density matrix $hat(rho)$ of any pure/mixed state satisfies:
+    $hat(rho)$ is a density matrix of a pure/mixed state iff it satisfies:
     - *Normalised*: $tr(hat(rho)) = 1$
     - *Hermitian*: $hat(rho)^dagger = hat(rho)$
-    - *Semi-positive-definite*: for every state $ket(psi)$, $braket(psi, hat(rho), psi) >= 0$ (can be $= 0$ when $ket(psi) != 0$).
+    - *Semi-positive-definite*: for every state $ket(phi)$, $braket(phi, hat(rho), phi) >= 0$ (can be $= 0$ when $ket(phi) != 0$).
 ]
 #proposition[
     After taking measurement of pure or mixed state $hat(rho)$:  
-    - Result is $lambda$ with probability $p_lambda = tr\(hat(P)_lambda hat(rho) hat(P)_lambda\) = tr\(hat(P)_lambda hat(rho)\)$.
+    - Result is $lambda$ with probability $p_lambda = tr\(hat(P)_lambda hat(rho) hat(P)_lambda\) = tr\(hat(P)_lambda hat(rho)\) = tr\(hat(rho) hat(P)_lambda\)$.
     - Density matrix after measuring value of $lambda$ is $1/p_lambda hat(P)_lambda hat(rho) hat(P)_lambda$.
 ]
 #theorem[
@@ -247,7 +247,7 @@ ket(1) <-> (0, 1)^T: & quad vd(r) = (0, 0, -1)^T, quad (theta, phi) = (pi, dot.o
     Unitary transformations of a qubit correspond to rotations of points on/in Bloch sphere about the origin, representing the fact that unitary transformations cannot transform pure states to mixed states.
 ]
 #remark[
-    Measurements and transform any state to a pure state.
+    Measurements transform any state to a pure state.
 ]
 #proposition[
     $tr(rho^2)$ is invariant under unitary transformations (time evolution).
@@ -290,10 +290,8 @@ ket(1) <-> (0, 1)^T: & quad vd(r) = (0, 0, -1)^T, quad (theta, phi) = (pi, dot.o
     - $sigma_i sigma_j = delta_(i j) I_2 + i epsilon_(i j k) sigma_k$.
     - They form a basis for vector space of $2 times 2$ Hermitian traceless matrices over $RR$.
 ]
-#definition[
-    Define measurement operators $X, Y, Z$ as $ X & := 1/2 (I_2 - sigma_1), quad Y := 1/2 (I_2 - sigma_2), quad Z := 1/2 (I_2 - sigma_3) $
-]
 #proposition[
+    Define measurement operators $X, Y, Z$ as $ X & := 1/2 (I_2 - sigma_1), quad Y := 1/2 (I_2 - sigma_2), quad Z := 1/2 (I_2 - sigma_3) $
     $X$, $Y$ and $Z$ have their eigenvectors as the six special Bloch states, with eigenvalues $0$ or $1$: $ X ket(+) & = 0 ket(+), quad X ket(-) = 1 ket(-), \ Y ket(L) & = 0 ket(L), quad Y ket(R) = 1 ket(R), \ Z ket(0) & = 0 ket(0), quad Z ket(1) = 1 ket(1) $
 ]
 #proposition[
@@ -396,8 +394,8 @@ $
 #example[
     Let $\{ket(v_i)\}, \{ket(w_j)\}$ be orthonormal eigenstates of operators $hat(F)_A$ and $hat(G)_B$ with non-degenerate eigenvalues $\{lambda_i\}$ and $\{mu_j\}$, $ket(Psi) = sum_(i in [N_1], med j in [N_2]) gamma_(i j) ket(v_i) tp ket(w_j)$ be entangled state, define $
 alpha_i := (sum_(j = 1)^N_2 |gamma_(i j)|^2)^(1\/2), quad beta_j := (sum_(i = 1)^(N_1) |gamma_(i j)|^2)^(1\/2)
-$ and define auxiliary states (set $ket(psi_j) = vd(0)$ when $beta_n = 0$ and $ket(phi_i) = vd(0)$ when $alpha_m = 0$): $
-ket(psi_n) := 1/beta_j sum_(i = 1)^(N_1) gamma_(i j) ket(v_i) in cal(H)_A, quad ket(phi_i) := 1/alpha_i sum_(j = 1)^(N_2) gamma_(i j) ket(w_j) in cal(H)_B \
+$ and define auxiliary states (set $ket(psi_j) = vd(0)$ when $beta_j = 0$ and $ket(phi_i) = vd(0)$ when $alpha_i = 0$): $
+ket(psi_j) := 1/beta_j sum_(i = 1)^(N_1) gamma_(i j) ket(v_i) in cal(H)_A, quad ket(phi_i) := 1/alpha_i sum_(j = 1)^(N_2) gamma_(i j) ket(w_j) in cal(H)_B \
 ==> ket(Psi) = sum_(i = 1)^(N_1) alpha_i ket(v_i) tp ket(phi_i) = sum_(j = 1)^(N_2) beta_j ket(psi_j) tp ket(w_j)
 $ If Alice measures $hat(F)$ with result $lambda_i$, entangled state $ket(Psi)$ collapses to separable state $
 ket(Psi) -> hat(F)_i ket(Psi) = \(hat(F)_(A i) tp hat(I)\) ket(Psi) tilde ket(v_i) tp ket(phi_i)
@@ -411,6 +409,9 @@ $ So Bob's state depends on the result of Alice's measurement.
 ]
 #definition[
     For bipartite system, the *reduced density matrix* of a subsystem is partial trace of density matrix over other subsystem. So for bipartite system, $ hat(rho)_A := tr_B \(hat(rho)\), quad hat(rho)_B := tr_A \(hat(rho)\) $
+]
+#proposition[
+    We have $tr\(hat(A) tp hat(B)\) = tr_A tr_B \(hat(A) tp hat(B)\) = tr_B tr_A \(hat(A) tp hat(B)\)$.
 ]
 #note[
     A reduced matrix describes one subsystem, assuming no knowledge of the other system.
@@ -543,7 +544,9 @@ $ We have $hat(U)_H ket(0) = ket(+)$, $hat(U)_H ket(1) = ket(-)$.
 H(X) := -sum_x p(x) log_2 (p(x))
 $ where conventionally $0 log 0 = 0$.
 ]
-- *Shannon's noiseless coding theorem*: $H(X)$ gives lower bound on average number of bits needed to encode message $X$.
+#theorem(name: "Shannon's noiseless coding theorem")[
+    $H(X)$ gives lower bound on average number of bits needed to encode message $X$.
+]
 #definition[
     *Joint entropy* is $ H(X, Y) := -sum_(x, y) p(x, y) log_2 (p(x, y)) $
 ]
@@ -569,7 +572,10 @@ $ where conventionally $0 log 0 = 0$.
 == Quantum entropy
 
 #definition[
-    *Von Neumann entropy* of quantum state with density operator $hat(rho)$ is $ S\(hat(rho)\) := -tr(hat(rho) log_2 (hat(rho))) = -sum_i p_i log_2 (p_i) $ where $hat(rho) = sum_i p_i ket(i) bra(i)$, $ket(i)$ are eigenstates of $hat(rho)$. $S\(hat(rho)\)$ is Shannon entropy of ensemble of pure states described by $hat(rho)$.
+    *Von Neumann entropy* of quantum state with density operator $hat(rho)$ is $ S\(hat(rho)\) := -tr(hat(rho) log_2 (hat(rho))) = -sum_i p_i log_2 (p_i) $ where $hat(rho) = sum_i p_i ket(i) bra(i)$, $ket(i)$ are eigenstates of $hat(rho)$, $p_i$ are eigenvalues of $hat(rho)$. $S\(hat(rho)\)$ is Shannon entropy of ensemble of pure states described by $hat(rho)$.
+]
+#note[
+    To compute $log_2 \(hat(rho)\)$, diagonalise $hat(rho)$ (use spectral decomposition) and take $log_2$ of each diagonal element (use here the convention $log_2 (0) = 0$).
 ]
 #remark[
     For pure state, $S\(hat(rho)\) = -1 log_2 (1) = 0$.
@@ -592,10 +598,13 @@ $
     Unlike classical conditional entropy, quantum conditional entropy can be negative, e.g. if $hat(rho)$ describes pure state, $S(A, B) = 0$ but if entangled, $hat(rho)_B$ is not pure state so $S(B) > 0$.
 ]
 #definition[
-    *(quantum) mutual information* is $ I(A: B) = S(A: B) := S(A) + S(B) - S(A, B) $
+    *(Quantum) mutual information* is $ I(A: B) = S(A: B) := S(A) + S(B) - S(A, B) $
 ]
 #remark[
-    Entanglement can be interpreted as mutual information: information shared by $A$ and $B$ and not in either one alone.
+    When $hat(rho)$ is pure state, $S(A) = S(B)$ so $I(A: B) = 2 S(A)$. So entanglement can be interpreted as mutual information: information shared by $A$ and $B$ and not in either one alone.
+]
+#definition[
+    *Entanglement entropy* is $S(A) = S(B)$ (these are equal since both reduced density matrices have same non-zero eigenvalues).
 ]
 
 #import "@preview/quill:0.2.0": *
@@ -1087,19 +1096,12 @@ Note: Toffoli gate maps computational basis elements to computational basis elem
     - Start with state $ket(0)_n ket(0)_(n_0)$ where $n_0 = ceil(log_2 (N))$, $n = 2n_0$.
     - Act with $H^(tp n)$ on input bits, giving $ 1/2^(n\/2) sum_(x = 0)^(2^n - 1) ket(x) tp ket(0) $
     - Act with $U_f$ (where $U_f ket(x) ket(m) = ket(x) ket(m xor f(x))$), giving $ 1/2^(n\/2) sum_(x = 0)^(2^n - 1) ket(x) tp ket(f(x)) $
-    - Measure the output bits, yielding a random value $f(x_0)$, which projects the state to $ 1/sqrt(Q + 1) sum_(m = 0)^Q ket(x_0 + m r) ket(f(x_0)) $ where $Q$ is largest integer strictly less than $2^n\/r$. Shift by random $x_0$ means we can't learn anything about $r$ by measuring input bits. Discard output bits.
+    - Measure the output bits, yielding a random value $f(x_0)$ (assume WLOG that $x_0 < r$), which projects the state to $ 1/sqrt(Q + 1) sum_(m = 0)^Q ket(x_0 + m r) ket(f(x_0)) $ where $Q = |{i in {0, ..., 2^n - 1}: f(i) = f(x_0)}|$ which is approximately the largest integer strictly less than $2^n\/r$. Shift by random $x_0$ means we can't learn anything about $r$ by measuring input bits. Discard output bits.
     - Perform QFT on input bits, giving $ U_"FT" 1/sqrt(Q + 1) sum_(m = 0)^Q ket(x_0 + m r) & = 1/sqrt(Q + 1) sum_(m = 0)^Q 1/2^(n\/2) sum_(y = 0)^(2^n - 1) e^(2pi i(x_0 + m r)y\/2^n) ket(y) \ & = 1/2^(n\/2) sum_(y = 0)^(2^n - 1) e^(2pi i x_0 y\/2^n) (1/sqrt(Q + 1) sum_(m = 0)^Q e^(2pi i m r y\/2^n)) ket(y) $
     - Measure input bits in the computational basis. Probability that this yields value $y$ is $ p(y) & = abs(1/sqrt(Q + 1) 1/2^(n\/2) e^(2pi i x_0 y\/2^n) (sum_(m = 0)^Q e^(2pi i m r y\/2^n)))^2 \ & = 1/(2^n (Q + 1)) abs(sum_(m = 0)^Q e^(2pi i m r y\/2^n))^2 \ & = 1/(2^n (Q + 1)) abs((e^(2 pi i r y (Q + 1)\/2^n) - 1)/(e^(2 pi i r y\/2^n) - 1))^2 \ & = 1/(2^n (Q + 1)) abs((e^(pi i r y (Q + 1)\/2^n) (e^(pi i r y (Q + 1)\/2^n) - e^(-pi i r y(Q + 1)\/2^n)))/(e^(pi i r y\/2^n) (e^(pi i r y\/2^n) - e^(-pi i r y\/2^n))))^2 \ & = 1/(2^n (Q + 1)) (sin^2 (pi r y(Q + 1)\/2^n))/(sin^2 (pi r y\/2^n)) $
     - When $r y\/2^n in ZZ$, we have $p(y) = 1/(2^n (Q + 1)) abs(sum_(m = 0)^Q 1)^2 = (Q + 1)\/2^n$. Now $Q + 1 approx 2^n\/r$ so $p(y) approx 1\/r$.
     - If $r y\/2^n in.not ZZ$ (and not close to being an integer), then $sum_(m = 0)^Q e^(2pi i m r y\/2^n) < 1$ (typically a small value since phases do not add coherently) and $p(y) approx 1\/(2^n (Q + 1)) approx r\/4^n$. Note $r <= N < 2^(n_0) << 2^n$ implies that summing over all the approximately $2^n$ possibly values of $y$ gives $ sum_(y: r y\/2^n in.not ZZ) p(y) approx 2^n r\/4^n approx r\/2^n << 1 $
     - Hence it is likely to measure $y$ such that $r y\/2^n$ is approximately an integer. Equivalently, $y\/2^n = j\/r$ for some $j in ZZ$.
+    - With high probability, $y$ will be the nearest integer to a multiple of $2^n\/r$, i.e. within $1\/2$ of $j 2^n\/r$, so $ abs(y/2^n - j/r) <= 1/2^(n + 1) <= 1/(2N^2) $ since $N <= 2^(n_0) = 2^(n\/2)$. There is unique fraction $j\/r$ with $r < N$ satisfying this (by triangle inequality), as $ abs(j_1/r_1 - j_2/r_2) >= 1/(r_1 r_2) > 1/N^2 $ unless $j_1/r_1 = j_2/r_2$ (this is why $n = 2n_0$ is chosen). $j/r$ can be obtained from $y\/2^n$ via continued fractions.
+    - If $j$ and $r$ have common divisor, we obtain $r_0 = r\/gcd(j, r)$ instead of $r$. But given the guess $r_0$, we can check if $r_0$ is the period by checking if $f(r_0) = 1$, and if not try $f(2r_0), f(3r_0), ...$. If these fail, run algorithm again. Probability of $j$ and $r$ having common divisor is $< 1\/2$.
 ]
-
-// #pagebreak()
-
-// - $f(x_0)$ is measured. Input bits collapse to superposition of states $ket(y)$ where $y equiv x_0 mod r$.
-// - Assume that $0 <= x_0 < r$ (if not, compute remainder $mod r$).
-// - The states $ket(y)$ are given by $y = x_0, x_0 + r, ..., x_0 + Q r$ where $Q$ is given by $ x_0 + Q r <= 2^n - 1 < x_0 + (Q + 1)r $
-// - In the case that $x_0 = 0$: $ Q_L r <= 2^n - 1 < (Q_L + 1)r ==> Q_L = floor((2^n - 1)/r) $
-// - In the case that $x_0 = r - 1$: $ & (Q_U + 1)r - 1 <= 2^n - 1 < (Q_U + 2)r - 1 \ ==> & Q_U + 1 <= 2^n / r < Q_U + 2 \ & ==> Q_U = floor(2^n / r) - 1 $
-// - In the notes, $Q$ is given as $ceil(2^n\/r) - 1$. $Q_L, Q_U$ and $Q$ may be different.

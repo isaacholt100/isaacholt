@@ -69,9 +69,9 @@
     - Computing $m$ from $f(m, k_E)$ should be hard without knowing $k_D$.
 - *Converting between messages and numbers*:
     - To convert message $m_1 m_2 ... m_r$, $m_i in {0, ..., 25}$ to number, compute $ m = sum_(i = 1)^r m_i 26^(i - 1) $
-    - To convert number $m$ to message, add character $m mod 26$ to message. If $m < 26$, stop. Otherwise, floor divide $m$ by $26$ and repeat.
+    - To convert number $m$ to message, append character $m mod 26$ to message. If $m < 26$, stop. Otherwise, floor divide $m$ by $26$ and repeat.
 - *Fermat's little theorem*: let $p$ prime, $a in ZZ$ coprime to $p$, then $a^(p - 1) equiv 1 thick (mod p)$.
-- *Euler $phi$ function*: $ phi: NN -> NN, phi(n) = |{1 <= a <= n: gcd(a, n) = 1}| = |(ZZ \/ n ZZ)^times| $
+- *Euler $phi$ function*: $ phi: NN -> NN, quad phi(n) = |{1 <= a <= n: gcd(a, n) = 1}| = |(ZZ \/ n ZZ)^times| $
 - $phi(p^r) = p^r - p^(r - 1)$, $phi(m n) = phi(m) phi(n)$ for $gcd(m, n) = 1$.
 - *Euler's theorem*: if $gcd(a, n) = 1$, $a^(phi(n)) equiv 1 quad (mod n)$.
 - *RSA algorithm*:
@@ -81,7 +81,7 @@
     - Encryption: $c = m^e quad (mod n)$.
     - Decryption: $m = c^d quad (mod n)$.
     - It is recommended that $n$ have at least $2048$ bits. A typical choice of $e$ is $2^16 + 1$.
-- *RSA problem*: given $n = p q$ a product of two unknown primes, $e$ and $m^e quad (mod n)$, recover $m$. If $n$ can be factored, the RSA is solved.
+- *RSA problem*: given $n = p q$ a product of two unknown primes, $e$ and $m^e quad (mod n)$, recover $m$. If $n$ can be factored, then RSA is solved.
 - *Factorisation problem*: given $n = p q$ for large distinct primes $p$ and $q$, find $p$ and $q$.
 - *RSA signatures*:
     - Public key is $(n, e)$ and private key is $d$.
@@ -100,7 +100,7 @@
     - If $phi(n)$ is known, then we have $p q = n$ and $(p - 1)(q - 1) = phi(n)$ so $p + q = n - phi(n) + 1$. Hence $p$ and $q$ are roots of $x^2 - (n - phi(n) + 1)x + n$.
     - *Known $d$ attack*:
         - $d e - 1$ is multiple of $phi(n)$ so $p, q | x^(d e - 1) - 1$.
-        - Look for factor $K$ of $d e - 1$ with $x^K - 1$ divisible by $p$ but not $q$ (or vice versa) (equivalently, $(p - 1) | K$ but $(q - 1) divides.not K$).
+        - Look for factor $K$ of $d e - 1$ with $x^K - 1$ divisible by $p$ but not $q$ (or vice versa) (so likely that $(p - 1) | K$ but $(q - 1) divides.not K$).
         - Let $d e - 1 = 2^r s$, $gcd(2, s) = 1$, choose random $x mod n$. Let $y = x^s$, then $y^(2^r) = x^(2^r s) = x^(d e - 1) equiv 1 thick mod n$.
         - If $y equiv 1 thick mod n$, restart with new random $x$. Find first occurence of $1$ in $y, y^2, ..., y^(2^r)$: $y^(2^j) equiv.not 1 thick mod n$, $y^(2^(j + 1)) equiv 1 thick mod n$ for some $j >= 0$.
         - Let $a := y^(2^j)$, then $a^2 equiv 1 thick mod n$, $a equiv.not 1 thick mod n$. If $a equiv -1 thick mod n$, restart with new random $x$.
@@ -121,7 +121,7 @@
 
 == Factorisation
 
-- *Trial division algorithm*: for $p = 2, 3, 5, ...$ test whether $p | n$.
+- *Trial division algorithm*: for $p = 2, 3, 5, ...$ up to $sqrt(n)$, test whether $p | n$.
 - If $x^2 equiv y^2 mod n$ but $x equiv.not plus.minus y mod n$, then $x - y$ is divisible by factor of $n$ but not by $n$ itself, so $gcd(x - y, n)$ gives proper factor of $n$ (or $1$).
 - *Fermat's method*:
     - Let $a = ceil(sqrt(n))$. Compute $a^2 mod n$, $(a + 1)^2 mod n$ until a square $x^2 equiv (a + i)^2 mod n$ appears. Then compute $gcd(a + i - x, n)$.
@@ -131,7 +131,7 @@
     - Choose $B$ and let $m$ be number of primes $<= B$.
     - Look at integers $x = ceil(sqrt(n)) + k$, $k = 1, 2, ...$ and check whether $y = x^2 - n$ is $B$-smooth.
     - Once $y_1 = x_1^2 - n, ..., y_t = x_t^2 - n$ are all $B$-smooth with $t > m$, find some product of them that is a square.
-    - Deduce a congruence between the squares.
+    - Deduce a congruence between the squares. Use difference of two squares and $gcd$ to factor $n$.
     - Time complexity is $exp(sqrt(log n log log n))$.
 
 = Diffie-Hellman key exchange
@@ -756,11 +756,33 @@ $ So $G = mat(1, 2, 0, 3, 4; 0, 0, 1, 5, 6)$ is generator matrix for $C$ and $di
 == Hamming codes
 
 #definition[
-    Let $r >= 2$, $n = 2^r - 1$, let $H in M_(r, n)(FF_2)$ have columns corresponding to all non-zero vectors in $FF_2^r$. The *binary Hamming code of redundancy $r$* is $ "Ham"_2 (r) = {vd(x) in FF_2^n: vd(x) H^t = vd(0)} $ Note the order of columns is not specified, so we have a collection of equivalent codes.
+    Let $r >= 2$, $n = 2^r - 1$, let $H in M_(r, n)(FF_2)$ have columns corresponding to all non-zero vectors in $FF_2^r$. The *binary Hamming code of redundancy $r$* is $ "Ham"_2 (r) = {vd(x) in FF_2^n: vd(x) H^t = vd(0)} $ Note the order of columns is not specified, so we have a collection of permutation-equivalent codes.
 ]
 #example[
     For $r = 2, 3$, we can take $ H_2 = mat(0, 1, 1; 1, 0, 1), quad H_3 = mat(0, 0, 0, 1, 1, 1, 1; 0, 1, 1, 0, 0, 1, 1; 1, 0, 1, 0, 1, 0, 1) $
 ]
 #proposition[
-
+    For $r >= 2$, $"Ham"_2 (r)$ is perfect $[2^r - 1, 2^r - r - 1, 3]$ code with check-matrix $H$.
+]
+#proof[
+    - $n = 2^r - 1$: count rows in $H^t$.
+    - To show $H$ is check-matrix, verify its rows are linearly independent by considering its column rank.
+    - $k = 2^r - r - 1$: $k = n - "number of rows of" H$.
+    - $d = 3$: use criterion of minimum distance from linearly (in)dependent columns. No column is multiple of another, but columns $vd(e_1), vd(e_2)$ and $vd(e_1) + vd(e_2)$ are linearly dependent.
+    - $"Ham"_2 (r)$ is perfect: we have $|"Ham"_2 (r)| = 2^k = 2^(2^r - r - 1)$, $t = floor((d - 1)/2) = 1$. $|S(c, 1)| = 1 + n = 2^r$ and the $S(c, 1)$ are disjoint, so $|union_(c in C) S(c, 1)| = 2^(2^r - r - 1) dot 2^r = 2^n$.
+]
+#definition[
+    Can define Hamming codes for $q > 2$. Consider $FF_q^r$ for $r >= 2$. $vd(v), vd(w) in FF_q^r - {0}$ are *equivalent* if $vd(v) = lambda dot vd(w)$ for some $lambda in FF_q^times$. For $vd(v) in FF_q^r - {0}$, set $ L_(vd(v)) = {vd(w) in FF_q^r: vd(w) "equivalent to" vd(v)} = {lambda vd(v): lambda in FF_q^times} $ Note $|L_(vd(v))| = q - 1$ and $w in L_(vd(v))$ iff $L_(vd(w)) = L_(vd(v))$. Also, if $L_(vd(v)) != L_(vd(w))$ then $L_(vd(v)) sect L_(vd(w)) = emptyset$. Hence the $L_(vd(v))$ partition $FF_q^r - {0}$ and there are $(q^r - 1)\/(q - 1)$ of them.
+]
+#example[
+    For $q = 3$, $r = 2$ there are $(3^2 - 1)\/(3 - 1) = 4$ sets: $ L_((0, 1)) & = {(0, 1), (0, 2)}, quad L_((1, 0)) & = {(1, 0), (2, 0)}, \ L_((1, 1)) & = {(1, 1), (2, 2)}, quad L_((1, 2)) & = {(1, 2), (2, 1)} $
+]
+#definition[
+    For $r >= 2$, $n = (q^r - 1)\/(q - 1)$, construct $H in M_(r, n)(FF_q)$ by taking one colum from each of the $n$ different $L_v$. The *Hamming code of redundancy $r$* is $ "Ham"_q (r) = {vd(x) in FF_q^n: vd(x) H^t = vd(0)} $ Note that different choices of $H$ give monomially equivalent codes.
+]
+#example[
+    For $"Ham"_3 (2)$, we can choose e.g. $ H = mat(0, 2, 2, 2; 1, 2, 0, 1) quad "or" quad H = mat(2, 1, 2, 0; 1, 1, 0, 1) $
+]
+#proposition[
+    For $r >= 2$, $"Ham"_q (r)$ is perfect $[n, n - r, 3]$ code, with check-matrix $H$.
 ]
