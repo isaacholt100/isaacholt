@@ -1,5 +1,5 @@
 #import "../../template.typ": *
-#show: doc => template(doc, hidden: ())
+#show: doc => template(doc, hidden: (/*"proof",*/))
 
 // FIND: - \*(\w+)\*: ([\s\S]*?)(?=\n-|\n\n)\n
 // REPLACE: #$1[\n    $2\n]\n
@@ -138,7 +138,7 @@
     - $tau_QQ$ is not the discrete topology on $QQ$.
 ]
 #proposition[
-    Metrics $d_p$ for $p in lr([1, oo))$ and $d_oo$ all induce same topology on $RR^n$, alled the *standard topology* on $RR^n$.
+    Metrics $d_p$ for $p in lr([1, oo))$ and $d_oo$ all induce same topology on $RR^n$, called the *standard topology* on $RR^n$.
 ]
 #definition[
     $(X, tau)$ is *Hausdorff* if $ forall x != y in X, exists U, V in tau: U sect V = nothing and x in U, y in V $
@@ -347,15 +347,14 @@
 #theorem[
     Let $X$ topological space. The following are equivalent:
     - $X$ is connected.
-    - $X$ cannot be written as disjoint union of two non-empty sets.
+    - $X$ cannot be written as disjoint union of two non-empty open sets.
     - There exists no continuous surjective function from $X$ to a discrete space with more than one point.
 ]
 #example[
-    
     - $"GL"_n (RR)$ is not connected (since $det: "GL"_n (RR) -> RR - {0}$ is continuous and surjective and $RR - {0} = (-oo, 0) union (0, oo)$).
     - $O(n)$ is not connected.
     - $(0, 1)$ is connected (since $RR tilde.equiv (0, 1)$ and $RR$ is connected).
-    - $X = lr((0, 1])$ and $Y = (0, 1)$ are not homeomorphic (if they are, then $lr((0, 1])$ is connected since $(0, 1)$ is).
+    - $X = lr((0, 1])$ and $Y = (0, 1)$ are not homeomorphic (consider $h(1) = p in Y$).
 ]
 #definition[
     Let $A = B union C$, $B sect C = emptyset$, then $B$ and $C$ are *complementary subsets* of $A$.
@@ -559,7 +558,7 @@
     - $1 circle.filled.small x = x$.
 ]
 #remark[
-    For the above definition, the condition $g(x) = g circle.filled.small x$ being continuous isn't required since $g$ is the comoposition of continuous maps: $ X limits(arrow.hook)^g G times X limits(-->)^circle.filled.small X, quad x -> (g, x) -> g circle.filled.small x $
+    For the above definition, the condition $g(x) = g circle.filled.small x$ being continuous isn't required since $g$ is the composition of continuous maps: $ X limits(arrow.hook)^g G times X limits(-->)^circle.filled.small X, quad x -> (g, x) -> g circle.filled.small x $
 ]
 #example[
     
@@ -578,7 +577,7 @@
     - Action of $O(n)$ on $S^(n - 1)$ is transitive for $n in NN$. Action of $"SO"(n)$ on $S^(n - 1)$ is transitive for $n >= 2$.
 ]
 #lemma[
-    If connected topological group $G$ acts on topological space $X$, then the orbits are connected.
+    If connected topological group $G$ acts on topological space $X$, then the orbits are connected in $X$.
 ]
 #theorem[
     Let $G$ connected topological group act on topological space $X$. If $X\/G$ is connected, then $X$ is connected.
@@ -702,7 +701,7 @@
     A finite simplicial complex $K subset RR^N$ is a topological space when equipped with subspace topology from $RR^N$.
 ]
 #remark[
-    Second condition implies that two simplices can meet in at most one common face (this is important when considering quotient topologies and identifying edges with each other).
+    Second condition implies that two simplices can meet in at most one common face (this is important when considering quotient topologies and identifying edges with each other). It also implies that any set of $n$ vertices defines either only one or no $n$-simplices in $K$.
 ]
 #definition[
     *Triangulation* of topological space $X$ is homeomorphism $h: X -> K$ for some finite simplicial complex $K$. We say $K$ *triangulates* $X$. $X$ is *triangulable* if it has at least one triangulation.
@@ -723,7 +722,7 @@
 #definition[
     A map $f: K -> L$ between finite simplicial complexes $K$ and $L$ is *simplicial* if
     - For every vertex $v$ of $K$, $f(v)$ is a vertex of $L$.
-    - If $sigma = ideal(v_0, ..., v_n)$ is simplex $sigma$ in $K$, $f(sigma)$ is simplex of $L$ with vertices $f(v_0), ..., f(v_n)$, where map $f|_sigma$ is defined as $ f(sum_(i = 0)^n lambda_i v_i) = sum_(i = 0)^n lambda_i f(v_i) $
+    - If $sigma = ideal(v_0, ..., v_n)$ is simplex $sigma$ in $K$, $f(sigma)$ is simplex of $L$ with vertices $f(v_0), ..., f(v_n)$, where map $f|_sigma$ is defined linearly as $ f(sum_(i = 0)^n lambda_i v_i) = sum_(i = 0)^n lambda_i f(v_i) $
 ]
 #remark[
     Vertices $f(v_0), ..., f(v_n)$ of simplex $f(sigma)$ may not be distinct, so $f(sigma)$ may be simplex of lower dimension than $sigma$.
@@ -761,10 +760,11 @@
 #definition[
     The $r$th barycentric subdivision of $K$ is defined inductively for $r > 1$ by $K^((r)) := (K^((r - 1)))^((1))$.
 ]
-#remark[
+#proposition[
     Let $K$ be finite simplicial complex.
     - If $K$ is triangulation of topological space $X$, then so is $K^((r))$ for all $r in NN$.
     - Each simplex in $K^((1))$ is contained in a simplex of $K$.
+    - If $dim(K) = n$, then length of longest $1$-simplex in $K^((1))$ is at most $n\/(n + 1)$ times length of longest $1$-simplex in $K$.
 ]
 #theorem(name: "Simplicial approximation theorem")[
     For each $i in {1, 2}$, let $h_i: X_i -> K_i$ be triangulation of topological space $X_i$ by finite simplicial complex $K_i$. Let $f: X_1 -> X_2$ be map. Then $forall epsilon > 0$ there exist $n, m in NN$ and a simplicial map $s: K_1^((n)) -> K_2^((m))$ such that for $F := h_2 compose f compose h_1^(-1)$, $ s tilde.eq F quad "and" quad forall x in K_1, quad |F(x) - s(x)| < epsilon $
@@ -800,6 +800,12 @@
 #corollary[
     Let $X$ topological space, triangulated by connected finite simplicial complex $K$, $dim(K) = 2$. Then $X$ is closed surface iff for every vertex $v in K$, $St(v, K) tilde.equiv E^2$.
 ]
+#remark[
+    This means $X$ is closed surface if open star of every vertex of triangulation of $X$ is homeomorphic to union of two copies of $E^2 sect RR_+^2$ glued along the parts of their boundaries that are contained in $E^2 sect RR_+^2$.
+]
+#remark[
+    If we remove an edge from the open star of a vertex, and this produces a disjoint union of open sets, the original space cannot be a surface, since removing a segment from $E^2$ yields a connected space and removing a segment from $E^2 sect RR_+^2$ yields either a connected space or a disjoint union of two non-open sets.
+]
 #definition[
     *Real projective plane* is closed surface arising from identifying the edges of the unit square with the following: $ PP := (I times I)\/tilde, quad (x, 0) tilde (1 - x, 1), quad (0, y) tilde (1, 1 - y) $ It may also be defined as quotient of $S^2$ by identifying diametrically opposite points: $ PP = S^2 \/ tilde, quad forall x in S^2, quad x tilde -x $
 ]
@@ -814,6 +820,9 @@
 ]
 #definition[
     Surface $S$ is *orientable* if for all $x in int(S)$, any choice of local orientation at $x$ is preserved after translation along any simple closed curve in $int(S)$ containing $x$. $S$ is *non-orientable* if there exists $x in int(S)$ and simple closed curve $C subset.eq int(S)$ through $x$ such that translation along $C$ reverses any choice of local orientation at $x$. Every surface is either orientable or non-orientable.
+]
+#remark[
+    Orientability or non-orientability respectively correspond to the surface having two sides or one side.
 ]
 #example[
     $S^2, TT$ are orientable. Mobius band and Klein bottle are non-orientable.
@@ -877,6 +886,9 @@
 == Homotopy
 
 #definition[
+    The *stereographic projection* is the bijection $ phi: S^n - (0, ..., 0, 1) -> RR^n, quad (y_1, ..., y_(n + 1)) |-> (y_1/(1 - y_(n + 1)), ..., y_n/(1 - y_(n + 1))) $
+]
+#definition[
     Let $X, Y$ topological spaces. *Homotopy* between $f$ and $g$ is map $H: X times [0, 1] -> Y$ with $ forall x in X, quad H(x, 0) = f(x) and H(x, 1) = g(x) $ $f$ and $g$ are *homotopic*, $f tilde.eq g$, if there is a homotopy between them. We can think of homotopy as "path of maps" starting at $f: X -> Y$ and ending at $g: X -> Y$: for $t in [0, 1]$, define $h_t: X -> Y$, $h_t (x) = H(x, t)$, which varies continuously from $f$ at $t = 0$ to $g$ at $t = 1$.
 ]
 #example[
@@ -920,7 +932,7 @@
     )
 }))
 #example[
-    Consider $S^1 subset CC$, so $S^1 = {e^(i pi s): s in [0, 2)}$. Let $a: S^1 -> S^1$ be the *antipodal map*, $a(e^(i pi s)) = e^(-i pi s)$. Then $a tilde.eq id$, with homotopy given by $H: S^1 times I -> S^1$, $H(e^(i pi s)) = e^(i pi (s + t))$.
+    Consider $S^1 subset CC$, so $S^1 = {e^(i pi s): s in [0, 2)}$. Let $a: S^1 -> S^1$ be the *antipodal map*, $a(e^(i pi s)) = -e^(i pi s)$. Then $a tilde.eq id$, with homotopy given by $H: S^1 times I -> S^1$, $H(e^(i pi s)) = e^(i pi (s + t))$.
 ]
 #lemma[
     Homotopy is equivalence relation between maps.
@@ -948,6 +960,9 @@
 ]
 #proposition[
     For all topological spaces $X$, the cone $C X$ is contractible.
+]
+#example[
+    For a finite simplicial complex $K subset RR^N$, $C K subset RR^(N + 1)$ has vertices equal to vertices of $K$ together with $P = (0, ..., 0, 1) in RR^(N + 1)$. Simplices in $C K$ of dimension $>= 1$ are those in $K$ together with all simplices $ideal(v_0, ..., v_r, P)$ where $ideal(v_0, ..., v_r)$ is simplex in $K$.
 ]
 #lemma[
     Every contractible space is path connected.
@@ -1432,7 +1447,7 @@ TODO: add diagrams.
     Since $chi(M_g) = 2 - 2g$ and $chi(N_g) = 2 - g$, a closed surface is classified up to homeomorphism (its *homeomorphism type*) by its Euler characteristic and whether it is orientable or not.
 ]
 #definition[
-    Let $K$ be finite simplicial complex that triangulates a closed surface $S$, let $L$ be sub-complex of $K$ of dimension $<= 1$. The *thickening* of $L$, $Theta(L)$, is sub-complex of $K^((2))$ given by the union of all $2$-simplices in $K^((2))$ (including all their faces) which meet in $L$.
+    Let $K$ be finite simplicial complex that triangulates a closed surface $S$, let $L$ be sub-complex of $K$ of dimension $<= 1$. The *thickening* of $L$, $Theta(L)$, is sub-complex of $K^((2))$ given by the union of all $2$-simplices in $K^((2))$ (including all their faces) which meet $L$.
 ]
 #proposition[
     Let $L$ be $1$-dimensional sub-complex of $2$-dimensional finite simplicial complex $K$. Then
@@ -1497,6 +1512,9 @@ TODO: add diagrams.
         - So $ chi(S') = cases(chi(S) + 2 & "if" Theta(C) tilde.equiv "cylinder", chi(S) + 1 & "if" Theta(C) tilde.equiv "Mobius band") $
     - We can repeat this surgery procedure along cycles in "the" dual graph in each such new surface obtained.
     - This process must terminate after a finite number of surgeries in a closed surface $Z$ for which "the" dual graph (in every triangulation) has no cycles (i.e. the dual graph is a tree, i.e. $Z tilde.equiv S^2$), since each surgery increases the Euler characteristic and $chi(S) <= 2$ for all closed surfaces $S$.
+]
+#corollary[
+    If $S$ is non-orientable surface, then $S \# T tilde.equiv S \# KK$.
 ]
 #corollary[
     Up to homeomorphism, every closed surface $S$ is given by precisely one of the closed surfaces

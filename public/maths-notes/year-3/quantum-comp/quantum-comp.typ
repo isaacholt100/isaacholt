@@ -1,5 +1,5 @@
 #import "../../template.typ": *
-#show: doc => template(doc, hidden: ("proof", ))
+#show: doc => template(doc, hidden: ("proof", ), slides: true)
 
 // FIND: - \*(\w+)\*: ([\s\S]*?)(?=\n-|\n\n)\n
 // REPLACE: #$1[\n    $2\n]\n
@@ -192,7 +192,7 @@
     $hat(rho)$ is a density matrix of a pure/mixed state iff it satisfies:
     - *Normalised*: $tr(hat(rho)) = 1$
     - *Hermitian*: $hat(rho)^dagger = hat(rho)$
-    - *Semi-positive-definite*: for every state $ket(phi)$, $braket(phi, hat(rho), phi) >= 0$ (can be $= 0$ when $ket(phi) != 0$).
+    - *Semi-positive-definite*: for every state $ket(phi)$, $braket(phi, hat(rho), phi) >= 0$ (can be $= 0$ when $ket(phi) != 0$). This holds if $hat(rho)$ has non-negative eigenvalues, or if $tr\(hat(rho)^2\) <= 1$.
 ]
 #proposition[
     After taking measurement of pure or mixed state $hat(rho)$:  
@@ -376,7 +376,7 @@ ket(1) <-> (0, 1)^T: & quad vd(r) = (0, 0, -1)^T, quad (theta, phi) = (pi, dot.o
 == Local measurements
 
 #definition[
-    For bipartite system, *local mesaurements* are Hermitian operators of the form $hat(F) = hat(F)_A tp hat(I)$ for Alice and $hat(G) = hat(I) tp hat(G)_B$ for Bob.
+    For bipartite system, *local measurements* are Hermitian operators of the form $hat(F) = hat(F)_A tp hat(I)$ for Alice and $hat(G) = hat(I) tp hat(G)_B$ for Bob.
 ]
 #notation[
     Projection operators of $hat(F)_A$ and $hat(G)_B$ for eigenvalues $lambda_i$ and $mu_j$ are denoted $hat(F)_(A i)$ and $hat(G)_(B j)$.
@@ -417,7 +417,7 @@ $ So Bob's state depends on the result of Alice's measurement.
     A reduced matrix describes one subsystem, assuming no knowledge of the other system.
 ]
 #proposition[
-    - $hat(rho)_A$ is invariant under all local operations in system $B$.
+    - $hat(rho)_A$ is invariant under all local operations in system $B$ (for measurements, this is provided Alice does not learn about the result of the measurement in system B).
     - Under unitary transformations $hat(U)$ in system $A$, $hat(rho)_A$ transforms as normal: $hat(rho)_A -> hat(U) hat(rho)_A hat(U)^dagger$.
     - Local measurements in system $A$ can be described by $hat(rho)_A$ and operators acting on $cal(H)_A$: $tr_B \(hat(F)_i hat(rho) hat(F)_i\) = hat(F)_(A i) hat(rho)_A hat(F)_(A i)$.
 ]
@@ -459,7 +459,7 @@ $ So Bob's state depends on the result of Alice's measurement.
 
 == Superdense coding
 
-- Qubit can be used instead of classical bit: $ket(0)$ corresponds to the bit $0$, $ket(1)$ corresponds to the bit $1$. In this case, the qubit can be measured with probability $1$ with the measurement operator $Z$, since $Z ket(0) = 0 ket(0)$, $Z ket(1) = 1 ket(1)$ so measurement with outcome $0$ means state is $ket(0)$ with probability $1$, measurement with outcome $1$ means state is $ket(1)$ with probability $1$.
+- Qubit can be used instead of classical bit: $ket(0)$ corresponds to the bit $0$, $ket(1)$ corresponds to the bit $1$. In this case, the qubit can be measured with probability $1$ with the measurement operator $Z = 1/2 (I_2 - sigma_3)$, since $Z ket(0) = 0 ket(0)$, $Z ket(1) = 1 ket(1)$ so measurement with outcome $0$ means state is $ket(0)$ with probability $1$, measurement with outcome $1$ means state is $ket(1)$ with probability $1$.
 - Alice can prepare the qubit to represent the classical bit to send to Bob: prepare any state $ket(psi)$ and measure on it with operator $1/2 (I_2 - sigma_3)$. Outcome is $0$ or $1$ - if outcome is equal to the bit $x$ she wants to send, $ket(psi)$ has been projected to $ket(x)$, so send this state to Bob. Otherwise, perform unitary transformation $sigma_1 ket(overline(x)) = ket(x)$ and send this state to Bob.
 - *Superdense coding*:
     - Superdense coding allows one qubit to transmit two classical bits of information.
@@ -518,7 +518,7 @@ $ We have $hat(U)_H ket(0) = ket(+)$, $hat(U)_H ket(1) = ket(-)$.
 
 #definition[
     *Local realism* is a property of a system:
-    - *Locality*: influences cannot happen faster than speed of light.
+    - *Locality*: an effect at one point can be detected at another point only if something travels between those two points (no faster than the speed of light).
     - *Realism*: measurements must be deterministic, i.e. measurements tell us a property of the system.
 ]
 - *CHSH Bell-inequality*:
@@ -609,7 +609,6 @@ $
 
 #import "@preview/quill:0.2.0": *
 
-
 #let logicalop(o) = $op(#o)$
 
 #let AND = logicalop("AND")
@@ -676,12 +675,12 @@ $
 ]
 #definition[
     *#CnNOT(1) gate* is defined as $ CnNOT(1)(x_1, ..., x_n, y) := (x_1, ..., x_n, y xor "AND"(x_1, ..., x_n)) $ #CnNOT($n$) is reversible for all $n in NN$ and $(CnNOT(n))^(-1) = CnNOT(n)$. For $n = 2$, #CCNOT gate is called a *Toffoli gate*.
+]
 #figure(quantum-circuit(
     lstick($y$), 2, targ(), 2, rstick($AND(x_1, x_2) xor y$), [\ ],
     lstick($x_2$), 2, ctrl(-1), 2, rstick($x_2$), [\ ],
     lstick($x_1$), 2, ctrl(-1), 2, rstick($x_1$)
 ))
-]
 #definition[
     *#NAND gate* is defined as $ NAND(x, y) := NOT(AND(x, y)) $
 ]
@@ -697,7 +696,7 @@ $
 == Universal gate sets
 
 #notation[
-    For $f: {0, 1}^m -> {0, 1}^n$, can write as $ f(x_(n - 1), ..., x_0) = (f_(m - 1)(x_(n - 1), ..., x_0), ..., f_0 (x_(n - 1), ..., x_0)) $
+    For $f: {0, 1}^m -> {0, 1}^n$, can write as $ f(x_(m - 1), ..., x_0) = (f_(n - 1)(x_(m - 1), ..., x_0), ..., f_0 (x_(m - 1), ..., x_0)) $
 ]
 #remark[
     Can "copy" bits by introducing extra "ancillary" bits and using #CNOT gates:
@@ -716,10 +715,10 @@ $
     ${CNOT, AND}$ is a universal gate set.
 ]
 #proposition[
-    ${CCNOT}$ is a minimal ($1$-gate) UGS.
+    ${CCNOT}$ is a minimal ($1$-gate) UGS for reversible classical computation.
 ]
 #remark[
-    There is an infinte number of UGSs.
+    There is an infinite number of UGSs.
 ]
 
 == Computational resources and complexity
@@ -727,20 +726,21 @@ $
 #definition[
     An *algorithm* is a set of instructions (systematic procedure) for computing some output for a given input.
 ]
-- Resources considered in complexity:
-    *Time*: corresponds to numbers of gates in any UGS needed for implementing the circuit.
+#definition[
+    Resources considered in complexity:
+    - *Time*: corresponds to numbers of gates in any UGS needed for implementing the circuit.
     - *Space*: corresponds to number of bits (lines) in the circuit.
     - $n$ denotes size in bits of input.
 ]
 #example[
     Computing $gcd(a, b)$ (assuming WLOG $a >= b$, $2^(n - 1) <= b < 2^n$ so $b$ has $n$ bits).
     - Brute-force algorithm: try all $1 <= c <= b$, check if $c | a$ and $c | b$, return largest such $c$. Time complexity: $O(2^n)$.
-    - Euclid's algorithm has time complexity $O(n^3)$ (since $r_(i + 2) < r_i\/2$).
+    - Euclid's algorithm has time complexity $O(n^3)$ (assuming division and remainder algorithm is $O(n^2)$) (since $r_(i + 2) < r_i\/2$).
 ]
 #definition[
     - *P* is complexity class of algorithms whose run time is at most polynomial time in $n$.
-    - *EXP* is complexity class of algorithms whose run time is at most exponential time in $n$. $"P" subset.eq "EXP"$.
-    - *PSPACE* is class of algorithms which require space at most polynomial in $n$.
+    - *EXP* is complexity class of algorithms whose run time is at most exponential time in $n$. $"P" subset "EXP"$.
+    - *PSPACE* is class of algorithms which require space at most polynomial in $n$. $"P" subset.eq "PSPACE"$ (e.g. each line in circuit diagram is assumed to involve at least one gate).
     - *NP* is complexity class of algorithms whose output can be verified to be correct in polynomial time, e.g. integer factorisation. Clearly $P subset.eq "NP"$.
     - *NP-hard* problem is one such that, if you have an oracle for solving them, you can solve any NP problem in polynomial time (NP problems reduce polynomially to NP-hard problems).
     - *NP-complete* is complexity class of problems which are NP-hard, e.g. travelling salesman.
@@ -810,10 +810,10 @@ Note: Toffoli gate maps computational basis elements to computational basis elem
     $U$ is unitary iff its rows are orthonormal iff its columns are orthonormal (with respect to Hermitian inner product).
 ]
 #example[
-    For unitary $ U = mat(a, d, g; b, e, h; c, f, j) $ we can find unitaries $U_1, U_2, U_3$ with $U_3 U_2 U_1 U = I$. Choose $U_1$ to have upper left $2 times 2$ block non-trivial and such that $ U_1 U = mat(a', d', g'; 0, e', h'; c', f', j') $ If $b = 0$, set $U_1 = I$. If $b != 0$, set $ U_1 = mat(alpha^*, beta^*, 0; beta, -alpha, 0; 0, 0, 1), quad alpha := a/(|a|^2 + |b|^2), beta = b/sqrt(|a|^2 + |b|^2) ==> beta a - alpha b = 0 $ Then set $ gamma = (a')/sqrt(|a'|^2 + |c'|^2), delta = (c')/sqrt(|a'|^2 + |c'|^2), quad U_2 = mat(gamma^*, 0, delta^*; 0, 1, 0; delta, 0, -gamma) ==> U_2 U_1 U = mat(1, 0, 0; 0, e'', h''; 0, f'', j'') =: U_3^dagger $ If $U in U(N)$ is unitary, then can find $N - 1$ unitaries $U_1, ..., U_(N - 1)$ where $U_i$ is non-trivial in first and $(i + 1)$th row such that $U_(N - 1) dots.h.c U_1 U$ has first row and first column $(1, 0, ..., 0)$ and non-trivial bottom-right $(N - 1) times (N - 1)$ block. So it can be reduced entirely by induction, to $1/2 N (N - 1)$ unitaries.
+    For unitary $ U = mat(a, d, g; b, e, h; c, f, j) $ we can find unitaries $U_1, U_2, U_3$ with $U_3 U_2 U_1 U = I$. Choose $U_1$ to have upper left $2 times 2$ block non-trivial and such that $ U_1 U = mat(a', d', g'; 0, e', h'; c', f', j') $ If $b = 0$, set $U_1 = I$. If $b != 0$, set $ U_1 = mat(alpha^*, beta^*, 0; beta, -alpha, 0; 0, 0, 1), quad alpha := a/sqrt(|a|^2 + |b|^2), beta = b/sqrt(|a|^2 + |b|^2) ==> beta a - alpha b = 0 $ Then set $ gamma = (a')/sqrt(|a'|^2 + |c'|^2), delta = (c')/sqrt(|a'|^2 + |c'|^2), quad U_2 = mat(gamma^*, 0, delta^*; 0, 1, 0; delta, 0, -gamma) ==> U_2 U_1 U = mat(1, 0, 0; 0, e'', h''; 0, f'', j'') =: U_3^dagger $ If $U in U(N)$ is unitary, then can find $N - 1$ unitaries $U_1, ..., U_(N - 1)$ where $U_i$ is non-trivial in first and $(i + 1)$th row such that $U_(N - 1) dots.h.c U_1 U$ has first row and first column $(1, 0, ..., 0)$ and non-trivial bottom-right $(N - 1) times (N - 1)$ block. So it can be reduced entirely by induction, to $1/2 N (N - 1)$ unitaries.
 ]
 #remark[
-    $U$ acts of $n$ qubits so $N = 2^n$, so we need $approx 4^n$ elementary matrices, so complexity is exponential in number of qubits.
+    $U$ acts on $n$ qubits so $N = 2^n$, so we need $approx 4^n$ elementary matrices, so complexity is exponential in number of qubits.
 ]
 #example[
     Any $4 times 4$ unitary can be written as product of 6 elementary unitaries: $ U = mat(*, *, 0, 0; *, *, 0, 0; 0, 0, 1, 0; 0, 0, 0, 1) mat(*, 0, *, 0; 0, 1, 0, 0; *, 0, *, 0; 0, 0, 0, 1) mat(*, 0, 0, *; 0, 1, 0, 0; 0, 0, 1, 0; *, 0, 0, *) mat(1, 0, 0, 0; 0, *, *, 0; 0, *, *, 0; 0, 0, 0, 1) mat(1, 0, 0, 0; 0, *, 0, *; 0, 0, 1, 0; 0, *, 0, *) mat(1, 0, 0, 0; 0, 1, 0, 0; 0, 0, *, *; 0, 0, *, *) $
@@ -877,7 +877,7 @@ Note: Toffoli gate maps computational basis elements to computational basis elem
     CCNOT can be implemented with $H$ (Hadamard) and $T$ gates (and their Hermitian conjugates).
 ]
 #lemma[
-    Any single qubit unitary $U$ can be written as $U = e^(i alpha) A X B X C$ with $A, B, C$ single-qubit ($2 times 2$) unitaries, $A B C = 1$, $alpha in RR$. In particular, $U$ can be implemented as
+    Any single qubit unitary $U$ can be written as $U = e^(i alpha) A X B X C$ with $A, B, C$ single-qubit ($2 times 2$) unitaries, $A B C = 1$, $alpha in RR$. In particular, C-$U$ can be implemented as
 #figure(quantum-circuit(
     lstick($ket(q_1)$), 1, ctrl(1), 1, ctrl(1), gate($mat(1, 0; 0, e^(i alpha))$), 1, nl,
     lstick($ket(q_0)$), gate($C$), targ(), gate($B$), targ(), gate($A$), 1
@@ -890,7 +890,7 @@ Note: Toffoli gate maps computational basis elements to computational basis elem
     Number of elementary unitaries $U_i$ needed is $O(2^(2n))$. Gray code requires $O(n)$ $CnNOT(n - 1)$ gates, and representing these multiply-controlled unitaries as controlled-unitaries requires $O(n)$ CCNOT gates, so overall $U$ is represented as $O(n^2 2^(2n))$ operations.
 ]
 #definition[
-    *BQP (bounded-error quantum polynomial)* decision problems are those which a unitary operation solves with success $p > c$, with $c > 1/2$ a fixed constant (conventionally, $c = 2/3$), with polynomial growth in resources (i.e. number of CNOT and single-qubit unitary gates) as $n$ (number of qubits) is increased.
+    *BQP (bounded-error quantum polynomial)* decision problems are those which a unitary operation solves with probability of success $p > c$, with $c > 1/2$ a fixed constant (conventionally, $c = 2/3$), with polynomial growth in resources (i.e. number of CNOT and single-qubit unitary gates) as $n$ (number of qubits) is increased.
 ]
 #note[
     $"BPP" subset.eq "BQP"$, since any classical computation can be written in terms of CCNOT and CCNOT has fixed quantum cost. A source of randomness is the following circuit, giving $0$ and $1$ each with probability $1\/2$:
@@ -905,7 +905,7 @@ Note: Toffoli gate maps computational basis elements to computational basis elem
     We can always measure using the Pauli $Z$ operator (so measure in the computational basis). To measure in different basis, act with a unitary to transform desired basis into computational basis, then measure in computational basis, then transform back to desired basis.
 ]
 #example[
-    Let $U$ be single-qubit operator, Hermitian and unitary, so eigenvalues are $plus.minus 1$. Measuring $U$ can be achieved with the following circuit:
+    Let $U$ be single-qubit operator, with eigenvalues $plus.minus 1$, so it is Hermitian and unitary. Measuring $U$ can be achieved with the following circuit:
     #figure(quantum-circuit(
         lstick($ket(0)$), 1, gate($H$), 1, ctrl(1), 1, gate($H$), 1, meter(), setwire(2), 1, nl,
         lstick($ket(psi)$), 3, gate($U$), 5
@@ -921,6 +921,9 @@ Note: Toffoli gate maps computational basis elements to computational basis elem
 
 == Correcting single bit flips
 
+#definition[
+    A *code subspace* is a two-dimensional subspace of an $n$-qubit Hilbert space, in which the logical qubits live, such that each possible error (being considered) maps states in the code subspaces into a distinct two-dimensional subspace, and all of these error subspaces and the codespace are orthogonal.
+]
 #example[
     Assume only error that can occur is flip of single qubit (same as classical case), i.e. each qubit has probability $p$ of $X$ gate being applied. We encode the state in a *code subspace*. Each qubit is encoded as 3 qubits: the *logical qubit* $ket(overline(0))$ is encoded as the _physical_ state $ket(000)$, $ket(overline(1))$ is encoded as $ket(111)$. So $ket(psi) = alpha ket(0) + beta ket(1)$ is mapped to $alpha ket(000) + beta ket(111)$, in the subspace $span{ket(000), ket(111)}$ of the Hilbert space of 3 qubits. The embedding is implemented as
     #figure(quantum-circuit(
@@ -943,6 +946,7 @@ Note: Toffoli gate maps computational basis elements to computational basis elem
         lstick($ket(a_1) = ket(0)$), targ(), targ(), 3, ctrl(-1), 1, ctrl(-2), ctrl(-2), 2, ctrl(-3), meter(), setwire(2), rstick($Z_1 Z_0$), nl,
         lstick($ket(a_0) = ket(0)$), 2, targ(), targ(), 1, ctrl(-1), 2, ctrl(-1), 1, ctrl(-4), ctrl(-4), meter(), setwire(2), rstick($Z_2 Z_0$)
     ))
+    where the measurements are to reset the ancilla so they can be reused.
 ]
 #note[
     We cannot use less than 3 qubits, since to encode with $n$ qubits, we need $n + 1$ orthogonal two-dimensional subspaces, which is possible in $2^n$-dimensional $n$ qubit Hilbert space iff $2^n >= 2(n + 1)$.
@@ -951,7 +955,7 @@ Note: Toffoli gate maps computational basis elements to computational basis elem
 == Correcting general single qubit errors
 
 #remark[
-    General error consists of acting with unitary operation $U_i$ on single physical qubit. Can use Bloch sphere rotation representation to write $ U_i = e_i I + a_i X_i + b_i Y_i + c_i Z_i $ So if state $ket(psi)$ is single logical qubit encoded in $n$-qubit Hilbert space, action of single qubit error on qubit $i$ transforms $ket(psi)$ to $ (1 - epsilon) ket(psi) + sum_(i = 1)^n a_i X_i ket(psi) + b_i Y_i ket(psi) + c_i Z_i ket(psi) $ If error depends of state of environment, state after errors occurs is entangled: $ ket(e_1) tp ket(psi) + sum_(i = 1)^n ket(e_(2i)) tp X_i ket(psi) + ket(e_(3i)) tp Y_i ket(psi) + ket(e_(4i)) tp Z_i ket(psi) $ Measuring chosen error syndromes projects qubits to one of the subspaces, so state becomes one of $ ket(psi), quad X_i ket(psi), quad Y_i ket(psi), quad Z_i ket(psi) $ $3n + 1$ 2d subspaces are needed (corresponding to $3n$ single-qubit errors and original state), so we require $ 2^n >= 2(3n + 1) $ which is saturated by $n = 5$.
+    General error consists of acting with unitary operation $U_i$ on single physical qubit. Can use Bloch sphere rotation representation to write $ U_i = e_i I + a_i X_i + b_i Y_i + c_i Z_i $ So if state $ket(psi)$ is single logical qubit encoded in $n$-qubit Hilbert space, action of single qubit error on qubit $i$ transforms $ket(psi)$ to $ (1 - epsilon) ket(psi) + a_i X_i ket(psi) + b_i Y_i ket(psi) + c_i Z_i ket(psi) quad "for some" i $ If error depends of state of environment, state after errors occurs is entangled: $ ket(e_1) tp ket(psi) + sum_(i = 1)^n ket(e_(2i)) tp X_i ket(psi) + ket(e_(3i)) tp Y_i ket(psi) + ket(e_(4i)) tp Z_i ket(psi) $ (This is linear superpositon of single qubit errors). Measuring chosen error syndromes projects qubits to one of the subspaces, so state becomes one of $ ket(psi), quad X_i ket(psi), quad Y_i ket(psi), quad Z_i ket(psi) $ $3n + 1$ 2d subspaces are needed (corresponding to $3n$ single-qubit errors and original state), so we require $ 2^n >= 2(3n + 1) $ which is saturated by $n = 5$.
 ]
 #remark[
     In terms of errors, $X$ is a single bit flip, $Z$ is a phase flip ($alpha ket(0) + beta ket(1) -> alpha ket(0) - beta ket(1)$), $Y = i X Z$ is composition of both.
@@ -960,7 +964,7 @@ Note: Toffoli gate maps computational basis elements to computational basis elem
     We define a *coding* $c: H_1 -> H_n$, $ket(overline(0)) = c(ket(0))$, $ket(overline(1)) = c(ket(1))$.
 ]
 #definition[
-    *Steane code* is coding using $7$ qubits, which uses the syndromes $ M_0 := X_0 X_4 X_5 X_6, quad M_1 & := X_1 X_3 X_5 X_6, quad M_2 := X_2 X_3 X_4 X_6, \ N_0 := Z_0 Z_4 Z_5 Z_6, quad N_1 & := Z_1 Z_3 Z_5 Z_6, quad N_2 := Z_2 Z_3 Z_4 Z_6 $ which all commute, so have simultaneous eigenvalues. Code subspace is spanned by $
+    *Steane code* is coding using $7$ qubits, which uses the syndromes $ M_0 := X_0 X_4 X_5 X_6, quad M_1 & := X_1 X_3 X_5 X_6, quad M_2 := X_2 X_3 X_4 X_6, \ N_0 := Z_0 Z_4 Z_5 Z_6, quad N_1 & := Z_1 Z_3 Z_5 Z_6, quad N_2 := Z_2 Z_3 Z_4 Z_6 $ which all commute, so have simultaneous eigenstates. Code subspace is spanned by $
         ket(overline(0)) & = 1/(2^(3\/2)) (1 + M_0)(1 + M_1)(1 + M_2) ket(0000000), \
         ket(overline(1)) & = 1/(2^(3\/2)) (1 + M_0)(1 + M_1)(1 + M_2) ket(1111111)
     $
@@ -1008,7 +1012,7 @@ Note: Toffoli gate maps computational basis elements to computational basis elem
     The operation $overline(X)$, acting on the logical Hilbert space $H_7$, acts as the #NOT operator on the code subspace $span{ket(0), ket(1)}$: $ overline(X) = X_6 X_5 X_4 X_3 X_2 X_1 X_0, quad ==> overline(X) ket(overline(0)) = ket(overline(1)), quad overline(X) ket(overline(1)) = ket(overline(0)) $
 ]
 #example[
-    The operation $overline(Z) = Z_6 Z_5 Z_4 Z_3 Z_2 Z_1 Z_0$ commutes with each $M_i$ and leaves $ket(0000000)$ invaraint so leaves $ket(overline(0))$ invariant. $overline(Z)$ anti-commutes with $overline(X)$ so acts within the code subspace and $overline(Z) ket(overline(0)) = ket(overline(1))$, $overline(Z) ket(overline(1)) = -ket(overline(1))$, so acts as Pauli $Z$ on logical qubits.
+    The operation $overline(Z) = Z_6 Z_5 Z_4 Z_3 Z_2 Z_1 Z_0$ commutes with each $M_i$ and leaves $ket(0000000)$ invariant so leaves $ket(overline(0))$ invariant. $overline(Z)$ anti-commutes with $overline(X)$ so acts within the code subspace and $overline(Z) ket(overline(0)) = ket(overline(1))$, $overline(Z) ket(overline(1)) = -ket(overline(1))$, so acts as Pauli $Z$ on logical qubits.
 ]
 #example[
     $overline(H) = H_6 H_5 H_4 H_3 H_2 H_1 H_0$ realises the Hadamard gate on logical qubits: $ overline(H) ket(overline(0)) = 1/sqrt(2) (ket(overline(0)) + ket(overline(1))), quad overline(H) ket(overline(1)) = 1/sqrt(2) (ket(overline(0)) - ket(overline(1))) $ We have $H X H = Z$ so $H_i X_i = Z_i H_i$, thus $ M_j overline(H) ket(psi) = overline(H) N_j ket(psi), quad N_j overline(H) ket(psi) = overline(H) M_j ket(psi) $ Hence if $ket(psi)$ is in an eigenspace of $M_j$ and $N_j$, $overline(H) ket(psi)$ also lies in an eigenspace of $M_j$ and $N_j$ but with the eigenvalues of $M_j$ and $N_j$ swapped. This means $overline(H)$ preserves the code subspace, so $overline(H) ket(overline(0))$ and $overline(H) ket(overline(1))$ lie in the code subspace. Now $ overline(H) ket(overline(0)) = overline(H) 1/2^(3\/2) (1 + M_0)(1 + M_1)(1 + M_2) ket(0000000) = 1/2^(3\/2) (1 + N_0)(1 + N_1)(1 + N_2) overline(H) ket(0000000) $ $overline(H)$ maps $ket(0000000)$ to uniform superposition of all computational basis states, and $1 + N_j$ is projector onto $+1$ eigenspace of $N_j$, so we have the component of the uniform superposition which lies in the code subspace, i.e. $ overline(H) ket(overline(0)) = 1/sqrt(2) (ket(overline(0)) + ket(overline(1))) $ Similarly, $ overline(H) ket(overline(1)) = overline(H) 1/2^(3\/2) (1 + M_0)(1 + M_1)(1 + M_2) ket(1111111) = 1/2^(3\/2) (1 + N_0)(1 + N_1)(1 + N_2) overline(H) ket(1111111) $ $overline(H)$ maps $ket(1111111)$ to uniform superposition of all computational basis states, with each state with an odd number of $1$'s negated, hence $ overline(H) ket(overline(1)) = 1/sqrt(2) (ket(overline(0)) - ket(overline(1))) $ as all computational basis states in $ket(overline(1))$ have odd number of $1$'s.
@@ -1028,7 +1032,7 @@ Note: Toffoli gate maps computational basis elements to computational basis elem
     *Bitwise addition* of $a$ and $b$ is $a xor b = c$ where $c_i = a_i + b_i mod 2$.
 ]
 #definition[
-    *Simon's problem* is: given an $n$-bit function $f: {0, 1}^n -> {0, 1}^n$, with $f(x xor a) = f(x)$ for all $x$ and $f(x) != f(y)$ otherwise, determine the period $a$.
+    *Simon's problem* is: given an $n$-bit function $f: {0, 1}^n -> {0, 1}^n$, with $f(x xor a) = f(x)$ for all $x$ ($a != 0$) and $f(x) != f(y)$ otherwise, determine the period $a$.
 ]
 #example[
     Let $f: {0, 1}^n -> {0, 1}^n$ be $n$-bit function with period $a != 0$, so $f(x xor a) = f(x)$ and $f(x) != f(y)$ otherwise. To determine $a$ classically, we compute $f(x_i)$ until we find two values with $f(x_i) = f(x_j)$, then $a = x_i xor x_j$. After $m$ values are computed, we know $a != x_i xor x_j$ for all $i, j <= m$, so at most $1/2 m(m - 1)$ values are eliminated. There are $2^n - 1$ values for $a$, so this has complexity $O(2^(n\/2))$.
@@ -1043,7 +1047,7 @@ Note: Toffoli gate maps computational basis elements to computational basis elem
     Define the unitary operator $U_f$ acting on $n$ input qubits $ket(x)$ and $n$ output qubits $ket(m)$: $ U_f ket(x) ket(m) = ket(x) ket(m xor f(x)) $
     + Start with system in state $ket(0)_n tp ket(0)_n$ where $ket(0)_n = ket(00...0)$.
     + Apply $H^(tp n) tp I$ (i.e. acting on input qubits) to give $ 1/(2^(n\/2)) sum_(k = 0)^(2^n - 1) ket(k) tp ket(0)_n $
-    + Apply $U_f$ where $U_f (ket(x) tp ket(m)) = ket(x) tp (ket(m xor f(x)))$ to give $ 1/2^(n\/2) sum_(k = 0)^(2^n - 1) ket(0) tp ket(0 tp f(k)) = 1/2^(n\/2) sum_(k = 0)^(2^n - 1) ket(k) tp ket(f(k)) $
+    + Apply $U_f$ to give $ 1/2^(n\/2) sum_(k = 0)^(2^n - 1) ket(k) tp ket(0 xor f(k)) = 1/2^(n\/2) sum_(k = 0)^(2^n - 1) ket(k) tp ket(f(k)) $
     + Measure the ancillary bits (the $ket(f(k))$) in the computational basis, yielding a random $f(x_0)$. The state collapses to $ 1/sqrt(2) (ket(x_0) + ket(x_0 xor a)) tp ket(f(x_0)) $
     + Discard ancillary bits and apply $H^(tp n)$ to input bits $1/sqrt(2) (ket(x_0) + ket(x_0 xor a))$ to give $
         H^(tp n) 1/sqrt(2) (ket(x_0) + ket(x_0 xor a)) & = 1/sqrt(2) (H^(tp n) ket(x_0) + H^(tp n) ket(x_0 xor a)) \
@@ -1071,10 +1075,10 @@ Note: Toffoli gate maps computational basis elements to computational basis elem
 == Quantum Fourier transform
 
 #definition[
-    *Quantum Fourier transform* is unitary operation $U_"FT"$ acting on the $n$ qubit space $H_n$, given by action on computational basis states: $ U_"FT" ket(x) = 1/2^(n\/2) sum_(y = 0)^(2^n - 1) e^(2 pi i x y \/ 2^n) ket(y) $ It is quantum version of the discrete Fourier transform: by linearity, if $ket(psi) = sum_(x = 0)^(2^n - 1) psi_x ket(x)$ and $ket(phi) = U_"FT" ket(psi) = sum_(y = 0)^(2^n - 1) phi_y ket(y)$, then $ phi_y = 1/2^(n\/2) sum_(x = 0)^(2^n - 1) e^(2pi i x y \/2^n) psi_x $
+    *Quantum Fourier transform* is unitary operation $U_"FT"$ acting on the $n$ qubit space $H_n$, given by action on computational basis states: $ U_"FT" ket(x) = 1/2^(n\/2) sum_(y = 0)^(2^n - 1) e^(2 pi i x y \/ 2^n) ket(y) $ It is quantum version of the discrete Fourier transform: by linearity, if $ket(psi) = sum_(x = 0)^(2^n - 1) psi_x ket(x)$ and $ket(phi) = U_"FT" ket(psi) = sum_(y = 0)^(2^n - 1) phi_y ket(y)$, then $ phi_y = 1/2^(n\/2) sum_(x = 0)^(2^n - 1) e^(2pi i x y \/2^n) psi_x $ Note this is precisely the discrete Fourier transform on the vector $psi_x$.
 ]
 #note[
-    Can check $U_"FT"$ is unitary by checking $U_"FT" ket(x)$ has norm $1$ and $U_"FT" ket(x)$ orthogonal to $U_"FT" ket(x')$ for $x != x'$.
+    Can check $U_"FT"$ is unitary by checking $U_"FT" ket(x)$ has norm $1$ and $U_"FT" ket(x)$ orthogonal to $U_"FT" ket(x')$ for $x != x'$ (i.e. it preserves the inner product).
 ]
 #example[
     Note that classically, computing $phi_y$ requires $2^n$ additions. If $y = y_(n - 1)...y_0$, i.e. $y = y_(n - 1) 2^(n - 1) + dots.h.c + y_0$, then $ e^(2 pi i x y\/2^n) = product_(l = 0)^(n - 1) e^(2pi i x y_l \/ 2^(n - l)) $ which gives $ U_"FT" ket(x) = 1/2^(n\/2) sum_(y = 0)^(2^n - 1) e^(2pi i x y\/2^n) ket(y) = 1/2^(n\/2) times.circle.big_(l = 0)^(n - 1) (ket(0) + e^(2pi i x \/2^(n - l)) ket(1)) $ Note this is similar to $ H^(tp n) ket(x) = times.circle.big_(i = 0)^(n - 1) 1/sqrt(2) (ket(0)_i + (-1)^(x_i) ket(1)_i) = sum_(y = 0)^(2^n - 1) (-1)^(x dot y) ket(y) $ However, for $U_"FT"$, phases in individual qubit states depend on $x$, not just $x_l$, so $U_"FT"$ cannot be realised only by single-qubit operations. Now also $ e^(2pi x \/2^(n - l)) = e^(2pi i(x_(n - 1) 2^(l - 1) + dots.h.c + x_0 2^(l - n))) = product_(m = 0)^(n - 1) e^(2pi i x_m \/2^(n - l - m)) = product_(m = 0)^(n - l - 1) e^(2pi i x_m\/2^(n - l - m)) $ since $e^(2pi i r) = 1$ for $r in ZZ$. So phase for $l = n - 1$ only depends on $x_0$, phase for $l = n - 2$ only depends on $x_0$ and $x_1$: $ U_"FT" ket(x) = 1/2^(n\/2) (ket(0) + e^(i pi x_0) ket(1)) tp (ket(0) + e^(i pi x_1) e^(i pi x_0 \/2)) tp dots.c $ When $U_"FT"$ is realised, order of qubits is reversed. QFT can be implemented of controlled-phase gates, where we apply unitaries $ R_k = mat(1, 0; 0, e^(i pi\/2^k)) $ Each qubit $i$ has controlled-$R_k$ applied, controlled by each qubit $j < i$, where $k = i - j$. E.g. for $n = 3$,

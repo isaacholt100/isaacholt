@@ -539,6 +539,9 @@ $
 #theorem[
     Let $I subset.neq cal(O)_K$ be non-zero ideal. Then $I$ is unique (up to reordering) product of prime ideals.
 ]
+#definition[
+    A ring where every proper non-zero ideal can be uniquely factorised into prime ideals is a *Dedekind domain*. So rings of integers are Dedekind domains.
+]
 #example[
     In $ZZ\[sqrt(-6)\]$, $\(1 + 3 sqrt(-6)\) \(1 - 3 sqrt(-6)\) = 55 = 5 dot.op 11$. $P_5 = ideal(5, 1 + 3 sqrt(-6))$ and $overline(P_5) = ideal(5, 1 - 3 sqrt(-6))$ are prime, as are $P_11 = ideal(11, 1 + 3 sqrt(-6))$ and $overline(P_11) = ideal(11, 1 - sqrt(-6))$. $P_5 overline(P_5) = ideal(5)$, $P_11 overline(P_11) = ideal(11)$, $P_5 P_11 = ideal(1 + 3 sqrt(-6))$, $overline(P_5) thick overline(P_11) = ideal(1 - 3 sqrt(-6))$ so $ \(P_5 P_11\) \(overline(P_5) thick overline(P_11)\) = \(P_5 overline(P_5)\) \(P_11 overline(P_11)\) $
 ]
@@ -549,6 +552,33 @@ $
 ]
 #corollary(name: "to divide is to contain and to contain is to divide")[
     $I | J <==> J subset.eq I$.
+]
+#theorem[
+    If $cal(O)_K$ is UFD, then it is also PID.
+]
+
+== Arithmetic with ideals
+
+#definition[
+    Let $I, J$ be non-zero ideals of $R$, $ I & = P_1^(a_1) dots.c P_r^(a_r), \ J & = P_1^(b_1) dots.c P_r^(b_r) $ with $P_1, ..., P_r$ distinct prime ideals of $R$ and $a_i, b_i >= 0$. *gcd* and *lcm* of $I$ and $J$ are $ gcd(I, J) & := P_1^(min{a_1, b_1}) dots.c P_r^(min{a_r, b_r}), \ "lcm"(I, J) & := P_1^(max{a_1, b_1}) dots.c P_r^(max{a_r, b_r}) $
+]
+#definition[
+    $I$ and $J$ are *coprime* if $gcd(I, J) = ideal(1) = R$.
+]
+#proposition[
+    - For $m, n in ZZ$, $gcd\(ideal(m)_ZZ, ideal(n)_ZZ\) = ideal(gcd(m, n))_ZZ$ and $"lcm"\(ideal(m)_ZZ, ideal(n)_ZZ\) = ideal("lcm"(m, n))_ZZ$.
+    - $gcd(I, J)$ divides $I$ and $J$, and if any $K$ divides $I$ and $J$, then $K | gcd(I, J)$.
+    - $I, J | "lcm"(I, J)$ and for any ideal $K$, if $I, J | K$ then $"lcm"(I, J) | K$.
+]
+#proposition[
+    - In any ring, the smallest ideal containing ideals $I$ and $J$ is $I + J$. So if $I = ideal(a_1, ..., a_n)$ and $J = (b_1, ..., b_m)$ then smallest ideal containing $I$ and $J$ is $ideal(a_1, ..., a_n, b_1, ..., b_m)$.
+    - In any ring, the largest ideal contained in both $I$ and $J$ is $I sect J$.
+]
+#proposition[
+    If $I$ and $J$ are non-zero ideals in $cal(O)_K$ then $ gcd(I, J) = I + J, quad "lcm"(I, J) = I sect J $
+]
+#theorem(name: "Chinese remainder theorem for ideals")[
+    Let $I_1, ..., I_k$ be pairwise coprime ideals of $cal(O)_K$, then there is an isomorphism $ R \/ (I_1 dots.c I_k) & -> R\/I_1 times dots.c times R\/I_k, \ x + (I_1 dots.c I_k) & |-> (x + I_1, ..., x + I_k) $
 ]
 
 = Splitting of primes and the Kummer-Dedekind theorem
@@ -580,7 +610,7 @@ $
 == The Kummer-Dedekind theorem
 
 #definition[
-    If $p in ZZ$ prime, and $ideal(p)_(O_K) = P_1^(e_1) dots.h.c P_r^(e_r)$ then $P_1, ..., P_r$ are the prime ideals *lying above* $p$.
+    If $p in ZZ$ prime, and $ideal(p)_(O_K) = P_1^(e_1) dots.h.c P_r^(e_r)$ then $P_1, ..., P_r$ are the prime ideals *lying above* $p$. Equivalently, $P$ *lies above* $p$ if $P sect ZZ = ideal(p)_ZZ$.
 ]
 #remark[
     If $P subset cal(O)_K$ nonzero prime ideal, then $N(P) in P sect ZZ$ so $P sect ZZ != ideal(0)$. But $P sect ZZ$ is prime ideal of $ZZ$ so $P sect ZZ = ideal(p)_ZZ$ for some prime $p in ZZ$. Hence $p in P$, $ideal(p)_(cal(O)_K) subset.eq P$ so $P | ideal(p)_(cal(O)_K)$. Hence every $P$ lies over some prime $p$.

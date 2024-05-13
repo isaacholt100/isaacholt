@@ -278,7 +278,7 @@
 - *Definition*: let $E: y^2 = x^3 + a x + b$ defined over $QQ$, $a, b in ZZ$. For odd prime $p$, taking reductions $overline(a)$, $overline(b) mod p$ gives curve over $FF_p$: $ overline(E): y^2 = x^3 + overline(a) x + overline(b) $ This is elliptic curve if $Delta_E equiv.not 0 mod p$, in which case $p$ is *prime of good reduction* for $E$.
 - *Theorem*: let $E: y^2 = x^3 + a x + b$ defined over $QQ$, $a, b in ZZ$, $p$ be odd prime of good reduction for $E$. Then $f: E(QQ)_"tors" -> overline(E)(FF_p)$ defined by $ f(x, y) := (overline(x), overline(y)), quad f\(PAI\) := PAI $ is injective (note $x, y in ZZ$ by Nagell-Lutz).
 - So $E(QQ)_"tors"$ can be thought of as subgroup of $E(FF_p)$ for any prime $p$ of good reduction, so by Lagrange's theorem, $|E(QQ)_"tors"|$ divides $|E(FF_p)|$.
-- *Mordell's theorem*: if $E$ is elliptic curve over $QQ$, then $ E(QQ) tilde.equiv E(QQ)_"tors" times ZZ^r $ for some $r >= 0$ the *rank* of $E$. So for some $P_1, ..., P_r in E(QQ)$, $ E(QQ) = \{n_1 P_1 + dots.h.c + n_r P_r + T: n_i in ZZ, T in E(QQ)_"tors"\} $ $P_1, ..., P_r, T$ are *generators* for $E(QQ)$.
+- *Mordell's theorem*: if $E$ is elliptic curve over $QQ$, then $ E(QQ) tilde.equiv E(QQ)_"tors" times ZZ^r $ for some $r >= 0$ the *rank* of $E$. So for some $P_1, ..., P_r in E(QQ)$, $ E(QQ) = \{n_1 P_1 + dots.h.c + n_r P_r + T: n_i in ZZ, T in E(QQ)_"tors"\} $ $P_1, ..., P_r$ (together with $T$) are *generators* for $E(QQ)$.
 
 = Basic coding theory
 
@@ -327,7 +327,7 @@ Definition[
 
 #definition[
     *$q$-ary symmetric channel with symbol-error probability $p$* is channel for $q$-ary alphabet $A$ such that:
-    - For every $a in A$, probability that $a$ is changed in channel is $p$.
+    - For every $a in A$, probability that $a$ is changed in channel is $p$ (i.e. symbol-errors in different positions are independent events).
     - For every $a != b in A$, probability that $a$ is changed to $b$ in channel is $ PP(b "received" | a "sent") = p/(q - 1) $
     i.e. symbol-errors in different positions are independent events.
 ]
@@ -371,7 +371,7 @@ Definition[
 #definition[
     Let $A$ be alphabet, $|A| = q$. Let $n in NN$, $0 <= t <= n$, $t in NN$, $x in A^n$.
     - *Ball of radius $t$ around $x$* is $ S(x, t) := {y in A^n: d(y, x) <= t} $
-    - Code $C subset.eq A^n$ is *perfect* if $ exists t in NN: A^n = product.co_(c in C) S(c, t) $ where $product.co$ is disjoint union.
+    - Code $C subset.eq A^n$ is *perfect* if $ exists t in NN_0: A^n = product.co_(c in C) S(c, t) $ where $product.co$ is disjoint union.
 ]
 #example[
     For $C = {000, 111} subset {0, 1}^3$, $S(000, 1) = {000, 100, 010, 001}$ and $S(111, 1) = {111, 011, 101, 110}$. These are disjoint and $S(000, 1) union S(111, 1) = {0, 1}^3$, so $C$ is perfect.
@@ -445,6 +445,13 @@ $ So $G = mat(1, 2, 0, 3, 4; 0, 0, 1, 5, 6)$ is generator matrix for $C$ and $di
 ]
 
 == Encoding and channel decoding
+
+- Let $C$ be $q$-ary $[n, k]$ code with generator matrix $G in M_(k, n)(FF_q)$. To encode a message $x in FF_q^k$, multiply by $G$: codeword is $c = x G$.
+- Note that rows of $G$ being independent implies $f_G$ is injective, so no two messages are mapped to same codeword.
+- If we want the code to correct (and detect) errors, we must have $k < n$.
+- The received word $y in FF_q^n$ is decoded to the codeword $c' in C$.
+- *Channel decoding* is finding the unique word $x'$ such that $x' G = c'$, i.e. $x' dot g_i = c'_i$ where $g_i$ is $i$th column of $G$. This gives $n$ equations in $k$ unknowns. Since $c'$ is a codeword, these equations are consistent, and since $f_G$ is injective, there is a unique solution.
+- To solve $x' G = c'$, either use that $G^t (x')^t = (c')^t$ and row-reduce augmented matrix $(G^t | (c')^t)$, or pick generator-matrix in RREF, which then picks out each $x'_i$.
 
 == Equivalence and standard form
 

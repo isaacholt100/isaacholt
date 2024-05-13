@@ -1,5 +1,5 @@
 #import "../../template.typ": *
-#show: doc => template(doc, hidden: ())
+#show: doc => template(doc, hidden: (), slides: true)
 
 // FIND: - \*(\w+)\*: ([\s\S]*?)(?=\n-|\n\n)\n
 // REPLACE: #$1[\n    $2\n]\n
@@ -99,7 +99,7 @@
 == Polynomials over fields
 
 #definition[
-    *Degree* of $f(x) = a_0 + a_1 x + dots.h.c + a_n x_n$, $a_n != 0$ is $deg(f(x)) = n$.
+    *Degree* of $f(x) = a_0 + a_1 x + dots.h.c + a_n x^n$, $a_n != 0$, is $deg(f(x)) = n$.
     - Degree of zero polynomial is $deg(0) = -oo$.
     - $deg(f(x)g(x)) = deg(f(x)) + deg(g(x))$.
     - $deg(f(x) + g(x)) <= max{deg(f(x)), deg(g(x))}$ with equality if $deg(f(x)) != deg(g(x))$.
@@ -119,7 +119,9 @@
 
 == Tests for irreducibility
 
-- If $f(x)$ has linear factor in $K[x]$, it has root in $K[x]$.
+#proposition[
+    If $f(x)$ has linear factor in $K[x]$, it has root in $K[x]$.
+]
 #proposition(name: "Rational root test")[
     If $f(x) = a_0 + dots.h.c + a_n x^n in ZZ[x]$ has rational root $b/c in QQ$ with $gcd(b, c) = 1$ then $b | a_0$ and $c | a_n$. *Note*: this can't be used to show $f$ is irreducible for $deg(f(x)) >= 4$.
 ]
@@ -161,7 +163,7 @@
 ]
 #example[
     - $CC \/ RR$, $CC \/ QQ$, $RR \/ QQ$.
-    - $L = QQ\(sqrt(2)\) = \{a + b sqrt(2): a, b in QQ\}$ is field extension of $QQ$. $QQ(theta)$ is field extension of $QQ$ where $theta$ is root of $f(x) in Q[x]$.
+    - $L = QQ\(sqrt(2)\) = \{a + b sqrt(2): a, b in QQ\}$ is field extension of $QQ$. $QQ(theta)$ is field extension of $QQ$ where $theta$ is root of $f(x) in QQ[x]$.
     - $L = QQ\(root(3, 2)\) = \{a + b root(3, 2) + c root(3, 4): a, b, c in QQ\}$ is smallest subfield of $RR$ containing $QQ$ and $root(3, 2)$.
     - $K(t)$ is field extension of $K$.
 ]
@@ -237,8 +239,10 @@
 
 == Explicit examples of simple extensions
 
-- Let $r in K^times$ non-square in $K$, $char(K) != 2$, then $x^2 - r$ irreducible in $K[x]$. E.g. for $K = QQ(t)$, $x^2 - t in K[x]$ is irreducible. Then $K\(sqrt(t)\) = QQ\(sqrt(t)\) tilde.equiv K[x] \/ ideal(x^2 - t)$.
-- Define $FF_9 = FF_3 [x] \/ ideal(x^2 - 2) tilde.equiv FF_3 (theta) = {a + b theta: a, b in FF_3}$ for $theta$ a root of $x^2 - 2$.
+#example[
+    - Let $r in K^times$ non-square in $K$, $char(K) != 2$, then $x^2 - r$ irreducible in $K[x]$. E.g. for $K = QQ(t)$, $x^2 - t in K[x]$ is irreducible. Then $K\(sqrt(t)\) = QQ\(sqrt(t)\) tilde.equiv K[x] \/ ideal(x^2 - t)$.
+    - Define $FF_9 = FF_3 [x] \/ ideal(x^2 - 2) tilde.equiv FF_3 (theta) = {a + b theta: a, b in FF_3}$ for $theta$ a root of $x^2 - 2$.
+]
 #proposition[
     Let $K(theta)\/K$ where $theta$ has minimal polynomial $m(x) in K[x]$ of degree $n$. Then $ K[x] \/ ideal(m(x)) tilde.equiv K(theta) = {c_0 + c_1 theta + dots.h.c + c_(n - 1) theta^(n - 1): c_i in K} $ and its elements are written uniquely: $K(theta)$ is vector space over $K$ of dimension $n$ with basis ${1, theta, ..., theta^(n - 1)}$.
 ]
@@ -259,10 +263,10 @@
     $L\/K$ is *algebraic extension* if every element in $L$ is algebraic over $K$.
 ]
 #proposition[
-    Let $[L: K] < oo$, then $L\/K$ is algebraic extension and $L = K(alpha_1, ..., alpha_n)$ for some $alpha_1, ..., alpha_n in L$.
+    Let $[L: K] < oo$, then $L\/K$ is algebraic extension and $L = K(alpha_1, ..., alpha_n)$ for some $alpha_1, ..., alpha_n in L$. The converse also holds.
 ]
 #theorem(name: "Tower law")[
-    Let $K subset.eq M subset.eq L$ *tower* of field extensions. Then
+    Let $K subset.eq M subset.eq L$ tower of field extensions. Then
   - $[L: K] < oo <==> [L: M] < oo and [M: K] < oo$.
   - $[L: K] = [L: M] [M: K]$.
 ]
@@ -372,11 +376,16 @@
 #definition[
     Let $f(x) = sum_(i = 0)^n a_i x^i in K[x]$. *Formal derivative* of $f(x)$ is $ D f(x) = D(f) := sum_(i = 1)^n i a_i x^(i - 1) in K[x] $
 ]
-- Formal derivative satisfies: $ D(f + g) = D(f) + D(g), quad D(f g) = f dot.op D(g) + D(f) dot.op g, quad forall a in K, D(a) = 0 $ Also $deg(D(f)) < deg(f)$. But if $char(K) = p$, then $D(x^p) = p x^(p - 1) = 0$ so it is not always true that $deg(D(f)) = deg(f) - 1$.
+#note[
+    Formal derivative satisfies: $ D(f + g) = D(f) + D(g), quad D(f g) = f dot.op D(g) + D(f) dot.op g, quad forall a in K, D(a) = 0 $ Also $deg(D(f)) < deg(f)$. But if $char(K) = p$, then $D(x^p) = p x^(p - 1) = 0$ so it is not always true that $deg(D(f)) = deg(f) - 1$.
+]
+#note[
+    If $f(x)$ has a repeated root $alpha$, then $D f(alpha) = 0$.
+]
 #theorem(name: "sufficient conditions for separability")[
     Finite extension $L\/K$ is separable if any of the following hold:
     - $char(K) = 0$,
-    - $char(K) = p$ and $K = {b^p: b in K}$ for prime $p$,
+    - $char(K) = p$ and $K = {b^p: b in K} = K^p$ for prime $p$,
     - $char(K) = p$ and $p divides.not [L: K]$
 ]
 #definition[
@@ -414,6 +423,9 @@
     - $L^(Gal(L\/K)) = K$.
     - If $L^G = K$ for some group $G$ of $K$-automorphisms of $L$, then $G = Gal(L\/K)$.
 ]
+#note[
+    Let $sigma in Gal(L\/K)$. If $alpha in L$ has minimal polynomial $f(x) in K[x]$ over $K$, then $f(alpha) = 0$, and $ f(sigma(alpha)) = sigma(f(alpha)) $ by properties of field homomorphisms. Hence $sigma(alpha)$ is also a root of $f(x)$ for any $sigma in Gal(L\/K)$, i.e. $sigma$ permutes the roots of $f(x)$.
+]
 #remark[
     If $L\/K$ is Galois and $alpha in L$ but $alpha in.not K$, then there exists an automorphism $sigma in Gal(L\/K)$ such that $sigma(alpha) != alpha$.
 ]
@@ -431,7 +443,7 @@
     $Gal(L\/K)$ acts on $cal(F)$: given $sigma in Gal(L\/K)$ and $K subset.eq M subset.eq L$, consider $sigma(M) = {sigma(alpha): alpha in M}$ which is a subfield of $L$ and contains $K$, since $sigma$ fixes elements of $K$. Given another automorphism $tau: L -> L$, $ tau in Gal(L\/sigma(M)) & <==> forall alpha in M, tau(sigma(alpha)) = sigma(alpha) \ & <==> forall alpha in M, sigma^(-1) (tau (sigma(alpha))) = alpha \ & <==> sigma^(-1) tau sigma in Gal(L\/M) \ & <==> tau in sigma Gal(L\/M) sigma^(-1) $ Hence $sigma Gal(L\/M) sigma^(-1)$ and $Gal(L\/M)$ are conjugate subgroups of $Gal(L\/K)$. Now $ [M: K] = ([L: K]) / ([L: M]) = abs(Gal(L\/K)) / abs(Gal(L\/M)) $
 ]
 #theorem(name: "Fundamental theorem of Galois theory - Theorem B")[
-    For finite Galois extension $L\/K$, $G = Gal(L\/K)$ and $K subset.eq M subset.eq L$. Then the following are equivalent:
+    Let $L\/K$ be finite Galois extension, $G = Gal(L\/K)$ and $K subset.eq M subset.eq L$. Then the following are equivalent:
     - $M\/K$ is Galois.
     - $forall sigma in G, quad sigma(M) = M$.
     - $H = Gal(L\/M)$ is normal subgroup of $G = Gal(L\/K)$.
@@ -446,7 +458,7 @@
 == Computations with Galois groups
 
 #example(name: "quadratic extension")[
-    $QQ\(sqrt(2)\)\/QQ$ is normal (since degree is $2$) and separable (since characteristic is zero). Any element of $phi in G = Gal\(QQ\(sqrt(2)\)\/Q\)$ is determined by the image of $sqrt(2)$. But $phi\(sqrt(2)\)^2 = phi(2) = 2$ so $phi\(sqrt(2)\) = plus.minus sqrt(2)$. This gives two automorphisms $id\(sqrt(2)\) = sqrt(2)$ and $sigma\(sqrt(2)\) = -sqrt(2)$. So $G = {id, sigma} = ideal(sigma) tilde.equiv ZZ\/2$. Subgroup ${id}$ corresponds to $QQ\(sqrt(2)\)$, $G$ corresponds to $QQ$.
+    $QQ\(sqrt(2)\)\/QQ$ is normal (since degree is $2$) and separable (since characteristic is zero). Any element of $phi in G = Gal\(QQ\(sqrt(2)\)\/QQ\)$ is determined by the image of $sqrt(2)$. But $phi\(sqrt(2)\)^2 = phi(2) = 2$ so $phi\(sqrt(2)\) = plus.minus sqrt(2)$. This gives two automorphisms $id\(sqrt(2)\) = sqrt(2)$ and $sigma\(sqrt(2)\) = -sqrt(2)$. So $G = {id, sigma} = ideal(sigma) tilde.equiv ZZ\/2$. Subgroup ${id}$ corresponds to $QQ\(sqrt(2)\)$, $G$ corresponds to $QQ$.
 ]
 #example(name: "biquadratic extension")[
     $L = QQ\(sqrt(2), sqrt(3)\)$ over $QQ$ is normal (as splitting field of $(x^2 - 2)(x^2 - 3)$ over $QQ$) and separable (as $char(QQ) = 0$), so is Galois extension. Let $sigma$ be given as before.
@@ -502,7 +514,7 @@
     - If $sigma\(cbrt(3)\) = omega^2 cbrt(3)$, $QQ\(cbrt(3\/4)\) = QQ\(cbrt(6)\) subset.eq QQ(omega)$: contradiction.
 ]
 #remark[
-    In the above example, $N = QQ(theta_1, theta_2, theta_3) = QQ\(cbrt(2), omega\)$ where $theta_i$ are the roots of $x^3 - 2$. Plotting this roots on Argand diagram gives the symmetry group $S_3 tilde.equiv D_3$ of an equilateral triangle. $tau$ reflects the $theta_i$ (complex conjugation), $sigma$ rotates the roots (but *doesn't* rotate all of $N$, as it fixes $QQ$). For $g in G$, $g(theta_j) = theta_(pi(j))$ where $pi$ is permutation of ${1, 2, 3}$. So there is a group homomorphism $phi: G -> S_3$, $phi(g) = pi$. $ker(phi) = {id}$, so $phi$ is injective and also surjective, since $|G| = |S_3| = 6$, so $phi$ is isomorphism.
+    In the above example, $N = QQ(theta_1, theta_2, theta_3) = QQ\(cbrt(2), omega\)$ where $theta_i$ are the roots of $x^3 - 2$. Plotting these roots on Argand diagram gives the symmetry group $S_3 tilde.equiv D_3$ of an equilateral triangle. $tau$ reflects the $theta_i$ (complex conjugation), $sigma$ rotates the roots (but *doesn't* rotate all of $N$, as it fixes $QQ$). For $g in G$, $g(theta_j) = theta_(pi(j))$ where $pi$ is permutation of ${1, 2, 3}$. So there is a group homomorphism $phi: G -> S_3$, $phi(g) = pi$. $ker(phi) = {id}$, so $phi$ is injective and also surjective, since $|G| = |S_3| = 6$, so $phi$ is isomorphism.
 ]
 #definition[
     For $f(x) in K[x]$, $deg(f) = n >= 1$, with $n$ distinct roots, the *Galois group* of $f(x)$, $G_f$, is Galois group of splitting field of $f(x)$ over $K$ (provided it is separable).
@@ -532,9 +544,6 @@
 == Roots of unity
 
 #definition[
-    If $L\/K$ is Galois, $Gal(L\/K) tilde.equiv ZZ\/n$, then $L$ is *cyclic extension* of $K$ of degree $n$.
-]
-#definition[
     $zeta in K^*$ is *$n$-th primitive root of unity* if $zeta^n = 1$ and $forall 0 < m < n$, $zeta^m != 1$, i.e. order of $zeta$ in $K^*$ is $n$.
 ]
 #example[
@@ -556,6 +565,9 @@
 ]
 #theorem[
     Let $K$ field, $H$ finite subgroup of $K^*$, then $H$ is cyclic.
+]
+#remark[
+    This implies that any finite field $FF_q$ can be written $FF_q = FF_(p^n) = FF_p (alpha)$ where $alpha$ is generator of $FF_q^times$.
 ]
 #corollary[
     Let $K$ field, $n in NN$ be largest such that $K$ contains primitive $n$-th root of unity $zeta$. Then $mu(K)$ is cyclic subgroup in $K^*$ generated by $zeta$.
@@ -604,6 +616,11 @@
 #theorem[
     $Gal(QQ\(zeta_n\)\/QQ) tilde.equiv (ZZ\/n)^times$.
 ]
+#remark[
+    To compute $(ZZ\/n)^times$, note that for $m, n$ coprime, $(ZZ\/m n)^times tilde.equiv (ZZ\/m)^times times (ZZ\/n)^times$ and
+    - If $p != 2$ prime, then $(ZZ\/p^r)^times$ is cyclic of order $phi(p^r)$.
+    - $(ZZ\/4)^times tilde.equiv ZZ\/2$ and for $r >= 3$, $(ZZ\/2^r)^times tilde.equiv ZZ\/2 times ZZ\/2^(r - 2)$.
+]
 #corollary[
     $Gal(QQ\(zeta_n\)\/QQ)$ is abelian so every subgroup is normal, so any subfield of $QQ\(zeta_n\)$ is Galois over $QQ$.
 ]
@@ -611,16 +628,15 @@
     For $p$ prime, $G = Gal(QQ\(zeta_p\)\/QQ) tilde.equiv (ZZ\/p)^times tilde.equiv ZZ\/(p - 1)$. In particular, for $d | (p - 1)$, $QQ\(zeta_p\)$ contains exactly one subfield of degree $d$ and there are no other subfields.
 ]
 #remark[
-    For $d = 2$ in above corollary, $QQ\(zeta_p\)$ contains unique quadratic subfield $QQ\(sqrt(D_p)\)$. $D_p = p$ if $p equiv 1 mod 4$ and $D_p = -p$ if $p equiv 3 mod 4$.
+    For $d = 2$ in above corollary, $QQ\(zeta_p\)$ contains unique quadratic subfield $QQ\(sqrt(D_p)\)$, where $D_p = (-1)^((p - 1)\/2) p$
 ]
 #example[
     $Gal(QQ\(zeta_n\)\/QQ)$ not always cyclic, e.g. $Gal(QQ(zeta_8)\/QQ) tilde.equiv ZZ\/2 times ZZ\/2$.
 ]
 #proposition[
     - If $n$ odd, $mu(QQ\(zeta_n\))$ is cyclic of order $2n$ and is generated by $-zeta_n$.
-    - If $n$ even, $mu(QQ\(zeta_n\))$ is of order $n$ and is generated by $zeta_n$.
-    - If $gcd(m, n) = 1$, then $QQ(zeta_m, zeta_n) = QQ(zeta_(m n))$.
-    - $forall m, n in NN$, $QQ(zeta_m, zeta_n) = QQ(zeta_("lcm"(m, n)))$
+    - If $n$ even, $mu(QQ\(zeta_n\))$ is cyclic of order $n$ and is generated by $zeta_n$.
+    - If $gcd(m, n) = d$, then $QQ(zeta_m, zeta_n) = QQ(zeta_(m n \/ d))$.
 ]
 
 == Special properties of $QQ\(zeta_p\)$, where $p > 2$ is prime
@@ -648,9 +664,6 @@
 
 == Cyclic extensions of degree $2$
 
-#definition[
-    $L\/K$ is *cyclic of degree 2* if it is Galois and $Gal(L\/K) tilde.equiv ZZ\/2$.
-]
 #example[
     Let $L\/K$ cyclic of degree $2$, so $Gal(L\/K) = {e, tau}$, $tau^2 = e$. Let $theta in L - K$, then $tau(theta) != theta$ (as otherwise $theta in L^ideal(tau) = K$). Let $theta_1 = tau(theta) - theta$, so $tau(theta_1) = tau^2 (theta) - tau(theta) = -theta_1$. If $char(K) != 2$, then $theta_1 != -theta_1$ and so $theta_1 in.not K$, $L = K(theta_1)$. $theta_1$ is "better" than $theta$, since $tau(theta_1) = -theta_1$. Now if $a = theta_1^2$, then $tau(a) = a$, so $L = K\(sqrt(a)\)$.
 ]
@@ -682,10 +695,10 @@
     If $zeta_p in K$, $a in K^times - K^times^p$, then $K(root(p, a))\/K$ is cyclic of degree $p$. In particular, $x^p - a in K[x]$ is irreducible.
 ]
 #theorem[
-    Let $K$ contain $n$-th primitive root of unity, $L\/K$ is cyclic extension of degree $n$. Then $ exists a in K^times: L = K\(root(n, a)\) $ Such an $a$ is given by $theta_(b_0)^n$ for some $b_0 in L$, where $ theta_b = b + zeta_n^(-1) sigma(b) + dots.h.c + zeta_n^(-(n - 1)) sigma^(n - 1)(b) $ is *Lagrange resolvent* for $b$, i.e. $L = K(theta_b)$.
+    Let $K$ contain primitive $n$-th root of unity $zeta_n$, $L\/K$ is cyclic extension of degree $n$, $Gal(L\/K) = ideal(sigma)$. Then $ exists a in K^times: L = K\(root(n, a)\) $ Such an $a$ is given by $theta_b^n$ for some $b in L$, where $ theta_b = b + zeta_n^(-1) sigma(b) + dots.h.c + zeta_n^(-(n - 1)) sigma^(n - 1)(b) $ is *Lagrange resolvent* for $b$, i.e. $L = K(theta_b)$.
 ]<lagrange-resolvent>
 #lemma(name: "Artin's lemma")[
-    There exists $b_0 in L$ such that $theta_(b_0) != 0$.
+    There exists $b in L$ such that $theta_b != 0$.
 ]
 
 = Finite fields
@@ -731,9 +744,17 @@
     To use above theorem, note that $FF_p (alpha) != FF_(p^m)$ iff $alpha$ belongs to proper subfield of $FF_(p^m)$.
 ]
 #example[
+     - If $m$ is prime, then $FF_(p^m)$ has only one proper subfield $FF_p$, so $m N_p (m) = |FF_(p^m)| - |FF_p| = p^m - p$.
+     - The proper subfields of $FF_(p^4)$ are $FF_p$ and $FF_(p^2)$, but $FF_p subset FF_(p^2)$, so $4 N_p (4) = |FF_(p^4)| - |FF_(p^2)|$.
+     - $FF_p (alpha) != FF_(p^6)$ iff $alpha in FF_(p^3) union FF_(p^2)$. Since $FF_(p^3) sect FF_(p^2) = FF_p$, we have $6 N_p (6) = |FF_(p^6)| - |FF_(p^3)| - |FF_(p^2)| + |FF_p| = p^6 - p^3 - p^2 + p$.
+]
+#proposition[
+    We have $ p^n = sum_(m | n) m N_p (m) $ which we can use recursively to compute any $N_p (m)$.
+]
+#example[
     We construct $L = FF_(3^16)$ by finding irreducible polynomial of degree $16$ in $FF_3 [x]$.
     - $FF_9 = FF_3 (theta)$ where $theta^2 + 1 = 0$, $FF_9 = {a + b theta: a, b in FF_3}$. $K := FF_9$ contains primitive $8$-th root of unity since $FF_9^times tilde.equiv ZZ\/8$.
-    - $L\/K$ is cyclic extension of degree $8$, so by Kummer theory there exists $alpha in K$ such that $L = K\(root(8, alpha)\)$. $alpha$ must be element that is not square or fourth power in $FF_9$ and has order exactly $8$.
+    - $L\/K$ is cyclic extension of degree $8$, so by Kummer theory there exists $alpha in K$ such that $L = K\(root(8, alpha)\)$. $alpha$ must be element that is not square or fourth power in $FF_9$, so we can look for elements that have order $8$.
     - $alpha = theta$ doesn't work since $theta^2 = -1 ==> theta^4 = 1$. $alpha = 1 + theta$ works since $ (1 + theta)^2 = theta^2 + theta + 1 = -theta, quad (1 + theta)^4 = theta^2 = -1, (1 + theta)^8 = 1 $ so $alpha = 1 + theta$ has order $8$ in $FF_9$.
     - So $L = K\(root(8, a)\) = FF_9 \(root(8, 1 + theta)\) = FF_3 \(theta, root(8, 1 + theta)\) = FF_3 (eta)$ where $eta^8 = 1 + theta$. Now $[L: FF_3] = 16$ by tower law, so $L = FF_(3^16)$ by uniqueness of finite fields.
     - $eta^8 = 1 + theta ==> (eta^8 - 1)^2 = theta^2 = -1 ==> eta^16 + eta^8 + 2 = 0$ so $f(x) = x^16 + x^8 + 2 in FF_3 [x]$ is irreducible.
@@ -745,7 +766,7 @@
 
 #definition[
     Define action of $S_n$ on $L = k(x_1, ..., x_n)$ by $tau: x_j |-> x_(pi(j))$ where $pi in S_n$, which gives $k$-automorphism $
-        tau: L -> L, quad f(x_1, ..., x_n) / g(x_1, ..., x_n) |-> (f\(x_(pi(1)), ..., x_(pi_n)\)) / (g\(x_(pi(1)), ..., x_(pi(n))\))
+        tau: L -> L, quad f(x_1, ..., x_n) / g(x_1, ..., x_n) |-> (f\(x_(pi(1)), ..., x_(pi(n))\)) / (g\(x_(pi(1)), ..., x_(pi(n))\))
     $ The *symmetric functions* in $L$ are elements of fixed field $L^(S_n)$.
 ]
 #definition[
@@ -814,7 +835,7 @@
 ]
 #example(name: "Solving cubic")[
     - Let $char(k) != 2, 3$, let $ f(x) = x^3 - e_1 x^2 + e_2 x - e_3 = (x - x_1)(x - x_2)(x - x_3) in K[x] $ where $e_1 = x_1 + x_2 + x_3$, $e_2 = x_1 x_2 + x_1 x_3 + x_2 x_3$, $e_3 = x_1 x_2 x_3 in K = k(e_1, e_2, e_3) subset L = K(x_1, x_2, x_3)$.
-    - By @symmetric-polynomial-extension-galois-group-is-symmetric-group, $Gal(L\/K) = S_3$ with normal subgroup $A_3 tilde.equiv ZZ\/3$. We have tower $K subset M = L^(A_3) subset L$. So $Gal(L\/M) tilde.equiv A_3 tilde.equiv ZZ\/2$, $Gal(M\/K) tilde.equiv S_3 \/ A_3 tilde.equiv ZZ\/2$.
+    - By @symmetric-polynomial-extension-galois-group-is-symmetric-group, $Gal(L\/K) = S_3$ with normal subgroup $A_3 tilde.equiv ZZ\/3$. We have tower $K subset M = L^(A_3) subset L$. So $Gal(L\/M) tilde.equiv A_3 tilde.equiv ZZ\/3$, $Gal(M\/K) tilde.equiv S_3 \/ A_3 tilde.equiv ZZ\/2$.
     - Assume $k$ contains primitive $3$rd root of unity $omega$, so $w^2$ is also primitive $3$rd root of unity. Define $
         theta_1 & = 1/3(x_1 + omega x_2 + omega^2 x_3), quad t_1 = theta_1^3, \
         theta_2 & = 1/3(x_1 + omega^2 x_2 + omega x_3), quad t_2 = theta_2^3
@@ -912,15 +933,22 @@
 ]
 #example[
     - If $f(x) in K[x]$ but cubic resolvent $R(t) in K[t]$ is reducible, it is possible that all roots $t_1 = theta_1^2$, $t_2 = theta_2^2$, $t_3 = theta_3^2$ are in $K$. Then $M = K$ and $L = K(theta_1, theta_2, theta_3)$. Since $theta_1 theta_2 theta_3 in K$, $L\/K$ is obtained by adjoining only two square roots to $K$. Since $f(x)$ irreducible of degree $4$, we have $[L: K] >= 4$, hence only option is biquadratic extension $G_f = Gal(L\/K) = V_4 tilde.equiv ZZ\/2 times ZZ\/2$.
-    - If only one root $t_1, t_2, t_3$ is in $K$:
+    - If only one root $t_1, t_2, t_3$ is in $K$ (say it is $t_1$):
         - $M$ is splitting field of irreducible quadratic over $K$. Hence $M = K\(sqrt(d)\)$ for some $d in K^times - K^times^2$ and $Gal(M\/K) = {id, phi} tilde.equiv ZZ\/2$ where $phi\(sqrt(d)\) = -sqrt(d)$.
-        - We have $ K subset M = K\(sqrt(d)\) = K(alpha, overline(alpha)) subset L = M\(sqrt(alpha), sqrt(overline(alpha))\) $ where $alpha$ and $overline(alpha) = phi(alpha)$ are conjugate elements in $M^times - M^times^2$.
+        - We have $ K subset M = K\(sqrt(d)\) = K(alpha, overline(alpha)) subset L = M\(sqrt(alpha), sqrt(overline(alpha))\) $ where $alpha$ and $overline(alpha) = phi(alpha)$ are conjugate elements in $M^times - M^times^2$ (corresponding to $t_2$ and $t_3$).
         - In this case, $L\/K$ is normal extension, since if $alpha, overline(alpha)$ are roots of $x^2 + a x + b in K[x]$, then $plus.minus sqrt(alpha), plus.minus sqrt(overline(alpha))$ are roots of $x^4 + a x^2 + b in K[x]$. So $L$ is splitting field of $x^4 + a x^2 + b$ over $K$. For above tower of fields, we have Galois groups $ {id} subset Gal(L\/M) = H subset Gal(L\/K) = G $ and $G\/H tilde.equiv Gal(M\/K) = {id, phi} tilde.equiv ZZ\/2$.
 ]
 #theorem[
+    Let $M = K\(sqrt(d)\)$, $d in.not K^times^2$, $Gal(M\/K) = {id, phi}$. Let $alpha$, $overline(alpha) = phi(alpha) in M^times - M^times^2$, and let $L = M\(sqrt(alpha), sqrt(overline(alpha))\)$, $G = Gal(L\/K)$.
     - If $alpha overline(alpha) in K^times^2$, then $[L: K] = 4$ and $G tilde.equiv ZZ\/2 times ZZ\/2$.
     - If $alpha overline(alpha) in M^times^2 - K^times^2$ then $[L: K] = 4$ and $G tilde.equiv ZZ\/4$.
     - If $alpha overline(alpha) in.not M^times^2$, then $[L: K] = 8$ and $G tilde.equiv D_4$.
+]
+#note[
+    In the case that $C := alpha overline(alpha) in.not M^times^2$ and so $G tilde.equiv D_4$:
+    - We have $Gal(M\/K) = {id, phi}$, $phi: sqrt(d) |-> -sqrt(d)$.
+    - There are two lifts of $phi$ to $L$: $ tau: \(sqrt(d), sqrt(C), sqrt(alpha)\) & |-> \(-sqrt(d), sqrt(C), sqrt(overline(alpha))\), \ sigma: \(sqrt(d), sqrt(C), sqrt(alpha)\) & |-> \(-sqrt(d), -sqrt(C), sqrt(overline(alpha))) $ (so $tau\(sqrt(overline(alpha))\) = sqrt(alpha)$, $sigma\(sqrt(overline(alpha))\) = -sqrt(alpha)$)
+    - Then $G = Gal(L\/K) = ideal(tau, sigma | tau^2 = sigma^4 = e, tau sigma = sigma^3 tau)$.
 ]
 
 == A criterion for solvability by radicals
@@ -932,7 +960,7 @@
     $L\/K$ is *radical extension* if there is tower of field extensions $ K = K_0 subset dots.h.c subset K_m = L $ where for each $1 <= i <= m$, $K_i = K_(i - 1)(root(n_i, alpha_i))$ with $alpha_i in K_(i - 1)$ and $n_i in NN$.
 ]
 #example[
-    Let $alpha = cbrt(2 + root(5, 3 - sqrt(7)))$. We have $ K_0 = QQ subset K_1 = QQ\(sqrt(7)\) subset K_2 = K_1 (root(5, 3 - cbrt(7))) subset K_3 = K_2 (alpha) $
+    Let $alpha = cbrt(2 + root(5, 3 - sqrt(7)))$. We have $ K_0 = QQ subset K_1 = QQ\(sqrt(7)\) subset K_2 = K_1 (root(5, 3 - sqrt(7))) subset K_3 = K_2 (alpha) $
 ]
 #definition[
     $f(x) in K[x]$ is *solvable in radicals* over $K$ if there is a radical extension $L$ of $K$ containing at least one root of $f(x)$.
@@ -941,7 +969,7 @@
     If $f(x)$ irreducible and solvable in radicals, then all its roots belong to the radical field extension $L$.
 ]
 #definition[
-    A finite group $G$ is *solvable (soluble)* if there exists decreasing sequence of subgroups $ G = G_0 supset dots.c subset G_m = {id} $ where for each $1 <= i <= m$, $G_i$ is normal subgroup of $G_(i - 1)$ and $G_(i - 1)\/G_i$ is cyclic.
+    A finite group $G$ is *solvable (soluble)* if there exists decreasing sequence of subgroups $ G = G_0 supset dots.c supset G_m = {id} $ where for each $1 <= i <= m$, $G_i$ is normal subgroup of $G_(i - 1)$ and $G_(i - 1)\/G_i$ is cyclic.
 ]
 #lemma(name: "Properties of solvable groups")[
     - Every subgroup of finite solvable group is solvable.
@@ -970,11 +998,11 @@
     For $n >= 5$, $A_n$ and $S_n$ are not solvable.
 ]
 #proof[
-    - Assume $A_n$ solvable, so there is decreasing sequence of subgroups $ A_n = G_0 supset dots.c subset G_m = {id} $ with $G_i$ normal in $G_(i - 1)$, $G_(i - 1)\/G_i$ cyclic and so abelian. So we have canonical projection homomorphism $pi: A_n -> Q = A_n\/G_1$, $Q$ is abelian and non-trivial.
-    - Let $g = (i_1 i_2 i_3) in A_n$. There are $i_4, i_5 in [n]$ (since $n >= 5$) such that $i_1, i_2, i_3, i_4, i_5$ distinct. Let $g_1 = (i_2 i_2 i_4)$, $g_2 = (i_1 i_3 i_5)$, then $g_1 g_2 g_1^(-1) g_2^(-1) = g$.
+    - Assume $A_n$ solvable, so there is decreasing sequence of subgroups $ A_n = G_0 supset dots.c supset G_m = {id} $ with $G_i$ normal in $G_(i - 1)$, $G_(i - 1)\/G_i$ cyclic and so abelian. So we have canonical projection homomorphism $pi: A_n -> Q = A_n\/G_1$, $Q$ is abelian and non-trivial.
+    - Let $g = (i_1 i_2 i_3) in A_n$. There are $i_4, i_5 in [n]$ (since $n >= 5$) such that $i_1, i_2, i_3, i_4, i_5$ distinct. Let $g_1 = (i_1 i_2 i_4)$, $g_2 = (i_1 i_3 i_5)$, then $g_1 g_2 g_1^(-1) g_2^(-1) = g$.
     - Since $Q$ abelian, $pi(g) = pi(g_1) pi(g_2) pi(g_1)^(-1) pi(g_2)^(-1) = id$.
     - So $pi$ sends $3$-cycles to $id$, and $A_n$ is generated by $3$-cycles, so $pi(A_n) = {id}$ which is the trivial group: contradiction.
 ]
 #theorem[
-    Let $f(x) in Q[x]$ irreducible polynomial of degree $5$ with exactly $3$ real roots. Then $f(x)$ has Galois group $G_f tilde.equiv S_5$ (and so $f(x)$ is not solvable by radicals over $QQ$).
+    Let $f(x) in QQ[x]$ irreducible polynomial of degree $5$ with exactly $3$ real roots. Then $f(x)$ has Galois group $G_f tilde.equiv S_5$ (and so $f(x)$ is not solvable by radicals over $QQ$).
 ]

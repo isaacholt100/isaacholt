@@ -1,5 +1,5 @@
 #import "../../template.typ": *
-#show: doc => template(doc, hidden: ("proof",))
+#show: doc => template(doc, hidden: (), slides: true)
 
 // FIND: - \*(\w+)\*: ([\s\S]*?)(?=\n-|\n\n)\n
 // REPLACE: #$1[\n    $2\n]\n
@@ -39,7 +39,7 @@
     $a in RR$ is an *lower bound* of $E subset.eq RR$ if $forall x in E, x >= a$.
 ]
 #definition[
-    $c in RR$ is a *greatest lower bound (supremum)*, $c = inf(E)$, if $c >= a$ for every upper bound $a$.
+    $c in RR$ is a *greatest lower bound (infimum)*, $c = inf(E)$, if $c >= a$ for every lower bound $a$.
 ]
 #theorem(name: "Completeness axiom of the real numbers")[
     Every $E subset.eq RR$ with an upper bound has a least upper bound. Every $E subset.eq RR$ with a lower bound has a greatest lower bound.
@@ -74,12 +74,12 @@
 #proposition[
     Let $(x_n)$ bounded, $l in RR$. Then $l = limsup x_n$ iff both of the following hold:
     - $forall epsilon > 0, exists N in NN: forall n >= N, x_n < l + epsilon$.
-    - $forall epsilon > 0, forall N in NN: exists n in NN: x_n > l - epsilon$.
+    - $forall epsilon > 0, forall N in NN: exists n >= N: x_n > l - epsilon$.
 ]
 #proposition[
     Let $(x_n)$ bounded, $l in RR$. Then $l = liminf x_n$ iff both of the following hold:
     - $forall epsilon > 0, exists N in NN: forall n >= N, x_n > l - epsilon$.
-    - $forall epsilon > 0, forall N in NN: exists n in NN: x_n < l + epsilon$.
+    - $forall epsilon > 0, forall N in NN: exists n >= N: x_n < l + epsilon$.
 ]
 #theorem(name: "Bolzano-Weierstrass")[
     Every bounded sequence has a convergent subsequence.
@@ -124,7 +124,7 @@
     For any set $E$, $overline(E)$ is closed, i.e. $overline(E) = overline(overline(E))$.
 ]
 #proposition[
-    $E subset.eq RR$ is closed iff $R - E$ is open.
+    $E subset.eq RR$ is closed iff $RR - E$ is open.
 ]
 #proposition[
     Arbitrary intersections of closed sets are closed. Finite unions of closed sets are closed.
@@ -226,7 +226,7 @@
     If $(a_n)$ is a nonnegative sequence and $phi: NN -> NN$ is a bijection then $ sum_(n = 1)^infinity a_n = sum_(n = 1)^infinity a_(phi(n)) $
 ]
 #proposition[
-    If $\(a_(n, k)\)$ is a nonnegative sequence and $phi: NN -> NN times NN$ is a bijection then $ sum_(n = 1)^infinity sum_(n = 1)^infinity a_(n, k) = sum_(n = 1)^infinity a_(phi(n)) $
+    If $\(a_(n, k)\)$ is a nonnegative sequence and $phi: NN -> NN times NN$ is a bijection then $ sum_(n = 1)^infinity sum_(k = 1)^infinity a_(n, k) = sum_(n = 1)^infinity a_(phi(n)) $
 ]
 #definition[
     $f: X -> Y$ is *monotone* if $x >= y => f(x) >= f(y)$ or $x <= y => f(x) >= f(y)$.
@@ -283,7 +283,7 @@
     The *middle third Cantor set* is defined by:
     - Define $C_0 := [0, 1]$
     - Given $C_n = union_(i = 1)^(2^n) [a_i, b_i]$, $a_1 < b_1 < a_2 < dots.h.c < a_(2^n) < b_(2^n)$, with $|b_i - a_i| = 3^(-n)$, define $ C_(n + 1) := union_(i = 1)^(2^n) [a_i, a_i + 3^(-(n + 1))] union [b_i - 3^(-(n + 1)), b_i] $ which is a union of $2^(n + 1)$ disjoint intervals, with all differences in endpoints equalling $3^(-(n + 1))$.
-    - The *middle third Cantor set* is $ C := sect.big_(n in NN) C_n $ Observe that if $a$ is an endpoint of an interval in $C_n$, it is contained in $C$.
+    - The *middle third Cantor set* is $ C := sect.big_(n in NN_0) C_n $ Observe that if $a$ is an endpoint of an interval in $C_n$, it is contained in $C$.
 ]
 #proposition[
     The middle third Cantor set is closed, non-empty and equal to its set of accumulation points. Hence it is perfect and so uncountable.
@@ -360,7 +360,7 @@
     A union of a countable collection of Lebesgue measurable sets is also the union of a countable disjoint collection of Lebesgue measurable sets: if ${A_k}_(k in NN)$ is countable collection of Lebesgue measurable sets, then let $A_1 ' := A_1$ and for $k > 1$, define $ A_k ' := A_k - union_(i = 1)^(k - 1) A_i $ then ${A_k '}_(k in NN)$ is disjoint union of Lebesgue measurable sets and $union_(k in NN) A_k ' = union_(k in NN) A_k$.
 ]
 #proposition[
-    If $E$ is countable union of Lebesgue measurable sets, then $E$ is Lebesgue measurable. Also, if ${E_k}_(k in NN)$ is countable disjoint collection of Lebesgue measurable sets then $ mu^* (union.big_(k in NN) E_k) = sum_(k in NN) mu^* (E_k) $
+    If $E$ is countable union of Lebesgue measurable sets, then $E$ is Lebesgue measurable. Also, if ${E_k}_(k in NN)$ is countable disjoint collection of Lebesgue measurable sets then $ mu (union.big_(k in NN) E_k) = sum_(k in NN) mu (E_k) $
 ]
 
 == Abstract definition of a measure
@@ -369,7 +369,7 @@
     Let $X subset.eq RR$. Collection of subsets of $cal(F)$ of $X$ is *$sigma$-algebra* if
     - $nothing in cal(F)$
     - $E in cal(F) ==> E^c in cal(F)$
-    - $E_1, ..., E_n in cal(F) ==> union_(k in NN) E_k in cal(F)$.
+    - If $forall k in NN, E_k in cal(F)$ then $union_(k in NN) E_k in cal(F)$.
 ]
 #example[
     - Trivial examples are $cal(F) = {nothing, RR}$ and $cal(F) = cal(P)(RR)$.
@@ -466,7 +466,7 @@
     $f: E -> RR union {plus.minus oo}$ is *(Lebesgue) measurable* if it satisfies any of the above properties and if $E$ is Lebesgue measurable. $f$ being *Borel measurable* is defined similarly.
 ]
 #corollary[
-    If $f$ is measurable then for every $B in cal(B)(RR)$, $f^(-1)(B)$ is measurable. In particular, if $f$ is measurable, preimage of any interval is measurable.
+    If $f$ is Lebesgue measurable then for every $B in cal(B)(RR)$, $f^(-1)(B)$ is measurable. In particular, if $f$ is Lebesgue measurable, preimage of any interval is measurable.
 ]
 #definition[
     *Indicator function* on set $A$, $indicator(A): RR -> {0, 1}$, is $ indicator(A)(x) := cases(1 & "if" x in A, 0 & "if" x in.not A) $
@@ -556,7 +556,7 @@
     - Let $phi_2 = indicator([0, 2]) + indicator([1, 3]) = indicator(lr([0, 1) union lr((2, 3]))) + 2 indicator([1, 2])$ so $integral phi_2 = 4$.
     - Let $phi_3 = indicator(RR)$, then $integral phi_3 = 1 dot.op oo = oo$.
     - Let $phi_4 = bb(1)_((0, oo)) + (-1) indicator((-oo, 0))$. This can't be integrated.
-    - Let $phi_5 = indicator((-1, 0)) + (-1) indicator((0, 1))$.
+    - Let $phi_5 = indicator((-1, 0)) + (-1) indicator((0, 1))$, then $integral phi_5 = 0$.
 ]
 #lemma[
     Let $B_1, ..., B_m$ be measurable sets, $beta_1, ..., beta_m in RR - {0}$. Then $phi = sum_(i = 1)^m beta_i indicator(B_i)$ is simple measurable function. Also, $ mu(union.big_(i = 1)^m B_i) < oo ==> sum_(i = 1)^n alpha_i mu(A_i) = sum_(i = 1)^m beta_i mu(B_i) $ where $A_i$ in standard representation.
@@ -588,8 +588,8 @@
 #definition[
     Let $f in cal(M)^+$. *Integral of $f$ with respect to $mu$* is $ integral f := sup{integral phi: 0 <= phi <= f, phi "simple measurable"} in RR union {oo} $ For measurable set $E$, define $ integral_E f := integral indicator(E) f $
 ]
-#proposition[
-    Let $f, g$ measurable. If $g <= f$ then $integral g <= integral f$. Let $E, F$ measurable. If $E subset.eq F$ then $integral_E f <= integral_F f$.
+#proposition(name: "Monotonicity")[
+    Let $f, g$ measurable, nonnegative. If $g <= f$ then $integral g <= integral f$. Let $E, F$ measurable. If $E subset.eq F$ then $integral_E f <= integral_F f$.
 ]
 #theorem(name: "Monotone convergence theorem")[
     Let $(f_n)$ be sequence in $cal(M)^+$. If $(f_n)$ is increasing on measurable set $E$ and converges pointwise to $f$ on $E$ then $ integral_E f_n -> integral_E f quad "as" n -> oo $
@@ -652,7 +652,7 @@
     Bounded function $f$ is *Lebesgue integrable* if it satisfies either of the equivalences in the above proposition.
 ]
 #definition[
-    Let $P = {x_1, ..., x_n}$ partition of $[a, b]$, $f: [a, b] -> RR$ bounded. *Lower and upper Darboux sums* for $f$ with respect to $P$ are $ L(f, P) := sum_(i = 1)^n m_i (x_i - x_(i - 1)), quad U(f, P) := sum_(i = 1)^n M_i (x_i - x_(i - 1)) $ where $ m_i := inf{f(x): x in (x_(i - 1), x_i)}, quad M_i := sup{f(x): x in (x_(i - 1), x_i)} $ If $P subset.eq Q$ ($Q$ is a *refinement of $P$*), then $ L(f, P) <= L(f, Q) <= U(f, Q) <= U(f, P) $
+    Let $P = {x_0, ..., x_n}$ partition of $[a, b]$, $f: [a, b] -> RR$ bounded. *Lower and upper Darboux sums* for $f$ with respect to $P$ are $ L(f, P) := sum_(i = 1)^n m_i (x_i - x_(i - 1)), quad U(f, P) := sum_(i = 1)^n M_i (x_i - x_(i - 1)) $ where $ m_i := inf{f(x): x in (x_(i - 1), x_i)}, quad M_i := sup{f(x): x in (x_(i - 1), x_i)} $ If $P subset.eq Q$ ($Q$ is a *refinement of $P$*), then $ L(f, P) <= L(f, Q) <= U(f, Q) <= U(f, P) $
 ]
 #definition[
     *Lower and upper Riemann integrals* of $f$ over $[a, b]$ are $ underline(cal(I))_a^b (f) & := sup{L(f, P): P "partition of" [a, b]} \ overline(cal(I))_a^b (f) & := inf{U(f, P): P "partition of" [a, b]} $
@@ -827,7 +827,7 @@
     $RR$ is separable, since $QQ$ is countable and dense in $RR$.
 ]
 #theorem[
-    Let $E subset.eq RR$ measurable, $p in [1, oo)$. Then $\(L^p (E), norm(dot.op)_(L^p)\)$ is separable.
+    Let $E subset.eq RR$ measurable, $p in [1, oo)$. Then $\(L^p (E), norm(dot.op)_(L^p)\)$ is separable. In particular, step functions are dense in $L^p (E)$ for $p in [1, oo)$.
 ]
 #proposition[
     Let $epsilon > 0$, $f in L^p (E)$, $p in [1, oo)$. There exists continuous $g in L^p (E)$ such that $norm(f - g)_(L^p) < epsilon$.
@@ -866,7 +866,7 @@
     *Dual space* of $X$, $X^*$, is set of bounded linear functionals on $X$ with norm $norm(dot.op)_*$.
 ]
 #proposition[
-    Let $(X, norm(dot.op))$ be normed linear space, then dual space of $X$ is linear space.
+    Let $(X, norm(dot.op))$ be normed linear space, then dual space of $X$ is linear space with norm $norm(dot.op)_*$.
 ]
 #remark[
     Bounded linear functional is special case of *bounded linear transformation* between normed spaces. $T: X -> Y$ is bounded linear transformation if $T(a f + b g) = a T(f) + b T(g)$ and $exists M >= 0: norm(T(f))_Y <= M norm(f)_X$.
@@ -916,13 +916,16 @@
 #definition[
     Let $(X, ip(dot.op, dot.op)_X)$, $(Y, ip(dot.op, dot.op)_Y)$ be inner product spaces.
     - An inner product on $X times Y$ is $ ip((x_1, y_1), (x_2, y_2))_(X times Y) = ip(x_1, x_2)_X + ip(y_1, y_2)_Y $
-    - The associated norm on $X times Y$ is $ norm((x, y))_(X times Y) = sqrt(ip((x_1, y_1), (x_2, y_2))_(X times Y)) = sqrt(norm(x)_X^2 + norm(y)_Y^2) $
+    - The associated norm on $X times Y$ is $ norm((x, y))_(X times Y) = sqrt(ip((x, y), (x, y))_(X times Y)) = sqrt(norm(x)_X^2 + norm(y)_Y^2) $
 ]
 #theorem[
     Let $X$ inner product space, $x_n -> x$, $y_n -> y$ in $X$. Then $ip(x_n, y_n)_X -> ip(x, y)_X$.
 ]
 #proof[
     Use $|ip(x_n, y_n) - ip(x, y)| = |ip(x_n - x, y_n) + ip(x, y_n) - ip(x, y_n) + ip(x, y_n - y)|$ and Cauchy-Schwarz, reverse triangle inequality to show $norm(y_n) -> norm(y)$.
+]
+#proposition[
+    The norm and inner product are continuous.
 ]
 
 == Hilbert spaces
@@ -984,6 +987,8 @@
 ]
 #corollary[
     If $M$ closed subspace of Hilbert space $H$, then $H = M xor M^perp$.
+
+    For all $x in H$, $x$ can be written uniquely as $x = y + z$ where $y$ is best approximation to $x$ in $M$ and $z = x - y perp M$.
 ]
 #proof[
     By above theorem.
@@ -1132,7 +1137,7 @@
 ]
 #theorem[
     Let $f in L^1 ([-pi, pi])$ be $2pi$-periodic, assume $f$ differentiable at $b in [-pi, pi]$. Then $
-        f(b) = lim_(m -> oo) 1/(2pi) integral_(-pi)^pi f(y) D_m (b - y) dif y = lim_(m -> oo) (f * D_m)(b)
+        f(b) = lim_(m -> oo) 1/(2pi) integral_(-pi)^pi f(y) D_m (b - y) dif y = lim_(m -> oo) (f * D_m)(b) = lim_(m -> oo) S_m f (b)
     $
 ]
 #proof[
