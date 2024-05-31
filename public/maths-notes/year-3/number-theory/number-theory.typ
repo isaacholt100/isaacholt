@@ -1,5 +1,5 @@
 #import "../../template.typ": *
-#show: doc => template(doc, hidden: ("proof",))
+#show: doc => template(doc, hidden: ("proof",), slides: false)
 
 // FIND: - \*(\w+)\*: ([\s\S]*?)(?=\n-|\n\n)\n
 // REPLACE: #$1[\n    $2\n]\n
@@ -30,7 +30,7 @@
 ]
 #proposition[
     Let $R$ be PID and $a in R$ irreducible. Then $ideal(a) = ideal(a)_R$ is maximal.
-]
+]<ideals-generated-by-irreducible-elements-in-PIDs-are-maximal>
 #theorem[
     Let $F$ be field, $f(x) in F[x]$ irreducible. Then $F[x] \/ ideal(f(x))$ is a field and a vector space over $F$ with basis $B = \{1, overline(x), ..., overline(x)^(n - 1)\}$ where $n = deg(f)$. That is, every element in $F[x] \/ ideal(f(x))$ can be uniquely written as linear combination $ overline(a_0 + a_1 x + hdots + a_(n - 1) x^(n - 1)), quad a_i in F $
 ]
@@ -62,11 +62,11 @@
     Integral domain $R$ is *unique factorisation domain (UFD)* if every non-zero non-unit in $R$ can be written uniquely (up to order of factors and multiplication by units) as product of irreducible elements in $R$.
 ]
 #example[
-    Let $R = {f(x) in QQ[x]: f(0) in ZZ}$. Its units are $pm 1$. Any factorisation of $x in R$ must be of the form $f(x) g(x)$ where $deg f = 1, deg g = 0$, so $x = (a x + b)c$, $a in QQ$, $b, c in ZZ$. We have $b c = 0$ and $a c = 1$ hence $x = x / c dot.op c$. So $x$ irreducible if $c != pm 1$. Also, any factorisation of $x / c$ in $R$ is of the form $x / c = x / (c d) dot.op d$, $d in ZZ$, $d != 0$. Again, neither factor is a unit when $d != pm 1$. So $x = x / c dot.op c = x / (c d) dot.op c dot.op c = hdots$ can never be decomposed into irreducibles (the first factor is never irreducible).
+    Let $R = {f(x) in QQ[x]: f(0) in ZZ}$. Its units are $pm 1$. Any factorisation of $x in R$ must be of the form $f(x) g(x)$ where $deg f = 1, deg g = 0$, so $x = (a x + b)c$, $a in QQ$, $b, c in ZZ$. We have $b c = 0$ and $a c = 1$ hence $x = x / c dot.op c$. So $x$ is not irreducible if $c != pm 1$. Also, any factorisation of $x / c$ in $R$ is of the form $x / c = x / (c d) dot.op d$, $d in ZZ$, $d != 0$. Again, neither factor is a unit when $d != pm 1$. So $x = x / c dot.op c = x / (c d) dot.op d dot.op c = hdots$ can never be decomposed into irreducibles (the first factor is never irreducible).
 ]
 #lemma[
     Let $R$ be PID. Then every irreducible element is prime in $R$.
-]
+]<irreducible-elements-in-PIDs-are-prime>
 #theorem[
     Every PID is a UFD.
 ]
@@ -95,7 +95,7 @@
     $[CC: RR] = 2$ (a basis is ${1, i}$). $[RR: QQ]$ is not finite, due to the existence of transcendental numbers (if $alpha$ transcendental, then $\{1, alpha, alpha^2, ...\}$ is linearly independent).
 ]
 #definition[
-    Let $L \/ F$ field extension. $alpha in L$ is *algebraic* over $F$ if $ exists f(x) in F[x]: f(alpha) = 0 $ If all elements in $L$ are algebraic, then $L \/ F$ is *algebraic field extension*.
+    Let $L \/ F$ field extension. $alpha in L$ is *algebraic* over $F$ if $ exists 0 != f(x) in F[x]: f(alpha) = 0 $ If all elements in $L$ are algebraic, then $L \/ F$ is *algebraic field extension*.
 ]
 #example[
     $i in CC$ is algebraic over $RR$ since $i$ is root of $x^2 + 1$. $CC \/ RR$ is algebraic since $z = a + b i$ is root of $(x - z)(x - overline(z)) = x^2 - 2a x + a^2 + b^2$.
@@ -110,7 +110,6 @@
     $p_alpha (x)$ is unique and irreducible. Also, if $f(x) in F[x]$ is monic, irreducible and $f(alpha) = 0$, then $f = p_alpha$.
 ]
 #example[
-    
     - $p_(i, RR)(x) = p_(i, QQ)(x) = x^2 + 1$, $p_(i, QQ(i))(x) = x - i$.
     - Let $alpha = root(7, 5)$. $f(x) = x^7 - 5$ is minimal polynomial of $alpha$ over $QQ$ by above proposition, as it is irreducible by Eisenstein's criterion with $p = 5$.
     - Let $alpha = e^(2pi i\/p)$, $p$ prime. $alpha$ is algebraic as root of $x^p - 1$ which isn't irreducible as $x^p - 1 = (x - 1) Phi(x)$ where $Phi(x) = (x^(p - 1) + hdots + 1)$. $Phi(alpha) = 0$ since $alpha != 1$, $Phi(x)$ is monic and $Phi(x + 1) = ((x + 1)^p - 1)\/x$ irreducible by Eisenstein's criterion with $p = p$, hence $Phi(x)$ irreducible. So $p_alpha (x) = Phi(x)$.
@@ -166,13 +165,13 @@
     Let $L\/F$ finite field extension. $forall alpha, beta in L$,
   - $N_(L\/F)(alpha) = 0 <==> alpha = 0$.
   - $N_(L\/F)(alpha beta) = N_(L\/F)(alpha) N_(L\/F)(beta)$.
-  - $forall a in F, N_(L\/F)(a) = a^([L: F])$ and $tr_(L\/F)(a) = [L: F] alpha$.
+  - $forall a in F, N_(L\/F)(a) = a^([L: F])$ and $tr_(L\/F)(a) = [L: F] a$.
   - $forall a, b in F, tr_(L\/F)(a alpha + b beta) = a tr_(L\/F)(alpha) + b tr_(L\/F)(beta)$ (so $tr_(L\/F)$ is $F$-linear map).
 ]
 
 == Characteristic polynomials
 
-- Let $A in M_n (F)$, then characteristic polynomial is $chi_A (x) = det(x I - A) in F[x]$ and is monic, $deg(chi_A) = n$. If $chi_A (x) = x^n + sum_(i = 0)^(n = 1) c_i x^i$ then $det(A) = (-1)^n det(0 - A) = (-1)^n chi_A (0) = (-1)^n c_0$ and $tr(A) = -c_(n - 1)$, since if $alpha_1, ..., alpha_n$ are eigenvalues of $A$ (in some field extension of $F$), then $tr(A) = alpha_1 + hdots + alpha_n$, $chi_A (x) = (x - alpha_1) hdots (x - alpha_n) = x^n - (alpha_1 + hdots alpha_n) x^(n - 1) + hdots$.
+- Let $A in M_n (F)$, then characteristic polynomial is $chi_A (x) = det(x I - A) in F[x]$ and is monic, $deg(chi_A) = n$. If $chi_A (x) = x^n + sum_(i = 0)^(n - 1) c_i x^i$ then $det(A) = (-1)^n det(0 - A) = (-1)^n chi_A (0) = (-1)^n c_0$ and $tr(A) = -c_(n - 1)$, since if $alpha_1, ..., alpha_n$ are eigenvalues of $A$ (in some field extension of $F$), then $tr(A) = alpha_1 + hdots + alpha_n$, $chi_A (x) = (x - alpha_1) hdots (x - alpha_n) = x^n - (alpha_1 + hdots alpha_n) x^(n - 1) + hdots$.
 - For finite extension $L\/F$, $n = [L: F]$, $alpha in L$, *characteristic polynomial* $chi_alpha (x) = chi_(alpha, L\/F)(x)$ is characteristic polynomial of $T_alpha$. So $N_(L\/F)(alpha) = (-1)^n c_0$, $tr_(L\/F)(alpha) = -c_(n - 1)$. By the Cayley-Hamilton theorem, $chi_alpha (T_alpha) = 0$ so $T_(chi_alpha (alpha)) = chi_alpha (T_alpha) = 0$, where $chi_alpha (x) = x^n + c_(n - 1) x^(n - 1) + hdots + c_0$. Since $alpha -> T_alpha$ is injective, $chi_alpha (alpha) = 0$.
 #lemma[
     Let $L\/F$ finite extension, $alpha in L$ with $L = F(alpha)$. Then $chi_alpha (x) = p_alpha (x)$.
@@ -181,7 +180,7 @@
     Let $F subset.eq F(alpha) subset.eq L$, let $m = [L: F(alpha)]$. Then $chi_alpha (x) = p_alpha (x)^m$.
 ]
 #corollary[
-    Let $L\/F$, $alpha in L$ as above, $p_alpha (x) = x^d + a_(d - 1) x^(d - 1) + hdots + a_0$, $a_i in F$. Then $ N_(L\/F)(alpha) = (-1)^(m d) a_0^m, quad tr_(L\/F)(alpha) = -m a_(d - 1) $
+    Let $L\/F$, $alpha in L$, $m = [L: F(alpha)]$, $p_alpha (x) = x^d + a_(d - 1) x^(d - 1) + hdots + a_0$, $a_i in F$. Then $ N_(L\/F)(alpha) = (-1)^(m d) a_0^m, quad tr_(L\/F)(alpha) = -m a_(d - 1) $
 ]
 
 = Algebraic number fields and algebraic integers
@@ -235,8 +234,7 @@
     - There exists non-trivial finitely generated abelian additive subgroup $G subset CC$ such that $ alpha G subset.eq G "i.e." forall g in G, alpha g in G $ ($alpha g$ is complex multiplication).
 ]
 #remark[
-    
-    - For third statement, generally we have $ZZ[alpha] = {f(alpha: f(x) in ZZ[x])}$ and in this case, $ZZ[alpha] = {f(alpha): f(x) in ZZ[x], deg(f) < d}$.
+    - For third statement, generally we have $ZZ[alpha] = {f(alpha): f(x) in ZZ[x]}$ and in this case, $ZZ[alpha] = {f(alpha): f(x) in ZZ[x], deg(f) < d}$.
     - Fourth statement means that $ G = {a_1 gamma_1 + hdots + a_r gamma_r: a_i in ZZ} = gamma_1 ZZ + hdots + gamma_r ZZ = ideal(gamma_1, ..., gamma_r)_ZZ $ $G$ is typically $ZZ[alpha]$. E.g. if $alpha = sqrt(2)$, $ZZ\[sqrt(2)\]$ is generated by $1, sqrt(2)$ and $sqrt(2) dot.op ZZ\[sqrt(2)\] subset.eq ZZ\[sqrt(2)\]$.
 ]
 #proposition[
@@ -396,14 +394,14 @@ $
     
     - Let $K = QQ\(sqrt(d)\)$, $d$ square-free, $theta = (1 + sqrt(d))/2$, then $ Delta_K ((1, theta)) = ((1 + sqrt(d))/2 - (1 - sqrt(d))/2)^2 = d $
     - Let $theta = sqrt(d)$, so $p_theta (x) = x^2 - d$, $p'_theta (x) = 2x$, so $ Delta_K (1, theta) = (-1)^binom(2, 2) N_K (2 theta) = -4 N_k (theta) = 4d $
-    - Let $theta = root(d, 3)$, so $p_theta (x) = x^3 - d$, $p'_theta (x) = 3x^2$ so $ Delta_K (1, theta, theta^2) = (-1)^binom(3, 2) N_K (3 theta^2) = -27 d^2 $
+    - Let $theta = root(3, d)$, so $p_theta (x) = x^3 - d$, $p'_theta (x) = 3x^2$ so $ Delta_K (1, theta, theta^2) = (-1)^binom(3, 2) N_K (3 theta^2) = -27 d^2 $
     - Let $theta$ be root of $p_theta (x) = x^3 - x + 2$, so $p'_theta (x) = 3x^2 - 1$. $ Delta_K (1, theta, theta^2) = (-1)^binom(3, 2) N_K (3 theta^2 - 1) $ Now $theta^3 = theta - 2$ so $ N_K (3 theta^2 - 1) = (N_K (2) N_K (theta - 3))/(N_K (theta)) = 8/2 N_K (3 - theta) = 4(3 - theta_1)(3 - theta_2)(3 - theta_3) = 4 p_theta (3) = 104 $ so $Delta_K (1, theta, theta^2) = -104$. Note: in general, this method doesn't work, and generally we have to compute matrix $T_theta$ and $det(f(T_theta))$. *As a generalisation*, $ N_(QQ(theta)) (a - b theta) = b^n p_theta (a\/b) $
 ]
 #lemma[
     
     - Roots $theta_1, ..., theta_n$ of $p_theta (x)$ are distinct.
-    - $forall f in QQ[x], tr_K (f(theta)) = sum_(i = 1)^n f(theta_i)$.
-    - $forall f in QQ[x], N_K (f(theta)) = product_(i = 1)^n f(theta_i)$.
+    - $forall f(x) in QQ[x], tr_K (f(theta)) = sum_(i = 1)^n f(theta_i)$.
+    - $forall f(x) in QQ[x], N_K (f(theta)) = product_(i = 1)^n f(theta_i)$.
 ]
 #proposition[
     Let $K = QQ(theta)$ number field. Then $Delta_K (gamma) != 0$ iff $gamma$ is $QQ$-basis of $K$.
@@ -460,7 +458,7 @@ $
 ]
 #example[
     Let $K = QQ(theta)$, $theta = root(3, 5)$. let $R = cal(O)_K$, $S = ZZ[theta]$. $Delta_K (S) = -3^3 dot.op 5^2$. If $p$ prime and $p | |R\/S|$, then $p in {3, 5}$ and there is $alpha = a + b theta + c theta^2$ such that $alpha\/p in R - S$, $|a|, |b|, |c| < p\/2$. Note $alpha != 0$, as otherwise $alpha in S$.
-    - If $5 | |R\/S|$, then $|a|, |b|, |c| in {0, 1, 2}$. Then $tr_(K\/QQ)(alpha\/5) = 3a\/5 in ZZ$ so $5 | a$ so $a = 0$. $theta alpha = c + (b theta^2)\/5 in cal(O)_K$ so $(b theta^2)\/5 in cal(O)_K$ so $ N_K ((b theta^2)\/5) = (N_K (b) N_K (theta)^2)/(N_K (5)) = b^3 / 5 in ZZ $ so $5 | b$, so $b = 0$. Finally, $ N_K (alpha/5) = N_K ((c theta^2)/5) = (c^3 (-5)^2)/5^3 = c^3/5 in ZZ ==> c = 0 $ Contradiction.
+    - If $5 | |R\/S|$, then $|a|, |b|, |c| in {0, 1, 2}$. Then $tr_(K\/QQ)(alpha\/5) = 3a\/5 in ZZ$ so $5 | a$ so $a = 0$. $theta alpha \/ 5 = c + (b theta^2)\/5 in cal(O)_K$ so $(b theta^2)\/5 in cal(O)_K$ so $ N_K ((b theta^2)\/5) = (N_K (b) N_K (theta)^2)/(N_K (5)) = b^3 / 5 in ZZ $ so $5 | b$, so $b = 0$. Finally, $ N_K (alpha/5) = N_K ((c theta^2)/5) = (c^3 (-5)^2)/5^3 = c^3/5 in ZZ ==> c = 0 $ Contradiction.
     - If $3 | |R\/S|$, then $|a|, |b|, |c| in {0, 1}$ and can assume $a >= 0$ (by possibly multiplying by $-1$). Then $ N_K ((a + b theta + c theta^2) / 3) in ZZ ==> a^3 + 5b^3 + 25c^3 - 15a b c equiv 0 (mod 3^3) $ If $a = 0$, then $5b^3 + 25c^3 equiv 2b + c equiv 0 (mod 3)$ (as $b, c in {0, 1, -1}$), so if $b = 0$, then $c equiv 0 (mod 3) ==> c = 0$: contradiction. So $b = 1$ (by possibly multiplying by $-1$) hence $c = 1$. But then $ N_K (alpha\/3) = N_K ((theta + theta^2)/3) = (N_K (theta) N_K (1 + theta))/3^3 = (5 dot.op 6)/27 in.not ZZ $ Contradiction. If $a = 1$, then $ 1 + 5b^3 + 25c^3 equiv 1 + 2b + c equiv 0 (mod 3) $ which also leads to a contradiction.
     - So $5 divides.not |R\/S|$, $3 divides.not |R\/S|$, so $|R\/S| = 1$, so $ZZ[theta] = cal(O)_K$.
 ]
@@ -631,6 +629,9 @@ $
     - Deduce that $N(P_i) = p^(deg(f_i))$.
     - Use that $P_1^(e_1) dots.h.c P_r^(e_r) subset.eq ideal(p, f_1 (theta)^(e_1) dots.h.c f_r (theta)^(e_r))$ and $f_1 (theta)^(e_1) dots.h.c f_r (theta)^(e_r) equiv p_theta (theta) mod p$ and $N(P_1^(e_1) dots.h.c P_r^(e_r)) = N(p)$ to show $P_1^(e_1) dots.h.c P_r^(e_r) = ideal(p)_(cal(O)_K)$.
 ]
+#theorem(name: "Strong Kummer-Dedekind")[
+    Let $K = QQ(theta)$, $theta in R = cal(O)_K$, $p divides.not |R\/ZZ[theta]|$ then $ideal(p)_R$ can be factorised by considering $overline(p_theta)(x) in FF_p [x]$ as in usual Kummer-Dedekind when $|R\/ZZ[theta]| = 1$.
+]
 #example[
     Let $K = QQ\(sqrt(6)\)$, so $cal(O)_K = ZZ\[sqrt(6)\]$. $p_theta (x) = x^2 - 6$ factorises modulo small primes as: $
         overline(x^2 - 6) & = x^2 quad & "in" FF_2 [x] \
@@ -678,7 +679,7 @@ $
 ]
 #proposition[
     - $[I] = e$ iff $I in cal(P)(R)$ iff $I$ is principal.
-    - $[I] = [J]$ iff $I = ideal(lambda)_R J$ for some $lambda in K^times*$ iff $alpha I = beta J$ for some $alpha, beta in R - {0}$.
+    - $[I] = [J]$ iff $I = ideal(lambda)_R J$ for some $lambda in K^times$ iff $alpha I = beta J$ for some $alpha, beta in R - {0}$.
     - $[I] dot.op [J] = I J dot.op cal(P)(R) = [I J]$.
     - $[I]^(-1) = [I^(-1)]$.
 ]
@@ -708,7 +709,7 @@ $
     - If $P_2$ were principal, then $P_2 = ideal(a + b sqrt(-29))$ but $N(P_2) = 2 = a^2 + 29b^2$: contradiction. So $[P_2] != e$ but $[P_2]^2 = e$ as $P_2^2 = ideal(2)_R$ is principal.
     - Similarly, $P_5$ is not principal, but also $P_5^2$ is not principal, as if it was, then $P_5^2 = ideal(a + b sqrt(-29))$ so $25 = a^2 + 29b^2 ==> a = plus.minus 5$, but then $P_5^2 = ideal(5) = P_5 overline(P_5)$, but $P_5 != overline(P_5)$.
     - But $N\(3 + 2 sqrt(-29)\) = 5^3$, so $ideal(3 + 2 sqrt(-29))_R | (5^3)_R$ by @ideal-contains-its-norm, so $ideal(3 + 2 sqrt(-29)) = P_5^a overline(P_5)^(3 - a)$; but $5 divides.not 3 + 2 sqrt(-29)$, so we can't have $P_5 overline(P_5) | ideal(3 + 2 sqrt(-29))$. So $ideal(3 + 2 sqrt(-29)) = P_5^3$ or $overline(P_5)^3$, and $3 + 2 sqrt(-29) in P_5$ so $ideal(3 + 2 sqrt(-29)) = P_5^3$, hence $[P_5]^3 = e$, so $[P_5]$ has order $3$.
-    - Again, $[P_3] != e$. As $N\(1 + sqrt(-29)\) = 30$, $ideal(1 + sqrt(-29)) | ideal(30) = ideal(2) ideal(3) ideal(5)$, so we see $ideal(1 + sqrt(-29)) = P_2 overline(P_3)overline(P_5)$, hence $e = [P_2] [P_3]^(-1) [P_5]^(-1)]$ and so $[P_3] = [P_2] [P_5]^(-1)$. Since product of two elements of coprime orders $m, n$ in abelian group has order $m n$, we have $ "ord"([P_3]) = "ord"([P_2] \[overline(P_5)\]) = 2 dot.op 3 = 6 $ Also, $[P_3]^2 = \[overline(P_5)\]^2 = [P_5]$ so $[P_3]^3 = [P_2]$ and $[P_3]^4 = [P_5]^(-1)$. Hence $Cl(R)$ contains a cyclic subgroup of order $6$ generated by $[P_3]$.
+    - Again, $[P_3] != e$. As $N\(1 + sqrt(-29)\) = 30$, $ideal(1 + sqrt(-29)) | ideal(30) = ideal(2) ideal(3) ideal(5)$, so we see $ideal(1 + sqrt(-29)) = P_2 overline(P_3)overline(P_5)$, hence $e = [P_2] [P_3]^(-1) [P_5]^(-1)$ and so $[P_3] = [P_2] [P_5]^(-1)$. Since product of two elements of coprime orders $m, n$ in abelian group has order $m n$, we have $ "ord"([P_3]) = "ord"([P_2] \[overline(P_5)\]) = 2 dot.op 3 = 6 $ Also, $[P_3]^2 = \[overline(P_5)\]^2 = [P_5]$ so $[P_3]^3 = [P_2]$ and $[P_3]^4 = [P_5]^(-1)$. Hence $Cl(R)$ contains a cyclic subgroup of order $6$ generated by $[P_3]$.
 ]
 
 == Finiteness of the class group
@@ -754,7 +755,7 @@ $
     Let $K = QQ\(sqrt(-19)\)$, so $R = cal(O)_K = ZZ\[ (1 + sqrt(-19))/2\]$, $Delta_K = -19$, then $ B_K = (4/pi) (2!)/(2^2) sqrt(19) = (2 sqrt(19))/pi < 3 $ So every element in $Cl(cal(O)_K)$ is represented by an ideal of norm $1$ or $2$. Let $N(I) = 2$, then $I$ is prime and $I | ideal(2)_R$. But minimal polynomial of $(1 + sqrt(-19))/2$ is $x^2 - x + 5$ and $x^2 - x + 4 = x^2 + x + 1 quad "irreducible in" FF_2 [x]$ so $2$ is inert in $R$, hence $I = ideal(2)_R$ and $N(ideal(2)_R) = 4$: contradiction. So $Cl(cal(O)_K) = {e}$, i.e. $cal(O)_K$ is PID, and in particular a UFD. Note that it is not an ED though.
 ]
 #example[
-    Let $K = QQ\(sqrt(-14)\)$, so $R = cal(O)_K = ZZ\[sqrt(-14)\]$. $Delta_K = 4 dot.op -14 = -56$, so $ B_K = (4/pi)^1 (2!)/2^2 sqrt(56) = (4 sqrt(14))/pi < 5 $ In general, $Cl(cal(O)_K)$ is generated by prime ideals of norm $<= B_K$. By Kummer-Dedekind, $(2)_R = (2, sqrt(-14))^2 = P_2^2$ and $(3)_R = \(3, sqrt(-14) - 1\)\(3, sqrt(-14) + 1\)$. Hence if $N(I) = 4$, then $I | (2)_R^2 = P_2^4$ so $I = P_2^2 = (2)_R$. So as a set, $ Cl(R) = {e, [P_2], [P_3], [overline(P_3)] = [P_3]^(-1), [P_2^2] = e} $ The norm of a principal ideal is $N(ideal(a + b sqrt(-14))) = a^2 + 14b^2 != 2, 3, 6$ hence $P_2$, $P_3$, $overline(P_3)$, $P_2 P_3$, $P_2 overline(P_3)$ are not principal. We have $[P_2] [overline(P_3)] != e ==> [P_2] != [P_3]$, similarly $[P_2] != [overline(P_3)]$. We have $[P_3] != [overline(P_3)]$, since otherwise $[P_3]^2 = e$, so $P_3^2$ is principal and so $P_3^2 = ideal(3)$ but then $P_3 = overline(P_3)$. Thus $e, [P_2], [P_3], [overline(P_3)]$ are distinct, so $|Cl(R)| = 4$, so $Cl(R) tilde.equiv ZZ\/2 times ZZ\/2$ or $ZZ\/4$. But $[P_3]^2 != e$ so $[P_3]$ has order $4$, hence $Cl(R) tilde.equiv ZZ\/4$ is generated by $[P_3]$. Note $[overline(P_3)]^2$ and $[P_2]$ have order $2$, so $[overline(P_3)]^2 = [P_2]$, so $[P_2 P_3^2] = e$, hence $P_2 P_3^2$ is principal and there exists element in $cal(O)_K$ of norm $2 dot.op 3^2 = 18$.
+    Let $K = QQ\(sqrt(-14)\)$, so $R = cal(O)_K = ZZ\[sqrt(-14)\]$. $Delta_K = 4 dot.op -14 = -56$, so $ B_K = (4/pi)^1 (2!)/2^2 sqrt(56) = (4 sqrt(14))/pi < 5 $ In general, $Cl(cal(O)_K)$ is generated by classes of prime ideals of norm $<= B_K$. By Kummer-Dedekind, $(2)_R = (2, sqrt(-14))^2 = P_2^2$ and $(3)_R = \(3, sqrt(-14) - 1\)\(3, sqrt(-14) + 1\)$. Hence if $N(I) = 4$, then $I | (2)_R^2 = P_2^4$ so $I = P_2^2 = (2)_R$. So as a set, $ Cl(R) = {e, [P_2], [P_3], [overline(P_3)] = [P_3]^(-1), [P_2^2] = e} $ The norm of a principal ideal is $N(ideal(a + b sqrt(-14))) = a^2 + 14b^2 != 2, 3, 6$ hence $P_2$, $P_3$, $overline(P_3)$, $P_2 P_3$, $P_2 overline(P_3)$ are not principal. We have $[P_2] [overline(P_3)] != e ==> [P_2] != [P_3]$, similarly $[P_2] != [overline(P_3)]$. We have $[P_3] != [overline(P_3)]$, since otherwise $[P_3]^2 = e$, so $P_3^2$ is principal and so $P_3^2 = ideal(3)$ but then $P_3 = overline(P_3)$. Thus $e, [P_2], [P_3], [overline(P_3)]$ are distinct, so $|Cl(R)| = 4$, so $Cl(R) tilde.equiv ZZ\/2 times ZZ\/2$ or $ZZ\/4$. But $[P_3]^2 != e$ so $[P_3]$ has order $4$, hence $Cl(R) tilde.equiv ZZ\/4$ is generated by $[P_3]$. Note $[overline(P_3)]^2$ and $[P_2]$ have order $2$, so $[overline(P_3)]^2 = [P_2]$, so $[P_2 P_3^2] = e$, hence $P_2 P_3^2$ is principal and there exists element in $cal(O)_K$ of norm $2 dot.op 3^2 = 18$.
 ]
 #example[
     Let $K = QQ\(sqrt(79)\)$. Prove that $Cl(R) tilde.equiv ZZ\/3$.
@@ -789,7 +790,7 @@ $
     - Similarly, since $N(ideal(10 + sqrt(79))) = 3 dot.op 7$, we have $ {[P_7], [overline(P_7)]} = {[P_3], [overline(P_3)]} $
     - Thus $Cl(R)$ is generated by $[P_3]$ and as a set, $Cl(R) = \{e, [P_3], [P_3]^(-1)\}$.
     - Since $N\(ideal(5 + sqrt(79))\) = 2 dot.op 27$, we have $ ideal(5 + sqrt(79)) = P_2 P_3^a overline(P_3)^(3 - a) quad "for some" a in {0, 1, 2, 3} $
-    - If $a in {1, 2}$, then $P_3 overline(P_3) = ideal(3)_R | ideal(5 + sqrt(79))$: contradiction, since $3 divides.not (5 + sqrt(79)$. So WLOG assume $a = 3$ (if $a = 0$, swap $P_3$ and $overline(P_3)$. So $ideal(5 + sqrt(79)) = P_2 P_3^3$, hence $e = [P_3]^3$, so $[P_3]$ has order $1$ or $3$.
+    - If $a in {1, 2}$, then $P_3 overline(P_3) = ideal(3)_R | ideal(5 + sqrt(79))$: contradiction, since $3 divides.not 5 + sqrt(79)$. So WLOG assume $a = 3$ (if $a = 0$, swap $P_3$ and $overline(P_3)$. So $ideal(5 + sqrt(79)) = P_2 P_3^3$, hence $e = [P_3]^3$, so $[P_3]$ has order $1$ or $3$.
     - Assume that $P_3 = ideal(alpha)_R$, then $ P_2 P_3^3 = ideal(9 + sqrt(79)) ideal(alpha^3) = ideal(5 + sqrt(79)) $ and so $ alpha^3 = (5 + sqrt(79))/(9 + sqrt(79)) u = (-17 + 2 sqrt(79)) u quad "for some" u in R^times $
     - For any $a in R^times$, $ideal(plus.minus a alpha)_R = ideal(alpha)_R$ and $(plus.minus a alpha)^3 = \(-17 + 2 sqrt(79)\) u (plus.minus a)^3$. So without changing $P_3$, we can rescale $alpha$ by a unit and so rescale $u$ by a unit cube.
     - The fundamental unit of $R$ (by trial and error) is $v = 80 + 9 sqrt(79)$. By @main-theorem-for-units, $ R^times \/ ideal(plus.minus v^3) tilde.equiv ZZ\/3 $ (consider the map $R^times -> ZZ\/3$, $plus.minus v^r = r mod 3$ and use FIT). Thus, up to multiplication by unit cubes, there are only three possible units $1, v, v^2$ (can take $v^(-1)$ instead of $v^2$). So we can choose $alpha$ such that $u$ is $1$, $v$ or $v^(-1)$.
@@ -810,7 +811,7 @@ $
 
     - Let $K = QQ\(sqrt(-5)\)$, then $R = cal(O)_K = ZZ\[sqrt(-5)\]$. By the Minkowski bound, every element in $Cl(R)$ has representative ideal of norm at most $ (4/pi) sqrt(5) < 3 $ so as a set, $Cl(R) = {e, [P_2]}$ where $P_2 = ideal(2, 1 + sqrt(-5))$ by Kummer-Dedekind.
     - $P_2$ is not principal as $a^2 + 5b^2 = 2$ has no solutions, hence $Cl(R) tilde.equiv ZZ\/2$.
-    - Let $ideal(alpha) = ideal(x + sqrt(-5))$, so $ideal(overline(alpha)) = ideal(x - sqrt(-5))$. If a prime ideal $P$ divides $ideal(alpha)$ and $ideal(overline(alpha))$, then $P | ideal(alpha - overline(alpha)) = ideal(2 sqrt(-5)) = ideal(2)_R ideal(sqrt(-5))_R = P_2^2 P_51$. $2$ and $5$ ramify, so $P_2 = overline(P_2)$ and $overline(P_5) = P_5$.
+    - Let $ideal(alpha) = ideal(x + sqrt(-5))$, so $ideal(overline(alpha)) = ideal(x - sqrt(-5))$. If a prime ideal $P$ divides $ideal(alpha)$ and $ideal(overline(alpha))$, then $P | ideal(alpha - overline(alpha)) = ideal(2 sqrt(-5)) = ideal(2)_R ideal(sqrt(-5))_R = P_2^2 P_5$. $2$ and $5$ ramify, so $P_2 = overline(P_2)$ and $overline(P_5) = P_5$.
     - Hence $ ideal(alpha) & = P_2^a P_5^b Q_1^(r_1) dots.c Q_n^(r_n), \ ideal(overline(alpha))_R & = P_2^a P_5^b overline(Q_1)^(r_1) dots.c overline(Q_n)^(r_n) $ where $a, b, r_i >= 0$, all $Q_i, overline(Q_i)$ are distinct and different from $P_2$, $P_5$.
     - Then $ ideal(y)^3 = ideal(y^3) = ideal(alpha overline(alpha)) = ideal(alpha) ideal(overline(alpha)) = P_2^(2a) P_5^(2b) (Q_1 overline(Q_1))^(r_1) dots.c (Q_n overline(Q_n))^(r_n) $ By uniqueness of prime ideal factorisation, all exponents in RHS are divisible by $3$, so let $I = P_2^(a\/3) P_5^(b\/3) Q_1^(r_1\/3) dots.c Q_n^(r_n\/3)$, so that $I^3 = ideal(alpha)_R$.
     - Since $h_K = 2$, the square of any fractional ideal of $R$ is principal, so $(I^(-1))^2$ is principal, hence $I = I^3 (I^(-1))^2 = alpha (I^(-1))^2$ is principal, so let $I = ideal(beta)_R$, for $beta = s + t sqrt(-5) in R$.

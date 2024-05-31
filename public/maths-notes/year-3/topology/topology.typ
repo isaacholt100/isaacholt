@@ -1,5 +1,5 @@
 #import "../../template.typ": *
-#show: doc => template(doc, hidden: (/*"proof",*/))
+#show: doc => template(doc, hidden: ("proof",), slides: false)
 
 // FIND: - \*(\w+)\*: ([\s\S]*?)(?=\n-|\n\n)\n
 // REPLACE: #$1[\n    $2\n]\n
@@ -37,13 +37,13 @@
 == Open and closed sets
 
 #definition[
-    $U subset.eq X$ is *open* if $ forall x in U, exists epsilon > 0: B(x; epsilon) subset U $
+    $U subset.eq X$ is *open* if $ forall x in U, exists epsilon > 0: B(x; epsilon) subset.eq U $
 ]
 #definition[
     $A subset.eq X$ is *closed* if $X - A$ is open.
 ]
 #note[
-    Sets can be neither closed nor open, or both.
+    It is possible for sets to be neither closed nor open, or both closed and open.
 ]
 #example[
     With standard metric on $RR$, any singleton ${x} in RR$ is closed and not open (same holds for $RR^n$).
@@ -72,7 +72,6 @@
 == Continuity
 
 #definition[
-    
     - *Sequence* in $X$ is $a: NN_0 -> X$, written $\(a_n\)_(n in NN)$.
     - $(a_n)$ *converges to $a$*, $lim_(n -> oo) a_n = a$, if $ forall epsilon > 0, exists n_0 in NN: forall n >= n_0, d(a, a_n) < epsilon $
 ]
@@ -116,7 +115,6 @@
     $tau = {nothing, X}$ is the *indiscrete topology* on $X$.
 ]
 #example[
-    
     - For metric space $(M, d)$, let $tau_d$ exactly contain sets which are open with respect to $d$. Then $(M, tau_d)$ is a topological space. $d$ *induces* topology $tau_d$.
     - Let $X = NN_0$ and $tau = {nothing} union {U subset.eq X: X - U "is finite"}$, then $(X, tau)$ is topological space.
 ]
@@ -152,7 +150,9 @@
 #definition[
     *Furstenberg's topology on $ZZ$*: define $U subset.eq ZZ$ to be open if $ forall a in U, exists 0 != d in ZZ: a + d ZZ := {a + d n: n in ZZ} subset.eq U $
 ]
-- Furstenberg's topology is Hausdorff.
+#proposition[
+    Furstenberg's topology is Hausdorff.
+]
 
 == Continuity
 
@@ -183,7 +183,6 @@
     In the standard topology, the $n$-sphere is a closed subset of $RR^(n + 1)$. (Consider the preimage of ${1}$ which is closed in $RR$).
 ]
 #example[
-    
     - Can consider set of square matrices $M_(n, n) (RR) tilde.equiv RR^(n^2)$ and give it the standard topology.
     - Note $ det(A) = sum_(sigma in "sym"(n)) ("sgn"(sigma) product_(i = 1)^n a_(i, sigma(i))) $ is a polynomial in the entries of $A$ so is continuous function from $M_n (RR)$ to $RR$.
     - $"GL"_n (RR) = {A in M_n (RR): det(A) != 0} = det^(-1) (RR - {0})$ is open.
@@ -231,10 +230,9 @@
 #definition[
     Let $A subset.eq X$.
     - *Interior* of $A$ is largest open set contained in $A$: $ A^circle.small := union.big_(U "open" \ U subset.eq A) U $
-    - *Closure* of $A$ is smallest closed set containing $A$: $ overline(A) := sect.big_(F "closed" \ A subset.eq F) $ If $overline(A) = X$, $A$ is *dense* in $X$.
+    - *Closure* of $A$ is smallest closed set containing $A$: $ overline(A) := sect.big_(F "closed" \ A subset.eq F) F $ If $overline(A) = X$, $A$ is *dense* in $X$.
 ]
 #lemma[
-    
     - $overline(X - A) = X - A^circle.small$
     - $overline(A) = X - (X - A)^circle.small$
 ]
@@ -248,10 +246,9 @@
     Let $a, d$ coprime, then $a + d ZZ$ contains infinitely many primes.
 ]
 #example[
-    Let $A$ be set of primes in $ZZ$ with Furstenberg topology. By above lemma, only need to find  limit points in $ZZ - A$ to find $overline(A)$. $10 ZZ$ is an open neighbourhood of $0$ for $0$ inside $ZZ - A$. For $a in.not {-1, 0, 1}$, $a + 10a ZZ$ is an open neighbourhood of $a$. These sets have no primes so the corresponding points are not limit points of $A$. For $plus.minus 1$, any open neighbourhood of $1$ contains a set $plus.minus 1 + d ZZ$ for some $d != 0$, but by the Dirichlet prime number theorem, this set contains at least one prime. So $overline(A) = A union {plus.minus 1}$.
+    Let $A$ be set of primes in $ZZ$ with Furstenberg topology. By above lemma, only need to find  limit points in $ZZ - A$ to find $overline(A)$. $10 ZZ$ is an open neighbourhood of $0$ for $0$ inside $ZZ - A$. For $a in.not {-1, 0, 1}$, $a + 10a ZZ$ is an open neighbourhood of $a$. These sets have no primes so the corresponding points are not limit points of $A$. For $plus.minus 1$, any open neighbourhood of $plus.minus 1$ contains a set $plus.minus 1 + d ZZ$ for some $d != 0$, but by the Dirichlet prime number theorem, this set contains at least one prime. So $overline(A) = A union {plus.minus 1}$.
 ]
 #lemma[
-    
     - Let $A subset.eq M$ for metric space $M$. If $x$ is limit point of $A$ then exists sequence $x_n$ in $A$ such that $lim_(n -> oo) x_n = x$.
     - If $x in M - A$ and exists sequence $x_n$ in $A$ with $lim_(n -> oo) x_n = x$ then $x$ is limit point of $A$.
 ]
@@ -262,7 +259,6 @@
     A *basis* for topology $tau$ on $X$ is collection $cal(B) subset.eq tau$ such that $ forall U in tau, exists B subset.eq cal(B): U = union.big_(b in B) b $ (every open $U$ is a union of sets in $B$).
 ]
 #example[
-    
     - For metric space $(M, d)$, $cal(B) = {B(x; r): x in M, r > 0}$ is basis for the induced topology. (Since if $U$ open, $U = union_(u in U) {u} subset.eq union_(u in U) B(u, r_u) subset.eq U$.)
     - In $RR^n$ with standard topology, $cal(B) = {B(q; 1\/m): q in QQ^n, m in NN}$ is a *countable* basis. (Find $m in NN$ such that $1/m < r/2$ and $q in QQ^n$ such that $q in B(p; 1/m)$, then $B(q; 1/m) subset.eq B(p; r) subset.eq U$ using the triangle inequality).
 ]
@@ -287,7 +283,6 @@
     *Cartesian product* of topological spaces $X, Y$ is $X times Y := {(x, y): x in X, y in Y}$. We give it the *product topology* which is generated by $cal(B)_(X times Y) := {U times V: U in tau_X, V in tau_Y}$.
 ]
 #example[
-    
     - Let $X = Y = RR$, then product topology is same as standard topology on $RR^2$.
     - Let $X = Y = S^1$, then $X times Y = T^2 = S^1 times S^1$ is the *$2$-torus*. *$n$-torus* is defined for $n >= 3$ by $ T^n := S^1 times T^(n - 1) $
 ]
@@ -324,16 +319,14 @@
     $X$ is *connected* if the only clopen sets in $X$ are $X$ and $nothing$.
 ]
 #example[
-    
     - $RR$ with standard topology is connected.
     - $QQ$ with induced topology from $RR$ is not connected (consider $L = QQ sect \(-oo, sqrt(2)\)$ and $QQ - L = QQ sect \(sqrt(2), oo\)$).
     - The connected subsets of $RR$ are the intervals.
 ]
 #definition[
-    $A subset.eq RR$ is an interval iff $forall x, y, z in A, x < z < y ==> z in A$.
+    $A subset.eq RR$ is an interval iff $forall x, y in A, forall z in RR, x < z < y ==> z in A$.
 ]
 #example[
-    
     - $X = {0, 1}$ with discrete topology is not connected (${1}$ and ${0}$ both open so both closed).
     - $X = {0, 1}$ with $tau = {nothing, {1}, {0, 1}}$ is connected.
     - $ZZ$ with Furstenberg topology is not connected.
@@ -375,13 +368,11 @@
     If $X$ and $Y$ are connected then $X times Y$ is connected.
 ]
 #example[
-    
     - $RR^n$ is connected.
-    - $B^n = {x in RR^n: d_2 (0, x) < 1}$ ($B^n$ is homeomorphic to $RR^n$).
+    - $B^n = {x in RR^n: d_2 (0, x) < 1}$ is connected ($B^n$ is homeomorphic to $RR^n$).
     - $D^n = {x in RR^n: d_2 (0, x) <= 1} = overline(B^n)$ is connected.
 ]
 #example[
-    
     - $forall n in NN$, $S^n$ is connected.
     - $forall n in NN$, $T^n$ is connected.
 ]
@@ -396,7 +387,6 @@
     - Every component is closed in $X$.
 ]
 #example[
-    
     - If $X$ connected, then its only component is itself.
     - If $X$ discrete, then each singleton in $tau_X$ is a component.
     - In $QQ$ with induced standard topology from $RR$, every singleton is a component.
@@ -427,7 +417,6 @@
     $X$ is *compact* if every open cover of $X$ admits a finite subcover.
 ]
 #example[
-    
     - If $X$ is finite then $X$ is compact.
     - $RR$ is not compact.
     - If $X$ infinite with $tau = {U subset.eq X: X - U "is finite"} union {emptyset}$, then $X$ is compact.
@@ -463,7 +452,6 @@
     $A subset.eq RR^n$ is compact iff it is closed and bounded.
 ]
 #example[
-    
     - $S^n$ is compact.
     - $T^n$ is compact.
     - $X = {vd(x) in RR^3: x_1^2 + x_2^2 - x_3^3 = 1}$ is not compact, since $forall n in NN$, $\(n, 0, \(n^2 - 1\)^(1\/3) \) in X$, so $X subset.eq.not B(n)$, so is unbounded, so not compact by Heine-Borel.
@@ -496,7 +484,7 @@
     Let $X$ topological space with equivalence relation $tilde$, $Y$ topological space. Then $f: X\/tilde thick -> Y$ continuous iff $f compose pi: X -> Y$ is continuous.
 ]
 #example[
-    In $RR$, let $x tilde y <==> x - y in ZZ$. Define $exp: RR -> S^1 subset.eq CC$, $exp(t) = e^(2pi i t)$) and $overline(exp): RR\/tilde thick -> S^1$, $overline(exp)([t]) = exp(t)$. Then $ [s] = [t] <==> s - t = k in ZZ <==> overline(exp)(s) = e^(2pi i k) e^(2pi i t) = e^(2pi i t) = overline(exp)(t) $ Hence $overline(exp)$ is well-defined and injective, and is surjective since $exp$ is. Also, $overline(exp)$ is continuous since $exp = overline(exp) compose pi$ is. $RR^2$ is a metric space and so is Hausdorff, so $S^1 subset RR^2$ with the induced topology is Hausdorff. Now e.g. $pi([-10, 10]) = RR\/tilde$, $[-10, 10]$ is compact and $pi$ continuous so $RR\/tilde$ is compact. Since $overline(exp)$ is a continuous bijection, these three properties imply $overline(exp)$ is a homeomorphism. Hence $RR\/tilde thick tilde.equiv S^1$.
+    In $RR$, let $x tilde y <==> x - y in ZZ$. Define $exp: RR -> S^1 subset.eq CC$, $exp(t) = e^(2pi i t)$ and $overline(exp): RR\/tilde thick -> S^1$, $overline(exp)([t]) = exp(t)$. Then $ [s] = [t] <==> s - t = k in ZZ <==> overline(exp)(s) = e^(2pi i k) e^(2pi i t) = e^(2pi i t) = overline(exp)(t) $ Hence $overline(exp)$ is well-defined and injective, and is surjective since $exp$ is. Also, $overline(exp)$ is continuous since $exp = overline(exp) compose pi$ is. $RR^2$ is a metric space and so is Hausdorff, so $S^1 subset RR^2$ with the induced topology is Hausdorff. Now e.g. $pi([-10, 10]) = RR\/tilde$, $[-10, 10]$ is compact and $pi$ continuous so $RR\/tilde$ is compact. Since $overline(exp)$ is a continuous bijection, these three properties imply $overline(exp)$ is a homeomorphism. Hence $RR\/tilde thick tilde.equiv S^1$.
 ]
 #definition[
     Let $A subset.eq X$, define $x tilde y <==> x = y$ or $x, y in A$. Then define $X\/A := X\/tilde$.
@@ -513,17 +501,14 @@
     A *topological group* $G$ is Hausdorff space which is also a group such that $ circle.filled.small: G times G -> G, thick thick circle.filled.small (g, h) = g h quad "and" quad i: G -> G, thick thick i(g) = g^(-1) $ are continuous.
 ]
 #example[
-    
     - $RR^n$ with addition is topological group.
     - $"GL"_n (RR)$ with multiplication and its subgroups $O(n)$ and $"SO"(n)$ are topological groups (each entry in $A B$ is sum of products of entries of $A$ and $B$, so matrix multiplication is continuous, matrix inversion also continuous).
 ]
 #proposition[
-    
     - Any group with discrete topology is topological group.
     - Any subgroup of topological group is also topological group.
 ]
 #example[
-    
     - $CC - {0}$ with multiplication has topological subgroup $S^1 subset CC - {0}$.
     - Define *quaternions* as vector space $HH := ideal(1, i, j, k)$, with topology taken from $RR^4$. $HH - {0}$ is a multiplicative group with $S^3$ a topological subgroup. For $q = a + b i + c j + d k in HH$, $a, b, c, d in RR$, we have $i j := k$, $j k := i$, $k i := j$, $j i := -k$, $k j := -i$, $i k := -j$. For $q != 0$, $ q^(-1) = (a - b i - c j - d k)/(a^2 + b^2 + c^2 + d^2) $
     - Note however that $S^2$ is not a topological group.
@@ -561,7 +546,6 @@
     For the above definition, the condition $g(x) = g circle.filled.small x$ being continuous isn't required since $g$ is the composition of continuous maps: $ X limits(arrow.hook)^g G times X limits(-->)^circle.filled.small X, quad x -> (g, x) -> g circle.filled.small x $
 ]
 #example[
-    
     - Trivial action: $(g, x) |-> g circle.filled.small x = x$, so $circle.filled.small = pi_X$.
     - Let $G = "GL"_n (RR)$, $X = RR^n$, let the action be matrix multiplication: $(A, vd(x)) -> A circle.filled.small vd(x) = A vd(x)$. This induces an action of subgroups $O(n)$ or $"SO"(n)$ on $X = RR^n$.
     - Let $H$ subgroup of topological group $G$, *left translation action* of $H$ on $G$ is $circle.filled.small: H times G -> G$, $h circle.filled.small g = h g$. Equivalently, $phi(h) = L_h$.
@@ -571,7 +555,6 @@
     Let $G$ act on topological space $X$, define equivalence relation $tilde$ on $X$ by $ x tilde y <==> exists g in G: g(x) := g circle.filled.small x = y $ An equivalence class for this relation is an *orbit*, denoted $G x$. *Orbit space*, $X\/G$, is quotient space $X\/tilde$. Action is *transitive* if $X\/G$ is a singleton.
 ]
 #example[
-    
     - If $G$ acts trivially, every orbit is singleton and $X\/G = X$.
     - $RR^n\/"GL"_n (RR)$ contains two points and has neither discrete nor indiscrete topology.
     - Action of $O(n)$ on $S^(n - 1)$ is transitive for $n in NN$. Action of $"SO"(n)$ on $S^(n - 1)$ is transitive for $n >= 2$.
@@ -586,7 +569,6 @@
     Define specified inclusion $i_1: M_n (RR) limits(arrow.hook)^1 M_(n + 1) (RR)$ by $A -> mat(1, 0; 0, A)$. So $M_n (RR)$ can be regarded as subspace of $M_(n + 1) (RR)$.
 ]
 #proposition[
-    
     - Using the inclusion $limits(arrow.hook)^1$, $"SO"(n)$ is subgroup of $"SO"(n + 1)$.
     - Viewing these as topological groups, if subgroup $"SO"(n)$ acts on $"SO"(n + 1)$, orbit space is $"SO"(n + 1)\/"SO"(n) tilde.equiv S^n$.
 ]
@@ -682,7 +664,6 @@
     - An *$n$-simplex*, $sigma^n = ideal(v_0, ..., v_n)$, is convex hull of $v_0, ..., v_n$ in general position. The *vertices* $v_0, ..., v_n$ *span* $sigma^n$ and $sigma^n$ is *$n$-dimensional*.
 ]
 #example[
-    
     - $0$-simplex is a point.
     - $1$-simplex is a closed line segment.
     - $2$-simplex is closed triangle including its interior.
@@ -744,7 +725,6 @@
     *Barycentre* of $sigma^k = ideal(v_0, ..., v_k) subset RR^N$ is $ overline(sigma^k) = 1/(k + 1) (v_0 + dots.h.c + v_k) in RR^N $
 ]
 #example[
-    
     - Barycentre of $0$-simplex is itself.
     - Barycentre of $1$-simplex is midpoint of the line.
 // #canvas(length: 2cm, {
@@ -776,7 +756,7 @@
 
 #definition[
     Let $S$ be Hausdorff, compact, connected topological space.
-    - $S$ is *surface* if for all $x in S$, there exists $U subset.eq S$ such that $x in U$ and $U tilde.equiv E^2$ or $U tilde.equiv E^2 sect RR times RR_(>=0)$.
+    - $S$ is *surface* if for all $x in S$, there exists $U subset.eq S$ such that $x in U$ and $U tilde.equiv E^2$ or $U tilde.equiv E^2 sect (RR times RR_(>=0)) =: E^2 sect RR_+^2$.
     - *Boundary* of $S$, $diff S$, is set of all $x in S$ such that there is not a $U subset.eq S$ with $x in U$ and $U tilde.equiv E^2$.
     - *Interior* of $S$ is $"int"(S) := S - diff S$.
     - $S$ is *closed surface* if $diff S = emptyset$ ($S$ is *locally Euclidean of dimension 2*).
@@ -848,10 +828,9 @@
 == Constructions on surfaces
 
 #definition[
-    For surfaces $S_1, S_2$, their *connected sum*, $S_1 \# S_2$, is obtained by removing the interiors of one small open disc from interior of each surface, and identifying the two newly formed boundary circles. If $S_1, S_2$ oriented, directions around the boundary circles must be identified such that their induced orientations are opposite to each other. Then $S_1 \# S_2$ inherits an orientation which agrees (upon restriction) with those of the original surfaces $S_1$ and $S_2$.
+    For surfaces $S_1, S_2$, their *connected sum*, $S_1 \# S_2$, is obtained by removing the interiors of one small open disc from interior of each surface, and identifying the two newly formed boundary circles. If $S_1, S_2$ oriented, directions around the boundary circles induced by the respective orientations must be identified such that the directions are opposite to each other. Then $S_1 \# S_2$ inherits an orientation which agrees (upon restriction) with those of the original surfaces $S_1$ and $S_2$.
 ]
 #proposition[
-    
     - Since $S_1$, $S_2$ connected, it does not matter which two open discs are removed, the result is the same up to homeomorphism.
     - $\#$ is commutative and associative.
     - $S^2$ is the identity for $\#$ operation: $M \# S^2 tilde.equiv M$.
@@ -866,7 +845,6 @@
     *Adding handle* to surface $S$ is as follows: remove two open discs from $S$. Attach the ends of cylinder $S^1 times I$ to the resulting boundary circles. If $S$ (and cylinder) are oriented, require that the two resulting boundary circles are glued to those of the cylinder with opposite orientations, which ensures the new surface is still oriented. But if $S$ is not orientable, this doesn't matter, as all possible results are homeomorphic.
 ]
 #example[
-    
     - $S^2$ with handle added is homeomorphic to the torus.
     - $S^2$ with $g$ handles added is homeomorphic to $M_g$.
     - $M_n$ with handle added is homeomorphic to $M_(n + 1)$.
@@ -889,7 +867,7 @@
     The *stereographic projection* is the bijection $ phi: S^n - (0, ..., 0, 1) -> RR^n, quad (y_1, ..., y_(n + 1)) |-> (y_1/(1 - y_(n + 1)), ..., y_n/(1 - y_(n + 1))) $
 ]
 #definition[
-    Let $X, Y$ topological spaces. *Homotopy* between $f$ and $g$ is map $H: X times [0, 1] -> Y$ with $ forall x in X, quad H(x, 0) = f(x) and H(x, 1) = g(x) $ $f$ and $g$ are *homotopic*, $f tilde.eq g$, if there is a homotopy between them. We can think of homotopy as "path of maps" starting at $f: X -> Y$ and ending at $g: X -> Y$: for $t in [0, 1]$, define $h_t: X -> Y$, $h_t (x) = H(x, t)$, which varies continuously from $f$ at $t = 0$ to $g$ at $t = 1$.
+    Let $X, Y$ topological spaces. *Homotopy* between maps $f: X -> Y$ and $g: X -> Y$ is map $H: X times [0, 1] -> Y$ with $ forall x in X, quad H(x, 0) = f(x) and H(x, 1) = g(x) $ $f$ and $g$ are *homotopic*, $f tilde.eq g$, if there is a homotopy between them. We can think of homotopy as "path of maps" starting at $f: X -> Y$ and ending at $g: X -> Y$: for $t in [0, 1]$, define $h_t: X -> Y$, $h_t (x) = H(x, t)$, which varies continuously from $f$ at $t = 0$ to $g$ at $t = 1$.
 ]
 #example[
     Let $f, g: RR -> RR$ maps, then $ H: RR times [0, 1] -> RR, quad (x, t) |-> (1 - t) f(x) + t g(x) $ is homotopy between $f$ and $g$.
@@ -971,10 +949,10 @@
     If $X$ and $Y$ are homeomorphic, they are homotopy equivalent (converse does not hold).
 ]
 #definition[
-    
     - It is useful to assume that every topological space $X$ has a particular distinguished *base point* $x_0 in X$.
     - We then require that all maps and homotopies between spaces map base points to base points.
     - The pair $(X, x_0)$ is a *based space*.
+    - If $K$ is finite simplicial complex and $v_0$ is vertex of $K$, then $(K, v_0)$ is *pointed*.
     - A *based map* $f: (X, x_0) -> (Y, y_0)$ is a map $X -> Y$ and satisfies $f(x_0) = y_0$.
     - A *based homotopy* $H: (X, x_0) times [0, 1] -> (Y, y_0)$ between based maps $f, g: (X, x_0) -> (Y, y_0)$ is homotopy $H: X times [0, 1] -> Y$ with $forall t in [0, 1]$, $H(x_0, t) = y_0$.
     - All results shown for homotopies are true for based homotopies.
@@ -989,7 +967,7 @@
     A *loop* in based space $(X, x_0)$ is based map $ lambda: (S^1, 1) -> (X, x_0) $ Equivalently, a loop in $(X, x_0)$ is path in $X$ beginning and ending at $x_0$: $ lambda: [0, 1] -> (X, x_0), quad lambda(0) = lambda(1) = x_0 $ Two loops $lambda, mu: [0, 1] -> (X, x_0)$ are homotopic if there exists based homotopy between them, i.e. if there is map $ & H: [0, 1] times [0, 1] -> X, \ forall s in I, quad & H(s, 0) = lambda(s), \ forall s in I, quad & H(s, 1) = mu(s), \ forall t in I, quad & H(0, t) = H(1, t) = x_0 $ This corresponds with $lambda$ being continuously deformed into $mu$.
 ]
 #remark[
-    It is useful to represented based homotopy $H$ between $lambda$ and $mu$ on the unit square. Bottom edge corresponds to $lambda$, top edge corresponds to $mu$, right and left edges are mapped entirely to $x_0$. Horizontal line drawn across unit square represents loop in $(X, x_0)$ and homotopy $H$ describes path of loops from $lambda$ to $mu$. Vertical line describes path traced from $lambda(s)$ to $mu(s)$ under $H$.
+    It is useful to represent based homotopy $H$ between $lambda$ and $mu$ on the unit square. Bottom edge corresponds to $lambda$, top edge corresponds to $mu$, right and left edges are mapped entirely to $x_0$. Horizontal line drawn across unit square represents loop in $(X, x_0)$ and homotopy $H$ describes path of loops from $lambda$ to $mu$. Vertical line describes path traced from $lambda(s)$ to $mu(s)$ under $H$.
 ]
 #figure(canvas(length: 2cm, {
     import cetz.draw: *
@@ -1005,7 +983,7 @@
     content("my-rect.south", padding: -1.2em, box(fill: white)[$mu$], anchor: "south")
 }))
 #definition[
-    *Homotopy class* of loop $lambda$ in $(X, x_0)$ is $ [lambda] := {mu: mu "loop in" (X, x_0), mu tilde.eq lambda} $ *Fundamental group* of $(X, x_0)$ is set of homotopy classes of loops in $(X, x_0)$: $ pi_1 (X, x_0) := {[lambda]: lambda "loop in" (X, x_0)} $ with group operation $*$ defined by $ *: pi_1 (X, x_0) times pi_1 (X, x_0) & -> p_1 (X, x_0), \ ([lambda_1], [lambda_2]) -> [lambda_1 * lambda_2] $ where *concatenation (product)* of $lambda_1$ and $lambda_2$ is the loop in $(X, x_0)$ given by $ lambda_1 * lambda_2: [0, 1] & -> X, \ s & |-> cases(lambda_1 (2s) & "if" 0 <= s <= 1/2, lambda_2 (2s - 1) & "if" 1/2 <= s <= 1) $ Group identity is $e: [0, 1] -> X$, $e(s) = x_0$, inverse of loop $lambda$ is $overline(lambda): s |-> lambda(1 - s)$, then $[overline(lambda)] = [lambda]^(-1)$ (equivalently, define $[lambda]^(-1) = [lambda compose w]$ where $w: [0, 1] -> [0, 1]$, $w(s) = 1 - s$).
+    *Homotopy class* of loop $lambda$ in $(X, x_0)$ is $ [lambda] := {mu: mu "loop in" (X, x_0), mu tilde.eq lambda} $ *Fundamental group* of $(X, x_0)$ is set of homotopy classes of loops in $(X, x_0)$: $ pi_1 (X, x_0) := {[lambda]: lambda "loop in" (X, x_0)} $ with group operation $*$ defined by $ *: pi_1 (X, x_0) times pi_1 (X, x_0) & -> pi_1 (X, x_0), \ ([lambda_1], [lambda_2]) -> [lambda_1 * lambda_2] $ where *concatenation (product)* of $lambda_1$ and $lambda_2$ is the loop in $(X, x_0)$ given by $ lambda_1 * lambda_2: [0, 1] & -> X, \ s & |-> cases(lambda_1 (2s) & "if" 0 <= s <= 1/2, lambda_2 (2s - 1) & "if" 1/2 <= s <= 1) $ Group identity is $e: [0, 1] -> X$, $e(s) = x_0$, inverse of loop $lambda$ is $overline(lambda): s |-> lambda(1 - s)$, then $[overline(lambda)] = [lambda]^(-1)$ (equivalently, define $[lambda]^(-1) = [lambda compose w]$ where $w: [0, 1] -> [0, 1]$, $w(s) = 1 - s$).
 ]
 #remark[
     Group operation $*$ is well defined, since if $lambda_1 tilde.eq mu_1$ by homotopy $H_1$, $lambda_2 tilde.eq mu_2$ by homotopy $H_2$, then $lambda_1 * lambda_2 tilde.eq mu_1 * mu_2$ by homotopy $H$ where $ H(s, t) = cases(H_1 (2s, t) & "if" 0 <= s <= 1/2, H_2 (2s - 1, t) & "if" 1/2 <= s <= 1) $
@@ -1289,10 +1267,6 @@ where, for the first diagram, a horizontal path at fixed $t$ is given by $ s |->
 #example[
     Consider $S^1$ triangulated with three $1$-simplices and no $2$-simplices. A maximal tree consists of two edges, the maximal connected subcomplex $M$ is already the maximal tree. There is one $1$-simplex not in $M$  and there are no relations (since no $2$-simplices). Hence $pi_1 (S^1, x_0) tilde.equiv ideal(a) = F^1 tilde.equiv ZZ$.
 ]
-TODO: add diagrams.
-#canvas(length: 1cm, {
-    ngon(3)
-})
 
 == Van Kampen's theorem
 
@@ -1314,7 +1288,7 @@ TODO: add diagrams.
 ]
 #example[
     - Decompose torus as $TT = A union B$ where $A$ is small closed disc in $TT$, $B$ is closure of the remainder (i.e. remainder together with circle boundary of the disc) so $A sect B = S^1$.
-    - $B$ is homotopy equivalent to the figure-eight space so $pi_1 (B) tilde.equiv ideal(x, y)$. $A$ is contractible so $pi_1 (A) tilde.equiv bb(1)$, and $pi_1 (A sect B) tilde.equiv ideal(x)$. But the loop going once around $A sect B$ is homotopy equivalent to the loop going along the boundary of unit square whose quotient gives $TT$, which corresponds to $x y x^(-1) y^(-1)$.
+    - $B$ is homotopy equivalent to the figure-eight space so $pi_1 (B) tilde.equiv ideal(x, y)$. $A$ is contractible so $pi_1 (A) tilde.equiv bb(1)$, and $pi_1 (A sect B) tilde.equiv ideal(z)$. But the loop going once around $A sect B$ is homotopy equivalent to the loop going along the boundary of unit square whose quotient gives $TT$, which corresponds to $x y x^(-1) y^(-1)$.
     - So by van Kampen's theorem, $ pi_1 (TT) & tilde.equiv pi_1 (A) *_(pi_1 (A sect B)) pi_1 (B) \ & tilde.equiv bb(1) *_(ideal(z)) ideal(x, y) \ & = ideal(x, y | z) \ & = ideal(x, y | x y x^(-1) y^(-1)) tilde.equiv ZZ^2 $ since the image of $z$ under the homomorphism $h_1: pi_1 (A sect B) -> A$ must be $e$.
 ]
 
@@ -1405,8 +1379,8 @@ TODO: add diagrams.
 #proof[
     Non-examinable.
 ]
-#remark[
-    For $n$-dimensional finite simplicial complex $K$, Euler characteristic is defined as $ sum_(k = 0)^n (-1)^k ("number of k-simplices in" K) $
+#definition[
+    For $n$-dimensional finite simplicial complex $K$, Euler characteristic is defined as $ sum_(k = 0)^n (-1)^k ("number of " k #h(0em) "-simplices in" K) $
 ]
 #lemma(name: "Union Lemma")[
     Let $K = A union B$ be $2$-dimensional finite simplicial complex with $A$, $B$, $A sect B$ simplicial sub-complexes. Then $ chi(K) = chi(A union B) = chi(A) + chi(B) - chi(A sect B) $
@@ -1492,6 +1466,16 @@ TODO: add diagrams.
 ]
 #lemma[
     Let $S$ be non-orientable closed surface. Then $(S + "handle") tilde.equiv S \# KK tilde.equiv S \# PP \# PP tilde.equiv (S + 2 "cross caps")$.
+]
+#definition[
+    Let $L$ be maximal tree in finite simplicial complex $K$ with dual graph $L^*$, let $C subset.eq L^*$ be a cycle. Then $C$ is a *non-separating* simple closed curve.
+]
+#definition[
+    Performing *surgery* along a non-separating simple closed curve $C$ is the following process:
+    - Remove interior of $Theta(C)$ from $K^((2)) tilde.equiv K tilde.equiv S$, giving a simplicial complex $K^((2)) - int(Theta(C))$ which has either two holes (if $Theta(C) tilde.equiv$ cylinder) or one hole (if $Theta(C) tilde.equiv$ Mobius band), with the boundary of each of these holes being a triangulated circle.
+    - Glue triangulated closed discs onto each boundary circle to "cap off" the holes.
+    - This gives a new finite simplicial complex $K'$ which triangulates a closed surface $S'$. So $ S tilde.equiv cases(S' + "handle" & "if" Theta(C) tilde.equiv "cylinder", S' + "cross cap" & "if" Theta(C) tilde.equiv "Mobius band") $
+    - So $ chi(S') = cases(chi(S) + 2 & "if" Theta(C) tilde.equiv "cylinder", chi(S) + 1 & "if" Theta(C) tilde.equiv "Mobius band") $
 ]
 #theorem[
     Up to homeomorphism, any closed surface can be obtained from a sphere by adding a finite number of handles and/or a finite number of cross caps.
