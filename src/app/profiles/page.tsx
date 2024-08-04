@@ -1,6 +1,6 @@
 import Icon from "@mdi/react";
 // import discord from "./discord.svg";
-import { mdiChessPawn, mdiEmail, mdiGithub, mdiGitlab, mdiLinkedin, mdiReddit, mdiStackExchange, mdiStackOverflow } from "@mdi/js";
+import { mdiChessPawn, mdiEmail, mdiGithub, mdiLinkedin, mdiReddit, mdiStackOverflow } from "@mdi/js";
 //import styles from "@/styles/contact.module.scss";
 import PageTitle from "../../components/PageTitle";
 
@@ -44,19 +44,9 @@ const PROFILES: Profile[] = [
 		icon: mdiGithub,
 	},
 	{
-		name: "GitLab",
-		url: "https://www.gitlab.com/isaacholt100/",
-		icon: mdiGitlab,
-	},
-	{
 		name: "Stack Overflow",
 		url: "https://stackoverflow.com/users/14087924/isaacholt100",
 		icon: mdiStackOverflow,
-	},
-	{
-		name: "Math SE",
-		url: "https://math.stackexchange.com/users/815840/isaacholt100",
-		icon: mdiStackExchange,
 	},
 	{
 		name: "Chess.com",
