@@ -24,6 +24,14 @@ const DATE_FORMAT_OPTIONS: Intl.DateTimeFormatOptions = {
 	year: "numeric",
 }
 
+function splitAfterFirst(str: string, substr: string): string {
+    let idx = str.indexOf(substr);
+    if (idx == -1) {
+        return str;
+    }
+    return str.slice(idx + 1);
+}
+
 export default async function Maths() {
     process.env.NODE_ENV === "development" && await generateMetadataFile();
 	return (
@@ -31,9 +39,9 @@ export default async function Maths() {
 			<PageTitle title="Maths Notes" />
             <InfoText />
             <div className="mt-n4" />
-			{notesMetadata.map((y, i) => (
+			{notesMetadata.sort((y1, y2) => y1.year.localeCompare(y2.year)).reverse().map((y, i) => (
 				<div className="row g-2 g-md-3 pt-3" key={y.year}>
-					<h2>{capitalizeName(y.year)}</h2>
+					<h2>{capitalizeName(splitAfterFirst(y.year, "-"))}</h2>
 					{y.notes.map(note => (
 						<div className="col col-12 col-sm-6 col-lg-4 col-xl-3" key={note.name}>
 							<div className="card border-light bg-transparent h-100">
