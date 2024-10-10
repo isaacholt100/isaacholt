@@ -39,7 +39,7 @@
     theorem, lemma, corollary, definition, remark, proposition, example, proof, rules: thm-rules
 ) = default-theorems("thm-group", lang: "en", proof-styling: thm-style-proof, thm-styling: thm-style-simple)
 
-#let (algorithm, note, notation, rules) = new-theorems("thm-group", ("algorithm": [Algorithm], "note": [Note], "notation": [Notation]), thm-styling: thm-style-simple)
+#let (algorithm, note, notation, exercise, rules) = new-theorems("thm-group", ("algorithm": [Algorithm], "note": [Note], "notation": [Notation], "exercise": [Exercise]), thm-styling: thm-style-simple)
 
 #let template(doc, hidden: ("proof", ), slides: false) = {
 	set text(
@@ -108,3 +108,4 @@
 }
 
 #let hdots = $op(dot.op dot.op dot.op)$
+#let powset = math.bb("P")
