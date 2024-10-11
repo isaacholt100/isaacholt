@@ -109,3 +109,5 @@
 
 #let hdots = $op(dot.op dot.op dot.op)$
 #let powset = math.bb("P")
+#let dom = math.op("dom")
+#let indicator(S) = $bb(1)_#S$

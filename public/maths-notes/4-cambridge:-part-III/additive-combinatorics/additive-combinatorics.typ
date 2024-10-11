@@ -65,6 +65,11 @@
 #proof[
     Exercise (sheet 1).
 ]
+#definition[
+    Let $A, B subset.eq G$ be finite subsets of an abelian group $G$. The *Ruzsa distance* between $A$ and $B$ is $
+        d(A, B) := log (|A - B|)/(sqrt(|A| dot |B|)).
+    $
+]
 
 
 = Fourier-analytic techniques

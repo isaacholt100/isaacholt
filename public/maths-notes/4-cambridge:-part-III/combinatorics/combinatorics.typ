@@ -20,7 +20,7 @@
 
     This graph is the *discrete cube* $Q_n$.
 
-    Alternatively, we can view $Q_n$ as an $n$-dimensional unit cube ${0, 1}^n$ by identifying e.g. ${1, 3} subset.eq [5]$ with $10100$ (i.e. identify $A$ with $bb(1)_A$, the characterstic/indicator function of $A$).
+    Alternatively, we can view $Q_n$ as an $n$-dimensional unit cube ${0, 1}^n$ by identifying e.g. ${1, 3} subset.eq [5]$ with $10100$ (i.e. identify $A$ with $bb(1)_A$, the characteri stic/indicator function of $A$).
 ]<def:discrete-cube>
 #definition[
     $cal(A) subset.eq powset(X)$ is a *chain* if $forall A, B in cal(A)$, $A subset.eq B$ or $B subset.eq A$.
