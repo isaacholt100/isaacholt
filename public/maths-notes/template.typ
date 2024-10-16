@@ -23,23 +23,28 @@
   name,
   number,
   body
-) = block(width: 100%, breakable: true, radius: 0.25em, /*fill: rgb("#e2e2ec"), inset: 0.25em,*/ spacing: 1em)[#{
-  strong(thm-type)
-  if number != none {
-    // " " + strong(number)
-  }
+) = {
+    if thm-type == "Proof (Hints)" {
+        return thm-style-proof(thm-type, name, none, body)
+    }
+    return block(width: 100%, breakable: true)[#{
+        strong(thm-type)
+        if number != none {
+            // " " + strong(number)
+        }
 
-  if name != none {
-    " " + [(#name)]
-  }
-    ". " + body
-}]
+        if name != none {
+            " " + [(#name)]
+        }
+            ". " + body
+    }]
+}
 
 #let (
     theorem, lemma, corollary, definition, remark, proposition, example, proof, rules: thm-rules
 ) = default-theorems("thm-group", lang: "en", proof-styling: thm-style-proof, thm-styling: thm-style-simple)
 
-#let (algorithm, note, notation, exercise, rules) = new-theorems("thm-group", ("algorithm": [Algorithm], "note": [Note], "notation": [Notation], "exercise": [Exercise]), thm-styling: thm-style-simple)
+#let (algorithm, note, notation, exercise, fact, axiom, proofhints, problem, rules) = new-theorems("thm-group", ("algorithm": [Algorithm], "note": [Note], "notation": [Notation], "exercise": [Exercise], "fact": [Fact], "axiom": [Axiom], "proofhints": "Proof (Hints)", "problem": [Problem]), thm-styling: thm-style-simple)
 
 #let template(doc, hidden: ("proof", ), slides: false) = {
 	set text(

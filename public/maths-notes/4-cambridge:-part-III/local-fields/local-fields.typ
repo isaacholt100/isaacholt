@@ -107,3 +107,111 @@
 #remark[
     There is an analogy with the construction of $RR$ with respect to $|dot|_oo$.
 ]
+#definition[
+    For $x in K$ and $r > 0$, define $
+        B(x, r) & := {y in K: |x - y| < r}, \
+        overline(B)(x, r) & = {y in K: |x - y| <= r}.
+    $
+]
+#lemma[
+    Let $(K, |dot|)$ be a non-Archimedean valued field.
+    - If $z in B(x, r)$, then $B(z, r) = B(x, r)$, i.e. open balls don't have a centre.
+    - If $z in overline(B)(x, r)$, then $overline(B)(z, r) = overline(B)(x, r)$. i.e. closed balls don't have a centre.
+    - $B(x, r)$ is closed.
+    - $overline(B)(x, r)$ is open.
+]
+#proof[
+    - Let $y in B(x, r)$. Then $|x - y| < r$ so $|z - y| = |(z - x) + (x - y)| <= max{|z - x|, |x - y|} < r$. Hence $B(x, r) subset.eq B(z, r)$. Converse is obtained by symmetry.
+    - Same as above.
+    - Let $y in.not B(x, r)$. If $z in B(x, r) sect B(y, r)$ then $B(x, r) = B(z, r) = B(y, r)$ by above, hence $y in B(x, r)$: contradiction. Hence $B(x, r) sect B(y, r) = emptyset$.
+    - Let $z in overline(B)(x, r)$, then $B(z, r) subset.eq overline(B)(z, r) = overline(B)(x, r)$ by above.
+]
+
+= Valuation rings
+
+#definition[
+    Let $K$ be a field. $t: K^times -> RR$ is a *valuation* on $K$ if:
+    - $v(x y) = v(x) + v(y)$.
+    - $v(x + y) >= min{v(x), v(y)}$.
+    Fix $alpha in (0, 1)$. Then for a valuation $v$ on $K$, we can define a non-Archimedean absolute value $
+        |x| = cases(
+            alpha^(v(x)) & "if" x != 0,
+            0 & "if" x = 0
+        )
+    $ Conversely, a non-Archimedean absolute value determines a valuation $
+        v(x) = log_alpha |x|   
+    $
+]
+#remark[
+    - We ignore the trivial valuation $v(x) = 0$ (corresponds to trivial absolute value).
+    - We say $v_1$ and $v_2$ are equivalent valuations if there exists $c > 0$ such that $v_1 (x) = c v_2 (x)$ for all $x in K^times$.
+]
+#example[
+    - For $K = QQ$, $v_p (x) = -log_p |x|_p$ is the $p$-adic valuation.
+    - Let $k$ be field, $K = k(t) = "Frac"(k[t])$ be the rational function field. Define the $t$-adic valuation $v(t^n f(t)/g(t)) = n$ where $f, g in k[t]$, $f(0), g(0) != 0$.
+    - $K = k((t)) = "Frac"(k[[t]]) = \{sum_(i = n)^oo a_i t^i: a_i in k, n in ZZ\}$ is the field of formal Laurent series over $k$. Define the $t$-adic valuation $
+        v(sum_i a_i t^i) = min{i in ZZ: a_i != 0}
+    $
+]
+#definition[
+    Let $(K, |dot|)$ be a non-Archimedean valued field. The *valuation ring* of $K$ is $
+        cal(O)_K & = {x in K: |x| <= 1} = overline(B)(0, 1) \
+        & = {x in K^times: v(x) >= 0} union {0}
+    $
+]
+#proposition[
+    - $cal(O)_K$ is an open subring of $K$.
+    - The subsets ${x in K: |x| <= r}$ and ${x in K: |x| < r}$ are both open ideals in $cal(O)_K$ for $r <= 1$.
+    - $cal(O)_K^times = {x in K: |x| = 1}$.
+]
+#proof[
+    - To show ring:
+        - $|0| = 0, |1| = 1 <= 1$ so $0, 1 in cal(O)_K$.
+        - If $x in cal(O)_K$, then $|-x| = |x| <= 1$ so $-x in cal(O)_K$.
+        - If $x, y in cal(O)_K$, then $|x + y| <= max{|x|, |y|} <= 1$ so $x + y in cal(O)_K$.
+        - If $x, y in cal(O)_K$, then $|x y| = |x| |y| <= 1$ so $x y in cal(O)_K$.
+    - $cal(O)_K$ is open since it is a "closed" ball.
+    - Showing open ideals is similar to above.
+    - $|x| |x^(-1)| = |x x^(-1)| = 1$ so $|x| = 1$ iff $|x^(-1)| = 1$, i.e. $x, x^(-1) in cal(O)_K$, i.e. $x in cal(O)_K^times$.
+]
+#notation[
+    Write $m := {x in cal(O)_K: |x| < 1}$ which is a maximal ideal in $cal(O)_K$. $k = cal(O)_K\/m$ be the *residue field*.
+]
+#corollary[
+    $cal(O)_K$ is a local ring (i.e. it has a unique maximal ideal) with unique maximal ideal $m$.
+]
+#proof[
+    Let $m' != m$ be a maximal ideal, then there exists $x in m' \\ m$, hence $|x| = 1$ so $x$ is a unit, so $m' = R$: contradiction.
+]
+#example[
+    - Let $K = QQ$ with $|dot|_p$. Then $cal(O)_K = ZZ_((p)) = {a/b in QQ: p divides.not b}$. $m = p ZZ_((p))$ and $k = FF_p$.
+]
+#definition[
+    A valuation $v: K^times -> RR$ is *discrete* if $v(K^times) tilde.equiv ZZ$. In this case, $K$ is a *discretely valued field*, and element $pi in cal(O)_K$ is a *uniformiser* if $v(pi) > 0$ and $v(pi)$ generates $v(K^times)$.
+]<def:valuation.discrete>
+#example[
+    - $K = QQ$ with the $p$-adic valuation is discretely valued.
+    - $K = k(t)$ with the $t$-adic valuation is discretely valued.
+    - $K = k(t)(t^(1\/2), t^(1\/4), ...)$ with the $t$-adic valuation is not discrete.
+]
+#remark[
+    If $v$ is a discrete valuation, then we can replace it with an equivalent valuation such that $v(K^times) = ZZ$. Such valuations are called *normalised* valuations (in this case, $pi$ is a uniformiser iff $v(pi) = 1$).
+]
+#lemma[
+    Let $v$ be a valuation on $K$. TFAE:
+    + $v$ is discrete.
+    + $cal(O)_K$ is a PID.
+    + $cal(O)_K$ is Noetherian.
+    + $m$ is principal.
+]
+#proof[
+    - $(1 => 2)$:
+        - $cal(O)_K$ is ID as subring of a field.
+        - Let $I subset.eq cal(O)_K$ be a non-zero ideal, $x in I$ such that $v(x) = min{v(a): a in I}$ (which exists as valuation is discrete).
+        - We claim $x cal(O)_K = {a in K: v(a) >= v(x)}$ is equal to $I$.
+        - $subset.eq$: since $I$ is ideal.
+        - $supset.eq$: let $y in I$, then $v(x^(-1) y) >= 0$ so $y = x (x^(-1) y) in x cal(O_K) $ TODO: finish.
+    - $(2 => 3)$: clear.
+    - $(3 => 4)$: write $m = x_1 cal(O)_K + dots.c + x_n cal(O)_K$. WLOG $v(x_1) <= dots.c <= v(x_n)$. Then $x_2, ..., x_n in x_1 cal(O)_K$ so $m = x cal(O)_K$.
+    - $(4 => 1)$: let $m = pi cal(O)_K$ for some $pi in cal(O)_K$, let $c = v(pi)$. Then if $v(x) > 0$, $x in m$, hence $v(x) >= c$. Thus $v(K^times) sect (0, c) = emptyset$. Since $v(K^times)$ is a subgroup, we must have $v(K^times) = c ZZ$.
+]

@@ -24,14 +24,7 @@ const PROJECTS: Project[] = [
         source: "https://github.com/isaacholt100/generic_root_count",
         description: "Compute the generic root count of tropically transverse systems in Julia, using the OSCAR computer algebra system.",
         image: ""
-    },
-	{
-		name: "My Year Book",
-		url: "https://myyearbook.vercel.app",
-		source: "https://github.com/isaacholt100/MYB",
-		description: "A progressive web app that allows students from a school to upload photos and a quote. Prizes can also be created/suggested by students which are then voted for. The results are used to create a downloadable yearbook in PDF format.",
-		image: ""
-	},
+    }
 	// {
 	// 	name: "Latin Grammar Test",
 	// 	url: "https://latingrammartest.vercel.app",
