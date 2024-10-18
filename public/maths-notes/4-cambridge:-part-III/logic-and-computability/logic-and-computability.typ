@@ -216,20 +216,22 @@ We will inductively define a provability relation by enforcing rules that implem
 ]<def:simple-types>
 #definition[
     The set $Lambda_Pi$ of *simply typed $lambda$-terms* is defined by the grammar $
-        Lambda_Pi := V | lambda  V: pi thin . thin Lambda_Pi | Lambda_Pi med Lambda_Pi
+        Lambda_Pi := V | lambda  V: Pi thin . thin Lambda_Pi | Lambda_Pi med Lambda_Pi
     $ In the term $lambda x: tau . M$, $x$ is a variable, $tau$ is type and $M$ is a $lambda$-term. Forming terms of this form is called *$lambda$-abstraction*. Forming terms of the form $Lambda_Pi Lambda_Pi$ is called *$lambda$-application*.
 ]<def:simply-typed-lambda-term>
+#example[
+    The $lambda$-term $lambda x: ZZ . x^2$ should represent the function $x |-> x^2$ on $ZZ$.
+]
 #definition[
     A *context* is a set of pairs $Gamma = {x_1: tau_1, ..., x_n: tau_n}$ where the $x_i$ are distinct variables and each $tau_i$ is a type. So a context is an assignment of a type to each variable in a given set. Write $C$ for the set of all possible contexts. Given a context $Gamma in C$, write $Gamma, x: tau$ for the context $Gamma union {x: tau}$ (if $x$ does not appear in $Gamma$).
 
     The *domain* of $Gamma$ is the set of variables ${x_1, ..., x_n}$ that occur in it, and its *range*, $abs(Gamma)$, is the set of types ${tau_1, ..., tau_n}$ that it manifests.
 ]<def:context>
 #definition[
-    Recursively define the *typability relation* $| proves subset.eq C times Lambda_Pi times Pi$ via:
-    + For every context $Gamma$, variable $x$ not occurring in $Gamma$ and type $tau$, we have $Gamma, x: tau | proves x: tau$.
-    + For a context $Gamma$, variable $x$ not occurring in $Gamma$, types $sigma, tau in Pi$, and $lambda$-term. If $Gamma, x: sigma | proves M: tau$, then $Gamma | proves (lambda x: sigma . M): (sigma -> t)$.
-    + Let $Gamma$ be a context, $sigma, tau in Pi$ be types, and $M, N in Lambda_Pi$ be terms. If $Gamma | proves M: (sigma -> t)$ and $Gamma | proves N: sigma$, then $Gamma | proves (M N): tau$.
-
+    Recursively define the *typability relation* $forces subset.eq C times Lambda_Pi times Pi$ via:
+    + For every context $Gamma$, variable $x$ not occurring in $Gamma$ and type $tau$, we have $Gamma, x: tau forces x: tau$.
+    + For every context $Gamma$, variable $x$ not occurring in $Gamma$, types $sigma, tau in Pi$, and $lambda$-term $M$, if $Gamma, x: sigma forces M: tau$, then $Gamma forces (lambda x: sigma . M): (sigma -> t)$.
+    + For all contexts $Gamma$, types $sigma, tau in Pi$, and terms $M, N in Lambda_Pi$, if $Gamma forces M: (sigma -> t)$ and $Gamma forces N: sigma$, then $Gamma forces (M N): tau$.
 ]<def:typability-relation>
 #notation[
     We will refer to the $lambda$-calculus of $Lambda_Pi$ with this typability relation as $lambda(->)$.
@@ -238,12 +240,12 @@ We will inductively define a provability relation by enforcing rules that implem
     A variable $x$ occurring in a $lambda$-abstraction $lambda x: sigma . M$ is *bound* and is *free* otherwise. A term with no free variables is called *closed*.
 ]<def:variable.bound-and-free>
 #definition[
-    Terms $M$ and $N$ are *$alpha$-equivalent* if they differ only in the names of teh bound variables.
+    Terms $M$ and $N$ are *$alpha$-equivalent* if they differ only in the names of their bound variables.
 ]<def:alpha-equivalence>
 #definition[
     If $M$ and $N$ are $lambda$-terms and $x$ is a variable, then we define the *substitution of $N$ for $x$ in $M$* by the following rules:
     - $x[x := N] = N$.
-    - $y[x := N] = N$.
+    - $y[x := N] = y$ for $y != x$.
     - $(P Q)[x := N] = P[x := N] Q[x := N]$ for $lambda$-terms $P, Q$.
     - $(lambda y: sigma . P)[x := N] = lambda y: sigma . (P[x := N])$ for $x != y$ and $y$ not free in $N$.
 ]<def:substitution>
@@ -251,7 +253,7 @@ We will inductively define a provability relation by enforcing rules that implem
     The *$beta$-reduction* relation is the smallest relation $-->_beta$ on $Lambda_Pi$ closed under the following rules:
     - $(lambda x: sigma . P) Q -->_beta P[x := Q]$. The term being reduced is called a *$beta$-redex*, and the result is called its *$beta$-contraction*.
     - If $P -->_beta P'$, then for all variables $x$ and types $sigma in Pi$, we have $lambda x: sigma . P -->_beta lambda x: sigma . P'$.
-    - If $P -->_beta P'$ and $Z$ is a $lambda$-term, then $P Z -->_beta P' Z$ and $Z p -->_beta Z P'$.
+    - If $P -->_beta P'$ and $Z$ is a $lambda$-term, then $P Z -->_beta P' Z$ and $Z P -->_beta Z P'$.
 ]<def:beta-reduction>
 #definition[
     We define *$beta$-equivalence*, $equiv_beta$, as the smallest equivalence relation containing $-->_beta$.
@@ -260,8 +262,75 @@ We will inductively define a provability relation by enforcing rules that implem
     We have $(lambda x: ZZ . (lambda y: tau . x)) 2 -->_beta (lambda y: tau . 2)$.
 ]
 #lemma(name: "Free Variables Lemma")[
-    Let $Gamma | proves M: sigma$. Then
-    - If $Gamma subset.eq Gamma'$, then $Gamma' | proves M: sigma$.
+    Let $Gamma forces M: sigma$. Then
+    - If $Gamma subset.eq Gamma'$, then $Gamma' forces M: sigma$.
     - The free variables of $M$ occur in $Gamma$.
-    - There is a context $Gamma^* subset.eq Gamma$ comprising exactly the free variables in $M$, with $Gamma^* | proves M: sigma$.
+    - There is a context $Gamma^* subset.eq Gamma$ whose variables are exactly the free variables in $M$, with $Gamma^* forces M: sigma$.
 ]<lem:free-variables>
+#lemma(name: "Generation Lemma")[
+    + For every variable $x in V$, context $Gamma$ and type $sigma in Pi$: if $Gamma forces x: sigma$, then $x: sigma in Gamma$.
+    + If $Gamma forces (M N): sigma$, then there is a type $tau in Pi$ such that $Gamma forces M: tau -> sigma$ and $Gamma forces N: tau$.
+    + If $Gamma forces (lambda x . M): sigma$, then there are types $tau, rho in Pi$ such that $Gamma, x: tau forces M: rho$ and $sigma = (tau -> rho)$.
+]<lem:generation>
+#proof[
+    By induction (exercise).
+]
+#lemma(name: "Substitution Lemma")[
+    + If $Gamma forces M: sigma$ and $alpha in U$ is a type variable, then $Gamma[alpha := tau] forces M: sigma[alpha := tau]$.
+    + If $Gamma, x: tau forces M: sigma$ and $Gamma forces N: tau$, then $Gamma forces M[x := N]: sigma$.
+]<lem:substitution>
+#proposition(name: "Subject Reduction")[
+    If $Gamma forces M: sigma$ and $M -->_beta N$, then $Gamma forces N: sigma$.
+]<prop:subject-reduction>
+#proof[
+    - By induction on the derivation of $M -->_beta N$, using Generation and Substitution Lemmas (exercise).
+]
+#definition[
+    A $lambda$-term $M in Lambda_Pi$ is an *$beta$-normal form ($beta$-NF)* if there is no term $N$ such that $M -->_beta N$.
+]<def:lambda-term.beta-normal-form>
+#notation[
+    Write $M ->>_beta N$ if $M$ reduces to $N$ after (potentially multiple) $beta$-reductions.
+]
+#theorem(name: [Church-Rosser for $lambda(->)$])[
+    Suppose that $Gamma forces M: sigma$. If $M ->>_beta N_1$ and $M ->>_beta N_2$, then there is a $lambda$-term $L$ such that $N_1 ->>_beta L$ and $N_2 ->>_beta L$, and $Gamma: L: sigma$.
+]<thm:church-rosser>
+#corollary(name: "Uniqueness of normal form")[
+    If a simply-typed $lambda$-term admits a $beta$-NF, then this form is unique.
+]<cor:uniqueness-of-beta-normal-form>
+#proposition(name: "Uniqueness of types")[
+    + If $Gamma forces M: sigma$ and $Gamma forces M: tau$, then $sigma = tau$.
+    + If $Gamma forces M: sigma$ and $Gamma forces N: tau$, and $M equiv_beta N$, then $sigma = tau$.
+]<prop:uniqueness-of-types>
+#proof[
+    + Induction (exercise).
+    + By Church-Rosser, there is a $lambda$-term $L$ which both $M$ and $N$ reduce to. By Subject Reduction, we have $Gamma forces L: sigma$ and $Gamma forces L: tau$, so $sigma = tau$ by 1.
+]
+#example[
+    There is no way to assign a type to $lambda x . x x$: let $x$ be of type $tau$, then by the Generation Lemma, in order to apply $x$ to $x$, $x$ must be of type $tau -> sigma$ for some type $sigma$. But $tau != tau -> sigma$, which contradicts Uniqueness of Types.
+]
+#definition[
+    The *height function* is the recursively defined map $h: Pi -> NN$ that maps all type variables $u in U$ to $0$, and a function type $sigma -> tau$ to $1 + max{h(sigma), h(tau)}$: $
+        h: Pi & -> NN, \
+        h(u) & = 0 quad forall u in U, \
+        h(sigma -> tau) & = 1 + max{h(sigma), h(tau)} quad forall sigma, tau in Pi.
+    $ We extend the height function from types to redexes by taking the height of its $lambda$-abstraction.
+]<def:height-function>
+#notation[
+    $(lambda x: sigma . P^tau)^(sigma -> tau)$ denotes that $P$ has type $tau$ and the $lambda$-abstraction has type $sigma -> tau$.
+]
+#theorem(name: [Weak normalisation for $lambda(->)$])[
+    Let $Gamma forces M: sigma$. Then there is a finite reduction path $M := M_0 -->_beta M_1 -->_beta ... -->_beta M_n$, where $M_n$ is in $beta$-normal form.
+]
+#proof(name: "\"Taming the Hydra\"")[
+    - Idea is to apply induction on the complexity of $M$.
+    - Define a function $m: Lambda_Pi -> NN times NN$ by $
+        m(M) := cases(
+            (0, 0) & "if" M "is in" beta"-NF",
+            (h(M), "redex"(M)) & "otherwise"
+        )
+    $ where $h(M)$ is the maximal height of a redex in $M$, and $"redex"(M)$ is the number of redexes in $M$ of that height.
+    - We use induction over $omega times omega$ to show that if $M$ is typable, then it admits a reduction to $beta$-NF.
+    - The problem is that inductions can copy redexes or create new ones, so our strategy is to always reduce the right-most redex of maximal height.
+    - We will argue that, by following this strategy, any new redexes that we generate have a strictly lower height than the height of the redex we chose to reduce.
+    - 
+]

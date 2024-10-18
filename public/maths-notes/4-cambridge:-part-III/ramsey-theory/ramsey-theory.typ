@@ -5,13 +5,14 @@
     #set text(fill: eval(c))
     #c
 ]
+#let Clr(c) = smallcaps(c)
 
 = Monochromatic sets
 
 == Ramsey's theorem
 
 #notation[
-    $NN$ denotes the set of positive integers, $[n] = {1, ..., n}$, and $X^((r)) = {A subset.eq X: |A| = r}$. Elements of a set are written in ascending order, e.g. ${i, j}$ means $i < j$.
+    $NN$ denotes the set of positive integers, $[n] = {1, ..., n}$, and $X^((r)) = {A subset.eq X: |A| = r}$. Elements of a set are written in ascending order, e.g. ${i, j}$ means $i < j$. Write e.g. $i j k$ to mean the set ${i, j, k}$ with the ordering (unless otherwise stated) $i < j < k$.
 ]
 #definition[
     A *$k$-colouring* on $A^((r))$ is a function $c: A^((r)) -> [k]$.
@@ -86,19 +87,26 @@
     - It is a proof by compactness (essentially, we proved that ${0, 1}^NN$ with the product topology, i.e. the topology derived from the metric $d(f, g) = 1/min{n in NN: f(n) != g(n)}$, is sequentially compact).
 ]
 #remark[
-    Now consider a colouring $c: NN^((2)) -> X$ with $X$ potentially infinite. Can $c$ be injective?
-    - $c({i, j}) = i$ is... TODO finish
+    Now consider a colouring $c: NN^((2)) -> X$ with $X$ potentially infinite. This does not necessarily admit an infinite monochromatic set, as we could colour each edge a different colour. Such a colouring would be injective. We can't guarantee either the colouring being constant or injective though, as $c(i j) = i$ satisfies neither.
 ]
 #theorem(name: "Canonical Ramsey")[
-    Let $c: NN^((2)) -> X$ be a colouring with $X$ an arbitrary set. Then there exists an infinite set $M$ such that:
+    Let $c: NN^((2)) -> X$ be a colouring with $X$ an arbitrary set. Then there exists an infinite set $M subset.eq NN$ such that:
     + $c$ is constant on $M^((2))$, or
     + $c$ is injective on $M^((2))$, or
-    + $c({i, j}) = c({k, l})$ iff $i = k$ for all $i < j$ and $k < l$, $i, j, k, l in M$, or
-    + $c({i, j}) = c({k, l})$ iff $j = l$ for all $i < j$ and $k < l$, $i, j, k, l in M$.
+    + $c(i j) = c(k l)$ iff $i = k$ for all $i < j$ and $k < l$, $i, j, k, l in M$, or
+    + $c(i j) = c(k l)$ iff $j = l$ for all $i < j$ and $k < l$, $i, j, k, l in M$.
+]
+#proofhints[
+    - First consider the $2$-colouring $c_1$ of $NN^((4))$ where $i j k l$ is coloured #Clr("same") if $c(i j) = c(k l)$ and #Clr("diff") otherwise. Show that an infinite monochromatic set $M_1 subset.eq NN$ (why does this exist?) coloured #Clr("same") leads to case 1.
+    - Assume $M_1$ is coloured #Clr("diff"), consider the $2$-colouring of $M_1^((4))$, which colours $i j k l$ #Clr("same") if $c(i l) = c(j k)$ and #Clr("diff") otherwise. Show an infinite monochromatic $M_2 subset.eq M_1$ (why does this exist?) must be coloured #Clr("diff") by contradiction.
+    - Consider the $2$-colouring of $M_2^((4))$ where $i j k l$ is coloured #Clr("same") if $c(i k) = c(j l)$ and #Clr("diff") otherwise. Show an infinite monochromatic set $M_3 subset.eq M_2$ (why does this exist?) must be coloured #Clr("diff") by contradiction.
+    - $2$-colour $M_3^((3))$ by: $i j k$ is coloured #Clr("same") if $c(i j) = c(j k)$ and #Clr("diff") otherwise. Show an infinite monochromatic set $M_4 subset.eq M_3$ (why does this exist) must be coloured #Clr("diff") by contradiction.
+    - $2$-colour $M_4^((3))$ by the other two similar colourings to above, obtaining monochromatic $M_6 subset.eq M_5 subset.eq M_4$.
+    - Consider 4 combinations of these colourings on $M_6$, show 3 lead to one of the cases in the theorem, and the other leads to contradiction.
 ]
 #proof[
-    - $2$-colour $NN^((4))$ by: $i j k l$ is red if $c(i j) = c(k l)$ and blue otherwise. By Ramsey's Theorem for $4$-sets, there is an infinite monochromatic set $M_1$.
-    - If $M_1$ is red, then $c$ is constant on $M_1^((2))$: if pick $m < n$ with $m > l$, then $c(i j) = c(m n) = c(k l)$.
+    - $2$-colour $NN^((4))$ by: $i j k l$ is red if $c(i j) = c(k l)$ and blue otherwise. By Ramsey's Theorem for $4$-sets, there is an infinite monochromatic set $M_1 subset.eq NN$ for this colouring.
+    - If $M_1$ is red, then $c$ is constant on $M_1^((2))$: for all pairs $i j, i' j' in M_1^((2))$, pick $m < n$ with $j, j' < m$, then $c(i j) = c(m n) = c(i' j')$.
     - So assume $M_1$ is blue.
     - Colour $M_1^((4))$ by giving $i j k l$ colour green if $c(i l) = c(j k)$ and purple otherwise. By Ramsey's theorem for $4$-sets, there exists an infinite monochromatic $M_2 subset.eq M_1$ for this colouring.
     - Assume $M_2$ is coloured green: if $i < j < k < l < m < n in M_2$, then $c(j k) = c(i n) = c(l m)$ (consider $i j k n$ and $i l m n$): contradiction, since $M_1$ is blue.
@@ -112,6 +120,57 @@
     - So for any $i j k in M_4^((3))$, $c(i j) != c(j k)$.
     - Finally, colour $M_4^((3))$ by: $i j k$ is gold if $c(i j) = c(i k)$ and $c(i k) = c(j k)$, silver if $c(i j) = c(i k)$ and $c(i k) != c(j k)$, bronze if $c(i j) != c(i k)$ and $c(i k) = c(j k)$, and platinum if $c(i j) != c(i k)$ and $c(i k) != c(j k)$.
     - By Ramsey's theorem for $3$-sets, there exists monochromatic $M_5 subset.eq M_4$. $M_5$ cannot be gold, since then $c(i j) = c(j k)$: contradiction, since $M_5 subset.eq M_4$. If silver, then we have case 3 in the theorem. If bronze, then we have case 4 in the theorem. If platinum, then we have case 2 in the theorem.
+]
+#remark[
+    - A more general result of the above theorem states: let $NN^((r))$ be arbitrarily coloured. Then we can find an infinite $M$ and $I subset.eq [r]$ such that for all $x_1 ... x_r in M^((r))$ and $y_1 ... y_r in M^((r))$, $c(x_1 ... x_r) = c(y_1 ... y_r)$ iff $x_i = y_i$ for all $i in I$.
+    - In canonical Ramsey, $I = emptyset$ is case 1, $I = {1, 2}$ is case $2$, $I = {1}$ is case 3 and $I = {2}$ is case 4.
+    - These $2^r$ colourings are called the *canonical colourings* of $NN^((r))$.
+]
+#exercise[
+    Prove the general statement.
+]
+
+== Van der Waerden's theorem
+
+#remark[
+    We want to show that for any $2$-colouring of $NN$, we can find a monochromatic arithmetic progression of length $m$ for any $m in NN$. By compactness, this is equivalent to showing that for all $m in NN$, there exists $n in NN$ such that for any $2$-colouring of $[n]$, there exists a monochromatic arithmetic progression of length $m$. (If not, there for each $n$, there is a colouring $c_n: [n] -> {1, 2}$ with no monochromatic arithmetic progression of length $m$. Infinitely many agree on $[1]$, infinitely many agree on $[2]$, and so on - we obtain a $2$-colouring of $NN$ with no monochromatic arithmetic progression of length $m$).
+
+    We will prove a slightly stronger result: whenever $NN$ is $k$-coloured, there exists a monochromatic arithmetic progression, i.e. for any $k, m in NN$, there exists $n in NN$ such that whenever $[n]$ is $k$-coloured, we have a length $m$ monochromatic progression.
+]
+#definition[
+    Let $A_1, ..., A_k$ be length $m$ arithmetic progressions: $A_i = {a_i, a_i + d_i, ..., a_i + (m - 1)d_i}$. $A_1, ..., A_k$ are *focussed* at $f$ if $a_i + m d_i = f$ for all $i$.
+]<def:arithmetic-progression.focussed>
+#example[
+    ${4, 8}$ and ${6, 9}$ are focussed at $12$.
+]
+#definition[
+    If length $m$ arithmetic progressions $A_1, ..., A_k$ are focused at $f$ and are monochromatic with each a different colour (for a given colouring), they are called *colour-focussed* at $f$.
+]<def:arithmetic-progression.colour-focussed>
+#theorem[
+    Whenever $NN$ is $k$-coloured, there exists a monochromatic arithmetic progression of length $3$, i.e. for all $k in NN$, there exists $n in NN$ such that any $k$-colouring of $[n]$ admits a length $3$ monochromatic progression.
+]
+#proof[
+    - We claim that for all $r <= k$, there exists an $n$ such that if $[n]$ is $k$-coloured, then either:
+        - There exists a monochromatic arithmetic progression of length $3$.
+        - There exist $r$ colour-focussed arithmetic progressions of length $2$.
+    - We prove the claim by induction on $r$:
+        - $r = 1$: take $n = k + 1$, then by pigeonhole, some two elements of $[n]$ have the same colour, so form a length two arithmetic progression.
+        - Assume true for $r - 1$ with witness $n$. We claim that $N = 2n (k^(2n) + 1)$ works for $r$.
+        - Let $c: [2n (k^(2n) + 1)] -> [k]$ be a colouring. We partition $[N]$ into $k^(2n) + 1$ sets: $B_1 = {1, ..., 2n}$, $B_2 = {2n + 1, ..., 4n}$, ....
+        - Assume there is no length $3$ monochromatic progression for $c$. By inductive hypothesis, each $B_i$ has $r - 1$ colour-focussed arithmetic progressions of length $2$.
+        - Since $|B_i| = 2n$, each block also contains their focus. For a set $M$ with $|M| = 2n$, there are $k^(2n)$ ways to $k$-colour $M$. So by pigeonhole, there are blocks $B_s$ and $B_(s + t)$ that have the same colouring.
+        - Let ${a_i, a_i + d_i}$ be the $r - 1$ colour-focussed arithmetic progressions in $B_s$, then ${a_i + 2n t, a_i + d_i + 2n t}$ is the corresponding set in $B_(s + t)$. Let $f$ be the focus in $B_s$, then $f + 2n t$ is the focus in $B_(s + t)$.
+        - Now ${a_i, a_i + d_i + 2n t}$, $i in [r - 1]$, are $r - 1$ arithmetic progresions colour-focused at $f + 4 n t$. Also, ${f, f + 2n t}$ is monochromatic of a different colour to the $r - 1$ colours used. Hence, there are $r$ arithmetic progressions of length $2$ colour-focussed at $f + 4 n t$.
+        - TODO finish proof.
+]
+#remark[
+    The idea of looking at all possible colourings of a set is called a *product argument*.
+]
+#definition[
+    The *Van der Waerden* number $W(k, m)$ is the smallest $n$ such that for any $k$-colouring of $[n]$, there exists a monochromatic arithmetic progression of length $m$.
+]
+#remark[
+    The above theorem gives a tower-type upper bound $W(k, 3) <= k^(k^(dots.up)^(k^(4k)))$.
 ]
 
 
