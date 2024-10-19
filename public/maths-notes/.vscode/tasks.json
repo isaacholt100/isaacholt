@@ -1,0 +1,29 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Export as Html",
+            "type": "typst",
+            "command": "export",
+            "export": {
+                "format": "html"
+            }
+        },
+        {
+            "label": "Export as Markdown",
+            "type": "typst",
+            "command": "export",
+            "export": {
+                "format": "markdown"
+            }
+        },
+        {
+            "label": "Export as Plain Text",
+            "type": "typst",
+            "command": "export",
+            "export": {
+                "format": "html"
+            }
+        }
+    ]
+}

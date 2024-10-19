@@ -201,6 +201,8 @@
 #proof[
     - Observe that $
         E(A, B) & = abs({(a, a', b, b') in A^2 times B^2: a + b = a' + b'}) \
+        & = abs(union.big_(x in G) {(a, a', b, b') in A^2 times B^2: a + b = x "and" a' + b' = x}) \
+        & = union.big_(x in G) abs({(a, a', b, b') in A^2 times B^2: a + b = x "and" a' + b' = x}) \
         & = sum_(x in G) r_(A + B) (x)^2
     $
 ]
