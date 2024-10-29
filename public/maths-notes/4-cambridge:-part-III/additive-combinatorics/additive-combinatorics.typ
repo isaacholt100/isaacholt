@@ -1,6 +1,8 @@
 #import "../../template.typ": *
 #show: doc => template(doc, hidden: (), slides: false)
 
+#let Spec = math.op("Spec")
+
 = Combinatorial methods
 
 #definition[
@@ -374,7 +376,106 @@ In this chapter, assume that $G$ is a _finite_ abelian group.
         gamma & |-> EE_(x in G) f(x) overline(gamma(x)).
     $
 ]
-TODO: look at notation sheet on Moodle.
+#proposition[
+    Let $f: G -> CC$. Then for all $x in G$, $
+        f(x) = sum_(gamma in hat(G)) hat(f)(gamma) gamma(x).
+    $
+]
+#proofhints[
+    Straightforward.
+]
+#proof[
+    We have $
+        sum_(gamma in hat(G)) hat(f)(gamma) gamma(x) & = sum_(gamma in hat(G)) EE_(y in G) f(y) overline(gamma(y)) gamma(x) \
+        & = EE_(y in G) f(y) sum_(gamma in hat(G)) gamma(x - y) \
+        & = f(x)
+    $ by the above lemma.
+]
+#definition[
+    For $A subset.eq G$, the *indicator* (or *characteristic*) function of $A$ is $
+        indicator(A): G & -> {0, 1}, \
+        x & |-> cases(
+            1 quad & "if" x in A,
+            0 & "if" x in.not A
+        ).
+    $
+]<def:indicator-function>
+#definition[
+    $hat(bb(1))_A (1) = EE_(x in G) indicator(A)(x) dot 1 = abs(A)\/abs(G)$ is the *density* of $A$ in $G$. This is often denoted by $alpha$.
+]<def:density>
+#definition[
+    Given $emptyset != A subset.eq G$, the *characteristic measure* $mu_A: G -> [0, abs(G)]$ is defined by $
+        mu_A (x) := alpha^(-1) indicator(A)(x).
+    $ Note that $EE_(x in G) mu_A (x) = 1 = hat(mu)_A (1)$.
+]<def:characteristic-measure>
+#definition[
+    The *balanced function* $f_A: G -> [-1, 1]$ of $A$ is given by $
+        f_A (x) = indicator(A)(x) - alpha.
+    $ Note that $EE_(x in G) f_A (x) = 0 = hat(f)_A (1)$.
+]<def:balanced-function>
+#example[
+    Let $V <= FF_p^n$ be a subspace. Then for $t in hat(FF)_p^n$, $
+        hat(bb(1))_V (t) & = EE_(x in FF_p^n) indicator(V)(x) e(-x . t \/ p) \
+        & = abs(V)/p^n indicator(V^perp)(t).
+    $ where $V^perp = \{t in hat(FF)_p^n: x . t = 0 quad forall x in V\}$ is the *annihilator* of $V$. Hence, $hat(bb(1))_V (t) = mu_(V^perp) (t)$.
+]
+#example[
+    Let $R subset.eq G$ be such that each $x in G$ lies in $R$ independently with probability $1/2$. Then with high probability, $
+        sup_(gamma != 1) abs(hat(bb(1))_R (gamma)) = O(sqrt((log abs(G))/abs(G))).
+    $ This follows from Chernoff's inequality.
+]
+#theorem("Chernoff's Inequality")[
+    Given complex-valued independent random variables $X_1, ..., X_n$ with mean $0$, for all $theta > 0$, we have $
+        Pr[abs(sum_(i = 1)^n X_i) >= theta sqrt(sum_(i = 1)^n norm(X_i)_(L^oo (Pr))^2)] <= 4 exp(-theta^2 \/ 4).
+    $
+]<thm:chernoffs-inequality>
+#example[
+    Let $Q = {x in FF_p^n: x . x = 0}$ wiht $p > 2$. Then $abs(Q)\/p^n = 1/p + O(p^(-n\/2))$ and $sup_(t != 0) abs(hat(bb(1))_Q (t)) = O(p^(-n\/2))$.
+]
+#lemma("Plancherel's Identity")[
+    Let $f, g: G -> CC$. Then we have
+    - *Parseval's identity*: 
+    - *Plancherel's identity*: $gen(f, g) = gen(hat(f), hat(g))$.
+]
+#proof[
+    Exercise.
+]
+#corollary("Parseval's Identity")[
+    For all $f, g: G -> CC$, $
+        norm(f)_(L^2 (G))^2 = norm(hat(f))_(L^2 (hat(G)))^2.
+    $
+]
+#proof[
+    By Plancherel.
+]
+#definition[
+    Let $rho > 0$ and $f: G -> CC$. The *$rho$-large Fourier spectrum* of $f$ is $
+        Spec_rho (f) := {gamma in hat(G): abs(hat(f)(gamma)) >= rho norm(f)_1}.
+    $
+]<def:rho-large-fourier-spectrum>
+#example[
+    By the previous example, if $f = indicator(V)$ with $V <= FF_p^n$ a subspace, then for all $rho in (0, 1]$, $
+        Spec_rho (indicator(V)) = {t in hat(FF)_p^n: abs(indicator(V)(t)) >= rho abs(V) / p^n} = V^perp
+    $
+]
+#lemma[
+    For all $rho > 0$, $
+        abs(Spec_rho (f)) <= rho^(-2) norm(f)_2^2 / norm(f)_1^2
+    $
+]
+#proofhints[
+    Use Parseval's identity.
+]
+#proof[
+    By Parseval's identity, $
+        norm(f)_2^2 = norm(hat(f))_2^2 & = sum_(gamma in hat(G)) abs(hat(f)(gamma))^2 \
+        & >= sum_(gamma in Spec_rho (f)) abs(hat(f)(gamma))^2 \
+        & >= abs(Spec_rho (f)) (rho norm(f)_1)^2.
+    $
+]
+#remark[
+    In particular, if $f = indicator(A)$ for $A subset.eq G$, then $norm(f)_1 = alpha = abs(A) \/ abs(G) = norm(f)_2^2$. So $abs(Spec_rho (indicator(A))) <= rho^(-2) alpha^(-1)$.
+]
 
 
 = Probabilistic tools

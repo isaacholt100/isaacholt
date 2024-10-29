@@ -256,7 +256,7 @@
     Let $X$ be finite set. We say $X^n$ consists of *words of length $n$ on alphabet $X$*.
 ]<def:length-n-words>
 #definition[
-    Let $X$ be finite. A *combinatorial line* in $X^n$ is a set $L subset.eq X^n$ of the form $
+    Let $X$ be finite. A *(combinatorial) line* in $X^n$ is a set $L subset.eq X^n$ of the form $
         L = {(x_1, ..., x_n) in X^n: forall i in.not I, x_i = a_i "and" forall i, j in I, x_i = x_j }
     $ for some non-empty set $I subset.eq [n]$ and $a_i in X$ (for each $i in.not I$). $I$ is the set of *active coordinates* for $L$.
 
@@ -274,8 +274,27 @@
     - $I = {1}$: ${(1, 2, 3), (2, 2, 3), (3, 2, 3)}$ (with $a_2 = 2, a_3 = 3$).
     - $I = {1, 3}$: ${(1, 3, 1), (2, 3, 2), (3, 3, 3)}$ (with $a_2 = 3$).
 ]
+#definition[
+    In a line $L$, write $L^-$ and $L^+$ for the smallest and largest points in $L$ (with respect to the ordering on $[m]^n$ where $x <= y$ if $x_i <= y_i$ for all $i$).
+]
+#definition[
+    Lines $L_1, ..., L_k$ are *focussed* at $f$ if $L_i^+ = f$ for all $i in [k]$. They are *colour-focussed* if they are focussed and $L_i \\ {L_i^+}$ is monochromatic for all $i in [k]$.
+]
+#example[
+    In $[4]^2$, three lines colour-focussed at $f$ are shown below: TODO insert diagram.
+]
 #theorem("Hales-Jewett")[
     Let $m, k in NN$ (we use alphabet $X = [m]$), then there exists $n in NN$ such that for any $k$-colouring of $[m]^n$, there exists a monochromatic combinatorial line.
+]
+#proof[
+    By induction on $m$. The case $m = 1$ is trivial as $abs([m]^n) = 1$. Assume that $"HJ"(m - 1, k')$ exists for all $k' in NN$. We claim that for all $1 <= r <= k$, there exists $n in NN$ such that for any $k$-colouring of $[m]^n$, we have either:
+    - a monochromatic line, or
+    - $r$ colour-focussed lines.
+    We can then take $r = k$ and consider the focus.
+
+    We prove the claim by induction on $r$. For $r = 1$, $n = "HJ"(m - 1, k)$ suffices. Let $n$ be a witness for $r - 1$. Let $n' = "HJ"(m - 1, k^(m^n))$. We will show $N = n + n'$ is suitable for $r$. Let $c: [m]^N -> [k]$ be a $k$-colouring with no monochromatic lines. Writing $[m]^N = [m]^n times [m]^(n')$, colour $[m]^(n')$ by $c': [m]^(n') -> [k]^(m^n)$, $c'(b) = (c(a_1, b), ..., c(a_(m^n), b))$ (where $[m]^n = {a_1, ..., a_(m^n)}$). By the inductive hypothesis, there eixsts a line $L$ with active coordinates $I$ such that $c(a, b) = c'(a, b')$ for all $a in [m]^n$ and for all $b, b' in L \\ {L^+}$. But now this induces a colouring $c'': [m]^n -> [k]$, $c''(a) = c(a, b)$ for any $b in L \\ {L^+}$. By definition of $n$, there exist $r - 1$ lines $L_1, ..., L_(r - 1)$ colour-focussed (w.r.t $c''$) at $f$, with active coordinates $I_1, ..., I_(r - 1)$.
+
+    Finally, look at the lines that start at $(L_i^-, L^-)$ with active coordinates $I_i union I$, and at the line that starts at $(f, L^-)$ with active coordinate $I$. These are all focussed at $(f, L^+)$, so we are done.
 ]
 #notation[
     Denote the smallest such $n$ by $"HJ"(m, k)$.
@@ -291,6 +310,29 @@
 ]
 #exercise[
     Show that the $m$-in-a-row noughts and crosses game cannot be a draw in sufficiently high dimensions, and that the first player can always win.
+]
+#definition[
+    A *$d$-dimensional subspace* (or *$d$-point parameter set*) $S subset.eq X^n$ is a set such that there exist pairwise disjoint $I_1, ..., I_d subset.eq [n]$ and $a_i in X$ for all $i in [n] - (I_1 union dots.c union I_d)$, such that $
+        S = {x in X^n: & x_i = a_i quad forall i in [n] - (I_1 union dots.c union I_d), \ "and" & x_i = x_j quad forall i, j in I_k "for some" k in [d]}.
+    $
+]<def:combinatorial-subspace>
+#theorem("Extended Hales-Jewett")[
+    For all $m, k, d in NN$, there exists $n in NN$ such that for any colouring of $[m]^n$, there exists a monochromatic $d$-dimensional subspace.
+]
+#proof[
+    We can view $X^(d n')$ as $(X^d)^(n')$. A line in $(X^d)^n'$ (on alphabet $Y = X^d$) corresponds to a $d$-dimensional subspace in $X^(d n')$ (on alphabet $X$). Hence, we can take $n = "HJ"(n^d, k)$.
+]
+#example[
+    Let $X = [3]$, $d = 3$. $Y = [3]^3$. Up to rearranging the active coordinate indices, a line in $Y^n$ is (TODO look at scan).
+]
+#definition[
+    Let $S subset.eq NN^d$ be finite. A *homothetic copy* of $S$ is a set of the form $a + lambda S$ where $a in NN^d$ and $lambda in NN$.
+]
+#theorem("Gallai")[
+    Let $S subset.eq NN^d$ be finite. For every $k$-colouring of $NN^d$, there exists a monochromatic homothetic copy of $S$.
+]
+#proof[
+    Let $S = {S_1, ..., S_m}$. Let $c: NN^d -> [k]$ be a $k$-colouring. For $n$ large enough (i.e. $n >= "HJ"(m, k)$), colour $[m]^n$ by $c(x_1, ..., x_n) = c(S_(x_1) + dots.c + S_(x_m))$. By Hales-Jewett, there exists a monochromatic line in $[m]^n$ with active coordinates $I$. So $c(sum_(i in.not I) S_i + abs(I) S_j)$ is the same colour for all $j in [m]$. So we are done, as $sum_(i in.not I) S_i + abs(I) S$ is a homothetic copy of $S$.
 ]
 
 
