@@ -1,50 +1,37 @@
-#import "@preview/lemmify:0.1.5": *
 #import "@preview/polylux:0.3.1": *
+#import "@preview/ctheorems:1.1.3": *
 
-#let thm-style-proof(
-    thm-type,
-    name,
-    number,
-    body
-) = block(width: 100%, breakable: true)[#{
-    emph(thm-type) + "."
-    if number != none {
-        strong(number) + " "
+#let thmstyle = (
+    titlefmt: strong,
+    inset: 0em,
+    separator: [#h(0.1em)#h(0.2em)],
+    namefmt: x => [(#x)],
+    base_level: 1,
+)
+#let theorem = thmplain("theorem", "Theorem", ..thmstyle)
+#let lemma = thmplain("theorem", "Lemma", ..thmstyle)
+#let corollary = thmplain("theorem", "Corollary", ..thmstyle)
+#let definition = thmplain("theorem", "Definition", ..thmstyle)
+#let remark = thmplain("theorem", "Remark", ..thmstyle)
+#let proposition = thmplain("theorem", "Proposition", ..thmstyle)
+#let example = thmplain("theorem", "Example", ..thmstyle)
+#let conjecture = thmplain("theorem", "Conjecture", ..thmstyle)
+#let algorithm = thmplain("theorem", "Algorithm", ..thmstyle)
+#let notation = thmplain("theorem", "Notation", ..thmstyle)
+#let note = thmplain("theorem", "Note", ..thmstyle)
+#let fact = thmplain("theorem", "Fact", ..thmstyle)
+#let axiom = thmplain("theorem", "Axiom", ..thmstyle)
+#let problem = thmplain("theorem", "Problem", ..thmstyle)
+#let exercise = thmplain("theorem", "Exercise", ..thmstyle)
+#let proof = thmproof("proof", "Proof", inset: 0em, separator: [#h(0.1em).#h(0.2em)])
+#let proofhints = thmproof("proofhints", "Proof (Hints)", inset: 0em, separator: [#h(0.1em).#h(0.2em)])
+
+#let to-identifier(name) = {
+    if name == "Proof (Hints)" {
+        return "proofhints"
     }
-
-    if name != none {
-        emph[(#name)] + " "
-    }
-    " " + body + h(1fr) + $square$
-}]
-
-#let thm-style-simple(
-  thm-type,
-  name,
-  number,
-  body
-) = {
-    if thm-type == "Proof (Hints)" {
-        return thm-style-proof(thm-type, name, none, body)
-    }
-    return block(width: 100%, breakable: true)[#{
-        strong(thm-type)
-        if number != none {
-            // " " + strong(number)
-        }
-
-        if name != none {
-            " " + [(#name)]
-        }
-            ". " + body
-    }]
+    return lower(name)
 }
-
-#let (
-    theorem, lemma, corollary, definition, remark, proposition, example, proof, rules: thm-rules
-) = default-theorems("thm-group", lang: "en", proof-styling: thm-style-proof, thm-styling: thm-style-simple)
-
-#let (algorithm, note, notation, exercise, fact, axiom, proofhints, problem, rules) = new-theorems("thm-group", ("algorithm": [Algorithm], "note": [Note], "notation": [Notation], "exercise": [Exercise], "fact": [Fact], "axiom": [Axiom], "proofhints": "Proof (Hints)", "problem": [Problem]), thm-styling: thm-style-simple)
 
 #let template(doc, hidden: ("proof", ), slides: false) = {
 	set text(
@@ -60,18 +47,15 @@
     } else {
         "1"
     })
-    // set par(justify: true)
 	set math.mat(delim: "[")
     set math.vec(delim: "[")
 	set heading(numbering: "1.")
 
-    show: rules
-    show: thm-rules
+    let hidden-supplements = hidden
 
-    let hidden = hidden.map(s => [#s])
-
-    show thm-selector("thm-group"): it => {
-        if hidden.contains(it.supplement) {
+    show: thmrules.with(qed-symbol: $square$)
+    show figure.where(kind: "thmenv"): it => {
+        if hidden-supplements.contains(to-identifier(it.supplement.text)) {
             none
         } else {
             if slides {
@@ -83,6 +67,7 @@
             }
         }
     }
+
 
     show heading: it => {
         if slides {
@@ -116,3 +101,4 @@
 #let powset = math.bb("P")
 #let dom = math.op("dom")
 #let indicator(S) = $bb(1)_#S$
+#let gen(..gens) = $angle.l #gens.pos().join(",") angle.r$

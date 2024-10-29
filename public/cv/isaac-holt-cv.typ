@@ -143,7 +143,8 @@
 
 == Education
 
-*University of Cambridge*, MASt in Pure Mathematics #date("Current") \
+*University of Cambridge*, MASt in Pure Mathematics #dates("10/2024", "06/2025") \
+- Current courses: Additive Combinatorics, Combinatorics, Information Theory, Logic and Computability, Quantum Computation, Ramsey Theory
 
 *Durham University*, BSc Mathematics #dates("09/2021", "06/2024") \
 - Grade: First Class Honours

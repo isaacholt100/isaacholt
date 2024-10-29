@@ -46,7 +46,7 @@
     - $g in A + B$ iff $A sect (g - B) != emptyset$ where ($g - B = {g} - B$).
     - Let $g in ZZ\/p$, then use inclusion-exclusion on $|A sect (g - B)|$ to conclude result.
 ]
-#theorem(name: "Cauchy-Davenport")[
+#theorem("Cauchy-Davenport")[
     Let $p$ be prime, $A, B subset.eq ZZ\/p$ be non-empty. Then $
         |A + B| >= min{p, |A| + |B| - 1}.
     $
@@ -85,7 +85,7 @@
         d(A, B) := log (|A - B|)/(sqrt(|A| dot |B|)).
     $
 ]
-#lemma(name: "Ruzsa Triangle Inequality")[
+#lemma("Ruzsa Triangle Inequality")[
     Let $A, B, C subset.eq G$ be finite. Then $
         d(A, C) <= d(A, B) + d(B, C).
     $
@@ -113,7 +113,7 @@
         ell A + m A := underbrace(A + dots.c + A, ell "times") underbrace(- A - dots.c - A, m "times")
     $ This is referred to as the *iterated sum and difference set*.
 ]
-#theorem(name: "Plunnecke's Inequality")[
+#theorem("Plunnecke's Inequality")[
     Let $A, B subset.eq G$ be finite and $|A + B| <= K|A|$ for some $K >= 1$. Then $forall ell, m in NN_0$, $
         |ell B - m B| <= K^(ell + m) abs(A).
     $
@@ -146,7 +146,7 @@
         - Suppose $m - 1 >= 1$ is true. By the claim with $C = (m - 1) B$, we have $ abs(A' + m B) = |A' + B + (m - 1)B| <= K' abs(A' + (m - 1)B) <= (K')^m abs(A'). $
     - As in the proof of Ruzsa's triangle inequality, $forall ell, m in NN_0$, $ |A'| |ell B - m B| <= |A' + ell B| |A' + m B| <= (K')^ell abs(A') (K')^m abs(A') = (K')^(ell + m) abs(A')^2. $
 ]
-#theorem(name: "Freiman-Ruzsa")[
+#theorem("Freiman-Ruzsa")[
     Let $A subset.eq FF_p^n$ and $abs(A + A) <= K abs(A)$. Then $A$ is contained in a subspace $H subset.eq FF_p^n$ with $abs(H) <= K^2 p^(K^4) abs(A)$.
 ]<thm:freiman-ruzsa>
 #proofhints[
@@ -174,7 +174,7 @@
 
     Now $abs(A + A) = abs((V union R) + (V union R)) = abs(V union (V + R) union 2R) approx K abs(V) approx K abs(A)$ (since $V union (V + R)$ gives $K$ cosets of $V$). But any subspace $H subset.eq FF_p^n$ containing $A$ must have size at least $p^(n\/K + (K - 1)) approx abs(V) p^K$. Hence, the exponential dependence on $K$ in Freiman-Ruzsa is necessary.
 ]
-#theorem(name: "Polynomial Freiman-Ruzsa Theorem")[
+#theorem("Polynomial Freiman-Ruzsa Theorem")[
     Let $A subset.eq FF_p^n$ be such that $abs(A + A) <= K abs(A)$. Then there exists a subspace $H subset.eq FF_p^n$ of size at most $C_1 (K) abs(A)$ such that for some $x in FF_p^n$, $
         abs(A sect (x + H)) >= abs(A)/(C_2 (K)),
     $ where $C_1 (K)$ and $C_2 (K)$ are polynomial in $K$.
@@ -195,22 +195,186 @@
 ]
 #lemma[
     Let $emptyset != A, B subset.eq G$ for an abelian group $G$. Then $
-        E(A, B) >= (abs(A)^2 abs(B)^2)/abs(A + B).
+        E(A, B) >= (abs(A)^2 abs(B)^2)/abs(A plus.minus B).
     $
 ]
+#proofhints[
+    - Show that using Cauchy-Schwarz that $
+        E(A, B) = sum_(x in G) r_(A + B)(x)^2 >= (sum_(x in G) r_(A + B)(x))^2 / abs(A + B).
+    $
+    - By using indicator functions, show that $sum_(x in G) r_(A + B)(x) = abs(A) abs(B)$.
+]
 #proof[
-    - Observe that $
+    Observe that $
         E(A, B) & = abs({(a, a', b, b') in A^2 times B^2: a + b = a' + b'}) \
         & = abs(union.big_(x in G) {(a, a', b, b') in A^2 times B^2: a + b = x "and" a' + b' = x}) \
         & = union.big_(x in G) abs({(a, a', b, b') in A^2 times B^2: a + b = x "and" a' + b' = x}) \
-        & = sum_(x in G) r_(A + B) (x)^2
+        & = sum_(x in G) r_(A + B) (x)^2 \
+        & = sum_(x in A + B) r_(A + B) (x)^2 \
+        & >= (sum_(x in A + B) r_(A + B) (x))^2/(abs(A + B)) quad "by Cauchy-Schwarz"
+    $ But now $
+        sum_(x in G) r_(A + B) (x) & = sum_(x in G) abs(A sect (x - B)) = sum_(x in G) sum_(y in G) indicator(A)(y) indicator(x - B) (y) \
+        & = sum_(x in G) sum_(y in G) indicator(A)(y) indicator(B)(x - y) = abs(A) abs(B).
     $
+    Note that the same argument works for $abs(A - B)$.
+]
+#corollary[
+    If $abs(A + A) <= K abs(A)$, then $E(A) >= abs(A)^4 / abs(A + A) >= abs(A)^3 / K$. So if $A$ has small doubling constant, then it has large additive energy.
+]
+#proofhints[
+    Trivial.
+]
+#proof[
+    Trivial.
+]
+#example[
+    The converse of the above lemma does not hold: e.g. let $G$ be a (class of) abelian group(s). Then there exist constants $theta, eta > 0$ such that for all $n$ large enough, there exists $A subset.eq G$ with $abs(A) >= n$ satisfying $E(A) >= eta abs(A)^3$, and $abs(A + A) >= theta abs(A)^2$.
+]
+#definition[
+    Given $A subset.eq G$ and $gamma > 0$, let $P_gamma := {x in G: abs(A sect (x + A)) >= gamma abs(A)}$ be the set of *$gamma$-popular differences* of $A$.
+]
+#lemma[
+    Let $A subset.eq G$ be finite such that $E(A) = eta abs(A)^3$ for some $eta > 0$. Then $forall c > 0$, there is a subset $X subset.eq A$ with $abs(X) >= eta/3 abs(A)$ such that for all $(16c)$-proportion of pairs $(a, b) in X^2$, $a - b in P_(c eta)$.
+]
+#proof[
+    - We use a technique called "dependent random choice".
+    - Let $U = {x in G: abs(A sect (x + A)) <= 1/2 eta abs(A)}$.
+    - Then $sum_(x in U) abs(A sect (x + A))^2 <= 1/2 eta abs(A) sum_(x in G) abs(A sect (x + A)) = 1/2 eta abs(A)^3 = 1/2 E(A)$.
+    - For $0 <= i <= ceil(log_2 eta^(-1))$, let $Q_i = {x in G: abs(A) \/ 2^(i + 1) < abs(A sect (x + A)) <= abs(A) \/ 2^i}$ and set $delta_i = eta^(-1) 2^(-2i)$.
+    - Then $
+        sum_(i = 0)^(ceil(log_2 eta^(-1))) delta_i abs(Q_i) & = sum_i abs(Q_i) / (eta 2^(2i)) \
+        & = 1 / (eta abs(A)^2) sum_i abs(A)^2 / 2^(2i) abs(Q_i) \
+        & = 1 / (eta abs(A)^2) sum_i abs(A)^2 / 2^(2i) sum_(x in.not U) indicator({abs(A) \/ 2^(i + 1) < abs(A sect (x + A)) <= abs(A) \/ 2^i}) \
+        & >= 1 / (eta abs(A)^2) sum_(x in.not U) abs(A sect (x + A))^2 \
+        & >= 1 / (eta abs(A)^2) dot 1/2 E(A) = 1/2 abs(A).
+    $
+    - Let $S = {(a, b) in A^2: a - b in.not P_(c eta)}$. Now $
+        sum_i sum_((a, b) in S) abs((A - a) sect (A - b) sect Q_i) & <= sum_((a, b) in S) abs((A - a) sect (A - b)) \
+        & = sum_((a, b) in S) abs(A sect (a - b + A)) \
+        & <= sum_((a, b) in S) c eta abs(A) quad "by definition of" S \
+        & = abs(S) c eta abs(A) \
+        & <= c eta abs(A)^3 = 2 c eta abs(A)^2 dot 1/2 abs(A) \
+        & <= 2 c eta abs(A)^2 sum_i delta_i abs(Q_i) quad "by above inequality".
+    $
+    - Hence $exists i_0$ such that $
+        sum_((a, b) in S) abs((A - a) sect (A - b) sect Q_(i_0)) <= 2 c eta abs(A)^2 delta_(i_0) abs(Q_(i_0))
+    $
+    - Let $Q = Q_(i_0)$, $delta = delta_(i_0)$, $lambda = 2^(-i_0)$, so that $
+        sum_((a, b) in S) abs((A - a) sect (A - b) sect Q) <= 2 c eta abs(A)^2 delta abs(Q)
+    $
+    - Given $x in G$, let $X(x) = A sect (x + A)$. Then $
+        EE_(x in Q) abs(X(x)) = 1/abs(Q) sum_(x in Q) abs(A sect (x + A)) >= 1/2 lambda abs(A).
+    $
+    - Define $T(x) = {(a, b) in X(x)^2: a - b in P^(c eta)}$. Then $
+        EE_(x in Q) abs(T(x)) & = EE_(x in Q) abs({(a, b) in (A sect (x + A))^2: a - b in.not P_(c eta)}) \
+        & = 1/abs(Q) sum_(x in Q) abs({(a, b) in S: x in (A - a) sect (A - b)}) \
+        & = 1/abs(Q) sum_((a, b) in S) abs((A - a) sect (A - b) sect Q) \
+        & <= 1/abs(Q) 2 c eta abs(A)^2 delta abs(Q) = 2 c eta delta abs(A)^2 = 2c lambda^2 abs(A)^2.
+    $
+    - Therefore, $
+        EE_(x in Q) (abs(X(x))^2 - (16c)^(-1) abs(T(x))) & >= (EE_(x in Q) abs(X(x)))^2 - (16c)^(-1) EE_(x in Q) abs(T(x)) "by C-S" \
+        & >= (lambda/2)^2 abs(A)^2 - (16c)^(-1) 2 c lambda^2 abs(A)^2 \
+        & = (lambda^2 / 4 - lambda^2 / 8) abs(A)^2 = lambda^2 / 8 abs(A)^2.
+    $
+    - So $exists x in Q$ such that $abs(X(x))^2 >= lambda^2 / 8 abs(A)^2$, so $abs(X) >= lambda / sqrt(8) abs(A) >= eta/3 abs(A)$ and $abs(T(x)) <= 16c abs(X)^2$.
+]
+#theorem("Balog-Szemerédi-Gowers, Schoen")[
+    Let $A subset.eq G$ be finite such that $E(A) >= eta abs(A)^3$ for some $eta > 0$. Then there exists $A' subset.eq A$ with $abs(A') >= c_1 (eta) abs(A)$ such that $abs(A' + A') <= abs(A)\/c_2 (eta)$, where $c_1 (eta)$ and $c_2 (eta)$ are both polynomial in $eta$.
+]
+#proof[
+    - The idea is to find $A' subset.eq A$ such that $forall a, b in A'$, $a - b$ has many representations as $(a_1 - a_2) + (a_3 - a_4)$ with each $a_i in A$.
+    - Apply the above lemma with $c = 2^(-7)$ to obtain $X subset.eq A$ with $abs(X) >= eta/3 abs(A)$ such that for all but $1/8$ of pairs $(a, b) in X^2$, $a - b in P_(eta\/2^7)$. In particular, the bipartite graph $G = \(X union.sq X, \{(x, y) in X times X: x - y in P_(eta\/2^7)\}\)$ has at least $7/8 abs(X)^2$ edges.
+    - Let $A' = {x in X: deg_G (x) >= 3/4 abs(X)}$. Clearly $abs(A') >= abs(X)\/8$.
+    - For any $a, b in A'$, there are at least $abs(X)\/2$ elements $y in X$ such that $(a, y), (b, y) in E(G)$ (so $a - y, b - y in P_(eta\/2^7)$). Hence $a - b = (a - y) - (b - y)$ has at least $
+        underbrace(eta/6 abs(A), "choices for" y) dot eta/2^7 abs(A) eta/2^7 abs(A) >= eta^3 / 2^17 abs(A)^3
+    $ representations of the form $a_1 - a_2 - (a_3 - a_4)$ with each $a_i in A$.
+    - It follows that $eta^3 / 2^17 abs(A)^3 abs(A' - A') <= abs(A)^4$, hence $abs(A' - A') <= 2^17 eta^(-3) abs(A) <= 2^22 eta^(-4) abs(A')$, and so $abs(A' + A') <= 2^44 eta^(-8) abs(A')$.
 ]
 
 
 = Fourier-analytic techniques
 
+In this chapter, assume that $G$ is a _finite_ abelian group.
 
+#definition[
+    The group $hat(G)$ of *characters* of $G$ is the group of homomorphisms $gamma: G -> CC^times$. In fact, $hat(G)$ is isomorphic to $G$.
+]<def:group-characters>
+#notation[
+    Norm and inner product notation:
+    - Write $
+        norm(f)_q = norm(f)_(L^q (G)) & = (EE_(x in G) abs(f(x))^q)^(1\/q), \
+        norm(hat(f))_q = norm(hat(f))_(ell^q (hat(G))) & = \(sum_(gamma in hat(G)) abs(hat(f)(gamma))^q\)^(1\/q), \
+        gen(f, g)_(L^2 (G)) & = EE_(x in G) f(x) overline(g(x)), \
+        gen(f, g)_(ell^2 (hat(G))) & = sum_(gamma in hat(G)) hat(f)(gamma) overline(hat(g)(gamma))
+    $
+    - If Fourier support of function is restricted to $Lambda subset.eq hat(G)$, write $norm(hat(f))_(ell^q (Lambda)) = (sum_(gamma in Lambda) abs(hat(f)(gamma))^q)^(1\/q)$.
+]
+#notation[
+    Asymptotic notation:
+    - Write $f(n) = O(g(n))$ if $
+        exists C > 0: forall n in NN, quad abs(f(n)) <= C abs(g(n)).
+    $
+    - Write $f(n) = o(g(n))$ if $
+        forall epsilon > 0, exists N in NN: forall n >= N, abs(f(n)) <= epsilon abs(g(n)),
+    $ i.e. $lim_(n -> oo) f(n)/g(n) = 0$.
+    - Write $f(n) = Omega(g(n))$ if $g(n) = O(f(n))$.
+    - If the implied constant depends on a fixed parameter, this may be indicated by a subscript, e.g. $exp(p n^2) = O_p (exp(n^2))$.
+]
+#theorem("Hölder's Inequality")[
+    Let $p, q in [1, oo]$ with $1/p + 1/q$, and $f in L^p (G)$, $g in L^q (G)$. Then $
+        norm(f g)_1 <= norm(f)_p norm(g)_q.
+    $
+]
+#theorem("Cauchy-Schwarz Inequality")[
+    For $f, g in L^2 (G)$, we have $ gen(f, g)_(L^2 (G)) <= norm(f)_2 norm(g)_2. $ Note this is a special case of Hölder's inequality with $p = q = 2$.
+]
+#theorem("Young's Convolution Inequality")[
+    Let $p, q, r in [1, oo]$, $1/p + 1/q = 1/r$, $f in L^p (G)$, $g in L^q (G)$. Then $
+        norm(f * g)_r <= norm(f)_p norm(g)_q.
+    $
+]
+#notation[
+    $e(y)$ denotes the function $e^(2pi i y)$.
+]
+#example[
+    - Let $G = FF_p^n$, then for any $gamma in hat(G)$, we have a corresponding character $gamma(x) = e((gamma . x) \/p)$.
+    - If $G = ZZ\/N$, then any $gamma in hat(G)$ has a corresponding character $gamma(x) = e(gamma x \/ N)$.
+]
+#notation[
+    Given a non-empty $B subset.eq G$ and $g: B -> CC$, write $EE_(x in B) g(x)$ for $1/abs(B) sum_(x in B) g(x)$. If $B = G$, we may simply write $EE$ instead of $EE_(x in B)$.
+]
+#lemma[
+    For all $gamma in hat(G)$, $
+        EE_(x in G) gamma(x) = cases(
+            1 quad & "if" gamma = 1,
+            0 & "otherwise"
+        ).
+    $ and for all $x in G$, $
+        sum_(gamma in hat(G)) gamma(x) = cases(
+            abs(G) quad & "if" x = 0,
+            0 & "otherwise"
+        ).
+    $
+]
+#proofhints[
+    - For $1 != gamma in hat(G)$, consider $y in G$ with $gamma(y) != 1$.
+    - For $0 != x in G$, by considering $G\/gen(x)$, show by contradiction that there is $gamma in hat(G)$ with $gamma(x) != 1$.
+]
+#proof[
+    The first case for both equations is trivial. Let $1 != gamma in hat(G)$. Then $exists y in G$ with $gamma(y) != 1$. So $
+        gamma(y) EE_(z in G) gamma(z) & = EE_(z in G) gamma(y + z) \
+        & = EE_(z' in G) gamma(z').
+    $ Hence $EE_(z in G) gamma(z) = 0$.
+    
+    For second equation, given $0 != x in G$, there exists $gamma in hat(G)$ such that $gamma(x) != 1$, since otherwise $hat(G)$ would act trivially on $gen(x)$, hence would also be the dual group for $G\/gen(x)$, a contradiction.
+]
+#definition[
+    Given $f: G -> CC$, define the *Fourier transform* of $f$ to be $
+        hat(f): hat(G) & -> CC, \
+        gamma & |-> EE_(x in G) f(x) overline(gamma(x)).
+    $
+]
+TODO: look at notation sheet on Moodle.
 
 
 = Probabilistic tools

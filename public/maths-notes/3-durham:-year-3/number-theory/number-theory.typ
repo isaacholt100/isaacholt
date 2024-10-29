@@ -133,7 +133,7 @@
 #definition[
     Let $K\/F$ and $L\/K$ field extensions, then $F subset.eq K subset.eq L$ is *tower of fields*.\
 ]
-#theorem(name: "Tower theorem")[
+#theorem("Tower theorem")[
     Let $F subset.eq K subset.eq L$ tower of fields. Then $ [L: F] = [L: K] dot.op [K: F] $
 ]
 #example[
@@ -197,7 +197,7 @@
 #example[
     Let $theta = sqrt(2) + sqrt(3)$, then $QQ(theta) subset.eq QQ\(sqrt(2), sqrt(3)\)$ but also $theta^3 = 11 sqrt(2) + 9 sqrt(3)$ so $ sqrt(2) = (theta^3 - 9 theta)/2, quad sqrt(3) = (-theta^3 + 11 theta)/2 $ so $QQ\(sqrt(2), sqrt(3)\) subset.eq QQ(theta)$ hence $QQ\(sqrt(2), sqrt(3)\) = QQ(theta)$.
 ]
-#theorem(name: "Simple extension theorem")[
+#theorem("Simple extension theorem")[
     Every number field $K$ has form $K = QQ(theta)$ for some $theta in K$.
 ]
 - Set of all algebraic numbers (union of all number fields) is denoted $overline(QQ)$ and is a field, since if $alpha != 0$ algebraic over $QQ$, $[QQ(alpha): QQ] = deg(p_alpha) < oo$ so $QQ(alpha)\/QQ$ algebraic, so $-alpha, alpha^(-1) in QQ(alpha)$ algebraic, so $alpha^(-1), -alpha in overline(QQ)$, and if $alpha, beta in overline(QQ)$ then $QQ(alpha, beta) = QQ(alpha)(beta)$ is finite extension of $QQ$ by tower theorem so $alpha + beta$, $alpha beta in QQ(alpha, beta)$ so are algebraic.
@@ -286,7 +286,7 @@
         - For $d equiv 1 thick (mod 4)$ and $d < -3$, $ZZ\[ (1 + sqrt(d))/2\]^times = {plus.minus 1}$.
         - $ZZ\[ (1 + sqrt(-3))/2\]^times = {plus.minus 1, plus.minus omega, plus.minus omega^2}$ where $omega = (1 + sqrt(-3))/2 = e^(pi i\/3)$.
 ]
-#theorem(name: "Main theorem")[
+#theorem("Main theorem")[
     Let $d > 1$, $d$ non-square, $S$ be quadratic number ring of $K = QQ\(sqrt(d)\)$ (i.e. $S = cal(O)_d$ or $S = ZZ\[sqrt(d)\]$). Then
     - $S$ has a smallest unit $u > 1$ (smaller than all units except $1$).
     - $S^times = {plus.minus u^r: r in ZZ} = ideal(-1, u)$.
@@ -548,7 +548,7 @@ $
     - Every fractional ideal (and hence every nonzero ideal) in $R$ is invertible.
     - $cal(I)(R)$ is abelian group under multiplication, with identity element $R$.
 ]
-#corollary(name: "to divide is to contain and to contain is to divide")[
+#corollary("to divide is to contain and to contain is to divide")[
     $I | J <==> J subset.eq I$.
 ]
 #theorem[
@@ -575,7 +575,7 @@ $
 #proposition[
     If $I$ and $J$ are non-zero ideals in $cal(O)_K$ then $ gcd(I, J) = I + J, quad "lcm"(I, J) = I sect J $
 ]
-#theorem(name: "Chinese remainder theorem for ideals")[
+#theorem("Chinese remainder theorem for ideals")[
     Let $I_1, ..., I_k$ be pairwise coprime ideals of $cal(O)_K$, then there is an isomorphism $ R \/ (I_1 dots.c I_k) & -> R\/I_1 times dots.c times R\/I_k, \ x + (I_1 dots.c I_k) & |-> (x + I_1, ..., x + I_k) $
 ]
 
@@ -619,7 +619,7 @@ $
 #proof[
     For "if" direction, use that $N(I) in I$.
 ]
-#theorem(name: "Kummer Dedekind")[
+#theorem("Kummer Dedekind")[
     Let $p$ prime. Suppose $cal(O)_K = ZZ[theta]$ for some $theta in cal(O)_K$ with minimal polynomial $p_theta$. Let $overline(f)(x)$ be reduction of $f(x) in ZZ[x]$ $mod p$, so $overline(f)(x) in FF_p [x]$. Let $ overline(p_theta)(x) = overline(f_1)(x)^(e_1) dots.h.c overline(f_r)(x)^(e_r) $ be factorisation of $overline(p_theta)$ where $overline(f_i)$ are distinct, monic, irreducible. For each $i$, let $f_i (x) in ZZ[x]$ be monic polynomial whose reduction $mod p$ is $overline(f_i)(x)$. Let $P_i = (p, f_i (theta))_(cal(O)_K)$. Then $P_i$ are distinct prime ideals, $N(P_i) = p^(deg(f_i))$ and $ ideal(p)_(cal(O)_K) = P_1^(e_1) dots.h.c P_r^(e_r) $
 ]
 #proof[
@@ -629,7 +629,7 @@ $
     - Deduce that $N(P_i) = p^(deg(f_i))$.
     - Use that $P_1^(e_1) dots.h.c P_r^(e_r) subset.eq ideal(p, f_1 (theta)^(e_1) dots.h.c f_r (theta)^(e_r))$ and $f_1 (theta)^(e_1) dots.h.c f_r (theta)^(e_r) equiv p_theta (theta) mod p$ and $N(P_1^(e_1) dots.h.c P_r^(e_r)) = N(p)$ to show $P_1^(e_1) dots.h.c P_r^(e_r) = ideal(p)_(cal(O)_K)$.
 ]
-#theorem(name: "Strong Kummer-Dedekind")[
+#theorem("Strong Kummer-Dedekind")[
     Let $K = QQ(theta)$, $theta in R = cal(O)_K$, $p divides.not |R\/ZZ[theta]|$ then $ideal(p)_R$ can be factorised by considering $overline(p_theta)(x) in FF_p [x]$ as in usual Kummer-Dedekind when $|R\/ZZ[theta]| = 1$.
 ]
 #example[
@@ -745,7 +745,7 @@ $
 
 == The Minkowski bound
 
-#theorem(name: "Minkowski bound")[
+#theorem("Minkowski bound")[
     If $K = QQ(theta)$ and $p_theta$ has $s$ real roots, $2t$ complex roots, $n := s + 2t$, then for every $underline(c) in Cl(R)$, we can find a (non-fractional) ideal $I$ with $[I] = underline(c)$ and $ N(I) <= B_K := (4/pi)^t (n!)/(n^n) sqrt(abs(Delta_K)) $ i.e. we can take $C_K = B_K$.
 ]
 #example[

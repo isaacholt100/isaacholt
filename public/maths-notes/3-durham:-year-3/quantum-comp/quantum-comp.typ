@@ -469,7 +469,7 @@ $ So Bob's state depends on the result of Alice's measurement.
 
 == No-cloning theorem
 
-#theorem(name: "No-cloning theorem")[
+#theorem("No-cloning theorem")[
     In quantum mechanics, it is impossible to clone an unknown state $ket(psi)$. More precisely, it is impossible to perform transformation $ket(psi) tp ket(phi) -> ket(psi) tp ket(psi)$ for an arbitrary unknown state $ket(psi)$ and fixed initial state $ket(phi)$.
 ]
 
@@ -544,7 +544,7 @@ $ We have $hat(U)_H ket(0) = ket(+)$, $hat(U)_H ket(1) = ket(-)$.
 H(X) := -sum_x p(x) log_2 (p(x))
 $ where conventionally $0 log 0 = 0$.
 ]
-#theorem(name: "Shannon's noiseless coding theorem")[
+#theorem("Shannon's noiseless coding theorem")[
     $H(X)$ gives lower bound on average number of bits needed to encode message $X$.
 ]
 #definition[
@@ -1020,7 +1020,7 @@ Note: Toffoli gate maps computational basis elements to computational basis elem
 #example[
     If two logical qubits are encoded with 14 physical qubits using Steane code, a logical #CNOT can be implemented as $ overline(CNOT) = product_(i = 1)^7 C_i "NOT"_i $ where $C_i "NOT"_i$ is #CNOT with $i$th qubit in first logical qubit as control and $i$th qubit in second logical qubit as target.
 ]
-#theorem(name: "Eastin, Knill")[
+#theorem("Eastin, Knill")[
     Not all gates in a UGS can be transversal.
 ]
 
@@ -1043,7 +1043,7 @@ Note: Toffoli gate maps computational basis elements to computational basis elem
 #proposition[
     $ H^(tp n) ket(0) & = 1/2^(n\/2) sum_(k = 0)^(2^n - 1) ket(k) quad "and" \ H^(tp n) ket(x) & = times.circle.big_(i = 0)^(n - 1) 1/sqrt(2) ((-1)^(0 dot.op x_i) ket(0) + (-1)^(1 dot.op x_i) ket(1)) = 1/2^(n\/2) sum_(k = 0)^(2^n - 1) (-1)^(k dot x) ket(k) $
 ]
-#algorithm(name: "Simon's algorithm")[
+#algorithm("Simon's algorithm")[
     Define the unitary operator $U_f$ acting on $n$ input qubits $ket(x)$ and $n$ output qubits $ket(m)$: $ U_f ket(x) ket(m) = ket(x) ket(m xor f(x)) $
     + Start with system in state $ket(0)_n tp ket(0)_n$ where $ket(0)_n = ket(00...0)$.
     + Apply $H^(tp n) tp I$ (i.e. acting on input qubits) to give $ 1/(2^(n\/2)) sum_(k = 0)^(2^n - 1) ket(k) tp ket(0)_n $
@@ -1095,7 +1095,7 @@ Note: Toffoli gate maps computational basis elements to computational basis elem
 #example[
     Given $N in NN$, pick random $1 < y < N$. If $gcd(y, N) != 1$, we can find a divisor of $N$. If $gcd(y, N) = 1$, define $ f_y: ZZ -> ZZ\/N, quad f_y (a) = y^a quad mod N $ Period of $f_y$ is smallest $r in NN$ such that $f_y (r) = 1$. We have $f_y (a) = f_y (b)$ iff $a - b = 0 mod r$. Let $r$ be even (if $r$ odd, start again with different $y$). Now $ y^r - 1 = 0 mod N ==> (y^(r\/2) - 1)(y^(r\/2) + 1) = 0 mod N $ If either factor on LHS is multiple of $N$, start again with different $y$. Otherwise, we know $y^(r\/2) - 1$ and $N$ have common factor $< N$, and so use Euclid's algorithm to find $gcd(y^(r\/2) - 1, N)$.
 ]
-#algorithm(name: "Shor's algorithm")[
+#algorithm("Shor's algorithm")[
     - Shor's algorithm finds the smallest $r > 0$ such that $y^r equiv 1 mod N$.
     - Start with state $ket(0)_n ket(0)_(n_0)$ where $n_0 = ceil(log_2 (N))$, $n = 2n_0$.
     - Act with $H^(tp n)$ on input bits, giving $ 1/2^(n\/2) sum_(x = 0)^(2^n - 1) ket(x) tp ket(0) $

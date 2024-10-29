@@ -205,7 +205,7 @@
 #example[
     Let $X = RR union \{overline(0)\}$. Define $f_0: RR -> X$, $f_0(a) = a$ and $f_(overline(0)): RR -> X$, $f_(overline(0))(a) = a$ for $a != 0$, $f_(overline(0))(0) = overline(0)$. Topology on $X$ has $A subset.eq X$ open iff $f_0^(-1)(A)$ and $f_(overline(0))^(-1)(A)$ open. Every point in $X$ lies in open set: for $a in.not \{0, overline(0)\}$, $a in \(a - (|a|)/2, a + (|a|)/2\)$ and both pre-images of this are same open interval, for $0$, set $U_0 = (-1, 0) union {0} union (0, 1) subset.eq X$ then $f_0^(-1) (U_0) = (-1, 1)$ and $f_(underline(0))^(-1) (U_0) = (-1, 0) union (0, 1)$ are both open. For $overline(0)$, set $U_(overline(0)) = (-1, 0) union {overline(0)} union (0, 1) subset.eq X$, then $f_(overline(0))^(-1)(U_(overline(0))) = (-1, 1)$ and $f_0^(-1)(U_(overline(0))) = (-1, 0) union (0, 1)$ are both open. So $U_0$ and $U_(overline(0))$ both open in $X$. $X$ is not Hausdorff since any open sets containing $0$ and $overline(0)$ must contain "open intervals" such as $U_0$ and $U_(overline(0))$.
 ]
-#example(name: "Furstenberg's proof of infinitude of primes")[
+#example("Furstenberg's proof of infinitude of primes")[
     Since $a + d ZZ$ is infinite, any nonempty finite set is not open, so any set with finite complement is not closed. For fixed $d$, sets $d ZZ$, $1 + d ZZ, ..., (d - 1) + d ZZ$ partition $ZZ$. So the complement of each is the union of the rest, so each is open and closed. Every $n in ZZ - {-1, 1}$ is prime or product of primes, so $ZZ - {-1, 1} = union.big_(p "prime") p ZZ$, but finite unions of closed sets are closed, and since $ZZ - {-1, 1}$ has finite complement, the union must be infinite.
 ]
 
@@ -242,7 +242,7 @@
 #lemma[
     $overline(A) = A union L$ where $L$ is the set of limit points of $A$.
 ]
-#theorem(name: "Dirichlet prime number theorem")[
+#theorem("Dirichlet prime number theorem")[
     Let $a, d$ coprime, then $a + d ZZ$ contains infinitely many primes.
 ]
 #example[
@@ -331,7 +331,7 @@
     - $X = {0, 1}$ with $tau = {nothing, {1}, {0, 1}}$ is connected.
     - $ZZ$ with Furstenberg topology is not connected.
 ]
-#theorem(name: "continuity preserves connectedness")[
+#theorem("continuity preserves connectedness")[
     If $h: X -> Y$ continuous and $X$ connected, then $h(X) subset.eq Y$ is connected.
 ]
 #corollary[
@@ -448,7 +448,7 @@
 #definition[
     $S subset.eq RR^n$ is *bounded* if $ exists r in RR: S subset.eq B(0; r) $
 ]
-#theorem(name: "Heine-Borel")[
+#theorem("Heine-Borel")[
     $A subset.eq RR^n$ is compact iff it is closed and bounded.
 ]
 #example[
@@ -459,7 +459,7 @@
 #corollary[
     Let $f: X -> RR$, $X$ compact, $f$ continuous. Then $f$ attains its maximum and minimum.
 ]
-#theorem(name: "Bolzano-Weierstrass")[
+#theorem("Bolzano-Weierstrass")[
     An infinite subset $A$ of a compact space $X$ has a limit point in $X$.
 ]
 
@@ -746,7 +746,7 @@
     - Each simplex in $K^((1))$ is contained in a simplex of $K$.
     - If $dim(K) = n$, then length of longest $1$-simplex in $K^((1))$ is at most $n\/(n + 1)$ times length of longest $1$-simplex in $K$.
 ]
-#theorem(name: "Simplicial approximation theorem")[
+#theorem("Simplicial approximation theorem")[
     For each $i in {1, 2}$, let $h_i: X_i -> K_i$ be triangulation of topological space $X_i$ by finite simplicial complex $K_i$. Let $f: X_1 -> X_2$ be map. Then $forall epsilon > 0$ there exist $n, m in NN$ and a simplicial map $s: K_1^((n)) -> K_2^((m))$ such that for $F := h_2 compose f compose h_1^(-1)$, $ s tilde.eq F quad "and" quad forall x in K_1, quad |F(x) - s(x)| < epsilon $
 ]
 
@@ -1249,7 +1249,7 @@ where, for the first diagram, a horizontal path at fixed $t$ is given by $ s |->
 #definition[
     Each directed $1$-simplex in $M^c$ gives a *basic loop* (opposite choice of direction yields the inverse loop).
 ]
-#proof(name: "Proof of algorithm")[
+#proof("Proof of algorithm")[
     Let $K$ be connected finite simplicial complex, $v_0$ be $0$-simplex in $K$, $L$ be maximal tree in $K$, $M$ be maximal simply connected subcomplex in $K$ associated to $L$.
     - Simplices are convex, so every path in $K$ is homotopic to one which passes through only $0$- and $1$-simplices (with no doubling back). In particular, every element of $pi_1 (K, v_0)$ can be represented by a loop based at $v_0$ which passes through only $0$- and $1$-simplices.
     - If $v$ is $0$-simplex then $v in L subset.eq M$, and $L$ has no cycles, so there exists unique path from $v$ to $v_0$ in $L$ with no doubling back.
@@ -1270,7 +1270,7 @@ where, for the first diagram, a horizontal path at fixed $t$ is given by $ s |->
 
 == Van Kampen's theorem
 
-#theorem(name: "van Kampen's theorem")[
+#theorem("van Kampen's theorem")[
     Let $(K, v_0)$ be based, connected finite simplicial complex. Suppose there exists connected simplicial subcomplexes $A, B subset.eq K$ such that:
     - $K = A union B$
     - $A sect B$ is path-connected simplicial subcomplex.
@@ -1320,7 +1320,7 @@ where, for the first diagram, a horizontal path at fixed $t$ is given by $ s |->
 #remark[
     $chi(G)$ is a homotopy invariant, i.e. $G_1 tilde.eq G_2$, then $chi(G_1) = chi(G_2)$.
 ]
-#theorem(name: "Euler's Theorem")[
+#theorem("Euler's Theorem")[
     Let $G$ be finite, connected graph drawn on $S^2$. Then $S^2 - G$ consists of $f = 2 - chi(G)$ *faces* (connected regions homeomorphic to open discs).
 ]
 #proof[
@@ -1382,7 +1382,7 @@ where, for the first diagram, a horizontal path at fixed $t$ is given by $ s |->
 #definition[
     For $n$-dimensional finite simplicial complex $K$, Euler characteristic is defined as $ sum_(k = 0)^n (-1)^k ("number of " k #h(0em) "-simplices in" K) $
 ]
-#lemma(name: "Union Lemma")[
+#lemma("Union Lemma")[
     Let $K = A union B$ be $2$-dimensional finite simplicial complex with $A$, $B$, $A sect B$ simplicial sub-complexes. Then $ chi(K) = chi(A union B) = chi(A) + chi(B) - chi(A sect B) $
 ]
 #proof[
@@ -1414,7 +1414,7 @@ where, for the first diagram, a horizontal path at fixed $t$ is given by $ s |->
 
 == The classification of closed surfaces
 
-#theorem(name: "Classification Theorem for Closed Surfaces")[
+#theorem("Classification Theorem for Closed Surfaces")[
     The complete list of closed surfaces, up to homeomorphism, is
     - *Orientable*: for $g in NN_0$, $ M_g tilde.equiv S^2 \# underbrace(T \# dots.h.c \# T, g "times") tilde.equiv S^2 "with" g "handles attached" $
     - *Non-orientable*: for $g in NN$, $ N_g tilde.equiv underbrace(PP \# dots.h.c \# PP, g "times") tilde.equiv S^2 "with" g "cross caps attached" $

@@ -92,7 +92,7 @@
 #remark[
     Let $char(K) = p$, then $p | binom(p, i)$ so $(a + b)^p = a^p + b^p$ in $K$. Also in $K[x]$ for $p$ prime, $x^p - 1 = (x - 1)^p$.
 ]
-#theorem(name: "Fermat's little theorem")[
+#theorem("Fermat's little theorem")[
     $forall a in FF_p, a^p = a$.
 ]
 
@@ -122,10 +122,10 @@
 #proposition[
     If $f(x)$ has linear factor in $K[x]$, it has root in $K[x]$.
 ]
-#proposition(name: "Rational root test")[
+#proposition("Rational root test")[
     If $f(x) = a_0 + dots.h.c + a_n x^n in ZZ[x]$ has rational root $b/c in QQ$ with $gcd(b, c) = 1$ then $b | a_0$ and $c | a_n$. *Note*: this can't be used to show $f$ is irreducible for $deg(f(x)) >= 4$.
 ]
-#theorem(name: "Gauss's lemma")[
+#theorem("Gauss's lemma")[
     Let $f(x) in ZZ[x]$, $f(x) = g(x) h(x)$, $g(x), h(x) in QQ[x]$. Then $exists r in QQ: r g(x), r^(-1) h(x) in ZZ[x]$. i.e. if $f(x)$ can be factored in $QQ[x]$ it can be factored in $ZZ[x]$.
 ]
 #example[
@@ -141,7 +141,7 @@
     Let $f(x) = 8x^3 + 14x - 9$. Reducing $mod 7$, $overline(f)(x) = x^3 - 2 in FF_7 [x]$. No roots exist for this, so $f(x)$ irreducible in $QQ[x]$. For some polynomials, no $p$ is suitable, e.g. $f(x) = x^4 + 1$.
 ]
 - Gauss's lemma works with any UFD $R$ instead of $ZZ$ and field of fractions $"Frac"(R)$ instead of $QQ$: e.g. let $F$ field, $R = F[t]$, $K = F(t)$, then $f(x) in R[x]$ irreducible in $K[x]$ if $f(x)$ is irreducible in $R[x]$.
-#proposition(name: "Eisenstein's criterion")[
+#proposition("Eisenstein's criterion")[
     Let $f(x) = a_0 + dots.h.c + a_n x^n in ZZ[x]$, prime $p in ZZ$ such that $p | a_0, ..., p | a_(n - 1)$, $p divides.not a_n$, $p^2 divides.not a_0$. Then $f(x)$ irreducible in $QQ[x]$.
 ]
 #example[
@@ -150,7 +150,7 @@
 #example[
     *$p$-th cyclotomic polynomial* is $ f(x) = (x^p - 1)/(x - 1) = 1 + dots.h.c + x^(p - 1) $ Now $ f(x + 1) = ((1 + x)^p - 1)/(1 + x - 1) = x^(p - 1) + p x^(p - 2) + dots.h.c + binom(p, p - 2) x + p $ so can apply Eisenstein with $p = p$.
 ]
-#proposition(name: "Generalised Eisenstein's criterion")[
+#proposition("Generalised Eisenstein's criterion")[
     Let $R$ be integral domain, $K = "Frac"(R)$, $ f(x) = a_0 + dots.h.c + a_n x^n in R[x] $ If there is irreducible $p in R$ with $ p | a_0, ..., p | a_(n - 1), p divides.not a_n, p^2 divides.not a_0 $ then $f(x)$ is irreducible in $K[x]$.
 ]
 
@@ -226,7 +226,7 @@
     - $K_m \/ K$ is field extension.
     - Let $theta = pi(x)$ where $pi: K[x] -> K_m$ is canonical projection, then $theta$ has minimal polynomial $m(x)$ and $K_m tilde.equiv K(theta)$.
 ]
-#proposition(name: "Universal property of simple extension")[
+#proposition("Universal property of simple extension")[
     Let $L\/K$ field extension, $tau in L$ with $m(tau) = 0$ and $K_L (tau)$ be minimal subfield of $L$ containing $K$ and $tau$. Then exists unique $K$-isomorphism $phi: K_m -> K_L (tau)$ such that $phi(theta) = tau$.
 ]
 #example[
@@ -265,7 +265,7 @@
 #proposition[
     Let $[L: K] < oo$, then $L\/K$ is algebraic extension and $L = K(alpha_1, ..., alpha_n)$ for some $alpha_1, ..., alpha_n in L$. The converse also holds.
 ]
-#theorem(name: "Tower law")[
+#theorem("Tower law")[
     Let $K subset.eq M subset.eq L$ tower of field extensions. Then
   - $[L: K] < oo <==> [L: M] < oo and [M: K] < oo$.
   - $[L: K] = [L: M] [M: K]$.
@@ -329,7 +329,7 @@
     - If $[L: K] = 3$ then $L\/K$ is not necessarily normal. Let $theta$ be root of $x^3 - 2 in QQ[x]$. Other two roots are $omega theta$, $omega^2 theta$ where $omega = e^(2pi i\/3)$. If $omega theta in QQ(theta)$ then $omega = (omega theta)/theta in L$ so $QQ subset QQ(omega) subset QQ(theta)$ but $[QQ(omega): QQ] = 2$ which doesn't divide $[QQ(theta): QQ] = 3$.
     - Let $theta in CC$ be root of irreducible $f(x) = x^3 - 3x - 1 in QQ[x]$. Let $theta = u + v$, then $(u + v)^3 - 3 u v(u + v) - (u^3 + v^3) equiv 0$ implies $u v = 1 = u^3 v^3$, $u^3 + v^3 = 1$. So $(y - u^3)(y - v^3) = y^2 - y + 1$ has roots $u^3$ and $v^3$. So the three roots of $f$ are $ theta_1 = u + v = e^(pi i\/9) + e^(-pi i\/9) & = 2 cos(pi\/9) \ theta_2 = omega u + omega^2 v = e^(7pi i\/9) + e^(-7 pi i\/9) & = 2 cos(7 pi \/ 9) \ theta_3 = omega^2 u + omega v = e^(13 pi i\/9) + e^(-13pi i\/9) & = 2 cos(13pi\/9) $ Furthermore, for each $i, j$, $theta_i in QQ(theta_j)$, e.g. $ theta_2 = 2 cos(pi - (2pi)/9) = -2cos((2pi)/9) = -2(2cos(pi/9)^2 - 1) = 2 - theta_1^2 $ Also $theta_1 + theta_2 + theta_3 = 0$ so $theta_3 in QQ(theta_1)$. So $QQ(theta_1)$ contains all roots of $f(x)$.
 ]
-#theorem(name: "normality criterion")[
+#theorem("normality criterion")[
     $L\/K$ is finite and normal iff $L$ is splitting field for some $0 != f(x) in K[x]$ over $K$.
 ]
 #example[
@@ -382,7 +382,7 @@
 #note[
     If $f(x)$ has a repeated root $alpha$, then $D f(alpha) = 0$.
 ]
-#theorem(name: "sufficient conditions for separability")[
+#theorem("sufficient conditions for separability")[
     Finite extension $L\/K$ is separable if any of the following hold:
     - $char(K) = 0$,
     - $char(K) = p$ and $K = {b^p: b in K} = K^p$ for prime $p$,
@@ -400,7 +400,7 @@
 #remark[
     For tower $K subset.eq M subset.eq L$, $L\/K$ is separable iff $L\/M$ and $M\/K$ are separable. However, the same statement for normality does not hold.
 ]
-#theorem(name: "Theorem of the Primitive Element")[
+#theorem("Theorem of the Primitive Element")[
     Let $L\/K$ finite and separable. Then $L\/K$ is simple, i.e. $exists alpha in L: L = K(alpha)$.
 ]
 
@@ -433,7 +433,7 @@
     For $H$ subgroup of $Gal(L\/K)$, set $L^H := {alpha in L: forall sigma in H, thick sigma(alpha) = alpha}$, then $K subset.eq L^H subset.eq L$. Define $Phi: cal(G) -> cal(F)$, $Phi(H) = L^H$.
 ]
 - $Gamma$ and $Phi$ are inclusion-reversing: $M_1 subset.eq M_2 ==> Gamma(M_2) subset.eq Gamma(M_1)$, and $H_1 subset.eq H_2 ==> Phi(H_2) subset.eq Phi(H_1)$.
-#theorem(name: "Fundamental theorem of Galois theory - Theorem A")[
+#theorem("Fundamental theorem of Galois theory - Theorem A")[
     For finite Galois extension $L\/K$,
     - $Gamma: cal(F) -> cal(G)$ and $Phi: cal(G) -> cal(F)$ are mutually inverse bijections (the *Galois correspondence*).
     - For $M in cal(F)$, $L\/M$ is Galois and $|Gal(L\/M)| = [L: M]$.
@@ -442,7 +442,7 @@
 #remark[
     $Gal(L\/K)$ acts on $cal(F)$: given $sigma in Gal(L\/K)$ and $K subset.eq M subset.eq L$, consider $sigma(M) = {sigma(alpha): alpha in M}$ which is a subfield of $L$ and contains $K$, since $sigma$ fixes elements of $K$. Given another automorphism $tau: L -> L$, $ tau in Gal(L\/sigma(M)) & <==> forall alpha in M, tau(sigma(alpha)) = sigma(alpha) \ & <==> forall alpha in M, sigma^(-1) (tau (sigma(alpha))) = alpha \ & <==> sigma^(-1) tau sigma in Gal(L\/M) \ & <==> tau in sigma Gal(L\/M) sigma^(-1) $ Hence $sigma Gal(L\/M) sigma^(-1)$ and $Gal(L\/M)$ are conjugate subgroups of $Gal(L\/K)$. Now $ [M: K] = ([L: K]) / ([L: M]) = abs(Gal(L\/K)) / abs(Gal(L\/M)) $
 ]
-#theorem(name: "Fundamental theorem of Galois theory - Theorem B")[
+#theorem("Fundamental theorem of Galois theory - Theorem B")[
     Let $L\/K$ be finite Galois extension, $G = Gal(L\/K)$ and $K subset.eq M subset.eq L$. Then the following are equivalent:
     - $M\/K$ is Galois.
     - $forall sigma in G, quad sigma(M) = M$.
@@ -457,10 +457,10 @@
 
 == Computations with Galois groups
 
-#example(name: "quadratic extension")[
+#example("quadratic extension")[
     $QQ\(sqrt(2)\)\/QQ$ is normal (since degree is $2$) and separable (since characteristic is zero). Any element of $phi in G = Gal\(QQ\(sqrt(2)\)\/QQ\)$ is determined by the image of $sqrt(2)$. But $phi\(sqrt(2)\)^2 = phi(2) = 2$ so $phi\(sqrt(2)\) = plus.minus sqrt(2)$. This gives two automorphisms $id\(sqrt(2)\) = sqrt(2)$ and $sigma\(sqrt(2)\) = -sqrt(2)$. So $G = {id, sigma} = ideal(sigma) tilde.equiv ZZ\/2$. Subgroup ${id}$ corresponds to $QQ\(sqrt(2)\)$, $G$ corresponds to $QQ$.
 ]
-#example(name: "biquadratic extension")[
+#example("biquadratic extension")[
     $L = QQ\(sqrt(2), sqrt(3)\)$ over $QQ$ is normal (as splitting field of $(x^2 - 2)(x^2 - 3)$ over $QQ$) and separable (as $char(QQ) = 0$), so is Galois extension. Let $sigma$ be given as before.
     - Suppose $sqrt(3) in QQ\(sqrt(2)\)$, then $sigma\(sqrt(3)\)^2 = sigma(3) = 3$, so $sigma\(sqrt(3)\) = plus.minus sqrt(3)$.
     - If $sigma\(sqrt(3)\) = sqrt(3)$, then $sqrt(3) in QQ\(sqrt(2)\)^({id, sigma}) = QQ$: contradiction.
@@ -481,7 +481,7 @@
 #remark[
     Can generalise above example to arbitrary $K\(sqrt(a), sqrt(b)\)\/K$ where $char(K) != 2$, and $a, b in K$, $a, b, a b in.not (K^times)^2$ where $(K^times)^2$ is set of squares of $K^times$.
 ]
-#example(name: [degree $8$ extension])[
+#example([degree $8$ extension])[
     - Consider $L = QQ\(sqrt(2), sqrt(3), sqrt(5)\)$ over $QQ$. $L$ is splitting field of $(x^2 - 2)(x^2 - 3)(x^2 - 5)$, so is normal, and $char(QQ) = 0$, so is separable, so is Galois.
     - Let $M = QQ\(sqrt(2), sqrt(3)\)$. By above, $Gal(M\/Q) = ideal(sigma) times ideal(tau) tilde.equiv ZZ\/2 times ZZ\/2$.
     - Suppose $sqrt(5) in M$. Then $sigma\(sqrt(5)\)^2 = tau\(sqrt(5)\)^2 = 5$, so $sigma\(sqrt(5)\) = plus.minus sqrt(5)$, $tau\(sqrt(5)\) = plus.minus sqrt(5)$.
@@ -495,7 +495,7 @@
     - $Gal(L\/QQ) = ideal(sigma_1, sigma_2, sigma_3) tilde.equiv ZZ\/2 times ZZ\/2 times ZZ\/2$ where $sigma_1 \(sqrt(2)\) = -sqrt(2)$, $sigma_2 \(sqrt(3)\) = -sqrt(3)$, $sigma_1 \(sqrt(5)\) = -sqrt(5)$ and the $sigma_i$ fix all other square roots.
     - More generally, write $sigma\(sqrt(5)\) = (-1)^j sqrt(5)$, $tau\(sqrt(5)\) = (-1)^k sqrt(5)$, $j, k in {0, 1}$. Define $m = 2^j 3^k$, then $sigma\(sqrt(m)\) = (-1)^j sqrt(m) => sigma\(sqrt(5 m)\) = sqrt(5m)$ and $tau\(sqrt(m)\) = (-1)^k sqrt(m) => tau\(sqrt(5m)\) = sqrt(5m)$, so $sqrt(5 m) in M^ideal(sigma, tau) = QQ$: contradiction.
 ]
-#example(name: "cubic extension and its normal closure")[
+#example("cubic extension and its normal closure")[
     - Let $L = QQ(theta)$, $theta^3 - 2 = 0$. $L\/QQ$ isn't Galois since not normal. Take the normal closure $N = QQ(theta, omega) = QQ\(theta, sqrt(-3)\)$.
     - Let $M = QQ(omega)$ so $[M: QQ] = 2$, $[L: QQ] = 3$ and $[N: QQ] = 6$. Let $G = Gal(N\/QQ)$.
     - Since $|G| = [N: QQ] = 6$, $G tilde.equiv ZZ\/6$ or $G tilde.equiv D_3 tilde.equiv S_3$.
@@ -697,7 +697,7 @@
 #theorem[
     Let $K$ contain primitive $n$-th root of unity $zeta_n$, $L\/K$ is cyclic extension of degree $n$, $Gal(L\/K) = ideal(sigma)$. Then $ exists a in K^times: L = K\(root(n, a)\) $ Such an $a$ is given by $theta_b^n$ for some $b in L$, where $ theta_b = b + zeta_n^(-1) sigma(b) + dots.h.c + zeta_n^(-(n - 1)) sigma^(n - 1)(b) $ is *Lagrange resolvent* for $b$, i.e. $L = K(theta_b)$.
 ]<lagrange-resolvent>
-#lemma(name: "Artin's lemma")[
+#lemma("Artin's lemma")[
     There exists $b in L$ such that $theta_b != 0$.
 ]
 
@@ -830,10 +830,10 @@
 
 == Galois theory for cubic polynomials
 
-#example(name: "Solving quadratic")[
+#example("Solving quadratic")[
     Let $char(k) != 2$. General quadratic polynomial can be written as $ f(x) = x^2 - e_1 x + e_2 = (x - x_1)(x - x_2) in K[x] $ where $e_1 = x_1 + x_2, e_2 = x_1 x_2 in K = k(e_1, e_2)$. Let $L = k(x_1, x_2) = K(x_1)$, then $L\/K$ is Galois and $Gal(L\/K) = {id, sigma} tilde.equiv S_2 tilde.equiv ZZ\/2$ where $sigma(x_1) = x_2$, $sigma(x_2) = x_1$. Since $L\/K$ cyclic and $zeta_2 = -1 in K$, by @lagrange-resolvent, Lagrange resolvent of $x_1$ is $ theta = theta_(x_1) = x_1 + zeta_2^(-1) sigma(x_1) = x_1 - x_2 $ So $sigma(theta) = -theta$ and $theta^2 = e_1^2 - 4e_2$. $Delta = theta^2$ is *discriminant* of $f(x)$. So we have $x_1 = \(e_1 + sqrt(Delta)\)\/2$, $x_2 = \(e_1 - sqrt(Delta)\)\/2$. If $f(x)$ is irreducible, it has distinct roots, and so Galois group $G_f tilde.equiv ZZ\/2$.
 ]
-#example(name: "Solving cubic")[
+#example("Solving cubic")[
     - Let $char(k) != 2, 3$, let $ f(x) = x^3 - e_1 x^2 + e_2 x - e_3 = (x - x_1)(x - x_2)(x - x_3) in K[x] $ where $e_1 = x_1 + x_2 + x_3$, $e_2 = x_1 x_2 + x_1 x_3 + x_2 x_3$, $e_3 = x_1 x_2 x_3 in K = k(e_1, e_2, e_3) subset L = K(x_1, x_2, x_3)$.
     - By @symmetric-polynomial-extension-galois-group-is-symmetric-group, $Gal(L\/K) = S_3$ with normal subgroup $A_3 tilde.equiv ZZ\/3$. We have tower $K subset M = L^(A_3) subset L$. So $Gal(L\/M) tilde.equiv A_3 tilde.equiv ZZ\/3$, $Gal(M\/K) tilde.equiv S_3 \/ A_3 tilde.equiv ZZ\/2$.
     - Assume $k$ contains primitive $3$rd root of unity $omega$, so $w^2$ is also primitive $3$rd root of unity. Define $
@@ -850,7 +850,7 @@
 #remark[
     To solve general cubic $f(x) = x^3 + a x^2 + b x + c$, first perform shift: $ f(x - a\/3) = x^3 + p x + q $ then quadratic resolvent is  (_memorise_) *$ t^2 + q t - p^3 / 27 $* with roots $t_1 = theta_1^3$, $t_2 = theta_2^3$, choose $theta_1, theta_2$ such that $theta_1 theta_2 = -p/3$, then roots of $f(x - a\/3)$ are $x_1 = theta_1 + theta_2$, $x_2 = omega^2 theta_1 + omega theta_2$, $omega theta_1 + omega^2 theta_2$.
 ]
-#example(name: "Galois groups of cubic polynomials")[
+#example("Galois groups of cubic polynomials")[
     Let $char(K) != 2, 3$, $f(x) = x^3 + a x^2 + b x + c in K[x]$, let $L$ be splitting field for $f(x)$ over $K$, then $G_f = Gal(L\/K)$. Let $alpha_1, alpha_2, alpha_3$ be roots of $f(x)$ in $L$.
     - If $alpha_1, alpha_2, alpha_3 in K$, then $L = K$, $G_f = {id}$.
     - If $f(x) = (x - alpha_j) g(x)$ where $alpha_j in K$, $g(x) in K[x]$ irreducible quadratic, then $[L: K] = 2$, $G_f tilde.equiv ZZ\/2$.
@@ -890,7 +890,7 @@
     - We have tower $ K = L^(S_4) subset L^(V_4) subset L = L^({e}) $ By fundamental theorem, $Gal(L\/L^(V_4)) = V_4 tilde.equiv ZZ\/2 times ZZ\/2$, so $L\/L^(V_4)$ appears as biquadratic extension.
     - $V_4$ is normal in $S_4$ so by fundamental theorem, $Gal(L^(V_4)\/K) tilde.equiv S_4 \/ V_4 tilde.equiv S_3$ by first isomorphism theorem. Hence $L^(V_4)$ appears as splitting field of a cubic polynomial over $K$.
 ]
-#example(name: "Solving quartic equations")[
+#example("Solving quartic equations")[
     Define $ theta_1 & = 1/2 (x_1 + x_2 - x_3 - x_4), \ theta_2 & = 1/2 (x_1 - x_2 + x_3 - x_4), \ theta_3 & = 1/2 (x_1 - x_2 - x_3 + x_4) $ Then $forall j in [3], forall sigma in V_4$, $sigma (theta_j) = plus.minus theta_j$. The $theta_j$ arise from Lagrange resolvents for the three quadratic subextensions of $L^(V_4)$ in $L$. They behave like $sqrt(2)$, $sqrt(3)$, $sqrt(6)$ in $QQ\(sqrt(2), sqrt(3)\)$. Each $t_i = theta_i^2$ is fixed by $V_4$ and are permuted by $S_4 \/ V_4 tilde.equiv S_3$. They are roots of *cubic resolvent* of $f(x)$: $ (t - t_1)(t - t_2)(t - t_3) = t^3 + s_1 t^2 + s_2 t + s_3 $ which has coefficients in $\(L^(V_4)\)^(S_3) = L^(S_4) = K$. To find roots $x_1, x_2, x_3, x_4$ of $f(x)$:
     - Solve cubic resolvent to find $t_1$, $t_2$, $t_3$.
     - Set $theta_j = plus.minus sqrt(t_j)$ where signs are chosen so that $theta_1 theta_2 theta_3 = (e_1^3 - 4e_1 e_2 + 8 e_3)\/8$.
@@ -912,7 +912,7 @@
     - So roots of $f(x - 3\/2)$ are $ x_1 & = 1/2 (theta_1 + theta_2 + theta_3) = 1/2 (1 + 4i), \ x_2 & = 1/2 (theta_1 - theta_2 - theta_3) = 1/2 (1 - 4i), \ x_3 & = 1/2 (-theta_1 + theta_3 - theta_3) = 1/2 (-1 - 2i), \ x_4 & = 1/2 (-theta_1 - theta_2 + theta_3) = 1/2 (-1 + 2i) $
     - So roots of $f(x)$ are $-1 plus.minus 2i$, $-2 plus.minus i$.
 ]
-#example(name: "Galois groups of quartic polynomials")[
+#example("Galois groups of quartic polynomials")[
     - Let $char(K) != 2, 3$, $f(x) = x^4 + a x^3 + b x^2 + c x + d in K[x]$. Galois group is $G_f = Gal(L\/K)$ where $L$ is splitting field for $f(x)$ over $K$, and $G_f$ is subgroup of $S_4$.
     - Assume that $f(x)$ irreducible in $K[x]$. It can be shown there are five possible isomorphism classes of Galois groups: $S_4, A_4, V_4, ZZ\/4$ or $D_4$.
     - Let $R(t) in K[t]$ be cubic resolvent of $f(x)$ with roots $t_1 = theta_1^2$, $t_2 = theta_2^2$, $t_3 = theta_3^2$. Let $M$ be splitting field of $R(t)$ over $K$, so $ K subset K(t_1, t_2, t_3) subset M subset L = M(theta_1, theta_2, theta_3) $
@@ -971,13 +971,13 @@
 #definition[
     A finite group $G$ is *solvable (soluble)* if there exists decreasing sequence of subgroups $ G = G_0 supset dots.c supset G_m = {id} $ where for each $1 <= i <= m$, $G_i$ is normal subgroup of $G_(i - 1)$ and $G_(i - 1)\/G_i$ is cyclic.
 ]
-#lemma(name: "Properties of solvable groups")[
+#lemma("Properties of solvable groups")[
     - Every subgroup of finite solvable group is solvable.
     - Abelian groups are solvable.
     - $S_n$ is solvable iff $n <= 4$.
     - Let $G$ finite group with normal subgroup $H$. Then $G$ is solvable iff both $H$ and $G\/H$ are solvable.
 ]
-#theorem(name: "Galois' Theorem: Criterion for solvability in radicals")[
+#theorem("Galois' Theorem: Criterion for solvability in radicals")[
     Let $f(x) in K[x]$ irreducible. Then $f(x)$ is solvable in radicals over $K$ iff Galois group $G_f$ is solvable.
 ]
 

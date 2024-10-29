@@ -41,10 +41,10 @@
 #definition[
     $c in RR$ is a *greatest lower bound (infimum)*, $c = inf(E)$, if $c >= a$ for every lower bound $a$.
 ]
-#theorem(name: "Completeness axiom of the real numbers")[
+#theorem("Completeness axiom of the real numbers")[
     Every $E subset.eq RR$ with an upper bound has a least upper bound. Every $E subset.eq RR$ with a lower bound has a greatest lower bound.
 ]
-#proposition(name: "Archimedes' principle")[
+#proposition("Archimedes' principle")[
     $ forall x in RR, exists n in NN: n > x $
 ]
 #remark[
@@ -81,7 +81,7 @@
     - $forall epsilon > 0, exists N in NN: forall n >= N, x_n > l - epsilon$.
     - $forall epsilon > 0, forall N in NN: exists n >= N: x_n < l + epsilon$.
 ]
-#theorem(name: "Bolzano-Weierstrass")[
+#theorem("Bolzano-Weierstrass")[
     Every bounded sequence has a convergent subsequence.
 ]
 #proposition[
@@ -90,7 +90,7 @@
 #proposition[
     Let $(x_n)$ bounded, then $(x_n)$ is convergent iff $limsup x_n = liminf x_n$.
 ]
-#theorem(name: "Monotone convergence theorem for sequences")[
+#theorem("Monotone convergence theorem for sequences")[
     Monotone sequence converges in $RR$ or tends to either $oo$ or $-oo$.
 ]
 #definition[
@@ -141,7 +141,7 @@
 #example[
     $RR$ is not compact, $[a, b]$ is compact.
 ]
-#theorem(name: "Heine Borel")[
+#theorem("Heine Borel")[
     $F$ compact iff $F$ closed and bounded.
 ]
 
@@ -246,7 +246,7 @@
 #definition[
     Collection ${A_i: i in I}$ of sets is *(pairwise) disjoint* if $n != m ==> A_n sect A_m = nothing$.
 ]
-#theorem(name: "Structure theorem for open sets")[
+#theorem("Structure theorem for open sets")[
     Let $U subset.eq RR$ open. Then exists countable collection of disjoint open intervals ${I_n: n in NN}$ such that $U = union_(n in NN) I_n$.
 ]
 
@@ -344,7 +344,7 @@
 #definition[
     $E subset.eq RR$ is *Lebesgue measurable* if $ forall A subset.eq RR, quad mu^*(A) = mu^*(A sect E) + mu^*(A sect E^c) $ Collection of such sets is $cal(F)_(mu^*)$.
 ]
-#lemma(name: "Excision Property")[
+#lemma("Excision Property")[
     Let $E$ Lebesgue measurable set with finite measure and $E subset.eq B$, then $ mu^*(B - E) = mu^*(B) - mu^*(E) $
 ]
 #proposition[
@@ -394,10 +394,10 @@
 #lemma[
     $F_(mu^*)$ is $sigma$-algebra and contains every interval.
 ]
-#theorem(name: "Carathéodory Extension")[
+#theorem("Carathéodory Extension")[
     Restriction of the $mu^*$ to $F_(mu^*)$ is a measure.
 ]
-#theorem(name: "Hahn extension theorem")[
+#theorem("Hahn extension theorem")[
     There exists unique measure $mu$ defined on $cal(F)_(mu^*)$ for which $mu(I) = ell(I)$ for any interval $I$.
 ]
 #definition[
@@ -512,10 +512,10 @@
 #proposition[
     Let $f_n: E -> RR union {plus.minus oo}$ be sequence of measurable functions that converges pointwise to $f: E -> RR union {plus.minus oo}$. Then $f$ is measurable.
 ]
-#lemma(name: "Simple approximation lemma")[
+#lemma("Simple approximation lemma")[
     Let $f: E -> RR$ measurable and bounded, so $exists M >= 0: forall x in E, |f|(x) < M$. Then $forall epsilon > 0$, there exist simple measurable functions $phi_epsilon, psi_epsilon: E -> RR$ such that $ forall x in E, quad phi_epsilon (x) <= f(x) <= psi_epsilon (x) and 0 <= psi_epsilon (x) - phi_epsilon (x) < epsilon $
 ]
-#theorem(name: "Simple approximation theorem")[
+#theorem("Simple approximation theorem")[
     Let $f: E -> RR union {plus.minus oo}$, $E$ measurable. Then $f$ is measurable iff there exists sequence $(phi_n)$ of simple functions on $E$ which converge pointwise on $E$ to $f$ and satisfy $ forall n in NN, forall x in E, |phi_n|(x) <= |f|(x) $ If $f$ is nonnegative, $(phi_n)$ can be chosen to be increasing.
 ]
 #definition[
@@ -588,22 +588,22 @@
 #definition[
     Let $f in cal(M)^+$. *Integral of $f$ with respect to $mu$* is $ integral f := sup{integral phi: 0 <= phi <= f, phi "simple measurable"} in RR union {oo} $ For measurable set $E$, define $ integral_E f := integral indicator(E) f $
 ]
-#proposition(name: "Monotonicity")[
+#proposition("Monotonicity")[
     Let $f, g$ measurable, nonnegative. If $g <= f$ then $integral g <= integral f$. Let $E, F$ measurable. If $E subset.eq F$ then $integral_E f <= integral_F f$.
 ]
-#theorem(name: "Monotone convergence theorem")[
+#theorem("Monotone convergence theorem")[
     Let $(f_n)$ be sequence in $cal(M)^+$. If $(f_n)$ is increasing on measurable set $E$ and converges pointwise to $f$ on $E$ then $ integral_E f_n -> integral_E f quad "as" n -> oo $
 ]
 #corollary[
     Restriction of integral to nonnegative functions is linear: $forall f, g in cal(M)^+$, $forall alpha >= 0$, $ integral (f + g) & = integral f + integral g \ integral alpha f & = alpha integral f $
 ]
-#lemma(name: "Fatou's Lemma")[
+#lemma("Fatou's Lemma")[
     Let $(f_n)$ be sequence in $cal(M)^+$, then $ integral liminf_(n -> oo) f_n <= liminf_(n -> oo) integral f_n $
 ]
 #lemma[
     Let $(f_n) subset cal(M)^+$, then $ integral sum_(n in NN) f_n = sum_(n in NN) integral f_n $
 ]
-#proposition(name: "Chebyshev's inequality")[
+#proposition("Chebyshev's inequality")[
     Let $f$ be nonnegative measurable function on $E$. Then $ forall lambda > 0, quad mu({x in E: f(x) >= lambda}) <= 1/lambda integral_E f $
 ]
 #proposition[
@@ -636,10 +636,10 @@
 #example[
     $sin$ is not integrable over $RR$, but is integrable over $[0, 2pi]$, since $|f_([0, 2pi])| <= indicator([0, 2pi])$.
 ]
-#theorem(name: "Linearity of Integration")[
+#theorem("Linearity of Integration")[
     Let $f, g in cal(M)$ integrable. Then $f + g$ is integrable and $forall alpha in RR$, $alpha f$ is integrable. The integral is linear: $ integral (f + g) & = integral f + integral g \ integral alpha f & = alpha integral f $
 ]
-#theorem(name: "Dominated Convergence Theorem")[
+#theorem("Dominated Convergence Theorem")[
     Let $(f_n)$ be sequence of integrable functions. If there exists an integrable $g$ with $forall n in NN, |f_n| <= g$, and $f_n -> f$ pointwise almost everywhere then $f$ is integrable and $ integral f = lim_(n -> oo) integral f_n $
 ]
 
@@ -754,16 +754,16 @@
 #definition[
     $p, q in RR$ are *conjugate exponents* if $p > 1$ and $1/p + 1/q = 1$.
 ]
-#lemma(name: "Young's inequality")[
+#lemma("Young's inequality")[
     Let $p, q$ conjugate exponents, then $ forall A, B in RR_(>=0), quad A B <= A^p / p + B^q / q $ with equality iff $A^p = B^q$.
 ]
-#lemma(name: "Hölder's inequality")[
+#lemma("Hölder's inequality")[
     Let $p, q$ conjugate exponents. If $f in L^p (E)$, $g in L^q (E)$, then $ integral_E |f g| <= norm(f)_(L^p) norm(g)_(L^q) $
 ]
-#corollary(name: [Cauchy-Schwarz inequality for $L^2 (E)$])[
+#corollary([Cauchy-Schwarz inequality for $L^2 (E)$])[
     If $f, g in L^2 (E)$, then $ abs(integral_E f overline(g)) <= integral_E |f g| <= norm(f)_(L^2) norm(g)_(L^2) $
 ]
-#lemma(name: "Minkowski's inequality")[
+#lemma("Minkowski's inequality")[
     Let $p in lr([1, oo))$. If $f, g in L^p (E)$ then $f + g in L^p (E)$ and $ norm(f + g)_(L^p) <= norm(f)_(L^p) + norm(g)_(L^p) $
 ]
 #theorem[
@@ -776,7 +776,7 @@
     - Convergence in $L^p$ is also called convergence in the mean of order $p$.
     - This notion of convergence is different to pointwise convergence, uniform convergence and convergence in measure.
 ]
-#theorem(name: "Riesz-Fischer")[
+#theorem("Riesz-Fischer")[
     For $p in lr([1, oo))$, $\(L^p (E), norm(dot.op)_(L^p)\)$ is complete.
 ]<riesz-fischer>
 
@@ -874,7 +874,7 @@
 #proposition[
     Let $E subset.eq RR$ measurable, $p in [1, oo)$, $q$ conjugate to $p$, $h in L^q (E)$. Define $T: L^p (E) -> RR$ by $ T(f) = integral_E h f $ Then $norm(T)_* = norm(h)_(L^q)$.
 ]
-#theorem(name: [Riesz representation theorem for $L^p$])[
+#theorem([Riesz representation theorem for $L^p$])[
     Let $p in [1, oo)$, $q$ conjugate to $p$, $E subset.eq RR$ measurable. For $h in L^q (E)$, define bounded linear functional $R_h: L^p (E) -> RR$ by $ R_h (f) = integral_E h f $ Then for every bounded linear functional $T: L_p (E) -> RR$, there is unique $h in L^q (E)$ such that $ R_h = T quad and quad norm(T)_* = norm(h)_(L^q) $
 ]
 #theorem[
@@ -907,10 +907,10 @@
 #proposition[
     $norm(x plus.minus y)^2 = norm(x)^2 plus.minus 2 "Re"(ip(x, y)) + norm(y)^2$.
 ]
-#theorem(name: "Cauchy-Schwarz inequality")[
+#theorem("Cauchy-Schwarz inequality")[
     Let $(H, ip(dot.op, dot.op))$ be pre-Hilbert space. Then $ forall x, y in H, quad |ip(x, y)| <= norm(x) norm(y) $ with equality iff $x$ and $y$ linearly dependent.
 ]
-#theorem(name: "Parallelogram Identity")[
+#theorem("Parallelogram Identity")[
     A normed linear space $X$ is an inner product space with norm derived from the inner product (i.e. $norm(dot.op) = sqrt(ip(dot.op, dot.op))$) iff $ forall x, y in X, quad norm(x + y)^2 + norm(x - y)^2 = 2 norm(x)^2 + 2 norm(y)^2 $
 ]
 #definition[
@@ -945,7 +945,7 @@
     - $A, B subset.eq H$ are *orthogonal*, $A perp B$ if $forall x in A, forall y in B, quad x perp y$.
     - *Orthogonal complement* of $A subset.eq H$ is $ A^perp := {x in H: forall y in A, thick thick x perp y} $
 ]
-#theorem(name: "Pythagorean Theorem")[
+#theorem("Pythagorean Theorem")[
     If $x_1, ..., x_n in H$, $x_i perp x_j$ for $i != j$, then $ norm(sum_(i = 1)^n x_i)^2 = sum_(i = 1)^n norm(x_i)^2 $
 ]
 #proof[
@@ -961,7 +961,7 @@
         - Show if $(y_n) subset.eq A^perp$, $y_n -> y$, then $y in A^perp$:
             - Let $x in A$, then show $|ip(x, y)| -> 0$ by squeezing, triangle inequality and Cauchy-Schwarz.
 ]
-#theorem(name: "Projection")[
+#theorem("Projection")[
     Let $M$ closed subspace of Hilbert space $H$.
     - For every $x in H$, there exists unique closest point $y in M$: $ forall x in H, exists! y in M: quad norm(x - y) = min{norm(x - z): z in M} $ We say $y$ is "the best approximation" to $x$ in $M$.
     - The point $y in M$ closest to $x in H$ is unique element of $M$ such that $(x - y) perp M$.
@@ -1012,7 +1012,7 @@
 #proposition[
     Let ${c_alpha: alpha in I} subset.eq [0, oo]$, $K = {alpha in I: c_alpha > 0}$. If $sum_(alpha in I) c_alpha < oo$, then $K$ is countable.
 ]
-#theorem(name: "Bessel's inequality")[
+#theorem("Bessel's inequality")[
     Let $U = {u_alpha: alpha in I}$ orthonormal in Hilbert space $H$. Then $ forall x in H, quad sum_(alpha in I) |ip(x, u_alpha)|^2 <= norm(x)^2 $ In particular, $forall x in H$, ${alpha in I: ip(x, u_alpha) != 0}$ is countable.
 ]
 #proof[
@@ -1064,7 +1064,7 @@
 #example[
     Let $X$ be non-empty collection of sets. Then $subset.eq$ is partial ordering on $X$. $A in X$ is upper bound for $X' subset.eq X$ if every set in $X'$ is subset of $A$. $M in X$ is maximal if it is not proper subset of any set in $X$.
 ]
-#theorem(name: "Zorn's Lemma")[
+#theorem("Zorn's Lemma")[
     A partially ordered set $X$ that has upper bounds for its totally ordered subsets has a maximal element.
 ]<zorn>
 #proposition[
@@ -1074,7 +1074,7 @@
     - $==>$: let $U = {u_n: n in NN}$ countable, dense in $H$. Recursively discard any $u_n$ in linear span of $u_1, ..., u_(n - 1)$ to obtain linearly independent set $V = {v_n: n in NN}$ whose linear span is dense in $H$. Applying Gram-Schmidt, set $ w_1 = v_1 / norm(v_1), ..., w_(n + 1) = c_(n + 1) (v_(n + 1) - sum_(k = 1)^n ip(w_k, v_(n + 1) w_k)) $ where $c_n in CC$ chosen so that $norm(w_n) = 1$. ${w_n: n in NN}$ is countable orthonormal basis.
     - $<==$: let ${w_n: n in NN}$ be orthonormal basis, show that $ S_m = {sum_(k = 1)^m c_k w_k: c_k in QQ + i QQ} $ is countable and $union_(m in NN) S_m$ dense in $H$.
 ]
-#theorem(name: "Riesz Representation Theorem for Hilbert Spaces")[
+#theorem("Riesz Representation Theorem for Hilbert Spaces")[
     Let $H$ Hilbert space with inner product $ip(dot.op, dot.op)$, $T: H -> RR$ bounded linear functional. Then $ exists! y in H: forall x in H, quad T(x) = ip(x, y) $ Note RHS gives bounded linear functional by Cauchy-Schwarz.
 ]
 #proof[
@@ -1123,7 +1123,7 @@
 #remark[
     RHS in @dirichlet-kernel-explicit has removable singularity at $x = 0$, and $D_m (0) = 2m + 1$. Applying l'Hopital's rule to RHS gives $ lim_(x -> 0) sin((m + 1/2) x)/sin(x/2) = 2m + 1 $
 ]
-#theorem(name: "Riemann-Lebesgue Lemma")[
+#theorem("Riemann-Lebesgue Lemma")[
     Let $E subset.eq RR$ measurable, $f in L^1 (E)$. Then $ lim_(n -> oo) integral_E f(x) sin(n x) = lim_(n -> oo) integral_E f(x) cos(n x) = lim_(n -> oo) integral_E f(x) e^(-i n x) = 0 $
 ]
 #proof[

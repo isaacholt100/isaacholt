@@ -6,6 +6,7 @@
     #c
 ]
 #let Clr(c) = smallcaps(c)
+#set align(left)
 
 = Monochromatic sets
 
@@ -22,7 +23,7 @@
     - Colour ${i, j} in NN^((2))$ red if $max{n in NN: 2^n | (i + j)}$ is even and blue otherwise. $M = {4^n: n in NN}$ is a monochromatic subset.
     - Colour ${i, j} in NN^((2))$ red if $i + j$ has an even number of distinct prime divisors and blue otherwise. No explicit monochromatic subset is known.
 ]
-#theorem(name: "Ramsey's Theorem for Pairs")[
+#theorem("Ramsey's Theorem for Pairs")[
     Let $NN^((2))$ are $2$-coloured by $c: NN^((2)) -> {1, 2}$. Then there exists an infinite monochromatic subset $M$.
 ]<thm:ramseys-theorem-for-pairs>
 #proof[
@@ -46,7 +47,7 @@
 #example[
     Colour ${i < j < k}$ red iff $i | (j + k)$. A monochromatic subset $M = {2^n: n in NN_0}$ is a monochromatic set.
 ]
-#theorem(name: [Ramsey's Theorem for $r$-sets])[
+#theorem([Ramsey's Theorem for $r$-sets])[
     Let $NN^((r))$ be finitely coloured. Then there exists a monochromatic infinite set.
 ]
 #proof[
@@ -71,7 +72,7 @@
     - By Ramsey's theorem for pairs, $M = {i_1 < i_2 < dots.c}$ is monochromatic. If $M$ is red, then the subsequence $x_(i_1), x_(i_2), ...$ is increasing, and is strictly decreasing otherwise.
     - We can insist that $\(x_(i_j)\)$ is either concave or convex: $2$-colour $NN^((3))$ by colouring ${j < k < ell}$ #clr("red") if $(i, x_(i_j)), (j, x_(i_k)), (k, x_(i_ell))$ form a convex triple, and #clr("blue") if they form a concave triple. Then by Ramsey's theorem for $r$-sets, there is an infinite convex or concave subsequence.
 ]
-#theorem(name: "Finite Ramsey")[
+#theorem("Finite Ramsey")[
     Let $r, m, k in NN$. There exists $n in NN$ such that whenever $[n]^((r))$ is $k$-coloured, we can find a monochromatic set of size (at least) $m$.
 ]<thm:finite-ramsey>
 #proof[
@@ -89,7 +90,7 @@
 #remark[
     Now consider a colouring $c: NN^((2)) -> X$ with $X$ potentially infinite. This does not necessarily admit an infinite monochromatic set, as we could colour each edge a different colour. Such a colouring would be injective. We can't guarantee either the colouring being constant or injective though, as $c(i j) = i$ satisfies neither.
 ]
-#theorem(name: "Canonical Ramsey")[
+#theorem("Canonical Ramsey")[
     Let $c: NN^((2)) -> X$ be a colouring with $X$ an arbitrary set. Then there exists an infinite set $M subset.eq NN$ such that:
     + $c$ is constant on $M^((2))$, or
     + $c$ is injective on $M^((2))$, or
@@ -133,9 +134,9 @@
 == Van der Waerden's theorem
 
 #remark[
-    We want to show that for any $2$-colouring of $NN$, we can find a monochromatic arithmetic progression of length $m$ for any $m in NN$. By compactness, this is equivalent to showing that for all $m in NN$, there exists $n in NN$ such that for any $2$-colouring of $[n]$, there exists a monochromatic arithmetic progression of length $m$. (If not, there for each $n$, there is a colouring $c_n: [n] -> {1, 2}$ with no monochromatic arithmetic progression of length $m$. Infinitely many agree on $[1]$, infinitely many agree on $[2]$, and so on - we obtain a $2$-colouring of $NN$ with no monochromatic arithmetic progression of length $m$).
+    We want to show that for any $2$-colouring of $NN$, we can find a monochromatic arithmetic progression of length $m$ for any $m in NN$. By compactness, this is equivalent to showing that for all $m in NN$, there exists $n in NN$ such that for any $2$-colouring of $[n]$, there exists a monochromatic arithmetic progression of length $m$. (If not, then for each $n in NN$, there is a colouring $c_n: [n] -> {1, 2}$ with no monochromatic arithmetic progression of length $m$. Infinitely many of these colourings agree on $[1]$, infinitely many of those agreeing in $[1]$ agree on $[2]$, and so on - we obtain a $2$-colouring of $NN$ with no monochromatic arithmetic progression of length $m$).
 
-    We will prove a slightly stronger result: whenever $NN$ is $k$-coloured, there exists a monochromatic arithmetic progression, i.e. for any $k, m in NN$, there exists $n in NN$ such that whenever $[n]$ is $k$-coloured, we have a length $m$ monochromatic progression.
+    We will prove a slightly stronger result: whenever $NN$ is $k$-coloured, there exists a length $m$ monochromatic arithmetic progression, i.e. for any $k, m in NN$, there exists $n in NN$ such that whenever $[n]$ is $k$-coloured, we have a length $m$ monochromatic progression.
 ]
 #definition[
     Let $A_1, ..., A_k$ be length $m$ arithmetic progressions: $A_i = {a_i, a_i + d_i, ..., a_i + (m - 1)d_i}$. $A_1, ..., A_k$ are *focussed* at $f$ if $a_i + m d_i = f$ for all $i$.
@@ -144,33 +145,152 @@
     ${4, 8}$ and ${6, 9}$ are focussed at $12$.
 ]
 #definition[
-    If length $m$ arithmetic progressions $A_1, ..., A_k$ are focused at $f$ and are monochromatic with each a different colour (for a given colouring), they are called *colour-focussed* at $f$.
+    If length $m$ arithmetic progressions $A_1, ..., A_k$ are focused at $f$ and are monochromatic, each with a different colour (for a given colouring), they are called *colour-focussed* at $f$.
 ]<def:arithmetic-progression.colour-focussed>
+#remark[
+    We use the idea that if $A_1, ..., A_k$ are colour-focussed at $f$ (for a $k$-colouring) and of length $m - 1$, then some $A_i union {f}$ is a length $m$ monochromatic arithmetic progression.
+]
 #theorem[
     Whenever $NN$ is $k$-coloured, there exists a monochromatic arithmetic progression of length $3$, i.e. for all $k in NN$, there exists $n in NN$ such that any $k$-colouring of $[n]$ admits a length $3$ monochromatic progression.
 ]
+#proofhints[
+    - Prove by induction the claim: $forall r <= k$, $exists n in NN$ such that for any $k$-colouring of $[n]$, there exists a monochromatic arithmetic progression of length $3$, or $r$ colour-focussed arithmetic progressions of length $2$.
+        - $r = 1$ case is straightforward.
+        - Let claim be true for $r - 1$ with witness $n$, let $N = 2n(k^(2n) + 1)$.
+        - Partition $N$ into blocks of equal size, show that two of these blocks must have the same colouring.
+        - Using the inductive hypothesis, merge the $r - 1$ colour-focussed arithmetic progressions from these two blocks into a new set of $r - 1$ colour-focussed arithmetic progressions.
+        - Find another length $2$ monochromatic arithmetic progression, reason that this is of different colour.
+    - Reason that this claim implies the result.
+]
 #proof[
-    - We claim that for all $r <= k$, there exists an $n$ such that if $[n]$ is $k$-coloured, then either:
+    - We claim that for all $r <= k$, there exists an $n in NN$ such that if $[n]$ is $k$-coloured, then either:
         - There exists a monochromatic arithmetic progression of length $3$.
         - There exist $r$ colour-focussed arithmetic progressions of length $2$.
+    - This claim implies the result by the above remark.
     - We prove the claim by induction on $r$:
         - $r = 1$: take $n = k + 1$, then by pigeonhole, some two elements of $[n]$ have the same colour, so form a length two arithmetic progression.
         - Assume true for $r - 1$ with witness $n$. We claim that $N = 2n (k^(2n) + 1)$ works for $r$.
-        - Let $c: [2n (k^(2n) + 1)] -> [k]$ be a colouring. We partition $[N]$ into $k^(2n) + 1$ sets: $B_1 = {1, ..., 2n}$, $B_2 = {2n + 1, ..., 4n}$, ....
-        - Assume there is no length $3$ monochromatic progression for $c$. By inductive hypothesis, each $B_i$ has $r - 1$ colour-focussed arithmetic progressions of length $2$.
+        - Let $c: [2n (k^(2n) + 1)] -> [k]$ be a colouring. We partition $[N]$ into $k^(2n) + 1$ blocks of size $2n$: $B_i = {2n(i - 1) + 1, ..., 2n i}$ for $i = 1, ..., k^(2n) + 1$.
+        - Assume there is no length $3$ monochromatic progression for $c$. By inductive hypothesis, each block $B_i$ has $r - 1$ colour-focussed arithmetic progressions of length $2$.
         - Since $|B_i| = 2n$, each block also contains their focus. For a set $M$ with $|M| = 2n$, there are $k^(2n)$ ways to $k$-colour $M$. So by pigeonhole, there are blocks $B_s$ and $B_(s + t)$ that have the same colouring.
-        - Let ${a_i, a_i + d_i}$ be the $r - 1$ colour-focussed arithmetic progressions in $B_s$, then ${a_i + 2n t, a_i + d_i + 2n t}$ is the corresponding set in $B_(s + t)$. Let $f$ be the focus in $B_s$, then $f + 2n t$ is the focus in $B_(s + t)$.
-        - Now ${a_i, a_i + d_i + 2n t}$, $i in [r - 1]$, are $r - 1$ arithmetic progresions colour-focused at $f + 4 n t$. Also, ${f, f + 2n t}$ is monochromatic of a different colour to the $r - 1$ colours used. Hence, there are $r$ arithmetic progressions of length $2$ colour-focussed at $f + 4 n t$.
-        - TODO finish proof.
+        - Let ${a_i, a_i + d_i}$ be the $r - 1$ arithmetic progressions in $B_s$ colour-focussed at $f$, then ${a_i + 2n t, a_i + d_i + 2n t}$ is the corresponding set of arithmetic progressions in $B_(s + t)$, each colour-focussed at $f + 2n t$.
+        - Now ${a_i, a_i + d_i + 2n t}$, $i in [r - 1]$, are $r - 1$ arithmetic progresions colour-focused at $f + 4 n t$. Also, ${f, f + 2n t}$ is monochromatic of a different colour to the $r - 1$ colours used (since there is no length $3$ monochromatic progression for $c$). Hence, there are $r$ arithmetic progressions of length $2$ colour-focussed at $f + 4 n t$.
 ]
 #remark[
     The idea of looking at all possible colourings of a set is called a *product argument*.
 ]
 #definition[
-    The *Van der Waerden* number $W(k, m)$ is the smallest $n$ such that for any $k$-colouring of $[n]$, there exists a monochromatic arithmetic progression of length $m$.
+    The *Van der Waerden* number $W(k, m)$ is the smallest $n in NN$ such that for any $k$-colouring of $[n]$, there exists a monochromatic arithmetic progression in $[n]$ of length $m$.
 ]
 #remark[
-    The above theorem gives a tower-type upper bound $W(k, 3) <= k^(k^(dots.up)^(k^(4k)))$.
+    The above theorem gives a *tower-type* upper bound $W(k, 3) <= k^(k^(dots.up)^(k^(4k)))$.
+]
+#theorem("Van der Waerden's Theorem")[
+    For all $k, m in NN$, there exists $n in NN$ such that for any $k$-colouring of $[n]$, there is a length $m$ monochromatic arithmetic progression.
+]
+#proofhints[
+    - Use induction on $m$.
+    - Given induction hypothesis on $m - 1$, prove the claim: for all $r <= k$, there exists $n in NN$ such that for any $k$-colouring of $[n]$, we have either a monochromatic length $m$ arithmetic progression, or $r$ colour-focussed arithmetic progressions of length $m - 1$. Reason that this claim implies the result.
+    - Use induction on $r$. Give an explicit $n$ for $r = 1$.
+    - Let $n$ be the witness for $r - 1$, let $N = W(k^(2n), m - 1) dot 2n$. Assume a $k$-colouring of $[N]$, $c: [N] -> [k]$, has no arithmetic progressions of length $m$.
+    - Partition $[N]$ into the obvious choice of $W(k^(2n), m - 1)$ blocks $B_i$, each of length $2n$.
+    - Colour the indices $1 <= i <= W(k^(2n), m - 1)$ of the blocks by $
+        c'(i) = (c(2n(i - 1) + 1), c(2n(i - 1) + 2) ...., c(2n i))
+    $
+    - Reason that we can find monochromatic arithmetic progression $s, s + t, ..., s + (m - 2)t$ of length $m - 1$ (w.r.t $c'$), and that this corresponds to sequence of blocks $B_s, B_(s + t), ..., B_(s + (m - 2)t)$, each identically coloured.
+    - Reason that $B_s$ contains $r - 1$ colour-focussed length $m - 1$ arithmetic progressions $A_i$ together with their focus $f$.
+    - Let $A'_i$ be the same arithmetic progression but with common difference $2n t$ larger than that of $A_i$. Show the $A'_i$ are colour-focussed at some focus in terms of $f$.
+    - Find another length $m - 1$ arithmetic progression, show this must be monochromatic and of different colour to all $A'_i$. Show it also has same focus as all $A'_i$.
+]
+#proof[
+    - By induction on $m$. $m = 1$ is trivial, $m = 2$ is by pigeonhole principle. $m = 3$ is the statement of the previous theorem.
+    - Assume true for $m - 1$ and all $k in NN$.
+    - For fixed $k$, we prove the claim: for all $r <= k$, there exists $n in NN$ such that for any $k$-colouring of $[n]$, either:
+        - There is a monochromatic arithmetic progression of length $m$, or
+        - There are $r$ colour-focussed arithmetic progressions of length $m - 1$.
+    - We will then be done (by considering the focus).
+    - To prove the claim, we use induction on $r$.
+    - $r = 1$ is the claim of the first inductive hypothesis: take $n = W(k, m - 1)$.
+    - Assume the claim holds for $r - 1$ with witness $n$, and assume there is no monochromatic arithmetic progression of length $m$. We will show that $N = W(k^(2n), m - 1) 2n$ is sufficient for $r$.
+    - Partition $[N]$ into $W(k^(2n), m - 1)$ blocks of length $2n$: $B_i = {2n(i - 1) + 1, ..., 2n i}$ for $i = 1, ..., W(k^(2n), m- 1)$.
+    - Each block has $k^(2n)$ possible colourings. Colour the blocks as $
+        c'(i) = (c(2n(i - 1) + 1), c(2n(i - 1) + 2) ...., c(2n i))
+    $ By definition of $W$, there exists a monochromatic arithmetic progression of length $m - 1$ (w.r.t. to $c'$): ${alpha, alpha + t, ..., alpha + (m - 2)t}$. The repsective blocks $B_alpha, ..., B_(alpha + (m - 2)t)$ are identically coloured.
+    - $B_alpha$ has length $2n$, so by induction $B_alpha$ contains $r - 1$ colour-focussed arithmetic progressions of length $m - 1$, together with their focus (as length of block is $2n$).
+    - Let $A_1, ..., A_(r - 1)$, $A_i = {a_i, a_i + d_i, ..., a_i + (m - 2)d_i}$, be colour-focussed at $f$.
+    - Let $A'_i = {a_i, a_i + (d_i + 2n t), ..., a_i + (m - 2)(d_i + 2n t)}$ for $i = 1, ..., r - 1$. The $A'_i$ are monochromatic as the blocks are identically coloured and the $A_i$ are monochromatic. Also, $A_i$ and $A'_i$ have the same colouring, and the $A_i$ are colour-focussed, hence the $A'_i$ have pairwise distinct colours.
+    - The $A_i$ are focussed at $f$ and the colour of $f$ of different than the colour of all $A_i$. $f = a_i + (m - 1)d_i$ for all $i$.
+    - Now ${f, f + 2n t, f + 4n t, ..., f + 2n(m - 2)t}$ is an arithmetic progression of length $m - 1$, is monochromatic and of a different colour to all the $A'_i$.
+    - It is enough to show that $a_i + (m - 1)(d_i + 2n t) = f + 2n(m - 1)t$ for all $i$, but this is equivalent to $a_i + (m - 1)d_i = f$, which is true as all $A_i$ were focussed at $f$.
+]
+#corollary[
+    For any $k$-colouring of $NN$, there exists a colour class containing arbitrarily long arithmetic progressions.
+]
+#remark[
+    We can't guarantee infinitely long arithmetic progressions, e.g.
+    - $2$-colour $NN$ by $1$ red, $2, 3$ blue, $4, 5, 6$ red, etc.
+    - The set of infinite arithmetic progressions in $NN$ is countable (since described by two integers: the start term and step). Enumerate them by $(A_k)_(k in NN)$. Pick $x_1 < y_1 in A_1$, colour $x_1$ red and $y_1$ blue. Then pick $x_2, y_2 in A_2$ with $y_1 < x_2 < y_2$, colour $x_2$ red, $y_2$ blue. Continue inductively.
+]
+#theorem("Strengthened Van der Waerden")[
+    Let $m, k in NN$. There exists $n in NN$ such that for any $k$-colouring of $[n]$, there exists a monochromatic length $m$ arithmetic progression whose common difference is the same colour (i.e. there exists $a, a + d, ..., a + (m - 1), d$ all of the same colour).
+]<thm:strengthened-van-der-waerden>
+#proofhints[
+    - Use induction on $k$.
+    - If $n$ is the witness for $k - 1$ colours, show that $N = W(k, n(m - 1) + 1)$ is a witness for $k$ colours, by considering $n$ different multiples of the step of a suitable arithmetic progression.
+]
+#proof[
+    - Fix $m in NN$. We use induction on $k$. $k = 1$ case is trivial.
+    - Let $n$ be witness for $k - 1$ colours.
+    - We will show that $N = W(k, n(m - 1) + 1)$ is suitable for $k$ colours.
+    - If $[N]$ is $k$-coloured, there exists a monochromatic (say red) arithemtic progression of length $n(m - 1) + 1$: $a, a + d, ..., a + n(m - 1)d$.
+    - If $r d$ is red for any $1 <= r <= n$, then we are done (consider $a, a + r d, ..., a + (m - 1)r d$).
+    - If not, then ${d, 2d, ..., n d}$ is $k - 1$-coloured, which induces a $k - 1$ colouring on $[n]$. Therefore, there exists a monochromatic arithmetic progression $b, b + s, ..., b + (m - 1) s$ (with $s$ the same colour) by induction, which translates to $d b, d b + d s, ..., d b + d(m - 1)s$ and $d s$ being monochromatic. 
+]
+#remark[
+    The case $m = 2$ of strengthened Van der Waerden is *Schur's theorem*: for any $k$-colouring of $NN$, there are monochromatic $x, y, z$ such that $x + y = z$. This can be proved directly from Ramsey's theorem for pairs: let $c: NN -> [k]$ be a $k$-colouring, then induce $c': NN^((2)) -> [k]$ by $c' (i j) = c(j - i)$. By Ramsey, there exist $i < j < k$ such that $c'(i j) = c'(i k) = c'(j k)$, i.e. $c(j - i) = c(k - i) = c(k - j)$. So take $x = j - i$, $z = k - i$, $y = k - j$.
+]
+
+== The Hales-Jewett theorem
+
+#definition[
+    Let $X$ be finite set. We say $X^n$ consists of *words of length $n$ on alphabet $X$*.
+]<def:length-n-words>
+#definition[
+    Let $X$ be finite. A *combinatorial line* in $X^n$ is a set $L subset.eq X^n$ of the form $
+        L = {(x_1, ..., x_n) in X^n: forall i in.not I, x_i = a_i "and" forall i, j in I, x_i = x_j }
+    $ for some non-empty set $I subset.eq [n]$ and $a_i in X$ (for each $i in.not I$). $I$ is the set of *active coordinates* for $L$.
+
+    Note that a combinatorial line is invariant under permutations of $X$.
+]<def:combinatorial-line>
+#example[
+    Let $X = [3]$. Some lines in $X^2$ are:
+    - $I = {1}$: ${(1, 1), (2, 1), (3, 1)}$ (with $a_2 = 1$), ${(1, 2), (2, 2), (3, 2)}$ (with $a_2 = 2$), ${(1, 3), (2, 3), (3, 3)}$ (with $a_2 = 3$).
+    - $I = {2}$: ${(1, 1), (1, 2), (1, 3)}$ (with $a_1 = 1$), ${(2, 1), (2, 2), (2, 3)}$ (with $a_1 = 2$), ${(3, 1), (3, 2), (3, 3)}$ (with $a_1 = 3$).
+    - $I = {1, 2}$: ${(1, 1), (2, 2), (3, 3)}$.
+    Note that ${(1, 3), (2, 2), (3, 1)}$ is *not* a combinatorial line.
+]
+#example[
+    Some sets of lines in $[3]^3$ are:
+    - $I = {1}$: ${(1, 2, 3), (2, 2, 3), (3, 2, 3)}$ (with $a_2 = 2, a_3 = 3$).
+    - $I = {1, 3}$: ${(1, 3, 1), (2, 3, 2), (3, 3, 3)}$ (with $a_2 = 3$).
+]
+#theorem("Hales-Jewett")[
+    Let $m, k in NN$ (we use alphabet $X = [m]$), then there exists $n in NN$ such that for any $k$-colouring of $[m]^n$, there exists a monochromatic combinatorial line.
+]
+#notation[
+    Denote the smallest such $n$ by $"HJ"(m, k)$.
+]
+#corollary[
+    Hales-Jewett implies Van der Waerden's theorem. 
+]
+#proofhints[
+    For a colouring $c: NN -> [k]$, consider the induced colouring $c'(x_1, ..., x_n) = c(x_1 + dots.c + x_n)$ of $[m]^n$.
+]
+#proof[
+    Let $c$ be a $k$-colouring of $NN$. For sufficiently large $n$ (i.e. $n >= "HJ"(m, k)$), induce a $k$-colouring $c'$ of $[m]^n$ by $c'(x_1, ..., x_n) = c(x_1 + dots.c + x_n)$. By Hales-Jewett, a monochromatic (with respect to $c'$) combinatorial line $L$ exists. This gives a monochromatic (with respect to $c$) length $m$ arithmetic progression in $NN$. The step is equal to the number of active coordinates. The first term in the arithmetic progression corresponds to the point in $L$ with all active coordinates equal to $1$, the last term corresponds to the point in $L$ with all active coordinates equal to $m$.
+]
+#exercise[
+    Show that the $m$-in-a-row noughts and crosses game cannot be a draw in sufficiently high dimensions, and that the first player can always win.
 ]
 
 
