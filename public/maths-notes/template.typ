@@ -102,3 +102,4 @@
 #let dom = math.op("dom")
 #let indicator(S) = $bb(1)_#S$
 #let gen(..gens) = $angle.l #gens.pos().join(",") angle.r$
+#let supp = math.op("supp")

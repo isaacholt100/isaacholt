@@ -1,3 +1,4 @@
+#import "@preview/quill:0.2.0": *
 #import "../../template.typ": *
 #show: doc => template(doc, hidden: (), slides: false)
 
@@ -277,7 +278,7 @@
     A $d$-dimensional unitary representation $chi$ of $G$ is *irreducible* if no non-trivial subspace of $CC^d$ is invariant under the action of $\{chi(g_1), ..., chi\(g_(abs(G))\)\}$ (i.e. we cannot simultaneously block diagonalise all the $chi(g)$ matrices by a basis change).
 ]<def:unitary-representation.irreducible>
 #definition[
-    A set of irreps ${chi_1, ..., chi_m}$ is a *complete set of irreps* if each $chi_i, chi_j$ are unitarily equivalent to each other, i.e. for some $V in U(d)$, $forall g in G, chi_i (g) = V chi_j (g) V^dagger$.
+    A set of irreps ${chi_1, ..., chi_m}$ is a *complete set of irreps* for every irrep $chi$ of $G$, there exists $1 <= i <= m$ such that $chi$ is unitarily equivalent to $chi_i$, i.e. for some $V in U(d)$, $forall g in G, chi(g) = V chi_i (g) V^dagger$.
 ]<def:complete-irreps>
 #theorem[
     Let the dimensions of a complete set of irreps $chi_1, ..., chi_m$ be $d_1, ..., d_m$. Then $d_1^2 + dots.c + d_m^2 = abs(G)$.
@@ -286,4 +287,75 @@
     Let $chi_1, ..., chi_m$ be a complete set of irreps for $G$, and $i, j, k in [m]$. Then $
         sum_(g in G) chi_(i, j, k) chi_(i, j, k)(g) overline(chi_(i', j', k')(g)) = abs(G) delta_(i i') delta_(j j') delta_(k k').
     $
+]<thm:schur-orthogonality>
+#definition[
+    The *Fourier basis* for a group $G$ consists of $
+        ket(chi_(i, j k)) = 1/sqrt(abs(G)) sum_(g in G) overline(chi_(i, j k)(g)) ket(g)
+    $ for each $i in [n]$ and $j, k in [d_i]$. Note that by Schur orthogonality, this is an orthonormal basis.
+]
+#remark[
+    - Note that these states are not shift invariant for every $U(g_0): ket(g) |-> ket(g_0 g)$.
+    - The coset state is $
+        ket(g_0 K) = 1/sqrt(abs(K)) sum_(k in K) ket(g_0 k)
+    $
+]
+#definition[
+    The *Quantum Fourier transform* over $H_abs(G)$ is the unitary mapping the Fourier basis to the computational basis: $
+        QFT ket(chi_(i, j k)) = ket(i\, j k).
+    $ ($ket(i\, j k)$ is a relabelling of the states $ket(g)$ for $g in G$.)
+]
+#remark[
+    - Measuring $QFT ket(g_0 K)$ does *not* give $g_0$-independent outcomes. A complete measurement in the computational basis gives an outcome $i, j, k$.
+    - However, there is an incomplete measurement which projects into the $d_i^2$-dimensional subspaces $
+        S_i = span{ket(chi_(i, j k)): j, k in [d_i]}.
+    $ for each $i in [n]$. Call this measurement operator $M_"rep"$.
+    - Measuring only the representation labels of $QFT ket(g_0 K)$ gives outcomes that are independent of the random shift $g_0$, since the $chi_i$ are homomorphisms.
+    - Note this only gives partial information about $K$. If $K$ is a normal subgroup, then in fact we can then determine $K$ with $O(log abs(G))$ queries.
+]
+
+
+= Quantum phase estimation (QPE)
+
+Quantum phase estimation is a unifying algorithmic primitive, e.g. there is an alternative factoring algorithm based on QPE, and has many important applications in physics.
+
+#problem("Quantum Phase Estimation")[
+    / Input: A unitary $U in U(d)$ acting on $CC^d$, a state $ket(v_phi) in CC^d$ and a level of precision $n in NN$.
+    / Promise: $ket(v_phi)$ is an eigenstate of $U$ with *phase* (eigenvalue) $e^(2pi i phi)$, $phi in [0, 1)$ (i.e. $U ket(v_phi) = e^(2pi i phi) ket(v_phi)$).
+    / Task: Output an estimate $tilde(phi)$ of $phi$, accurate to $n$ binary bits of precision.
+]
+#remark[
+    Note if $U$ is given as a cirucit, we can implement the controlled-$U$ operation, $"C-U"$, by controlling each elementary gate in the circuit of $U$.
+
+    If $U$ is given as a black box, we need more information. Note that $U$ is equivalent to $U' = e^(i theta) U$ and $ket(psi)$ is equivalen to $e^(i theta) ket(psi)$, but C-U is not equivalent to C-$U'$. Given an eigenstate $ket(alpha)$ with known phase $e(i alpha)$ (so $U ket(alpha) = e^(i alpha) ket(alpha)$). Then $$ $U' ket(alpha) = e^(i(theta + alpha)) ket(alpha)$. so $U$ and $U'$ can be distinguished using this additional information.
+
+    #figure(quantum-circuit(
+        lstick($"control" quad ket(a)$), 2, ctrl(1), 1, ctrl(1), $X$, $P(-alpha)$, $X$, rstick($a$), [\ ],
+        lstick($ket(xi)$), 2, $times$, 1, $times$, 3, rstick($U^a ket(xi)$), [\ ],
+        lstick($ket(alpha)$), 2, $times$, $U$, $times$, 3, rstick($ket(alpha)$)
+    )) where $P(-alpha) = mat(1, 0; 0, e^(-i alpha))$. $times$ shows controlled SWAP operation.
+]
+#definition[
+    Generalised control: $"C-U" ket(x) ket(xi) = ket(x) U^x ket(xi)$, $x in {0, 1}^n$ (e.g. $"C-U" ket(11) ket(xi) = ket(11) U^3 ket(xi)$). Note that $"C-"U^k$ = $("C-U")^k$.
+    The following circuit implements generalised control:
+    #figure(quantum-circuit(
+        lstick($ket(x_(n - 1))$), 3, ctrl(4), 1, [\ ],
+        lstick($dots.v$), 5, [\ ],
+        lstick($ket(x_1)$), 1, ctrl(2), 3, [\ ],
+        lstick($ket(x_0)$), ctrl(1), 4, [\ ],
+        lstick($ket(xi)$), $U^(2^0)$, $U^(2^1)$, $...$, $U^(2^(n - 1))$, 1, rstick($U^x ket(xi)$) 
+    ))
+]
+#algorithm("Quantum Phase Estimation")[
+    Work over the space $(CC^2)^(tp n) tp CC^d$, where $(CC^2)^(tp n)$ is the $n$-qubit register, $CC^d$ is the "qudit" register.
+    #figure(quantum-circuit(
+        lstick($"line"(n - 1)$), $H$, 3, ctrl(5), [\ ],
+        lstick($"line"(n - 2)$), $H$, 3, [\ ],
+        lstick($dots.v$), [\ ],
+        lstick($"line"(1)$), $H$, 1, ctrl(2), [\ ],
+        lstick($"line"(0)$), $H$, ctrl(1), [\ ],
+        lstick($ket(v_phi)$), 1, $U^(2^0)$, $U^(2^1)$, $...$, $U^(2^(n - 1))$
+    )) TODO finish diagram
+    After $"C-"U^(2^n - 1)$, the state is $1/sqrt(2^n) sum_(x in {0, 1}^n) e^(2pi i phi x) ket(x) ket(v_phi)$. After this, applying $QFT^(-1)$ on the state $1/sqrt(2^n) sum_(x in {0, 1}^n) e^(2pi i phi x) ket(x) = QFT_(2^n) ket(phi)$.
+
+    If $phi$ had an exact $n$-bit expansion $0.i_1 i_2 ... i_n = (i_1 ... i_n)/2^n$, 
 ]

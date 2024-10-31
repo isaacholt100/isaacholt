@@ -363,13 +363,7 @@
     So if $abs(cal(F)) = binom(k, r)$, then $abs(partial^t cal(F)) >= binom(k, r - t)$.
 ]
 
-
-= Isoperimetric inequalities
-
-
-
-
-= Intersecting families
+== Intersecting families
 
 #definition[
     A family $cal(F) in powset(X)$ is *intersecting* if for all $A, B in cal(F)$, $A sect B != emptyset$.
@@ -377,7 +371,10 @@
     We are interested in finding intersecting families of maximum size.
 ]<def:family.intersecting>
 #proposition[
-    For all intersecting families $cal(F) subset.eq powset(X)$, $abs(cal(F)) <= 2^(k - 1)$.
+    For all intersecting families $cal(F) subset.eq powset(X)$, $abs(cal(F)) <= 2^(n - 1) = 1/2 abs(powset(X))$.
+]<prop:size-of-intersecting-family-is-at-most-half-of-size-of-powerset>
+#proofhints[
+    Straightforward.
 ]
 #proof[
     Given any $A subset.eq X$, at most one of $A$ and $A^c$ can belong to $cal(F)$.
@@ -387,23 +384,100 @@
     - $cal(F) = {A subset.eq X: abs(A) > n/2}$ for $n$ odd.
 ]
 #example[
-    If $A subset.eq X^((r))$:
+    Let $cal(F) subset.eq X^((r))$:
     - If $r > n/2$, then $cal(F) = X^((r))$ is intersecting.
     - If $r = n/2$, then choose one of $A$ and $A^c$ for all $A in X^((r))$. This gives $abs(cal(F)) = 1/2 binom(n, r)$.
     - If $r < n/2$, then $cal(F) = {A in X^((r)): 1 in A}$ has size $binom(n - 1, r - 1) = r/n binom(n, r)$ (since the probability of a random $r$-set containing $1$ is $r/n$). If $(n, r) = (8, 3)$, then $abs(cal(F)) = binom(7, 2) = 21$.
-    - Let $cal(B) = {A in X^((r)): abs(A sect {1, 2, 3}) >= 2}$. If $(n, r) = (8, 3)$, then $abs(cal(B)) = 1 + binom(3, 2) binom(5, 1) = 16 < 21$ (since $1$ set $B$ has $abs(B sect [3]) = 3$, $15$ sets have $abs(B sect [3]) = 2$).
+    - Let $cal(F) = {A in X^((r)): abs(A sect {1, 2, 3}) >= 2}$. If $(n, r) = (8, 3)$, then $abs(cal(F)) = 1 + binom(3, 2) binom(5, 1) = 16 < 21$ (since $1$ set $A$ has $abs(B sect [3]) = 3$, $15$ sets $A$ have $abs(A sect [3]) = 2$).
 ]
 #theorem("Erdos-Ko-Rado")[
     Let $cal(F) subset.eq X^((r))$ be an intersecting family, where $r < n/2$. Then $abs(cal(F)) <= binom(n - 1, r - 1)$.
+]<thm:erdos-ko-rado>
+#proofhints[
+    - Method 1:
+        - Let $overline(cal(F)) = {A^c: A in cal(F)}$. Show that $partial^(n - 2r) overline(cal(F))$ and $cal(F)$ are disjoint families of $r$-sets.
+        - Assume the opposite, show that the size of the union of these two sets is greater than the size of $X^((r))$.
+    - Method 2:
+        - Let $c: [n] -> ZZ\/n$ be bijection, i.e. cyclic ordering of $[n]$. Show there at most $r$ sets in $cal(F)$ that are intervals (sets with $r$ consecutive elements) under this ordering.
+        - Find expression for number of times an $r$-set in $cal(F)$ is an interval all possible orderings, and find an upper bound for this using the above.
 ]
 #proof[
-    Proof 1 ("bubble down with Kruskal-Katona"): note that $A sect B != emptyset$ iff $A subset.eq.not B^c$. Let $overline(cal(F)) = {A^c: A in cal(F)} subset.eq X^((n - r))$. We have $partial^(n - 2r) overline(cal(F))$ and $cal(F)$ are disjoint families of $r$-sets. Suppose $abs(cal(F)) > binom(n - 1, r - 1)$. Then $abs(overline(cal(F))) = abs(cal(F)) > binom(n - 1, r - 1) = binom(n - 1, n - r)$. So by Kruskal=Katona, we have $abs(partial^(n - 2r) overline(cal(F))) >= binom(n - 1, r)$. So $abs(cal(F)) + abs(partial^(n - 2r) overline(cal(F))) > binom(n - 1, r - 1) + binom(n - 1, r) = binom(n, r)$.
+    Proof 1 ("bubble down with Kruskal-Katona"): note that $A sect B != emptyset$ iff $A subset.eq.not B^c$. Let $overline(cal(F)) = {A^c: A in cal(F)} subset.eq X^((n - r))$. We have $partial^(n - 2r) overline(cal(F))$ and $cal(F)$ are disjoint families of $r$-sets (if not, then there is some $A in cal(F)$ such that $A subset.eq B^c$ for some $B in cal(F)$, but then $A sect B = emptyset$). Suppose $abs(cal(F)) > binom(n - 1, r - 1)$. Then $abs(overline(cal(F))) = abs(cal(F)) > binom(n - 1, r - 1) = binom(n - 1, n - r)$. So by Kruskal-Katona, we have $abs(partial^(n - 2r) overline(cal(F))) >= binom(n - 1, r)$. So $abs(cal(F)) + abs(partial^(n - 2r) overline(cal(F))) > binom(n - 1, r - 1) + binom(n - 1, r) = binom(n, r) = abs(X^((r)))$, a contradiction, since $cal(F), partial^(n - 2r) overline(cal(F)) subset.eq X^((r))$.
 
-    Proof 2: pick a cyclic ordering of $[n]$, i.e. a bijection $c: [n] -> ZZ\/n$. There are at most $r$ sets in $cal(F)$ that are intervals ($r$ consecutive elements) in this ordering: for $c_1 ... c_r in cal(F)$, for each $2 <= i <= r$, at most one of the two intervals $c_i ... c_(i + r - 1)$ and $c_(i - r) ... c_(i - 1)$ can belong to $cal(F)$ (the indices of $c$ are taken $mod n$). For each $r$-set $A$, out of the $n!$ cyclic orderings, there are $n dot r! (n - r)!$ which map $A$ to an interval ($r!$ orderings inside $A$, $(n - r)!$ orderings outside $A$). Hence $abs(cal(F)) n r! (n - r)! <= n! r$, i.e. $abs(cal(F)) <= binom(n - 1, r - 1)$.
+    Proof 2: pick a cyclic ordering of $[n]$, i.e. a bijection $c: [n] -> ZZ\/n$. There are at most $r$ sets in $cal(F)$ that are intervals ($r$ consecutive elements) under this ordering: for $c_1 ... c_r in cal(F)$, for each $2 <= i <= r$, at most one of the two intervals $c_i ... c_(i + r - 1)$ and $c_(i - r) ... c_(i - 1)$ can belong to $cal(F)$, since they are disjoint and $cal(F)$ is intersecting (the indices of $c$ are taken $mod n$). For each $r$-set $A$, out of the $n!$ cyclic orderings, there are $n dot r! (n - r)!$ which map $A$ to an interval ($r!$ orderings inside $A$, $(n - r)!$ orderings outside $A$, $n$ choices for the start of the interval). Hence, by counting the number of times an $r$-set in $cal(F)$ is an interval under a given ordering (over all $r$-sets in $cal(F)$ and all cyclic orderings), we obtain $abs(cal(F)) n r! (n - r)! <= n! r$, i.e. $abs(cal(F)) <= binom(n - 1, r - 1)$.
 ]
 #remark[
-    - The calculation at the end of proof method 1 had to give the correct answer, as the shadow calculations would all be exact if $cal(F) = {A in X^((r)): 1 in A}$.
+    - The calculation at the end of proof method 1 had to give the correct answer, as the shadow calculations would all be exact if $cal(F) = {A in X^((r)): 1 in A}$ (in this case, $cal(F)$ and $partial^(n - 2r) overline(cal(F))$ partition $X^((r))$).
     - The calculations at the end of proof method 2 had to work out, given equality for the family $cal(F) = {A in X^((r)): 1 in A}$.
-    - In method 2, equivalently, we are double-counting the edges in the bipartite graph, where the vertex classes (partition sets) are $cal(F)$ and all cyclic orderings, with $A$ joined to $c$ if $A$ is an interval in $c$. This method is called *averaging* or Katona's method.
+    - In method 2, equivalently, we are double-counting the edges in the bipartite graph, where the vertex classes (partition sets) are $cal(F)$ and all cyclic orderings, with $A$ joined to $c$ if $A$ is an interval under $c$. This method is called *averaging* or *Katona's method*.
     - Equality in Erdos-Ko-Rado holds iff $cal(F) = {A in X^((r)): i in A}$, for some $1 <= i <= n$. This can be obtained from proof 1 and equality in Kruskal-Katona, or from proof 2.
 ]
+
+
+= Isoperimetric inequalities
+
+We seek to answer questions of the form "how do we minimise the boundary of a set of given size?"
+
+#example[
+    In the continuous setting:
+    - Among all subsets of $RR^2$ of a given fixed area, the disc minimises the perimeter.
+    - Among all subsets of $RR^3$ of a given fixed volume, the solid sphere minimises the surface area.
+    - Among all subsets of $S^2$ of given fixed surface area, the circular cap minimises the perimeter.
+]
+#definition[
+    For a $A$ of vertices of a graph $G$, the *boundary* of $A$ is $
+        b(A) = {x in G: x in.not A, x y in E "for some" y in A}.
+    $
+]<def:vertex-set-boundary>
+#definition[
+    An *isoperimetric inequality* on a graph $G$ is an inequality of the form $
+        forall A subset.eq G, quad abs(b(A)) >= f(abs(A))
+    $ for some function $f$.
+]<def:isoperimetric-inequality>
+#definition[
+    The *neighbourhood* of $A subset.eq V(G)$ is $N(A) := A union b(A)$, i.e. $
+        N(A) = {x in G: d(x, A) <= 1}.
+    $
+]<def:vertex-set-neighbourhood>
+#remark[
+    A good example for $A$ might be a ball $B(x, r) = {y in G: d(x, y) <= r}$.
+]
+#example[
+    Let $A subset.eq V(Q_3)$, $abs(A) = 4$.
+
+    A good guess is that balls are best, i.e. sets of the form $B(emptyset, r) = X^((<= r)) = X^((0)) union dots.c union X^((r))$. What if $abs(X^((<= r))) <= abs(A) <= abs(X^((<= r + 1)))$? A good guess is take $A$ with $X^((<= r)) subset.neq A subset.neq X^((<= r + 1))$. If $A = X^((<= r)) union B$, where $B subset.eq X^((r + 1))$, then $b(A) = (X^((r + 1)) - B) union partial^+ B$, so we would take $B$ to be an initial segment of lex by Kruskal-Katona. This motivates the following definition.
+]
+#definition[
+    The *simplicial ordering* on $powset(X)$ defines $x < y$ if either $abs(x) < abs(y)$, or both $abs(x) = abs(y)$ and $x <= y$ in lex.
+]<def:simplicial-ordering>
+We want to show the initial segments of the simplicial ordering minimise the boundary.
+#definition[
+    For $A subset.eq powset(X)$ and $1 <= i <= n$, the *$i$-sections* of $A$ are the families $A_-^((i)), A_+^((i)) subset.eq powset(X - i)$, given by $
+        A_-^((i)) & := {x in A: i in.not x}, \
+        A_+^((i)) & := {x - i: x in A, i in x}
+    $
+]
+#definition[
+    The *$i$-compression* of $A subset.eq powset(X)$ is the family $C_i (A) subset.eq powset(X)$ given by its $i$-sections: $(C_i (A))_-^((i))$ is the first $abs(A_-^((i)))$ elements of the simplicial order on $powset(X - i)$, and $(C_i (A))_+^((i))$ is the first $abs(A_+^((i)))$ elements of the simplicial order on $powset(X - i)$.
+]
+#definition[
+    $A subset.eq powset(X)$ is *$i$-compressed* if $C_i (A) = A$.
+]
+#definition[
+    A *Hamming ball* $A$ is a family with $X^((<= r)) subset.eq A subset.eq X^((<= r + 1))$ for some $r$.
+]
+#theorem("Harper")[
+    Let $A subset.eq V(Q_n)$ and let $C$ be the initial segment of the simplicial order on $powset(V(Q_n))$, with $abs(C) = abs(A)$. Then $abs(N(A)) >= abs(N(C))$. In particular, if $abs(A) = sum_(i = 0)^r binom(n, i)$, then $abs(N(A)) >= sum_(i = 0)^(r + 1) binom(n, i)$.
+]
+#proof[
+    By induction on $n$. $n = 1$ is trivial. Given $n > 1$, $A subset.eq Q_n$ and $1 <= i = n$, we claim that $abs(N(C_i (A))) <= abs(N(A))$:
+
+    Write $B = C_i (A)$. We have $N(A)_- = N(A_-) union A_+$, and $N(A)_+ = N(A_+) union A_-$. Similarly, $N(B)_- = N(B_-) union B^+$, and $N(B)_+ = N(B_+) union B_-$. Now $abs(B_+) = abs(A_+)$, and by the inductive hypothesis, $abs(N(B_-)) <= abs(N(A_-))$. But $B_+$ is an initial segment of the simplicial ordering, and $N(B_-)$ is as well (since as neighbourhood of an initial segment of the simplicial ordering is also an initial segment). So $B_+$ and $N(B_-)$ are nested (one is contained in the other). Hence, $abs(N(B)_-) <= abs(N(A)_-)$. Similarly, $abs(N(B)_+) <= abs(N(A)_+)$. This gives $abs(N(B)) <= abs(N(A))$, which proves the claim.
+]
+#remark[
+    - If $A$ is a Hamming ball, then we are done by Kruskal-Katona.
+    - Conversely, Harper's theorem implies Kruskal-Katona: given $B subset.eq X^((r))$, apply Harper's theorem to $A = X^((<= r - 1)) union B$.
+]
+
+
+= Intersecting families

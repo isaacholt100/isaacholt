@@ -545,4 +545,36 @@ Classically, we say that $Gamma satisfies t$ if for every valuation $v: L -> {0,
     - ($and$-I): $A = B and C$ and we have derivations $Gamma_1 proves B$ and $Gamma_2 proves C$, with $Gamma_1, Gamma_2 subset.eq Gamma$. By the indutive hypothesis, we have $v(and.big Gamma) <= v(and.big Gamma_1) and v(and.big Gamma_2) <= v(B) and v(C) = v(B and C)$, i.e. $Gamma satisfies_H A$.
     - ($->$-I): $A = B -> C$, so we must have $Gamma union {B} proves C$. By the inductive hypothesis, we have $v(and.big Gamma) and v(B) = v(and.big Gamma and B) <= v(C)$. By the definition of $=>$, this implies $v(and.big Gamma) <= (v(B) => v(C)) = v(B -> C) = v(A)$, i.e. $Gamma satisfies_H A$.
     - ($or$-I): $A = B or C$ and WLOG we have a derivation $Gamma proves B$. By the inductive hypothesis, we have $v(and.big Gamma) <= v(B)$, but $v(B or C) = v(B) or v(C) = sup{v(B), v(C)}$, and so $v(B) <= v(B or C)$.
+    - ($and$-E): by the induction hypothesis, we have $v(and.big Gamma) <= v(B and C) = v(B) and v(C) <= v(B), v(C)$.
+    - ($->$-E): we know that $v(A -> B) = (v(A) => v(B))$. From $v(A -> B) <= (v(A) => v(B))$, we derive $v(A) and v(A -> B) <= v(B)$ by definition of $=>$. So if $v(and.big Gamma) <= v(A -> B)$ and $v(and.big Gamma) <= v(A)$, then $v(and.big Gamma) <= v(B)$ as required.
+    - ($or$-E): by the inductive hypothesis, $v(A and and.big Gamma) <= v(C)$, $v(B and and.big Gamma) <= v(C)$ and $v(and.big Gamma) <= v(A or B) = v(A) or v(B)$. This last fact means that $v(and.big Gamma) and (v(A) or v(B)) = v(and.big Gamma)$. Since Heyting algebras are distributive lattices, this is the same as $(v(and.big Gamma) and v(A)) or (v(and.big Gamma) and v(B))$, and this is $<= v(C)$.
+    - ($bot$-E): if $v(and.big Gamma) <= v(bot) = bot$, then $v(and.big Gamma) = bot$, in which case $v(and.big Gamma) <= v(A)$ for any $A$ by minimality of $bot$ in $H$.
+]
+#example[
+    The LEM is not intuitionistically valid: let $p$ be a primitive proposition and consider the Heyting algebra given by the topology ${emptyset, {1}, {1, 2}}$ on $X = {1, 2}$. Define a valuation $v$ with $v(p) = {1}$, in which case $v(not p) = not {1} = "int"(X \\ {1}) = emptyset$. So $v(p or not p) = {1} or emptyset = {1} != top$. So by Soundness, $proves.not_"IPC" p or not p$.
+]
+#example[
+    Pierce's law $((p -> q) -> p) -> p$ is not intuitionistically valid: take the valuation on the standard topology on $RR^2$ that maps $p$ to $RR^2 \\ {(0, 0)}$ and $q$ to $emptyset$.
+]
+Classical completeness states that $Gamma proves_"CPC" A$ iff $Gamma satisfies_2 A$. For intuitionistic completeness, there is no single finite replacement for $2$.
+
+#definition[
+    Let $Q$ be a logical doctrine (e.g. CPC, IPC, etc.), $L$ be a propositional language, and $T$ be an $L$-theory. The *Lindenbaum-Tarski* algebra $F^Q (T)$ is built in the following way:
+    - The underlying set of $F^Q (T)$ is the set of equivalence classes $[phi]$ of propositions $phi$, where $phi tilde psi$ when $T, phi proves_Q psi$ and $T, psi proves_Q phi$.
+    - If $star$ is a logical connective in the fragment $Q$, we set $[phi] star [psi] := [phi star psi]$.
+    We are interested in the cases $Q = "CPC"$, $Q = "IPC"$ and $Q = "IPC" \\ {->}$.
+]
+#proposition[
+    The Lindenbaum-Tarski algebra of any theory in $"IPC" \\ {->}$ is a distributive lattice.
+]
+#proof[
+    Clearly, $and$ and $or$ inherit associativity and commutativity, so in order for $F^("IPC" \\ {->})(T)$ to be a lattice, we only need to check the absorption laws: $[phi] or [phi and psi] = [phi]$, and $[phi] and [phi or psi] = [phi]$. The first is true, siince $T, phi proves_("IPC" \\ {->}) phi or (phi and psi)$ by ($or$-I), and also $T, phi or (phi and psi) proves_("IPC" \\ {->}) phi$ by ($or$-E). The second is true by a similar argument.
+
+    For distributivity, $T, phi and (psi or chi) proves (phi and psi) or (phi and chi)$ by ($and$-E) followed by ($or$-E):
+    #Proof(
+        $phi and (psi or chi)$,
+        $phi quad psi or chi quad ("by" (and"-E"))$,
+        $(phi and psi) or (phi and chi) quad ("by" (or"-E"))$
+    )
+    Similarly, $T, (phi and psi) or (phi and chi) proves phi and (psi or chi)$ by ($or$-E) followed by ($and$-I).
 ]

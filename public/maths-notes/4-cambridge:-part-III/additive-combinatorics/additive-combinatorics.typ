@@ -2,6 +2,7 @@
 #show: doc => template(doc, hidden: (), slides: false)
 
 #let Spec = math.op("Spec")
+#let codim = math.op("codim")
 
 = Combinatorial methods
 
@@ -375,12 +376,12 @@ In this chapter, assume that $G$ is a _finite_ abelian group.
         hat(f): hat(G) & -> CC, \
         gamma & |-> EE_(x in G) f(x) overline(gamma(x)).
     $
-]
+]<def:finite-group-fourier-transform>
 #proposition[
     Let $f: G -> CC$. Then for all $x in G$, $
         f(x) = sum_(gamma in hat(G)) hat(f)(gamma) gamma(x).
     $
-]
+]<prop:group-characters-span-complex-valued-functions-on-group>
 #proofhints[
     Straightforward.
 ]
@@ -417,7 +418,7 @@ In this chapter, assume that $G$ is a _finite_ abelian group.
     Let $V <= FF_p^n$ be a subspace. Then for $t in hat(FF)_p^n$, $
         hat(bb(1))_V (t) & = EE_(x in FF_p^n) indicator(V)(x) e(-x . t \/ p) \
         & = abs(V)/p^n indicator(V^perp)(t).
-    $ where $V^perp = \{t in hat(FF)_p^n: x . t = 0 quad forall x in V\}$ is the *annihilator* of $V$. Hence, $hat(bb(1))_V (t) = mu_(V^perp) (t)$.
+    $ where $V^perp = \{t in hat(FF)_p^n: x . t = 0 quad forall x in V\}$ is the *annihilator* of $V$. Hence, $hat(bb(1))_V = mu_(V^perp)$.
 ]
 #example[
     Let $R subset.eq G$ be such that each $x in G$ lies in $R$ independently with probability $1/2$. Then with high probability, $
@@ -430,12 +431,12 @@ In this chapter, assume that $G$ is a _finite_ abelian group.
     $
 ]<thm:chernoffs-inequality>
 #example[
-    Let $Q = {x in FF_p^n: x . x = 0}$ wiht $p > 2$. Then $abs(Q)\/p^n = 1/p + O(p^(-n\/2))$ and $sup_(t != 0) abs(hat(bb(1))_Q (t)) = O(p^(-n\/2))$.
+    Let $Q = {x in FF_p^n: x . x = 0}$ with $p > 2$. Then $abs(Q)\/p^n = 1/p + O(p^(-n\/2))$ and $sup_(t != 0) abs(hat(bb(1))_Q (t)) = O(p^(-n\/2))$.
 ]
 #lemma("Plancherel's Identity")[
-    Let $f, g: G -> CC$. Then we have
-    - *Parseval's identity*: 
-    - *Plancherel's identity*: $gen(f, g) = gen(hat(f), hat(g))$.
+    For all $f, g: G -> CC$, $
+        gen(f, g) = gen(hat(f), hat(g)).
+    $
 ]
 #proof[
     Exercise.
@@ -444,6 +445,9 @@ In this chapter, assume that $G$ is a _finite_ abelian group.
     For all $f, g: G -> CC$, $
         norm(f)_(L^2 (G))^2 = norm(hat(f))_(L^2 (hat(G)))^2.
     $
+]
+#proofhints[
+    Trivial from Plancherel.
 ]
 #proof[
     By Plancherel.
@@ -455,14 +459,14 @@ In this chapter, assume that $G$ is a _finite_ abelian group.
 ]<def:rho-large-fourier-spectrum>
 #example[
     By the previous example, if $f = indicator(V)$ with $V <= FF_p^n$ a subspace, then for all $rho in (0, 1]$, $
-        Spec_rho (indicator(V)) = {t in hat(FF)_p^n: abs(indicator(V)(t)) >= rho abs(V) / p^n} = V^perp
+        Spec_rho (indicator(V)) = {t in hat(FF)_p^n: abs(hat(bb(1))_V (t)) >= rho abs(V) / p^n} = V^perp
     $
 ]
 #lemma[
     For all $rho > 0$, $
         abs(Spec_rho (f)) <= rho^(-2) norm(f)_2^2 / norm(f)_1^2
     $
-]
+]<lem:set-of-large-fourier-coefficients-is-small>
 #proofhints[
     Use Parseval's identity.
 ]
@@ -475,6 +479,63 @@ In this chapter, assume that $G$ is a _finite_ abelian group.
 ]
 #remark[
     In particular, if $f = indicator(A)$ for $A subset.eq G$, then $norm(f)_1 = alpha = abs(A) \/ abs(G) = norm(f)_2^2$. So $abs(Spec_rho (indicator(A))) <= rho^(-2) alpha^(-1)$.
+]
+#definition[
+    The *convolution* of $f, g: GG -> CC$ is $
+        f * g: G & -> CC, \
+        x & |-> EE_(y in G) f(y) g(x - y).
+    $
+]<def:convolution>
+#example[
+    Given $A, B subset.eq G$, $
+        (indicator(A) * indicator(B))(x) & = EE_(y in G) indicator(A)(y) indicator(B)(x - y) \
+        & = EE_(y in G) indicator(A)(y) indicator(x - B)(y) \
+        & = EE_(y in G) indicator(A sect (x - B))(y) \
+        & = abs(A sect (x - B)) / abs(G) = 1/abs(G) r_(A + B)(x).
+    $ In particular, $supp(indicator(A) * indicator(B)) = A + B$.
+]
+#lemma[
+    Given $f, g: G -> CC$, $
+        forall gamma in hat(G), quad hat((f * g))(gamma) = hat(f)(gamma) hat(g)(gamma).
+    $
+]
+#proof[
+    We have $
+        hat((f * g))(gamma) & = EE_(x in G) (f * g)(x) overline(gamma(x)) \
+        & = EE_(x in G) EE_(y in G) f(y) g(x - y) overline(gamma(x)) \
+        & = EE_(u in G) EE_(y in G) f(y) g(u) overline(gamma(u + y)) quad (u = x - y) \
+        & = EE_(u in G) EE_(y in G) f(y) g(u) overline(gamma(u)) overline(gamma(y)) \
+        & = hat(f)(gamma) hat(g)(gamma).
+    $
+]
+#example[
+    $EE_(x + y = z + w) f(x) f(y) overline(f(z) f(w)) = norm(hat(f))_(ell^4 (hat(G)))^4$. In particular, $norm(hat(bb(1))_A)_(ell^4 (hat(G)))^4 = E(A) \/ abs(G)^3$ for any $A subset.eq G$.
+]
+#theorem("Bogolyubov's Lemma")[
+    Let $A subset.eq FF_p^n$ be of density $alpha$. Then there exists a subspace $V <= FF_p^n$ with $codim(V) <= 2 alpha^(-2)$, such that $V subset.eq A + A - A - A$.
+]
+#proof[
+    Observe $2A - 2A = supp(g)$ where $g = indicator(A) * indicator(A) * indicator(-A) * indicator(-A)$, so we want to find $V <= FF_p^n$ such that $g(x) > 0$ for all $x in V$.
+
+    Now $
+        g(x) & = sum_(t in hat(FF)_p^n) hat(g)(t) e(x . t \/ p) \
+        & = sum_(t in hat(FF)_p^n) abs(hat(bb(1))_A (t))^4 e(x . t \/ p) quad "by above lemma" \
+        & = alpha^4 + sum_(t != 0) abs(hat(bb(1))_A (t))^4 e(x . t \/ p) \
+        & = alpha^4 + sum_(t in SS \\ {0}) abs(hat(bb(1))_A (t))^4 e(x . t \/ p) + sum_(t in.not S) abs(hat(bb(1))_A (t))^4 e(x . t \/ p) \
+    $ since first sum is $>= (rho alpha)^4 quad "as" x . t = 0 thick forall t in S$ absolute value of each term in the second sum is $<= sup_(t in.not S) abs(hat(bb(1))_A (t))^2 sum_(t in.not S) abs(hat(bb(1))_A)^2 <= sup_(t in.not S) abs(hat(bb(1))_A (t))^2 sum_(t in FF_p^n) abs(hat(bb(1))_A)^2 <= (rho alpha)^2 <= norm(indicator(A))_2^2 = rho^2 alpha^3$ by Parseval. So we want $rho^2 alpha^3 <= alpha^4 / 2$, so set $rho = sqrt(a\/2)$. Hence $g(x) > 0$ (in fact, $g(x) >= alpha^4 / 2$) for all $x in V$, and $codim(V) <= 2alpha^(-2)$.
+    
+    Let $S = Spec_rho (indicator(A))$ with $rho = ...$, and let $V = gen(S)^perp$. By @lem:set-of-large-fourier-coefficients-is-small, $codim(V) <= abs(S) <= rho^(-2) alpha^(-1)$. Fix $x in V$.
+]
+#example[
+    The set $A = {x in FF_2^n: abs(x) >= n/2 + sqrt(n)/2}$ (where $|x|$ is number of $1$s in $x$) has density $>= 1/8$ but there is no coset $C$ of any subspace of codimension $sqrt(n)$ such that $C subset.eq A + A$.
+]
+#lemma[
+    Let $A subset.eq FF_p^n$ have density $alpha$ with $sup_(t != 0) abs(hat(bb(1))_A (t)) >= rho alpha$ for some $rho > 0$. Then there exists a subspace $V <= FF_p^n$ with $codim(V) = 1$ and $x in FF_p^n$ such that $
+        abs(A sect (x + V)) >= alpha(1 + rho/2) abs(V).
+    $
+]
+#proof[
+    Let $t != 0$ be such that $abs(hat(bb(1))_A (t)) >= rho alpha$ and let $V = gen(t)^perp$. Write $v_j + V = {x in FF_p^n: x . t = j}$ for $j in [p]$ for the $p$ distinct cosets of $V$. Then $hat(bb(1))_A (t) = hat(f)_A (t) = EE_(x in FF_p^n) (indicator(A) (x) - alpha) e(-x . t \/ p) = EE_(j in [p]) EE_(x in v_j + V) (indicator(A)(x) - alpha)e(-j\/p) = EE_(j in [p]) (abs(A sect (v_j + V))/abs(v_j + V) - alpha) e(-j\/p) =: EE_(j in [p]) a_j e(-j\/p)$. By the triangle inequality, $EE_(j in [p]) abs(a_j) >= rho alpha$. Note that $EE_(j in [p]) a_j = 0$. So $EE_(j in [p]) a_j + abs(a_j) >= rho alpha$, so $exists j in [p]$ such that $a_j + abs(a_j) >= rho alpha$, hence $a_j >= rho alpha\/2$.
 ]
 
 

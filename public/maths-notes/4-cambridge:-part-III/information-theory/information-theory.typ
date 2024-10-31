@@ -3,6 +3,7 @@
 
 #let Bern = math.op("Bern")
 #let sim = sym.tilde
+#let Pois = math.op("Pois")
 
 = Entropy
 
@@ -490,7 +491,7 @@
     Consider an "error" Bernoulli RV $E$ which depends on $X$ and $Y$. Use the chain rule in two directions on $H(X, E | Y)$. Merge these and split up into the cases when $E = 0$ and $E = 1$ (using )
 ]
 #proof[
-    Let $E$ be the binary RV taking value $1$ when there is an error (i.e. $hat(X) != X$), and taking value $0$ otherwise. So $E sim "Bern"(P_e)$ and $H(E) = h(P_e)$. Then $
+    Let $E$ be the binary RV taking value $1$ when there is an error (i.e. $hat(X) != X$), and taking value $0$ otherwise. So $E sim Bern(P_e)$ and $H(E) = h(P_e)$. Then $
         H(X, E | Y) = H(X | Y) + H(E | X, Y) = H(X | Y)
     $ since $E$ is function of $(X, Y)$. Using the chain rule in the other direction, $
         H(X, E | Y) = H(E | Y) + H(X | E, Y) <= H(E) + E(X | E, Y).
@@ -498,4 +499,122 @@
         H(X | Y) - h(P_e) & <= H(X | E, Y) \
         & = P_e H(X | E = 1, Y) + (1 - P_e)H(X | E = 0, Y)
     $ When $E = 0$, given $Y$, we can determine $X = f(Y)$ as a function of $Y$, so $H(X | E = 0, Y) = 0$. When $E = 1$, given $Y$, we know $X$ doesn't take value $f(Y)$, so there are $abs(A) - 1$ possible values that it takes, so $H(X | E = 1, Y) <= log(abs(A) - 1)$.
+]
+
+== Properties of relative entropy
+
+#theorem("Data Processing Inequality for Relative Entropy")[
+    Let $X sim P_X$ and $X' sim Q_X$ be RVs on the same alphabet $A$, and $f: A -> B$ be an arbitrary function. Let $P_(f(X))$ and $Q_(f(X))$ be the PMFs of $f(X)$ and $f(X')$ respectively. Then $
+        D(P_(f(X)) || Q_(f(X))) <= D(P_X || Q_X).
+    $
+]<thm:data-processing-inequality-for-relative-entropy>
+#proofhints[
+    Use that $P_(f(X))(y) = sum_(x in f^(-1)({y})) P_X (x)$.
+]
+#proof[
+    For each $y in B$, let $A_y = {x in A: f(x) = y} = f^(-1)({y})$. Then $
+        D(P_(f(X)) || Q_(f(X))) & = sum_(y in B) P_(f(X))(y) log (P_(f(X))(y))/(Q_(f(X))(y)) \
+        & = sum_(y in B) (sum_(x in A_y) P_X (x)) log (sum_(x in A_y) P_X (x))/(sum_(x in A_y) Q_X (x)) \
+        & <= sum_(y in B) sum_(x in A_y) P_X (x) log (P_X (x))/(Q_X (x)) quad "by log-sum inequality" \
+        & = sum_(x in A) P_X (x) log (P_X (x))/(Q_X (x)) = D(P_X || Q_X).
+    $ 
+]
+#remark[
+    The data processing inequality for relative entropy shows that we cannot make two distributions more "distinguishable" by first "processing" the data (by applying $f$).
+]
+#definition[
+    The *total variation distance* between PMFs $P$ and $Q$ on the same alphabet $A$ is $
+        norm(P - Q)_"TV" = sum_(x in A) abs(P(x) - Q(x)).
+    $
+]<def:total-variation-distance>
+#remark[
+    Let $B = {x in A: P(x) > Q(x)}$, then $
+        norm(P - Q)_"TV" & = sum_(x in A) abs(P(x) - Q(x)) \
+        & = sum_(x in B) (P(x) - Q(x)) + sum_(x in B^c) (Q(x) - P(x)) \
+        & = P(B) - Q(B) + Q(B^c) - P(B^c) \
+        & = P(B) - Q(B) + (1 - Q(B)) + (1 - P(B)) \
+        & = 2(P(B) - Q(B)).
+    $
+]
+#notation[
+    Write $
+        D_e (P || Q) = (ln 2) P(D || Q) = sum_(x in A) P(x) log_e P(x) / Q(x)
+    $ and more generally, write $
+        D_c (P || Q) = (log_c 2) P(D || Q) = sum_(x in A) P(x) log_c P(x) / Q(x).
+    $
+]
+#theorem("Pinsker's Inequality")[
+    Let $P$ and $Q$ be PMFs on the same alphabet $A$. Then $
+        norm(P - Q)_"TV"^2 <= (2 ln 2) D(P || Q) = 2 D_e (P || Q).
+    $
+]<thm:pinskers-inequality>
+#proofhints[
+    - First prove for case that $P$ and $Q$ are PMFs of $Bern(p)$ and $Bern(q)$ (explain why we can assume $q <= p$ WLOG), by definining $Delta(p, q) = 2 D_e (P || Q) - norm(P - Q)_"TV"^2$, and showing that $(partial Delta(p, q))/(partial q) <= 0$.
+    - Then show for general PMFs by using data processing, where $f = indicator(B)$ for $B = {x in A: P(x) > Q(x)}$.
+]
+#proof[
+    First, assume that $P$ and $Q$ are the PMFs of the distributions $Bern(p)$ and $Bern(q)$ for some $0 <= q <= p <= 1$ ($q <= p$ WLOG since we can simultaneously interchange both $P$ with $1 - P$ and $Q$ with $1 - Q$ if necessary). Let $
+        Delta(p, q) = (2 ln 2) D(P || Q) - norm(P - Q)_"TV"^2 = 2p ln p/q + 2(1 - p) ln (1 - p)/(1 - q) - (2(p - q))^2.
+    $ Since $Delta(p, p) = 0$ for all $p$, it suffices to show that $(partial Delta(p, q))/(partial q) <= 0$. Indeed, $
+        (partial Delta(p, q))/(partial q) = -2 p/q + 2 (1 - p)/(1 - q) + 8(p - q) = 2(q - p)(1/(q(1 - q)) - 4) <= 0
+    $ since $q(1 - q) <= 1/4$ for all $q in [0, 1]$.
+
+    Now, assume $P$ and $Q$ are general PMFs and let $B = {x in A: P(x) > Q(x)}$ and $f = indicator(B)$. Define the RVs $X sim P$ and $X' sim Q$, and let $P_f$ and $Q_f$ be the respective PMFs of the RVs $f(X)$ and $f(X')$. Note that $f(X) sim Bern(p)$, $f(X') sim Bern(q)$ where $p = P(B)$ and $q = Q(B)$. Then $
+        2 D_e (P || Q) & >= 2 D_e (P_f || Q_f) quad & "by data-processing" \
+        & >= norm(P_f - Q_f)_"TV"^2 quad & "by above" \
+        & = (2(p - q))^2 \
+        & = (2(P(B) - Q(B)))^2 \
+        & = norm(P - Q)_"TV"^2.
+    $
+]
+#theorem("Convexity of Relative Entropy")[
+    The relative entropy $D(P || Q)$ is jointly convex in $P, Q$: for all PMFs $P, P', Q, Q'$ on the same alphabet and for all $0 < lambda < 1$, $
+        D(lambda P + (1 - lambda) P' || lambda Q + (1 - lambda) Q') <= lambda D(P || Q) + (1 - lambda) D(P' || Q').
+    $
+]<thm:relative-entropy-is-convex>
+#proof[
+    Exercise.
+]
+#corollary("Concavity of Entropy")[
+    The entropy of $H(P)$ is a concave function on all PMFs $P$ on a finite alphabet.
+]<cor:entropy-is-concave>
+#proofhints[
+    Use convexity of relative entropy of $P$ and a suitable distribution.
+]
+#proof[
+    Let $P$ be a PMF on finite alphabet $A$ and $U$ be the uniform PMF on $A$. Then by convexity of relative entropy, $D(P || U) = sum_(x in A) p(x) log P(x) / (1\/abs(A)) = log m - H(P)$ is convex in $P$, so $H(P)$ is concave in $P$.
+]
+
+
+= Poisson approximation
+
+#theorem[
+    Let $X_1, ..., X_n$ be IID RVs with each $X_i sim Bern(lambda\/n)$, let $S_n = X_1 + dots.c + X_n$. Then $P_(S_n) -> Pois(lambda)$ in distribution as $n -> oo$, i.e. $forall k in NN$, $
+        Pr(S_n = k) -> e^(-lambda) lambda^k / n! quad "as" n -> oo
+    $
+]<thm:binomial-converges-to-poisson>
+#remark[
+    Using information theory, we can derive stronger and more general statements than the one above.
+]
+#theorem[
+    Let $X_1, ..., X_n$ be (not necessarily independent) RVs with each $X_i sim Bern(p_i)$. Let $S_n = sum_(i = 1)^n X_i$ and $lambda = sum_(i = 1)^n p_i = EE[S_n]$. Then $
+        D_e (P_(S_n) || Pois(lambda)) <= sum_(i = 1)^n p_i^2 + (sum_(i = 1)^n H(X_i) - H(X_1^n)).
+    $
+]
+#proof[
+    Let $Z_i = Pois(p_i)$ for each $i in [n]$ be independent Poisson RVs so that $T_n = sum_(i = 1)^n Z_i sim Pois(lambda)$. Then $
+        D_e (P_(S_n) || Pois(lambda)) & = D_e (P_(S_n) || P_(T_n)) \
+        & <= D_e (P_(X_1^n) || P_(Z_1^n)) quad "by data-processing" \
+        & = sum_(x_1^n in A^n) P_(X_1^n) (x_1^n) ln ((P_(X_1^n) (x_1^n))/(P_(Z_1^n)(z_1^n)) dot (product_(i = 1)^n P_(X_i)(z_i))/(product_(i = 1)^n P_(X_i)(z_i))) \
+        & = sum_(x_1^n in A^n) P_(X_1^n) (x_i) ln (product_(i = 1)^n (P_(X_i)(x_i))/(P_(Z_i)(x_i))) + sum_(x_1^n in A^n) P_(X_1^n) (x_1^n) ln 1/(product_(i = 1)^n P_(X_i)(x_i)) - H_e (X_1^n) \
+        & = sum_(i = 1)^n D_e (P_(X_i) || P_(Z_i)) + sum_(i = 1)^n H_e (X_i) - H_e (X_1^n)
+    $ Now note that $D_e (P_(X_i) || P_(Z_i)) = D_e (Bern(p_i) || Pois(p_i))$
+]
+#corollary[
+    Let $X_1, ..., X_n$ be independent, with each $X_i sim Bern(p_i)$. Then $
+        D_e (P_(S_n) || Pois(lambda)) <= sum_(i = 1)^n p_i^2
+    $ and it is known that $P_(S_n) -> Pois(lambda)$ iff $sum_(i = 1)^n p_i^2 -> 0$.
+]
+#example[
+    If each $p_i = lambda/n$, then $D_e (P_("Bin"(n, lambda\/n)) || Pois(lambda)) <= lambda^2 \/ n$.
 ]
