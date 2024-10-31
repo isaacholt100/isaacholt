@@ -103,3 +103,5 @@
 #let indicator(S) = $bb(1)_#S$
 #let gen(..gens) = $angle.l #gens.pos().join(",") angle.r$
 #let supp = math.op("supp")
+#let vd(v) = math.bold(v)
+#let span = math.op("span")

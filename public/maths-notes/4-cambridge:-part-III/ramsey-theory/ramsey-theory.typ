@@ -347,11 +347,67 @@
 #proof[
     Let $S = {S_1, ..., S_m}$. Let $c: NN^d -> [k]$ be a $k$-colouring. For $n$ large enough (i.e. $n >= "HJ"(m, k)$), colour $[m]^n$ by $c'(x_1, ..., x_n) = c(S_(x_1) + dots.c + S_(x_m))$. By Hales-Jewett, there exists a monochromatic line (with respect to $c'$) in $[m]^n$ with active coordinates $I$. So $c(sum_(i in.not I) S_i + abs(I) S_j)$ is the same colour for all $j in [m]$. So we are done, as $sum_(i in.not I) S_i + abs(I) S$ is a homothetic copy of $S$.
 ]
+#remark[
+    - Gallai's theorem can also be proven with a focussing + product colouring argument.
+    - For $S = {(x, y) in NN^2: x, y in {1, 2}}$, Gallai's theorem proves the existence of a monochromatic square whereas extended Hales-Jewett only guarantees a monochromatic rectangle.
+]
 
 
 = Partition regular systems
 
+== Rado's theorem
 
+Schur's theorem says that $x + y = z$ has a monochromatic solution for any finite colouring of $NN$. Strengthened Van der Waerden says that the system $x_1 + x_2 = y_1, x_1 + 2x_2 = y_2, ..., x_1 + m x_2 = y_m$ has a monochromatic solution in $x_1, x_2, y_1, ..., y_m$. We want to find when a general system of equations is partition regular.
+
+#definition[
+    Let $A QQ^(m times n)$ be a $m times n$ matrix. $A$ is *partition regular (PR)* if for any finite colouring of $NN$, there exists a monochromatic $vd(x) in NN^n$ such that $A vd(x) = vd(0)$.
+]<def:partition-regular-matrix>
+#example[
+    - Schur's theorem states that $mat(1, 1, -1)$ is PR.
+    - Strengthened Van der Waerden states that $
+        mat(1, 1, -1, 0, ..., 0; 1, 2, 0, -1, ..., 0; dots.v, dots.v, dots.v, dots.v, dots.down, dots.v; 1, m, 0, 0, ..., -1)
+    $ is PR.
+    - $mat(a, b, -(a + b))$ is PR for any $a, b$ (a monochromatic solution is $x = y = z$).
+    - $mat(2, -1)$ is not PR: colour $NN$ by $n$ is #clr("red") if $max{m: 2^m | n}$ is even, and #clr("blue") otherwise. Then if $2x = y$, $x$ and $y$ must have different colours.
+]
+#definition[
+    A rational matrix $A$ with columns $vd(c)_1, ..., vd(c)_n in QQ^m$ has the *column property (CP)* if there exists a partition $B_1 union.sq dots.c union.sq B_r$ of $[n]$ such that:
+    + $sum_(i in B_1) vd(c)_i = vd(0)$.
+    + $sum_(i in B_s) vd(c)_i in span{vd(c)_j: j in B_1 union.sq dots.c union.sq B_(s - 1)}$ (note we can take the linear span over $RR$ or over $QQ$ here, as if a rational vector is a real linear combination of rational vectors, then it is also a rational linear combination of them).
+]
+#example[
+    - $mat(1, 1, -1)$ has CP, with $B_1 = {1, 3}$, $B_2 = {2}$.
+    - The matrix from strengthened van der Waerden has CP, with $B_1 = {1, 3, ..., n}$ and $B_2 = {2}$.
+    - $mat(3, 4, -7)$ has CP with $B_1 = {1, 2, 3}$.
+    - $mat(lambda, -1)$ has CP iff $lambda = 1$.
+    - $mat(3, 4, -6)$ doesn't have CP.
+]
+#theorem("Rado")[
+    A rational matrix is PR iff it has CP.
+]
+#remark[
+    This shows that partition regularity is checkable in finite time. Neither direction of Rado's theorem is obvious.
+]
+#example[
+    $
+        mat(1, -1, 3; 2, -2, a; 4, -4, b)
+    $ has CP iff $(a, b) = (6, 12)$.
+]
+#remark[
+    $vd(x) = (a_1, ..., a_n)$ is PR iff $lambda vd(x)$ is PR (for any $lambda in QQ^times$), so we can assume that each $a_i in ZZ$. So $vd(x)$ has CP iff there exists $emptyset != I subset.eq [n]$ such that $sum_(i in I) a_i = 0$. We may also assume each $a_i != 0$. We will first show that if $vd(x)$ is PR, then it has CP. Even in the $1 times n$ matrix case of Rado's theorem, neither direction is easy.
+]
+#notation[
+    For $p$ prime and $x = (a_k ... a_0)_p in NN$, write $e(x)$ for the rightmost non-zero digit in the base-$p$ expansion of $x$, i.e. $e(x) = a_(t(x))$, where $t(x) = min{i: a_i != 0}$.
+]
+#proposition[
+    Let $a_1, ..., a_n in QQ^*$. If $mat(a_1, ..., a_n)$ is PR, then it has CP.
+]
+#proof[
+    Let $p$ be a large prime ($p > sum_(i = 1)^n abs(a_i)$). Define a $(p - 1)$-colouring of $NN$ giving $x$ colour $e(x)$. By assumption, there are $x_1, ..., x_n$ of the same colour $d$ such that $sum_(i = 1)^n a_i x_i = 0$. Let $t = min{t(x_1), ..., t(x_n)}$, and let $I = {i: t(x_i) = t}$. So when summing $sum_(i = 1)^n a_i x_i = 0$ and considering the last digit in the base $p$ expansion, we obtain $sum_(i in I) a_i d = 0 mod p$, so $sum_(i in I) a_i = 0$ (since $p$ was chosen large enough).
+]
+#remark[
+    There is no other known proof of this proposition.
+]
 
 
 = Euclidean Ramsey theory
