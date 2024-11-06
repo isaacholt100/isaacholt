@@ -1,9 +1,11 @@
+#import "@preview/fletcher:0.5.2" as fletcher: diagram, node, edge
 #import "../../template.typ": *
 #show: doc => template(doc, hidden: (), slides: false)
 
-#let Bern = math.op("Bern")
 #let sim = sym.tilde
+#let Bern = math.op("Bern")
 #let Pois = math.op("Pois")
+#let Bin = math.op("Bin")
 
 = Entropy
 
@@ -588,9 +590,11 @@
 
 = Poisson approximation
 
+== Poisson approximation via entropy
+
 #theorem[
     Let $X_1, ..., X_n$ be IID RVs with each $X_i sim Bern(lambda\/n)$, let $S_n = X_1 + dots.c + X_n$. Then $P_(S_n) -> Pois(lambda)$ in distribution as $n -> oo$, i.e. $forall k in NN$, $
-        Pr(S_n = k) -> e^(-lambda) lambda^k / n! quad "as" n -> oo
+        Pr(S_n = k) -> e^(-lambda) lambda^k / k! quad "as" n -> oo
     $
 ]<thm:binomial-converges-to-poisson>
 #remark[
@@ -598,23 +602,300 @@
 ]
 #theorem[
     Let $X_1, ..., X_n$ be (not necessarily independent) RVs with each $X_i sim Bern(p_i)$. Let $S_n = sum_(i = 1)^n X_i$ and $lambda = sum_(i = 1)^n p_i = EE[S_n]$. Then $
-        D_e (P_(S_n) || Pois(lambda)) <= sum_(i = 1)^n p_i^2 + (sum_(i = 1)^n H(X_i) - H(X_1^n)).
+        D_e (P_(S_n) || Pois(lambda)) <= sum_(i = 1)^n p_i^2 + (sum_(i = 1)^n H_e (X_i) - H_e (X_1^n)).
     $
+]<thm:relative-entropy-between-sum-of-bernoullis-and-poisson-is-bounded>
+#proofhints[
+    - Let $Z_i = Pois(p_i)$ for each $i in [n]$ be independent Poisson RVs so that $T_n = sum_(i = 1)^n Z_i sim Pois(lambda)$.
+    - Use data processing inequality for relative entropy, and prove the fact that $D_e (Bern(p) || Pois(p)) <= p^2$ for all $p in [0, 1]$ (use that $1 - p <= e^(-p)$).
 ]
 #proof[
     Let $Z_i = Pois(p_i)$ for each $i in [n]$ be independent Poisson RVs so that $T_n = sum_(i = 1)^n Z_i sim Pois(lambda)$. Then $
         D_e (P_(S_n) || Pois(lambda)) & = D_e (P_(S_n) || P_(T_n)) \
-        & <= D_e (P_(X_1^n) || P_(Z_1^n)) quad "by data-processing" \
-        & = sum_(x_1^n in A^n) P_(X_1^n) (x_1^n) ln ((P_(X_1^n) (x_1^n))/(P_(Z_1^n)(z_1^n)) dot (product_(i = 1)^n P_(X_i)(z_i))/(product_(i = 1)^n P_(X_i)(z_i))) \
-        & = sum_(x_1^n in A^n) P_(X_1^n) (x_i) ln (product_(i = 1)^n (P_(X_i)(x_i))/(P_(Z_i)(x_i))) + sum_(x_1^n in A^n) P_(X_1^n) (x_1^n) ln 1/(product_(i = 1)^n P_(X_i)(x_i)) - H_e (X_1^n) \
+        & <= D_e (P_(X_1^n) || P_(Z_1^n)) quad "by data-processing with" f(x_1^n) = x_1 + dots.c + x_n \
+        & = EE[ln (P_(X_1^n) (X_1^n))/(P_(Z_1^n)(X_1^n))] \
+        & = EE[ln ((P_(X_1^n) (x_1^n))/(product_(i = 1)^n P_(Z_1^n)(X_i)) dot (product_(i = 1)^n P_(X_i)(X_i))/(product_(i = 1)^n P_(X_i)(X_i)))] \
+        & = EE[ln (product_(i = 1)^n (P_(X_i)(x_i))/(P_(Z_i)(x_i)))] + sum_(x_1^n in A^n) P_(X_1^n) (x_1^n) ln 1/(product_(i = 1)^n P_(X_i)(x_i)) - H_e (X_1^n) \
         & = sum_(i = 1)^n D_e (P_(X_i) || P_(Z_i)) + sum_(i = 1)^n H_e (X_i) - H_e (X_1^n)
-    $ Now note that $D_e (P_(X_i) || P_(Z_i)) = D_e (Bern(p_i) || Pois(p_i))$
+    $ since for given $x_1 in A$, $sum_(x_2^n in A^n) P_(X_1^n)(x_1^n) = P_(X_1)(x_1)$ (and similarly for each $x_j$, $j = 2, ..., n$). Now note that $D_e (P_(X_i) || P_(Z_i)) = D_e (Bern(p_i) || Pois(p_i))$, and for all $p in [0, 1]$, $
+        D_e (Bern(p_i) || Pois(p_i)) & = p ln p/e^(-p) + (1 - p) ln (1 - p)/(p e^(-p)) \
+        & = p ln p + p^2 + (1 - p) ln(1 - p) + (1 - p) ln p + (1 - p)p \
+        & = ln(1 - p) + ln p + p - p ln (1 - p) \
+        & = (1 - p) ln(1 - p) + p + ln p \
+        & <= -(1 - p) p + p + ln p <= p^2
+    $ since $1 - p <= e^(-p)$ for all $p in [0, 1]$.
 ]
 #corollary[
     Let $X_1, ..., X_n$ be independent, with each $X_i sim Bern(p_i)$. Then $
         D_e (P_(S_n) || Pois(lambda)) <= sum_(i = 1)^n p_i^2
-    $ and it is known that $P_(S_n) -> Pois(lambda)$ iff $sum_(i = 1)^n p_i^2 -> 0$.
+    $
+]
+#corollary[
+    @thm:binomial-converges-to-poisson follows directly from @thm:relative-entropy-between-sum-of-bernoullis-and-poisson-is-bounded.
+]
+#proof[
+    Let $P_lambda$ be the PMF of the $Pois(lambda)$ distribution. Then by Pinsker's inequality, $
+        norm(P_(S_n) - P_lambda)_"TV"^2 <= 2 D_e (P_(S_n) || Pois(lambda)) <= 2 sum_(i = 1)^n lambda^2 / n^2 = 2 lambda^2 / n.
+    $ So for each $k in NN$, $abs(P_(S_n)(k) - P_lambda (k)) <= norm(P_(S_n) - P_lambda)_"TV" <= sqrt(2/n) lambda -> 0$ as $n -> oo$.
+]
+#remark[
+    @thm:relative-entropy-between-sum-of-bernoullis-and-poisson-is-bounded is stronger than @thm:binomial-converges-to-poisson in that it holds for all $n$ rather than being asymptotic. It also provides an easily computable bound on the difference between $P_(S_n)$ and $Pois(lambda)$, and does not assume the $p_i$ are equal, or that the RVs $X_1, ..., X_n$ are independent.
+]
+#remark[
+    It is known that for independent $X_1, ..., X_n$, $P_(S_n) -> Pois(lambda)$ iff $sum_(i = 1)^n p_i^2 -> 0$. So the bound in @thm:relative-entropy-between-sum-of-bernoullis-and-poisson-is-bounded is the best possible.
+]
+
+== What is the Poisson distribution?
+
+#lemma("Binomial Maximum Entropy")[
+    Let $B_n (lambda)$ be set of distributions on $NN_0$ that arise from sums $sum_(i = 1)^n X_i$ where $X_i sim Bern(p_i)$ are independent and $sum_(i = 1)^n p_i = lambda$. For all $n >= lambda$, $
+        H_e ("Bin"(n, lambda\/n)) = sup{H_e (P): P in B_n (lambda)}
+    $
+]<lem:binomial-maximum-entropy>
+#proof[
+    Exercise.
+]
+#theorem("Poisson Maximum Entropy")[
+    We have $
+        & H_e (Pois(lambda)) \
+        = & sup{H_e (S_n): S_n = sum_(i = 1)^n X_i, X_i sim Bern(p_i) "independent" and sum_(i = 1)^n p_i = lambda, n >= 1} \
+        = & sup_(n in NN) sup{H_e(P): P in B_n (lambda)}.
+    $
+]<thm:poisson-maximum-entropy>
+#proof[
+    Let $H^* = sup_(n in NN) sup\{H_e (P): P in B_n (lambda)\}$. Note that $B_n (lambda) subset.eq B_(n + 1)(lambda)$, hence $H^* = lim_(n -> oo) sup{H_e(P): P in B_n (lambda)} = lim_(n -> oo) H_e (Bin(n, lambda\/n))$.
+    
+    Let $P_n$ and $Q$ be respective PMFs of $Bin(n, lambda\/n)$ and $Pois(lambda)$. Using that $k! <= k^k <= e^(k^2)$, we have $
+        H_e (Q) & = sum_(k = 0)^oo Q(k) ln (k!)/(e^(-lambda) lambda^k) \
+        & <= sum_(k = 0)^oo Q(k) (lambda - k ln lambda + k^2) \
+        & = lambda^2 + 2 lambda - lambda ln lambda < oo 
+    $ since $EE[X] = lambda$ and $EE[X^2] = lambda + lambda^2$ for $X sim Pois(lambda)$. So $H_e (Q)$ is finite. The convergence is left as an exercise.
+]
+
+
+= Mutual information
+
+#definition[
+    The *mutual information* between discrete RVs $X$ and $Y$ is $
+        I(X; Y) = H(X) - H(X|Y).
+    $ The *conditional mutual information* between $X$ and $Y$ given a discrete RV $Z$ is $
+        I(X; Y | Z) & = H(X | Z) - H(X | Y, Z) \
+        & = H(X | Z) + H(Y | Z) - H(X, Y | Z) \
+        & = H(Y | Z) - H(Y | X, Z).
+    $
+]<def:mutual-information>
+#proposition[
+    Let $X$ and $Y$ be discrete RVs with marginal PMFs $P_X$ and $P_Y$ respectively, and joint PMF $P_(X, Y)$, then the mutual information can be expressed as: $
+        I(X; Y) & = H(X) + H(Y) - H(X, Y) \
+        & = H(Y) - H(Y | X) \
+        & = D(P_(X, Y) || P_X P_Y).
+    $
+]<prop:expressions-for-mutual-information>
+#proofhints[
+    Straightforward.
+]
+#proof[
+    The first two lines are by the chain rule. For the third, we have $
+        H(X) + H(Y) - H(X, Y) & = EE[-log P_X (X)] + EE[-log P_Y (Y)] - EE[-log P_(X, Y)(X, Y)] \
+        & = EE[log((P_(X, Y)(X, Y))/(P_X (X) P_Y (Y)))] \
+        & = D(P_(X, Y) || P_X P_Y).
+    $
+]
+#remark[
+    - $I(X; Y)$ is symmetric in $X$ and $Y$.
+    - The sum of the information contain in $X$ and $Y$ separately minus the information contained in the pair indeed is the amount of mutual information shared by both.
+    - Considering @thm:steins-lemma, we can consider $I(X; Y)$ as a measure of how well data generated from $P_(X, Y)$ can be distinguished from independent pairs $(X', Y')$ generated by the product distribution $P_X P_Y$, so is a measure of how far $X$ and $Y$ are from being independent.
+]
+#proposition[
+    - $0 <= I(X; Y) <= H(X)$ with equality to $0$ iff $X$ and $Y$ are independent.
+    - Similarly, $I(X; Z | Y) >= 0$ with equality iff $X - Y - Z$, i.e. $X$ and $Z$ are conditionally independent given $Y$.
+]
+#proof[
+    First is by @prop:expressions-for-mutual-information and non-negativity of conditional entropy, second is an exercise.
+]
+#proposition("Chain Rule for Mutual Information")[
+    For all discrete RVs $X_1, ..., X_n, Y$, $
+        I(X_1^n; Y) = sum_(i = 1)^n I(X_i; Y | X_1^(i - 1)).
+    $
+]<prop:mutual-information-chain-rule>
+#proofhints[
+    Straighforward.
+]
+#proof[
+    By the chain rule for entropy, $
+        I(X_1^n; Y) & = H(X_1^n) - H(X_1^n | Y) \
+        & = sum_(i = 1)^n H(X_i | X_1^(i - 1)) - sum_(i = 1)^n H(X_i | X_1^(i - 1), Y) \
+        & = sum_(i = 1)^n (H(X_i | X_1^(i - 1)) - H(X_i | X_1^(i - 1), Y)) \
+        & = sum_(i = 1)^n I(X_i; Y | X_1^(i - 1)).
+    $
+]
+#theorem("Data Processing Inequalities for Mutual Information")[
+    If $X - Y - Z$ (so $X$ and $Z$ are conditionally independent given $Y$), then $
+        I(X; Z), I(X; Y | Z) <= I(X; Y).
+    $
+]<thm:data-processing-inequalities-for-mutual-information>
+#proofhints[
+    Use chain rule for mutual information twice on the same expression.
+]
+#proof[
+    By the chain rule, we have $
+        I(X; Y, Z) & = I(X; Y) + I(X; Z | Y) \
+        & = I(X; Z) + I(X; Y | Z).
+    $ Now $I(X; Z | Y) = 0$ by conditional independence, so $I(X; Y) = I(X; Z) + I(X; Y | Z)$.
 ]
 #example[
-    If each $p_i = lambda/n$, then $D_e (P_("Bin"(n, lambda\/n)) || Pois(lambda)) <= lambda^2 \/ n$.
+    We always have $X - Y - f(Y)$, hence $I(X; f(Y)) <= I(X; Y)$, so applying a function to $Y$ cannot make $X$ and $Y$ "less independent".
+]
+
+== Synergy and redundancy
+
+#note[
+    $I(X; Y_1, Y_2)$ can greater than, equal to, or less than $I(X; Y_1) + (X; Y_2)$.
+]
+#definition[
+    The *synergy* of $Y_1, Y_2$ about $X$ is $
+        S(X; Y_1, Y_2) & = I(X; Y_1, Y_2) - (I(X; Y_1) + I(X; Y_2)) \
+        & = I(X; Y_2 | Y_1) - I(X, Y_2).
+    $ So the synergy can be $< 0$, $> 0$ or $= 0$.
+]<def:synergy>
+#definition[
+    If $S(X; Y_1, Y_2)$ is:
+    - negative, then $Y_1$ and $Y_2$ contain *redundant* information about $X$;
+    - zero, then $Y_1$ and $Y_2$ are *orthogonal*;
+    - positive, then $Y_1$ and $Y_2$ are *synergistic*. Intuitively, knowing $Y_1$ already makes the information in $Y_2$ more valuable (in that it gives more information about $X$).
+]<def:redundancy-orthogonality-synergisticy>
+#theorem[
+    Let RVs $Y_1, Y_2$ be conditionally independent given $X$, each with distribution $P_(Y | X)$, and RVs $Z_1, Z_2$ be distributed according to $Q_(Z | Y)(dot | Y_1)$, $Q_(Z | Y)(dot | Y_2)$ respectively. Let RV $Y$ have distribution $P_(Y | X)$, and $W_1, W_2$ be conditionally independent given $Y$, distributed according to $Q_(Z | Y)(dot | Y)$.
+
+    If $S(X; W_1, W_2) > 0$, then $I(X; W_1, W_2) > I(X; Z_1, Z_2)$, for independent $Z_1$ and $Z_2$, i.e. correlated observations are better than independent ones.
+]
+#proofhints[
+    Use data processing for mutual information.
+]
+#proof[
+    As in @def:synergy, we have $I(X; W_2 | W_1) > I(X; W_2)$. $I(X; W_2) = I(X; Z_2)$ since $(X, W_2)$ has the same joint distribution as $(X, Z_2)$. By the data processing inequality, we have $I(X; Z_2 | Z_1) = I(Z_2; X | Z_1) <= I(Z_2; X) = I(X; Z_2)$, since $Z_1$ and $Z_2$ are conditionally independent given $X$. Hence $I(X; W_2 | W_1) > I(X; Z_2 | Z_1)$, so $I(X; W_2 | W_1) + I(X; W_1) > I(X; Z_2 | Z_1) + I(X; Z_1)$, and the result follows by the chain rule.
+]
+#example[
+    Given two equally noisy channels of a signal $X$, we want to decide whether it is better (gives more information about $X$) for the channels to be independent (this corresponds with choosing the $Y_1, Y_2, Z_1, Z_2$) or correlated (this corresponds with choosing the $Y, W_1, W_2$).
+
+    The natural assumption that the conditionally independent observations $Z_1, Z_2$ would be "better" than $W_1, W_2$ (i.e. $I(X; Z_1, Z_2) >= I(X; W_1, W_2)$) is *false*.
+    We can show diagramatically as
+    #figure(grid(columns: 2, gutter: 4em, diagram($
+        & X edge("ld", ->) edge("rd", ->) \
+        node(P(y | x)) edge("d", ->) & & P(y | x) edge("d", ->) \
+        Y_1 edge("d", ->) & & Y_2 edge("d", ->) \
+        Q(z | y_1) edge("d", ->) & & Q(z | y_2) edge("d", ->) \
+        Z_1 & & Z_2
+    $), diagram($
+        & X edge("d", ->) \
+        & node(P(y | x)) edge("d", ->) \
+        & Y edge("ld", ->) edge("rd", ->) \
+        Q(z | y) edge("d", ->) & & Q(z | y) edge("d", ->) \
+        W_1 & & W_2
+    $)))
+]
+#example[
+    For example, let $P_(Y | X)$ be the $Z$-channel: if $X = 0$, then $Y = 0$ with probability $1$, and if $X = 1$, then $Y sim Bern(1 - delta)$ for some $delta in (0, 1)$. Let $Q_(Z | Y)$ be a binary symmetric channel: given $Y$ taking values in $0, 1$, $Z = Y$ with probability $1 - epsilon$, and $Z = 1 - Y$ with probability $epsilon$ for some $epsilon in (0, 1)$. We can represent this as
+    #figure(grid(columns: 2, gutter: 4em, diagram(cell-size: 15mm, $
+        0 edge("r", ->, label: 1) & 0 \
+        1 edge("ru", ->, label: delta) edge("r", ->, label: 1 - delta) & 1
+    $), diagram(cell-size: 15mm, $
+        0 edge("r", ->, label: 1 - epsilon) edge("rd", ->, label: epsilon) & 0 \
+        1 edge("ru", ->, label: epsilon) edge("r", ->, label: 1 - epsilon) & 1
+    $)))
+
+    If $X sim Bern(1\/2)$, $delta = 0.85$ and $epsilon = 0.1$, then $I(X; W_1, W_2) approx 0.047 > I(X; Z_1, Z_2) approx 0.039$. So the correlated observations $W_1, W_2$ are better than the independent observations $Z_1, Z_2$.
+]
+
+
+= Entropy and additive combinatorics
+
+== Simple sumset entropy bounds
+
+#definition[
+    For $A, B subset.eq ZZ$ the *sumset* of $A$ and $B$ is $
+        A + B := {a + b: a in A, b in B}.
+    $
+]<def:sumset>
+#definition[
+    For $A, B subset.eq ZZ$ the *difference set* of $A$ and $B$ is $
+        A - B := {a - b: a in A, b in B}.
+    $
+]<def:sumset>
+#proposition[
+    Let $A, B subset.eq ZZ$ be finite. Then $
+        max{abs(A), abs(B)} <= abs(A + B) <= abs(A) abs(B).
+    $
+]<prop:sumset-bounds>
+#proofhints[
+    Trivial.
+]
+#proof[
+    Trivial.
+]
+#proposition("Ruzsa Triangle Inequality")[
+    Let $A, B, C subset.eq ZZ$ be finite. Then $
+        abs(A - C) <= (abs(A - B) abs(B - C))/abs(B)
+    $
+]<prop:ruzsa-triangle-inequality>
+#proof[
+    Fix a presentation $y = a_y - c_y$ (where $a_y in A, c_y in C$) for each $y in A - C$. Let $
+        f: B times (A - C) & -> (A - B) times (B - C) \
+        (b, y) & |-> (a_y - b, b - c_y).
+    $ If $f(b, y) = f(b', y')$, then $a_(y') - b' = a_y - b$ and $b' - c_(y') = b - c_y$. So $a_y - a_(y') = b - b' = c_y - c_(y')$. So $y = a_y - c_y = a_(y') - c_(y') = y'$. Hence $a_y = a_(y')$, and so $b = b'$. So $f$ is injective, so $abs(B times (A - C)) <= abs((A - B) times (B - C))$.
+]
+#remark[
+    If $X_1^n$ is a large collection of IID RVs with common PMF $P$ on alphabet $A$, then the AEP tells us that we can concentrate on the $2^(n H)$ typical strings. Since $2^(n H) = (2^H)^n$ is typically much smaller than all $abs(A)^n = (2^(log abs(A)))^n$ strings, we can think of $2^H$ as the effective support size of the $X_i$.
+]
+#proposition[
+    Let $X$ and $Y$ are independent RVs on alphabet $ZZ$, then $
+        max{H(X), H(Y)} <= H(X + Y) <= H(X) + H(Y).
+    $
+]
+#proof[
+    For the lower bound, $
+        H(X) + H(Y) & = H(X, Y) quad & "by independence" \
+        & = H(Y, X + Y) quad & "by data processing" \
+        & = H(X + Y) + H(Y | X + Y) quad & "by chain rule" \
+        & <= H(X + Y) + H(Y) quad & "by conditioning reduces entropy"
+    $ Hence $H(X + Y) >= H(X)$, and the same argument shows that $H(X + Y) >= H(Y)$.
+
+    For the upper bound, we have $H(X) + H(Y) = H(X + Y) + H(X | X + Y) >= H(X + Y)$ by non-negativity of conditional entropy.
+]
+#theorem("Ruzsa Triangle Inequality for Entropy")[
+    Let $X, Y, Z$ be independent RVs on alphabet $ZZ$. Then $
+        H(X - Z) + H(Y) <= H(X - Y) + H(Y - Z).
+    $
+]
+#proof[
+    By the data processing inequality for mutual information, we have $I(X; (X - Y, Y - Z)) >= I(X; X - Z)$. So $H(X) + H(X - Y, Y - Z) - H(X, X - Y, Y - Z) >= H(X) + H(X - Z)$. So $H(X - Y, Y - Z) - H(X, Y, Z) >= H(X - Z) - H(X, Z)$. Hence $H(X - Y, Y - Z) - H(Y) >= H(X - Z)$, and $H(X - Y, Y - Z) >= H(X - Y) + H(Y - Z)$.
+]
+
+== The doubling-difference inequality for entropy
+
+#definition[
+    For IID RVs $X_1, X_2$ on alphabet $ZZ$, the *entropy-increase* due to addition ($Delta^+$) or subtraction ($Delta^-$) is $
+        Delta^+ & := H(X_1 + X_2) - H(X_1), \
+        Delta^- & := H(X_1 - X_2) - H(X_1).
+    $
+]<def:entropy-increase>
+#lemma[
+    Let $X, Y, Z$ be independent RVs on alphabet $ZZ$. Then $
+        H(X + Y + Z) + H(Y) <= H(X + Y) + H(Y + Z).
+    $ In particular, $H(X + Z) + H(Y) <= H(X + Y) + H(Y + Z)$.
+]
+#proof[
+    By the data processing inequality for mutual information, since $X - (X + Y) - (X + Y + Z)$, we have $I(X; X + Y) >= I(X; X + Y + Z)$, i.e. $H(X) + H(X + Y) - H(X, X + Y) >= H(X) + H(X + Y + Z) - H(X, X + Y + Z)$. $H(X, X + Y) = H(X, Y) = H(X) + H(Y)$ by independence. So we have $H(X + Y) - H(Y) >= H(X + Y + Z) - H(Y + Z)$.
+]
+#theorem("Doubling-difference Inequality")[
+    Let $X_1$ and $X_2$ be IID RVs on $ZZ$. Then $
+        1/2 <= Delta^+ / Delta^- <= 2.
+    $ Equivalently, $
+        1/2 <= I(X_1 + X_2; X_2)/I(X_1 - X_2; X_2) <= 2.
+    $
+]
+#proof[
+    For the lower bound, let $X, -Y, Z$ be IID with the same distribution as $X_1$. Then by the Ruzsa triangle inequality, $H(X_1 - X_2) + H(X_1) <= H(X_1 + X_2) + H(X_1 + X_2)$. So $2(H(X_1 + X_2) - H(X_1)) >= H(X_1 - X_2) - H(X_1)$.
+
+    For the upper bound, let $X, -Y, Z$ be IID with the same distribution as $X_1$. Then by the above lemma, $H(X_1 + X_2) + H(X_1) <= H(X_1 - X_2) + H(X_1 - X_2)$ so $H(X_1 + X_2) - H(X_1) <= 2(H(X_1 - X_2) - H(X_1))$.
 ]

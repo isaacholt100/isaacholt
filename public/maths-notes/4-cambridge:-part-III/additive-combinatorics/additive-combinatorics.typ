@@ -377,11 +377,11 @@ In this chapter, assume that $G$ is a _finite_ abelian group.
         gamma & |-> EE_(x in G) f(x) overline(gamma(x)).
     $
 ]<def:finite-group-fourier-transform>
-#proposition[
+#proposition("Fourier Inversion Formula")[
     Let $f: G -> CC$. Then for all $x in G$, $
         f(x) = sum_(gamma in hat(G)) hat(f)(gamma) gamma(x).
     $
-]<prop:group-characters-span-complex-valued-functions-on-group>
+]<prop:fourier-inversion-formula>
 #proofhints[
     Straightforward.
 ]
@@ -419,7 +419,7 @@ In this chapter, assume that $G$ is a _finite_ abelian group.
         hat(bb(1))_V (t) & = EE_(x in FF_p^n) indicator(V)(x) e(-x . t \/ p) \
         & = abs(V)/p^n indicator(V^perp)(t).
     $ where $V^perp = \{t in hat(FF)_p^n: x . t = 0 quad forall x in V\}$ is the *annihilator* of $V$. Hence, $hat(bb(1))_V = mu_(V^perp)$.
-]
+]<exa:fourier-transform-of-indicator-of-subspace-is-characteristic-measure-of-annihilator>
 #example[
     Let $R subset.eq G$ be such that each $x in G$ lies in $R$ independently with probability $1/2$. Then with high probability, $
         sup_(gamma != 1) abs(hat(bb(1))_R (gamma)) = O(sqrt((log abs(G))/abs(G))).
@@ -458,14 +458,14 @@ In this chapter, assume that $G$ is a _finite_ abelian group.
     $
 ]<def:rho-large-fourier-spectrum>
 #example[
-    By the previous example, if $f = indicator(V)$ with $V <= FF_p^n$ a subspace, then for all $rho in (0, 1]$, $
-        Spec_rho (indicator(V)) = {t in hat(FF)_p^n: abs(hat(bb(1))_V (t)) >= rho abs(V) / p^n} = V^perp
-    $
-]
+    Let $A subset.eq G$, then $norm(f)_1 = alpha = abs(A)\/abs(G)$, so $
+        Spec_rho (indicator(A)) = {t in hat(FF)_p^n: abs(hat(bb(1))_V (t)) >= rho alpha}.
+    $ In particular, if $V <= FF_p^n$ is a subspace, then by @exa:fourier-transform-of-indicator-of-subspace-is-characteristic-measure-of-annihilator, $Spec_rho (indicator(V)) = V^perp$ for all $rho in (0, 1]$.
+]<exa:rho-large-spectrum-of-indicator-is-greater-than-rho-times-density>
 #lemma[
     For all $rho > 0$, $
         abs(Spec_rho (f)) <= rho^(-2) norm(f)_2^2 / norm(f)_1^2
-    $
+    $ In particular, if $f = indicator(A)$ for $A subset.eq G$, then $norm(f)_1 = alpha = abs(A) \/ abs(G) = norm(f)_2^2$. So $abs(Spec_rho (indicator(A))) <= rho^(-2) alpha^(-1)$.
 ]<lem:set-of-large-fourier-coefficients-is-small>
 #proofhints[
     Use Parseval's identity.
@@ -476,9 +476,6 @@ In this chapter, assume that $G$ is a _finite_ abelian group.
         & >= sum_(gamma in Spec_rho (f)) abs(hat(f)(gamma))^2 \
         & >= abs(Spec_rho (f)) (rho norm(f)_1)^2.
     $
-]
-#remark[
-    In particular, if $f = indicator(A)$ for $A subset.eq G$, then $norm(f)_1 = alpha = abs(A) \/ abs(G) = norm(f)_2^2$. So $abs(Spec_rho (indicator(A))) <= rho^(-2) alpha^(-1)$.
 ]
 #definition[
     The *convolution* of $f, g: GG -> CC$ is $
@@ -498,6 +495,9 @@ In this chapter, assume that $G$ is a _finite_ abelian group.
     Given $f, g: G -> CC$, $
         forall gamma in hat(G), quad hat((f * g))(gamma) = hat(f)(gamma) hat(g)(gamma).
     $
+]<lem:fourier-transform-of-convolution-is-product-of-fourier-transforms>
+#proofhints[
+    Straightforward.
 ]
 #proof[
     We have $
@@ -513,30 +513,101 @@ In this chapter, assume that $G$ is a _finite_ abelian group.
 ]
 #theorem("Bogolyubov's Lemma")[
     Let $A subset.eq FF_p^n$ be of density $alpha$. Then there exists a subspace $V <= FF_p^n$ with $codim(V) <= 2 alpha^(-2)$, such that $V subset.eq A + A - A - A$.
+]<thm:bogolyubovs-lemma>
+#proofhints[
+    - Let $g = indicator(A) * indicator(A) * indicator(-A) * indicator(-A)$, reason reason that if $g(x) > 0$ for all $x in V$, then $V subset.eq 2A - 2A$.
+    - Let $S = Spec_rho (indicator(A))$, with $rho$ for now unspecified.
+    - Show that $g(x) = alpha^4 + sum_(t in S \\ {0}) abs(hat(bb(1))_A (t))^4 e(x . t \/ p) + sum_(t in.not S) abs(hat(bb(1))_A (t))^4 e(x . t \/ p)$.
+    - Find an appropriate subspace $V$ from $S$, bound $g(x)$ from below in terms of $rho$, and use this to determine a suitable value for $rho$.
 ]
 #proof[
-    Observe $2A - 2A = supp(g)$ where $g = indicator(A) * indicator(A) * indicator(-A) * indicator(-A)$, so we want to find $V <= FF_p^n$ such that $g(x) > 0$ for all $x in V$.
-
-    Now $
+    Observe $2A - 2A = supp(g)$ where $g = indicator(A) * indicator(A) * indicator(-A) * indicator(-A)$, so we want to find $V <= FF_p^n$ such that $g(x) > 0$ for all $x in V$. Let $S = Spec_rho (indicator(A))$ with $rho$ a constant to be specified later, and let $V = gen(S)^perp$. By @lem:set-of-large-fourier-coefficients-is-small, $codim(V) = dim gen(S) <= abs(S) <= rho^(-2) alpha^(-1)$. Fix $x in V$. Now $
         g(x) & = sum_(t in hat(FF)_p^n) hat(g)(t) e(x . t \/ p) \
-        & = sum_(t in hat(FF)_p^n) abs(hat(bb(1))_A (t))^4 e(x . t \/ p) quad "by above lemma" \
+        & = sum_(t in hat(FF)_p^n) abs(hat(bb(1))_A (t))^4 e(x . t \/ p) quad #[by @lem:fourier-transform-of-convolution-is-product-of-fourier-transforms] \
         & = alpha^4 + sum_(t != 0) abs(hat(bb(1))_A (t))^4 e(x . t \/ p) \
-        & = alpha^4 + sum_(t in SS \\ {0}) abs(hat(bb(1))_A (t))^4 e(x . t \/ p) + sum_(t in.not S) abs(hat(bb(1))_A (t))^4 e(x . t \/ p) \
-    $ since first sum is $>= (rho alpha)^4 quad "as" x . t = 0 thick forall t in S$ absolute value of each term in the second sum is $<= sup_(t in.not S) abs(hat(bb(1))_A (t))^2 sum_(t in.not S) abs(hat(bb(1))_A)^2 <= sup_(t in.not S) abs(hat(bb(1))_A (t))^2 sum_(t in FF_p^n) abs(hat(bb(1))_A)^2 <= (rho alpha)^2 <= norm(indicator(A))_2^2 = rho^2 alpha^3$ by Parseval. So we want $rho^2 alpha^3 <= alpha^4 / 2$, so set $rho = sqrt(a\/2)$. Hence $g(x) > 0$ (in fact, $g(x) >= alpha^4 / 2$) for all $x in V$, and $codim(V) <= 2alpha^(-2)$.
-    
-    Let $S = Spec_rho (indicator(A))$ with $rho = ...$, and let $V = gen(S)^perp$. By @lem:set-of-large-fourier-coefficients-is-small, $codim(V) <= abs(S) <= rho^(-2) alpha^(-1)$. Fix $x in V$.
+        & = alpha^4 + sum_(t in S \\ {0}) abs(hat(bb(1))_A (t))^4 e(x . t \/ p) + sum_(t in.not S) abs(hat(bb(1))_A (t))^4 e(x . t \/ p)
+    $ Each term in the first sum is non-negative, since $forall t in S$, $x . t = 0$. The absolute value of the second sum is bounded above, by the triangle inequality, by $
+        sum_(t in.not S) abs(hat(bb(1))_A (t))^4 & <= sup_(t in.not S) abs(hat(bb(1))_A (t))^2 sum_(t in.not S) abs(hat(bb(1))_A (t))^2 \
+        & <= sup_(t in.not S) abs(hat(bb(1))_A (t))^2 sum_(t in hat(FF)_p^n) abs(hat(bb(1))_A (t))^2 \
+        & <= (rho alpha)^2 norm(indicator(A))_2^2 = rho^2 alpha^3
+    $ by @exa:rho-large-spectrum-of-indicator-is-greater-than-rho-times-density and Parseval's identity. Note the second sum must be real since all other terms in the equation are. So we have $g(x) >= alpha^4 - rho^2 alpha^3$. Thus, it is sufficient that $rho^2 alpha^3 <= alpha^4 / 2$, so set $rho = sqrt(a\/2)$. Hence $g(x) > 0$ (in fact, $g(x) >= alpha^4 / 2$) for all $x in V$, and $codim(V) <= 2alpha^(-2)$.
 ]
 #example[
-    The set $A = {x in FF_2^n: abs(x) >= n/2 + sqrt(n)/2}$ (where $|x|$ is number of $1$s in $x$) has density $>= 1/8$ but there is no coset $C$ of any subspace of codimension $sqrt(n)$ such that $C subset.eq A + A$.
+    The set $A = {x in FF_2^n: abs(x) >= n/2 + sqrt(n)/2}$ (where $|x|$ is number of $1$s in $x$) has density $>= 1/8$ but there is no coset $C$ of any subspace of codimension $sqrt(n)$ such that $C subset.eq A + A$. Hence, the $2A - 2A$ part of Bogolyubov's lemma is necessary: $2A$ is not sufficient.
 ]
 #lemma[
     Let $A subset.eq FF_p^n$ have density $alpha$ with $sup_(t != 0) abs(hat(bb(1))_A (t)) >= rho alpha$ for some $rho > 0$. Then there exists a subspace $V <= FF_p^n$ with $codim(V) = 1$ and $x in FF_p^n$ such that $
         abs(A sect (x + V)) >= alpha(1 + rho/2) abs(V).
     $
 ]
-#proof[
-    Let $t != 0$ be such that $abs(hat(bb(1))_A (t)) >= rho alpha$ and let $V = gen(t)^perp$. Write $v_j + V = {x in FF_p^n: x . t = j}$ for $j in [p]$ for the $p$ distinct cosets of $V$. Then $hat(bb(1))_A (t) = hat(f)_A (t) = EE_(x in FF_p^n) (indicator(A) (x) - alpha) e(-x . t \/ p) = EE_(j in [p]) EE_(x in v_j + V) (indicator(A)(x) - alpha)e(-j\/p) = EE_(j in [p]) (abs(A sect (v_j + V))/abs(v_j + V) - alpha) e(-j\/p) =: EE_(j in [p]) a_j e(-j\/p)$. By the triangle inequality, $EE_(j in [p]) abs(a_j) >= rho alpha$. Note that $EE_(j in [p]) a_j = 0$. So $EE_(j in [p]) a_j + abs(a_j) >= rho alpha$, so $exists j in [p]$ such that $a_j + abs(a_j) >= rho alpha$, hence $a_j >= rho alpha\/2$.
+#proofhints[
+    - Let $V = gen(t)^perp$ for some suitable $t$ (can determine later).
+    - Define $a_j = abs(A sect (v_j + V))/abs(v_j + V) - alpha$ for each $j in [p]$, where $x . v_j = j$.
+    - Show that $hat(bb(1))_A (t) = EE_(j in [p]) a_j e(-j\/p)$.
+    - Show that $EE_(j in [p]) a_j + abs(a_j) >= rho alpha$.
 ]
+#proof[
+    Let $t != 0$ be such that $abs(hat(bb(1))_A (t)) >= rho alpha$ and let $V = gen(t)^perp$. Write $v_j + V = {x in FF_p^n: x . t = j}$ for $j in [p]$ for the $p$ distinct cosets of $V$. Then $
+        hat(bb(1))_A (t) & = hat(f)_A (t) = EE_(x in FF_p^n) (indicator(A) (x) - alpha) e(-x . t \/ p) \
+        & = EE_(j in [p]) EE_(x in v_j + V) (indicator(A)(x) - alpha)e(-j\/p) \
+        & = EE_(j in [p]) (abs(A sect (v_j + V))/abs(v_j + V) - alpha) e(-j\/p) \
+        & =: EE_(j in [p]) a_j e(-j\/p).
+    $ By the triangle inequality, $EE_(j in [p]) abs(a_j) >= rho alpha$. Note that $EE_(j in [p]) a_j = 0$. So $EE_(j in [p]) a_j + abs(a_j) >= rho alpha$, so $exists j in [p]$ such that $a_j + abs(a_j) >= rho alpha$, hence $a_j >= rho alpha\/2$. So take $x = v_j$.
+]
+#notation[
+    Given $f, g, h: G -> CC$, write $
+        T_3 (f, g, h) = EE_(x, d in G) f(x) g(x + d) h(x + 2d).
+    $
+]
+#notation[
+    Given $A subset.eq G$, write $2 dot A = {2a: a in A}$. Note this is not the same as $2A = A + A$.
+]
+#lemma[
+    Let $p >= 3$ and $A subset.eq FF_p^n$ be of density $alpha > 0$, such that $sup_(t != 0) abs(hat(bb(1))_A (t)) <= epsilon$. Then the number of $3$-APs in $A$ differs from $alpha^3 (p^n)^2$ by at most $epsilon (p^n)^2$.
+]
+#proof[
+    The number of $3$-APs in $A$ is $(p^n)^2$ multiplied by $
+        T_3 (indicator(A), indicator(A), indicator(A)) & = EE_(x, d) indicator(A)(x) indicator(A)(x + d) indicator(A)(x + 2d) \
+        & = EE_(x, y) indicator(A)(x) indicator(A)(y) indicator(A)(2y - x) \
+        & = EE_y indicator(A)(y) EE_x indicator(A)(x) indicator(A)(2y - x) \
+        & = EE_y indicator(A)(y) (indicator(A) * indicator(A))(2y) \
+        & = gen(indicator(2 dot A), indicator(A) * indicator(A)).
+    $ By Plancherel's identity and @lem:fourier-transform-of-convolution-is-product-of-fourier-transforms, this is equal to $
+        gen(hat(bb(1))_(2 dot A), hat(bb(1))_A^2) & = sum_(t in FF_p^n) hat(bb(1))_(2 dot A)(t) overline(hat(bb(1))_(A)(t))^2 \
+        & = alpha^3 + sum_(t != 0) hat(bb(1))_(2 dot A)(t) overline(hat(bb(1))_A (t))^2
+    $ But $
+        abs(sum_(t != 0) hat(bb(1))_(2 dot A)(t) overline(hat(bb(1))_A (t))^2) & <= sup_(t != 0) abs(hat(bb(1))_A (t)) sum_(t != 0) abs(hat(bb(1))_(2 dot A)(t)) abs(hat(bb(1))_A (t)) \
+        & <= sup_(t != 0) abs(hat(bb(1))_A (t)) (sum_(t) abs(hat(bb(1))_(2 dot A)(t))^2 sum_(t) abs(hat(bb(1))_A (t))^2)^(1\/2) quad & "by Cauchy-Schwarz" \
+        & <= epsilon norm(hat(bb(1))_(2 dot A))_2 norm(hat(bb(1))_A)_2 \
+        & = epsilon dot alpha & "by Parseval".
+    $
+]
+#theorem("Meshulam")[
+    Let $A subset.eq FF_p^n$ be a set containing no non-trivial $3$-APs. Then $abs(A) = O(p^n \/ log p^n)$, i.e. $alpha = O(1\/n)$.
+]<thm:meshulam>
+#proof[
+    By assumption, $T_3 (indicator(A), indicator(A), indicator(A)) = abs(A)\/((p^n)^2) = alpha\/p^n$. By the proof of the above lemma, $
+        abs(T_3 (indicator(A), indicator(A), indicator(A)) - alpha^3) <= sup_(t != 0) abs(hat(bb(1))_A (t)) dot alpha.
+    $ So provided that $p^n >= 2alpha^(-2)$, we have $T_3 (indicator(A), indicator(A), indicator(A)) <= alpha^3 \/ 2$. So we have $
+        sup_(t != 0) abs(hat(bb(1))_A (t)) >= alpha^2 / 2
+    $ So by (find lemma) with $rho = alpha/2$, there exists a subspace $V = FF_p^n$ of codimension $1$ and $x in FF_p^n$ such that $abs(A sect (x + V)) >= (alpha + alpha^2 \/ 4) abs(V)$.
+    
+    We iterate this observation: let $A_0 = A$, $V_0 = FF_p^n$, $alpha_0 = abs(A_0) \/ abs(V_0)$. At this $i$-th step, we are given a set $A_(i - 1) subset.eq V_(i - 1)$ of density $alpha_(i - 1)$ with no non-trivial $3$-APs. Provided that $p^(dim(V_(i - 1))) >= 2 alpha_(i - 1)^(-2)$, there exists a subspace $V_i <= V_(i - 1)$ of codimension $1$ and $x_i in V_(i - 1)$ such that $
+        abs((A - x_i) sect V_i) = abs(A sect (x_i + V_i)) >= (alpha_(i - 1) + alpha_(i - 1)^2 \/ 4) abs(V_i)
+    $ So set $A_i = (A - x_i) sect V_i$. $A_i$ has density $alpha_i >= alpha_(i - 1) + alpha_(i - 1)^2 \/ 4$, and contains no non-trivial $3$-APs (since the translate $A - x_i$ contains no non-trivial $3$-APs). Through this iteration, the density increases:
+    - from $alpha$ to $2 alpha$ in at most $alpha\/(alpha^2 \/ 4) = 4 alpha^(-1)$ steps,
+    - from $2 alpha$ to $4 alpha$ in at most $(2 alpha)\/((2 alpha)^2 \/ 4) = 2 alpha^(-1)$ steps.
+    - and so on, ...
+    So the density reaches $1$ in at most $4 alpha^(-1) (1 + 1/2 + 1/4 + dots.c) = 8 alpha^(-1)$ steps. The iteration must end with $dim(V_i) >= n - 8 alpha^(-1)$, at which point we must have had $p^dim(V_i) < 2 alpha_(i - 1)^(-2) <= 2 alpha^(-2)$, or else we could have iterated again.
+
+    But we may assume that $alpha >= sqrt(2) p^(-n\/4)$ (since otherwise we would be done), so $alpha^(-2) < 1/2 p^(n\/2)$, whence $p^(n - 8alpha^(-1)) <= p^(n\/2)$, i.e. $n/2 <= 8 alpha^(-1)$.
+]
+#remark[
+    The current largest known subset of $FF_3^n$ containing no non-trivial $3$-APs has size $2.2202^n$.
+]
+#theorem("Roth")[
+    Let $A subset.eq [N]$ be a set containing no non-trivial $3$-APs. Then $abs(A) = O(N\/ log log N)$.
+]<thm:roth>
 
 
 = Probabilistic tools

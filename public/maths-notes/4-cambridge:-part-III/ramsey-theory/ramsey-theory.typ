@@ -357,30 +357,32 @@
 
 == Rado's theorem
 
-Schur's theorem says that $x + y = z$ has a monochromatic solution for any finite colouring of $NN$. Strengthened Van der Waerden says that the system $x_1 + x_2 = y_1, x_1 + 2x_2 = y_2, ..., x_1 + m x_2 = y_m$ has a monochromatic solution in $x_1, x_2, y_1, ..., y_m$. We want to find when a general system of equations is partition regular.
+Strengthened Van der Waerden says that the system $x_1 + x_2 = y_1, x_1 + 2x_2 = y_2, ..., x_1 + m x_2 = y_m$ has a monochromatic solution in $x_1, x_2, y_1, ..., y_m$. We want to find when a general system of equations is partition regular.
 
 #definition[
-    Let $A QQ^(m times n)$ be a $m times n$ matrix. $A$ is *partition regular (PR)* if for any finite colouring of $NN$, there exists a monochromatic $vd(x) in NN^n$ such that $A vd(x) = vd(0)$.
+    Let $A in QQ^(m times n)$ be a $m times n$ matrix. $A$ is *partition regular (PR)* if for any finite colouring of $NN$, there exists a monochromatic $vd(x) in NN^n$ such that $A vd(x) = vd(0)$.
 ]<def:partition-regular-matrix>
 #example[
-    - Schur's theorem states that $mat(1, 1, -1)$ is PR.
+    - Schur's theorem says that $x + y = z$ has a monochromatic solution for any finite colouring of $NN$, and so that $(1, 1, -1)$ is PR.
     - Strengthened Van der Waerden states that $
         mat(1, 1, -1, 0, ..., 0; 1, 2, 0, -1, ..., 0; dots.v, dots.v, dots.v, dots.v, dots.down, dots.v; 1, m, 0, 0, ..., -1)
     $ is PR.
-    - $mat(a, b, -(a + b))$ is PR for any $a, b$ (a monochromatic solution is $x = y = z$).
-    - $mat(2, -1)$ is not PR: colour $NN$ by $n$ is #clr("red") if $max{m: 2^m | n}$ is even, and #clr("blue") otherwise. Then if $2x = y$, $x$ and $y$ must have different colours.
+    - $(a, b, -(a + b))$ is PR for any $a, b$ (a monochromatic solution is $x = y = z$).
+    - $(2, -1)$ is not PR: colour $NN$ by $n$ is #clr("red") if $max{m in NN: 2^m | n}$ is even, and #clr("blue") otherwise. Then if $2x = y$, $x$ and $y$ must have different colours.
 ]
 #definition[
     A rational matrix $A$ with columns $vd(c)_1, ..., vd(c)_n in QQ^m$ has the *column property (CP)* if there exists a partition $B_1 union.sq dots.c union.sq B_r$ of $[n]$ such that:
     + $sum_(i in B_1) vd(c)_i = vd(0)$.
-    + $sum_(i in B_s) vd(c)_i in span{vd(c)_j: j in B_1 union.sq dots.c union.sq B_(s - 1)}$ (note we can take the linear span over $RR$ or over $QQ$ here, as if a rational vector is a real linear combination of rational vectors, then it is also a rational linear combination of them).
+    + For all $s in {2, ..., r}$, $sum_(i in B_s) vd(c)_i in span{vd(c)_j: j in B_1 union.sq dots.c union.sq B_(s - 1)}$ (note we can take the linear span over $RR$ or over $QQ$ here, as if a rational vector is a real linear combination of rational vectors, then it is also a rational linear combination of them).
 ]
 #example[
-    - $mat(1, 1, -1)$ has CP, with $B_1 = {1, 3}$, $B_2 = {2}$.
-    - The matrix from strengthened van der Waerden has CP, with $B_1 = {1, 3, ..., n}$ and $B_2 = {2}$.
-    - $mat(3, 4, -7)$ has CP with $B_1 = {1, 2, 3}$.
-    - $mat(lambda, -1)$ has CP iff $lambda = 1$.
-    - $mat(3, 4, -6)$ doesn't have CP.
+    - $(1, 1, -1)$ has CP, with $B_1 = {1, 3}$, $B_2 = {2}$.
+    - The matrix $
+        mat(1, 1, -1, 0, ..., 0; 1, 2, 0, -1, ..., 0; dots.v, dots.v, dots.v, dots.v, dots.down, dots.v; 1, m, 0, 0, ..., -1)
+    $ from Strengthened Van der Waerden has CP, with $B_1 = {1, 3, ..., n}$ and $B_2 = {2}$.
+    - $(3, 4, -7)$ has CP with $B_1 = {1, 2, 3}$.
+    - $(lambda, -1)$ has CP iff $lambda = 1$.
+    - $(3, 4, -6)$ doesn't have CP.
 ]
 #theorem("Rado")[
     A rational matrix is PR iff it has CP.
@@ -394,19 +396,72 @@ Schur's theorem says that $x + y = z$ has a monochromatic solution for any finit
     $ has CP iff $(a, b) = (6, 12)$.
 ]
 #remark[
-    $vd(x) = (a_1, ..., a_n)$ is PR iff $lambda vd(x)$ is PR (for any $lambda in QQ^times$), so we can assume that each $a_i in ZZ$. So $vd(x)$ has CP iff there exists $emptyset != I subset.eq [n]$ such that $sum_(i in I) a_i = 0$. We may also assume each $a_i != 0$. We will first show that if $vd(x)$ is PR, then it has CP. Even in the $1 times n$ matrix case of Rado's theorem, neither direction is easy.
+    $vd(x) = (a_1, ..., a_n)$ is PR iff $lambda vd(x)$ is PR (for any $lambda in QQ^times$), so we can assume that each $a_i in ZZ$. Also, $vd(x)$ has CP iff there exists $emptyset != I subset.eq [n]$ such that $sum_(i in I) a_i = 0$. We may also assume WLOG each $a_i != 0$. We will first show that if $vd(x)$ is PR, then it has CP. Even in the $1 times n$ matrix case of Rado's theorem, neither direction is easy.
 ]
 #notation[
     For $p$ prime and $x = (a_k ... a_0)_p in NN$, write $e(x)$ for the rightmost non-zero digit in the base-$p$ expansion of $x$, i.e. $e(x) = a_(t(x))$, where $t(x) = min{i: a_i != 0}$.
 ]
 #proposition[
-    Let $a_1, ..., a_n in QQ^*$. If $mat(a_1, ..., a_n)$ is PR, then it has CP.
+    Let $a_1, ..., a_n in QQ^*$. If $(a_1, ..., a_n)$ is PR, then it has CP.
+]
+#proofhints[
+    For $p$ large enough (determine later a bound for $p$), colour $NN$ by giving $x$ colour $e(x)$, and consider $min{t(x_1), ..., t(x_n)}$.
 ]
 #proof[
-    Let $p$ be a large prime ($p > sum_(i = 1)^n abs(a_i)$). Define a $(p - 1)$-colouring of $NN$ giving $x$ colour $e(x)$. By assumption, there are $x_1, ..., x_n$ of the same colour $d$ such that $sum_(i = 1)^n a_i x_i = 0$. Let $t = min{t(x_1), ..., t(x_n)}$, and let $I = {i: t(x_i) = t}$. So when summing $sum_(i = 1)^n a_i x_i = 0$ and considering the last digit in the base $p$ expansion, we obtain $sum_(i in I) a_i d = 0 mod p$, so $sum_(i in I) a_i = 0$ (since $p$ was chosen large enough).
+    Let $p$ be a large prime ($p > sum_(i = 1)^n abs(a_i)$). Define a $(p - 1)$-colouring of $NN$ giving $x$ colour $e(x)$. By assumption, there are $x_1, ..., x_n$ of the same colour $d$ such that $sum_(i = 1)^n a_i x_i = 0$. Let $t = min{t(x_1), ..., t(x_n)}$, and let $I = {i in [n]: t(x_i) = t}$ (note $I$ is non-empty). So when summing $sum_(i = 1)^n a_i x_i = 0$ and considering the last digit in the base $p$ expansion, we have $sum_(i = 1)^n a_i x_i = 0 mod p^(t + 1)$ and so obtain $sum_(i in I) a_i d = 0 mod p$, so $sum_(i in I) a_i = 0$ (since $p$ is prime and was chosen large enough).
 ]
 #remark[
     There is no other known proof of this proposition.
+]
+#lemma[
+    Let $lambda in QQ$. Then $(1, lambda, -1)$ is partition regular, i.e. for any finite colouring of $NN$, there exists monochromatic $(x, y, z) in NN^3$ such that $x + lambda y = z$.
+]
+#proof[
+    The case $lambda = 0$ is trivial, and if $lambda < 0$, we may rewrite the equation as $z - lambda y = x$, so we may assume that $lambda > 0$, so let $lambda = r/s$ for $r, s in NN$. In fact, we show that for any $k$-colouring of $[n]$ (for some $n$ depending on $k$), there is a monochromatic solution.
+
+    We seek a monochromatic solution to $x + r/s y = z$ for some finite colouring $c: NN -> [k]$. We use induction on the number of colours $k$. For $k = 1$, $n = max{s, r + 1}$ is sufficient, with monochromatic solution $(1, s, r + 1)$. Assume $n$ is a witness for $k - 1$ colours. We will show $N = W(k, n r + 1) n s$ is suitable for $k$ colours. By definition of $W$, given a $k$-colouring of $[N]$, there is a monochromatic AP of length $n r + 1$: $a, a + d, ..., a + n r d$, coloured red
+    
+    Consider $d i s$ for each $i in [n]$. Note that $d i s <= W(k, n r + 1) n s$ so the $d i s$ do indeed each have a colour. If $d i s$ is also red, then $(a, a + i r d, d i s)$ is a monochromatic solution. If no $d i s$ is red, then ${d s, ..., n d s}$ is $(k - 1)$-coloured, so by the inductive hypothesis, there exists $i, j, k in [n]$ such that $c(i d s) = c(j d s) = c(k d s)$ and $i + lambda j = k$ (hence $i d s + lambda j d s = k d s$), so $(i d s, j d s, k d s)$ is a monochromatic solution.
+]
+#remark[
+    - Note the similarity to the proof of Strengthened Van der Waerden.
+    - The case $lambda = 1$ is Schur's theorem, which can be proven directly by Ramsey's theorem; however, there is no known proof using Ramsey's theorem for general $lambda in QQ$.
+]
+#theorem("Rado's Theorem for Single Equations")[
+    Let $a_1, ..., a_n in QQ \\ {0}$. $(a_1, ..., a_n)$ is PR iff it has CP.
+]
+#proof[
+    $=>$ is by the above proposition. For $<=$: we have that $sum_(i in I) a_i = 0$ for some $emptyset != I subset.eq [n]$. Given a colouring $c: NN -> [k]$, we need to show that there are monochromatic $x_1, ..., x_n$ such that $sum_(i = 1)^n a_i x_i = 0$.
+
+    Fix $i_0 in I$. We construct the following vector $vd(x) in NN^n$ by defining its components: $
+        x_i = cases(
+            x quad & "if" i = i_0,
+            y & "if" i in.not I,
+            z & "if" i in I \\ {i_0}
+        )
+    $ for some fixed suitable $x, y, z$. We need $x, y, z$ to be monochromatic and $
+        & a_(i_0) x + sum_(i in.not I) a_i y + sum_(i in I \\ {i_0}) a_i z & = 0 \
+        <==> & a_(i_0) x - z a_(i_0) + sum_(i in.not I) a_i y & = 0 \
+        <==> & x + (sum_(i in.not I) a_i)/(a_(i_0)) y - z & = 0
+    $ and this holds, since $x, y, z$ exist by the above lemma.
+]
+#conjecture("Rado's Boundedness Conjecture")[
+    Let $A$ be an $m times n$ matrix that is not PR (so there exists a "bad" colouring, i.e. a $k$-colouring with no monochromatic solution to $A vd(x) = vd(0)$ for some $k in NN$). Is $k$ bounded (for given $m, n$)?
+
+    This is known for $1 times 3$ matrices: 24 colours suffice.
+]
+#proposition[
+    Let $A in QQ^(m times n)$. If $A$ is PR, then it has CP.
+]
+#proof[
+    Let $vd(c)_1, ..., vd(c)_n in QQ^m$ be the columns of $A$. For fixed prime $p$, colour $NN$ as before by $c(x) = e(x)$. By assumption, there exists a monochromatic $x in NN^n$ such that $sum_(i = 1)^n x_i vd(c)_i = vd(0)$. We partition the columns (by partitioning $[n] = B_1 union.sq dots.c union.sq B_l$) as follows:
+    - $i, j in B_k$ iff $t(x_i) = t(x_j)$.
+    - $i in B_k$, $j in B_ell$ for $k < ell$ iff $t(x_i) < t(x_j)$.
+    We do this for infinitely many primes $p$. Since there are finitely many partitions of $[n]$, for infinitely many $p$, we will have the same blocks $B_1, ..., B_l$.
+    
+    Consider $sum_(i = 1)^n x_i vd(c)_i = vd(0)$ performed in base $p$. For $B_1$, all have the same colour $d = e(x_i) in [1, p - 1]$ ($i in B_1$). So $sum_(i in B_1) d c_i = 0 mod p$ (by collecting the rightmost terms in base $p$), hence $sum_(i in B_1) c_i = 0 mod p$. But this holds for infinitely many $p$, hence $sum_(i in B_1) c_i = 0$.
+
+    Now $sum_(i in B_k) p^t d vd(c)_i + sum_(i in B_1, ..., B_(k - 1)) x_i vd(c)_i = vd(0) mod p^(t + 1)$ for some $t$.
 ]
 
 

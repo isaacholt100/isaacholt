@@ -568,7 +568,7 @@ Classical completeness states that $Gamma proves_"CPC" A$ iff $Gamma satisfies_2
     The Lindenbaum-Tarski algebra of any theory in $"IPC" \\ {->}$ is a distributive lattice.
 ]
 #proof[
-    Clearly, $and$ and $or$ inherit associativity and commutativity, so in order for $F^("IPC" \\ {->})(T)$ to be a lattice, we only need to check the absorption laws: $[phi] or [phi and psi] = [phi]$, and $[phi] and [phi or psi] = [phi]$. The first is true, siince $T, phi proves_("IPC" \\ {->}) phi or (phi and psi)$ by ($or$-I), and also $T, phi or (phi and psi) proves_("IPC" \\ {->}) phi$ by ($or$-E). The second is true by a similar argument.
+    Clearly, $and$ and $or$ inherit associativity and commutativity, so in order for $F^("IPC" \\ {->})(T)$ to be a lattice, we only need to check the absorption laws: $[phi] or [phi and psi] = [phi]$, and $[phi] and [phi or psi] = [phi]$. The first is true, since $T, phi proves_("IPC" \\ {->}) phi or (phi and psi)$ by ($or$-I), and also $T, phi or (phi and psi) proves_("IPC" \\ {->}) phi$ by ($or$-E). The second is true by a similar argument.
 
     For distributivity, $T, phi and (psi or chi) proves (phi and psi) or (phi and chi)$ by ($and$-E) followed by ($or$-E):
     #Proof(
@@ -578,3 +578,52 @@ Classical completeness states that $Gamma proves_"CPC" A$ iff $Gamma satisfies_2
     )
     Similarly, $T, (phi and psi) or (phi and chi) proves phi and (psi or chi)$ by ($or$-E) followed by ($and$-I).
 ]
+#lemma[
+    The Lindenbaum-Tarski algebra of any theory relative to IPC is a Heyting algebra.
+]
+#proof[
+    We already know that $F^"IPC" (T)$ is a distributive lattice, so it is enough to show that $[phi] => [psi] := [phi -> psi]$ gives a Heyting implication, and that $F^"IPC" (T)$ is bounded. Suppose that $[phi] and [psi] <= [chi]$, i.e. $T, phi and psi proves_"IPC" chi$. We want to show that $[phi] <= [psi -> chi]$, i.e. $T, phi proves (psi -> chi)$. But this is clear:
+    #Proof(
+        $phi quad [psi]$,
+        $phi and psi$,
+        $chi quad ("by hypothesis")$,
+        $psi -> chi quad (->"-I", psi)$
+    )
+    Conversely, if $T, phi proves (psi -> chi)$, then we can prove $T, phi and psi proves chi$:
+    #Proof(
+        $phi and psi$,
+        $phi quad psi$,
+        $psi -> chi quad ("by hypothesis")$,
+        $psi -> chi quad psi$,
+        $chi quad (->"-E")$
+    )
+    So defining $[phi] => [psi] := [phi -> psi]$ provides a Heyting $=>$. The bottom element of $F^"IPC" (T)$ is just $[bot]$: if $[phi]$ is any element, then $T, bot proves phi$ by ($bot$-E). The top element is $top := [bot -> bot]$: if $phi$ is any proposition, then $[phi] <= [bot -> bot]$ via
+    #Proof(
+        $phi quad [bot]$,
+        $bot quad (bot"-E")$,
+        $bot -> bot$
+    )
+]
+#theorem("Completeness of Heyting Semantics")[
+    A proposition is provable in IPC iff it is $H$-valid for every Heyting algebra $H$.
+]<thm:completeness-of-heyting-semantics>
+#proof[
+    One direction is easy: if $proves_"IPC" phi$, then there is a derivation in IPC, thus $top <= v(phi)$ for any Heyting algebra $H$ and valuation $v$ by soundness. But then $v(phi) = top$ and $phi$ is $H$-valid.
+
+    For the other direction, consider the Lindenbaum-Tarski algebra $F(L)$ of the empty theory relative to IPC, which is a Heyting algebra by the above lemma. We can define a valuation $v$ by extending $P -> F(L)$, $p |-> [p]$, to all propositions. Since $v$ is a valuation, it follows by induction (and the construction of $F(L)$) that $v(phi) = [phi]$ for all propositions $phi$. Now $phi$ is valid in every Heyting algebra, and so in $F(L)$ in particular. So $v(phi) = top = [phi]$, hence $proves_"IPC" phi$.
+]
+#definition[
+    Given a poset $S$, the set $a arrow.t := {s in S: a <= s}$ is a *principal up-set*. $U subset.eq S$ is a *terminal segment* if $a arrow.t subset.eq U$ for each $a in U$.
+]
+#proposition[
+    For any poset $S$, the set $T(S) = {U subset.eq S: U "is a terminal segment of" S}$ can be made into a Heyting algebra, and the way this is done is unique.
+]
+#proof[
+    Order the terminal segments by $subset.eq$. Meets and joins are $sect$ and $union$, so we just need to define $=>$. For $U, V in T(S)$, define $(U => V) := {s in S: (s arrow.t) sect U subset.eq V}$. To show this is a valid definition, let $U, V, W in T(S)$. We have $
+        W subset.eq (U => V) & "iff" (w arrow.t) sect U subset.eq V "for all" w in W
+    $ which happens if for every $w in W$ and $u in U$, we have if $w <= u$, then $u in V$. But $W$ is a terminal segment, so this is the same as saying that $W sect U subset.eq V$.
+]
+#definition[
+    Let $P$ be a set of primitive propositions. A *Kripke model* is a teriple $(S, <=, forces)$ where $(S, <=)$ is a poset (whose elements are called "worlds" or "states" and whose ordering is called the "accessibility relation"), and $forces subset.eq S times P$ is a binary relation called "forcing" satisfying the *persistence property*: if $p in P$ is such that $s forces p$ and $s <= s'$, then $s' forces p$.
+]
+Every valuation $v$ on $T(S)$ induces a Kripke model by setting $s forces p$ if $s in v(p)$.

@@ -21,6 +21,7 @@
 #let Pr = math.op("Pr")
 #let gen(..gens) = $angle.l #gens.pos().join(",") angle.r$
 #let Aut = math.op("Aut")
+#let Ctrl(U) = $C dash.en #U$
 
 #set terms(indent: 16pt)
 
@@ -282,10 +283,13 @@
 ]<def:complete-irreps>
 #theorem[
     Let the dimensions of a complete set of irreps $chi_1, ..., chi_m$ be $d_1, ..., d_m$. Then $d_1^2 + dots.c + d_m^2 = abs(G)$.
+]<thm:squares-of-dimensions-of-complete-set-of-irreps-sum-to-size-of-group>
+#notation[
+    Write $chi_(i, j k)(g)$ for the $(j, k)$-th entry of the matrix $chi_i (g)$.
 ]
 #theorem("Schur Orthogonality")[
-    Let $chi_1, ..., chi_m$ be a complete set of irreps for $G$, and $i, j, k in [m]$. Then $
-        sum_(g in G) chi_(i, j, k) chi_(i, j, k)(g) overline(chi_(i', j', k')(g)) = abs(G) delta_(i i') delta_(j j') delta_(k k').
+    Let $chi_1, ..., chi_m$ be a complete set of irreps for $G$ with respective dimensions $d_1, ..., d_m$, and let $i in [m]$, $j, k in [d_i]$. Then $
+        sum_(g in G) chi_(i, j k)(g) overline(chi_(i', j' k')(g)) = abs(G) delta_(i i') delta_(j j') delta_(k k').
     $
 ]<thm:schur-orthogonality>
 #definition[
@@ -294,22 +298,19 @@
     $ for each $i in [n]$ and $j, k in [d_i]$. Note that by Schur orthogonality, this is an orthonormal basis.
 ]
 #remark[
-    - Note that these states are not shift invariant for every $U(g_0): ket(g) |-> ket(g_0 g)$.
-    - The coset state is $
-        ket(g_0 K) = 1/sqrt(abs(K)) sum_(k in K) ket(g_0 k)
-    $
+    Note that these states are not shift invariant for every $U(g_0): ket(g) |-> ket(g_0 g)$. So measurement of the coset state $ket(g_0 K)$ yields an output distribution that is not independent of $g_0$.
 ]
 #definition[
     The *Quantum Fourier transform* over $H_abs(G)$ is the unitary mapping the Fourier basis to the computational basis: $
         QFT ket(chi_(i, j k)) = ket(i\, j k).
-    $ ($ket(i\, j k)$ is a relabelling of the states $ket(g)$ for $g in G$.)
+    $ $ket(i\, j k)$ is a relabelling of the states $ket(g)$ for $g in G$ (note this is valid by @thm:squares-of-dimensions-of-complete-set-of-irreps-sum-to-size-of-group).
 ]
 #remark[
     - Measuring $QFT ket(g_0 K)$ does *not* give $g_0$-independent outcomes. A complete measurement in the computational basis gives an outcome $i, j, k$.
     - However, there is an incomplete measurement which projects into the $d_i^2$-dimensional subspaces $
         S_i = span{ket(chi_(i, j k)): j, k in [d_i]}.
-    $ for each $i in [n]$. Call this measurement operator $M_"rep"$.
-    - Measuring only the representation labels of $QFT ket(g_0 K)$ gives outcomes that are independent of the random shift $g_0$, since the $chi_i$ are homomorphisms.
+    $ for each $i in [n]$. Call this measurement operator $M_"rep"$. Note that this distinguishes only between the irreps.
+    - Measuring only the representation labels of $QFT ket(g_0 K)$ gives an outcome distribution of the $i$ values that i independent of the random shift $g_0$, since the $chi_i$ are homomorphisms.
     - Note this only gives partial information about $K$. If $K$ is a normal subgroup, then in fact we can then determine $K$ with $O(log abs(G))$ queries.
 ]
 
@@ -319,43 +320,127 @@
 Quantum phase estimation is a unifying algorithmic primitive, e.g. there is an alternative factoring algorithm based on QPE, and has many important applications in physics.
 
 #problem("Quantum Phase Estimation")[
-    / Input: A unitary $U in U(d)$ acting on $CC^d$, a state $ket(v_phi) in CC^d$ and a level of precision $n in NN$.
+    / Input: Unitary $U in U(d)$ acting on $CC^d$; state $ket(v_phi) in CC^d$; level of precision $n in NN$.
     / Promise: $ket(v_phi)$ is an eigenstate of $U$ with *phase* (eigenvalue) $e^(2pi i phi)$, $phi in [0, 1)$ (i.e. $U ket(v_phi) = e^(2pi i phi) ket(v_phi)$).
     / Task: Output an estimate $tilde(phi)$ of $phi$, accurate to $n$ binary bits of precision.
 ]
 #remark[
-    Note if $U$ is given as a cirucit, we can implement the controlled-$U$ operation, $"C-U"$, by controlling each elementary gate in the circuit of $U$.
+    If $U$ is given as a cirucit, we can implement the controlled-$U$ operation, $Ctrl(U)$, by controlling each elementary gate in the circuit of $U$.
 
-    If $U$ is given as a black box, we need more information. Note that $U$ is equivalent to $U' = e^(i theta) U$ and $ket(psi)$ is equivalen to $e^(i theta) ket(psi)$, but C-U is not equivalent to C-$U'$. Given an eigenstate $ket(alpha)$ with known phase $e(i alpha)$ (so $U ket(alpha) = e^(i alpha) ket(alpha)$). Then $$ $U' ket(alpha) = e^(i(theta + alpha)) ket(alpha)$. so $U$ and $U'$ can be distinguished using this additional information.
+    If $U$ is given as a black box, we need more information. Note that $U$ is equivalent to $U' = e^(i theta) U$ and $ket(psi)$ is equivalent to $e^(i theta) ket(psi)$, but $Ctrl(U)$ is not equivalent to $Ctrl(U')$. Given an eigenstate $ket(alpha)$ with known phase $e^(i alpha)$ (so $U ket(alpha) = e^(i alpha) ket(alpha)$), we have $U' ket(alpha) = e^(i(theta + alpha)) ket(alpha)$. so $U$ and $U'$ can be distinguished using this additional information.
 
     #figure(quantum-circuit(
-        lstick($"control" quad ket(a)$), 2, ctrl(1), 1, ctrl(1), $X$, $P(-alpha)$, $X$, rstick($a$), [\ ],
-        lstick($ket(xi)$), 2, $times$, 1, $times$, 3, rstick($U^a ket(xi)$), [\ ],
-        lstick($ket(alpha)$), 2, $times$, $U$, $times$, 3, rstick($ket(alpha)$)
-    )) where $P(-alpha) = mat(1, 0; 0, e^(-i alpha))$. $times$ shows controlled SWAP operation.
+        lstick($"control" quad ket(a)$), 2, ctrl(1), 1, ctrl(1), $X$, $P(-alpha)$, $X$, rstick($ket(a)$), [\ ],
+        lstick($ket(xi)$), 2, swap(1), 1, swap(1), 3, rstick($U^a ket(xi)$), [\ ],
+        lstick($ket(alpha)$), 2, swap(0), $U$, swap(0), 3, rstick($ket(alpha)$)
+    )) where $P(-alpha) = mat(1, 0; 0, e^(-i alpha))$. $circle.small.filled dash #h(0em) times dash #h(0em) times$ denotes the controlled SWAP operation.
 ]
 #definition[
-    Generalised control: $"C-U" ket(x) ket(xi) = ket(x) U^x ket(xi)$, $x in {0, 1}^n$ (e.g. $"C-U" ket(11) ket(xi) = ket(11) U^3 ket(xi)$). Note that $"C-"U^k$ = $("C-U")^k$.
-    The following circuit implements generalised control:
+    For a unitary $U$, the *generalised control* unitary $Ctrl(U)$ is defined linearly by $
+        forall x in {0, 1}^n, quad Ctrl(U) ket(x) ket(xi) = ket(x) U^x ket(xi),
+    $ where $U^x$ denotes $U$ applied $x$ times (e.g. $Ctrl(U) ket(11) ket(xi) = ket(11) U^3 ket(xi)$). Note that $Ctrl(U^k)$ = $(Ctrl(U))^k$.
+    The following circuit implements $Ctrl(U)$:
     #figure(quantum-circuit(
         lstick($ket(x_(n - 1))$), 3, ctrl(4), 1, [\ ],
         lstick($dots.v$), 5, [\ ],
         lstick($ket(x_1)$), 1, ctrl(2), 3, [\ ],
         lstick($ket(x_0)$), ctrl(1), 4, [\ ],
-        lstick($ket(xi)$), $U^(2^0)$, $U^(2^1)$, $...$, $U^(2^(n - 1))$, 1, rstick($U^x ket(xi)$) 
+        lstick($ket(xi)$), $U^(2^0)$, $U^(2^1)$, midstick($dots.c$), $U^(2^(n - 1))$, 1, rstick($U^x ket(xi)$) 
     ))
-]
+]<def:generalised-control>
 #algorithm("Quantum Phase Estimation")[
-    Work over the space $(CC^2)^(tp n) tp CC^d$, where $(CC^2)^(tp n)$ is the $n$-qubit register, $CC^d$ is the "qudit" register.
+    Work over the space $\(CC^2\)^(tp n) tp CC^d$, where $\(CC^2\)^(tp n)$ is the $n$-qubit register, $CC^d$ is the "qudit" register.
     #figure(quantum-circuit(
-        lstick($"line"(n - 1)$), $H$, 3, ctrl(5), [\ ],
-        lstick($"line"(n - 2)$), $H$, 3, [\ ],
+        lstick($"line"(n - 1)$), $H$, 3, ctrl(4), mqgate($QFT_(2^n)^(-1)$, n: 4), 1, [\ ],
+        // lstick($"line"(n - 2)$), $H$, 5, [\ ],/
         lstick($dots.v$), [\ ],
-        lstick($"line"(1)$), $H$, 1, ctrl(2), [\ ],
-        lstick($"line"(0)$), $H$, ctrl(1), [\ ],
-        lstick($ket(v_phi)$), 1, $U^(2^0)$, $U^(2^1)$, $...$, $U^(2^(n - 1))$
-    )) TODO finish diagram
-    After $"C-"U^(2^n - 1)$, the state is $1/sqrt(2^n) sum_(x in {0, 1}^n) e^(2pi i phi x) ket(x) ket(v_phi)$. After this, applying $QFT^(-1)$ on the state $1/sqrt(2^n) sum_(x in {0, 1}^n) e^(2pi i phi x) ket(x) = QFT_(2^n) ket(phi)$.
+        lstick($"line"(1)$), $H$, 1, ctrl(2), 4, [\ ],
+        lstick($"line"(0)$), $H$, ctrl(1), 5, [\ ],
+        lstick($ket(v_phi)$), 1, $U^(2^0)$, $U^(2^1)$, midstick($dots.c$), $U^(2^(n - 1))$, 2,
+    ))
+    After $Ctrl(U^(2^(n - 1)))$, the state is $1/sqrt(2^n) sum_(x in {0, 1}^n) e^(2pi i phi x) ket(x) ket(v_phi)$. We now discard the qudit register holding $ket(v_phi)$. If $phi$ had an exact $n$-bit expansion $0.i_1 i_2 ... i_n = (i_1 ... i_n)/2^n =: phi_n / 2^n$, then this is precisely $QFT_(2^n) ket(phi_n)$. After this, applying $QFT^(-1)$ on the state $1/sqrt(2^n) sum_(x in {0, 1}^n) e^(2pi i phi x) ket(x)$. We then measure the state, yielding outcome $y = y_(n - 1) ... y_0$. Our estimate of $phi$ is $tilde(phi) = y/2^n = y_(n - 1) / 2 + dots.c + y_0 / 2^n$.
+]
+#lemma[
+    For all $alpha in RR$,
+    + If $abs(alpha) <= pi$, then $abs(1 - e^(i alpha)) = 2 abs(sin(alpha\/2)) >= 2/pi abs(alpha)$ (graphically, this says the line $y = 2/pi alpha$ lies below $2 sin(alpha\/2)$ for $0 <= alpha <= pi$).
+    + If $alpha >= 0$, then $abs(1 - e^(i alpha)) <= alpha$ (graphically, this says that on the complex unit circle, the arc length $alpha$ from $1$ to $e^(i alpha)$ is at least the chord length from $1$ to $e^(i alpha)$).
+]
+#theorem("Phase Estimation Theorem")[
+    Let $tilde(phi)$ be the estimate of $phi$ from the quantum phase estimation algorithm. Then
+    + $Pr(tilde(phi) #[is closest $n$-bit approximation of $phi$]) >= 4/pi^2 approx 0.4$.
+    + For all $epsilon > 0$, $Pr(abs(tilde(phi) - phi) > epsilon) = O(1/(2^n epsilon))$. So for any desired accuracy $epsilon$, the probability of failure decays exponentially with the number of bits of precision (lines in the circuit).
+]<thm:phase-estimation>
+#proof[
+    Let $ket(A) = 1/sqrt(2^n) sum_(x in {0, 1}^n) e^(2pi i phi x) ket(x)$. Let $delta(y) = phi - y\/2^n = phi - tilde(phi)$. Since $QFT^(-1) ket(x) = 1/sqrt(2^n) sum_(y in {0, 1}^n) e^(-2pi i x y \/ 2^n) ket(y)$, we have $
+        QFT^(-1) ket(A) = 1/2^n sum_(y in {0, 1}^n) sum_(x in {0, 1}^n) e^(2pi i x delta(y)) ket(y)
+    $ so the probability of measuring outcome $y$ is $
+        p_y = 1/2^(2n) abs((1 - e^(2^n 2 pi i delta(y)))/(1 - e^(2pi i delta(y))))^2.
+    $
 
-    If $phi$ had an exact $n$-bit expansion $0.i_1 i_2 ... i_n = (i_1 ... i_n)/2^n$, 
+    + Let $alpha = 2^n 2pi delta(a)$, where $a$ is the closest $n$-bit approximation of $phi$. Note we can imagine the possible values of $tilde(phi)$ as lying on the unit circle, spaced by angle $(2pi) / 2^n$. This gives a visual intuition to the fact that $abs(delta(a)) <= 1/(2^(n + 1))$. Hence $abs(alpha) <= pi$, and so by the above lemma, $
+        Pr(tilde(phi) = a) >= 1/(2^(2n)) ((2^(n + 2) delta(a))/(2pi delta(a)))^2 = 4/pi^2.
+    $
+
+    + Note that $abs(1 - e^(2^n 2 pi i delta(y))) <= 2$ by the triangle inequality. Let $B = {y in {0, 1}^n: abs(delta(y)) > epsilon}$ denote the set of "bad" values of $y$. For all $y in {0, 1}^n$, we have $delta(y) in [-1, 1]$. If $abs(delta(y)) <= 1\/2$, then, by the above lemma, we have $abs(1 - e^(2pi i delta(y))) >= 4 abs(delta(y))$. If $delta(y) > 1\/2$, then $delta(y) - 1 in [-1 \/ 2, 1 \/ 2]$, so by the above lemma, $abs(1 - e^(2pi i delta(y))) >= 4 abs(delta(y) - 1)$ hence $
+        p_y <= 1/2^(2n) (2/(4 delta(y)))^2 = 1 / (2^(2n + 2) delta(y)^2).
+    $ Let $delta^+ = min{delta(y): y in B, delta(y) > 0}$ be the smallest $delta(y)$ such that $delta(y) > epsilon$, and $delta^- = max{delta(y): y in B: delta(y) < 0}$ be the largest $delta(y)$ such that $delta(y) < -epsilon$. For all $y in B$, we have $delta(y) = delta^+ + k_y \/ 2^n$ or $delta(y) = delta^- - k_y \/ 2^n$ for some $k_y in NN$, so $abs(delta(y)) > epsilon + k_y \/ 2^n$. Note that each $k in NN$, $k = k_y$ for at most $2$ values of $y in B$. Hence, $
+        Pr(abs(delta(y)) > epsilon) & = Pr(y in B) = sum_(y in B) p_y \
+        & <= sum_(y in B) 1/(2^(2n + 2) (epsilon + k_y\/2^n)^2) \
+        & < 2 sum_(k = 0)^oo 1/2^(2n + 2) 1/(epsilon + k\/2^n)^2 \
+        & <= 1/(2^(2n + 1) epsilon^2) + sum_(k = 1)^oo 1/2^(2n + 1) 1/(epsilon + k\/2^n)^2 \
+        & = 1/(2^(2n + 1) epsilon^2) + integral_0^oo 1/2^(2n + 1) 1/(epsilon + x\/2^n)^2 dif x \
+        & = 1/(2^(2n + 1) epsilon^2) + integral_(2^n epsilon)^oo 1/(2u^2) dif u = 1/(2^(2n + 1) epsilon^2) + 1/(2^(n + 1) epsilon).
+    $
+]
+#remark[
+    The QPE algorithm excluding the measurement is a unitary - call this unitary $U_"PE"$. If we apply $U_"PE"$ to an arbitrary state $ket(psi) = sum_j c_j ket(v_j)$ where $ket(v_j)$ are the eigenstates of $U$ with eigenvalue $e^(2pi i phi_j)$, then we have $
+        U_"PE" ket(psi) = sum_(j) c_j ket(tilde(phi)_j) ket(v_j)
+    $ If every $phi_j$ has an exact $n$-bit representation, then this is exact. Otherwise, we have $ket(tilde(phi)_j) = sqrt(1 - eta) ket(tilde(phi)_1) + sqrt(eta) ket(tilde(phi)_0)$, where $ket(tilde(phi)_1)$ is a superposition of all $n$-bit strings that are correct to the first $n$-bits of $phi$, and $ket(tilde(phi)_0)$ is a superposition of strings with the first $n$ bits not all correct.
+]
+#remark[
+    Complexity of QPE: we use $Ctrl(U), ..., Ctrl(U^(2^(n - 1)))$, so the number of uses of $Ctrl(U)$ is $approx 2^n$. So this initially looks like exponential time, but there are special cases of $U$ where by repeated squaring, this can be implemented with $poly(n)$ gates.
+
+    If we want to estimate $phi$ accurate to $m$ bits of precision with probability $1 - eta$, then by the phase estimation theorem with $epsilon = 1/2^m$, we need $n = O(m + log(1\/eta))$ lines. Note this is a modest, polynomial increase in the number of lines of the circuit for an exponential reduction in $eta$.
+]
+
+
+= Amplitude amplification
+
+Amplitude amplification is an extension of the key insights in Grover's algorithm (TODO: read part II notes for Grover's).
+
+$ket(alpha) in H_d$ defines a one-dimensional subspace $L_alpha = span_CC {ket(alpha)}$ and a $(d - 1)$-dimensional subspace $L_alpha^perp$, the orthogonal complement of $L_alpha$. We define the operator $I_ket(alpha) = I - 2 ket(alpha) bra(alpha)$. This acts on $ket(alpha)$ as $I_ket(alpha) ket(alpha) = ket(alpha) - 2 ket(alpha) = -ket(alpha)$. For all $ket(beta) in L_alpha^perp$, $I_ket(alpha) ket(beta) = ket(beta)$, since $braket(alpha, beta) = 0$. Note $I_ket(alpha)$ is a reflection in the $(d - 1)$-dimensional "mirror" $L_alpha^perp$.
+
+For any unitary $U$, $U I_ket(alpha) U^dagger = I_(U ket(alpha))$.
+
+Let $A subset.eq H_d$ be a $k$-dimensional subspace with orthonormal basis ${ket(a_1), ..., ket(a_k)}$. Define the projector onto $A$ by $P_A = sum_(i = 1)^k ket(a_i) bra(a_i)$. $P_A$ is independent of the orthonormal basis. Define $I_A = I - 2 P_A$, the reflection in the $(d - k)$-dimensional "mirror" $A^perp$. For any $ket(xi) in A$, $I_A ket(xi) = -ket(xi)$, and for any $ket(chi) in A^perp$, $I_A ket(chi) = ket(chi)$, since $P_A ket(chi) = 0$.
+
+#problem("Unstructured Search")[
+    / Input: An oracle for $f: {0, 1}^n -> {0, 1}$.
+    / Promise: There is a unique $x_0 in {0, 1}^n$ such that $f(x_0) = 1$.
+    / Task: Find $x_0$.
+]
+#remark[
+    The unstructured search problem is closely related to the complexity class NP and to Boolean satisfiability.
+]
+#theorem("Grover")[
+    In the $2$-dimensional subspace spanned by $ket(psi)$ and $ket(x_0)$, the action of $Q$ is a rotation by angle $2 alpha$, where $sin(alpha) = 1/sqrt(2^n) = braket(x_0, psi)$.
+]
+#algorithm("Grover's Algorithm")[
+    Let $N = 2^n$.
+    + $I_ket(x_0): ket(x_0) |-> -ket(x_0)$, $ket(x) |-> ket(x)$ for $x != x_0$. Note that $U_f ket(x) 1/sqrt(2) (ket(0) - ket(1)) = (-1)^f(x) ket(x) 1/sqrt(2) (ket(0) - ket(1))$.
+    + We introduce the Grover iteration operator $Q = -H^(tp n) I_ket(0) H^(tp n) I_ket(x_0)$. Note that $H^(tp n) I_ket(0) H^(tp n) = I_ket(psi)$ where $ket(psi) = 1/sqrt(2^n) sum_(x in {0, 1}^n) ket(x)$. Implementing $Q$ requires one query to $f$.
+    + Prepare $ket(psi) = H^(tp n) ket(0)$.
+    + Apply $Q^m$ to $ket(psi)$, where $m$ is closest integer to $arccos(1\/sqrt(N))/(2 arcsin(1\/sqrt(N))) = theta / (2 alpha)$, where $cos(theta) = braket(x_0, psi) = 1/sqrt(N)$. This rotates $ket(psi)$ to be close to $ket(x_0)$ (within angle $plus.minus alpha$ of $ket(x_0)$).
+    + Measure to get $x_0$ with probability $p = abs(braket(x_0, Q^m, psi))^2 = 1 - 1/N$. For large $N$, $arccos(1\/sqrt(N)) approx pi/2$, and $arcsin(1\/sqrt(N)) approx 1\/sqrt(N)$. The number of iterations is $m = pi/4 sqrt(N) = O(sqrt(N))$. So we need $O(sqrt(N))$ queries to $U_f$. In contrast, clasically we need $Omega(N)$ queries to $f$ to find $x_0$ with any desired constant probability. Note that $Omega(N)$ queries are both necessary and sufficient.
+]
+
+Let $G$ be a subspace (called the "good" subspace) of state space $H$. We call the subspace $G^perp$ the "bad" subspace. We have $H = G xor G^perp$. For any state $psi in H$, there is a unique decomposition with real, positive coefficients $ket(psi) = sin(theta) ket(g) + cos(theta) ket(b)$, where $ket(g) = P_G ket(psi)$ and $ket(b) = P_(G^perp) ket(psi)$.
+
+Introduce the reflection operators that reflect $ket(psi)$ and $ket(g)$. $I_ket(psi) = I - 2 ket(psi) bra(psi)$, $I_G = I - 2 P_G$. Define $Q = -I_ket(psi) I_G$.
+
+#theorem("Amplitude Amplification Theorem/2D-subspace Lemma")[
+    In the $2$-dimensional subspace spanned by $ket(g)$, $ket(psi)$ (orthonormal basis is ${ket(g), ket(b)}$), $Q$ is a rotation by angle $2 theta$, where $sin(theta) = norm(P_G ket(psi))^2$, the length of the good projection of $ket(psi)$.
+]
+#remark[
+    In the amplitude amplification process, the relative amplitudes of basis states inside $ket(g)$ and $ket(b)$ won't change. So amplitude amplification boosts the overall amplitude of $ket(g)$ at the expense of the amplitude of $ket(b)$.
 ]

@@ -129,9 +129,9 @@
         - $partial cal(F)_n$ and $cal(F)_(n - 1)$ are disjoint, as $cal(F)$ is an antichain.
         - So $ (|partial cal(F)_n|)/binom(n, n - 1) + (|cal(F)_(n - 1)|)/binom(n, n - 1) = (|partial cal(F)_n union cal(F)_(n - 1)|)/binom(n, n - 1) <= 1. $
         - So by local LYM, $ (|cal(F)_n|)/binom(n, n) + (|cal(F)_(n - 1)|)/binom(n, n - 1) <= 1. $
-        - Now, $partial (partial A_n union A_(n - 1))$ and $cal(F)_(n - 2)$ are disjoint, as $cal(F)$ is an antichain.
+        - Now, $partial (partial cal(F)_n union cal(F)_(n - 1))$ and $cal(F)_(n - 2)$ are disjoint, as $cal(F)$ is an antichain.
         - So $ (|partial(partial cal(F)_n union cal(F)_(n - 1))|)/binom(n, n - 2) + (|cal(F)_(n - 2)|)/binom(n, n - 2) <= 1. $
-        - So by local LYM, $ (|partial A_n union cal(F)_(n - 1)|)/binom(n, n - 1) + (|cal(F)_(n - 2)|)/binom(n, n - 2) <= 1. $
+        - So by local LYM, $ (|partial cal(F)_n union cal(F)_(n - 1)|)/binom(n, n - 1) + (|cal(F)_(n - 2)|)/binom(n, n - 2) <= 1. $
         - So $ (|cal(F)_n|)/binom(n, n) + (|cal(F)_(n - 1)|)/binom(n, n - 1) + (|cal(F)_(n - 2)|)/binom(n, n - 2) <= 1. $
         - Continuing inductively, we obtain the result.
     - Method 2:
@@ -166,7 +166,7 @@
     $A < B$ in colex iff $A^c < B^c$ in lex with ground set order reversed.
 ]
 #remark[
-    By Local LYM, we know that $abs(partial cal(F)) >= abs(cal(F)) r\/(n - r + 1)$. Equality is rare (only for $cal(F) = X^((r))$ for $0 <= r <= n$). What happens in between, i.e., given $abs(cal(F))$, how should we choose $cal(F)$ to minimise $abs(partial A)$?
+    By Local LYM, we know that $abs(partial cal(F)) >= abs(cal(F)) r\/(n - r + 1)$. Equality is rare (only for $cal(F) = X^((r))$ for $0 <= r <= n$). What happens in between, i.e., given $abs(cal(F))$, how should we choose $cal(F)$ to minimise $abs(partial cal(F))$?
 
     You should be able to convince yourself that if $abs(cal(F)) = binom(k, r)$, then we should take $cal(F) = [k]^((r))$. If $binom(k, r) < abs(cal(F)) < binom(k + 1, r)$, then convince yourself that we should take some $[k]^((r))$ plus some $r$-sets in $[k + 1]^((r))$.
 
@@ -331,7 +331,7 @@
     - Equivalently, if $abs(cal(F)) = binom(k_r, r) + binom(k_(r - 1), r - 1) + dots.c + binom(k_s, s)$ where each $k_i > k_(i - 1)$ and $s >= 1$, then $
         abs(partial cal(F)) >= binom(k_r, r - 1) + binom(k_(r - 1), r - 2) + dots.c + binom(k_s, s - 1).
     $
-    - Equality in Kruskal-Katona: if $abs(cal(F)) = binom(k, r)$ and $abs(partial cal(F)) = binom(k, r - 1)$, then $cal(F) = Y^((r))$ for some $Y subset.eq X$ with $abs(Y) = k$. However, it is not true in general that if $abs(partial A) = abs(partial C)$, then $cal(F)$ is isomorphic to $cal(C)$ (i.e. there is a permutation of the ground set $X$ sending $cal(F)$ to $cal(C)$).
+    - Equality in Kruskal-Katona: if $abs(cal(F)) = binom(k, r)$ and $abs(partial cal(F)) = binom(k, r - 1)$, then $cal(F) = Y^((r))$ for some $Y subset.eq X$ with $abs(Y) = k$. However, it is not true in general that if $abs(partial cal(F)) = abs(partial C)$, then $cal(F)$ is isomorphic to $cal(C)$ (i.e. there is a permutation of the ground set $X$ sending $cal(F)$ to $cal(C)$).
 ]
 #definition[
     For $cal(F) subset.eq X^((r))$, $0 <= r <= n - 1$, the *upper shadow* of $cal(F)$ is $
@@ -432,51 +432,123 @@ We seek to answer questions of the form "how do we minimise the boundary of a se
 #definition[
     An *isoperimetric inequality* on a graph $G$ is an inequality of the form $
         forall A subset.eq G, quad abs(b(A)) >= f(abs(A))
-    $ for some function $f$.
+    $ for some function $f: NN -> RR$.
 ]<def:isoperimetric-inequality>
 #definition[
     The *neighbourhood* of $A subset.eq V(G)$ is $N(A) := A union b(A)$, i.e. $
         N(A) = {x in G: d(x, A) <= 1}.
     $
 ]<def:vertex-set-neighbourhood>
-#remark[
-    A good example for $A$ might be a ball $B(x, r) = {y in G: d(x, y) <= r}$.
-]
 #example[
-    Let $A subset.eq V(Q_3)$, $abs(A) = 4$.
+    A good (and natural) example for $A$ that minimises $abs(b(A))$ in the discrete cube $Q_n$ might be a ball $B(x, r) = {y in G: d(x, y) <= r}$. Let $A subset.eq powset(X) = V(Q_3)$, $abs(A) = 4$.
 
     A good guess is that balls are best, i.e. sets of the form $B(emptyset, r) = X^((<= r)) = X^((0)) union dots.c union X^((r))$. What if $abs(X^((<= r))) <= abs(A) <= abs(X^((<= r + 1)))$? A good guess is take $A$ with $X^((<= r)) subset.neq A subset.neq X^((<= r + 1))$. If $A = X^((<= r)) union B$, where $B subset.eq X^((r + 1))$, then $b(A) = (X^((r + 1)) - B) union partial^+ B$, so we would take $B$ to be an initial segment of lex by Kruskal-Katona. This motivates the following definition.
 ]
 #definition[
-    The *simplicial ordering* on $powset(X)$ defines $x < y$ if either $abs(x) < abs(y)$, or both $abs(x) = abs(y)$ and $x <= y$ in lex.
+    The *simplicial ordering* on $powset(X)$ defines $x < y$ if either $abs(x) < abs(y)$, or both $abs(x) = abs(y)$ and $x < y$ in lex.
 ]<def:simplicial-ordering>
 We want to show the initial segments of the simplicial ordering minimise the boundary.
 #definition[
-    For $A subset.eq powset(X)$ and $1 <= i <= n$, the *$i$-sections* of $A$ are the families $A_-^((i)), A_+^((i)) subset.eq powset(X - i)$, given by $
-        A_-^((i)) & := {x in A: i in.not x}, \
-        A_+^((i)) & := {x - i: x in A, i in x}
-    $
+    For $A subset.eq powset(X)$ and $1 <= i <= n$, the *$i$-sections* of $A$ are the families $A_-^((i)), A_+^((i)) subset.eq powset(X \\ i)$, given by $
+        A_-^((i)) = A_- & := {x in A: i in.not x}, \
+        A_+^((i)) = A_+ & := {x - i: x in A, i in x}
+    $ Note that $A = A_-^((i)) union \{x union i: x in A_+^((i))\}$, so we can define a family by its $i$-sections.
+]<def:i-sections>
+#remark[
+    When viewing $powset(X)$ as the $n$-dimensional cube $Q_n$, we view the $i$-sections as subgraphs of the $(n - 1)$-dimensional cube $Q_(n - 1)$ (which we view $powset(X \\ i)$ as).
 ]
 #definition[
-    The *$i$-compression* of $A subset.eq powset(X)$ is the family $C_i (A) subset.eq powset(X)$ given by its $i$-sections: $(C_i (A))_-^((i))$ is the first $abs(A_-^((i)))$ elements of the simplicial order on $powset(X - i)$, and $(C_i (A))_+^((i))$ is the first $abs(A_+^((i)))$ elements of the simplicial order on $powset(X - i)$.
-]
+    The *$i$-compression* of $A subset.eq powset(X)$ is the family $C_i (A) subset.eq powset(X)$ given by its $i$-sections:
+    - $(C_i (A))_-^((i))$ is the first $abs(A_-^((i)))$ elements of the simplicial order on $powset(X - i)$, and
+    - $(C_i (A))_+^((i))$ is the first $abs(A_+^((i)))$ elements of the simplicial order on $powset(X - i)$.
+    Note that $abs(C_i (A)) = abs(A)$, and $C_i (A)$ "looks more like" a Hamming ball than $A$ does.
+]<def:i-compression>
 #definition[
     $A subset.eq powset(X)$ is *$i$-compressed* if $C_i (A) = A$.
-]
+]<def:i-compressed>
 #definition[
-    A *Hamming ball* $A$ is a family with $X^((<= r)) subset.eq A subset.eq X^((<= r + 1))$ for some $r$.
+    A *Hamming ball* is a family $A subset.eq powset(X)$ with $X^((<= r)) subset.eq A subset.eq X^((<= r + 1))$ for some $r$.
+]<def:hamming-ball>
+#example[
+    Note that a set that is $i$-compressed for all $i in [n]$ is not necessarily an initial segment of simplicial, e.g. take ${emptyset, 1, 2, 12}$ in $Q_3$. However...
 ]
-#theorem("Harper")[
-    Let $A subset.eq V(Q_n)$ and let $C$ be the initial segment of the simplicial order on $powset(V(Q_n))$, with $abs(C) = abs(A)$. Then $abs(N(A)) >= abs(N(C))$. In particular, if $abs(A) = sum_(i = 0)^r binom(n, i)$, then $abs(N(A)) >= sum_(i = 0)^(r + 1) binom(n, i)$.
+#lemma[
+    Let $B subset.eq Q_n$ be $i$-compressed for all $i in [n]$ but not an initial segment of the simplicial order. Then either:
+    - $n$ is odd (say $n = 2k + 1$) and $
+        B = X^(<= k) \\ underbrace({k + 2, k + 3, ..., 2k + 1}, #[last $k$-set]) union underbrace({1, 2, ..., k + 1}, #[first $(k + 1)$-set]),
+    $
+    - or $n$ is even (say $n = 2k$), and $
+        B = X^((< k)) union {x in X^((k)): 1 in x} \\ underbrace({1, k + 2, k + 3, ..., 2k}, #[last $k$-set with $1$]) union underbrace({2, 3, ..., k + 1}, #[first $k$-set without $1$]).
+    $
 ]
 #proof[
-    By induction on $n$. $n = 1$ is trivial. Given $n > 1$, $A subset.eq Q_n$ and $1 <= i = n$, we claim that $abs(N(C_i (A))) <= abs(N(A))$:
+    Since $B$ is not an initial segment of simplicial, so there exist $x < y$ (in simplicial) with $y in B$ but $x in.not B$. For each $1 <= i <= n$, we cannot have $i in x$ and $i in y$ (as $B$ is $i$-compressed). For the same reason, we cannot have $i in.not x$ and $i in.not y$. So $x = y^c$. Thus for each $y in B$, there is at most one $x < y$ with $x in.not B$ (namely $x = y^c$), and for each $x in.not B$, there is at most one $y > x$ with $y in B$ (namely $y = x^c$). So no sets lie between $x$ and $y$ in the simplicial ordering. So $B = {z: z <= y} \\ {x}$, with $x$ the predecessor of $y$, and $x = y^c$. Hence if $n = 2k + 1$, then $x$ is the last $k$-set (otherwise sizes of $x$ and $y = x^c$ don't match), and if $n = 2k$, then $x$ is the last $k$-set containing $1$.
+]
+#theorem("Harper")[
+    Let $A subset.eq V(Q_n)$ and let $C$ be the initial segment of the simplicial order on $powset(X) = V(Q_n)$, with $abs(C) = abs(A)$. Then $abs(N(A)) >= abs(N(C))$. So initial segments of the simplicial order minimise the boundary. In particular, if $abs(A) = sum_(i = 0)^r binom(n, i)$, then $abs(N(A)) >= sum_(i = 0)^(r + 1) binom(n, i)$.
+]<thm:harper>
+#proofhints[
+    - Using induction, prove the claim that $abs(N(C_i (A))) <= abs(N(A))$:
+        - Find expressions for $N(A)_-$ as union of two sets, similarly for $N(A)_+$, same for $N(B)_-$ and $N(B)_+$.
+        - Explain why $N(B_-)$ and $B_+$ are nested, use this to show $abs(N(B_-) union B_+) <= abs(N(A_-) union A_+)$.
+        - Do the same with the $+$ and $-$ switched.
+]
+#proof[
+    By induction on $n$. $n = 1$ is trivial. Given $n > 1$, $A subset.eq Q_n$ and $1 <= i <= n$, we claim that $abs(N(C_i (A))) <= abs(N(A))$.
+    #proof("of claim")[
+        Write $B = C_i (A)$. We have $N(A)_- = N(A_-) union A_+$, and $N(A)_+ = N(A_+) union A_-$. Similarly, $N(B)_- = N(B_-) union B_+$, and $N(B)_+ = N(B_+) union B_-$.
+        
+        Now $abs(B_+) = abs(A_+)$ by definition of $B$, and by the inductive hypothesis, $abs(N(B_-)) <= abs(N(A_-))$ (since $C_i (A_-) = B_-$). But $B_+$ is an initial segment of the simplicial ordering, and $N(B_-)$ is as well (since the neighbourhood of an initial segment of the simplicial ordering is also an initial segment). So $B_+$ and $N(B_-)$ are nested (one is contained in the other). Hence, $abs(N(B_-) union B_+) <= abs(N(A_-) union A_+)$.
+        
+        Similarly, $abs(B_-) = abs(A_-)$ by definition of $B$. Since $B_+$ and $C_i (A_+)$ are both initial segments of size $abs(B_+) = abs(A_+)$, we have $B_+ = C_i (A_+)$, hence by the inductive hypothesis, $abs(N(B_+)) <= abs(N(A_+))$. $B_-$ and $N(B_+)$ are initial segments, so are nested. Hence $abs(N(B_+) union B_-) <= abs(N(A_+) union A_-)$.
+        
+        This gives $abs(N(B)) = abs(N(B)_-) + abs(N(B)_+) <= abs(N(A)_-) + abs(N(A)_+) = abs(N(A))$, which proves the claim.
 
-    Write $B = C_i (A)$. We have $N(A)_- = N(A_-) union A_+$, and $N(A)_+ = N(A_+) union A_-$. Similarly, $N(B)_- = N(B_-) union B^+$, and $N(B)_+ = N(B_+) union B_-$. Now $abs(B_+) = abs(A_+)$, and by the inductive hypothesis, $abs(N(B_-)) <= abs(N(A_-))$. But $B_+$ is an initial segment of the simplicial ordering, and $N(B_-)$ is as well (since as neighbourhood of an initial segment of the simplicial ordering is also an initial segment). So $B_+$ and $N(B_-)$ are nested (one is contained in the other). Hence, $abs(N(B)_-) <= abs(N(A)_-)$. Similarly, $abs(N(B)_+) <= abs(N(A)_+)$. This gives $abs(N(B)) <= abs(N(A))$, which proves the claim.
+        Define a sequence $A_0, A_1 ,... subset.eq Q_n$ as follows:
+        - Set $A_0 = A_1$.
+        - having chosen $A_0, ..., A_k$, if $A_k$ is $i$-compressed for all $i in [n]$, then end the sequence with $A_k$. If not, pick $i$ with $C_i (A_k) != A_k$ and set $A_(k + 1) = C_i (A_k)$, and continue.
+        The sequence must terminate, since $sum_(x in A_k) ("position of" x "in simplicial order")$ is strictly decreasing. The final family $B = A_k$ satisfies $abs(B) = abs(A)$, $abs(N(B)) <= abs(N(A))$, and is $i$-compressed for all $i in [n]$.
+
+        So we are done by above lemma, since in each case certainly we have $abs(N(B)) > abs(N(C))$.
+    ]
 ]
 #remark[
-    - If $A$ is a Hamming ball, then we are done by Kruskal-Katona.
+    - If $A$ was a Hamming ball, then we would be already done by Kruskal-Katona.
     - Conversely, Harper's theorem implies Kruskal-Katona: given $B subset.eq X^((r))$, apply Harper's theorem to $A = X^((<= r - 1)) union B$.
+    - We could also prove Harper's theorem using $U V$-compressions.
+    - Conversely, we can also prove Kruskal-Katona using these "codimension $1$" compressions.
+]
+#definition[
+    For $A subset.eq Q_n$ and $t in NN$, the *$t$-neighbourhood* of $A$ is $
+        A_((t)) = N^t (A) := {x in Q_n: d(x, A) <= t}.
+    $
+]<def:t-neighbourhood>
+#corollary[
+    Let $A subset.eq Q_n$ wiht $abs(A) >= sum_(i = 0)^r binom(n, i)$. Then $
+        forall t <= n - r, quad abs(N^t (A)) >= sum_(i = 0)^(r - t) binom(n, i).
+    $
+]
+#proof[
+    By Harper's theorem and induction on $t$.
+]
+#remark[
+    To get a feeling for the strength of the above corollary, we'll need some estimates on quantities such as $sum_(i = 0)^r binom(n, i)$. Note that $i = n\/2$ maximises $binom(n, i)$, while $i = (1\/2 - epsilon) n$ makes it small: we are going $epsilon sqrt(n)$ standard deviations away from the mean $n\/2$.
+]
+#proposition[
+    Let $0 < epsilon < 1\/k$. Then $
+        sum_(i = 0)^floor((1\/2 - epsilon)n) binom(n, i) <= 1/epsilon e^(-epsilon^2 n\/2) dot 2^n.
+    $ For $epsilon$ fixed and $n -> oo$, the upper bound is an exponentially small fraction of $2^n$.
+]
+#proof[
+    For $0 <= i <= floor((1\/2 - epsilon) n)$, $
+        binom(n, i - 1)\/binom(n, i) = i/(n - i + 1) <= ((1\/2 - epsilon)n)/((1\/2 + epsilon)n) = (1\/2 - epsilon)/(1\/2 + epsilon) = 1 - (2 epsilon)/(1\/2 + epsilon) <= 1 - 2 epsilon.
+    $ Hence $
+        sum_(i = 0)^floor((1\/2 - epsilon)n) binom(n, i) <= 1/(2 epsilon) binom(n, floor((1\/2 - epsilon) n))
+    $ (since this is the sum of geometric progression). The same argument tells us that $
+        binom(n, floor((1\/2 - epsilon)n)) <= binom(n, floor(1 \/2 - epsilon\/2)n) (1 - 2 epsilon/2)^(epsilon n \/2 - 1) <= 2^n dot 2 (1 - epsilon)^(epsilon n \/2) <= 2^n dot 2 e^(-epsilon^2 n\/2)
+    $ since $1 - epsilon <= e^(-epsilon)$ (we include $-1$ in the exponent due to taking floors). Then $
+        sum_(i = 0)^floor((1\/2 - epsilon)n) binom(n, i) <= 1/(2 epsilon) dot 2 e^(-epsilon^2 n\/2) dot 2^n.
+    $
 ]
 
 
