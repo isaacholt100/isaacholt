@@ -550,6 +550,68 @@ We want to show the initial segments of the simplicial ordering minimise the bou
         sum_(i = 0)^floor((1\/2 - epsilon)n) binom(n, i) <= 1/(2 epsilon) dot 2 e^(-epsilon^2 n\/2) dot 2^n.
     $
 ]
+#theorem[
+    Let $0 < epsilon < 1 \/ 4$, $A subset.eq Q_n$. If $abs(A) \/ 2^n >= 1 \/ 2$, then $
+        abs(N^(epsilon t)(A)) >= 1 - 2/epsilon e^(-epsilon^2 n \/ 2).
+    $ So $1/2$-sized sets have exponentially large $epsilon n$-neighbourhoods.
+]
+#proof[
+    It is enough to show that if $epsilon n$ is an integer then $abs(N^(epsilon n)(A))\/2^n >= 1 - 1/epsilon e^(-epsilon^2 n\/2)$. We have $abs(A) >= sum_(i = 0)^ceil(n\/2 - 1) binom(n, i)$, so by Harper's theorem, we have $abs(A_(epsilon n)) >= sum_(i = 0)^ceil(n\/2 - 1 + epsilon n) binom(n, i)$, so $abs(N^(epsilon n)(A)^c) <= sum_(i = ceil(n\/2 + epsilon n)) binom(n, i) = sum_(i = 0)^ceil(n\/2 - epsilon n) binom(n, i) <= 1/epsilon e^(-epsilon^2 n\/2) dot 2^n$.
+]
+#remark[
+    The same argument would give a result for "small" sets: if $abs(A) \/ 2^n >= 2/epsilon e^(-epsilon^2 n\/2)$, then $abs(N^(2epsilon n)(A))\/2^n >= 1 - 2/epsilon e^(-epsilon^2 n\/2)$.
+]
+#definition[
+    $f: Q_n -> RR$ is *Lipschitz* if for all adjacent $x, y in Q_n$, $abs(f(x) - f(y)) <= 1$.
+]<def:lipschitz>
+#definition[
+    For $f: Q_n -> RR$, we say $M in RR$ is a *Levy mean* (or *median*) of $f$ if $abs({x in Q_n: f(x) <= M}) >= 2^(n - 1)$ and $abs({x in Q_n: f(x) >= M}) >= 2^(n - 1)$.
+]<def:levy-mean>
+#theorem("Concentration of Measure Phenomenon")[
+    Let $f: Q_n -> RR$ be Lipschitz with median $M$. Then for all $0 < epsilon < 1/4$, $
+        abs({x in Q_n: abs(f(x) - M) <= epsilon n}) / 2^n >= 1 - 4/epsilon e^(-epsilon^2 n\/ 2).
+    $ So "every well-behaved function on the cube $Q_n$ is roughly constant nearly everywhere".
+]<thm:concentration-of-measure-phenomenon>
+#proof[
+    Let $A = {x in Q_n: f(x) <= M}$. Then by definition, $abs(A) \/ 2^n >= 1/2$, so by the above theorem, $abs(N^(epsilon n)(A))\/2^n >= 1 - 2/epsilon e^(-epsilon^2 n\/2)$. But $f$ is Lipschitz, so $x in N^(epsilon n)(A) ==> f(x) <= M + epsilon n$. Thus $abs({x in Q_n: f(x) <= M + epsilon n}) \/ 2^n >= 1 - 2/epsilon e^(-epsilon^2 n\/2)$.
+
+    Similarly, $abs({x in Q_n: f(x) >= M - epsilon n}) \/ 2^b >= 1 - 2/epsilon e^(-epsilon^2 n \/ 2)$. Hence, taking the intersection, we have $
+        abs({x in Q_n: M - epsilon n <= f(x) <= M + epsilon n}) / 2^n >= 1 - 4/epsilon e^(-epsilon^2 n \/ 2).
+    $
+]
+#definition[
+    The *diameter* of a graph $G = (V, E)$ is $max{d(x, y): x, y in V}$.
+]
+#definition[
+    Let $G$ be a graph of diameter $D$. Write $
+        alpha(G, epsilon) = max{1 - abs(N^(epsilon D)(A))/abs(G): A subset.eq G, abs(A) / abs(G) >= 1/2}.
+    $ So if $alpha(G, epsilon)$ is small, then "$1/2$-sized sets have large $epsilon D$-neighbourhoods".
+]
+#definition[
+    A sequence of graphs $(G_n)_(n in NN)$ is a *Levy family* if for all $epsilon > 0$, $alpha(G_n, epsilon) -> 0$ as $n -> oo$. It is a *normal Levy family* if for all $epsilon > 0$, $alpha(G_n, epsilon)$ decays exponentially with $n$.
+]
+#example[
+    By the above theorem, the sequence $(Q_n)$ is a normal Levy family. More generally, we have concentration of measure for any Levy family.
+]
+#example[
+    Many naturally-occurring families of graphs are Levy families, e.g. $(S_n)$, where the permutation group $S_n$ is made into a graph by including an edge between $sigma$ and $tau$ if $tau sigma^(-1)$ is a transposition.
+]
+#example[
+    Similarly, we can define $alpha(X, epsilon)$ for any metric measure space $X$ (of finite measure and finite diameter). E.g. the sequence of spheres $(S^n)$ is a Levy family. To prove this, we have:
+    + An isoperimetric inequality on $S^n$: for $A subset.eq S^n$ and $C$ a circular cap with $abs(C) = abs(A)$, we have $abs(N^(epsilon)(A)) >= abs(N^(epsilon)(C))$.
+    + An estimate: a circular cap $C$ of measure $1\/2$ if the cap of angle $pi\/2$. So $N^(epsilon)(C)$ is the circular cap of angle $pi\/2 + epsilon$. This has measure roughly equal to $integral_epsilon^(pi\/2) cos^(n - 1)(t) dif t -> 0$ as $n -> oo$.
+]
+#remark[
+    We deduced concentration of measure from an isoperimetric inequality. Conversely, we have:
+]
+#proposition[
+    Let $G$ be a graph such that for any Lipschitz function $f: G -> RR$ with median $M$, we have $abs({x in G: abs(f(x) - M) > t}) \/ abs(G) <= alpha$ for some given $t, alpha$. Then for all $A subset.eq G$ with $abs(A) \/ abs(G) >= 1\/2$, we have $abs(N^(t)(A)) \/ abs(G) >= 1 - alpha$.
+]
+#proof[
+    The function $f(x) = d(x, A)$ is Lipschitz, and has $0$ as a median. So $abs({x in G: x in.not N^(t)(A)}) \/ abs(G) <= alpha$.
+]
+
+== Concentration of measure
 
 
 = Intersecting families

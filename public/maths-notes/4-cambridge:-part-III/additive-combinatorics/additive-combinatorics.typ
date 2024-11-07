@@ -605,9 +605,45 @@ In this chapter, assume that $G$ is a _finite_ abelian group.
 #remark[
     The current largest known subset of $FF_3^n$ containing no non-trivial $3$-APs has size $2.2202^n$.
 ]
+#lemma[
+    Let $A subset.eq [N]$ be of density $alpha > 0$ and contain no non-trivial $3$-APs, with $N > 50 alpha^(-2)$. Let $p$ be a prime with $p in [N\/3, 2N\/3]$, and write $A' = A sect [p] subset.eq ZZ\/p$. Then one of the following holds:
+    + $sup_(t != 0) abs(hat(bb(1))_(A')(t)) = alpha^2 \/ 10$ (where the Fourier coefficient is computed in $ZZ\/p$).
+    + There exists an interval $J subset.eq [N]$ of length $N\/3$ such that $abs(A sect J) >= alpha(1 + alpha\/400) abs(J)$.
+]
+#proof[
+    TODO: fill in details in proof.
+
+    We may assume that $abs(A') = abs(A sect [p]) >= alpha(1 - alpha\/200) p$, since otherwise $abs(A sect [p + 1, N]) >= alpha N - (alpha(1 - alpha\/200) p) = alpha(N - p) + alpha^2 / 200 p >= (alpha + alpha^2 \/ 400)(N - p)$ since $p >= N\/3$, which implies case 2 with $J = [p + 1, N]$.
+
+    Let $A'' = A' sect [p\/3, 2p\/3]$. Note that all $3$-APs of the form $(x, x + d, x + 2d) in A' times A'' times A''$ are in fact APs in $[N]$. If $abs(A' sect [p\/3])$ or $abs(A' sect [2p\/3, p])$ is at least $2/5 abs(A)'$, then again we are in case 2. So we may assume that $abs(A'') >= abs(A')\/5$. Now as in above lemmas, we have $
+        alpha'' / p = abs(A'') / p^2 = T_3 (indicator(A'), indicator(A''), indicator(A'')) = alpha' (alpha'')^2 + sum_(t) overline(hat(bb(1))_(A')(t) hat(bb(1))_(A'')(t)) hat(bb(1))_(2 dot A'')(t)
+    $ where $alpha' = abs(A') \/ p$ and $alpha'' = abs(A'') \/ p$. So as before, $
+        (alpha' alpha'') / 2 & <= sup_(t != 0) abs(indicator(A')(t)) dot alpha''
+    $ provided that $alpha'' \/ p <= 1/2 alpha' (alpha'')^2$, i.e. $2 \/ p <= alpha' alpha''$ (check this inequality indeed holds). Hence, $sup_(t != 0) abs(hat(bb(1))_(A')(t)) >= (alpha' alpha'')/2 >= 1/2 alpha(1 - alpha\/200)^2 dot 2/5 >= alpha^2 \/ 10$. TODO: constants need to change somewhere here.
+]
+#lemma[
+    Let $m in NN$, and let $phi: [m] -> ZZ\/p$ be given by $phi(x) = t x$ for some $t != 0$. Given $epsilon > 0$, there exists a partition of $[m]$ into progressions $P_i$ of length $ell_i in [epsilon sqrt(m)\/2, epsilon sqrt(m)]$, such that $
+        forall i, quad "diam"(phi(P_i)) = max_(x, y in P_i) abs(phi(x) - phi(y)) <= epsilon p
+    $ (where $abs(phi(x) - phi(y))$ views $phi(x), phi(y) in {0, ..., p - 1}$).
+]
+#proof[
+    Let $u = floor(sqrt(m))$ and consider $0, t, ..., u t$. By the pigeonhole principle, there exists $0 <= v < w <= u$ such that $abs(w t - v t) = abs((w - v)t) <= p\/u$. Set $s = w - v$, so $abs(s t) <= p\/u$. Divide $[m]$ into residue classes $mod s$, each of which has size at least $m\/s >= m\/u$. But each residue class can be divided into APsof the form $a,  + s, ..., a + d s$ with $epsilon u \/ 2 < d <= epsilon u$. The diameter of the image of each progression under $phi$ is $abs(d s t) <= d p \/ u <= epsilon u p \/ u = epsilon p$.
+]
+#lemma[
+    Let $A subset.eq [N]$ be of density $alpha > 0$, let $p$ be prime with $p in [N\/3, 2N\/3]$, and write $A' = A sect [p] subset.eq ZZ\/p$. Suppose that $abs(hat(bb(1))_(A')(t)) >= alpha^2 \/ 10$ for some $t != 0$. Then there exists a progression $P subset.eq [N]$ of length at least $alpha^2 sqrt(N) \/ 500$ such that $abs(A sect P) >= alpha(1 + alpha\/80) abs(P)$.
+]
+#proof[
+
+]
 #theorem("Roth")[
     Let $A subset.eq [N]$ be a set containing no non-trivial $3$-APs. Then $abs(A) = O(N\/ log log N)$.
 ]<thm:roth>
+#proof[
+
+]
+#example("Behrend's Example")[
+    There exists a set $A subset.eq [N]$ of size $abs(A) >= exp(-c sqrt(log N)) N$ containing no non-trivial $3$-APs.
+]
 
 
 = Probabilistic tools

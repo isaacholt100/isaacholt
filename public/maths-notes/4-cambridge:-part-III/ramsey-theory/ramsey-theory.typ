@@ -454,14 +454,55 @@ Strengthened Van der Waerden says that the system $x_1 + x_2 = y_1, x_1 + 2x_2 =
     Let $A in QQ^(m times n)$. If $A$ is PR, then it has CP.
 ]
 #proof[
-    Let $vd(c)_1, ..., vd(c)_n in QQ^m$ be the columns of $A$. For fixed prime $p$, colour $NN$ as before by $c(x) = e(x)$. By assumption, there exists a monochromatic $x in NN^n$ such that $sum_(i = 1)^n x_i vd(c)_i = vd(0)$. We partition the columns (by partitioning $[n] = B_1 union.sq dots.c union.sq B_l$) as follows:
+    Let $vd(c)_1, ..., vd(c)_n in QQ^m$ be the columns of $A$. For fixed prime $p$, colour $NN$ as before by $c(x) = e(x)$. By assumption, there exists a monochromatic $vd(x) in NN^n$ such that $sum_(i = 1)^n x_i vd(c)_i = vd(0)$. We partition the columns (by partitioning $[n] = B_1 union.sq dots.c union.sq B_l$) as follows:
     - $i, j in B_k$ iff $t(x_i) = t(x_j)$.
     - $i in B_k$, $j in B_ell$ for $k < ell$ iff $t(x_i) < t(x_j)$.
     We do this for infinitely many primes $p$. Since there are finitely many partitions of $[n]$, for infinitely many $p$, we will have the same blocks $B_1, ..., B_l$.
     
     Consider $sum_(i = 1)^n x_i vd(c)_i = vd(0)$ performed in base $p$. For $B_1$, all have the same colour $d = e(x_i) in [1, p - 1]$ ($i in B_1$). So $sum_(i in B_1) d c_i = 0 mod p$ (by collecting the rightmost terms in base $p$), hence $sum_(i in B_1) c_i = 0 mod p$. But this holds for infinitely many $p$, hence $sum_(i in B_1) c_i = 0$.
 
-    Now $sum_(i in B_k) p^t d vd(c)_i + sum_(i in B_1, ..., B_(k - 1)) x_i vd(c)_i = vd(0) mod p^(t + 1)$ for some $t$.
+    Now $sum_(i in B_k) p^t d vd(c)_i + sum_(i in B_1, ..., B_(k - 1)) x_i vd(c)_i = vd(0) mod p^(t + 1)$ for some $t$. So $p^t sum_(i in B_k) vd(c)_i + sum_(i in B_1, ..., B_(k - 1)) x_i d^(-1) vd(c)_i equiv 0 mod p^(t + 1)$.
+    
+    We claim that $sum_(i in B_k) vd(c)_i in gen(vd(c)_i: i in B_1, ..., B_(k - 1))$. Suppose not, then there exists $vd(u) in NN^m$ such that $vd(u) . vd(c)_i = 0$ for all $i in B_1, ..., B_(k - 1)$, but $vd(u) . (sum_(i in B_k) vd(c)_i) != 0$. Then dotting with $vd(u)$, we obtain $p^t vd(u) . (sum_(i in B_k) vd(c)_i) equiv 0 mod p^(t + 1)$, so $vd(u) . sum_(i in B_k) vd(c)_i equiv 0 mod p$. But this holds for infinitely many $p$, so $vd(u) . sum_(i in B_k) vd(c)_i = 0$: contradiction.
+]
+#definition[
+    For $m, p, c in NN$, an *$(m, p, c)$-set* $S subset.eq NN$ with generators $x_1, ..., x_m in NN$ is of the form $
+        S = {sum_(i = 1)^m lambda_i x_i: exists j in [m]: lambda_j = c, lambda_i = 0 thick forall i < j, "and" lambda_k in [-p, p] thick forall k > j}
+    $ where $[-p, p] = {-p, -(p - 1), ..., p}$. So $S$ consists of $
+        c x_1 + & lambda_2 x_2 + lambda_3 x_3 + dots.c + & lambda_m x_m, quad & lambda_i in [-p, p], \
+        & c x_2 + lambda_3 x_3 + dots.c + & lambda_m x_m, quad & lambda_i in [-p, p],
+        & dots.v \
+        & & c x_m
+    $ These are the *rows* of $S$. We can think of $S$ as a "progression of progressions".
+]
+#example[
+    - A $(2, p, 1)$-set with generators $x_1, x_2$ is of the form ${x_1 - p x_2, x_1 - (p - 1) x_2, ..., x_1 + p x_2, x_2}$, so is an AP of length $2p + 1$ together with its step.
+    - A $(2, p, 3)$-set with generators $x_1, x_2$ is of the form ${3x_1 - p x_2, 3x_1 - (p - 1)x_2, ..., 3x_1 + p x_2, 3x_2}$, so is an AP of length $2p + 1$, whose middle term is divisible by $3$, together with three times its step.
+]
+#theorem[
+    Let $m, p, c in NN$. For any finite colouring of $NN$, there exists a monochromatic $(m, p, c)$-set.
+]
+#proof[
+    Let $c: NN -> [k]$ be the colouring of $NN$ with $k$ colours. Note that an $(m', p, c)$-set with $m' >= m$ contains an $(m, p, c)$-set. Let $M = k(m - 1) + 1$ It is enough to find a $(M, p, c)$-set such that each row is monochromatic.
+
+    Let $n$ be large (large enough to apply the argument that follows). Let $A_1 = {c, 2c, ..., c floor(n\/c)}$. By Van der Waerden, $A_1$ contains a monochromatic AP $R_1$ of length $2n_1 + 1$ where $n_1$ is large enough: $R_1 = {c x_1 - n_1 d_1, c x_1 - (n_1 - 1)d_1, ..., c x_1 + n_1 d_1}$ has colour $k_1$. Now we restrict our attention to $B_1 = {d_1, 2d_1, ..., floor(n_1 / ((M - 1)p)) d_1}$.
+
+    Observe that $c x_1 + lambda_1 b_1 + dots.c + lambda_(M - 1) b_(M - 1) in R_1$ for all $lambda_i in [-p, p]$ and $b_i in B_1$, so all these sums have colour $k_1$. Inside $B_1$, look at $A_2 = {c d_1, 2 c d_1, ..., floor(n_1 / ((M - 1)p c)) c d_1}$. By Van der Waerden, $A_2$ contains a monochromatic AP $R_2$ of length $2n_2 + 1$ with colour $k_2$: $R_2 = {c x_2 - n_2 d_2, c x_2 - (n_2 - 1)d_2, ..., c x_2 + n_2 d_2}$. Now we restrict our attention to $B_2 = {d_2, 2d_2, ..., floor(n_2 / ((M - 2)p)) d_2}$. Again, note that for all $lambda_i in [-p, p]$ and $b_i in B_2$, we have $
+        c x_2 + lambda_1 b_1 + dots.c + lambda_(M - 2) b_(M - 2) in R_2
+    $ so has colour $k_2$.
+
+    We iterate this process $M$ times, and restrict to $M$ generators $x_1, ..., x_m$ (by setting some $lambda_i$ to $0$) such that each row of the $(M, p, c)$-set generated by $x_1, ..., x_M$ is monochromatic. But now $M = k(m - 1) + 1$, so $m$ of the rows have the same colour.
+]
+#remark[
+    Being extremely precise in this proofs (such as considering $floor(dot)$) is much less important than the ideas in the proof. (Won't be penalised in the exam for small details like this).
+]
+#corollary("Folkman's Theorem")[
+    Let $m in NN$ be fixed. For every finite colouring of $NN$, there exists $x_1, ..., x_m in NN$ such that $
+        {sum_(i in I) x_i: emptyset != I subset.eq [m]}
+    $ is monochromatic.
+]
+#proof[
+    By the $(m, 1, 1)$ case of the above theorem.
 ]
 
 

@@ -44,13 +44,15 @@
 == Period finding
 
 #problem("Periodicity Determination")[
-    Given an oracle for $f: ZZ\/M -> ZZ\/N$ with promises:
-    - $f$ is periodic with period $r < M$ (i.e. $forall x in ZZ\/M$, $f(x + r) = f(x)$),
-    - $f$ is one-to-one in each period (i.e. $forall 0 <= x < y < r$, $f(x) != f(y)$),
-    find $r$ in time $O(poly(m))$, where $m = O(log M)$.
-
-    Clasically, this requires takes time $O\(sqrt(M)\)$.
+    / Input: An oracle for a function $f: ZZ\/M -> ZZ\/N$.
+    / Promise:
+        - $f$ is periodic with period $r < M$ (i.e. $forall x in ZZ\/M$, $f(x + r) = f(x)$), and
+        - $f$ is injective in each period (i.e. if $0 <= x < y < r$, then $f(x) != f(y)$).
+    / Task: Determine the period $r$.
 ]<prb:periodicity-determination>
+#remark[
+    Solving the periodicity determination problem classically requires takes time $O\(sqrt(M)\)$.
+]
 #definition[
     Let $f: ZZ\/M -> ZZ\/N$. Let $H_M$ and $H_N$ be quantum state spaces with orthonormal state bases ${ket(i): i in ZZ\/N}$ and ${ket(j): j in ZZ\/M}$. Define the unitary *quantum oracle* for $f$ by $U_f$ by $
         U_f ket(x) ket(z) = ket(x) ket(z + f(x)).
@@ -60,9 +62,9 @@
     The *quantum query complexity* of an algorithm is the number of times it queries $f$ (i.e. uses $U_f$).
 ]<def:quantum-query-complexity>
 #definition[
-    The *quantum Fourier transform* over $ZZ\/M$ is the unitary defined by its action on the computational basis: $
-        U_"QFT" ket(x) = 1/sqrt(M) sum_(y = 0)^(M - 1) omega^(x y) ket(y),
-    $ where $omega = e^(2pi i\/M)$. Note that $U_"QFT"$ requires only $O\((log M)^2\)$ gates to implement, whereas a general unitary requires $O(4^n \/ n)$ elementary gates.
+    The *quantum Fourier transform* over $ZZ\/M$ is the unitary $QFT$ defined by its action on the computational basis: $
+        QFT ket(x) = 1/sqrt(M) sum_(y = 0)^(M - 1) omega^(x y) ket(y),
+    $ where $omega = e^(2pi i\/M)$ is an $M$-th root of unity. Note that $QFT$ requires only $O\((log M)^2\)$ gates to implement, whereas a general $M times M$ unitary requires $O(4^M \/ M)$ elementary gates.
 ]<def:quantum-fourier-transform>
 #lemma[
     Let $alpha = e^(2pi i y\/M)$. Then $
@@ -72,28 +74,45 @@
         ).
     $
 ]
+#proofhints[
+    Trivial.
+]
+#proof[
+    The sum is a geometric series with common ratio $alpha$.
+]
 #lemma("Boosting success probability")[
     If a process succeeds with probability $p$ on one trial, then $
         Pr("at least one success in" t "trials") = 1 - (1 - p)^t > 1 - delta
     $ for $t = log(1\/d)/p$.
 ]
+#proofhints[
+    Trivial.
+]
+#proof[
+    Trivial.
+]
 #theorem("Co-primality Theorem")[
-    The number of integers less than $r$ that are coprime to $r$ is $O(r\/log log r)$ for large $r$.
+    The number of integers less than $r$ that are coprime to $r$ is $O(r\/log log r)$.
 ]
 #algorithm("Quantum Period Finding")[
+    The algorithm solves the periodicity determination problem:
     Let $f: ZZ\/M -> ZZ\/N$ be periodic with period $r < M$ and one-to-one in each period. Let $A = M/r$ be the number of periods. We work over the state space $H_M tp H_N$.
-    + Construct the state $1/sqrt(M) sum_(i = 0)^(M - 1) ket(i) ket(0)$.
-    + Query $U_f$ on the state, giving $1/sqrt(M) sum_(i = 0)^(M - 1) ket(i) ket(f(i))$.
-    + Measure second register in computational basis, giving outcome $y in ZZ\/N$, and input state collapses to $ket("per") = 1/sqrt(A) sum_(j = 0)^(A - 1) ket(x_0 + j r)$, where $f(x_0) = y$ and $0 <= x_0 < r$. TODO: add diagram showing amplitudes for this state.
-    + Apply the Quantum Fourier Transform to $ket("per")$: $
+    + Construct the state $1/sqrt(M) sum_(i = 0)^(M - 1) ket(i) ket(0)$ and query $U_f$ on it.
+    + Measure second register in computational basis and discard the second register.
+    + Apply the quantum Fourier transform to the input state.
+    + Measure the input state, yielding outcome $c$.
+    + Compute the denominator $r_0$ of the simplified fraction $c/M$.
+    + Repeat the previous steps $O(log log r) = O(log log M) = O(log m)$ times, halting if at any iteration, $f(0) = f(r_0)$.
+]
+#theorem("Correctness of Quantum Period Finding Algorithm")[
+    When repeated, $O(log log r) = O(log log M)$ times, the quantum period finding algorithm obtains the correct value of $r$ with high probability.
+]
+#proof[
+    After querying $U_f$, we have the state $1/sqrt(M) sum_(i = 0)^(M - 1) ket(i) ket(f(i))$. Upon measuring the second register in the computational basis, the input state collapses to $ket("per") = 1/sqrt(A) sum_(j = 0)^(A - 1) ket(x_0 + j r)$, where $f(x_0) = y$ and $0 <= x_0 < r$. Applying the quantum Fourier transform to $ket("per")$ then gives Quantum Fourier Transform to $ket("per")$: $
         QFT ket("per") & = 1/sqrt(M) sum_(y = 0)^(M - 1) 1/sqrt(A) sum_(j = 0)^(A - 1) omega^((x_0 + j r) y) ket(y) \
         & = 1/sqrt(M A) sum_(y = 0)^(M - 1) omega^(x_0 y) sum_(j = 0)^(A - 1) omega^(j r y) ket(y) \
         & = sqrt(A/M) sum_(k = 0)^(r - 1) omega^(x_0 k M\/r) ket(k M\/r)
-    $ Note now the outcomes and probabilities are independent of $x_0$, so carry useful information about $r$. TODO add diagram showing amplitudes for this state.
-    + Measure $QFT ket("per")$, yielding outcome $c = k_0 M\/r$ for some $0 <= k_0 < r$. So $c/M = k_0/r$. If $k_0$ is corpime to $r$, then the denominator $r_0$ of the simplified fraction $c/M$ is equal to $r$.
-    + By the coprimality theorem, the probability that $k_0$ is coprime to $r$ is $O(1\/log log r)$.
-    + To check if the computed value $r_0$ of $r$ is correct, compute/query $U_f$ to check if $f(0) = f(r_0)$ (this works since $f$ is periodic and one-to-one in each period, and $r_0 <= r$).
-    + Repeat the previous steps $O(log log r) = O(log log M) = O(log m)$ times. This obtains the correct value of $r$ with high probability.
+    $ Importantly, now the outcomes and probabilities are independent of $x_0$, so carry useful information about $r$. TODO add diagram showing amplitudes for this state. The outcome after the measuring the input state is $c = k_0 M \/ r$ for some $0 <= k_0 < r$ (so $c \/ M = k_0 \/ r$). If $k_0$ is coprime to $r$, then the denominator $r_0$ of the simplified fraction $c/M$ is equal to $r$. By the coprimality theorem, the probability that $k_0$ is coprime to $r$ is $O(1\/log log r)$. Checking if $f(0) = f(r_0)$ tells us if $r_0 = r$, since $f$ is periodic and one-to-one in each period, and $r_0 <= r$.
 ]
 
 == Analysis of QFT part of period finding algorithm
@@ -179,7 +198,7 @@
     / Task: Determine $K$.
 ]
 #remark[
-    - To find $K$, we either find a generating set for $K$, or sample a uniformly random element from $K$.
+    - To find $K$, we either find a generating set for $K$, or sample uniformly random elements from $K$.
     - We want to determine $K$ with high probability in $O(poly log |G|)$ queries. Using $O(|G|)$ queries is easy, as we just query all values $f(g)$ and find the "level sets" (sets where $f$ is constant).
 ]
 #example[
@@ -218,8 +237,7 @@
     Straightforward.
 ]
 #proof[
-    - Note that $overline(chi_k (g)) = chi_k (-g)$.
-    - We have $
+    Since $chi_k$ is a homomorphism, we have $overline(chi_k (g)) = chi_k (-g)$. Now $
         U(g_0) ket(chi_k) & = 1/sqrt(abs(G)) sum_(g in G) overline(chi_k (g)) ket(g_0 + g) \
         & = 1/sqrt(abs(G)) sum_(g' in G) overline(chi_k (g' - g_0)) ket(g') \
         & = 1/sqrt(abs(G)) sum_(g' in G) overline(chi_k (g')) chi_k (g_0) ket(g') \
@@ -238,17 +256,25 @@
     - Similarly, for $G = ZZ\/(M_1) times dots.c times ZZ\/(M_r)$, $chi_g (h) = e^(2pi i (g_1 h_1 \/M_1 + dots.c + g_r h_r \/M_r))$ are the irreps.
 ]
 #algorithm([Quantum HSP solver for finite abelian $G$])[
-    - We work in the state space $H_abs(G) tp H_abs(X)$.
-    - Prepare the state $
+    The algorithm solves the hidden subgroup problem for finite abelian $G$. We work in the state space $H_abs(G) tp H_abs(X)$.
+    + Prepare the uniform superposition state $
         1/sqrt(abs(G)) sum_(g in G) ket(g) ket(0)
-    $
-    - Query $f$ on the state, giving $
+    $ and query $U_f$ on it.
+    + Measure the output register, then discard this register.
+    + Apply QFT $mod thick abs(G)$ to the input register, then measure this register.
+    + Repeat the above steps $O(log abs(G))$ times.
+]
+#theorem("Correctness of Quantum HSP Solver")[
+    The quantum HSP solver algorithm solves the hidden subgroup problem for finite abelian groups with high probability.
+]
+#proof[
+    Query $U_f$ on the state gives $
         1/sqrt(abs(G)) sum_(g in G) ket(g) ket(f(g))
-    $
-    - Measure the output register, yielding a uniformly random value $f(g_0)$ from $f(G)$. The state collapses to a *coset state* $
+    $ Upon measurement of the output register, we obtain a uniformly random value $f(g_0)$ from $f(G)$, and the state collapses to a *coset state* $
         ket(g_0 + K) = 1/sqrt(abs(K)) sum_(k in K) ket(g_0 + k).
     $
-    - Apply QFT $mod thick abs(G)$, and measure the input register, yielding some $g in G$. We have $ket(K) = sum_(g in G) a_g ket(chi_g)$, so $ket(g_0 + K) = U(g_0) ket(K) = sum_(g in G) a_g chi_g (g_0) ket(chi_g)$. So applying QFT gives $sum_(g in G) a_g chi_g (g_0) ket(g)$, so probability of measuring outcome $k$ is $abs(a_k chi_k (g_0))^2 = abs(a_k)^2$. Now $
+
+    We have $ket(K) = sum_(g in G) a_g ket(chi_g)$, so $ket(g_0 + K) = U(g_0) ket(K) = sum_(g in G) a_g chi_g (g_0) ket(chi_g)$. So applying QFT to the input state gives $sum_(g in G) a_g chi_g (g_0) ket(g)$, so the probability of measuring outcome $k$ is $abs(a_k chi_k (g_0))^2 = abs(a_k)^2$. Now $
         QFT ket(K) & = 1/sqrt(abs(K)) sum_(k in K) QFT ket(k) \
         & = 1/sqrt(abs(G) abs(K)) sum_(g in G) (sum_(k in K) chi_g (k)) ket(g)
     $ Note that irreps of $G$ restricted to $K$ are irreps of $K$. The trivial irrep $chi_0: G -> CC$ remains the trivial irrep $chi_0$ for $K$. But there may be other irreps that become the trivial irrep on restriction to $K$. Hence $
@@ -260,7 +286,7 @@
         QFT ket(K) = sqrt(abs(K)/abs(G)) sum_(g in G \ chi_g|_K = chi_0|_K) ket(g)
     $ and measuring in the computational basis on this state yields random $g in G$ such that $forall k in K$, $chi_g (k) = 1$.
 
-    If $K$ has generators $k_1, ..., k_m$ (note that for an arbitrary group, we have $m = O(log abs(G))$), then we have a set of equations $chi_g (k_i) = 1$ for all $i in [m]$. We can show that $O(log abs(G))$ such $g$ are drawn uniformly at random, then with probability at least $2\/3$, we have enough equations to determine $k_1, ..., k_m$.
+    If $K$ has generators $k_1, ..., k_m$ (note that for an arbitrary group, we have $m = O(log abs(G))$), then we have a set of equations $chi_g (k_i) = 1$ for all $i in [m]$. We can show that if $O(log abs(G))$ such $g$ are drawn uniformly at random, then with probability at least $2\/3$, we have enough equations to determine $k_1, ..., k_m$.
 ]
 #example[
     Let $G = ZZ\/M_1 times dots.c times ZZ\/M_r$. The irreps are $chi_g (h) = e^(2pi i (g_1 h_1 \/ M_1 + dots.c + g_r h_r \/ M_r))$. For $k in K$, $chi_g (k) = 1$ iff $(g_1 k_1)/M_1 + dots.c + (g_r k_r)/M_r = 0 mod 1$. This is a homogenous linear equation in $k$, and $O(log abs(G))$ independent such equations determine $K$ as the nullspace.
@@ -408,38 +434,60 @@ Quantum phase estimation is a unifying algorithmic primitive, e.g. there is an a
 
 Amplitude amplification is an extension of the key insights in Grover's algorithm (TODO: read part II notes for Grover's).
 
-$ket(alpha) in H_d$ defines a one-dimensional subspace $L_alpha = span_CC {ket(alpha)}$ and a $(d - 1)$-dimensional subspace $L_alpha^perp$, the orthogonal complement of $L_alpha$. We define the operator $I_ket(alpha) = I - 2 ket(alpha) bra(alpha)$. This acts on $ket(alpha)$ as $I_ket(alpha) ket(alpha) = ket(alpha) - 2 ket(alpha) = -ket(alpha)$. For all $ket(beta) in L_alpha^perp$, $I_ket(alpha) ket(beta) = ket(beta)$, since $braket(alpha, beta) = 0$. Note $I_ket(alpha)$ is a reflection in the $(d - 1)$-dimensional "mirror" $L_alpha^perp$.
+#notation[
+    Given $ket(alpha) in H_d$, write $L_ket(alpha) = span{ket(alpha)}$ for the one-dimensional subspace generated by $ket(alpha)$, and $L_a^perp$ for its $(d - 1)$-dimensional orthogonal complement.
+]
+#notation[
+    Given a $k$-dimensional subspace $A <= H_d$ with orthonormal basis ${ket(a_1), ..., ket(a_k)}$, denote the projector onto the subspace $A$ by $P_A = sum_(i = 1)^k ket(a_i) bra(a_i)$. Note that $P_A$ is independent of the orthonormal basis.
+]
+#notation[
+    Given a subspace $A <= H_d$, define the unitary $I_A = I - 2 P_A$, which is the reflection in the "mirror" $A^perp$: indeed, not that for all $ket(phi) in A$, $I_A = -ket(phi)$, and for all $ket(psi) in A^perp$, $I_A ket(psi) = ket(psi)$, since $P_A ket(psi) = 0$.
 
-For any unitary $U$, $U I_ket(alpha) U^dagger = I_(U ket(alpha))$.
-
-Let $A subset.eq H_d$ be a $k$-dimensional subspace with orthonormal basis ${ket(a_1), ..., ket(a_k)}$. Define the projector onto $A$ by $P_A = sum_(i = 1)^k ket(a_i) bra(a_i)$. $P_A$ is independent of the orthonormal basis. Define $I_A = I - 2 P_A$, the reflection in the $(d - k)$-dimensional "mirror" $A^perp$. For any $ket(xi) in A$, $I_A ket(xi) = -ket(xi)$, and for any $ket(chi) in A^perp$, $I_A ket(chi) = ket(chi)$, since $P_A ket(chi) = 0$.
-
+    In the case that $A$ is one-dimensional and spanned by $ket(alpha)$, we have $P_A = ket(alpha) bra(alpha)$, and write $I_ket(alpha) = I - 2 ket(alpha) bra(alpha)$.
+]
+#proposition[
+    Let $ket(alpha) in H_d$. For any unitary $U in U(d)$, we have $
+        U I_ket(alpha) U^dagger = I_(U ket(alpha)).
+    $
+]
+#proofhints[
+    Trivial.
+]
+#proof[
+    $U I_ket(alpha) U^dagger = U U^dagger - 2 U ket(alpha) bra(alpha) U^dagger = I_(U ket(alpha))$.
+]
 #problem("Unstructured Search")[
-    / Input: An oracle for $f: {0, 1}^n -> {0, 1}$.
+    / Input: An oracle for a function $f: {0, 1}^n -> {0, 1}$.
     / Promise: There is a unique $x_0 in {0, 1}^n$ such that $f(x_0) = 1$.
     / Task: Find $x_0$.
 ]
 #remark[
     The unstructured search problem is closely related to the complexity class NP and to Boolean satisfiability.
 ]
+#definition[
+    For fixed $ket(x_0) in H_2^(tp n)$, the *Grover iteration operator* $Q$ is defined as $
+        Q := -H^(tp n) I_ket(0) H^(tp n) I_ket(x_0) = -I_(H^(tp n) ket(0)) I_ket(x_0).
+    $
+]
+#remark[
+    Note that for a function $f: {0, 1}^n -> {0, 1}$ fulfilling the promise of the unstructured search problem, we can implement $I_ket(x_0)$ without knowing $x_0$: we have $U_f ket(x) 1/sqrt(2) (ket(0) - ket(1)) = (-1)^f(x) ket(x) 1/sqrt(2) (ket(0) - ket(1))$. Hence, implementing $Q$ requires only one query to $f$.
+]
 #theorem("Grover")[
-    In the $2$-dimensional subspace spanned by $ket(psi)$ and $ket(x_0)$, the action of $Q$ is a rotation by angle $2 alpha$, where $sin(alpha) = 1/sqrt(2^n) = braket(x_0, psi)$.
+    In the $2$-dimensional subspace spanned by $ket(psi) = H^(tp n) ket(0)$ and $ket(x_0)$, the action of $Q$ is a rotation by angle $2 alpha$, where $sin(alpha) = 1/sqrt(2^n) = braket(x_0, psi)$.
 ]
 #algorithm("Grover's Algorithm")[
-    Let $N = 2^n$.
-    + $I_ket(x_0): ket(x_0) |-> -ket(x_0)$, $ket(x) |-> ket(x)$ for $x != x_0$. Note that $U_f ket(x) 1/sqrt(2) (ket(0) - ket(1)) = (-1)^f(x) ket(x) 1/sqrt(2) (ket(0) - ket(1))$.
-    + We introduce the Grover iteration operator $Q = -H^(tp n) I_ket(0) H^(tp n) I_ket(x_0)$. Note that $H^(tp n) I_ket(0) H^(tp n) = I_ket(psi)$ where $ket(psi) = 1/sqrt(2^n) sum_(x in {0, 1}^n) ket(x)$. Implementing $Q$ requires one query to $f$.
+    Work in the state space $H_2^(tp n)$.
     + Prepare $ket(psi) = H^(tp n) ket(0)$.
-    + Apply $Q^m$ to $ket(psi)$, where $m$ is closest integer to $arccos(1\/sqrt(N))/(2 arcsin(1\/sqrt(N))) = theta / (2 alpha)$, where $cos(theta) = braket(x_0, psi) = 1/sqrt(N)$. This rotates $ket(psi)$ to be close to $ket(x_0)$ (within angle $plus.minus alpha$ of $ket(x_0)$).
+    + Apply $Q^m$ to $ket(psi)$, where $m$ is closest integer to $arccos(1\/sqrt(N))/(2 arcsin(1\/sqrt(N))) = theta / (2 alpha)$ and $cos(theta) = sin(alpha) = braket(x_0, psi) = 1 \/ sqrt(2^n)$. This rotates $ket(psi)$ to be close to $ket(x_0)$ (within angle $plus.minus alpha$ of $ket(x_0)$).
     + Measure to get $x_0$ with probability $p = abs(braket(x_0, Q^m, psi))^2 = 1 - 1/N$. For large $N$, $arccos(1\/sqrt(N)) approx pi/2$, and $arcsin(1\/sqrt(N)) approx 1\/sqrt(N)$. The number of iterations is $m = pi/4 sqrt(N) = O(sqrt(N))$. So we need $O(sqrt(N))$ queries to $U_f$. In contrast, clasically we need $Omega(N)$ queries to $f$ to find $x_0$ with any desired constant probability. Note that $Omega(N)$ queries are both necessary and sufficient.
 ]
 
-Let $G$ be a subspace (called the "good" subspace) of state space $H$. We call the subspace $G^perp$ the "bad" subspace. We have $H = G xor G^perp$. For any state $psi in H$, there is a unique decomposition with real, positive coefficients $ket(psi) = sin(theta) ket(g) + cos(theta) ket(b)$, where $ket(g) = P_G ket(psi)$ and $ket(b) = P_(G^perp) ket(psi)$.
-
-Introduce the reflection operators that reflect $ket(psi)$ and $ket(g)$. $I_ket(psi) = I - 2 ket(psi) bra(psi)$, $I_G = I - 2 P_G$. Define $Q = -I_ket(psi) I_G$.
+#notation[
+    Write $G$ for the subspace of the state space $H$ whose associated amplitudes in a given state we wish to amplify. $G$ is called the "good" subspace. We call the subspace $G^perp$ the "bad" subspace. Note that $H = G xor G^perp$, and for any state $ket(phi) in H$, there is a unique decomposition with real, positive coefficients $ket(phi) = sin(theta) ket(g) + cos(theta) ket(b)$, where $ket(g) = P_G ket(phi)$ and $ket(b) = P_(G^perp) ket(phi)$.
+]
 
 #theorem("Amplitude Amplification Theorem/2D-subspace Lemma")[
-    In the $2$-dimensional subspace spanned by $ket(g)$, $ket(psi)$ (orthonormal basis is ${ket(g), ket(b)}$), $Q$ is a rotation by angle $2 theta$, where $sin(theta) = norm(P_G ket(psi))^2$, the length of the good projection of $ket(psi)$.
+    Let $ket(psi) = H^(tp n) ket(0)$. Let $G <= H_2^(tp n)$ be a subspace and $ket(g) = P_G ket(psi)$, $ket(b) = P_(G^perp) ket(psi)$. In the $2$-dimensional subspace $span{ket(g), ket(psi)} = span{ket(g), ket(b)}$, the unitary $Q = -I_ket(psi) I_G$ is a rotation by angle $2 theta$, where $sin(theta) = norm(P_G ket(psi))^2$, the length of the "good" projection of $ket(psi)$.
 ]
 #remark[
     In the amplitude amplification process, the relative amplitudes of basis states inside $ket(g)$ and $ket(b)$ won't change. So amplitude amplification boosts the overall amplitude of $ket(g)$ at the expense of the amplitude of $ket(b)$.
