@@ -1190,15 +1190,16 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, ... pr
     $ i.e. the most likely type class under $P^n$ is $T(P)$.
 ]
 #proofhints[
-    
+    - For $Q in cal(P)_n$, find an expression for $P^n (x_1^n)$ which should be independent of $x_1^n$, for each case $x_1^n in T(P)$ and $x_1^n in T(Q)$.
+    - Show that $(P^n (T(P)))/(P^n (T(Q))) >= 1$, using the fact that $k! \/ ell! >= ell^(k - ell)$ (why?).
 ]
 #proof[
     Let $Q in cal(P)_n$ be arbitrary. Then $
         (P^n (T(P)))/(P^n (T(Q))) & = (abs(T(P)) dot product_(i = 1)^m P(a_i)^(n P(a_i)))/(abs(T(Q)) dot product_(i = 1)^m P(a_i)^(n Q(a_i))) \
-        & = (n!)/(product_(i = 1)^m (n P(a_i))!) dot (product_(i = 1)^m (n Q(a_i))!)/(n!) product_(i = 1)^m P(a_i)^(n(P(a_i) - Q(a_i))) \
-        & = product_(i = 1)^m P(a_i)^(n(P(a_i) - Q(a_i))) product_(i = 1)^m ((n Q(a_i))!)/((n P(a_i))!)
+        & = (n!)/(product_(i = 1)^m (n P(a_i))!) dot (product_(i = 1)^m (n Q(a_i))!)/(n!) dot product_(i = 1)^m P(a_i)^(n(P(a_i) - Q(a_i))) \
+        & = product_(i = 1)^m P(a_i)^(n(P(a_i) - Q(a_i))) dot product_(i = 1)^m ((n Q(a_i))!)/((n P(a_i))!).
     $ Now since $k! \/ ell! >= ell^(k - ell)$ (to show this, consider $k >= ell$ and $k < ell$ cases separately), this is $
-        >= product_(i = 1)^m (n P(a_i))^(n(P(a_i) - Q(a_i))) product_(i = 1)^m (n(P(a_i)))^(n(Q(a_i) - P(a_i))) \
+        & >= product_(i = 1)^m P(a_i)^(n(P(a_i) - Q(a_i))) dot product_(i = 1)^m (n(P(a_i)))^(n(Q(a_i) - P(a_i))) \
         & = product_(i = 1)^m n^(n(Q(a_i) - P(a_i))) \
         & = n^(n sum_(i = 1)^m (Q(a_i) - P(a_i))) = 1
     $ since probabilities sum to $1$.
