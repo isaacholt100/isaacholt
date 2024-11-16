@@ -71,18 +71,12 @@
     - Reason that joining these matchings together, together with length $1$ chains of subsets of $X^((floor(n\/2)))$ not included in a matching, result in a partition of $powset(X)$ into $binom(n, floor(n\/2))$ chains, and conclude result from here.
 ]
 #proof[
-    - We use the idea: from "a chain meets each layer in $<=1$ points, because a layer is an antichain", we try to decompose the cube into chains.
-    - We partition $powset(X)$ into $binom(n, floor(n\/2))$ chains, so each subset of $X$ appears exactly once in one chain. Then we are done (since to form an antichain, we can pick at most one element from each chain).
-    - To achieve this, it is sufficient to find:
-        - For each $r < n/2$, a matching from $X^((r))$ to $X^((r + 1))$ (a matching is a set of disjoint edges, one for each point in $X^((r))$).
-        - For each $r > n/2$, a matching from $X^((r))$ to $X^((r - 1))$.
-    - Then put these matchings together to form a set of chains, each passing through $X^((floor(n\/2)))$. If a subset $X^((floor(n\/2)))$ has a chain passing through it, then this chain is unique. The subsets with no chain passing through form their own one-element chain.
-    - By taking complements, it is enough to construct the matchings just for $r < n/2$ (since a matching from $X^((r))$ to $X^((r + 1))$ induces a matching from $X^((n - r - 1))$ to $X^((n - r))$: there is a correspondence between $X^((r))$ and $X^((n - r))$ by taking complements, and taking complements reverse inclusion, so edges in the induced matching are guaranteed to exist).
-    - Let $G$ be the (bipartite) subgraph of $Q_n$ spanned by $X^((r)) union X^((r + 1))$.
-    - For any $S subset.eq X^((r))$, the number of $S$-$Gamma(S)$ edges in $G$ is $|S|(n - r)$ (counting from below) since there are $n - r$ ways to add an element.
-    - This number is $<= |Gamma(S)| (r + 1)$ (counting from above), since $r + 1$ ways to remove an element.
-    - Hence $|Gamma(S)| >= (|S| (n - r))/(r + 1) >= |S|$ as $r < n/2$.
-    - So by Hall's theorem, since there is a matching from $S$ to $Gamma(S)$, there is a matching from $X^((r))$ to $X^((r + 1))$.
+    We use the idea: from "a chain meets each layer in $<=1$ points, because a layer is an antichain", we try to decompose the cube into chains. In particular, we partition $powset(X)$ into $binom(n, floor(n\/2))$ chains, so each subset of $X$ appears exactly once in one chain. Then we are done (since to form an antichain, we can pick at most one element from each chain). To achieve this, it is sufficient to find:
+    - For each $r < n/2$, a matching from $X^((r))$ to $X^((r + 1))$ (a matching is a set of disjoint edges, one for each point in $X^((r))$).
+    - For each $r > n/2$, a matching from $X^((r))$ to $X^((r - 1))$.
+    Then put these matchings together to form a set of chains, each passing through $X^((floor(n\/2)))$. If a subset $X^((floor(n\/2)))$ has a chain passing through it, then this chain is unique. The subsets with no chain passing through form their own one-element chain. By taking complements, it is enough to construct the matchings just for $r < n/2$ (since a matching from $X^((r))$ to $X^((r + 1))$ induces a matching from $X^((n - r - 1))$ to $X^((n - r))$: there is a correspondence between $X^((r))$ and $X^((n - r))$ by taking complements, and taking complements reverse inclusion, so edges in the induced matching are guaranteed to exist).
+    
+    Let $G$ be the (bipartite) subgraph of $Q_n$ spanned by $X^((r)) union X^((r + 1))$. For any $S subset.eq X^((r))$, the number of $S$-$Gamma(S)$ edges in $G$ is $|S|(n - r)$ (counting from below) since there are $n - r$ ways to add an element. This number is $<= |Gamma(S)| (r + 1)$ (counting from above), since $r + 1$ ways to remove an element. Hence $|Gamma(S)| >= (|S| (n - r))/(r + 1) >= |S|$ as $r < n/2$. So by Hall's theorem, since there is a matching from $S$ to $Gamma(S)$, there is a matching from $X^((r))$ to $X^((r + 1))$.
 ]
 #remark[
     The proof above doesn't tell us when we have equality in Sperner's Lemma.
@@ -97,15 +91,16 @@
 ]
 #proposition("Local LYM")[
     Let $cal(F) subset.eq X^((r))$, $1 <= r <= n$. Then $
-        (|partial cal(F)|)/binom(n, r - 1) >= (|cal(F)|)/binom(n, r).
+        (|cal(F)|)/binom(n, r) <= (|partial cal(F)|)/binom(n, r - 1).
     $ i.e. the proportion of the level occupied by $partial cal(F)$ is at least the proportion of the level occupied by $cal(F)$.
 ]<prop:local-lym>
 #proofhints[
     Find equation and upper bound for number of $cal(F)$-$partial cal(F)$ edges in $Q_n$.
 ]
 #proof[
-    - The number of $cal(F)$-$partial cal(F)$ edges in $Q_n$ is $|A|r$ (counting from above, since we can remove any of $r$ elements from $|A|$ sets) and is $<= |partial cal(F)| (n - r + 1)$ (since adding one of the $n - r + 1$ elements not in $A in partial cal(F)$ to $A$ may not result in a subset of $cal(F)$).
-    - So $(|partial cal(F)|)/(|cal(F)|) >= r/(n - r + 1) = binom(n, r - 1)\/binom(n, r)$.
+    The number of $cal(F)$-$partial cal(F)$ edges in $Q_n$ is $abs(cal(F)) r$ (counting from above, since we can remove any of $r$ elements from $abs(cal(F))$ sets) and is $<= |partial cal(F)| (n - r + 1)$ (since adding one of the $n - r + 1$ elements not in $A in partial cal(F)$ to $A$ may not result in a subset of $cal(F)$). Hence, $
+        abs(cal(F)) / abs(partial cal(F)) <= (n - r + 1)/r = binom(n, r)\/binom(n, r - 1). #qedhere
+    $
 ]
 #remark[
     For equality in Local LYM, we must have that $forall A in cal(F)$, $forall i in A$, $forall j in.not A$, we must have $(A - {i}) union {j} in cal(F)$, i.e. $cal(F) = emptyset$ or $X^((r))$ for some $r$.
@@ -124,22 +119,17 @@
     - Method 3: determine number of maximal chains in $X$, determine number of maximal chains passing through a fixed $r$-set, deduce maximal number of chains passing through $cal(F)$.
 ]
 #proof[
-    - Method 1: "bubble down with local LYM".
-        - We trivially have that $cal(F)_n \/ binom(n, n) <= 1$.
-        - $partial cal(F)_n$ and $cal(F)_(n - 1)$ are disjoint, as $cal(F)$ is an antichain.
-        - So $ (|partial cal(F)_n|)/binom(n, n - 1) + (|cal(F)_(n - 1)|)/binom(n, n - 1) = (|partial cal(F)_n union cal(F)_(n - 1)|)/binom(n, n - 1) <= 1. $
-        - So by local LYM, $ (|cal(F)_n|)/binom(n, n) + (|cal(F)_(n - 1)|)/binom(n, n - 1) <= 1. $
-        - Now, $partial (partial cal(F)_n union cal(F)_(n - 1))$ and $cal(F)_(n - 2)$ are disjoint, as $cal(F)$ is an antichain.
-        - So $ (|partial(partial cal(F)_n union cal(F)_(n - 1))|)/binom(n, n - 2) + (|cal(F)_(n - 2)|)/binom(n, n - 2) <= 1. $
-        - So by local LYM, $ (|partial cal(F)_n union cal(F)_(n - 1)|)/binom(n, n - 1) + (|cal(F)_(n - 2)|)/binom(n, n - 2) <= 1. $
-        - So $ (|cal(F)_n|)/binom(n, n) + (|cal(F)_(n - 1)|)/binom(n, n - 1) + (|cal(F)_(n - 2)|)/binom(n, n - 2) <= 1. $
-        - Continuing inductively, we obtain the result.
-    - Method 2:
-        - Choose uniformly at random a maximal chain $cal(C)$ (i.e. $C_0 subset.neq C_1 subset.eq dots.c subset.neq C_n$ with $abs(C_r) = r$ for all $r$).
-        - For any $r$-set $A$, $Pr(A in cal(C)) = 1\/binom(n, r)$, since all $r$-sets are equally likely.
-        - So $Pr(cal(C) "meets" cal(F)_r) = abs(cal(F)_r)\/binom(n, r)$, since events are disjoint.
-        - So $Pr(cal(C) "meets" cal(F)) = sum_(r = 0)^n abs(cal(F)_r)\/binom(n, r) <= 1$ since events are disjoint (since $cal(F)$ is an antichain).
-    - Method 3: equivalently, the number of maximal chains is $n!$, and the number through any fixed $r$-set is $r! (n - r)!$, so $sum_r abs(cal(F)_r) r! (n - r)! <= n!$.
+    *Method 1*: "bubble down with local LYM". We trivially have that $cal(F)_n \/ binom(n, n) <= 1$. $partial cal(F)_n$ and $cal(F)_(n - 1)$ are disjoint, as $cal(F)$ is an antichain, so $
+        (|partial cal(F)_n|)/binom(n, n - 1) + (|cal(F)_(n - 1)|)/binom(n, n - 1) = (|partial cal(F)_n union cal(F)_(n - 1)|)/binom(n, n - 1) <= 1.
+    $ So by local LYM, $ (|cal(F)_n|)/binom(n, n) + (|cal(F)_(n - 1)|)/binom(n, n - 1) <= 1. $ Now, $partial (partial cal(F)_n union cal(F)_(n - 1))$ and $cal(F)_(n - 2)$ are disjoint, as $cal(F)$ is an antichain, so $
+        (|partial(partial cal(F)_n union cal(F)_(n - 1))|)/binom(n, n - 2) + (|cal(F)_(n - 2)|)/binom(n, n - 2) <= 1.
+    $ So by local LYM, $
+        (|partial cal(F)_n union cal(F)_(n - 1)|)/binom(n, n - 1) + (|cal(F)_(n - 2)|)/binom(n, n - 2) <= 1.
+    $ So $ (|cal(F)_n|)/binom(n, n) + (|cal(F)_(n - 1)|)/binom(n, n - 1) + (|cal(F)_(n - 2)|)/binom(n, n - 2) <= 1. $ Continuing inductively, we obtain the result.
+
+    *Method 2*: Choose uniformly at random a maximal chain $cal(C)$ (i.e. $C_0 subset.neq C_1 subset.eq dots.c subset.neq C_n$ with $abs(C_r) = r$ for all $r$). For any $r$-set $A$, $Pr(A in cal(C)) = 1\/binom(n, r)$, since all $r$-sets are equally likely. So $Pr(cal(C) "meets" cal(F)_r) = abs(cal(F)_r)\/binom(n, r)$, since the events are disjoint. Thus, $Pr(cal(C) "meets" cal(F)) = sum_(r = 0)^n abs(cal(F)_r)\/binom(n, r) <= 1$ since the events are disjoint (since $cal(F)$ is an antichain).
+    
+    *Method 3* (same as method 2 but counting instead of using probability): The number of maximal chains is $n!$, and the number through any fixed $r$-set is $r! (n - r)!$, so $sum_r abs(cal(F)_r) r! (n - r)! <= n!$.
 ]
 #remark[
     To have equality in LYM, we must have equality in each use of local LYM in proof method 1. In this case, the maximum $r$ with $cal(F)_r != emptyset$ has $cal(F)_r = X^((r))$. So equality holds iff $cal(F) = X^((r))$ for some $r$. Hence equality in Sperner's Lemma holds iff $cal(F) = X^((floor(n\/2)))$ or $cal(F) = X^((ceil(n\/2)))$.
@@ -213,17 +203,11 @@
     - Conclude the result.
 ]
 #proof[
-    - Let $cal(F)' = C_(i j)(cal(F))$. Let $B in partial cal(F)' - partial cal(F)$.
-    - We'll show that $i in B$, $j in.not B$, $(B union j) - i in partial cal(F) - partial cal(F)'$.
-    - $B union x in cal(F)'$ and $B union x in.not cal(F)$ (since $B in.not partial cal(F)$) for some $x$.
-    - So $i in B union x$, $j in.not B union x$, $(B union x union j) - i in cal(F)$.
-    - We can't have $x = i$, since otherwise $(B union x union j) - i = B union j$, which gives $B in partial cal(F)$, a contradiction.
-    - So $i in B$ and $j in.not B$.
-    - Also, $B union j - i in partial cal(F)$, since $B union x union j - i in cal(F)$.
-    - Suppose $B union j - i in partial cal(F)'$: so $(B union j - i) union y in cal(F)'$ for some $y$.
-    - We cannot have $y = i$, since otherwise $B union j in cal(F)'$, so $B union j in cal(F)$ (as $j in B union j$), contradicting $B in.not partial cal(F)$.
-    - Hence $j in (B union j - i) union y$ and $i in.not (B union j - i) union y$.
-    - Thus, both $(B union j - i) union y$ and $B union y = C_(i j) ((B union j - i) union y)$ belong to $cal(F)$ (by definition of $cal(F)'$), contradicting $B in.not partial cal(F)$.
+    Let $cal(F)' = C_(i j)(cal(F))$. Let $B in partial cal(F)' - partial cal(F)$. We'll show that $i in B$, $j in.not B$, $(B union j) - i in partial cal(F) - partial cal(F)'$.
+
+    Note that $B union x in cal(F)'$ and $B union x in.not cal(F)$ (since $B in.not partial cal(F)$) for some $x$. So $i in B union x$, $j in.not B union x$, $(B union x union j) - i in cal(F)$. We can't have $x = i$, since otherwise $(B union x union j) - i = B union j$, which gives $B in partial cal(F)$, a contradiction. So $i in B$ and $j in.not B$. Also, $B union j - i in partial cal(F)$, since $B union x union j - i in cal(F)$.
+    
+    Suppose $B union j - i in partial cal(F)'$: so $(B union j - i) union y in cal(F)'$ for some $y$. We cannot have $y = i$, since otherwise $B union j in cal(F)'$, so $B union j in cal(F)$ (as $j in B union j$), contradicting $B in.not partial cal(F)$. Hence $j in (B union j - i) union y$ and $i in.not (B union j - i) union y$. Thus, both $(B union j - i) union y$ and $B union y = C_(i j) ((B union j - i) union y)$ belong to $cal(F)$ (by definition of $cal(F)'$), contradicting $B in.not partial cal(F)$.
 ]
 #remark[
     In the above proof, we actually showed that $partial C_(i j) (cal(F)) subset.eq C_(i j) (partial cal(F))$.
@@ -238,11 +222,9 @@
     Define a sequence $cal(F)_0, cal(F)_1, ...$ of subsets of $X^((r))$ with $sum_(A in cal(F)_k) sum_(i in A) i$ strictly decreasing.
 ]
 #proof[
-    - Define a sequence $cal(F)_0, cal(F)_1, ...$ as follows:
-    - $cal(F)_0 = cal(F)$. Having defined $cal(F)_0, ..., cal(F)_k$, if $cal(F)_k$ is left-compressed the end the sequence with $cal(F)_k$.
-    - If not, choose $i < j$ such that $cal(F)_k$ is not $i j$-compressed, and set $cal(F)_(k + 1) = C_(i j)(cal(F)_k)$.
-    - This must terminate after a finite number of steps, e.g. since $sum_(A in cal(F)_k) sum_(i in A) i$ is strictly decreasing with $k$.
-    - The final term $cal(B) = cal(F)_k$ satisfies $abs(cal(B)) = abs(cal(F))$, and $abs(partial cal(B)) <= abs(partial cal(F))$ by the above lemma.
+    Define a sequence $cal(F)_0, cal(F)_1, ...$ as follows: set $cal(F)_0 = cal(F)$. Having defined $cal(F)_0, ..., cal(F)_k$, if $cal(F)_k$ is left-compressed the end the sequence with $cal(F)_k$; if not, choose $i < j$ such that $cal(F)_k$ is not $i j$-compressed, and set $cal(F)_(k + 1) = C_(i j)(cal(F)_k)$.
+    
+    This must terminate after a finite number of steps, e.g. since $sum_(A in cal(F)_k) sum_(i in A) i$ is strictly decreasing with $k$. The final term $cal(B) = cal(F)_k$ satisfies $abs(cal(B)) = abs(cal(F))$, and $abs(partial cal(B)) <= abs(partial cal(F))$ by the above lemma.
 ]
 #remark[
     - Another way of proving this is: among all $cal(B) subset.eq X^((r))$ with $abs(cal(F)) = abs(cal(F))$ and $abs(partial cal(B)) <= abs(partial cal(F))$, choose one with minimal $sum_(A in cal(B)) sum_(i in A) i$.
@@ -280,9 +262,7 @@
     Suppose not, consider a compression for appropriate $U$ and $V$.
 ]
 #proof[
-    - Suppose not, then there exists $A, B in X^((r))$ with $B < A$ in colex but $A in cal(F)$, $B in.not cal(F)$.
-    - Let $V = A \\ B$, $U = B \\ A$. Then $abs(V) = abs(U)$, $U sect V = emptyset$, and $max V > max U$ (since $max(A Delta B) in A$, by definition of colex).
-    - Since $cal(F)$ is $U V$-compressed, we have $C_(U V)(A) = B in C_(U V)(cal(F)) = cal(F)$, contradiction.
+    Suppose not, then there exists $A, B in X^((r))$ with $B < A$ in colex but $A in cal(F)$, $B in.not cal(F)$. Let $V = A \\ B$, $U = B \\ A$. Then $abs(V) = abs(U)$, $U sect V = emptyset$, and $max V > max U$ (since $max(A Delta B) in A$, by definition of colex). Since $cal(F)$ is $U V$-compressed, we have $C_(U V)(A) = B in C_(U V)(cal(F)) = cal(F)$, contradiction.
 ]
 #lemma[
     Let $U, V subset.eq X$, $abs(U) = abs(V)$, $U sect V = emptyset$, $max U < max V$. For $cal(F) subset.eq X^((r))$, suppose that $
@@ -296,15 +276,11 @@
     - Show that $(B - U) union V in.not partial cal(F)'$ by contradiction.
 ]
 #proof[
-    - Let $cal(F)' = C_(U V)(cal(F))$. For $B in partial cal(F)' - partial cal(F)$, we will show that $U subset.eq B$, $V sect B = emptyset$ and $B union V - U in partial cal(F) - partial cal(F)'$, then we will be done.
-    - We have $B union x in cal(F)'$ for some $x in X$, and $B union x in.not cal(F)$.
-    - So $U subset.eq B union x$, $V sect (B union x) = emptyset$, and $(B union x union V) - U in cal(F)$, by definition of $C_(U V)$.
-    - If $x in U$, then $exists y in V$ such that $cal(F)$ is $(U - x, V - y)$-compressed, so from $(B union x union V) - U in cal(F)$, we have $B union y in cal(F)$, contradicting $B in.not partial cal(F)$.
-    - Thus $x in.not U$, so $U subset.eq B$ and $V sect B = emptyset$.
-    - Certainly $B union V - U in partial cal(F)$ (since $(B union x union V) - U in cal(F)$), so we just need to show that $B union V - U in.not partial cal(F)'$.
-    - Assume the opposite, i.e. $(B - U) union V in partial cal(F)'$, so $(B - U) union V union w in cal(F)'$ for some $w in X$. (This also belongs to $cal(F)$, since it contains $V$).
-    - If $w in U$, then since $cal(F)$ is $(U - w, V - z)$-compressed for some $z in V$, we have $B union z = C_(U - w, V - z)((B - U) union V union w) in cal(F)$, contradicting $B in.not partial cal(F)$.
-    - So $w in.not U$, and since $V subset.eq (B - U) union V union w$ and $U sect ((B - U) union V union w) = emptyset$, by definition of $C_(U V)$, we must have that both $(B - U) union V union w$ and $B union w = C_(U V)((B - U) union V union w) in cal(F)$, contradicting $B in.not partial cal(F)$.
+    Let $cal(F)' = C_(U V)(cal(F))$. For $B in partial cal(F)' - partial cal(F)$, we will show that $U subset.eq B$, $V sect B = emptyset$ and $B union V - U in partial cal(F) - partial cal(F)'$, then we will be done.
+    
+    We have $B union x in cal(F)'$ for some $x in X$, and $B union x in.not cal(F)$. So $U subset.eq B union x$, $V sect (B union x) = emptyset$, and $(B union x union V) - U in cal(F)$, by definition of $C_(U V)$. If $x in U$, then $exists y in V$ such that $cal(F)$ is $(U - x, V - y)$-compressed, so from $(B union x union V) - U in cal(F)$, we have $B union y in cal(F)$, contradicting $B in.not partial cal(F)$. Thus $x in.not U$, so $U subset.eq B$ and $V sect B = emptyset$. Certainly $B union V - U in partial cal(F)$ (since $(B union x union V) - U in cal(F)$), so we just need to show that $B union V - U in.not partial cal(F)'$.
+    
+    Assume the opposite, i.e. $(B - U) union V in partial cal(F)'$, so $(B - U) union V union w in cal(F)'$ for some $w in X$. (This also belongs to $cal(F)$, since it contains $V$). If $w in U$, then since $cal(F)$ is $(U - w, V - z)$-compressed for some $z in V$, we have $B union z = C_(U - w, V - z)((B - U) union V union w) in cal(F)$, contradicting $B in.not partial cal(F)$. So $w in.not U$, and since $V subset.eq (B - U) union V union w$ and $U sect ((B - U) union V union w) = emptyset$, by definition of $C_(U V)$, we must have that both $(B - U) union V union w$ and $B union w = C_(U V)((B - U) union V union w) in cal(F)$, contradicting $B in.not partial cal(F)$.
 ]
 #theorem("Kruskal-Katona")[
     Let $cal(F) subset.eq X^((r))$, $1 <= r <= n$, let $cal(C)$ be the initial segment of colex on $X^((r))$ with $abs(cal(C)) = abs(cal(F))$. Then $abs(partial cal(C)) <= abs(partial cal(F))$.
@@ -317,15 +293,9 @@
     - Reason that sequence terminates by considering $sum_(A in cal(F)_k) sum_(i in A) 2^i$.
 ]
 #proof[
-    - Let $Gamma = {(U, V) in powset(X) times powset(X): abs(U) = abs(V) > 0, U sect V = emptyset, max U < max V} union {(emptyset, emptyset)}$.
-    - Define a sequence $cal(F)_0, cal(F)_1, ...$ of set systems in $X^((r))$ as follows:
-        - Let $cal(F)_0 = cal(F)$. Having chosen $cal(F)_0, ..., cal(F)_k$, if $cal(F)_k$ is $(U V)$-compressed for all $(U, V) in Gamma$ then stop.
-        - Otherwise, choose $(U, V) in Gamma$ with $abs(U) = abs(V) > 0$ minimal, such that $cal(F)_k$ is not $(U V)$-compressed.
-        - Note that $forall u in U$, $exists v in V$ such that $(U - u, V - v) in Gamma$ (namely $v = min(V)$).
-        - So by the above lemma, $abs(partial C_(U V) (cal(F)_k)) <= abs(partial cal(F)_k)$. Set $cal(F)_(k + 1) = C_(U V) (cal(F)_k)$, and continue.
-    - The sequence must terminate, as $sum_(A in cal(F)_k) sum_(i in A) 2^i$ is strictly decreasing with $k$.
-    - The final term $cal(B) = cal(F)_k$ satisfies $abs(cal(B)) = abs(cal(F))$, $abs(partial cal(B)) <= abs(partial cal(F))$, and is $(U V)$-compressed for all $(U, V) in Gamma$.
-    - So $cal(B) = cal(C)$ by lemma before previous lemma.
+    Let $Gamma = {(U, V) in powset(X) times powset(X): abs(U) = abs(V) > 0, U sect V = emptyset, max U < max V} union {(emptyset, emptyset)}$. Define a sequence $cal(F)_0, cal(F)_1, ...$ of set systems in $X^((r))$ as follows: set $cal(F)_0 = cal(F)$. Having chosen $cal(F)_0, ..., cal(F)_k$, if $cal(F)_k$ is $(U V)$-compressed for all $(U, V) in Gamma$ then stop. Otherwise, choose $(U, V) in Gamma$ with $abs(U) = abs(V) > 0$ minimal, such that $cal(F)_k$ is not $(U V)$-compressed.
+    
+    Note that $forall u in U$, $exists v in V$ such that $(U - u, V - v) in Gamma$ (namely $v = min(V)$). So by the above lemma, $abs(partial C_(U V) (cal(F)_k)) <= abs(partial cal(F)_k)$. Set $cal(F)_(k + 1) = C_(U V) (cal(F)_k)$, and continue. The sequence must terminate, as $sum_(A in cal(F)_k) sum_(i in A) 2^i$ is strictly decreasing with $k$. The final term $cal(B) = cal(F)_k$ satisfies $abs(cal(B)) = abs(cal(F))$, $abs(partial cal(B)) <= abs(partial cal(F))$, and is $(U V)$-compressed for all $(U, V) in Gamma$. So $cal(B) = cal(C)$ by lemma before previous lemma.
 ]
 #remark[
     - Equivalently, if $abs(cal(F)) = binom(k_r, r) + binom(k_(r - 1), r - 1) + dots.c + binom(k_s, s)$ where each $k_i > k_(i - 1)$ and $s >= 1$, then $
@@ -458,6 +428,9 @@ We want to show the initial segments of the simplicial ordering minimise the bou
     When viewing $powset(X)$ as the $n$-dimensional cube $Q_n$, we view the $i$-sections as subgraphs of the $(n - 1)$-dimensional cube $Q_(n - 1)$ (which we view $powset(X \\ i)$ as).
 ]
 #definition[
+    A *Hamming ball* is a family $A subset.eq powset(X)$ with $X^((<= r)) subset.eq A subset.eq X^((<= r + 1))$ for some $r$.
+]<def:hamming-ball>
+#definition[
     The *$i$-compression* of $A subset.eq powset(X)$ is the family $C_i (A) subset.eq powset(X)$ given by its $i$-sections:
     - $(C_i (A))_-^((i))$ is the first $abs(A_-^((i)))$ elements of the simplicial order on $powset(X - i)$, and
     - $(C_i (A))_+^((i))$ is the first $abs(A_+^((i)))$ elements of the simplicial order on $powset(X - i)$.
@@ -466,9 +439,6 @@ We want to show the initial segments of the simplicial ordering minimise the bou
 #definition[
     $A subset.eq powset(X)$ is *$i$-compressed* if $C_i (A) = A$.
 ]<def:i-compressed>
-#definition[
-    A *Hamming ball* is a family $A subset.eq powset(X)$ with $X^((<= r)) subset.eq A subset.eq X^((<= r + 1))$ for some $r$.
-]<def:hamming-ball>
 #example[
     Note that a set that is $i$-compressed for all $i in [n]$ is not necessarily an initial segment of simplicial, e.g. take ${emptyset, 1, 2, 12}$ in $Q_3$. However...
 ]
@@ -481,8 +451,13 @@ We want to show the initial segments of the simplicial ordering minimise the bou
         B = X^((< k)) union {x in X^((k)): 1 in x} \\ underbrace({1, k + 2, k + 3, ..., 2k}, #[last $k$-set with $1$]) union underbrace({2, 3, ..., k + 1}, #[first $k$-set without $1$]).
     $
 ]
+#proofhints[
+    For $x in.not B$ and $y in B$, show by contradiction that any $i in [n]$ is in exactly one of $x$ and $y$ (it helps to visualise this), and deduce that no elements lie strictly between $x$ and $y$ in the simplicial ordering.
+]
 #proof[
-    Since $B$ is not an initial segment of simplicial, so there exist $x < y$ (in simplicial) with $y in B$ but $x in.not B$. For each $1 <= i <= n$, we cannot have $i in x$ and $i in y$ (as $B$ is $i$-compressed). For the same reason, we cannot have $i in.not x$ and $i in.not y$. So $x = y^c$. Thus for each $y in B$, there is at most one $x < y$ with $x in.not B$ (namely $x = y^c$), and for each $x in.not B$, there is at most one $y > x$ with $y in B$ (namely $y = x^c$). So no sets lie between $x$ and $y$ in the simplicial ordering. So $B = {z: z <= y} \\ {x}$, with $x$ the predecessor of $y$, and $x = y^c$. Hence if $n = 2k + 1$, then $x$ is the last $k$-set (otherwise sizes of $x$ and $y = x^c$ don't match), and if $n = 2k$, then $x$ is the last $k$-set containing $1$.
+    As $B$ is not an initial segment, there are $x < y$ in simplicial ordering with $x in.not B$ and $y in B$. For each $i in [n]$, assume $i in x, y$. Since the $i$-section that $y$ lives in is an initial segment of simplicial on $PP(X \\ i)$ (as $B$ is $i$-compressed), and $x - i < y - i$ in simplicial on $PP(X \\ i)$, we have that $x - i$ lives in the same $i$-section, and so $x in B$: contradiction. Similarly, $i in.not x, y$ leads to a contradiction (as then $x < y$ in simplicial on $PP(X \\ i)$). So $x = y^c$.
+    
+    Thus for each $y in B$, there is at most one $x < y$ with $x in.not B$ (namely $x = y^c$), and for each $x in.not B$, there is at most one $y > x$ with $y in B$ (namely $y = x^c$). So no sets lie between $x$ and $y$ in the simplicial ordering. So $B = {z: z <= y} \\ {x}$, with $x$ the predecessor of $y$, and $x = y^c$. Hence if $n = 2k + 1$, then $x$ is the last $k$-set (otherwise sizes of $x$ and $y = x^c$ don't match), and if $n = 2k$, then $x$ is the last $k$-set containing $1$.
 ]
 #theorem("Harper")[
     Let $A subset.eq V(Q_n)$ and let $C$ be the initial segment of the simplicial order on $powset(X) = V(Q_n)$, with $abs(C) = abs(A)$. Then $abs(N(A)) >= abs(N(C))$. So initial segments of the simplicial order minimise the boundary. In particular, if $abs(A) = sum_(i = 0)^r binom(n, i)$, then $abs(N(A)) >= sum_(i = 0)^(r + 1) binom(n, i)$.
@@ -492,6 +467,9 @@ We want to show the initial segments of the simplicial ordering minimise the bou
         - Find expressions for $N(A)_-$ as union of two sets, similarly for $N(A)_+$, same for $N(B)_-$ and $N(B)_+$.
         - Explain why $N(B_-)$ and $B_+$ are nested, use this to show $abs(N(B_-) union B_+) <= abs(N(A_-) union A_+)$.
         - Do the same with the $+$ and $-$ switched.
+    - Define a suitable sequence of families $A_0, A_1, ... in Q_n$.
+    - Reason that the sequence terminates by considering $sum_(x in A_k) ("position of" x "in simplicial order")$.
+    - Conclude by above lemma.
 ]
 #proof[
     By induction on $n$. $n = 1$ is trivial. Given $n > 1$, $A subset.eq Q_n$ and $1 <= i <= n$, we claim that $abs(N(C_i (A))) <= abs(N(A))$.
@@ -509,8 +487,9 @@ We want to show the initial segments of the simplicial ordering minimise the bou
         - having chosen $A_0, ..., A_k$, if $A_k$ is $i$-compressed for all $i in [n]$, then end the sequence with $A_k$. If not, pick $i$ with $C_i (A_k) != A_k$ and set $A_(k + 1) = C_i (A_k)$, and continue.
         The sequence must terminate, since $sum_(x in A_k) ("position of" x "in simplicial order")$ is strictly decreasing. The final family $B = A_k$ satisfies $abs(B) = abs(A)$, $abs(N(B)) <= abs(N(A))$, and is $i$-compressed for all $i in [n]$.
 
-        So we are done by above lemma, since in each case certainly we have $abs(N(B)) > abs(N(C))$.
+        So we are done by above lemma, since in each case certainly we have $abs(N(B)) >= abs(N(C))$.
     ]
+
 ]
 #remark[
     - If $A$ was a Hamming ball, then we would be already done by Kruskal-Katona.
@@ -524,9 +503,12 @@ We want to show the initial segments of the simplicial ordering minimise the bou
     $
 ]<def:t-neighbourhood>
 #corollary[
-    Let $A subset.eq Q_n$ wiht $abs(A) >= sum_(i = 0)^r binom(n, i)$. Then $
-        forall t <= n - r, quad abs(N^t (A)) >= sum_(i = 0)^(r - t) binom(n, i).
+    Let $A subset.eq Q_n$ with $abs(A) >= sum_(i = 0)^r binom(n, i)$. Then $
+        forall t <= n - r, quad abs(N^t (A)) >= sum_(i = 0)^(r + t) binom(n, i).
     $
+]<cor:iterated-harper>
+#proofhints[
+    By Harper's theorem.
 ]
 #proof[
     By Harper's theorem and induction on $t$.
@@ -535,28 +517,46 @@ We want to show the initial segments of the simplicial ordering minimise the bou
     To get a feeling for the strength of the above corollary, we'll need some estimates on quantities such as $sum_(i = 0)^r binom(n, i)$. Note that $i = n\/2$ maximises $binom(n, i)$, while $i = (1\/2 - epsilon) n$ makes it small: we are going $epsilon sqrt(n)$ standard deviations away from the mean $n\/2$.
 ]
 #proposition[
-    Let $0 < epsilon < 1\/k$. Then $
+    Let $0 < epsilon < 1\/4$. Then $
         sum_(i = 0)^floor((1\/2 - epsilon)n) binom(n, i) <= 1/epsilon e^(-epsilon^2 n\/2) dot 2^n.
     $ For $epsilon$ fixed and $n -> oo$, the upper bound is an exponentially small fraction of $2^n$.
+]<prop:upper-bound-on-less-than-half-first-binomial-coefficients>
+#proofhints[
+    - For $1 <= i <= floor((1\/2 - epsilon) n)$, show that $binom(n, i - 1)\/binom(n, i) <= 1 - 2 epsilon$, use this to show that $sum_(i = 0)^floor((1\/2 - epsilon)n) binom(n, i) <= 1/(2 epsilon) binom(n, floor((1\/2 - epsilon) n))$.
+    - TODO.
 ]
 #proof[
-    For $0 <= i <= floor((1\/2 - epsilon) n)$, $
+    Let $L = floor((1\/2 - epsilon) n)$. For $1 <= i <= L$, $
         binom(n, i - 1)\/binom(n, i) = i/(n - i + 1) <= ((1\/2 - epsilon)n)/((1\/2 + epsilon)n) = (1\/2 - epsilon)/(1\/2 + epsilon) = 1 - (2 epsilon)/(1\/2 + epsilon) <= 1 - 2 epsilon.
-    $ Hence $
-        sum_(i = 0)^floor((1\/2 - epsilon)n) binom(n, i) <= 1/(2 epsilon) binom(n, floor((1\/2 - epsilon) n))
+    $ Hence by induction, $binom(n, i) <= (1 - 2 epsilon)^(L - i) binom(n, L)$ for each $0 <= i <= L$, and so $
+        sum_(i = 0)^L binom(n, i) <= 1/(2 epsilon) binom(n, L) = 1/(2 epsilon) binom(n, floor((1\/2 - epsilon) n))
     $ (since this is the sum of geometric progression). The same argument tells us that $
-        binom(n, floor((1\/2 - epsilon)n)) <= binom(n, floor(1 \/2 - epsilon\/2)n) (1 - 2 epsilon/2)^(epsilon n \/2 - 1) <= 2^n dot 2 (1 - epsilon)^(epsilon n \/2) <= 2^n dot 2 e^(-epsilon^2 n\/2)
+        binom(n, floor((1\/2 - epsilon)n)) & <= binom(n, floor(1 \/2 - epsilon\/2)n) (1 - 2 epsilon/2)^(epsilon n \/2 - 1) \
+        & <= 2^n dot 2 (1 - epsilon)^(epsilon n \/2) \
+        & <= 2^n dot 2 e^(-epsilon^2 n\/2)
     $ since $1 - epsilon <= e^(-epsilon)$ (we include $-1$ in the exponent due to taking floors). Then $
-        sum_(i = 0)^floor((1\/2 - epsilon)n) binom(n, i) <= 1/(2 epsilon) dot 2 e^(-epsilon^2 n\/2) dot 2^n.
+        sum_(i = 0)^L binom(n, i) <= 1/(2 epsilon) dot 2 e^(-epsilon^2 n\/2) dot 2^n.
     $
 ]
 #theorem[
     Let $0 < epsilon < 1 \/ 4$, $A subset.eq Q_n$. If $abs(A) \/ 2^n >= 1 \/ 2$, then $
-        abs(N^(epsilon t)(A)) >= 1 - 2/epsilon e^(-epsilon^2 n \/ 2).
-    $ So $1/2$-sized sets have exponentially large $epsilon n$-neighbourhoods.
+        abs(N^(epsilon n)(A)) / 2^n >= 1 - 2/epsilon e^(-epsilon^2 n \/ 2).
+    $ So sets of at least half density have exponentially dense $epsilon n$-neighbourhoods.
+]<thm:sets-of-at-least-half-density-have-exponentially-dense-neighbourhoods>
+#proofhints[
+    - Enough to show that if $epsilon n in NN$, then $abs(N^(epsilon n)(A))\/2^n >= 1 - 1/epsilon e^(-epsilon^2 n\/2)$.
+    - Give lower bound on $abs(A)$ which is a binomial sum, deduce lower bound on $N^(epsilon n)(A)$.
+    - Give an upper bound on $abs(N^(epsilon n)(A)^c)$ using the above proposition.
 ]
 #proof[
-    It is enough to show that if $epsilon n$ is an integer then $abs(N^(epsilon n)(A))\/2^n >= 1 - 1/epsilon e^(-epsilon^2 n\/2)$. We have $abs(A) >= sum_(i = 0)^ceil(n\/2 - 1) binom(n, i)$, so by Harper's theorem, we have $abs(A_(epsilon n)) >= sum_(i = 0)^ceil(n\/2 - 1 + epsilon n) binom(n, i)$, so $abs(N^(epsilon n)(A)^c) <= sum_(i = ceil(n\/2 + epsilon n)) binom(n, i) = sum_(i = 0)^ceil(n\/2 - epsilon n) binom(n, i) <= 1/epsilon e^(-epsilon^2 n\/2) dot 2^n$.
+    It is enough to show that if $epsilon n in NN$, then $abs(N^(epsilon n)(A))\/2^n >= 1 - 1/epsilon e^(-epsilon^2 n\/2)$. We have $abs(A) >= sum_(i = 0)^ceil(n\/2 - 1) binom(n, i)$, so by @cor:iterated-harper, $
+        abs(N^(epsilon n)(A)) >= sum_(i = 0)^ceil(n\/2 - 1 + epsilon n) binom(n, i).
+    $ So $
+        abs(N^(epsilon n)(A)^c) & <= sum_(i = ceil(n\/2 + epsilon n))^n binom(n, i) \
+        & = sum_(i = ceil(n\/2 + epsilon n))^n binom(n, n - i) \
+        & = sum_(i = 0)^ceil(n\/2 - epsilon n) binom(n, i) \
+        & <= 1/epsilon e^(-epsilon^2 n\/2) dot 2^n.
+    $ by @prop:upper-bound-on-less-than-half-first-binomial-coefficients.
 ]
 #remark[
     The same argument would give a result for "small" sets: if $abs(A) \/ 2^n >= 2/epsilon e^(-epsilon^2 n\/2)$, then $abs(N^(2epsilon n)(A))\/2^n >= 1 - 2/epsilon e^(-epsilon^2 n\/2)$.
@@ -567,51 +567,232 @@ We want to show the initial segments of the simplicial ordering minimise the bou
 #definition[
     For $f: Q_n -> RR$, we say $M in RR$ is a *Levy mean* (or *median*) of $f$ if $abs({x in Q_n: f(x) <= M}) >= 2^(n - 1)$ and $abs({x in Q_n: f(x) >= M}) >= 2^(n - 1)$.
 ]<def:levy-mean>
+#example[
+    Let $f: Q_n -> RR$, $f(x) = 1$ if $1 in x$ and $f(x) = 0$ otherwise. Then any $M in [0, 1]$ is a Levy mean of $f$.
+]
 #theorem("Concentration of Measure Phenomenon")[
-    Let $f: Q_n -> RR$ be Lipschitz with median $M$. Then for all $0 < epsilon < 1/4$, $
+    Let $f: Q_n -> RR$ be Lipschitz with Levy mean $M$. Then for all $0 < epsilon < 1/4$, $
         abs({x in Q_n: abs(f(x) - M) <= epsilon n}) / 2^n >= 1 - 4/epsilon e^(-epsilon^2 n\/ 2).
     $ So "every well-behaved function on the cube $Q_n$ is roughly constant nearly everywhere".
 ]<thm:concentration-of-measure-phenomenon>
+#proofhints[
+    - Consider two subsets $A, B subset.eq Q_n$ of density at least $1\/2$, and apply @thm:sets-of-at-least-half-density-have-exponentially-dense-neighbourhoods on them.
+    - Use the fact that $f$ is Lipschitz to find upper bound for the image of the $epsilon n$-neighbourhood of one of $A$ and $B$, similarly find a lower bound for the image of the $epsilon n$-neighbourhood of the other.
+]
 #proof[
-    Let $A = {x in Q_n: f(x) <= M}$. Then by definition, $abs(A) \/ 2^n >= 1/2$, so by the above theorem, $abs(N^(epsilon n)(A))\/2^n >= 1 - 2/epsilon e^(-epsilon^2 n\/2)$. But $f$ is Lipschitz, so $x in N^(epsilon n)(A) ==> f(x) <= M + epsilon n$. Thus $abs({x in Q_n: f(x) <= M + epsilon n}) \/ 2^n >= 1 - 2/epsilon e^(-epsilon^2 n\/2)$.
-
-    Similarly, $abs({x in Q_n: f(x) >= M - epsilon n}) \/ 2^b >= 1 - 2/epsilon e^(-epsilon^2 n \/ 2)$. Hence, taking the intersection, we have $
-        abs({x in Q_n: M - epsilon n <= f(x) <= M + epsilon n}) / 2^n >= 1 - 4/epsilon e^(-epsilon^2 n \/ 2).
+    Let $A = {x in Q_n: f(x) <= M}$. Then by definition, $abs(A) \/ 2^n >= 1 \/ 2$, so by the above theorem, $
+        abs(N^(epsilon n)(A)) / 2^n >= 1 - 2/epsilon e^(-epsilon^2 n\/2).
+    $ But $f$ is Lipschitz, so $x in N^(epsilon n)(A) ==> f(x) <= M + epsilon n$, so $N^(epsilon n)(A) subset.eq {x in Q_n: f(x) <= M + epsilon n} =: L$. Thus, $
+        abs(L) / 2^n >= 1 - 2/epsilon e^(-epsilon^2 n\/2).
+    $ Similarly, let $U = {x in Q_n: f(x) >= M - epsilon n}$, then $abs(U) \/ 2^n >= 1 - 2/epsilon e^(-epsilon^2 n \/ 2)$. Hence, we have $
+        abs(L sect U) / 2^n & = abs(L) / 2^n + abs(U) / 2^n - abs(L union U) / 2^n \
+        & >= 1 - 2/epsilon e^(-epsilon^2 n \/ 2) + 1 - 2/epsilon e^(-epsilon^2 n \/ 2) - 1 \
+        & = 1 - 4/epsilon e^(-epsilon^2 n \/ 2).
     $
 ]
 #definition[
     The *diameter* of a graph $G = (V, E)$ is $max{d(x, y): x, y in V}$.
-]
+]<def:graph-diameter>
 #definition[
     Let $G$ be a graph of diameter $D$. Write $
         alpha(G, epsilon) = max{1 - abs(N^(epsilon D)(A))/abs(G): A subset.eq G, abs(A) / abs(G) >= 1/2}.
-    $ So if $alpha(G, epsilon)$ is small, then "$1/2$-sized sets have large $epsilon D$-neighbourhoods".
+    $ So if $alpha(G, epsilon)$ is small, then sets of at least half density have large $epsilon D$-neighbourhoods.
 ]
 #definition[
-    A sequence of graphs $(G_n)_(n in NN)$ is a *Levy family* if for all $epsilon > 0$, $alpha(G_n, epsilon) -> 0$ as $n -> oo$. It is a *normal Levy family* if for all $epsilon > 0$, $alpha(G_n, epsilon)$ decays exponentially with $n$.
+    A sequence of graphs $\(G_n\)_(n in NN)$ is a *Levy family* if $
+        forall epsilon > 0, quad alpha(G_n, epsilon) -> 0 "as" n -> oo.
+    $ It is a *normal Levy family* if for all $epsilon > 0$, $alpha(G_n, epsilon)$ decays exponentially with $n$.
+]<def:levy-family>
+#example[
+    By the above theorem, the sequence $(Q_n)$ is a normal Levy family (note that $Q_n$ has diameter $n + 1$). More generally, we have concentration of measure for any Levy family.
 ]
 #example[
-    By the above theorem, the sequence $(Q_n)$ is a normal Levy family. More generally, we have concentration of measure for any Levy family.
+    Many naturally-occurring families of graphs are Levy families, e.g. $\(S_n\)_(n in NN)$, where the permutation group $S_n$ is made into a graph by including an edge between $sigma$ and $tau$ if $tau sigma^(-1)$ is a transposition.
 ]
 #example[
-    Many naturally-occurring families of graphs are Levy families, e.g. $(S_n)$, where the permutation group $S_n$ is made into a graph by including an edge between $sigma$ and $tau$ if $tau sigma^(-1)$ is a transposition.
-]
-#example[
-    Similarly, we can define $alpha(X, epsilon)$ for any metric measure space $X$ (of finite measure and finite diameter). E.g. the sequence of spheres $(S^n)$ is a Levy family. To prove this, we have:
+    Similarly, we can define $alpha(X, epsilon)$ for any metric measure space $X$ (of finite measure and finite diameter). E.g. the sequence of spheres $\(S^n\)_(n in NN)$ is a Levy family. To prove this, we have:
     + An isoperimetric inequality on $S^n$: for $A subset.eq S^n$ and $C$ a circular cap with $abs(C) = abs(A)$, we have $abs(N^(epsilon)(A)) >= abs(N^(epsilon)(C))$.
-    + An estimate: a circular cap $C$ of measure $1\/2$ if the cap of angle $pi\/2$. So $N^(epsilon)(C)$ is the circular cap of angle $pi\/2 + epsilon$. This has measure roughly equal to $integral_epsilon^(pi\/2) cos^(n - 1)(t) dif t -> 0$ as $n -> oo$.
+    + An estimate: a circular cap $C$ of measure $1\/2$ is the cap of angle $pi\/2$. So $N^(epsilon)(C)$ is the circular cap of angle $pi\/2 + epsilon$. This has measure roughly equal to $integral_epsilon^(pi\/2) cos^(n - 1)(t) dif t -> 0$ as $n -> oo$.
 ]
 #remark[
     We deduced concentration of measure from an isoperimetric inequality. Conversely, we have:
 ]
 #proposition[
-    Let $G$ be a graph such that for any Lipschitz function $f: G -> RR$ with median $M$, we have $abs({x in G: abs(f(x) - M) > t}) \/ abs(G) <= alpha$ for some given $t, alpha$. Then for all $A subset.eq G$ with $abs(A) \/ abs(G) >= 1\/2$, we have $abs(N^(t)(A)) \/ abs(G) >= 1 - alpha$.
+    Let $G$ be a graph such that for any Lipschitz function $f: G -> RR$ with Levy mean $M$, we have $
+        abs({x in G: abs(f(x) - M) > t}) / abs(G) <= alpha
+    $ for some given $t, alpha >= 0$. Then for all $A subset.eq G$ with $abs(A) \/ abs(G) >= 1\/2$, we have $
+        abs(N^(t)(A)) / abs(G) >= 1 - alpha.
+    $
+]
+#proofhints[
+    Consider an appropriate Lipschitz function with Levy mean $0$.
 ]
 #proof[
-    The function $f(x) = d(x, A)$ is Lipschitz, and has $0$ as a median. So $abs({x in G: x in.not N^(t)(A)}) \/ abs(G) <= alpha$.
+    The function $f(x) = d(x, A)$ is Lipschitz, and has $0$ as a Levy mean. So $
+        abs({x in G: d(x, A) > t}) / abs(G) = abs({x in G: x in.not N^(t)(A)}) / abs(G) <= alpha.
+    $
 ]
 
 == Concentration of measure
+
+== Edge-isoperimetric inequalities
+
+#definition[
+    For a graph $G$ and $A subset.eq V(G)$, the *edge-boundary* of $A$ is $
+        partial_e A = partial A := {x y in E: x in A, y in.not A}.
+    $
+]<def:edge-boundary>
+#definition[
+    An *edge-isoperimetric inequality* on a graph $G$ is an inequality of the form $
+        forall A subset.eq G, quad abs(partial A) >= f(abs(A)).
+    $
+]<def:edge-isoperimetric-inequality>
+#example[
+    We are interested in the case $G = Q_n$. Given $abs(A)$, which $A subset.eq Q_n$ should we take to minimise $abs(partial A)$? Let $abs(A) = 4$, $A subset.eq Q_3$. TODO: insert diagram. This suggests that subcubes are best. If $2^k < abs(A) < 2^(k + 1)$, then it is natural to take $A = powset([k]) union "some sets in" powset([k + 1])$. So we define:
+]
+#definition[
+    For $x, y in Q_n$, $x != y$, say $x < y$ in the *binary ordering* on $Q_n$ if $max (x Delta y) in y$. Equivalently, $
+        x < y <==> sum_(i in x) 2^i < sum_(i in y) 2^i.
+    $ "Go up in subcubes". Effectively, we are counting the naturals up to $2^(n - 1)$ (where an $n$-bit binary string corresponds to a subset of $Q_n$ in the obvious way).
+]<def:binary-order>
+#example[
+    The elements of $Q_3$ in ascending binary order are $
+        emptyset, 1, 2, 12, 3, 13, 23, 123.
+    $
+]
+#definition[
+    For $A subset.eq Q_n$, $1 <= i <= n$, the *$i$-binary-compression* $B_i (A) subset.eq Q_n$ is defined by its $i$-sections:
+    - $(B_i (A))_-^((i))$ is the initial segment of binary ordering on $powset(X - i)$ of size $abs(A_-^((i)))$.
+    - $(B_i (A))_+^((i))$ is the initial segment of binary ordering on $powset(X - i)$ of size $abs(A_+^((i)))$.
+    So $abs(B_i (A)) = abs(A)$.
+]<def:i-binary-compression>
+#definition[
+    $A subset.eq Q_n$ is *$i$-binary-compressed* if $B_i (A) = A$.
+]<def:i-binary-compressed>
+#example[
+    A set $B subset.eq Q_n$ which is $i$-binary-compressed for all $1 <= i <= n$ is not necessarily an initial segment of binary, e.g. ${emptyset, 1, 2, 3} subset.eq Q_3$. However, we have:
+]
+#lemma[
+    Let $B subset.eq Q_n$ be $i$-binary-compressed for all $1 <= i <= n$ but not an initial segment of binary. Then $
+    B = powset([n - 1]) \\ underbrace({1, 2, ..., n - 1}, #[last point in binary order in $
+        powset([n - 1])$]) union underbrace({n}, #[first point in binary order not in $powset([n - 1])$])
+    $
+]<lem:edge-case-for-binary-compressed-but-not-initial-segment>
+#proofhints[
+    For $x in.not B$ and $y in B$, show by contradiction that any $i in [n]$ is in exactly one of $x$ and $y$ (it helps to visualise this), and deduce that no elements lie strictly between $x$ and $y$ in the binary ordering.
+]
+#proof[
+    As $B$ is not an initial segment, there are $x < y$ with $x in.not B$ and $y in B$.  For each $1 <= i <= n$, assume that $i in x, y$. Since the $i$-section that $y$ lives in is an initial segment of binary on $PP(X \\ i)$ (as $B$ is $i$-binary-compressed), and $x - i < y - i$ in binary on $PP(X \\ i)$, we have that $x - i$ lives in the same $i$-section, and so $x in B$: contradiction. Similarly, $i in.not x, y$ leads to a contradiction (as then $x < y$ in binary on $PP(X \\ i)$). So $x = y^c$.
+    
+    Thus, for each $y in B$, there is at most one $x < y$ with $x in.not B$ (namely $x = y^c$), and for each $x in.not B$, there is at most one $y > x$ with $y in B$ (namely $y = x^c$). So $B = {z: z <= y} \\ {x}$, where $x$ is the predecessor of $y$ and $y = x^c$. So we must have $y = {n}$ and $x = {1, 2, ..., n - 1}$.
+]
+#theorem([Edge-isoperimetric Inequality in $Q_n$])[
+    Let $A subset.eq Q_n$ and let $C$ be the initial segment of binary on $Q_n$ with $abs(C) = abs(A)$. Then $abs(partial C) <= abs(partial A)$. In particular, if $abs(A) = 2^k$, then $abs(partial A) >= 2^k (n - k)$.
+]<thm:edge-isoperimetric-inequality-in-cube>
+#proofhints[
+    - By induction on $n$.
+    - Prove for each $1 <= i <= n$, $abs(partial B_i (A)) <= abs(partial A)$, by expressing $partial A$ as a disjoint union of three sets (it helps to visualise this), and using that $B_+$ and $B_-$ are nested (why?).
+    - Define a sequence $A_0, A_1, ...$ in the obvious way, show it terminates by considering a suitable function $A_k$.
+    - Use above lemma to conclude the result.
+]
+#proof[
+    By induction on $n$. $n = 1$ is trivial. For $n > 1$ and $A subset.eq Q_n$, and $1 <= i <= n$, we claim that $abs(partial B_i (A)) <= abs(partial A)$.
+    #proof("of claim")[
+        Write $B = B_i (A)$. We have (remember $A_-, A_+ subset.eq Q_(n - 1)$ not $Q_n$) $
+            abs(partial A) = underbrace(abs(partial A_-), "downstairs") + underbrace(abs(partial A_+), "upstairs") + underbrace(abs(A_+ Delta A_-), "across")
+        $ and similarly, $abs(partial B) = abs(partial B_-) + abs(partial B_+) + abs(B_+ Delta B_-)$. Now, $abs(partial B_-) <= abs(partial A_-)$ and $abs(partial B_+) <= abs(partial A_+)$ by the induction hypothesis. Also, the sets $B_+$ and $B_-$ are nested/comparable (one is contained in the other), as each is an initial segment of binary on $powset(X - i)$. So, since $abs(B_-) = abs(A_-)$ and $abs(B_+) = abs(A_+)$ by definition, we have $
+            abs(B_+ Delta B_-) = abs(B_+) - abs(B_-) = abs(A_+) - abs(A_-) <= abs(A_+ - A_-) <= abs(A_+ Delta A_-).
+        $ if $B_- subset.eq B_+$, and similarly this holds if $B_+ subset.eq B_-$. So $abs(partial B) <= abs(partial A)$. This proves the claim.
+    ]
+    Define a sequence $A_0, A_1, ...$ as follows: set $A_0 = A$. Having defined $A_0, ..., A_k$, if $A_k$ is $i$-binary-compressed for all $1 <= i <= n$, then stop the sequence with $A_k$. Otherwise, choose $i$ with $B_i (A_k) != A_k$, and set $A_(k + 1) = A_k$. This must terminate, as the function $k |-> sum_(x in A_k) ("position of" x "in binary")$ is strictly decreasing.
+
+    The final family in this sequence $B = A_k$ satisfies $abs(B) = abs(A)$, $abs(partial B) <= abs(partial A)$, and $B$ is $i$-binary-compressed for all $1 <= i <= n$. Then by @lem:edge-case-for-binary-compressed-but-not-initial-segment, we are done, since if $B$ is not initial segment, then clearly we have $abs(partial B) >= abs(partial C)$, since in that case $C = powset([n - 1])$.
+]
+#remark[
+    It is vital in the proof, and of Harper's theorem, that the extremal sets, i.e. the $i$-sections of the compression (in dimension $n - 1$) were nested.
+]
+#definition[
+    The *isoperimetric number* of a graph $G$ is $
+        i(G) := min{abs(partial A) / abs(A): A subset.eq G, abs(A) / abs(G) <= 1/2}.
+    $ $abs(partial A) \/ abs(A)$ can be thought as the average out-degree of $A$.
+]<def:isoperimetric-number>
+#corollary[
+    We have $i(Q_n) = 1$.
+]<crl:cube-has-isoperimetric-number-one>
+#proofhints[
+    Straightforward.
+]
+#proof[
+    Taking $A = powset(n - 1)$ shows that $i(Q_n) <= 1$. To show $i(Q_n) >= 1$, by the above theorem, we just need to show that if $C$ is an initial segment of binary with $abs(C) <= 2^(n - 1)$, then $abs(partial C) >= abs(C)$. But in this case, $C subset.eq powset(n - 1)$, so certainly $abs(partial C) >= abs(C)$.
+]
+
+== Inequalities in the grid
+
+#definition[
+    For $k >= 2$ and $n in NN$, the *grid* is the graph on $[k]^n$ in which $x$ is joined to $y$ if $
+        exists 1 <= i <= n: abs(x_i - y_i) = 1 "and" forall j != i, quad x_j = y_j.
+    $ "The distance is the $ell_1$ distance". Note that for $k = 2$, this is precisely the definition of $Q_n$.
+]<def:grid>
+#notation[
+    For a point $x$ in the grid on $[k]^n$, write $abs(x)$ for $sum_(i = 1)^n abs(x_i) = norm(x)_(ell_1)$. So $x$ is joined to $y$ in the grid on $[k]^n$ iff $norm(x - y)_(ell_1) = 1$.
+]
+#example[
+    Which sets $A subset.eq [k]^n$ (of a given size) minimise $abs(N(A))$? TODO: insert diagram. This suggests we "go up in levels" according to $abs(x) = sum_(i = 1)^n abs(x_i)$, so we'd take ${x in [k]^n: abs(x) <= r}$. If $
+        abs({x in [k]^n: abs(x) <= r}) < abs(A) < abs({x in [k]^n: abs(x) <= r + 1}),
+    $ then a reasonable guess is to take $A = {x in [k]^n: abs(x) <= r}$ together with some points with $x$ with $abs(x) = r + 1$. This suggests the following definition:
+]
+#definition[
+    The *simplicial order* on the grid $[k]^n$ defines $x < y$ if either $abs(x) < abs(y)$, or $abs(x) = abs(y)$ and $x_i > y_i$, where $i = min\{j in [n]: x_j != y_j\}$.
+
+    Note that this definition agrees with the definition of simplicial order on the cube (i.e. when $k = 2$).
+]<def:simplicial-order-on-grid>
+#example[
+    The elements of $[3]^2$ in ascending simplicial order are $
+        (1, 1), (2, 1), (1, 2), (3, 1), (2, 2), (1, 3), (3, 2), (2, 3), (3, 3).
+    $ The elements of $[4]^2$ in ascending simplicial order are $
+        & (1, 1, 1), (2, 1, 1), (1, 2, 1), (1, 1, 2), (3, 1, 1), (2, 2, 1), (2, 1, 2), (1, 3, 1), (1, 2, 2), (1, 1, 3), \
+        & (4, 1, 1), (3, 2, 1), ...
+    $
+]
+#definition[
+    For $A subset.eq [k]^n$, $n >= 2$, and $1 <= i <= n$, the *$i$-sections* of $A$ are the sets $
+        A_j^((i)) = A_j := {x in [k]^(n - 1): (x_1, ..., x_(i - 1), j, x_(i + 1), ..., x_(n - 1)) in A} subset.eq [k]^(n - 1).
+    $ for each $1 <= j <= k$.
+]<def:i-sections-for-grid>
+#definition[
+    The *$i$-compression* of $A subset.eq [k]^n$ is the set $C_i (A) subset.eq [k]^n$ which is defined by its $i$-sections: $C_i (A)_j$ is the initial segment of simplicial on $[k]^(n - 1)$ of size $abs(A_j)$, for each $1 <= j <= k$.
+
+    We have $abs(C_i (A)) = abs(A)$.
+]<def:grid-i-compression>
+#definition[
+    $A subset.eq [k]^n$ is *$i$-compressed* if $C_i (A) = A$.
+]<def:grid-i-compressed>
+#definition[
+    $A subset.eq [k]^n$ is a *down-set* if $
+        forall x in A, forall y in [k]^n, quad (y_i <= x_i thick forall 1 <= i <= n) ==> y in A.
+    $
+]
+#theorem("Vertex-isoperimetric Inequality in the Grid")[
+    Let $A subset.eq [k]^n$ and $C$ be the initial segment of simplicial on $[k]^n$ with $abs(C) = abs(A)$. Then $abs(N(C)) <= abs(N(A))$. In particular, if $
+        abs(A) >= abs({x in [k]^n: abs(x) <= r}) quad ==> quad abs(N(A)) >= abs({x in [k]^n: abs(x) <= r + 1}).
+    $
+]<thm:vertex-isoperimetric-inequality-in-the-grid>
+#proofhints[
+    - Use induction on $n$.
+    - Prove that $abs(N(C_i (A))) <= abs(N(A))$ by writing the $i$-section $N(A)_j^((i))$ as a union of three sets, doing the same for $N(C_i (A))_j^((i))$, using the fact that these three sets (for $C_i (A)$) are nested (why?).
+]
+#proof[
+    By induction on $n$. The case $n = 1$ follows since if $A subset.eq [k]^1$ and $A != emptyset, [k]^1$, then $abs(N(A)) >= abs(A) + 1 = abs(N(C))$. Now given $n > 1$, and $A subset.eq [k]^n$, fix $1 <= i <= n$, we claim that $abs(N(C_i (A))) <= abs(N(A))$.
+
+    #proof("of claim")[
+        Write $B = C_i (A)$. For any $1 <= j <= k$, we have $
+            N(A)_j = underbrace(N(A_j), "from" x_i = j) union underbrace(A_(j - 1), "from" x_i = j - 1) union underbrace(A_(j + 1), "from" x_i = j + 1)
+        $ where we set $A_0 = A_(k + 1) = emptyset$. Similarly, $N(B)_j = N(B_j) union B_(j - 1) union B_(j + 1)$. Now, $abs(B_(j - 1)) = abs(A_(j - 1))$ and $abs(B_(j + 1)) = abs(A_(j + 1))$ by definition, and $abs(N(B_j)) <= abs(N(A_j))$ by the induction hypothesis. But the sets $B_(j - 1), B_(j + 1)$ and $N(B_j)$ are nested, as each is an initial segment of simplicial on $[k]^(n - 1)$ (since neighbourhood of initial segment of simplicial is initial segment of simplicial). Hence $abs(N(B)_j) <= abs(N(A)_j)$ for each $1 <= j <= k$, thus $abs(N(B)) <= abs(N(A))$. This proves the claim.
+    ]
+
+    Among all $B subset.eq [k]^n$ with $abs(B) = abs(A)$ and $abs(N(B)) <= abs(N(A))$, pick one with $sum_(x in B) ("position of" x "in simplicial")$ minimal. Then $B$ is $i$-compressed for all $1 <= i <= n$. We consider two cases:
+    - Case $n = 2$: what we know is precisely that $B$ is a down-set.
+]
 
 
 = Intersecting families

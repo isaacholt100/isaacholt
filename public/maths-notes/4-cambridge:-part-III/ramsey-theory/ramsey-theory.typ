@@ -1,5 +1,9 @@
 #import "../../template.typ": *
-#show: doc => template(doc, hidden: (), slides: false)
+#let name-abbrvs = (
+    "Rado": "Rado's Theorem",
+    "Consistency": "Consistency Theorem"
+)
+#show: doc => template(doc, hidden: (), slides: false, name-abbrvs: name-abbrvs)
 
 #let clr(c) = [
     #set text(fill: eval(c))
@@ -384,12 +388,6 @@ Strengthened Van der Waerden says that the system $x_1 + x_2 = y_1, x_1 + 2x_2 =
     - $(lambda, -1)$ has CP iff $lambda = 1$.
     - $(3, 4, -6)$ doesn't have CP.
 ]
-#theorem("Rado")[
-    A rational matrix is PR iff it has CP.
-]
-#remark[
-    This shows that partition regularity is checkable in finite time. Neither direction of Rado's theorem is obvious.
-]
 #example[
     $
         mat(1, -1, 3; 2, -2, a; 4, -4, b)
@@ -403,7 +401,7 @@ Strengthened Van der Waerden says that the system $x_1 + x_2 = y_1, x_1 + 2x_2 =
 ]
 #proposition[
     Let $a_1, ..., a_n in QQ^*$. If $(a_1, ..., a_n)$ is PR, then it has CP.
-]
+]<prop:pr-implies-cp-for-single-row-matrices>
 #proofhints[
     For $p$ large enough (determine later a bound for $p$), colour $NN$ by giving $x$ colour $e(x)$, and consider $min{t(x_1), ..., t(x_n)}$.
 ]
@@ -415,13 +413,17 @@ Strengthened Van der Waerden says that the system $x_1 + x_2 = y_1, x_1 + 2x_2 =
 ]
 #lemma[
     Let $lambda in QQ$. Then $(1, lambda, -1)$ is partition regular, i.e. for any finite colouring of $NN$, there exists monochromatic $(x, y, z) in NN^3$ such that $x + lambda y = z$.
+]<lem:one-lambda-minus-one-is-pr>
+#proofhints[
+    - Reason that we can assume $lambda > 0$. Write $lambda = r\/s$, $r, s in NN$.
+    - Use induction on number of colours $k$: given $n$ such that any $(k - 1)$-colouring of $[n]$ admits monochromatic solution, show that $N = W(k, n r + 1)n s$ works for $k$ colours, by considering the definition of $W$ and $i s d$ for eacah $i in [n]$.
 ]
 #proof[
     The case $lambda = 0$ is trivial, and if $lambda < 0$, we may rewrite the equation as $z - lambda y = x$, so we may assume that $lambda > 0$, so let $lambda = r/s$ for $r, s in NN$. In fact, we show that for any $k$-colouring of $[n]$ (for some $n$ depending on $k$), there is a monochromatic solution.
 
-    We seek a monochromatic solution to $x + r/s y = z$ for some finite colouring $c: NN -> [k]$. We use induction on the number of colours $k$. For $k = 1$, $n = max{s, r + 1}$ is sufficient, with monochromatic solution $(1, s, r + 1)$. Assume $n$ is a witness for $k - 1$ colours. We will show $N = W(k, n r + 1) n s$ is suitable for $k$ colours. By definition of $W$, given a $k$-colouring of $[N]$, there is a monochromatic AP of length $n r + 1$: $a, a + d, ..., a + n r d$, coloured red
+    We seek a monochromatic solution to $x + r/s y = z$ for some finite colouring $c: NN -> [k]$. We use induction on the number of colours $k$. For $k = 1$, $n = max{s, r + 1}$ is sufficient, with monochromatic solution $(1, s, r + 1)$. Assume $n$ is a witness for $k - 1$ colours. We will show $N = n s W(k, n r + 1)$ is suitable for $k$ colours. By definition of $W$, given a $k$-colouring of $[N]$, there is a monochromatic AP inside $[W(k, n r + 1)] subset.eq [N]$ of length $n r + 1$: $a, a + d, ..., a + n r d$, coloured red.
     
-    Consider $d i s$ for each $i in [n]$. Note that $d i s <= W(k, n r + 1) n s$ so the $d i s$ do indeed each have a colour. If $d i s$ is also red, then $(a, a + i r d, d i s)$ is a monochromatic solution. If no $d i s$ is red, then ${d s, ..., n d s}$ is $(k - 1)$-coloured, so by the inductive hypothesis, there exists $i, j, k in [n]$ such that $c(i d s) = c(j d s) = c(k d s)$ and $i + lambda j = k$ (hence $i d s + lambda j d s = k d s$), so $(i d s, j d s, k d s)$ is a monochromatic solution.
+    Consider $i s d$ for each $i in [n]$. Note that $i s d <= n s W(k, n r + 1)$ so each $i s d$ does indeed have a colour. If some $i s d$ is also red, then $(a, i s d, a + i r d)$ is a monochromatic solution. If no $i s d$ is red, then ${s d, ..., n s d}$ is $(k - 1)$-coloured, so by the inductive hypothesis, there exists $i, j, k in [n]$ such that ${i s d, j s d, k s d}$ is monochromatic and $i s d + lambda j s d = k s d$, so $(i s d, j s d, k s d)$ is a monochromatic solution.
 ]
 #remark[
     - Note the similarity to the proof of Strengthened Van der Waerden.
@@ -430,8 +432,17 @@ Strengthened Van der Waerden says that the system $x_1 + x_2 = y_1, x_1 + 2x_2 =
 #theorem("Rado's Theorem for Single Equations")[
     Let $a_1, ..., a_n in QQ \\ {0}$. $(a_1, ..., a_n)$ is PR iff it has CP.
 ]
+#proofhints[
+    For $<==$: for the obvious choice of $I subset.eq [n]$, fix $i_0 in I$, and define $vd(x) in NN^n$ componentwise: $
+        x_i = cases(
+            x quad & "if" i = i_0,
+            y & "if" i in.not I,
+            z & "if" i in I \\ {i_0}
+        ).
+    $ Show that $vd(x)$ is a solution to $sum_(i = 1)^n a_i x_i = 0$.
+]
 #proof[
-    $=>$ is by the above proposition. For $<=$: we have that $sum_(i in I) a_i = 0$ for some $emptyset != I subset.eq [n]$. Given a colouring $c: NN -> [k]$, we need to show that there are monochromatic $x_1, ..., x_n$ such that $sum_(i = 1)^n a_i x_i = 0$.
+    $==>$ is by @prop:pr-implies-cp-for-single-row-matrices. For $<==$: we have that $sum_(i in I) a_i = 0$ for some $emptyset != I subset.eq [n]$. Given a colouring $c: NN -> [k]$, we need to show that there are monochromatic $x_1, ..., x_n$ such that $sum_(i = 1)^n a_i x_i = 0$.
 
     Fix $i_0 in I$. We construct the following vector $vd(x) in NN^n$ by defining its components: $
         x_i = cases(
@@ -449,61 +460,254 @@ Strengthened Van der Waerden says that the system $x_1 + x_2 = y_1, x_1 + 2x_2 =
     Let $A$ be an $m times n$ matrix that is not PR (so there exists a "bad" colouring, i.e. a $k$-colouring with no monochromatic solution to $A vd(x) = vd(0)$ for some $k in NN$). Is $k$ bounded (for given $m, n$)?
 
     This is known for $1 times 3$ matrices: 24 colours suffice.
-]
+]<cjt:rado-boundedness>
 #proposition[
     Let $A in QQ^(m times n)$. If $A$ is PR, then it has CP.
+]<prop:pr-implies-cp>
+#proofhints[
+    - Let $vd(x) in NN^n$ be the monochromatic solution to $A vd(x) = vd(0)$. For fixed prime $p$, partition $[n]$ into $B_1, ..., B_r$ by grouping $i, j in [n]$ by $t(x_i), t(x_j)$ (and preserving the ordering).
+    - Reason that the same partition exists for infinitely many $p$.
+    - Considering $sum_(i = 1)^n x_i vd(c)_i = vd(0) mod p$ for infinitely many $p$, show that $sum_(i in B_1) vd(c)_i = 0$, and $
+        p^t sum_(i in B_k) vd(c)_i + sum_(i in B_1, ..., B_(k - 1)) x_i d^(-1) vd(c)_i equiv vd(0) mod p^(t + 1).
+    $
+    - By taking the dot product with $vd(u) in NN^m$ for appropriate $u$, show by contradiction that $sum_(i in B_k) vd(c)_i in span{vd(c)_i: i in B_1, ..., B_(k - 1)}$.
 ]
 #proof[
-    Let $vd(c)_1, ..., vd(c)_n in QQ^m$ be the columns of $A$. For fixed prime $p$, colour $NN$ as before by $c(x) = e(x)$. By assumption, there exists a monochromatic $vd(x) in NN^n$ such that $sum_(i = 1)^n x_i vd(c)_i = vd(0)$. We partition the columns (by partitioning $[n] = B_1 union.sq dots.c union.sq B_l$) as follows:
+    Let $vd(c)_1, ..., vd(c)_n in QQ^m$ be the columns of $A$. For fixed prime $p$, colour $NN$ as before by $c(x) = e(x)$. By assumption, there exists a monochromatic $vd(x) in NN^n$ such that $sum_(i = 1)^n x_i vd(c)_i = vd(0)$. We partition the columns (by partitioning $[n] = B_1 union.sq dots.c union.sq B_r$) as follows:
     - $i, j in B_k$ iff $t(x_i) = t(x_j)$.
     - $i in B_k$, $j in B_ell$ for $k < ell$ iff $t(x_i) < t(x_j)$.
-    We do this for infinitely many primes $p$. Since there are finitely many partitions of $[n]$, for infinitely many $p$, we will have the same blocks $B_1, ..., B_l$.
+    We do this for infinitely many primes $p$. Since there are finitely many partitions of $[n]$, for infinitely many $p$, we will have the same blocks $B_1, ..., B_r$.
     
-    Consider $sum_(i = 1)^n x_i vd(c)_i = vd(0)$ performed in base $p$. For $B_1$, all have the same colour $d = e(x_i) in [1, p - 1]$ ($i in B_1$). So $sum_(i in B_1) d c_i = 0 mod p$ (by collecting the rightmost terms in base $p$), hence $sum_(i in B_1) c_i = 0 mod p$. But this holds for infinitely many $p$, hence $sum_(i in B_1) c_i = 0$.
-
-    Now $sum_(i in B_k) p^t d vd(c)_i + sum_(i in B_1, ..., B_(k - 1)) x_i vd(c)_i = vd(0) mod p^(t + 1)$ for some $t$. So $p^t sum_(i in B_k) vd(c)_i + sum_(i in B_1, ..., B_(k - 1)) x_i d^(-1) vd(c)_i equiv 0 mod p^(t + 1)$.
-    
-    We claim that $sum_(i in B_k) vd(c)_i in gen(vd(c)_i: i in B_1, ..., B_(k - 1))$. Suppose not, then there exists $vd(u) in NN^m$ such that $vd(u) . vd(c)_i = 0$ for all $i in B_1, ..., B_(k - 1)$, but $vd(u) . (sum_(i in B_k) vd(c)_i) != 0$. Then dotting with $vd(u)$, we obtain $p^t vd(u) . (sum_(i in B_k) vd(c)_i) equiv 0 mod p^(t + 1)$, so $vd(u) . sum_(i in B_k) vd(c)_i equiv 0 mod p$. But this holds for infinitely many $p$, so $vd(u) . sum_(i in B_k) vd(c)_i = 0$: contradiction.
+    Consider $sum_(i = 1)^n x_i vd(c)_i = vd(0)$ performed in base $p$. Each $i in [n]$ has the same colour $d = e(x_i) in [1, p - 1]$. So $sum_(i in B_1) d vd(c)_i = 0 mod p$ (by collecting the rightmost terms in base $p$), hence $sum_(i in B_1) c_i = 0 mod p$. But this holds for infinitely many $p$, hence $
+        sum_(i in B_1) vd(c)_i = 0.
+    $ Now $sum_(i in B_k) p^t d vd(c)_i + sum_(i in B_1, ..., B_(k - 1)) x_i vd(c)_i = vd(0) mod p^(t + 1)$ for some $t$. So $
+        p^t sum_(i in B_k) vd(c)_i + sum_(i in B_1, ..., B_(k - 1)) x_i d^(-1) vd(c)_i equiv vd(0) mod p^(t + 1).
+    $ We claim that $sum_(i in B_k) vd(c)_i in span{vd(c)_i: i in B_1, ..., B_(k - 1)}$. Suppose not, then there exists $vd(u) in NN^m$ such that $vd(u) . vd(c)_i = 0$ for all $i in B_1, ..., B_(k - 1)$, but $vd(u) . (sum_(i in B_k) vd(c)_i) != 0$. Then dotting with $vd(u)$, we obtain $p^t vd(u) . (sum_(i in B_k) vd(c)_i) equiv 0 mod p^(t + 1)$, so $vd(u) . sum_(i in B_k) vd(c)_i equiv 0 mod p$. But this holds for infinitely many $p$, so $vd(u) . sum_(i in B_k) vd(c)_i = 0$: contradiction.
 ]
 #definition[
     For $m, p, c in NN$, an *$(m, p, c)$-set* $S subset.eq NN$ with generators $x_1, ..., x_m in NN$ is of the form $
         S = {sum_(i = 1)^m lambda_i x_i: exists j in [m]: lambda_j = c, lambda_i = 0 thick forall i < j, "and" lambda_k in [-p, p] thick forall k > j}
     $ where $[-p, p] = {-p, -(p - 1), ..., p}$. So $S$ consists of $
-        c x_1 + & lambda_2 x_2 + lambda_3 x_3 + dots.c + & lambda_m x_m, quad & lambda_i in [-p, p], \
-        & c x_2 + lambda_3 x_3 + dots.c + & lambda_m x_m, quad & lambda_i in [-p, p],
-        & dots.v \
-        & & c x_m
+        c x_1 + lambda_2 x_2 + & lambda_3 x_3 + dots.c + & lambda_m x_m, & quad lambda_i in [-p, p], \
+        c x_2 + & lambda_3 x_3 + dots.c + & lambda_m x_m, & quad lambda_i in [-p, p], \
+        & & dots.v & & \
+        &  & c x_m. &
     $ These are the *rows* of $S$. We can think of $S$ as a "progression of progressions".
-]
+]<def:mpc-set>
 #example[
     - A $(2, p, 1)$-set with generators $x_1, x_2$ is of the form ${x_1 - p x_2, x_1 - (p - 1) x_2, ..., x_1 + p x_2, x_2}$, so is an AP of length $2p + 1$ together with its step.
-    - A $(2, p, 3)$-set with generators $x_1, x_2$ is of the form ${3x_1 - p x_2, 3x_1 - (p - 1)x_2, ..., 3x_1 + p x_2, 3x_2}$, so is an AP of length $2p + 1$, whose middle term is divisible by $3$, together with three times its step.
+    - A $(2, p, 3)$-set with generators $x_1, x_2$ is of the form ${3x_1 - p x_2, 3x_1 - (p - 1)x_2, ..., 3x_1, ..., 3x_1 + p x_2, 3x_2}$, so is an AP of length $2p + 1$, whose middle term is divisible by $3$, together with three times its step.
 ]
 #theorem[
     Let $m, p, c in NN$. For any finite colouring of $NN$, there exists a monochromatic $(m, p, c)$-set.
+]<thm:every-finite-colouring-of-naturals-admits-monochromatic-mpc-set>
+#proofhints[
+    - Reason that an $(m', p, c)$-set contains an $(m, p, c)$-set for $m' >= m$. With $M = k(m - 1) + 1$, reason that if we can find an $(M, p, c)$-set with each row monochromatic, then we can find an monochromatic $(m, p, c)$-set.
+    - Let $A_1 = {c, 2c, ..., floor(n\/c) c}$, reason that $A_1$ contains a set of the form $R_1 = {c x_1 - n_1 d_1, c x_1 - (n_1 - 1)d_1, ..., c x_1 + n_1 d_1}$ for some large $n_1$.
+    - Let $B_1 = {d_1, 2d_1, ..., floor(n_1 / ((M - 1)p)) d_1}$. We have $c x_1 + lambda_1 b_1 + dots.c + lambda_(M - 1) b_(M - 1) in R_1$, explain why these are monochromatic.
+    - Inside $B_1$, define $
+        A_2 = {c d_1, 2 c d_1, ..., floor(n_1 / ((M - 1)p c)) c d_1}.
+    $ and apply the argument as before, where the divisor in the $floor(dot)$ expression in the new $B_2$ is $(M - 2)p$.
+    - Argue that after a certain number of steps, we have formed an $(M, p, c)$-set with each row monochromatic.
 ]
 #proof[
-    Let $c: NN -> [k]$ be the colouring of $NN$ with $k$ colours. Note that an $(m', p, c)$-set with $m' >= m$ contains an $(m, p, c)$-set. Let $M = k(m - 1) + 1$ It is enough to find a $(M, p, c)$-set such that each row is monochromatic.
+    Let $c: NN -> [k]$ be the colouring of $NN$ with $k$ colours. Note that an $(m', p, c)$-set with $m' >= m$ contains an $(m, p, c)$-set (by taking any $m$ rows, and setting some suitable $lambda_i$ to $0$). Let $M = k(m - 1) + 1$. It is enough to find a $(M, p, c)$-set such that each row is monochromatic.
 
-    Let $n$ be large (large enough to apply the argument that follows). Let $A_1 = {c, 2c, ..., c floor(n\/c)}$. By Van der Waerden, $A_1$ contains a monochromatic AP $R_1$ of length $2n_1 + 1$ where $n_1$ is large enough: $R_1 = {c x_1 - n_1 d_1, c x_1 - (n_1 - 1)d_1, ..., c x_1 + n_1 d_1}$ has colour $k_1$. Now we restrict our attention to $B_1 = {d_1, 2d_1, ..., floor(n_1 / ((M - 1)p)) d_1}$.
-
-    Observe that $c x_1 + lambda_1 b_1 + dots.c + lambda_(M - 1) b_(M - 1) in R_1$ for all $lambda_i in [-p, p]$ and $b_i in B_1$, so all these sums have colour $k_1$. Inside $B_1$, look at $A_2 = {c d_1, 2 c d_1, ..., floor(n_1 / ((M - 1)p c)) c d_1}$. By Van der Waerden, $A_2$ contains a monochromatic AP $R_2$ of length $2n_2 + 1$ with colour $k_2$: $R_2 = {c x_2 - n_2 d_2, c x_2 - (n_2 - 1)d_2, ..., c x_2 + n_2 d_2}$. Now we restrict our attention to $B_2 = {d_2, 2d_2, ..., floor(n_2 / ((M - 2)p)) d_2}$. Again, note that for all $lambda_i in [-p, p]$ and $b_i in B_2$, we have $
+    Let $n$ be large (large enough to apply the argument that follows). Let $A_1 = {c, 2c, ..., floor(n\/c) c}$. By Van der Waerden, $A_1$ contains a monochromatic AP $R_1$ of length $2n_1 + 1$ where $n_1$ is large enough: $
+        R_1 = {c x_1 - n_1 d_1, c x_1 - (n_1 - 1)d_1, ..., c x_1 + n_1 d_1}.
+    $ has colour $k_1$. Now we restrict our attention to $
+        B_1 = {d_1, 2d_1, ..., floor(n_1 / ((M - 1)p)) d_1}.
+    $ Observe that $
+        c x_1 + lambda_1 b_1 + dots.c + lambda_(M - 1) b_(M - 1) in R_1
+    $ for all $lambda_i in [-p, p]$ and $b_i in B_1$, so all these sums have colour $k_1$. Inside $B_1$, look at $
+        A_2 = {c d_1, 2 c d_1, ..., floor(n_1 / ((M - 1)p c)) c d_1}.
+    $ By Van der Waerden, $A_2$ contains a monochromatic AP $R_2$ of length $2n_2 + 1$ with colour $k_2$: $
+        R_2 = {c x_2 - n_2 d_2, c x_2 - (n_2 - 1)d_2, ..., c x_2 + n_2 d_2}.
+    $ Note that $x_2 subset.eq B_1$. Now we restrict our attention to $
+        B_2 = {d_2, 2d_2, ..., floor(n_2 / ((M - 2)p)) d_2}.
+    $ Again, note that for all $lambda_i in [-p, p]$ and $b_i in B_2$, we have $
         c x_2 + lambda_1 b_1 + dots.c + lambda_(M - 2) b_(M - 2) in R_2
     $ so has colour $k_2$.
 
-    We iterate this process $M$ times, and restrict to $M$ generators $x_1, ..., x_m$ (by setting some $lambda_i$ to $0$) such that each row of the $(M, p, c)$-set generated by $x_1, ..., x_M$ is monochromatic. But now $M = k(m - 1) + 1$, so $m$ of the rows have the same colour.
+    We iterate this process $M$ times, and obtain $M$ generators $x_1, ..., x_M$ such that each row of the $(M, p, c)$-set generated by $x_1, ..., x_M$ is monochromatic. But now $M = k(m - 1) + 1$, so $m$ of the rows have the same colour.
 ]
 #remark[
     Being extremely precise in this proofs (such as considering $floor(dot)$) is much less important than the ideas in the proof. (Won't be penalised in the exam for small details like this).
 ]
 #corollary("Folkman's Theorem")[
     Let $m in NN$ be fixed. For every finite colouring of $NN$, there exists $x_1, ..., x_m in NN$ such that $
-        {sum_(i in I) x_i: emptyset != I subset.eq [m]}
+        "FS"(x_1, ..., x_m) := {sum_(i in I) x_i: emptyset != I subset.eq [m]}
     $ is monochromatic.
 ]
-#proof[
-    By the $(m, 1, 1)$ case of the above theorem.
+#proofhints[
+    A specific case of @thm:every-finite-colouring-of-naturals-admits-monochromatic-mpc-set.
 ]
+#proof[
+    By the $(m, 1, 1)$ case of @thm:every-finite-colouring-of-naturals-admits-monochromatic-mpc-set.
+]
+#remark[
+    - The case $n = 2$ of Folkman's theorem is Schur's theorem.
+    - For a colouring $c: NN -> [k]$, we induce a colouring $c': NN -> [k]$ by $c'(n) = c(2^n)$. Then by Folkman's theorem for $c'$, there exists $x_1, ..., x_m$ such that $
+        "FP"(x_1, ..., x_m) = {product_(i in I) x_i: emptyset != I subset.eq [m]}.
+    $
+    - It is not known whether the same result holds for $"FS"(x_1, ..., x_m) union "FP"(x_1, ..., x_m)$. However, it does not hold for infinite sets ${x_n: n in NN}$, and does hold for colourings of $QQ$.
+]
+#proposition[
+    Let $A$ have CP. Then there exist $m, p, c in NN$ such that every $(m, p, c)$-set contains a solution $vd(y)$ to $A vd(y) = vd(0)$, i.e. all $y_i$ belong to the $(m, p, c)$-set.
+]
+#proof[
+    Let $vd(c)_1, ..., vd(c)_n$ be the columns of $A$. By assumption, there is a partition $B_1 union.sq dots.c union.sq B_r$ of $[n]$ such that $forall k in [r]$, $
+        sum_(i in B_k) vd(c)_i & in span{vd(c)_i: in B_1 union dots.c union B_(k - 1)} \
+        ==> sum_(i in B_k) vd(c)_i & = sum_(i in B_1 union dots.c union B_(k - 1)) q_(i k) vd(c)_i quad "for some" q_(i k) in QQ \
+        ==> sum_(i = 1)^n d_(i k) vd(c)_i & = vd(0)
+    $ where $
+        d_(i k) = cases(
+            0 quad & "if" i in.not B_1 union dots.c union B_(k - 1),
+            1 & "if" i in B_k,
+            -q_(i k) & "if" i in B_1 union dots.c union B_(k - 1)
+        ).
+    $ Take $m = r$. Let $x_1, ..., x_r in NN$, and let $y_i = sum_(k = 1)^r d_(i k) x_k$ for each $i in [n]$. Now $vd(y) = (y_1, ..., y_n)$ is a solution to $A vd(y) = vd(0)$: we have $
+        sum_(i = 1)^n y_i vd(c)_i & = sum_(i = 1)^n sum_(k = 1)^r d_(i k) x_k vd(c)_i \
+        & = sum_(k = 1)^r x_k sum_(i = 1)^n d_(i k) vd(c)_i = vd(0).
+    $ Let $c$ be the LCD of all the $q_(i k)$. Now $c y_i = sum_(k = 1)^n c d_(i k) x_k$ is an integral linear combination of the $x_k$, and $c vd(y)$ is a solution since $vd(y)$ is. Let $p$ be $c$ times maximum of the absolute values of the numberators of the $q_(i k)$. By definition of the $d_(i k)$, $c vd(y)$ is in the $(m, p, c)$-set generated by $x_1, ...., x_r$.
+]
+#theorem("Rado")[
+    $A in QQ^(m times n)$ is PR iff it has CP.
+]<thm:rado>
+#proof[
+    $==>$ is by @prop:pr-implies-cp. For $<==$, let $c': NN -> [k]$ be a finite colouring of $NN$. Also, by the above proposition, since $A$ has CP, there exists $m, p, c in NN$ such that $A vd(x) = vd(0)$ has a solution $vd(x)$ in any $(m, p, c)$-set by the above theorem. By @thm:every-finite-colouring-of-naturals-admits-monochromatic-mpc-set, there is a monochromatic $(m, p, c)$-set with respect to $c'$. This gives a monochromatic solution $vd(x)$ to $A vd(x) = vd(0)$.
+]
+#remark[
+    From the proof of @thm:rado, we obtain that if $A$ is PR for the "$mod p$" colourings, then it is PR for _any_ colouring. There is no proof of this fact that is more direct than using Rado's theorem.
+]
+#theorem("Consistency")[
+    Let $A$ and $B$ be rational PR matrices. Then the matrix $
+        mat(A, 0; 0, B)
+    $ is PR.
+]<thm:consistency>
+#proofhints[
+    @thm:rado.
+]
+#proof[
+    This is a trivial check of the CP given the CP of $A$ and $B$, then we are done by @thm:rado.
+]
+#remark[
+    The @thm:consistency says that if we can find monochromatic solutions $vd(x)$ and $vd(x')$ to $A vd(x) = vd(0)$ and $B vd(y) = vd(0)$, then we can find monochromatic solutions $vd(x')$ and $vd(y')$, of the same colour, to $A vd(x') = vd(0)$ and $B vd(y') = vd(0)$.
+]
+#theorem[
+    For any finite colouring of $NN$, some colour class contains solutions to _all_ PR equations.
+]
+#proofhints[
+    Use the @thm:consistency.
+]
+#proof[
+    For a given $k$-colouring of $NN$, let $NN = C_1 union.sq dots.c union.sq C_k$ be the colour classes. Assume the contrary, so for each $1 <= i <= k$, there exists a PR matrix $A_i$ such that $A_i vd(x) = vd(0)$ has no monochromatic solution of the same colour as $C_i$. But then by inductively applying the consistency theorem, the matrix $
+        mat(A_1, , 0; , dots.down, ; 0, , A_k)
+    $ has a monochromatic solution of the same colour as some $C_j$. But then $C_j vd(x) = vd(0)$ has a solution $vd(x)$ of the same colour as $C_j$: contradiction.
+]
+
+== Ultrafilters
+
+#theorem("Hindman")[
+    For any finite colouring of $NN$, there exists a sequence $(x_n)_(n in NN)$ such that $
+        "FS"({x_n: n in NN}) = {sum_(i in I): I subset.eq NN "finite", I != emptyset}.
+    $
+]<thm:hindman>
+#definition[
+    A *filter* on $NN$ is a non-empty collection $cal(F)$ of subsets of $NN$ such that:
+    - $emptyset in.not cal(F)$,
+    - If $A in cal(F)$ and $A subset.eq B$, then $B in cal(F)$, i.e. $cal(F)$ is an *up-set*.
+    - If $A, B in cal(F)$ then $A sect B in cal(F)$, i.e. $cal(F)$ is closed under finite intersections.
+    A filter is a notion of "large" subsets of $NN$.
+]<def:filter>
+#example[
+    - $cal(F)_1 = {A subset.eq NN: 1 in A}$ is a filter.
+    - $cal(F)_2 = {A subset.eq NN: 1, 2 in A}$ is a filter.
+    - $cal(F)_3 = {A subset.eq NN: A^c "finite"}$ is a filter, called the *cofinite filter*.
+    - $cal(F)_4 = {A subset.eq NN: A "infinite"}$ is not a filter, since it contains $2 NN$ and $2 NN + 1$ but not $emptyset = (2 NN) sect (2 NN + 1)$.
+    - $cal(F)_5 = {A subset.eq NN: 2 NN \\ A "finite"}$ is a filter.
+]
+#definition[
+    An *ultrafilter* is a maximal filter.
+]
+#definition[
+    For $x in NN$, the *principal ultrafilter at $x$* is $
+        cal(U)_x := {A subset.eq NN: x in A}.
+    $
+]
+#proposition[
+    The principal ultrafilter at $x$ is indeed an ultrafilter.
+]
+#proofhints[
+    Straightforward.
+]
+#proof[
+    If $B in.not cal(U)_x$, then $x in B^c$ so $B^c in cal(U)_x$, but $B^c sect B = emptyset$, so $cal(U)_x union {B}$ is not a filter.
+]
+#example[
+    - $cal(F)_1 = {A subset.eq NN: 1 in A}$ is an ultrafilter.
+    - $cal(F)_2 = {A subset.eq NN: 1, 2 in A}$ is not an ultrafilter as $cal(F)_1$ extends it.
+    - $cal(F)_3 = {A subset.eq NN: A^c "finite"}$ is not an ultra filter, as $cal(F)_5$ extends it.
+    - $cal(F)_5 = {A subset.eq NN: 2 NN \\ A "finite"}$ is not an ultrafilter, as ${A subset.eq NN: 4 NN \\ A "finite"}$ extends it.
+]
+#proposition[
+    A filter $cal(F)$ is an ultrafilter iff for all $A subset.eq NN$, either $A in cal(F)$ or $A^c in cal(F)$.
+]<prop:ultrafilter-iff-contains-each-set-xor-complement>
+#proofhints[
+    $<==$: straightforward. $==>$: show if $A in.not cal(F)$, then $exists B in cal(F)$ such that $A sect B = emptyset$.
+]
+#proof[
+    $<==$: since $A sect A^c = emptyset in.not cal(F)$.
+
+    $==>$: let $cal(F)$ is an ultrafilter. We cannot have $A, A^c in cal(F)$ as $A sect A^c = emptyset in.not cal(F)$. Suppose there is $A subset.eq NN$ such that $A, A^c in.not cal(F)$. By maximality of $cal(F)$, since $A in.not cal(F)$, then $exists B in cal(F)$ such that $A sect B = emptyset$ (suppose not, then $cal(F)' = {S subset.eq NN: S supset.eq A sect B "for some" B in cal(F)}$ extends $cal(F)$). Similarly, $exists C in cal(F)$ such that $A^c sect C = emptyset$. So we have $C subset.eq A$, so $B sect C = emptyset in.not cal(F)$: contradiction (or also $C subset.eq A ==> A in cal(F)$: contradiction).
+]
+#corollary[
+    Let $cal(U)$ be an ultrafilter and $A = B union C in cal(U)$. Then $B in U$ or $C in U$.
+]<crl:union-in-ultrafilter-has-element-in-ultrafilter>
+#proofhints[
+    Straightforward.
+]
+#proof[
+     If not, then $B^c, C^c in cal(U)$ by @prop:ultrafilter-iff-contains-each-set-xor-complement, hence $B^c sect C^c = (B union C)^c = A^c in cal(U)$: contradiction.
+]
+#proposition[
+    Every filter is contained in an ultrafilter.
+]<prop:every-filter-is-contained-in-ultrafilter>
+#proofhints[
+    Use Zorn's Lemma.
+]
+#proof[
+    By Zorn's Lemma, it is enough to show that every non-empty chain of filters has an upper bound. Let ${cal(F)_i: i in I}$ be a chain of filters, and set $cal(F) = union.big_(i in I) cal(F)_i$.
+    - $emptyset in.not cal(F)$ since $emptyset in.not cal(F)_i$ for each $i in I$.
+    - If $A in cal(F)$ and $A subset.eq B$, then $A in cal(F)_i$ for some $i in I$, so $B in cal(F)_i$, so $B in cal(F)$.
+    - Let $A, B in cal(F)$, so $A in cal(F)_i$ and $B in cal(F)_j$ for some $i, j$. WLOG, $cal(F)_i subset.eq cal(F)_j$, so $A sect B in cal(F)_j$, so $A sect B in cal(F)$.
+    $cal(F)$ is an upper bound for the chain, so we are done.
+]
+#proposition[
+    Let $cal(U)$ be an ultrafilter. Then $cal(U)$ is non-principal iff $cal(U)$ extends the cofinite filter $cal(F)_C$.
+]<prop:ultrafilter-is-non-principal-iff-extends-cofinite-filter>
+#proofhints[
+    $<==$: straightforward. $==>$: use @crl:union-in-ultrafilter-has-element-in-ultrafilter.
+]
+#proof[
+    $<==$: if $cal(U) = cal(U)_x$ is principal, then we have ${x} in cal(U)$ so ${x}^c in.not cal(U)$ by @prop:ultrafilter-iff-contains-each-set-xor-complement, but also ${x}^c in cal(F)_C$: contradiction.
+
+    $==>$: let $A in cal(F)_C$, so $A^c = {a_1, ..., a_k}$ is finite. Assume $A in.not cal(U)$, then $A^c in cal(U)$, so by @crl:union-in-ultrafilter-has-element-in-ultrafilter, some $a_i in cal(U)$. But then by definition of a filter, each set containing $a_i$ is in $cal(U)$, so $cal(U)$ is principal: contradiction.
+]
+#notation[
+    Let $beta NN$ denote the set of all ultrafilters on $NN$.
+]<ntn:set-of-ultrafilters>
+#definition[
+    Define a topology on $beta NN$ by its base (basis), which consists of $
+        C_A := {cal(U) in beta NN: A in cal(U)}
+    $ for each $A subset.eq NN$. The sets above indeed form a base: we have $union.big_(A subset.eq NN) C_A = beta NN$, and $C_A sect C_B = C_(A sect B)$, since $A sect B in cal(U)$ iff $A, B in cal(U)$. The open sets are of the form $union.big_(i in I) C_(A_i)$ and the closed sets are of the form $sect.big_(i in I) C_(A_i)$.
+]<def:topology-on-ultrafilters>
+#remark[
+    $beta NN \\ C_A = C_(A^c)$, since $A in.not cal(U)$ iff $A^c in cal(U)$. We can view $NN$ as being embedded in $beta NN$ by identifying $n in NN$ with $tilde(n) := cal(U)_n$, the principal ultrafilter at $n$. Each point in $NN$ under this correspondence is isolated in $beta NN$, since $C_({n}) = {tilde(n)}$ is an open neighbourhood of $tilde(n)$. Also, $NN$ is dense in $beta NN$, since for every $n in A$, $tilde(n) in C_A$, so every non-empty open set in $beta NN$ intersects $NN$.
+]
+#theorem[
+    $beta NN$ is a compact Hausdorff topological space.
+]<thm:topology-on-ultrafilters-is-compact-and-hausdorff>
 
 
 = Euclidean Ramsey theory

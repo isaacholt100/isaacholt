@@ -1,6 +1,11 @@
 #import "@preview/quill:0.2.0": *
 #import "../../template.typ": *
-#show: doc => template(doc, hidden: (), slides: false)
+#let name-abbrvs = (
+    "Hidden Subgroup Problem (HSP)": "HSP",
+    "Discrete Logarithm Problem (DLP)": "DLP",
+    "Amplitude Amplification Theorem/2D-subspace Lemma": "Amplitude Amplification Theorem"
+)
+#show: doc => template(doc, hidden: (), slides: false, name-abbrvs: name-abbrvs)
 
 #let poly = math.op("poly")
 #let ip(a, b) = $angle.l #a, #b angle.r$
@@ -29,9 +34,11 @@
 
 == Review of Shor's algorithm
 
-#definition[
-    The *factoring problem* is: given a positive integer $N$, find a non-trivial factor ($!= 1, N$) in time polynomial in $n$ (i.e. $O(poly(n))$), where $n = O(log N)$ is the length of the description of the problem input (memory/space used to store it).
-]<def:factoring-problem>
+#problem("Factoring")[
+    / Input: a positive integer $N$.
+    / Promise: $N$ is composite.
+    / Task: Find a non-trivial factor of $N$ in $O(poly(n))$ time, where $n = log N$.
+]<prb:factoring>
 #definition[
     An *efficient problem* is one that can be solved in polynomial time.
 ]<def:efficient-problem>
@@ -43,7 +50,7 @@
 
 == Period finding
 
-#problem("Periodicity Determination")[
+#problem("Periodicity Determination Problem")[
     / Input: An oracle for a function $f: ZZ\/M -> ZZ\/N$.
     / Promise:
         - $f$ is periodic with period $r < M$ (i.e. $forall x in ZZ\/M$, $f(x + r) = f(x)$), and
@@ -95,7 +102,7 @@
     The number of integers less than $r$ that are coprime to $r$ is $O(r\/log log r)$.
 ]
 #algorithm("Quantum Period Finding")[
-    The algorithm solves the periodicity determination problem:
+    The algorithm solves the @prb:periodicity-determination:
     Let $f: ZZ\/M -> ZZ\/N$ be periodic with period $r < M$ and one-to-one in each period. Let $A = M/r$ be the number of periods. We work over the state space $H_M tp H_N$.
     + Construct the state $1/sqrt(M) sum_(i = 0)^(M - 1) ket(i) ket(0)$ and query $U_f$ on it.
     + Measure second register in computational basis and discard the second register.
@@ -157,17 +164,16 @@
 
 == The hidden subgroup problem (HSP)
 
-#problem([Discrete Logarithm Problem (DLP) on $ZZ\/p^times$])[
-    Let $p$ be prime.
-    / Input: $g, x in ZZ\/p^times$.
-    / Promise: $g$ is a generator of $ZZ\/p^times$.
-    / Task: Find $log_g x$, i.e. find $L in ZZ\/(p - 1)$ such that $x = g^L$.
+#problem("Discrete Logarithm Problem (DLP)")[
+    / Input: $g, x in G$ for an abelian group $G$.
+    / Promise: $g$ is a generator of $G$.
+    / Task: Find $log_g x$, i.e. find $L in ZZ\/abs(G)$ such that $x = g^L$.
 ]<prb:dlp>
 #notation[
     Write $[n]$ for ${1, ..., n}$. Write e.g. $i j$ for the set ${i, j}$.
 ]
 #definition[
-    Let $Gamma_1 = ([n], E_1)$ and $Gamma_2 = ([n], E_2)$ be (undirected) graphs. $Gamma_1$ and $Gamma_2$ are *isomorphic* if there exists a permutation $pi in S_n$ such that for all $1 <= i, j < n$, $i j in E$ iff $pi(i) pi(j) in E$.
+    Let $Gamma_1 = ([n], E_1)$ and $Gamma_2 = ([n], E_2)$ be (undirected) graphs. $Gamma_1$ and $Gamma_2$ are *isomorphic* if there exists a permutation $pi in S_n$ such that for all $1 <= i, j < n$, $i j in E_1$ iff $pi(i) pi(j) in E_2$.
 ]<def:graph.isomorphic>
 #definition[
     Let $Gamma = ([n], E)$ be a graph. The *automorphism group* of $Gamma$ is $
@@ -196,16 +202,16 @@
         + $f$ is constant on the (left) cosets of $K$ in $G$.
         + $f$ takes a different value on each coset.
     / Task: Determine $K$.
-]
+]<prb:hsp>
 #remark[
     - To find $K$, we either find a generating set for $K$, or sample uniformly random elements from $K$.
     - We want to determine $K$ with high probability in $O(poly log |G|)$ queries. Using $O(|G|)$ queries is easy, as we just query all values $f(g)$ and find the "level sets" (sets where $f$ is constant).
 ]
 #example[
     The following problems are special cases of HSP:
-    - The period finding problem: $G = ZZ\/M$, $K = gen(r) = {0, r, ..., (A - 1)r}$. The cosets are $x_0 + K = {x_0, x_0 + r, ..., x_0 + (A - 1) r}$ for each $0 <= x_0 < r$.
-    - The DLP on $(ZZ\/p)^times$: let $f: ZZ\/(p - 1) times ZZ\/(p - 1) -> (ZZ\/p)^times$ be defined by $f(a, b) = g^a x^(-b) = g^(a - L b)$. $G = ZZ\/(p - 1) times ZZ\/(p - 1)$, the hidden subgroup is $K = {lambda (L, 1): lambda in ZZ\/(p - 1)}$. (Note that if we know $K$, we can pick any $(c, d) = (lambda L, lambda) in G$ and compute $L = c/d$ to find $L$.)
-    - The graph isomorphism problem: $G = S_n$, hidden subgroup is $K = Aut(G)$. Let $f_Gamma: S_n -> X$ where $X$ is set of adjacency matrices of labelled graphs on $[n]$, defined by $f_Gamma (pi) = pi(A)$. Note $abs(S_n) = abs(G) = n!$, so $log abs(G) approx n log n$, so $O(poly log abs(G)) = O(poly n)$.
+    - The @prb:periodicity-determination: $G = ZZ\/M$, $K = gen(r) = {0, r, ..., (A - 1)r}$. The cosets are $x_0 + K = {x_0, x_0 + r, ..., x_0 + (A - 1) r}$ for each $0 <= x_0 < r$.
+    - The @prb:dlp on $(ZZ\/p)^times$: let $f: ZZ\/(p - 1) times ZZ\/(p - 1) -> (ZZ\/p)^times$ be defined by $f(a, b) = g^a x^(-b) = g^(a - L b)$. $G = ZZ\/(p - 1) times ZZ\/(p - 1)$, the hidden subgroup is $K = {lambda (L, 1): lambda in ZZ\/(p - 1)}$. (Note that if we know $K$, we can pick any $(c, d) = (lambda L, lambda) in G$ and compute $L = c/d$ to find $L$.)
+    - The @prb:graph-isomorphism: $G = S_n$, hidden subgroup is $K = Aut(G)$. Let $f_Gamma: S_n -> X$ where $X$ is set of adjacency matrices of labelled graphs on $[n]$, defined by $f_Gamma (pi) = pi(A)$. Note $abs(S_n) = abs(G) = n!$, so $log abs(G) approx n log n$, so $O(poly log abs(G)) = O(poly n)$.
 ]
 #definition[
     An *irreducible representation (irrep)* of a finite abelian group $G$ is a homomorphism $chi: G -> CC^times$.
@@ -216,7 +222,7 @@
 ]
 #theorem("Schur's Lemma")[
     Let $chi_i$ and $chi_j$ be irreps of $G$. Then $
-        1/abs(G) sum_(g in G) chi_i (g) overline(chi_j) (g) = delta_(i j).
+        1/abs(G) sum_(g in G) chi_i (g) overline(chi_j (g)) = delta_(i j).
     $
 ]<thm:schurs-lemma>
 #example[
@@ -256,7 +262,7 @@
     - Similarly, for $G = ZZ\/(M_1) times dots.c times ZZ\/(M_r)$, $chi_g (h) = e^(2pi i (g_1 h_1 \/M_1 + dots.c + g_r h_r \/M_r))$ are the irreps.
 ]
 #algorithm([Quantum HSP solver for finite abelian $G$])[
-    The algorithm solves the hidden subgroup problem for finite abelian $G$. We work in the state space $H_abs(G) tp H_abs(X)$.
+    The algorithm solves the @prb:hsp for finite abelian $G$. We work in the state space $H_abs(G) tp H_abs(X)$.
     + Prepare the uniform superposition state $
         1/sqrt(abs(G)) sum_(g in G) ket(g) ket(0)
     $ and query $U_f$ on it.
@@ -265,10 +271,10 @@
     + Repeat the above steps $O(log abs(G))$ times.
 ]
 #theorem("Correctness of Quantum HSP Solver")[
-    The quantum HSP solver algorithm solves the hidden subgroup problem for finite abelian groups with high probability.
+    The quantum HSP solver algorithm solves the @prb:hsp for finite abelian groups with high probability.
 ]
 #proof[
-    Query $U_f$ on the state gives $
+    Querying $U_f$ on the state gives $
         1/sqrt(abs(G)) sum_(g in G) ket(g) ket(f(g))
     $ Upon measurement of the output register, we obtain a uniformly random value $f(g_0)$ from $f(G)$, and the state collapses to a *coset state* $
         ket(g_0 + K) = 1/sqrt(abs(K)) sum_(k in K) ket(g_0 + k).
@@ -289,7 +295,9 @@
     If $K$ has generators $k_1, ..., k_m$ (note that for an arbitrary group, we have $m = O(log abs(G))$), then we have a set of equations $chi_g (k_i) = 1$ for all $i in [m]$. We can show that if $O(log abs(G))$ such $g$ are drawn uniformly at random, then with probability at least $2\/3$, we have enough equations to determine $k_1, ..., k_m$.
 ]
 #example[
-    Let $G = ZZ\/M_1 times dots.c times ZZ\/M_r$. The irreps are $chi_g (h) = e^(2pi i (g_1 h_1 \/ M_1 + dots.c + g_r h_r \/ M_r))$. For $k in K$, $chi_g (k) = 1$ iff $(g_1 k_1)/M_1 + dots.c + (g_r k_r)/M_r = 0 mod 1$. This is a homogenous linear equation in $k$, and $O(log abs(G))$ independent such equations determine $K$ as the nullspace.
+    Let $G = ZZ\/M_1 times dots.c times ZZ\/M_r$. The irreps are $
+        chi_g (h) = e^(2pi i (g_1 h_1 \/ M_1 + dots.c + g_r h_r \/ M_r)).
+    $ For $k in K$, $chi_g (k) = 1$ iff $(g_1 k_1)/M_1 + dots.c + (g_r k_r)/M_r = 0 mod 1$. This is a homogenous linear equation in $k$, and $O(log abs(G))$ independent such equations determine $K$ as the nullspace.
 ]
 #remark[
     We can implement QFT over abelian groups (and some non-abelian groups, including $S_n$) using circuits with $O((log abs(G))^2)$ elementary gates.
@@ -351,15 +359,17 @@ Quantum phase estimation is a unifying algorithmic primitive, e.g. there is an a
     / Task: Output an estimate $tilde(phi)$ of $phi$, accurate to $n$ binary bits of precision.
 ]
 #remark[
-    If $U$ is given as a cirucit, we can implement the controlled-$U$ operation, $Ctrl(U)$, by controlling each elementary gate in the circuit of $U$.
+    If $U$ is given as a circuit, we can implement the controlled-$U$ operation, $Ctrl(U)$, by controlling each elementary gate in the circuit of $U$.
 
-    If $U$ is given as a black box, we need more information. Note that $U$ is equivalent to $U' = e^(i theta) U$ and $ket(psi)$ is equivalent to $e^(i theta) ket(psi)$, but $Ctrl(U)$ is not equivalent to $Ctrl(U')$. Given an eigenstate $ket(alpha)$ with known phase $e^(i alpha)$ (so $U ket(alpha) = e^(i alpha) ket(alpha)$), we have $U' ket(alpha) = e^(i(theta + alpha)) ket(alpha)$. so $U$ and $U'$ can be distinguished using this additional information.
+    If $U$ is given as a black box, we need more information. Note that $U$ is equivalent to $U' = e^(i theta) U$ and $ket(psi)$ is equivalent to $e^(i theta) ket(psi)$, but $Ctrl(U)$ is not equivalent to $Ctrl(U')$. Given an eigenstate $ket(alpha)$ with known phase $e^(i alpha)$ (so $U ket(alpha) = e^(i alpha) ket(alpha)$), we have $U' ket(alpha) = e^(i(theta + alpha)) ket(alpha)$. so $U$ and $U'$ can be distinguished using this additional information. The following circuit implements $Ctrl(U)$ (the top two lines end in state $Ctrl(U) ket(a) ket(xi)$):
 
     #figure(quantum-circuit(
         lstick($"control" quad ket(a)$), 2, ctrl(1), 1, ctrl(1), $X$, $P(-alpha)$, $X$, rstick($ket(a)$), [\ ],
         lstick($ket(xi)$), 2, swap(1), 1, swap(1), 3, rstick($U^a ket(xi)$), [\ ],
         lstick($ket(alpha)$), 2, swap(0), $U$, swap(0), 3, rstick($ket(alpha)$)
-    )) where $P(-alpha) = mat(1, 0; 0, e^(-i alpha))$. $circle.small.filled dash #h(0em) times dash #h(0em) times$ denotes the controlled SWAP operation.
+    ))
+    
+    where $P(-alpha) = mat(1, 0; 0, e^(-i alpha))$, and $circle.small.filled dash #h(0em) times dash #h(0em) times$ denotes the controlled SWAP operation.
 ]
 #definition[
     For a unitary $U$, the *generalised control* unitary $Ctrl(U)$ is defined linearly by $
@@ -376,7 +386,7 @@ Quantum phase estimation is a unifying algorithmic primitive, e.g. there is an a
 ]<def:generalised-control>
 #algorithm("Quantum Phase Estimation")[
     Work over the space $\(CC^2\)^(tp n) tp CC^d$, where $\(CC^2\)^(tp n)$ is the $n$-qubit register, $CC^d$ is the "qudit" register.
-    #figure(quantum-circuit(
+    + Apply the following circuit to $ket(0 ... 0) ket(v_phi)$: #figure(quantum-circuit(
         lstick($"line"(n - 1)$), $H$, 3, ctrl(4), mqgate($QFT_(2^n)^(-1)$, n: 4), 1, [\ ],
         // lstick($"line"(n - 2)$), $H$, 5, [\ ],/
         lstick($dots.v$), [\ ],
@@ -384,29 +394,51 @@ Quantum phase estimation is a unifying algorithmic primitive, e.g. there is an a
         lstick($"line"(0)$), $H$, ctrl(1), 5, [\ ],
         lstick($ket(v_phi)$), 1, $U^(2^0)$, $U^(2^1)$, midstick($dots.c$), $U^(2^(n - 1))$, 2,
     ))
-    After $Ctrl(U^(2^(n - 1)))$, the state is $1/sqrt(2^n) sum_(x in {0, 1}^n) e^(2pi i phi x) ket(x) ket(v_phi)$. We now discard the qudit register holding $ket(v_phi)$. If $phi$ had an exact $n$-bit expansion $0.i_1 i_2 ... i_n = (i_1 ... i_n)/2^n =: phi_n / 2^n$, then this is precisely $QFT_(2^n) ket(phi_n)$. After this, applying $QFT^(-1)$ on the state $1/sqrt(2^n) sum_(x in {0, 1}^n) e^(2pi i phi x) ket(x)$. We then measure the state, yielding outcome $y = y_(n - 1) ... y_0$. Our estimate of $phi$ is $tilde(phi) = y/2^n = y_(n - 1) / 2 + dots.c + y_0 / 2^n$.
+    + Discard the qudit register holding $ket(v_phi)$, and measure the input qubits, yielding outcome $y_0 ... y_(n - 1)$ from lines $0, ..., n - 1$.
+    + The estimate of $phi$ is $tilde(phi) = y \/ 2^n = y_0 \/ 2 + dots.c + y_(n - 1) \/ 2^n$.
+]
+#remark[
+    After $Ctrl(U^(2^(n - 1)))$, the input qubits are in the state $
+        1/sqrt(2^n) sum_(x in {0, 1}^n) e^(2pi i phi x) ket(x).
+    $ If $phi$ had an exact $n$-bit expansion $0.i_1 i_2 ... i_n = (i_1 ... i_n) \/ 2^n =: phi_n \/ 2^n$, then this state is precisely $QFT_(2^n) ket(phi_n)$, in which case, after applying $QFT^(-1)$, we have $ket(phi_n)$, so measuring the input bits gives $phi_n$, and so $phi$, exactly.
 ]
 #lemma[
     For all $alpha in RR$,
-    + If $abs(alpha) <= pi$, then $abs(1 - e^(i alpha)) = 2 abs(sin(alpha\/2)) >= 2/pi abs(alpha)$ (graphically, this says the line $y = 2/pi alpha$ lies below $2 sin(alpha\/2)$ for $0 <= alpha <= pi$).
-    + If $alpha >= 0$, then $abs(1 - e^(i alpha)) <= alpha$ (graphically, this says that on the complex unit circle, the arc length $alpha$ from $1$ to $e^(i alpha)$ is at least the chord length from $1$ to $e^(i alpha)$).
+    + If $abs(alpha) <= pi$, then $abs(1 - e^(i alpha)) = 2 abs(sin(alpha\/2)) >= 2/pi abs(alpha)$.
+    + If $alpha >= 0$, then $abs(1 - e^(i alpha)) <= alpha$.
+]
+#proofhints[
+    For both, think graphically.
+]
+#proof[
+    + The line $y = 2/pi alpha$ lies below $2 sin(alpha\/2)$ for $0 <= alpha <= pi$).
+    + On the complex unit circle, the arc length $alpha$ from $1$ to $e^(i alpha)$ is at least the chord length from $1$ to $e^(i alpha)$.
 ]
 #theorem("Phase Estimation Theorem")[
     Let $tilde(phi)$ be the estimate of $phi$ from the quantum phase estimation algorithm. Then
     + $Pr(tilde(phi) #[is closest $n$-bit approximation of $phi$]) >= 4/pi^2 approx 0.4$.
     + For all $epsilon > 0$, $Pr(abs(tilde(phi) - phi) > epsilon) = O(1/(2^n epsilon))$. So for any desired accuracy $epsilon$, the probability of failure decays exponentially with the number of bits of precision (lines in the circuit).
 ]<thm:phase-estimation>
-#proof[
-    Let $ket(A) = 1/sqrt(2^n) sum_(x in {0, 1}^n) e^(2pi i phi x) ket(x)$. Let $delta(y) = phi - y\/2^n = phi - tilde(phi)$. Since $QFT^(-1) ket(x) = 1/sqrt(2^n) sum_(y in {0, 1}^n) e^(-2pi i x y \/ 2^n) ket(y)$, we have $
-        QFT^(-1) ket(A) = 1/2^n sum_(y in {0, 1}^n) sum_(x in {0, 1}^n) e^(2pi i x delta(y)) ket(y)
-    $ so the probability of measuring outcome $y$ is $
+#proofhints[
+    Let $delta(y) = phi - y\/2^n = phi - tilde(phi)$. Show the probability of the measuring yielding outcome $y$ is $
         p_y = 1/2^(2n) abs((1 - e^(2^n 2 pi i delta(y)))/(1 - e^(2pi i delta(y))))^2.
     $
-
-    + Let $alpha = 2^n 2pi delta(a)$, where $a$ is the closest $n$-bit approximation of $phi$. Note we can imagine the possible values of $tilde(phi)$ as lying on the unit circle, spaced by angle $(2pi) / 2^n$. This gives a visual intuition to the fact that $abs(delta(a)) <= 1/(2^(n + 1))$. Hence $abs(alpha) <= pi$, and so by the above lemma, $
-        Pr(tilde(phi) = a) >= 1/(2^(2n)) ((2^(n + 2) delta(a))/(2pi delta(a)))^2 = 4/pi^2.
+    + Find an upper bound on $delta(a)$ where $a$ is the closest $n$-bit approximation of $phi$.
+    + Show that $
+        p_y <= 1/2^(2n) (2/(4 delta(y)))^2 = 1 / (2^(2n + 2) delta(y)^2).
+    $ Let $B = {y in {0, 1}^n: abs(delta(y)) > epsilon}$. Show that for each $y in B$, $abs(delta(y)) <= epsilon + k_y \/ 2^n$ for some $k_y in NN$, and that each $k_y$ occurs at most twice here. Conclude the upper bound using an integral.
+]
+#proof[
+    Let $
+        ket(A) = 1/sqrt(2^n) sum_(x = 0)^(2^n - 1) e^(2pi i phi x) ket(x).
+    $ Let $delta(y) = phi - y\/2^n = phi - tilde(phi)$. Since $QFT^(-1) ket(x) = 1/sqrt(2^n) sum_(y = 0)^(2^n - 1) e^(-2pi i x y \/ 2^n) ket(y)$, we have $
+        QFT^(-1) ket(A) = 1/2^n sum_(y = 0)^(2^n - 1) sum_(x = 0)^(2^n - 1) e^(2pi i x delta(y)) ket(y)
+    $ so the probability of measuring outcome $y$ is $
+        p_y = Pr(tilde(phi) = y/2^n) = 1/2^(2n) abs((1 - e^(2^n 2 pi i delta(y)))/(1 - e^(2pi i delta(y))))^2.
     $
-
+    + Let $alpha = 2^n 2pi delta(a)$, where $a$ is the closest $n$-bit approximation of $phi$. Note we can imagine the possible values of $tilde(phi)$ as lying on the unit circle, spaced by angle $(2pi) / 2^n$. This gives a visual intuition to the fact that $abs(delta(a)) <= 1/(2^(n + 1))$. Hence $abs(alpha) <= pi$, and so by the above lemma, $
+        p_a = Pr(tilde(phi) = a) >= 1/(2^(2n)) ((2^(n + 2) delta(a))/(2pi delta(a)))^2 = 4/pi^2.
+    $
     + Note that $abs(1 - e^(2^n 2 pi i delta(y))) <= 2$ by the triangle inequality. Let $B = {y in {0, 1}^n: abs(delta(y)) > epsilon}$ denote the set of "bad" values of $y$. For all $y in {0, 1}^n$, we have $delta(y) in [-1, 1]$. If $abs(delta(y)) <= 1\/2$, then, by the above lemma, we have $abs(1 - e^(2pi i delta(y))) >= 4 abs(delta(y))$. If $delta(y) > 1\/2$, then $delta(y) - 1 in [-1 \/ 2, 1 \/ 2]$, so by the above lemma, $abs(1 - e^(2pi i delta(y))) >= 4 abs(delta(y) - 1)$ hence $
         p_y <= 1/2^(2n) (2/(4 delta(y)))^2 = 1 / (2^(2n + 2) delta(y)^2).
     $ Let $delta^+ = min{delta(y): y in B, delta(y) > 0}$ be the smallest $delta(y)$ such that $delta(y) > epsilon$, and $delta^- = max{delta(y): y in B: delta(y) < 0}$ be the largest $delta(y)$ such that $delta(y) < -epsilon$. For all $y in B$, we have $delta(y) = delta^+ + k_y \/ 2^n$ or $delta(y) = delta^- - k_y \/ 2^n$ for some $k_y in NN$, so $abs(delta(y)) > epsilon + k_y \/ 2^n$. Note that each $k in NN$, $k = k_y$ for at most $2$ values of $y in B$. Hence, $
@@ -456,11 +488,11 @@ Amplitude amplification is an extension of the key insights in Grover's algorith
 #proof[
     $U I_ket(alpha) U^dagger = U U^dagger - 2 U ket(alpha) bra(alpha) U^dagger = I_(U ket(alpha))$.
 ]
-#problem("Unstructured Search")[
+#problem("Unstructured Search Problem")[
     / Input: An oracle for a function $f: {0, 1}^n -> {0, 1}$.
     / Promise: There is a unique $x_0 in {0, 1}^n$ such that $f(x_0) = 1$.
     / Task: Find $x_0$.
-]
+]<prb:unstructured-search>
 #remark[
     The unstructured search problem is closely related to the complexity class NP and to Boolean satisfiability.
 ]
@@ -470,7 +502,7 @@ Amplitude amplification is an extension of the key insights in Grover's algorith
     $
 ]
 #remark[
-    Note that for a function $f: {0, 1}^n -> {0, 1}$ fulfilling the promise of the unstructured search problem, we can implement $I_ket(x_0)$ without knowing $x_0$: we have $U_f ket(x) 1/sqrt(2) (ket(0) - ket(1)) = (-1)^f(x) ket(x) 1/sqrt(2) (ket(0) - ket(1))$. Hence, implementing $Q$ requires only one query to $f$.
+    Note that for a function $f: {0, 1}^n -> {0, 1}$ fulfilling the promise of the @prb:unstructured-search, we can implement $I_ket(x_0)$ without knowing $x_0$: we have $U_f ket(x) 1/sqrt(2) (ket(0) - ket(1)) = (-1)^f(x) ket(x) 1/sqrt(2) (ket(0) - ket(1))$. Hence, implementing $Q$ requires only one query to $f$.
 ]
 #theorem("Grover")[
     In the $2$-dimensional subspace spanned by $ket(psi) = H^(tp n) ket(0)$ and $ket(x_0)$, the action of $Q$ is a rotation by angle $2 alpha$, where $sin(alpha) = 1/sqrt(2^n) = braket(x_0, psi)$.
@@ -480,15 +512,152 @@ Amplitude amplification is an extension of the key insights in Grover's algorith
     + Prepare $ket(psi) = H^(tp n) ket(0)$.
     + Apply $Q^m$ to $ket(psi)$, where $m$ is closest integer to $arccos(1\/sqrt(N))/(2 arcsin(1\/sqrt(N))) = theta / (2 alpha)$ and $cos(theta) = sin(alpha) = braket(x_0, psi) = 1 \/ sqrt(2^n)$. This rotates $ket(psi)$ to be close to $ket(x_0)$ (within angle $plus.minus alpha$ of $ket(x_0)$).
     + Measure to get $x_0$ with probability $p = abs(braket(x_0, Q^m, psi))^2 = 1 - 1/N$. For large $N$, $arccos(1\/sqrt(N)) approx pi/2$, and $arcsin(1\/sqrt(N)) approx 1\/sqrt(N)$. The number of iterations is $m = pi/4 sqrt(N) = O(sqrt(N))$. So we need $O(sqrt(N))$ queries to $U_f$. In contrast, clasically we need $Omega(N)$ queries to $f$ to find $x_0$ with any desired constant probability. Note that $Omega(N)$ queries are both necessary and sufficient.
-]
-
+]<alg:grovers>
 #notation[
     Write $G$ for the subspace of the state space $H$ whose associated amplitudes in a given state we wish to amplify. $G$ is called the "good" subspace. We call the subspace $G^perp$ the "bad" subspace. Note that $H = G xor G^perp$, and for any state $ket(phi) in H$, there is a unique decomposition with real, positive coefficients $ket(phi) = sin(theta) ket(g) + cos(theta) ket(b)$, where $ket(g) = P_G ket(phi)$ and $ket(b) = P_(G^perp) ket(phi)$.
 ]
-
 #theorem("Amplitude Amplification Theorem/2D-subspace Lemma")[
-    Let $ket(psi) = H^(tp n) ket(0)$. Let $G <= H_2^(tp n)$ be a subspace and $ket(g) = P_G ket(psi)$, $ket(b) = P_(G^perp) ket(psi)$. In the $2$-dimensional subspace $span{ket(g), ket(psi)} = span{ket(g), ket(b)}$, the unitary $Q = -I_ket(psi) I_G$ is a rotation by angle $2 theta$, where $sin(theta) = norm(P_G ket(psi))^2$, the length of the "good" projection of $ket(psi)$.
+    /*Let $ket(psi) = H^(tp n) ket(0)$.*/ Let $G <= H_2^(tp n)$ be a subspace and $ket(g) = P_G ket(psi)$, $ket(b) = P_(G^perp) ket(psi)$. In the $2$-dimensional subspace $span{ket(psi), ket(g)} = span{ket(b), ket(g)}$, the unitary $
+        Q = -I_ket(psi) I_G
+    $ is a rotation by angle $2 theta$, where $sin(theta) = norm(P_G ket(psi))_2^2 = abs(braket(g, g))$ is the length of the "good" projection of $ket(psi)$.
+]<thm:amplitude-amplification>
+#proofhints[
+    Consider the matrix representation of $Q$ in the $span{ket(b), ket(g)}$ basis.
+]
+#proof[
+    By definition, we have $I_G ket(g) = -ket(g)$, and $I_G ket(b) = ket(b)$. Hence $Q ket(g) = I_ket(psi) ket(g)$ and $Q ket(b) = -I_ket(psi) ket(b)$. The matrix representation of $I_ket(psi)$ in the ${ket(b), ket(g)}$ basis is $
+        mat(1, 0; 0, 1) - 2 vec(cos(theta), sin(theta)) mat(cos(theta), sin(theta))
+        & = mat(1 - 2 cos(theta)^2, -2 sin(theta) cos(theta); -2 sin(theta) cos(theta),  1 - 2 sin(theta)^2) \
+        & = mat(-cos(2 theta), -sin(2 theta); -sin(2 theta), cos(2 theta)).
+    $ So $Q ket(b) = cos(2theta) ket(b) + sin(2theta) ket(g)$, and $Q ket(g) = -sin(2theta) ket(b) + cos(2theta) ket(g)$. So the matrix representation of $Q$ in the ${ket(b), ket(g)}$ basis is $
+        mat(cos(2 theta), -sin(2theta); sin(2theta), cos(2theta))
+    $ which indeed is a rotation by angle $2theta$.
+]
+#corollary[
+    We have $Q^m ket(psi) = cos((2m + 1) theta) ket(b) + sin((2m + 1) theta) ket(g)$.
+]
+#proofhints[
+    Trivial.
+]
+#proof[
+    Induction on $m$.
+]
+#notation[
+    Denote by $m_"opt"$ the $m in ZZ$ which maximises the probability of measuring (in the ${ket(b), ket(g)}$ basis) an outcome in $G$ on the state $Q^m ket(psi)$. Note that this probability is equal to $sin((2m + 1) theta)^2$, which is maximised when $
+        (2m + 1) theta = pi \/ 2 quad ==> m = pi \/ 4 theta - 1 \/ 2.
+    $ So $m_"opt"$ is the nearest integer to $pi \/ 4 theta - 1 \/ 2$.
+]
+#example[
+    Let $theta = pi \/ 6$, then $m_"opt" = 1$ and $Q ket(psi) = ket(g)$. So we obtain a good outcome with certainty on measurement.
+]
+#remark[
+    Note that since $Q$ is a rotation by angle $2 theta$, $Q^(m_"opt") ket(psi)$ lies within angle $plus.minus theta$ of $ket(g)$, hence the $ket(g)$ component of $Q^(m_"opt") ket(psi)$ has amplitude $>= cos(theta)^2$. TODO: insert diagram. So for small $theta$, $
+        Pr("measuring good outcome") >= cos(theta)^2 approx 1 - O(theta^2).
+    $ Also, for small $theta$, $
+        m_"opt" = O(1 \/ theta) approx O(1 \/ sin(theta)).
+    $
+]
+#remark[
+    $Q$ can be implemented (efficiently) if $I_ket(psi)$ and $I_G$ can be implemented (efficiently). For an efficient implementation of $I_G$, it suffices for $G$ to be spanned by some subset of computational basis states, and the indicator function $indicator(G)$ is efficiently computable. In this case, we have $
+        U_(indicator(G)) ket(x) 1/sqrt(2) (ket(0) - ket(1)) & = (-1)^(indicator(G)(x)) 1/sqrt(2) (ket(0) - ket(1))
+    $ Since $I_G$ is defined by its action $ket(g) |-> -ket(g)$ for $g in G$ and $ket(b) |-> ket(b)$ for $b in G^perp$, the first register holds the value $I_G ket(x)$.
+    
+    For an efficient implementation of $I_ket(psi)$,  we usually have $ket(psi) = H^(tp n) ket(0 ... 0)$, and then $I_ket(psi) = H^(tp n) I_ket(0) H^(tp n)$ can be implemented with $O(n)$ gates.
 ]
 #remark[
     In the amplitude amplification process, the relative amplitudes of basis states inside $ket(g)$ and $ket(b)$ won't change. So amplitude amplification boosts the overall amplitude of $ket(g)$ at the expense of the amplitude of $ket(b)$.
+]
+
+== Applications of amplitude amplification
+
+#example[
+    // TODO: for this generalised Grover (including stuff before), does G have to be a subspace, or just a subset? looks like just a subset in this example
+    We can generalise Grover search from $1$ marked item to $k$ marked items out of $N = 2^n$ items. In this case, $
+        ket(psi) & = 1/sqrt(2^n) sum_(x in {0, 1}^n) ket(x) \
+        & = sqrt(k/N) 1/sqrt(k) sum_(x in G) ket(x) + sqrt((N - k)/N) 1/sqrt(N - k) sum_(x in G^perp) ket(x) \
+        & =: sqrt(k/N) ket(g) + sqrt((N - k)/N) ket(b)
+    $ so $sin(theta) = sqrt(k \/ N)$. For $k << N$, $sin(theta) approx theta$, so $m_"opt" = O\(sqrt(N\/k)\)$ uses of $Q$ required. E.g. $N = 4 = 2^2$ items and $k = 1$ marked item, we have $sin(theta) = 1 \/ 2$, so $theta = pi \/ 6$, so Grover search is exact, and requires exactly one application of $Q$.
+]
+
+#example("Quadratic speedup of general quantum algorithms")[
+    Let $U$ be a unitary representing a quantum algorithm/circuit, with $U ket(0...0) = alpha ket(g) + beta ket(b)$ where $ket(g)$ is a (generally non-uniform) superposition of good/correct outcomes, and $ket(b)$ is a (generally non-uniform) superposition of bad/incorrect outcomes. Note $ket(g) = sum_(x in {0, 1}^n) c_x ket(x)$ is generally a non-uniform superposition. We have $
+        Pr("measuring" U ket(0...0) "yields good outcome") = abs(alpha)^2.
+    $ Thus, we need to run $U$ about $O(1 \/ abs(alpha)^2)$ times to succeed with high probability.
+    
+    Now define $ket(psi) = U ket(0...0)$ and $Q = -I_ket(psi) I_G$. We can implement $Q$ if we have a method to verify the output of $U$; so in particular, we can use this method for any NP problem. This will mean we can efficiently implement the indicator function $indicator(G)$ of good labels and therefore also $I_G$. So by the @thm:amplitude-amplification, $Q$ performs a rotation of $2theta$ where $sin(theta) = abs(alpha)$. So after approximately $
+        m_"opt" approx pi \/ 4theta = O(1 \/ theta) = O(1 \/ sin(theta)) = O(1 \/ abs(alpha))
+    $ (for $theta$ small) uses of $Q$, we get a good outcome with high probability.
+]
+#problem("Counting Problem")[
+    / Input: $f: {0, 1}^n -> {0, 1}$.
+    / Task: Estimate the number $k = abs(f^(-1)({1}))$ of inputs that evaluate to $1$.
+]<prb:counting>
+#example("Quantum Counting")[
+    This combines amplitude amplification and quantum phase estimation. Let the "good" subspace $G$ be the subspace with basis $f^(-1)({1})$. As usual, let $
+        ket(g) & := 1/sqrt(k) sum_(x in f^(-1)({1})) ket(x), quad ket(b) := 1/sqrt(2^n - k) sum_(x in f^(-1)({0})) ket(x), \
+        ket(psi) & = 1/sqrt(2^n) sum_(x in {0, 1}^n) ket(x) = sqrt(k/N) 1/sqrt(k) sum_(x in f^(-1)({1})) ket(x) + sqrt((N - k)/N) 1/sqrt(N - k) sum_(x in f^(-1)({0})) ket(x).
+    $ Recall that $Q$ has matrix representation $
+        Q = mat(cos(2 theta), -sin(2theta); sin(2 theta), cos(2 theta))
+    $ in the orthonormal basis ${ket(b), ket(g)}$ where $sin(theta) = norm(P_G ket(psi))$. The eigenvalues and eigenstates of $Q$ are $lambda_(plus.minus) = e^(plus.minus 2 i theta)$ and $ket(e_(plus.minus)) = 1/sqrt(2)(ket(b) minus.plus i ket(g))$. So we can write $ket(psi) = sin(theta) ket(g) + cos(theta) ket(b) = 1/sqrt(2) (e^(-i theta) ket(e_+) + e^(i theta) ket(e_-))$. So $ket(psi)$ is an equally-weighted superposition of eigenstates of $Q$. Write $e^(plus.minus 2 i theta) = e^(2pi i phi_(plus.minus))$ with $phi_(plus.minus) in (0, 1)$. We have $phi_+ = theta \/ pi$ and $phi_- = (-2 theta + 2pi) \/ 2pi = 1 - theta \/ pi$. When $k << N$, $sin(theta) = sqrt(k\/N) approx theta$, so using $U_"PE"$ with $m$ qubits of precision $
+        U_"PE" ket(psi) = 1/sqrt(2) (e^(-i theta) ket(e_+) ket(tilde(phi)_+) + e^(i theta) ket(e_-) ket(tilde(phi)_-))
+    $ Measuring the QPE output gives (with probability $1\/2$) an estimate of $phi_+ = theta \/ pi approx 1/pi sqrt(k \/ N)$ or (with probability $1\/2$) an estimate of $phi_- = 1 - theta \/ pi approx 1 - 1/pi sqrt(k \/ N)$. So in either case, we get an estimate of $sqrt(k\/N)$ (since we can tell when $k << N$ which case we are in). By the @thm:phase-estimation, with probability at least $4 \/ pi^2$, QPE with $m$ lines gives us an approximation of $sqrt(k \/ N)$ to precision $O(1\/2^m)$, using $O(2^m)$ $Ctrl(Q)$ operations, each of which requires one query to $f$. Write $delta \/ sqrt(2^n) = 1 \/ 2^m$ for some $delta > 0$. So we can estimate $sqrt(k)$ to precision $delta$, and since $Delta(x^2) = 2x Delta(x)$, we estimate $sqrt(k)$ to additive error (precision) $O(delta sqrt(k))$ using $O(2^m) = O(sqrt(N) \/ delta)$ queries to $f$.
+]
+#remark[
+    The quantum counting algorithm is quadratically faster than the best possible classical algorithm, which is:
+    - Sample random $x$ from ${0, 1}^n$, then $Pr(f(x) = 1) = k\/N$.
+    - Draw $m$ samples $x_1, ..., x_m$, then the estimate is $tilde(k) = ell N \/ m$, where $m = |{i in [m]: f(x_i) = 1}|$.
+    We need $m = O(N\/delta^2)$ to estimate $k$ to high precision.
+]
+
+= Hamiltonian simulation
+
+We want to use a quantum system to simulate the evolution/dynamics of another quantum system, given its Hamiltonian $H$. For an $n$-qubit system, in general this requires $O(2^n)$ time on a classical computer. For some physically interesting classes of $H$, we have quantum algorithms that run in $O(poly(n))$ time.
+
+#proposition[
+    The Schrodinger equation which governs the time evolution of a physical state $ket(psi(t))$, which is given by (assuming $planck.reduce = 1$) $
+        dif / (dif t) ket(psi(t)) = -i H ket(psi(t)),
+    $ has solution $
+        ket(psi(t)) = e^(-i H t) ket(psi(0))
+    $ when $H$ is time-independent.
+]<prop:solution-to-finite-dimensional-time-independent-schrodinger-equation>
+#definition[
+    The *exponential* of a matrix $A in CC^(n times n)$ is defined as $
+        exp(A) = e^A := sum_(k = 0)^oo A^k / k!.
+    $
+]<def:matrix-exponential>
+#theorem[
+    If $H$ is Hermitian, then $e^(-i H t)$ is unitary for all $t in RR$.
+]<thm:evolution-operator-is-unitary-for-hermitian-matrices>
+#definition[
+    $U(t) = e^(-i H t)$ is called the *evolution operator*. Given $H$ and $t > 0$, we want to simulate $U(t)$ accurately.
+]<def:evolution-operator>
+#proposition[
+    If $A in CC^(n times n)$ has spectrum ${(lambda_i, ket(e_i)): i in [n]}$, then $
+        exp(A) = sum_(i = 1)^n exp(lambda_i) ket(e_i).
+    $
+]
+#definition[
+    The *operator norm* (*spectral norm*) of an operator $A: H -> H$ acting on the space $H$ of states is $
+        norm(A) & := max{norm(A ket(psi)): psi in H, thick norm(psi) = 1}.
+    $
+]<def:operator-norm>
+#theorem[
+    If $A$ is diagonalisable with eigenvalues $lambda_1, ..., lambda_n$, then $
+        norm(A) = max{abs(lambda_1), ..., abs(lambda_n)}.
+    $
+]
+#proposition[
+    The operator norm satisfies the following properties:
+    + *Submultiplicative*: $norm(A B) <= norm(A) norm(B)$
+    + *Triangle inequality*: $norm(A + B) <= norm(A) + norm(B)$.
+]<prop:operator-norm-is-submultiplicative-and-subadditive>
+#definition[
+    Let $U, tilde(U): H -> H$ be operators. $tilde(U)$ *$epsilon$-approximates* $U$ if $
+    norm(U - tilde(U)) <= epsilon,
+$ i.e. for all normalised states $ket(psi)$, $norm(U ket(psi) - tilde(U) ket(psi)) <= epsilon$.
+]<def:epsilon-approximation>
+#lemma[
+    Let $U_1, ..., U_m, tilde(U)_1, ..., tilde(U)_m$ be unitaries. Suppose $tilde(U)_i$ $epsilon$-approximates $U_i$ for each $1 <= i <= m$. Then $
+        norm(U_n dots.c U_1 - tilde(U)_n dots.c tilde(U)_1) <= n epsilon
+    $ So the error increases at most linearly.
 ]

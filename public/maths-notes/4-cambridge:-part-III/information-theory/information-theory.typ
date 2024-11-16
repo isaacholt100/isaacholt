@@ -1,11 +1,22 @@
 #import "@preview/fletcher:0.5.2" as fletcher: diagram, node, edge
 #import "../../template.typ": *
-#show: doc => template(doc, hidden: (), slides: false)
+
+#let name-abbrvs = (
+    "Data Processing Inequality for Entropy": "Data Processing",
+    "Data Processing Inequalities for Mutual Information": "Data Processing",
+    "Chain Rule for Mutual Information": "Chain Rule",
+    "Ruzsa Triangle Inequality for Entropy": "Ruzsa Triangle Inequality"
+)
+#show: doc => template(doc, hidden: (), slides: false, name-abbrvs: name-abbrvs)
 
 #let sim = sym.tilde
 #let Bern = math.op("Bern")
 #let Pois = math.op("Pois")
 #let Bin = math.op("Bin")
+
+= Probability basics
+
+TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, ... probably others.
 
 = Entropy
 
@@ -447,9 +458,9 @@
     - or equivalently, $P_(Z | X, Y)(z | x, y) = P_(Z | Y)(z | y)$.
     We denote this by writing $X - Y - Z$ and we say that $X, Y, Z$ form a Markov chain. Note that $X - Y - Z$ is equivalent to $Z - Y - X$, but not to $X - Z - Y$.
 ]<def:conditional-independence>
-#example[
+#note[
     For any function $g$ on $Y$, we have $X - Y - g(Y)$.
-]
+]<note:x-y-and-function-of-y-form-markov-chain>
 #corollary[
     $H(X_1^n) <= sum_(i = 1)^n H(X_i)$ with equality iff all $X_1^n$ are independent.
 ]
@@ -470,7 +481,7 @@
     Let $X$ be discrete RV on alphabet $A$ and $f$ be function on $A$. Then
     + $H(f(X)|X) = 0$.
     + $H(f(X)) <= H(X)$ with equality iff $f$ is injective.
-]
+]<prop:entropy-data-processing>
 #proofhints[
     Use that $x |-> (x, f(x))$ is injective and the chain rule.
 ]
@@ -509,7 +520,7 @@
     Let $X sim P_X$ and $X' sim Q_X$ be RVs on the same alphabet $A$, and $f: A -> B$ be an arbitrary function. Let $P_(f(X))$ and $Q_(f(X))$ be the PMFs of $f(X)$ and $f(X')$ respectively. Then $
         D(P_(f(X)) || Q_(f(X))) <= D(P_X || Q_X).
     $
-]<thm:data-processing-inequality-for-relative-entropy>
+]<thm:relative-entropy-data-processing>
 #proofhints[
     Use that $P_(f(X))(y) = sum_(x in f^(-1)({y})) P_X (x)$.
 ]
@@ -617,13 +628,12 @@
         & = EE[ln ((P_(X_1^n) (x_1^n))/(product_(i = 1)^n P_(Z_1^n)(X_i)) dot (product_(i = 1)^n P_(X_i)(X_i))/(product_(i = 1)^n P_(X_i)(X_i)))] \
         & = EE[ln (product_(i = 1)^n (P_(X_i)(x_i))/(P_(Z_i)(x_i)))] + sum_(x_1^n in A^n) P_(X_1^n) (x_1^n) ln 1/(product_(i = 1)^n P_(X_i)(x_i)) - H_e (X_1^n) \
         & = sum_(i = 1)^n D_e (P_(X_i) || P_(Z_i)) + sum_(i = 1)^n H_e (X_i) - H_e (X_1^n)
-    $ since for given $x_1 in A$, $sum_(x_2^n in A^n) P_(X_1^n)(x_1^n) = P_(X_1)(x_1)$ (and similarly for each $x_j$, $j = 2, ..., n$). Now note that $D_e (P_(X_i) || P_(Z_i)) = D_e (Bern(p_i) || Pois(p_i))$, and for all $p in [0, 1]$, $
-        D_e (Bern(p_i) || Pois(p_i)) & = p ln p/e^(-p) + (1 - p) ln (1 - p)/(p e^(-p)) \
-        & = p ln p + p^2 + (1 - p) ln(1 - p) + (1 - p) ln p + (1 - p)p \
-        & = ln(1 - p) + ln p + p - p ln (1 - p) \
-        & = (1 - p) ln(1 - p) + p + ln p \
-        & <= -(1 - p) p + p + ln p <= p^2
-    $ since $1 - p <= e^(-p)$ for all $p in [0, 1]$.
+    $ since for given $x_1 in A$, $sum_(x_2^n in A^n) P_(X_1^n)(x_1^n) = P_(X_1)(x_1)$ (and similarly for each $x_j$, $j = 2, ..., n$). Now note that $D_e (P_(X_i) || P_(Z_i)) = D_e (Bern(p_i) || Pois(p_i))$, and for all $p in (0, 1)$, $
+        D_e (Bern(p) || Pois(p)) & = (1 - p) ln (1 - p)/e^(-p) + p ln p/(p e^(-p)) \
+        & = (1 - p) ln(1 - p) + (1 - p)p + p^2 \
+        & <= (1 - p) ln(e^(-p)) + p \
+        & = p^2
+    $ since $1 - p <= e^(-p)$ for all $p in [0, 1]$. Similarly, if $p = 0$ or $1$, then $D_e (Bern(p) || Pois(p)) = 0 <= p^2$.
 ]
 #corollary[
     Let $X_1, ..., X_n$ be independent, with each $X_i sim Bern(p_i)$. Then $
@@ -733,7 +743,7 @@
     If $X - Y - Z$ (so $X$ and $Z$ are conditionally independent given $Y$), then $
         I(X; Z), I(X; Y | Z) <= I(X; Y).
     $
-]<thm:data-processing-inequalities-for-mutual-information>
+]<thm:mutual-information-data-processing>
 #proofhints[
     Use chain rule for mutual information twice on the same expression.
 ]
@@ -821,7 +831,7 @@
     For $A, B subset.eq ZZ$ the *difference set* of $A$ and $B$ is $
         A - B := {a - b: a in A, b in B}.
     $
-]<def:sumset>
+]<def:difference-set>
 #proposition[
     Let $A, B subset.eq ZZ$ be finite. Then $
         max{abs(A), abs(B)} <= abs(A + B) <= abs(A) abs(B).
@@ -835,9 +845,12 @@
 ]
 #proposition("Ruzsa Triangle Inequality")[
     Let $A, B, C subset.eq ZZ$ be finite. Then $
-        abs(A - C) <= (abs(A - B) abs(B - C))/abs(B)
+        abs(A - C) dot abs(B) <= (abs(A - B) abs(B - C)).
     $
 ]<prop:ruzsa-triangle-inequality>
+#proofhints[
+    Show that an appropriate function is injective.
+]
 #proof[
     Fix a presentation $y = a_y - c_y$ (where $a_y in A, c_y in C$) for each $y in A - C$. Let $
         f: B times (A - C) & -> (A - B) times (B - C) \
@@ -845,30 +858,62 @@
     $ If $f(b, y) = f(b', y')$, then $a_(y') - b' = a_y - b$ and $b' - c_(y') = b - c_y$. So $a_y - a_(y') = b - b' = c_y - c_(y')$. So $y = a_y - c_y = a_(y') - c_(y') = y'$. Hence $a_y = a_(y')$, and so $b = b'$. So $f$ is injective, so $abs(B times (A - C)) <= abs((A - B) times (B - C))$.
 ]
 #remark[
-    If $X_1^n$ is a large collection of IID RVs with common PMF $P$ on alphabet $A$, then the AEP tells us that we can concentrate on the $2^(n H)$ typical strings. Since $2^(n H) = (2^H)^n$ is typically much smaller than all $abs(A)^n = (2^(log abs(A)))^n$ strings, we can think of $2^H$ as the effective support size of the $X_i$.
+    If $X_1^n$ is a large collection of IID RVs with common PMF $P$ on alphabet $A$, then the AEP tells us that we can concentrate on the $2^(n H)$ typical strings. $2^(n H) = \(2^H\)^n$ is typically much smaller than all $abs(A)^n = (2^(log abs(A)))^n$ strings. We can think of $\(2^H\)^n$ as the effective support size of $P^n$, and can of $2^H$ as the effective support size of a single RV with entropy $H$.
+]
+#remark[
+    We can use the above interpretation to obtain useful conjectures about bounds for the entropy of discrete RVs, from corresponding results on bounds on sumsets. We start with a sumset bound, then replace subsets of $ZZ$ by independent RVs on $ZZ$, and replace $log abs(A)$ of each set $A$ by the entropy of the corresponding RV.
 ]
 #proposition[
     Let $X$ and $Y$ are independent RVs on alphabet $ZZ$, then $
         max{H(X), H(Y)} <= H(X + Y) <= H(X) + H(Y).
     $
+]<prop:sum-entropy-bounds>
+#proofhints[
+    - For lower bound, show that $H(X) <= H(X + Y)$ using data processing and similarly for $H(Y)$. The upper bound should follow directly from this calculation.
 ]
 #proof[
     For the lower bound, $
-        H(X) + H(Y) & = H(X, Y) quad & "by independence" \
-        & = H(Y, X + Y) quad & "by data processing" \
-        & = H(X + Y) + H(Y | X + Y) quad & "by chain rule" \
-        & <= H(X + Y) + H(Y) quad & "by conditioning reduces entropy"
-    $ Hence $H(X + Y) >= H(X)$, and the same argument shows that $H(X + Y) >= H(Y)$.
+        H(X) + H(Y) & = H(X, Y) quad & #[by @prop:entropy-chain-rule] \
+        & = H(Y, X + Y) quad & #[by @prop:entropy-data-processing] \
+        & = H(X + Y) + H(Y | X + Y) quad & #[by @prop:entropy-chain-rule] \
+        & <= H(X + Y) + H(Y) quad & #[by @prop:conditioning-reduces-entropy].
+    $ Note we have equality for data processing, since $(x, y) |-> (x, x + y)$ is injective. Hence $H(X + Y) >= H(X)$, and the same argument shows that $H(X + Y) >= H(Y)$.
 
-    For the upper bound, we have $H(X) + H(Y) = H(X + Y) + H(X | X + Y) >= H(X + Y)$ by non-negativity of conditional entropy.
+    For the upper bound, we have $H(X) + H(Y) = H(X + Y) + H(Y | X + Y) >= H(X + Y)$ by non-negativity of conditional entropy.
+]
+#lemma[
+    Let $X, Y, Z$ be independent RVs on alphabet $ZZ$. Then $
+        H(X - Z) + H(Y) <= H(X - Y, Y - Z).
+    $
+]
+#proofhints[
+    - Show that $I(X; X - Z) <= I(X; (X - Y, Y - Z))$.
+    - Rewrite both sides of the above inequality in terms of entropies, using @prop:entropy-data-processing.
+]
+#proof[
+    Since $X - Z = (X - Y) + (Y - Z)$, $X$ and $X - Z$ are conditionally independent given $(X - Y, Y - Z)$ by @note:x-y-and-function-of-y-form-markov-chain. Thus by @thm:mutual-information-data-processing for mutual information, we have $I(X; (X - Y, Y - Z)) >= I(X; X - Z)$. Now $
+        I(X; X - Z) & = H(X - Z) - H(X - Z | X) \
+        & = H(X - Z) - H(Z | X) = H(X - Z) - H(Z)
+    $ by @prop:entropy-data-processing (since, given $X = x$, $x - z |-> z$ is injective), and independence of $X$ and $Z$. Also, $
+        I(X; (X - Y, Y - Z)) & = H(X - Y, Y - Z) + H(X) - H(X, X - Y, Y - Z) \
+        & = H(X - Y, Y - Z) + H(X) - H(X, Y, Z) \
+        & = H(X - Y, Y - Z) - H(Y) - H(Z)
+    $ by @prop:entropy-data-processing (since $(x, x - y, y - z) |-> (x, y, z)$ is injective), and independence of $X$, $Y$ and $Z$.
 ]
 #theorem("Ruzsa Triangle Inequality for Entropy")[
     Let $X, Y, Z$ be independent RVs on alphabet $ZZ$. Then $
         H(X - Z) + H(Y) <= H(X - Y) + H(Y - Z).
     $
+]<thm:entropy-ruzsa-triangle-inequality>
+#proofhints[
+    By above lemma.
 ]
 #proof[
-    By the data processing inequality for mutual information, we have $I(X; (X - Y, Y - Z)) >= I(X; X - Z)$. So $H(X) + H(X - Y, Y - Z) - H(X, X - Y, Y - Z) >= H(X) + H(X - Z)$. So $H(X - Y, Y - Z) - H(X, Y, Z) >= H(X - Z) - H(X, Z)$. Hence $H(X - Y, Y - Z) - H(Y) >= H(X - Z)$, and $H(X - Y, Y - Z) >= H(X - Y) + H(Y - Z)$.
+    By the above lemma, we have $
+        H(X - Z) + H(Y) & <= H(X - Y, Y - Z) \
+        & = H(X - Y) + H(Y - Z | X - Y) quad & #[by @prop:entropy-chain-rule] \
+        & <= H(X - Y) + H(Y - Z).
+    $ by @prop:conditioning-reduces-entropy.
 ]
 
 == The doubling-difference inequality for entropy
@@ -879,23 +924,282 @@
         Delta^- & := H(X_1 - X_2) - H(X_1).
     $
 ]<def:entropy-increase>
+#proposition[
+    For IID $X_1, X_2$ on $ZZ$, we have $
+        Delta^+ & = I(X_1 + X_2; X_2), \
+        Delta^- & = I(X_1 - X_2; X_2).
+    $
+]
+#proofhints[
+    Straightforward.
+]
+#proof[
+    We have $
+        I(X_1 + X_2; X_2) & = H(X_1 + X_2) + H(X_2) - H(X_1 + X_2, X_2) \
+        & = H(X_1 + X_2) + H(X_2) - H(X_1, X_2) \
+        & = H(X_1 + X_2) + H(X_2) - H(X_1) - H(X_2)
+    $ by @prop:entropy-data-processing (since $(x_1 + x_2, x_2) |-> (x_1, x_2)$ is injective) and @prop:entropy-chain-rule. The proof is identical for $Delta^-$.
+]
 #lemma[
     Let $X, Y, Z$ be independent RVs on alphabet $ZZ$. Then $
         H(X + Y + Z) + H(Y) <= H(X + Y) + H(Y + Z).
-    $ In particular, $H(X + Z) + H(Y) <= H(X + Y) + H(Y + Z)$.
+    $
+]
+#proofhints[
+    - Show that $I(X; X + Y + Z) <= I(X + Y; X)$.
+    - Rewrite both sides in terms of entropies.
 ]
 #proof[
-    By the data processing inequality for mutual information, since $X - (X + Y) - (X + Y + Z)$, we have $I(X; X + Y) >= I(X; X + Y + Z)$, i.e. $H(X) + H(X + Y) - H(X, X + Y) >= H(X) + H(X + Y + Z) - H(X, X + Y + Z)$. $H(X, X + Y) = H(X, Y) = H(X) + H(Y)$ by independence. So we have $H(X + Y) - H(Y) >= H(X + Y + Z) - H(Y + Z)$.
+    Since $X - (X + Y, Z) - (X + Y + Z)$ form a Markov chain by @note:x-y-and-function-of-y-form-markov-chain, we have, by @thm:mutual-information-data-processing and @prop:mutual-information-chain-rule for mutual information, $
+        I(X; X + Y + Z) & <= I(X + Y, Z; X) = I(X + Y; X) + I(Z; X | X + Y). \
+        & = I(X + Y; X)
+    $ since $Z$ is (conditionally) independent of $X$ given $X + Y$. Now $
+        I(X + Y; X) & = H(X + Y) + H(X) - H(X + Y, X) \
+        & = H(X + Y) + H(X) - H(Y, X) \
+        & = H(X + Y) + H(X) - H(Y) - H(X) \
+        & = H(X + Y) - H(Y)
+    $ since $(y, x) |-> (x + y, x)$ is injective and $X$ and $Y$ are independent. Also, $
+        I(X + Y + Z; X) & = H(X + Y + Z) + H(X + Y + Z | X) \
+        & = H(X + Y + Z) - H(Y + Z | X) \
+        & = H(X + Y + Z) - H(Y + Z)
+    $ since, given $X = x$, $x + y + z |-> y + z$ is injective, and $X$ and $Y + Z$ are independent.
 ]
 #theorem("Doubling-difference Inequality")[
     Let $X_1$ and $X_2$ be IID RVs on $ZZ$. Then $
         1/2 <= Delta^+ / Delta^- <= 2.
-    $ Equivalently, $
-        1/2 <= I(X_1 + X_2; X_2)/I(X_1 - X_2; X_2) <= 2.
     $
 ]
+#proofhints[
+    - For lower bound, use @thm:entropy-ruzsa-triangle-inequality for appropriate RVs.
+    - For upper bound, 
+]
 #proof[
-    For the lower bound, let $X, -Y, Z$ be IID with the same distribution as $X_1$. Then by the Ruzsa triangle inequality, $H(X_1 - X_2) + H(X_1) <= H(X_1 + X_2) + H(X_1 + X_2)$. So $2(H(X_1 + X_2) - H(X_1)) >= H(X_1 - X_2) - H(X_1)$.
+    For the lower bound, let $X, -Y, Z$ be IID with the same distribution as $X_1$. Then by the @thm:entropy-ruzsa-triangle-inequality, $
+        H(X_1 - X_2) + H(X_1) <= H(X_1 + X_2) + H(X_1 + X_2).
+    $ So $2(H(X_1 + X_2) - H(X_1)) >= H(X_1 - X_2) - H(X_1)$.
 
-    For the upper bound, let $X, -Y, Z$ be IID with the same distribution as $X_1$. Then by the above lemma, $H(X_1 + X_2) + H(X_1) <= H(X_1 - X_2) + H(X_1 - X_2)$ so $H(X_1 + X_2) - H(X_1) <= 2(H(X_1 - X_2) - H(X_1))$.
+    For the upper bound, let $X, -Y, Z$ be IID with the same distribution as $X_1$. Then by the above lemma and @prop:sum-entropy-bounds, $
+        H(X_1 + X_2) + H(X_1) <= H(X_1 - X_2) + H(X_1 - X_2)
+    $ so $H(X_1 + X_2) - H(X_1) <= 2(H(X_1 - X_2) - H(X_1))$.
+]
+
+
+= Entropy rate
+
+#definition[
+    For an arbitrary source $vd(X) = {X_n: n in NN}$, the *entropy rate* $H(vd(X))$ of $vd(X)$ is the limit of the average number of bits per symbol: $
+        H(vd(X)) = lim_(n -> oo) 1/n H(X_1^n)
+    $ whenever the limit exists.
+]<def:entropy-rate>
+#example[
+    If $vd(X)$ is memoryless (so a sequence of IID RVs) with common entropy $H = H(X_i)$, then the entropy rate is $
+        H(vd(X)) = lim_(n -> oo) 1/n H(X_1^n) = lim_(n -> oo) 1/n sum_(i = 1)^n H(X_i) = H.
+    $
+]
+#example[
+    Let $vd(X) = {X_n: n in NN}$ be an irreducible, aperiodic Markov chain on a finite alphabet $A$ with transition matrix $Q$, where $
+        Q_(a b) = Pr(X_(n + 1) = b | X_n = a), quad forall a, b in A
+    $ Let $X_1 sim P_(X_1)$ be the initial distribution and $pi$ be the unique stationary distribution ($Pr(X_n = x) -> pi(x)$ as $n -> oo$). $vd(X)$ has a unique invariant distribution $pi$ to which it converges: $
+        forall x in A, quad Pr(X_n = x) -> pi(x) quad "as" n -> oo
+    $ and hence also $
+        Pr(X_(n- 1) = x, X_n = y) = Pr(X_n = x) Q_(x y) -> pi(x) Q_(x y).
+    $ Then by the @prop:entropy-chain-rule and conditional independence, $
+        H(X_1^n) & = sum_(i = 1)^n H(X_i | X_1^(i - 1)) \
+        & = H(X_1) + sum_(i = 2)^n H(X_i | X_(i - 1)) \
+        & = H(X_1) - H(X_(n + 1) | X_n) + sum_(i = 1)^n H(X_(i + 1) | X_i).
+    $ By the convergence theorem for Markov chains, we have $P_(X_n) -> pi$ as $n -> oo$. $H(X | Y)$ is a continuous function of the joint distribution $P_(X, Y)$, so $H(X_n | X_(n - 1)) -> H(overline(X_1) | overline(X_0))$ as $n -> oo$, where $overline(X_0) sim pi$ and $Pr(overline(X_1) = b | overline(X_1) = a) = Q_(a b)$. We have $
+        1/n H(X_1^n) = 1/n (H(X_1) - H(X_(n + 1) | X_n)) + 1/n sum_(i = 1)^n H(X_(i + 1) | X_i)
+    $ The first term tends to $0$ since the numerator is bounded, and the summands in the second term tend to $H(overline(X_1) | overline(X_0))$. So the entropy rate exists and is equal to $H(vd(X)) = H(overline(X_1) | overline(X_0))$.
+]
+#definition[
+    A source $vd(X)$ is *stationary* if for any block length $n in NN$, the distribution of $X_(k + 1)^(k + n)$ is independent of $k$.
+]<def:source.stationary>
+#remark[
+    If $vd(X) = {X_n: n in NN}$ is one-sided stationary process, then by Kolmogorov's extension theorem, $vd(X)$ admits a unique two-sided extension to $vd(X) = {X_n: n in ZZ}$.
+]
+#theorem[
+    If $vd(X) = {X_n: n in NN}$ is a stationary process on finite alphabet $A$, then its entropy rate exists and is equal to $
+        H(vd(X)) = lim_(n -> oo) 1/n H(X_1^n) = lim_(n -> oo) H(X_n | X_1^(n - 1)).
+    $
+]<thm:entropy-rate-of-stationary-source>
+#proofhints[
+    Show that the sequence $\{H(X_n) | X_1^(n - 1): n in NN\}$ is non-increasing and use the Cèsaro Lemma.
+]
+#proof[
+    The sequence $\{H(X_n) | X_1^(n - 1): n in NN\}$ is non-negative by non-negativity of conditional entropy, and is non-increasing, since $
+        H(X_(n + 1) | X_1^n) & <= H(X_(n + 1) | X_2^n) quad & #[by @prop:conditioning-reduces-entropy] \
+        & = H(X_2^(n + 1)) - H(X_2^n) quad & #[by @prop:entropy-chain-rule] \
+        & = H(X_1^n) - H(X_1^(n - 1)) quad & "by stationarity" \
+        & = H(X_(n - 1) | X_1^(n - 2)) quad & #[by @prop:entropy-chain-rule].
+    $ Hence the limit $lim_(n -> oo) H(X_n | X_1^(n - 1))$ exists, and so by the Cèsaro Lemma, the averages converge to the same limit. But by the @prop:entropy-chain-rule, the averages are $
+        1/n sum_(i = 1)^n H(X_i | X_1^(i - 1)) = 1/n H(X_1^n).
+    $
+]
+#theorem[
+    For a stationary process $vd(X) = {X_n: n in ZZ}$ on a finite alphabet $A$, $
+        H(vd(X)) = H(X_0 | X_(-oo)^(-1)).
+    $
+]<thm:entropy-rate-is-conditional-entropy-given-infinite-past>
+#proofhints[
+    Uses measure-theoretic probability, so beyond the scope of the course.
+]
+#proof[
+    By Martingale convergence, we have that $
+        P(x_0 | X_(-n)^(-1)) -> P(x_0 | X_(-oo)^(-1)) quad "almost surely" quad "as" n -> oo,
+    $ where $P(dot | x_(-n)^(-1))$ is the conditional distribution of $X_0$ given $X_(-n)^(-1) = x_(-n)^(-1)$, and $P(dot | x_(-oo)^(-1))$ is the conditional distribution of $X_0$ given $X_(-oo)^(-1) = x_(-oo)^(-1)$. Now, we can take expectations to obtain that, by the bounded convergence theorem (since $p |-> p log p$ is continuous and bounded for $p in [0, 1]$), $
+        H(X_0 | X_(-n)^(-1)) & = EE[-sum_(x_0 in A) P(x_0 | X_(-n)^(-1)) log P(x_0 | X_(-n)^(-1))] \ & -> EE[-sum_(x_0 in A) P(x_0 | X_(-oo)^(-1)) log P(x_0 | X_(-oo)^(-1))] \
+        & =: H(X_0 | X_(-oo)^(-1)) quad "almost surely" quad "as" n -> oo.
+    $ Finally, $H(X_0 | X_(-n)^(-1)) = H(X_(n + 1) | X_1^n)$ by stationarity, so we are done by @thm:entropy-rate-of-stationary-source.
+]
+#definition[
+    Let $vd(X) = {X_n: n in ZZ}$ be a stationary source on finite alphabet $A$, and define the (left) *shift* operator $T: A^ZZ -> A^ZZ$ on sequences $A^ZZ$ by $
+        (T x)_n = x_(n + 1) quad forall n in ZZ.
+    $ $vd(X)$ is *ergodic* if all shift invariant events are trivial, i.e. for any measurable $B subset.eq A^ZZ$, we have $
+        T^(-1) B = B ==> Pr(X_(-oo)^oo in B) = 0 "or" 1.
+    $ Intuitively, an ergodic process is one which satisfies the general form of the strong law of large numbers.
+
+    It turns out that ergodicity is equivalent to the validity of the following:
+]<def:source.ergodic>
+#theorem("Birkhoff's Ergodic Theorem")[
+    Let $vd(X) = {X_n: n in ZZ}$ be a stationary ergodic source on alphabet $A$. Then for any measurable function $f: A^ZZ -> RR$ such that $
+        EE[abs(f(X_(-oo)^oo))] < oo,
+    $ we have $
+        1/n sum_(i = 1)^n f(T^i X_(-oo)^oo) -> EE[f(X_(-oo)^oo)] quad "almost surely" quad "as" n -> oo 
+    $
+]<thm:birkhoff>
+#proofhints[
+    Beyond the scope of this course.
+]
+#proof[
+    Omitted.
+]
+#remark[
+    The strong law of large numbers follows instantly from Birkhoff by setting $f(x_(-oo)^oo) = x_1$.
+]
+#example[
+    Every IID source is ergodic.
+]
+#theorem("Shannon-McMillan-Breiman")[
+    Let $vd(X) = {X_n: n in NN}$ be a stationary ergodic source on alphahbet $A$ with entropy rate $H = H(vd(X))$, then $
+        -1/n log P_n (X_1^n) -> H "almost surely as" n -> oo
+    $ where $P_n$ is the PMF of $X_1^n$.
+]<thm:shannon-mcmillan-breiman>
+#proof[
+    Idea: by @prop:entropy-chain-rule, we have $
+        -1/n log P_n (X_1^n) = -1/n log product_(i = 1)^n P(X_i | X_1^(i - 1)) = 1/n sum_(i = 1)^n [-log P(X_i | X_1^(i - 1))]
+    $ but we cannot directly apply the ergodic theorem to this, since $-log P(X_i | X_1^(i - 1))$ is not of the form $f(T^i x_(-oo)^oo)$. Instead, note that by @thm:birkhoff and @thm:entropy-rate-is-conditional-entropy-given-infinite-past, $
+        -1/n log P(X_1^n | X_(-oo)^0) & = 1/n sum_(i = 1)^n [-log P(X_i | X_(-oo)^(i - 1))] \
+        & -> EE[-log P(X_0 | X_(-oo)^(-1))] \
+        & =: H(X_0 | X_(-oo)^(-1)) = H "almost surely" quad "as" n -> oo.
+    $ Also, by @thm:birkhoff, for each fixed $k >= 1$, $
+        1/n sum_(i = 1)^n (-log P(X_i | X_(i - k)^(i - 1))) & -> EE[-log P(X_0 | X_(-k)^(-1))] \
+        & =: H(X_0 | X_(-k)^(-1)) "almost surely" quad "as" n -> oo.
+    $
+    
+    
+    we show $
+        liminf_(n -> oo) -1/n sum_(i = 1)^n P(X_i | X_(-oo)^(i - 1)) & = EE[-log P(X_0 | X_(-oo)^(-1))] \
+        liminf_(n -> oo)  -1/n log P_n (X_1^n) & <= limsup_(n -> oo) -1/n log P_n (X_1^n) \
+        & <= limsup_(n -> oo) -1/n sum_(i = 1)^n log P(X_i | X_(i - k)^(i - 1)) \
+        & = EE[-log P(X_0 | X_(-k)^(-1))] \
+        & = H(X_0 | X_(-k)^(-1))
+    $
+
+    We have $
+        Pr(-1/n log P(X_1^n | X_(-oo)^0) - (-1/n log P_n (X_1^n)) > epsilon) & = Pr(1/n log (P_n (X_1^n))/(P(X_1^n | X_(-oo)^0)) > epsilon) \
+        & = Pr((P_n (X_1^n))/(P(X_1^n | X_(-oo)^0)) > 2^(n epsilon)) \
+        & <= 2^(-n epsilon) EE[(P_n (X_1^n))/(P(X_1^n | X_(-oo)^0))] quad "by markov's inequality" \
+        & <= 2^(-n epsilon) EE[EE[(P_n (X_1^n))/(P(X_1^n | X_(-oo)^0)) | X_(-oo)^0]] \
+        & = 2^(-n epsilon) EE[sum_(x_1^n \ P(x_1^n | X_(-oo)^0) > 0) P(x_1^n | X_(-oo)^0) (P_n (x_1^n))/(P(x_1^n | X_(-oo)^0))] \
+        & <= 2^(-n epsilon)
+    $ which is summable, so by Borel-Cantelli, $
+        liminf_(n -> oo) -1/n log P(X_1^n | X_(-oo)^0) <= liminf_(n -> oo) -1/n log P_n (X_1^n) "almost surely".
+    $ For each fixed $k$, consider the sequence of PMFs $Q_n^((k))(x_1^n) = P_k (x_1^k) product_(i = k + 1)^n P(x_i | X_(i - k)^(i - 1))$ for $x_1^n in A^n$. Then $
+        & -1/n log Q_n^((k)) (X_1^n) - [-1/n sum_(i = 1)^n log P(x_i | x_(i - k)^(i - 1))] \
+        & = -1/n [log P_k (x_1^k) - sum_(i = 1)^k log P(X_i | X_(i - k)^(i - 1))] \
+        & -> 0 "almost surely" "as" n -> oo
+    $ So suffices to show that $limsup_(n -> oo) -1/n log P_n (X_1^n) <= limsup_(n -> oo) -1/n log Q_n^((k)) (X_1^n)$ almost surely. So again, let $epsilon > 0$ be arbitrary, then $
+        & Pr(-1/n log P_n (X_1^n) - (-1/n log Q_n^((k))(X_1^n)) > epsilon) \
+        & = Pr((Q_n^((k))(X_1^n))/(P_n (X_1^n)) > 2^(n epsilon)) <= 2^(-n epsilon) EE[(Q_n^((k)) (X_1^n))/(P_n (X_1^n))] "by markov's inequality" \
+        & <= 2^(-n epsilon) sum_(x_1^n in A^n) P_n (x_1^n) (Q_n^((k))(x_1^n))/(P_n (x_1^n)) = 2^(-n epsilon)
+    $ which is summable, so by Borel-Cantelli and the fact that $epsilon > 0$ was arbitrary, we have $
+     limsup_(n -> oo) -1/n log P_n (X_1^n) <= limsup_(n -> oo) -1/n sum_(i = 1)^n log P(X_i | X_(i - k)^(i - 1))   
+    $
+]
+// TODO: look at proofs of things relying on AEP, convince yourself the arguments work with this general result in place of AEP.
+
+
+= Types and large deviations
+
+== The method of types
+
+#definition[
+    Let $A$ be a finite alphabet and $x_1^n in A^n$. The *type* of $x_1^n$ is its empirical distribution $hat(P)_n$: $
+        hat(P)_n (a) = 1/n sum_(i = 1)^n bb(1)_{x_i = a}.
+    $
+]
+#notation[
+    For a finite alphabet $A = {a_1, ..., a_m}$, let $cal(P)$ denote the set of all PMFs on $A$: $
+        cal(P) = {P in [0, 1]^m: sum_(a in A) P(a) = 1}.
+    $ Note that $cal(P)$ is an $m$-simplex.
+]
+#notation[
+    We write $cal(P)_n$ for the set of all *$n$-types*: $
+        cal(P)_n = {P in cal(P): n P(a) in ZZ thick forall a in A}.
+    $ Note that $cal(P)_n$ is finite.
+]
+#proposition[
+    We have $abs(cal(P)_n) <= (n + 1)^m$.
+]
+#proofhints[
+    Straightforward.
+]
+#proof[
+    Each $P in cal(P)_n$ is of the form $(k_1 \/ n, ..., k_m \/ n)$. There are at most $(n + 1)$ choices ($0, ..., n$) for each $k_i$.
+]
+#proposition[
+    Let $x_1^n in A^n$ have type $hat(P)_n$. Then for any PMF $Q$, $
+        Q^n (x_1^n) = 2^(-n\(H\(hat(P)_n\) + D\(hat(P)_n || Q\)\)).
+    $ In particular, if $Q = hat(P)_n$, then $Q^n (x_1^n) = 2^(-n H(Q))$.
+]
+#proofhints[
+    Rewrite $log Q^n (x_1^n)$.
+]
+#proof[
+    We have $
+        log Q^n (x_1^n) & = sum_(i = 1)^n log Q(x_i) \
+        & = sum_(i = 1)^n sum_(a in A) bb(1)_({x_i = a}) log Q(a) \
+        & = n sum_(a in A) 1/n sum_(i = 1)^n bb(1)_({x_i = a}) log Q(a) \
+        & = n sum_(a in A) hat(P)_n (a) log Q(a) = -sum_(a in A) hat(P)_n (a) log ((hat(P)_n (a))/(Q(a)) 1/(hat(P)_n (a))) \
+        & = -n (sum_(a in A) hat(P)_n (a) log (hat(P)_n (a))/(Q(a)) + sum_(a in A) hat(P)_n (a) log 1/(hat(P)_n (a))) \
+        & = -n\(D\(hat(P)_n || Q\) + H\(hat(P)_n\))
+    $
+]
+#definition[
+    Given a $n$-type $P$, its *type class* is $
+        T(P) := {x_1^n in A^n: hat(P)_(x_1^n) = P}.
+    $ Note that $A^n = product.co_(P in cal(P)_n) T(P)$: since $A^n$ has size $abs(A)^n$ exponential in $n$, and the union is over $abs(cal(P)_n) <= (n + 1)^m$ (polynomial in $n$) elements, at least one type class must contain exponentially many strings.
+
+    $T(P)$ consists of all possible arrangements of $n P(a_1)$ $a_1$'s, ..., $n P(a_m)$ $a_m$'s, so $
+        abs(T(P)) = (n!)/(product_(j = 1)^m (n P(a_j))!).
+    $
+]
+#lemma[
+    Let $P in cal(P)_n$. Then $
+        P^n (T(P)) = max{P^n (T(Q)): Q in cal(P)_n}.
+    $ i.e. the most likely type class under $P^n$ is $T(P)$.
+]
+#proofhints[
+    
+]
+#proof[
+    Let $Q in cal(P)_n$ be arbitrary. Then $
+        (P^n (T(P)))/(P^n (T(Q))) & = (abs(T(P)) dot product_(i = 1)^m P(a_i)^(n P(a_i)))/(abs(T(Q)) dot product_(i = 1)^m P(a_i)^(n Q(a_i))) \
+        & = (n!)/(product_(i = 1)^m (n P(a_i))!) dot (product_(i = 1)^m (n Q(a_i))!)/(n!) product_(i = 1)^m P(a_i)^(n(P(a_i) - Q(a_i))) \
+        & = product_(i = 1)^m P(a_i)^(n(P(a_i) - Q(a_i))) product_(i = 1)^m ((n Q(a_i))!)/((n P(a_i))!)
+    $ Now since $k! \/ ell! >= ell^(k - ell)$ (to show this, consider $k >= ell$ and $k < ell$ cases separately), this is $
+        >= product_(i = 1)^m (n P(a_i))^(n(P(a_i) - Q(a_i))) product_(i = 1)^m (n(P(a_i)))^(n(Q(a_i) - P(a_i))) \
+        & = product_(i = 1)^m n^(n(Q(a_i) - P(a_i))) \
+        & = n^(n sum_(i = 1)^m (Q(a_i) - P(a_i))) = 1
+    $ since probabilities sum to $1$.
 ]

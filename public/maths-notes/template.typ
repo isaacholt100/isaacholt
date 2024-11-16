@@ -33,7 +33,7 @@
     return lower(name)
 }
 
-#let template(doc, hidden: ("proof", ), slides: false) = {
+#let template(doc, hidden: ("proof", ), slides: false, name-abbrvs: (:)) = {
 	set text(
         font: "New Computer Modern",
 		size: if slides { 24pt } else { 12pt },
@@ -88,6 +88,23 @@
     ]
     
     show link: underline
+
+    show ref: it => {
+        let ref-name = str(it.target)
+        if it.element != none and it.element.func() == figure and it.element.caption != none {
+            let full-name = str(it.element.caption.body.text)
+            let name = if full-name in name-abbrvs {
+                name-abbrvs.at(full-name)
+            } else {
+                full-name
+            }
+            link(it.target, name)
+        } else {
+            it
+        }
+    }
+    show ref: set text(fill: blue)
+    show ref: underline
 
     if not slides {
         outline()
