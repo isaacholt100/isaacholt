@@ -63,10 +63,10 @@
             cetz.canvas({
                 import cetz.draw: *
 
-                draw.rect((1, 4.5), (2, 5.5), radius: 0.2, name: "l3")
-                draw.rect((0, 3), (3, 4), radius: 0.2, name: "l2")
-                draw.rect((0, 1.5), (3, 2.5), radius: 0.2, name: "l1")
-                draw.rect((1, 0), (2, 1), radius: 0.2, name: "l0")
+                draw.rect((1, 4.5), (2, 5.5), radius: 50%, name: "l3")
+                draw.rect((0, 3), (3, 4), radius: 50%, name: "l2")
+                draw.rect((0, 1.5), (3, 2.5), radius: 50%, name: "l1")
+                draw.rect((1, 0), (2, 1), radius: 50%, name: "l0")
                 content("l3", box[$X^((3))$])
                 content("l2", box[$X^((2))$])
                 content("l1", box[$X^((1))$])
@@ -75,11 +75,11 @@
             cetz.canvas({
                 import cetz.draw: *
 
-                draw.rect((2, 6), (3, 7), radius: 0.2, name: "l4")
-                draw.rect((1, 4.5), (4, 5.5), radius: 0.2, name: "l3")
-                draw.rect((0, 3), (5, 4), radius: 0.2, name: "l2")
-                draw.rect((1, 1.5), (4, 2.5), radius: 0.2, name: "l1")
-                draw.rect((2, 0), (3, 1), radius: 0.2, name: "l0")
+                draw.rect((2, 6), (3, 7), radius: 50%, name: "l4")
+                draw.rect((1, 4.5), (4, 5.5), radius: 50%, name: "l3")
+                draw.rect((0, 3), (5, 4), radius: 50%, name: "l2")
+                draw.rect((1, 1.5), (4, 2.5), radius: 50%, name: "l1")
+                draw.rect((2, 0), (3, 1), radius: 50%, name: "l0")
                 content("l4", box[$X^((4))$])
                 content("l3", box[$X^((3))$])
                 content("l2", box[$X^((2))$])
@@ -193,10 +193,50 @@
     - Reason that joining these matchings together, together with length $1$ chains of subsets of $X^((floor(n\/2)))$ not included in a matching, result in a partition of $powset(X)$ into $binom(n, floor(n\/2))$ chains, and conclude result from here.
 ]
 #proof[
-    We use the idea: from "a chain meets each layer in $<=1$ points, because a layer is an antichain", we try to decompose the cube into chains. In particular, we partition $powset(X)$ into $binom(n, floor(n\/2))$ chains, so each subset of $X$ appears exactly once in one chain. Then we are done (since to form an antichain, we can pick at most one element from each chain). To achieve this, it is sufficient to find:
+    We use the idea: from "a chain meets each layer in $<=1$ points, because a layer is an antichain", we try to decompose the cube into chains.
+    #fig-example[
+        #figure(
+            canvas({
+                import cetz.draw: *
+
+                diamond(3, 4)
+                hobby((1.4, 0.3), (1.45, 1), (1.4, 2), (1.55, 3), (1.5, 3.5), stroke: diagram-colors.red)
+                hobby((1, 1.1), (0.95, 1.7), (1.05, 2.4), stroke: diagram-colors.red)
+                hobby((2, 0.8), (2.1, 1.2), (2.2, 2.7), stroke: diagram-colors.red)
+                hobby((1.7, 0.6), (1.65, 1.2), (1.75, 2), stroke: diagram-colors.red)
+                hobby((1.8, 2.2), (1.9, 2.5), (1.8, 3.4), stroke: diagram-colors.red)
+                hobby((1, 0.8), (0.8, 1.2), (0.6, 2), (0.7, 2.4), (0.8, 2.7), (1.1, 3.2), stroke: diagram-colors.red)
+            }),
+            caption: [Decomposition of $powset(X)$ into chains.]
+        )
+    ]
+    In particular, we partition $powset(X)$ into $binom(n, floor(n\/2))$ chains, so each subset of $X$ appears exactly once in one chain. Then we are done (since to form an antichain, we can pick at most one element from each chain). To achieve this, it is sufficient to find:
     - For each $r < n/2$, a matching from $X^((r))$ to $X^((r + 1))$ (a matching is a set of disjoint edges, one for each point in $X^((r))$).
     - For each $r > n/2$, a matching from $X^((r))$ to $X^((r - 1))$.
-    Then put these matchings together to form a set of chains, each passing through $X^((floor(n\/2)))$. If a subset $X^((floor(n\/2)))$ has a chain passing through it, then this chain is unique. The subsets with no chain passing through form their own one-element chain. By taking complements, it is enough to construct the matchings just for $r < n/2$ (since a matching from $X^((r))$ to $X^((r + 1))$ induces a matching from $X^((n - r - 1))$ to $X^((n - r))$: there is a correspondence between $X^((r))$ and $X^((n - r))$ by taking complements, and taking complements reverse inclusion, so edges in the induced matching are guaranteed to exist).
+    Then put these matchings together to form a set of chains, each passing through $X^((floor(n\/2)))$.
+    #fig-example[
+        #figure(
+            cetz.canvas({
+                import cetz.draw: *
+
+                draw.rect((2, 6), (3, 7), radius: 50%, name: "l4")
+                draw.rect((-1, 4.5), (6, 5.5), radius: 50%, name: "l3")
+                draw.rect((0, 3), (5, 4), radius: 50%, name: "l2")
+                draw.rect((1, 1.5), (4, 2.5), radius: 50%, name: "l1")
+                draw.rect((2, 0), (3, 1), radius: 50%, name: "l0")
+                content((7, 0.5), box[$X^((4))$])
+                // content("l3", box[$X^((3))$])
+                // content("l2", box[$X^((2))$])
+                // content("l1", box[$X^((1))$])
+                // content("l0", box[$X^((0))$])
+                let points = ((0, 5), (1, 5), (2, 5))
+                for point in points {
+                    circle(point, ..point-style)
+                }
+            })
+        )
+    ]
+    If a subset $X^((floor(n\/2)))$ has a chain passing through it, then this chain is unique. The subsets with no chain passing through form their own one-element chain. By taking complements, it is enough to construct the matchings just for $r < n/2$ (since a matching from $X^((r))$ to $X^((r + 1))$ induces a matching from $X^((n - r - 1))$ to $X^((n - r))$: there is a correspondence between $X^((r))$ and $X^((n - r))$ by taking complements, and taking complements reverse inclusion, so edges in the induced matching are guaranteed to exist).
     
     Let $G$ be the (bipartite) subgraph of $Q_n$ spanned by $X^((r)) union X^((r + 1))$. For any $S subset.eq X^((r))$, the number of $S$-$Gamma(S)$ edges in $G$ is $|S|(n - r)$ (counting from below) since there are $n - r$ ways to add an element. This number is $<= |Gamma(S)| (r + 1)$ (counting from above), since $r + 1$ ways to remove an element. Hence $|Gamma(S)| >= (|S| (n - r))/(r + 1) >= |S|$ as $r < n/2$. So by Hall's theorem, since there is a matching from $S$ to $Gamma(S)$, there is a matching from $X^((r))$ to $X^((r + 1))$.
 ]

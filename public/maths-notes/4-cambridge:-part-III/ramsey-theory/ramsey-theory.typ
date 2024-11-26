@@ -813,3 +813,53 @@ Strengthened Van der Waerden says that the system $x_1 + x_2 = y_1, x_1 + 2x_2 =
 
 
 = Euclidean Ramsey theory
+
+If we $2$-colour $RR^2$, there are 2 points of distance at most $1$ of the same colour (consider equilateral triangel).
+
+If we $3$-colour $RR^3$, there are $2$ points of distance at most $1$ of the same colour (consider regular tetrahedron)
+
+If we $k$-colour $RR^k$, then by considering the regular simplex with $k + 1$ vertices such that any $2$ points have distance $1$ between them, $2$ points have the same colour.
+
+#definition[
+    $X'$ is an *isometric copy* of $X$ if there exists a bijection $phi: X -> X'$ which prserves distances: $
+        forall x, y in X, quad d(x, y) = d(phi(x), phi(y)).
+    $
+]
+#definition[
+    A finite set $X subset.eq RR^m$ is *(Euclidean) Ramsey* if for all $k in NN$, there exists a finite set $S subset.eq RR^n$ ($n$ could be very large) such that for any $k$-colouring of $S$, there exists a monochromatic isometric copy of $X$.
+]
+#example[
+    - ${0, 1}$ is Ramsey, by the above simplex argument.
+    - The equilateral triangle of side length $1$ is Ramsey, by considering the $2k$-dimensional unit simplex.
+    - Any ${0, a}$ is Ramsey.
+    - By the same argument, any regular simplex is Ramsey.
+]
+#remark[
+    - If $X$ is infinite, then (exercise) we can construct a $2$-colouring of $RR^n$ with no monochromatic isometric copy of $X$.
+    - Above, we took $S$ to be in $RR^k$ for $k$ colours. Can we do better? We can't do it for ${0, 1}$ in $RR$: consider the colouring $x |-> floor(x) mod 2$. For ${0, 1}$ with $3$ colours, can do this in $RR^2$: look at diagram. Actually this shows $chi(RR^2) >= 4$. Can show $chi(RR^2) <= 7$ by hexagonal argument. We know $chi(RR^2) >= 5$. In general, $1.2^n <= chi(RR^n) <= 3^n$. The upper bound easily follows from a hexagonal colouring.
+]
+#proposition[
+    $X$ is Euclidean Ramsey iff $forall k in NN$, $exists n in NN$ such that for any $k$-colouring of $RR^n$, there exists a monochromatic isometric copy of $X$.
+]
+#proof[
+    If $X$ is Euclidean Ramsey then take $S$ finite in $RR^n$ (for $k$ colours).
+
+    $<==$: we use a compactness proof. Suppose not, therefore for any finite $S subset.eq RR^n$, there is a bad $k$-colouring (i.e. no monochromatic isometric copy of $X$). The space of all $k$-colourings is $[k]^((RR^n))$, which is compact by Tychonov (TODO: add this statement). Consider the set $C_(X')$ of colourings under which $X'$ is not monochromatic. $C_(X')$ is closed. Look at ${C_(X'): X' "isometric copy of" X}$. It has the finite intersection property, because any finite $S$ has a bad $k$-colouring. Therefore, $sect.big C_(X') != emptyset$, so there exists a $k$-colouring of $RR^n$ with no monochromatic isometric copy of $X$ in $S$.
+]
+#lemma[
+    If $X subset.eq RR^n$ and $Y subset.eq RR^m$ are both Ramsey, then $X times Y subset.eq RR^(n + m)$ is also Ramsey.
+]
+#proof[
+    Let $c$ be a colouring of $S times T$, where $S$ is $k$-Ramsey for $X$ and $T$ is $k^abs(S)$-Ramsey for $Y$. $k^abs(S)$-colour $T$ as follows: $c'(t) = (c(s_1, t), ..., c(s_abs(S), t))$. By choice of $T$, there is a monochromatic (with respect to $c'$) isometric copy $Y'$ of $Y$. So $c(s, y) = c(s, y')$ for all $y, y' in Y$ and $s in S$. Now $k$-colour $S$ by $c''(s) = c(s, y)$ for any $y in Y$ (note this is well-defined). By choice of $S$, there is a monochromatic (with respect to $c''$) isometric copy $X'$ of $X$, so $X' times Y'$ is monochromatic with respect to $c$.
+
+    TODO: convince yourself that this is a very standard product argument.
+]
+#remark[
+    Since any ${0, a}$ and ${0, b}$ are Ramsey, any rectangle is Ramsey, so any right-angle triangle is Ramsey (since it is embedded in a rectangle). Similarly, any cuboid is Ramsey, and so any acute triangle (which is embedded in a cuboid) is Ramsey.
+]
+#remark[
+    In general, to prove sets are Ramsey, we will first embed them in "nicer" sets (with useful symmetry groups) and show instead that those sets are Ramsey. We will show:
+    - any triangle is Ramsey
+    - any regular $n$-gon is Ramsey
+    - any Platonic solid is Ramsey
+]
