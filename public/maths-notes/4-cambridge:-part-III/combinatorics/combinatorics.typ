@@ -1,5 +1,22 @@
+#import "@preview/fletcher:0.5.2" as fletcher: diagram, node, edge
+#import "@preview/cetz:0.3.1" as cetz: canvas, draw
 #import "../../template.typ": *
 #show: doc => template(doc, hidden: (), slides: false)
+
+#let diagram-colors = (
+    "red": rgb("#bf0101"),
+    "blue": rgb("#262686"),
+    "green": rgb("#006001")
+)
+#let point-style = (radius: 0.1, stroke: none, fill: diagram-colors.red)
+#let diamond(width, height) = {
+    import cetz.draw: *
+
+    line((width / 2, 0), (0, height / 2))
+    line((width / 2, 0), (width, height / 2))
+    line((width / 2, height), (0, height / 2))
+    line((width / 2, height), (width, height / 2))
+}
 
 = Set systems
 
@@ -21,12 +38,94 @@
     For brevity, we write e.g. $[4]^((2)) = {12, 13, 14, 23, 24, 34}$.
 ]
 #definition[
-    We can visualise $powset(A)$ as a graph by joining nodes $A in powset(X)$ and $B in powset(X)$ if $|A Delta B| = 1$, i.e. if $A = B union {i}$ for some $i in.not B$, or vice versa.
+    We can visualise $powset(X)$ as a graph by joining nodes $A in powset(X)$ and $B in powset(X)$ if $|A Delta B| = 1$, i.e. if $A = B union {i}$ for some $i in.not B$, or vice versa.
 
     This graph is the *discrete cube* $Q_n$.
-
-    Alternatively, we can view $Q_n$ as an $n$-dimensional unit cube ${0, 1}^n$ by identifying e.g. ${1, 3} subset.eq [5]$ with $10100$ (i.e. identify $A$ with $bb(1)_A$, the characteri stic/indicator function of $A$).
 ]<def:discrete-cube>
+#fig-example[
+    #figure(
+        grid(
+            columns: 3,
+            column-gutter: 2em,
+            diagram(
+                node-defocus: 0,
+                spacing: (3em, 2em),
+                mark-scale: 70%,
+                node-outset: 0pt,
+                node-inset: 4pt,
+                $
+                    & 123 edge("dl") edge("d") edge("dr") & \
+                    12 edge("d") edge("dr") & 13 edge("dl") edge("d") edge("dr") & 23 edge("dl") edge("d") \
+                    1 edge("dr") & 2 edge("d") & 3 edge("dl") \
+                    & emptyset &
+                $
+            ),
+            cetz.canvas({
+                import cetz.draw: *
+
+                draw.rect((1, 4.5), (2, 5.5), radius: 0.2, name: "l3")
+                draw.rect((0, 3), (3, 4), radius: 0.2, name: "l2")
+                draw.rect((0, 1.5), (3, 2.5), radius: 0.2, name: "l1")
+                draw.rect((1, 0), (2, 1), radius: 0.2, name: "l0")
+                content("l3", box[$X^((3))$])
+                content("l2", box[$X^((2))$])
+                content("l1", box[$X^((1))$])
+                content("l0", box[$X^((0))$])
+            }),
+            cetz.canvas({
+                import cetz.draw: *
+
+                draw.rect((2, 6), (3, 7), radius: 0.2, name: "l4")
+                draw.rect((1, 4.5), (4, 5.5), radius: 0.2, name: "l3")
+                draw.rect((0, 3), (5, 4), radius: 0.2, name: "l2")
+                draw.rect((1, 1.5), (4, 2.5), radius: 0.2, name: "l1")
+                draw.rect((2, 0), (3, 1), radius: 0.2, name: "l0")
+                content("l4", box[$X^((4))$])
+                content("l3", box[$X^((3))$])
+                content("l2", box[$X^((2))$])
+                content("l1", box[$X^((1))$])
+                content("l0", box[$X^((0))$])
+            })
+        ),
+        caption: [$Q_3$, $Q_3$, and $Q_4$.]
+    )
+]
+#remark[
+    Alternatively, we can view $Q_n$ as an $n$-dimensional unit cube ${0, 1}^n$ by identifying e.g. ${1, 3} subset.eq [5]$ with $10100$ (i.e. identify $A$ with $bb(1)_A$, the characteristic/indicator function of $A$).
+]
+#fig-example[
+    #figure(
+        cetz.canvas({
+            import cetz.draw: *
+
+            let shift-x = 1.25
+            let shift-y = 1.25
+            let height = 2.5
+            let (A, B, C, D, E, F, G, H) = ((0, 0), (height, 0), (0, height), (height, height), (shift-x, shift-y), (height + shift-x, shift-y), (shift-x, height + shift-y), (height + shift-x, height + shift-y))
+            let sets = ($emptyset$, $1$, $3$, $13$, $2$, $12$, $23$, $123$)
+
+            draw.rect(A, D, name: "front")
+            draw.rect(E, H, name: "back")
+            line(A, E)
+            line(B, F)
+            line(C, G)
+            line(D, H)
+
+            for (i, point) in (A, B, C, D, E, F, G, H).enumerate() {
+                circle(point, ..point-style, name: "point-" + str(i))
+                content("point-" + str(i), box(inset: 0.2em)[#sets.at(i)], anchor: "south-east")
+            }
+
+            line((6, 0), (7, 0), mark: (end: ">"), fill: black, name: "ax-1")
+            content((), $1$, anchor: "west")
+            line((6, 0), (6 + shift-x / height, shift-y / height), mark: (end: ">"), fill: black, name: "ax-3")
+            content((), $2$, anchor: "south-west")
+            line((6, 0), (6, 1), mark: (end: ">"), fill: black, name: "ax-3")
+            content((), $3$, anchor: "south")
+        }),
+        caption: [The cube $Q_3$ as the unit cube in $RR^3$]
+    )
+]
 #definition[
     $cal(F) subset.eq powset(X)$ is a *chain* if $forall A, B in cal(F)$, $A subset.eq B$ or $B subset.eq A$.
 ]<def:chain>
@@ -37,6 +136,29 @@
 #definition[
     $cal(F) subset.eq powset(X)$ is an *antichain* if $forall A != B in cal(F)$, $A subset.eq.not B$.
 ]<def:antichain>
+#fig-example[
+    #figure(
+        grid(
+            columns: (1fr, 1fr),
+            column-gutter: 2em,
+            canvas({
+                import cetz.draw: *
+
+                diamond(3, 4)
+                hobby((1.4, 0.3), (1.45, 1), (1.4, 2), (1.55, 3), (1.5, 3.5), stroke: diagram-colors.red)
+            }),
+            canvas({
+                import cetz.draw: *
+
+                diamond(3, 4)
+                for point in ((0.4, 2), (1.4, 1), (2, 1.8), (1.2, 3)) {
+                    circle(point, ..point-style)
+                }
+            }),
+        ),
+        caption: [A chain and antichain.]
+    )
+]
 #example[
     - $cal(F) = {23, 137}$ is an antichain.
     - $cal(F) = {1, ..., n} subset.eq powset([n])$ is an antichain.
@@ -110,9 +232,22 @@
 ]
 #theorem("LYM Inequality")[
     Let $cal(F) subset.eq powset(X)$ be an antichain. Then $
-        sum_(r = 0)^n (|cal(F) sect X^((r))|)/binom(n, r) <= 1.
-    $
+        sum_(r = 0)^n (|cal(F) sect X^((r))|)/binom(n, r) <= 1,
+    $ i.e. the proportions of each layer occupied add to $<= 1$.
 ]<thm:lym-inequality>
+#fig-example[
+    #figure(
+        canvas({
+            import cetz.draw: *
+
+            diamond(3, 4)
+            line((0.75, 3), (1, 3), stroke: diagram-colors.red)
+            line((1.2, 2), (2.2, 2), stroke: diagram-colors.red)
+            line((2.2, 2.5), (2.5, 2.5), stroke: diagram-colors.red)
+            line((1, 0.8), (1.15, 0.8), stroke: diagram-colors.red)
+        })
+    )
+]
 #proofhints[
     - Method 1: show the result for the sum $sum_(r = k)^n$ by induction, starting with $k = n$. Use local LYM, and that $partial cal(F)_n$ and $cal(F)_(n - 1)$ are disjoint (and analogous results for lower levels).
     - Method 2: let $cal(C)$ be uniformly random maximal chain, find an expression for $Pr(cal(C) "meets" cal(F))$.
@@ -790,9 +925,110 @@ We want to show the initial segments of the simplicial ordering minimise the bou
         $ where we set $A_0 = A_(k + 1) = emptyset$. Similarly, $N(B)_j = N(B_j) union B_(j - 1) union B_(j + 1)$. Now, $abs(B_(j - 1)) = abs(A_(j - 1))$ and $abs(B_(j + 1)) = abs(A_(j + 1))$ by definition, and $abs(N(B_j)) <= abs(N(A_j))$ by the induction hypothesis. But the sets $B_(j - 1), B_(j + 1)$ and $N(B_j)$ are nested, as each is an initial segment of simplicial on $[k]^(n - 1)$ (since neighbourhood of initial segment of simplicial is initial segment of simplicial). Hence $abs(N(B)_j) <= abs(N(A)_j)$ for each $1 <= j <= k$, thus $abs(N(B)) <= abs(N(A))$. This proves the claim.
     ]
 
-    Among all $B subset.eq [k]^n$ with $abs(B) = abs(A)$ and $abs(N(B)) <= abs(N(A))$, pick one with $sum_(x in B) ("position of" x "in simplicial")$ minimal. Then $B$ is $i$-compressed for all $1 <= i <= n$. We consider two cases:
-    - Case $n = 2$: what we know is precisely that $B$ is a down-set.
+    Among all $B subset.eq [k]^n$ with $abs(B) = abs(A)$ and $abs(N(B)) <= abs(N(A))$, pick one with $sum_(x in B) ("position of" x "in simplicial")$ minimal. Then $B$ is $i$-compressed for all $1 <= i <= n$. We consider the following cases:
+    - Case $n = 2$: what we know is precisely that $B$ is a down-set. Let $r = min{abs(x): x in.not B}$ and $s = max{abs(x): x in B}$. We may assume that $r <= s$, since if $r = s + 1$, then $B = {x: abs(x) <= r - 1}$, hence $B = C$. If $r = s$, then ${x: abs(x) <= r - 1} subset.eq B subset.eq {x: abs(x) <= r}$, so clearly, $abs(N(B)) >= abs(N(C))$. We cannot have ${x: abs(x) = s} subset.eq B$ because then also ${x: abs(x) = r} subset.eq B$ (as $B$ is a down-set). So there are $y, y'$ with $abs(y) = abs(y') = s$, $y in B$, $y' in.not B$, and $y' = y plus.minus (e_1 - e_2)$ (where $e_1 = (1, 0)$, $e_2 = (0, 1)$). Similarly, we cannot have ${x: abs(x) = r} sect B = emptyset$, because then ${x: abs(x) = s} sect B = emptyset$ (since $B$ is a down-set): contradiction. So there are $x, x'$ with $abs(x) = abs(x') = r$, $x in.not B$, $x' in B$, and $x' = x plus.minus (e_1 - e_2)$. Now let $B' = B union {x} \\ {y}$. From $B$ we lost at least one point in the neighbourhood (namely $z$) and gained at most one point, so $abs(N(B')) <= abs(N(B))$, but this contradicts the minimality of $B$.
+    - Case $n >= 3$: for any $1 <= i <= n - 1$ and any $x in B$ with $x_n > 1$ and $x_i < k$, we have $x - e_n + e_i in B$, since $B$ is $j$-compressed for any $j != i, n$. So, considering the $n$-sections of $B$, we have $N(B_t) subset.eq B_(t - 1)$ for all $t = 2, ..., k$. Recall that $N(B)_t = N(B_t) union B_(t + 1) union B_(t - 1)$. So in fact, $N(B)_t = B_(t - 1)$ for all $t >= 2$. Thus $
+        abs(N(B)) = underbrace(abs(B_(k - 1)), "level" k) + underbrace(abs(B_(k - 2)), "level" k - 1) + dots.c + underbrace(abs(B_1), "level" 2) + underbrace(abs(N(B_1)), "level" 1) = abs(B) - abs(B_k) + abs(N(B_1)).
+    $ Similarly, $abs(N(C)) = abs(C) - abs(C_k) + abs(N(C_1))$. So to show $abs(N(C)) <= abs(N(B))$, it is enough to show that $abs(B_k) <= abs(C_k)$ and $abs(B_1) >= abs(C_1)$ (since $B_1$, $C_1$ and their neighbourhoods are initial segments of simplicial). 
+    
+    $abs(B_k) <= abs(C_k)$: define a set $D subset.eq [k]^n$ as follows: let $D_k := B_k$, and for $t = k - 1, k - 2, ..., 1$, set $D_t := N(D_(t - 1))$. Then $D subset.eq B$, so $abs(D) <= abs(B)$. Also, $D$ is an initial segment of simplicial. So in fact, $D subset.eq C$, whence $abs(B_k) = abs(D_k) <= abs(C_k)$.
+
+    $abs(B_1) >= abs(C_1)$: define a set $E subset.eq [k]^n$ as follows: set $E_1 = B_1$ and for $t = 2, 3, ..., k$, set $E_t = {x in [k]^(n - 1): N({x}) subset.eq E_(t - 1)}$, so $E_t$ is the biggest set whose neighbourhood is contained in $E_(t - 1)$. Then $B subset.eq E$, so $abs(E) >= abs(B)$. Also, $E$ is an initial segment of simplicial. So $C subset.eq E$, whence $abs(B_1) = abs(E_1) >= abs(C_1)$. #qedhere
+]
+#corollary[
+    Let $A subset.eq [k]^n$ and $abs(A) >= abs({x: abs(x) <= r})$. Then $abs(N^t (A)) >= abs({x: abs(x) <= r + t})$ for all $t$.
+]
+#proof[
+    By induction, using above.
+]
+#remark[
+    We can check from the above corollary that, for $k$ fixed, the sequence ${[k]^n: n in NN}$ is a Levy family.
+]
+
+== The edge-isoperimetric inequality in the grid
+
+#example[
+    Which set $A subset.eq [k]^n$ of given size should we take to minimise $abs(partial A)$? In $[k]^2$, TODO: insert diagram. This suggests squares are best. However, TODO: insert diagram. So we have "phase transitions" at $abs(A) approx k^2 \/ 4$ and $abs(A) approx 3k^2 \/ 4$. So the extremal sets are not nested. This seems to rule out all our compression methods. And in $[k]^3$? We start with cube $[a]^3$, then square column $[a]^2 times [k]$, then "half space" $[a] times [k]^2$, then complement of square column, then copmlement of cube. So in $[k]^n$, up to $abs(A) = k^n \/ 2$, we get $n - 1$ of these "phase transitions".
+
+    
+]
+#theorem("Edge-isoperimetric Inequality in the Grid")[
+    Let $A subset.eq [k]^n$. If $abs(A) <= k^n \/ 2$, then $
+        abs(partial A) >= min{d abs(A)^(1 - 1 \/ d) k^(n \/ d - 1): 1 <= d <= n}.
+    $
+]<thm:edge-isoperimetric-inequality-in-grid>
+#proofhints[
+    Non-examinable.
+]
+#proof[
+    Non-examinable.
+]
+#remark[
+    Note that if $A = [a]^d times [k]^(n - d)$, then $abs(partial A) = d a^(d - 1) k^(n - d) = d abs(A)^(1 - 1 \/ d) k^(n \/ d - 1)$. So @thm:edge-isoperimetric-inequality-in-grid says that some set of the form $[a]^d times [k]^(n - d)$ minimises the edge boundary.
+]
+#remark[
+    Very few isoperimetric inequalities are known (even approximately), e.g. "iso in a layer": in a graph $X^((r))$, with $x, y$ joined if $abs(x sect y) = r - 1$. This is open. A nice special case is $r = n\/2$, where it is conjectured that balls are best, i.e. sets of the form ${x in [2r]^((r)): abs(x sect [r]) >= t}$.
 ]
 
 
 = Intersecting families
+
+== $t$-intersecting families
+
+#definition[
+    $A subset.eq powset(X)$ is *$t$-intersecting* if $
+        forall x, y in A, quad abs(x sect y) >= t.
+    $
+]
+#example[
+    How large can a $t$-intersecting family be? For $t = 2$, we could take ${x subset.eq X: 1, 2 in x}$, which has size $1/4 dot 2^n$, but better is ${x subset.eq X: abs(x) >= n \/ 2 + 1}$.
+]
+#theorem([Katona's $t$-intersecting Theorem])[
+    Let $A subset.eq powset(X)$ be $t$-intersecting, where $n equiv t mod 2$. Then $
+        abs(A) <= abs(X^((>= (n + t)\/2))).
+    $
+]
+#proof[
+    For any $x, y in A$, we have $abs(x sect y) >= t$, so $d(x, y^c) >= t$. Writing $overline(A) = {y^c: y in A}$, we have $d(A, overline(A)) >= t$, i.e. $A_((t - 1))$ is disjoint from $overline(A)$. Suppose for a contradiction $abs(A) > abs(X^((>= (n + t) \/ 2)))$. Then by @thm:harper, we have $
+        abs(N^(t - 1)(A)) >= abs(X^((>= (n + t) \/ 2 - (t - 1)))) = abs(X^((>= (n - t) \/ 2 + 1))).
+    $ But $N^(t - 1)(A)$ is disjoint from $overline(A)$ which has size $> abs(X^((<= (n - t) \/ 2)))$, contradicting $abs(N^(t - 1)(A)) + abs(overline(A)) <= 2^n$.
+]
+#example[
+    What about $t$-intersecting $A$ with $A subset.eq X^((r))$? We might guess that the best is $A_0 = {x in X^((r)): [t] subset.eq x}$. We could also try $A_alpha = {x in X^((r)): abs(x sect [t + 2 alpha]) >= t + alpha}$ for $alpha = 1, ..., r - t$.
+
+    For $2$-intersecting families in $[7]^((4))$: $abs(A_0) = binom(5, 2) = 10$, $abs(A_1) = 1 + binom(4, 3) binom(3, 1) = 13$, $abs(A_2) = binom(6, 4) = 15$.
+
+    For $2$-intersecting families in $[8]^((4))$: $abs(A_0) = binom(6, 2) = 15$, $abs(A_1) = 1 + binom(4, 3) binom(4, 1) = 17$, $abs(A_2) = binom(6, 4) = 15$.
+
+    For $2$-intersecting families in $[9]^((4))$: $abs(A_0) = binom(7, 2) = 21$, $abs(A_1) = 1 + binom(4, 3) binom(5, 1) = 21$, $abs(A_2) = binom(6, 4) = 15$.
+
+    Note that $A_0$ grows quadratically, $A_1$ grows linearly, $A_2$ is constant, so $A_0$ is the largest of these for large $n$.
+]
+#theorem[
+    Let $A subset.eq X^((r))$ be $t$-intersecting. Then, for $n$ sufficiently large, we have $abs(A) <= abs(A_0) = binom(n - t, r - t)$.
+]
+#proof[
+    Idea: "$A_0$ has $t - t$ degrees of freedom".
+
+    Extending $A$ to a maximal $t$-intersecting family, we must have some $x, y in A$ with $abs(x sect y) = t$ (if not, then by maximality, we have that $forall x in A, forall i in x, forall j in.not x$, $x - i union j in A$; repeating this, we have $A = X^((r))$: contradiction). We may assume that there exists $z in A$ with $x sect y subset.eq.not z$; otherwise, all $z in A$ have the $t$-set $x sect y subset.eq z$, whence $abs(A) <= binom(n - t, r - t) = abs(A_0)$. So each $w in A$ must meet $x union y union z$ in $>= t + 1$ points. Thus $
+        abs(A) <= underbrace(2^(3r), #[$w$ on $x union y union z$]) dot underbrace((binom(n, r - t - 1) + binom(n, r - t - 2) + dots.c + binom(n, 0)), #[$w$ off $x union y union z$])
+    $ which is a polynomial in $n$ of degree $r - t - 1$.
+]
+#remark[
+    - The bound we obtain for $n$ would be $>= (16r)^r$ (crude) or $2 t r^3$ (careful).
+    - The theorem is often called the "second Erdos-Ko-Rado" theorem.
+]
+
+== Modular intersections
+
+#example[
+    For intersecting families, we ban $abs(x sect y) = 0$. What if we banned $abs(x sect y) = 0 mod k$ for some $k in NN$?
+
+    e.g. want $A subset.eq X^((r))$ with $abs(x sect y)$ odd for all $x != y in A$.
+    
+    Try $r$ odd: can achieve $abs(A) = binom(floor((n - 1)\/2), (r - 1)\/2)$ by the diagram. What if, still for $r$ odd, we want $abs(x sect y)$ even for all $x != y in A$. Can achieve $n - r + 1$ by picture, but this is only linear in $n$.
+
+    Similarly: for $r$ even, if we want $abs(x sect y)$ even for all $x != y in A$, can achieve $abs(A) = binom(floor(n \/ 2), r \/ 2)$ by picture. If we want $abs(x sect y)$ odd for all $x != y in A$, can achieve $n - r + 1$ as above.
+
+    Seems to be that banning $abs(x sect y) = r (mod 2)$ forces the family to be very small (poly in $n$, even a linear poly).
+]

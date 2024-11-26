@@ -608,11 +608,6 @@ Strengthened Van der Waerden says that the system $x_1 + x_2 = y_1, x_1 + 2x_2 =
 
 == Ultrafilters
 
-#theorem("Hindman")[
-    For any finite colouring of $NN$, there exists a sequence $(x_n)_(n in NN)$ such that $
-        "FS"({x_n: n in NN}) = {sum_(i in I): I subset.eq NN "finite", I != emptyset}.
-    $
-]<thm:hindman>
 #definition[
     A *filter* on $NN$ is a non-empty collection $cal(F)$ of subsets of $NN$ such that:
     - $emptyset in.not cal(F)$,
@@ -677,7 +672,7 @@ Strengthened Van der Waerden says that the system $x_1 + x_2 = y_1, x_1 + 2x_2 =
     Use Zorn's Lemma.
 ]
 #proof[
-    By Zorn's Lemma, it is enough to show that every non-empty chain of filters has an upper bound. Let ${cal(F)_i: i in I}$ be a chain of filters, and set $cal(F) = union.big_(i in I) cal(F)_i$.
+    Let $cal(F)_0$ be a filter. By Zorn's Lemma, it is enough to show that every non-empty chain of filters has an upper bound. Let ${cal(F)_i: i in I}$ be a chain of filters in the poset of filters containing $cal(F)_0$, partially ordered by inclusion, and set $cal(F) = union.big_(i in I) cal(F)_i$.
     - $emptyset in.not cal(F)$ since $emptyset in.not cal(F)_i$ for each $i in I$.
     - If $A in cal(F)$ and $A subset.eq B$, then $A in cal(F)_i$ for some $i in I$, so $B in cal(F)_i$, so $B in cal(F)$.
     - Let $A, B in cal(F)$, so $A in cal(F)_i$ and $B in cal(F)_j$ for some $i, j$. WLOG, $cal(F)_i subset.eq cal(F)_j$, so $A sect B in cal(F)_j$, so $A sect B in cal(F)$.
@@ -708,6 +703,113 @@ Strengthened Van der Waerden says that the system $x_1 + x_2 = y_1, x_1 + 2x_2 =
 #theorem[
     $beta NN$ is a compact Hausdorff topological space.
 ]<thm:topology-on-ultrafilters-is-compact-and-hausdorff>
+#proof[
+    Hausdorff: let $cal(U) != cal(V)$ be ultrafilters, so there is $A in cal(U)$ such that $A in.not cal(V)$. But then $A^c in cal(V)$, so $cal(U) in C_A$, $cal(V) in C_(A^c)$, and $C_A sect C_(A^c)$ is open.
+
+    Compact: it is compact iff every open admits a finite subcover iff a collection of open sets such that no finite subcollection covers $beta NN$, they don't cover $beta NN$ iff for every collection of closed sets such that they have finite intersection property ($(F_i)_(i in I)$, $sect_(i in J) F_i != emptyset$ for all $J$ finite), then their intersection is non-empty. We can assume each $F_i$ is a basis set, i.e. $F_i = C_(A_i)$ for some $A_i in NN$. Suppose ${C_(A_i): i in I}$ have teh finite intersection property. First, $C_(A_(i_1)) sect dots.c sect C_(A_(i_k)) = C_(A_(i_1) sect dots.c sect A_(i_k)) != emptyset$, hence $sect.big_(j = 1)^k A_(i_j) != emptyset$. So let $cal(F) = {A: A supset.eq A_(i_1) sect dots.c sect A_(i_k) "for some" A_(i_1), ..., A_(i_n)}$. We have $emptyset in.not cal(F)$, if $B supset.eq A in cal(F)$ then $B in cal(F)$, and if $A, B in cal(F)$, then $A sect B in cal(F)$. Hence $cal(F)$ is a filter. $cal(F)$ extends to an ultrafilter $cal(U)$. Note that $(forall i, A_i in cal(U)) <==> (cal(U) in C_(A_i) forall i)$. So $U in sect C_(A_i)$, so $sect C_(A_i) != emptyset$.
+]
+#remark[
+    - $beta NN$ can be viewed as a subset of ${0, 1}^(powset(NN))$ (so each ultrafilter is viewed as a function $powset(NN) -> {0, 1}$). The topology on $beta NN$ is the restriction of the product topology on ${0, 1}^powset(NN)$. Also, $beta NN$ is a closed subset of ${0, 1}^powset(NN)$, so is compact by Tychonov's theorem (TODO: look up statement of this theorem).
+    - $beta NN$ is the largest compact Hausdorff topological space in which (the embedding of) $NN$ is dense. In other words, if $X$ is compact and Hausdorff, and $f: NN -> X$, there exists a unique continuous $tilde(f): beta NN -> X$ extending $f$. TODO: insert diagram.
+    - $beta NN$ is called the *Stone-Čech compactification* of $NN$.
+]
+#definition[
+    Let $p$ be a statement and $cal(U)$ be an ultrafilter. $forall_cal(U) x med p(x)$ to mean ${x in NN: p(x)} in cal(U)$ and say $p(x)$ "for most $x$" or "for $cal(U)$-most $x$".
+]
+#example[
+    - For $cal(U) = tilde(n)$, we have $forall_(cal(U)) x med p(x)$ iff $p(n)$.
+    - For non-principal $cal(U)$, we have $forall_cal(U) x med (x > 4)$ (if not, then ${1, 2, 3} = {x in NN: x > 4}^c in cal(U)$, so ${i} in cal(U)$ for some $i = 1, 2, 3$, so $cal(U)$ is principal: contradiction).
+]
+#proposition[
+    Let $cal(U)$ be an ultrafilter and $p, q$ be statements. Then
+    + $forall_cal(U) x med (p(x) and q(x))$ iff $(forall_cal(U) x med p(x)) and (forall_cal(U) x med q(x))$.
+    + $forall_cal(U) x med (p(x) or q(x))$ iff $(forall_cal(U) x med p(x)) or (forall_cal(U) x med q(x))$.
+    + $not (forall_cal(U) x med p(x))$ iff $forall_cal(U) x med (not p(x))$.
+]<prop:ultrafilter-quantification-distributes-over-logical-connectives>
+#proof[
+    Let $A = {x in NN: p(x)}$ and $B = {x in NN: q(x)}$. We have
+    + $A sect B in cal(U)$ iff $A in cal(U)$ and $B in cal(U)$ by definition.
+    + $A union B in cal(U)$ iff $A in cal(U)$ and $B in cal(U)$ by (find result).
+    + $A in.not cal(U)$ iff $A^c in cal(U)$ by (find result).
+]
+#note[
+    $forall_cal(U) x forall_cal(V) y med p(x, y)$ is not necessarily the same as $forall_cal(V) y forall_cal(U) x med p(x, y)$, even when $cal(U) = cal(V)$. For example, let $cal(U)$ be non-principal, and $p(x, y) = (x < y)$. Then $forall_cal(U) x (forall_cal(U) y med (x < y))$ is true, as every $x$ satisfies $forall_cal(U) y med (x < y)$. But $forall_cal(U) y forall_cal(U) x med (x < y)$ is false, as no $y$ has $forall_cal(U) x med (x < y)$. So *don't swap quantifiers!*.
+]
+#definition[
+    Given ultrafilters $cal(U), cal(V)$, define their sum to be $
+        cal(U) + cal(V) := {A subset.eq NN: forall_cal(U) x forall_cal(V) y med (x + y in A)}.
+    $
+]<def:ultafilter-sum>
+#example[
+    We have $tilde(m) + tilde(n) = tilde(m + n)$.
+]
+#proposition[
+    For any ultrafilters $cal(U)$ and $cal(V)$, $cal(U) + cal(V)$ is an ultrafilter.
+]
+#proof[
+    We have $emptyset in.not cal(U) + cal(V)$. If $A in cal(U) + cal(V)$ and $A subset.eq B$, then $B in cal(U) + cal(V)$. If $A, B in cal(U) + cal(V)$, then $(forall_cal(U) x forall_cal(V) y med (x + y in A)) and (forall_cal(U) x forall_cal(V) y med (x + y in B))$, so by above proposition, we have $forall_cal(U) x forall_cal(V) y (x + y in A and x + y in B)$, i.e. $forall_cal(U) x forall cal(V) y med (x + y in A sect B)$, i.e. $A sect B in cal(U) + cal(V)$. Hence $cal(U) + cal(V)$ is a filter.
+
+    Suppose that $A in.not cal(U) + cal(V)$, i.e. $not (forall_cal(U) x forall_cal(V) y med (x + y in A))$. Then by above proposition twice, we have $forall_cal(U) x forall_cal(V) y med not (x + y in A)$. So $forall_cal(U) x forall_cal(V) y med (x + y in A^c)$, i.e. $A^c in cal(U) + cal(V)$.
+]
+#proposition[
+    Ultrafilter addition is associative.
+]
+#proof[
+    Let $A subset.eq cal(U) + (cal(V) + cal(W))$, so $forall_cal(U) x forall_(cal(V) + cal(W)) med (x + y in A)$. So $B := {y: x + y in A} in cal(V) + cal(W)$, i.e. $forall_cal(V) y_1 forall_cal(W) y_2 med (y_1 + y_2 in B)$. So we have $forall_cal(U) x forall_cal(V) y_1 forall_cal(W) y_2 med (x + y_1 + y_2 in A)$. So $
+        cal(U) + (cal(V) + cal(W)) = {A subset.eq NN: forall_cal(U) x forall_cal(V) y forall_cal(W) z med (x + y + z in A)} = (cal(U) + cal(V)) + cal(W).
+    $
+]
+#proposition[
+    Ultrafilter addition is left-continuous: for fixed $cal(V)$, $cal(U) |-> cal(U) + cal(V)$ is continuous.
+]
+#proof[
+    For $A subset.eq NN$, we have $
+        cal(U) + cal(V) in C_A & <==> A in cal(U) + cal(V) \
+        & <==> forall_cal(U) x forall_cal(V) y med (x + y in A) \
+        & <==> B := {x in NN: forall_cal(V) y med (x + y in A)} in cal(U) \
+        & <==> cal(U) in C_B
+    $ hence the preimage of $C_A$, which is $C_B$, is open.
+]
+#proposition("Idempotent Lemma")[
+    There exists an idempotent ultrafilter $cal(U) in beta NN$ (i.e. $cal(U) = cal(U) + cal(U)$).
+]<prop:idempotent-lemma>
+#proof[
+    For $M subset.eq beta NN$, define $M + M := {x + y: x, y in M}$. We seek a non-empty, compact $M subset.eq beta NN$ which is minimal such that $M + M subset.eq M$, and hope to show that $M$ is a singleton.
+
+    Such an $M$ exists ($beta NN$ is one such), so the set of all such $M$ is non-empty. By Zorn's Lemma, it suffices to show that if ${M_i: i in I}$ is a chain of such sets, then $M = sect.big_(i in I) M_i$ (an upper bound with respect to the partial ordering $supset.eq$) is another such set. This $M$ will be compact as an intersection of closed sets, since $beta NN$ is compact and Hausdorff, so any subspace is closed iff it is compact. Also, $M + M subset.eq M$: for $x, y in M$, we have $x, y in M_i$ so $x + y in M_i + M_i subset.eq M_i$ for all $i in I$, so $x + y in M$. Finally, $M$ is non-empty: ${M_i: i in I}$ have the finite intersection property, as they are a chain, and are closed, so their intersection is non-empty.
+
+    So by Zorn's lemma, there exists such a minimal $M$. Given $x in M$, we have $M + x = M$, since $M + x != emptyset$, $M + x$ is compact (as the continuous image of a compact set) and $(M + x) + (M + x) = (M + x + M) + x subset.eq (M + M + M) + x subset.eq M + x$, so by minimality of $M$, $M + x = M$.
+
+    In particular, there exists $y in M$ such that $y + x = x$. Let $T = {y in M: y + x = x}$. We claim that $T = M$, and since $T subset.eq M$, it is enough to show that $T$ is compact, non-empty and $T + T subset.eq T$, by minimality of $M$. Indeed, $y in T$, so $T != emptyset$, $T$ is the pre-image of a singleton which is compact, hence closed, so $T$ is closed, so compact. Finally, for $y, z in T$, we have $y + x = x = z + x$ so $y + z + x = y + x = x$, so $y + z in T$, so $T + T subset.eq T$.
+
+    Hence, $y + x = x$ for all $y in M$, hence $x + x = M$. In fact, $M = {x}$.
+]
+#remark[
+    The finite subgroup problem asks whether we can find a non-trivial subgroup of $beta NN$ (e.g. find $cal(U)$ with $cal(U) + cal(U) != cal(U)$ but $cal(U) + cal(U) + cal(U) = cal(U)$). This was recently proven to be negative.
+]
+#remark[
+    An open problem is whether an ultrafilter can "absorb" another ultrafilter, i.e. whether there exist $cal(U) != cal(V)$ such that $cal(U) + cal(U) = cal(U) + cal(V) = cal(V) + cal(U) = cal(V) + cal(V) = cal(V)$.
+]
+#theorem("Hindman")[
+    For any finite colouring of $NN$, there exists a sequence $(x_n)_(n in NN)$ such that $
+        "FS"({x_n: n in NN}) = {sum_(i in I) x_i: I subset.eq NN "finite", I != emptyset}.
+    $
+]<thm:hindman>
+#proof[
+    Let $cal(U)$ be an idempotent ultrafilter, and partition $NN$ into its colour classes: $NN = A_1 union.sq dots.c union.sq A_k$. Since $emptyset in.not cal(U)$ by definition, we have $A_1 union dots.c union A_k in NN in cal(U)$ by @prop:ultrafilter-iff-contains-each-set-xor-complement. So by @crl:union-in-ultrafilter-has-element-in-ultrafilter, $A := A_i in cal(U)$ for some $i in [k]$. We have $forall_cal(U) y med (y in A)$ by definition. Thus:
+    + $forall_cal(U) x forall_cal(U) y med (y in A)$.
+    + $forall_cal(U) x forall_cal(U) y med (x in A)$.
+    + $forall_cal(U) x forall_cal(U) y med (x + y in A)$ since $A in cal(U) + cal(U) = cal(U)$.
+    @prop:ultrafilter-quantification-distributes-over-logical-connectives then gives that $forall_cal(U) x forall_cal(V) y med ("FS"(x, y) subset.eq A)$. Fix $x_1 in A$ such that $forall_cal(U) y med ("FS"(x_1, y) subset.eq A)$.
+
+    Now assume we have found $x_1, ..., x_n$ such that $forall_cal(U) y med ("FS"(x_1, ..., x_n, y) subset.eq A)$, i.e. $B := {y in NN: "FS"(x_1, ..., x_n, y) subset.eq A} in cal(U) = cal(U) + cal(U)$, i.e. $forall_cal(U) x forall_cal(U) y med (x + y in B)$ by definition. We have:
+    + $forall_cal(U) x forall_cal(U) y med ("FS"(x_1, ..., x_n, y) subset.eq A)$.
+    + $forall_cal(U) x forall_cal(U) y med ("FS"(x_1, ..., x_n, x) subset.eq A)$.
+    + For each $z in "FS"(x_1, ..., x_n, y)$, we have $forall_cal(U) y med (z + y in A)$, so $forall_cal(U) x forall_cal(U) y med (z + x + y in A)$.
+    @prop:ultrafilter-quantification-distributes-over-logical-connectives then gives that $
+        forall_cal(U) x forall_cal(U) y med ("FS"(x_1, ..., x_n, x, y) subset.eq A).
+    $ The result follows by induction.
+]
 
 
 = Euclidean Ramsey theory

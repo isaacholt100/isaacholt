@@ -197,7 +197,7 @@
     Let $emptyset != A, B subset.eq G$ for an abelian group $G$. Then $
         E(A, B) >= (abs(A)^2 abs(B)^2)/abs(A plus.minus B).
     $
-]
+]<lem:additive-energy-lower-bound>
 #proofhints[
     - Show that using Cauchy-Schwarz that $
         E(A, B) = sum_(x in G) r_(A + B)(x)^2 >= (sum_(x in G) r_(A + B)(x))^2 / abs(A + B).
@@ -314,12 +314,12 @@ In this chapter, assume that $G$ is a _finite_ abelian group.
     Let $p, q in [1, oo]$ with $1/p + 1/q$, and $f in L^p (G)$, $g in L^q (G)$. Then $
         norm(f g)_1 <= norm(f)_p norm(g)_q.
     $
-]
+]<thm:holders-inequality>
 #theorem("Cauchy-Schwarz Inequality")[
     For $f, g in L^2 (G)$, we have $ gen(f, g)_(L^2 (G)) <= norm(f)_2 norm(g)_2. $ Note this is a special case of Hölder's inequality with $p = q = 2$.
 ]<thm:cauchy-schwarz>
 #theorem("Young's Convolution Inequality")[
-    Let $p, q, r in [1, oo]$, $1/p + 1/q = 1/r$, $f in L^p (G)$, $g in L^q (G)$. Then $
+    Let $p, q, r in [1, oo]$, $1/p + 1/q = 1 + 1/r$, $f in L^p (G)$, $g in L^q (G)$. Then $
         norm(f * g)_r <= norm(f)_p norm(g)_q.
     $
 ]
@@ -701,8 +701,14 @@ All probability spaces here will be finite.
         norm(sum_(i = 1)^n X_i)_(L^p (PP)) = O(p^(1\/2) (sum_(i = 1)^n norm(X_i)_(L^2 (PP))^2)^(1\/2))
     $
 ]<thm:khintchines-inequality>
+#proofhints[
+    - Explain why sufficient to prove for the case that $p = 2k$ for $k in NN$.
+    - Explain why $sum_(i = 1)^n norm(X_i)_(L^oo (Pr))^2 = sum_(i = 1)^n norm(X_i)_(L^2 (Pr))^2$, and assume they are equal to $1$.
+    - Show that $norm(X)_(L^(2k)(Pr))^(2k) <= 8k I(k)$, where $I(k) = integral_0^oo t^(2k - 1) exp(-t^2 \/ 4) dif t$.
+    - Show by induction on $k$ that $I(k) <= 2^(2k) (2k)^k \/ 4k$.
+]
 #proof[
-    Since $L_p$ norms are nested, it suffices to prove in the case that $p = 2k$ for some $k in NN$. Write $X = sum_(i = 1)^n X_i$, and assume the quantity $sum_(i = 1)^n norm(X_i)_(L^oo (PP))^2 = sum_(i = 1)^n abs(x_i)^2 = sum_(i = 1)^n norm(X_i)_(L^2 (PP))^2$ is equal to $1$. By Chernoff's Inequality, $forall theta > 0$, $
+    Since $L^p$ norms are nested, it suffices to prove in the case that $p = 2k$ for some $k in NN$. Write $X = sum_(i = 1)^n X_i$, and assume the quantity $sum_(i = 1)^n norm(X_i)_(L^oo (PP))^2 = sum_(i = 1)^n abs(x_i)^2 = sum_(i = 1)^n norm(X_i)_(L^2 (PP))^2$ is equal to $1$. By @thm:chernoffs-inequality, $forall theta > 0$, $
         Pr(abs(X) >= theta) <= 4 exp(-theta^2 \/ 4),
     $ and so, since $integral_0^t P_X (s) dif s = Pr(abs(X) <= t)$, $
         norm(X)_(L^(2k)(Pr))^(2k) & = integral_0^oo t^(2k) P_X (t) dif t \
@@ -733,12 +739,15 @@ All probability spaces here will be finite.
         norm(hat(f))_(ell^2 (Gamma)) = O(sqrt(p / (p - 1)) dot norm(f)_(L^p (FF_2^n))).
     $
 ]<crl:dual-rudin>
+#proofhints[
+    Let $g(x) = sum_(gamma in Gamma) hat(f)(gamma) gamma(x)$. Show that $norm(hat(f))_(ell^2 (Gamma))^2 <= norm(f)_(L^p (FF_2^n)) norm(g)_(L^q (FF_2^n))$ where $1 \/ p + 1 \/ q = 1$, and conclude using @crl:rudins-inequality.
+]
 #proof[
-    Let $f in L^p (FF_2^n)$ and let $g(x) = sum_(gamma in Gamma) hat(f)(gamma) gamma(x)$, so $g = f|_(Gamma)$?. Then $
-        norm(hat(f))_(ell^2 (Gamma))^2 & = sum_(gamma in Gamma) abs(hat(f)(gamma))^2 \
+    Let $f in L^p (FF_2^n)$ and let $g(x) = sum_(gamma in Gamma) hat(f)(gamma) gamma(x)$. Then $
+        norm(hat(f))_(ell^2 (Gamma))^2 & := sum_(gamma in Gamma) abs(hat(f)(gamma))^2 \
         & = gen(hat(f), hat(g))_(ell^2 (Gamma)) = gen(hat(f), hat(g))_(ell^2 (hat(FF)_2^n)) \
         & = gen(f, g)_(L^2 (FF_2^n)) quad & #[by @lem:plancherels-identity] \
-        & <= norm(f)_(L^p (FF_2^n)) norm(g)_(L^q (FF_2^n)) quad & #[by Holder's inequality].
+        & <= norm(f)_(L^p (FF_2^n)) norm(g)_(L^q (FF_2^n)) quad & #[by @thm:holders-inequality].
     $ where $1 \/ p + 1 \/ q = 1$. By @crl:rudins-inequality, $
         norm(g)_(L^q (FF_2^n)) & = O(sqrt(q) dot norm(hat(g))_(ell^2 (Gamma))) \
         & = O(sqrt(p / (p - 1)) dot norm(hat(f))_(ell^2 (Gamma))).
@@ -746,18 +755,161 @@ All probability spaces here will be finite.
 ]
 Recall that given $A subset.eq FF_2^n$ of density $alpha > 0$, we have $abs(Spec_rho (indicator(A))) <= rho^(-2) alpha^(-1)$. This is the best possible bound as the example  of a subspace $A$ shows. However, in this case, the large spectrum is highly structured. 
 #theorem("Special Case of Chang's Theorem")[
-    Let $A subset.eq FF_2^n$ be of density of $alpha > 0$. Then $
-        forall rho > 0, exists H <= hat(FF)_2^n: dim(H) = O(rho^(-2) log alpha^(-1)) "and" Spec_rho (indicator(A)) subset.eq H.
+    Let $A subset.eq FF_2^n$ be of density $alpha > 0$. Then $
+        forall rho > 0, exists H <= hat(FF)_2^n: dim(H) = O(rho^(-2) log alpha^(-1)) quad "and" quad Spec_rho (indicator(A)) subset.eq H.
     $
 ]<thm:chang-special-case>
+#proofhints[
+    Use @crl:dual-rudin on a maximal linearly independent set in $Spec_rho (indicator(A))$, with $p = 1 + (log alpha^(-1))^(-1)$.
+]
 #proof[
     Let $Gamma subset.eq Spec_rho (indicator(A))$ be maximal linearly independent set. Let $H = gen(Spec_rho (indicator(A)))$. Clearly $dim(H) = abs(Gamma)$. By @crl:dual-rudin, $forall p in (1, 2]$, $
         (rho alpha)^2 abs(Gamma) <= sum_(gamma in Gamma) abs(hat(bb(1))_A (gamma))^2 = norm(hat(bb(1))_A)_(ell^2 (Gamma))^2 = O(p/(p - 1) norm(indicator(A))_(L^p (FF_2^n))^2) = O(p/(p - 1) alpha^(2 \/ p)).
     $ Hence, $abs(Gamma) <= O(rho^(-2) alpha^(-2) alpha^(2 \/ p) p/(p - 1))$. Setting $p = 1 + (log alpha^(-1))^(-1)$, we obtain $abs(Gamma) <= O(rho^(-2) alpha^(-2) (alpha^2 e^2)(log alpha^(-1) + 1)) = O(rho^(-2) log alpha^(-1))$.
 ]
 #definition[
-    Let $G$ be a finite abelian group. $S subset.eq G$ is *dissociated* if $sum_(s in S) epsilon_s s = 0$ with each $epsilon_s in {-1, 0, 1}$, then $epsilon_s = 0$ for all $s in S$.
-]
+    Let $G$ be a finite abelian group. $S subset.eq G$ is *dissociated* if, whenever $sum_(s in S) epsilon_s s = 0$ with each $epsilon_s in {-1, 0, 1}$, then we have $epsilon_s = 0$ for all $s in S$.
+]<def:dissociated>
 #example[
     Clearly, if $G = FF_2^n$, then $S subset.eq G$ is dissociated iff $S$ is linearly independent.
 ]
+#theorem("Chang")[
+    Let $G$ be a finite abelian group, and let $A subset.eq G$ be of density $alpha > 0$. If $Lambda subset.eq Spec_rho (indicator(A))$ is dissociated, then $abs(Lambda) = O(rho^(-2) log alpha^(-1))$.
+]<thm:chang>
+#theorem("Marcinkiewicz-Zygmund")[
+    Let $p in [2, oo)$ and let $X_1, ..., X_n in L^p (Pr)$ be independent RVs with $EE[X_1 + dots.c + X_n] = 0$. Then $
+        norm(sum_(i = 1)^n X_i)_(L^p (Pr)) = O(p^(1 \/ 2) dot norm(sum_(i = 1)^n abs(X_i)^2)_(L^(p \/ 2)(Pr))^(1 \/ 2)).
+    $
+]<thm:marcinkiewicz-zygumnd>
+#proof[
+    First assume that the distribution of the $X_i$ is symmetric, i.e. $Pr(X_i = a) = Pr(X_i = -a)$ for all $a in RR$ and $i in [n]$. Partition the probability space $Omega$ into sets $Omega_1, Omega_2, ..., Omega_M$ and write $Pr_j$ for the induced measure on $Omega$, such that all $X_i$ are symmetric and take at most $2$ values. By Khintchine's inequality, for each $j in [M]$, $
+        norm(sum_(i = 1)^n X_i)_(L^p (Pr_j))^p & = O(p^(p \/ 2) dot (sum_(i = 1)^n norm(X_i)_(L^2 (Pr_j))^2)^(p \/ 2)) \
+        & = O(p^(p \/ 2) dot norm(sum_(i = 1)^n abs(X_i)^2)_(L^(p \/ 2)(Pr_j))^(p \/ 2)).
+    $ Summing over all $j in [M]$ and taking $p$-th roots gives the result for the symmetric case.
+    
+    Now suppose the $X_i$ are arbitrary RVs, and let $Y_1, ..., Y_n$ be such that $Y_i tilde X_i$ and $X_1, Y_1, ..., X_n, Y_n$ are all independent. Applying the symmetric case to the RVs $X_i - Y_i$, we obtain $
+        norm(sum_(i = 1)^n (X_i - Y_i))_(L^p (Pr times Pr)) & = O(p^(1 \/ 2) dot norm(sum_(i = 1)^n abs(X_i - Y_i)^2)_(L^(p \/ 2)(Pr times Pr))^(1 \/ 2)) \
+        & = O(p^(1 \/ 2) dot norm(sum_(i = 1)^n abs(X_i^2))_(L^(p \/ 2)(Pr))^(1 \/ 2)) quad "TODO: check this explicitly"
+    $ But then $
+        norm(sum_(i = 1)^n X_i)_(L^p (Pr))^p & = norm(sum_(i = 1)^n X_i - EE_Y [sum_(i = 1)^n Y_i])_(L^p (Pr))^p \
+        & = EE_X abs(sum_(i = 1)^n X_i - EE_Y [sum_(i = 1)^n Y_i])^p \
+        & = EE_X abs(EE_Y sum_(i = 1)^n (X_i - Y_i))^p \
+        & <= EE_X EE_Y abs(sum_(i = 1)^n (X_i - Y_i))^p quad "by Jensen's inequality" \
+        & = norm(sum_(i = 1)^n (X_i - Y_i))_(L^p (Pr times Pr))^p.
+    $
+]
+#theorem("Croot-Sisask Almost Periodicity")[
+    Let $G$ be a finite abelian group, let $epsilon > 0$, and $p in [2, oo)$. Let $A, B subset.eq G$ be such that $abs(A + B) <= K abs(A)$, and let $f: G -> CC$. Then there is $b in B$ and a set $X subset.eq B - b$ such that $abs(X) >= 2 K^(-O(epsilon^(-2) p)) abs(B)$ and $
+        norm(tau_x f * mu_A - f * mu_A)_(L^p (G)) <= epsilon norm(f)_(L^p (G)) quad forall x in X,
+    $ where $tau_x g(y) = g(y + x)$ for all $y in G$.
+]<thm:croot-sisask-almost-periodicity>
+#proof[
+    The main idea is to approximated $
+        (f * mu_A)(y) = EE_(x in G) f(y - x) mu_A (x) = EE_(x in A) f(y - x)
+    $ by $1/m sum_(i = 1)^m f(y - z_i)$ where the $z_i$ are sampled independently and uniformly from $A$, and $m$ is to be chosen later. For each $y in G$, define $Z_i (y)= tau_(-z_i) f(y) - (f * mu_A)(y)$. For each $y in G$, these are independent random variables with mean $0$. So by Marcinkiewicz-Zygmund, $
+        norm(sum_(i = 1)^m Z_i (y))_(L^p (Pr))^p & = O(p^(p \/ 2) dot norm(sum_(i = 1)^m abs(Z_i (y))^2)_(L^(p \/ 2)(Pr))^(p \/ 2)) \
+        & = O(p^(p \/ 2) dot EE_((z_1, ..., z_m) in A^m) abs(sum_(i = 1)^m abs(Z_i (y))^2)^(p \/ 2)).
+    $ By Holder's inequality with $1 \/ p' + 2 \/ p = 1$, $
+        abs(sum_(i = 1)^m abs(Z_i (y))^2)^(p \/ 2) & <= (sum_(i = 1)^m 1^(p'))^(1 / p' dot p / 2) dot (sum_(i = 1)^m abs(Z_i (y))^(2 dot p / 2))^(2 / p dot p / 2) \
+        & = m^(p \/ 2 - 1) dot sum_(i = 1)^m abs(Z_i (y))^p.
+    $ So $
+        norm(sum_(i = 1)^m Z_i (y))_(L^p (Pr))^p = O(p^(p \/ 2) m^(p \/ 2 - 1) dot EE_((z_1, ..., z_m) in A^m) sum_(i = 1)^m abs(Z_i (y))^p).
+    $ Summing over all $y in G$, we have $
+        EE_(y in G) norm(sum_(i = 1)^m Z_i (y))_(L^p (Pr))^p = O(p^(p \/ 2) m^(p \/ 2 - 1) EE_((z_1, ..., z_m) in A^m) sum_(i = 1)^m EE_(y in G) abs(Z_i (y))^p)
+    $ and $(EE_(y in G) abs(Z_i (y))^p)^(1 \/ p) = norm(Z_i)_(L^p (G)) = norm(tau_(-z_i) f - f * mu_A)_(L^p (G)) <= norm(tau_(-z_i) f)_(L^p (G)) + norm(f * mu_A)_(L^p (G)) <= norm(f)_(L^p (G)) + norm(f)_(L^p (G)) dot norm(mu_A)_(L^1 (G)) <= 2 norm(f)_(L^p (G))$ by Young's convolution inequality. So we have $
+        EE_((z_1, ..., z_m) in A^m) EE_(y in G) abs(sum_(i = 1)^m Z_i (y))^p & = O(p^(p \/ 2) m^(p \/ 2 - 1) sum_(i = 1)^m (2 norm(f)_(L^p (G)))^p) \
+        & = O((4p)^(p \/ 2) m^(p \/ 2) norm(f)_(L^p (G))^p).
+    $ Choose $m = O(epsilon^(-2) p)$ so that the RHS is at most $(epsilon/4 norm(f)_(L^p (G)))^p$, and f§or $(z_1, ..., z_m) in A^m$, define $
+        M_((z_1, ..., z_m)) := EE_(y in G) abs(1/m sum_(i = 1)^m tau_(-z_i) f(y) - (f * mu_A)(y))^p.
+    $ Then we have $
+        EE_((z_1, ..., z_m) in A^m) M_((z_1, ..., z_m)) = O((4p)^(p \/ 2) m^(p \/ 2) norm(f)_(L^p (G))^p) = (epsilon/4 norm(f)_(L^p (G)))^p.
+    $ Also define $
+        L = {vd(z) in A^m: M_vd(z) <= (epsilon/2 norm(f)_(L^p (G)))^p}.
+    $ By Markov's inequality, since $
+        EE_(vd(z) in A^m) M_vd(z) <= (epsilon/4 norm(f)_(L^p (G)))^p = 2^(-p) (epsilon/2 norm(f)_(L^p (G)))^p,
+    $ we have $
+        abs(A^m \\ L)/abs(A^m) = Pr(M_vd(z) >= (epsilon/2 norm(f)_(L^p (G)))^p) <= Pr(M_vd(z) >= 2^p EE_(vd(z) in A^m) M_vd(z)) <= 2^(-p),
+    $ hence $abs(L) >= (1 - 1 \/ 2^p) abs(A)^m >= 1/2 abs(A)^m$. Let $D = {(b, ..., b): b in B} subset.eq B^m$. Then $L + D subset.eq (A + B)^m$, and so $
+        abs(L + D) <= abs(A + B)^m <= K^m abs(A)^m <= 2 K^m abs(L).
+    $ By @lem:additive-energy-lower-bound, $
+        E(L, D) >= (abs(L)^2 abs(D)^2)/abs(L + D) >= 1/2 K^(-m) abs(D)^2 abs(L),
+    $ so there are at least $abs(D)^2 \/ 2 K^m$ pairs $(d_1, d_2) in D^2$ such that $r_(L - L)(d_2 - d_1) > 0$. In particular, there exists $b in B$ and $X subset.eq B - b$ such that $abs(X) >= abs(D) \/ 2 K^m = abs(B) \/ 2 K^m$ and for all $x in X$, there exists $ell_2 (x) in L$ such that for all $ in [m]$, $ell_1 (x)_i - ell_2 (x)_i = x$. But now for all $x in X$, by the triangle inequality, we have, $
+        norm(tau_(-x) f * mu_A - f * mu_A)_(L^p (G)) & <= norm(tau_(-x) f * mu_A - tau_(-x) (1/m sum_(i = 1)^m tau_(-ell_2 (x)_i) f))_(L^p (G)) \
+        & thick + norm(tau_(-x) (1/m sum_(i = 1)^m tau_(-ell_2 (x)_i f) - f * mu_A))_(L^p (G)) \
+        & = norm(f * mu_A - 1/m sum_(i = 1)^m tau_(-ell_2 (x)_i f))_(L^p (G)) \
+        & thick + norm(1/m sum_(i = 1)^m tau_(-x - ell_2 (x)_i f) - f * mu_A)_(L^p (G)) \
+        & <= 2 dot epsilon/2 norm(f)_(L^p (G))
+    $ by definition of $L$.
+]
+#theorem("Bogolyubov, after Sanders")[
+    Let $A subset.eq FF_p^n$ have density $alpha > 0$. There exists a subspace $V <= FF_p^n$ of codimension $O\((log alpha^(-1))^4\)$ such that $
+        V subset.eq (A + A) - (A + A)
+    $
+]
+
+
+= Further topics
+
+#theorem("Ellenberg-Gijswijt")[
+    If $A subset.eq FF_3^n$ contains no non-trivial $3$-term APs, then $abs(A) = o(2.756^n)$.
+]
+#notation[
+    Let $M_n$ denote the set of monomials in $x_1, ..., x_n$ whose degree in each variable is at most $2$.
+]
+#notation[
+    Let $V_n$ denote the vector space of polynomials over $FF_3$ whose basis is $M_n$.
+]
+#notation[
+    For any $0 <= d <= 2n$, let $M_n^d$ denote the set of monomials in $M_n$ of total degree at most $d$, and let $V_n^d$ denote the corresponding vector space of polynomials. Write $m_d = dim(V_n^d) = abs(M_n^d)$.
+]
+#lemma[
+    Let $A subset.eq FF_3^n$ and $P in V_n^d$ be a polynomial. If $P(a + b) = 0$ for all $a != b in A$, then $
+        abs({a in A: P(2a) != 0}) <= 2 m_(d \/ 2).
+    $
+]
+#proof[
+    Every $P in V_n^d$ can be written as a linear combination of monomials in $M_n^d$, so $
+        P(x + y) = sum_(m, m' in M_n^d \ deg(m m') <= d) c_(m, m') m(x) m'(y)
+    $ for some coefficients $c_(m, m')$. Clearly, at least one of $m, m'$ must have degree $<= d \/ 2$, whence $
+        P(x + y) = sum_(m in M_n^(d \/ 2)) m(x) F_m (y) + sum_(m' in M_n^(d \/ 2)) m'(y) G_(m')(x),
+    $ for some families of polynomials ${F_m: m in M_n^(d \/ 2)}$ and ${G_(m'): m' in M_n^(d \/ 2)}$. Viewing $(P(x + y))_(x, y in A)$ as an $abs(A) times abs(A)$ matrix $C$, we see that $C$ can be written as the sum of at most $2 m_(d \/ 2)$ matrices, each of which has rank $1$. Thus, $"rank"(C) <= 2 m_(d \/ 2)$. But by assumption, $C$ is diagonal, and so its rank is equal to $abs({a in A: P(a + a) != 0})$.
+]
+#proposition[
+    Let $A subset.eq FF_3^n$ be a set containing no non-trivial $3$-APs. Then $abs(A) <= 3m_(2n \/ 3)$.
+]
+#proof[
+    Let $d in [0, 2n]$ be an integer which we will determine later. Let $W$ be the space of polynomials in $V_n^d$ that vanish in $(2 dot A)^c$. We have $dim(W) >= dim(V_n^d) - abs((2 dot A)^c) = m_d - (3^n - abs(A))$.
+
+    We claim that there exists $P in W$ such that $abs(supp(P)) >= dim(W)$. Indeed, pick $P in W$ with maximal support. If $abs(supp(P)) < dim(W)$, then there would be a non-zero polynomial $Q in W$ vanishing on $supp(P)$, in which case $supp(P + Q) supset.neq supp(P)$, contradicting the maximality of $supp(P)$.
+
+    Now by assumption, ${a + a': a != a' in A} sect 2 dot A = emptyset$, so any polynomial that vanishes on $(2 dot A)^c$ also vanishes on ${a + a': a != a' in A}$. Thus by above lemma, $
+        m_d - (3^n - abs(A)) <= dim(W) <= abs(supp(P)) & = abs({x in FF_3^n: P(x) != 0}) \
+        & = abs({a in A: P(2a) != 0}) <= 2 m_(d \/ 2).
+    $ Hence, $abs(A) <= 3^n - m_d + 2 m_(d \/ 2)$. But the monomials in $M_n \\ M_n^d$ are in bijection with the ones in $M_(2n - d)$ by $x_1^(alpha_1) dots.c x_n^(alpha_n) <--> x_1^(2 - alpha_1) dots.c x_n^(2 - alpha_n)$, whence $3^n - m_d = m_(2n - d)$. Thus, setting $d = 4n \/ 3$, we have $
+        abs(A) <= m_(2n \/ 3) + 2 m_(2n \/ 3) = 3 m_(2n \/ 3).
+    $
+]
+#example[
+    Recall from (find lemma) that given $A subset.eq G$, $
+        abs(T_3 (indicator(A), indicator(A), indicator(A)) - alpha^3) <= sup_(gamma != 1) abs(hat(bb(1))_A (gamma)).
+    $ However, it is impossible to bound $T_4 (indicator(A), indicator(A), indicator(A), indicator(A)) - alpha^4$, where $
+        T_4 (indicator(A), indicator(A), indicator(A), indicator(A)) = EE_(x, d) indicator(A)(x) indicator(A)(x + d) indicator(A)(x + 2d) indicator(A)(x + 3d),
+    $ by $sup_(gamma != 1) abs(hat(bb(1))_A (gamma))$. Indeed, consider $Q = {x in FF_p^n: x dot x = 0}$. By (find example), $abs(Q) \/ p^n = 1 \/ p + O(p^(-n \/ 2))$ and $sup_(t != 0) abs(hat(bb(1))_Q (t)) = O(p^(-n \/ 2))$. But given a $3$-AP $x, x + d, x + 2d in Q$, by the identity $
+        forall x, d, quad x^2 - 3(x + d)^2 + 3(x + 2d)^2 - (x + 3d)^2 = 0,
+    $ $x + 3d$ automatically lies in $Q$, so $T_4 (indicator(A), indicator(A), indicator(A), indicator(A)) = T_3 (indicator(A), indicator(A), indicator(A)) = (1\/p)^3 + O(p^(-n \/ 2))$.
+]
+#definition[
+    Given $f: G -> CC$, define its *$U^2$-norm* by $
+        norm(f)_(U^2 (G))^4 = EE_(x, a, b in G) f(x) overline(f(x + a) f(x + b)) f(x + a + b)
+    $ By (find example), we have $norm(f)_(U^2 (G)) = norm(hat(f))_(ell^4 (hat(G)))$, so it is indeed a norm.
+]
+#lemma[
+    Let $f_1, f_2, f_3: G -> CC$. Then $
+        abs(T_3 (f_1, f_2, f_3)) <= min_(i in [3]) (norm(f_i)_(U^2 (G)) dot product_(j != i) norm(f_j)_(L^oo (G))).
+    $
+]
+Note that $
+    sup_(gamma in hat(G)) abs(hat(f)(gamma))^4 <= sum_(gamma in hat(G)) abs(hat(f)(gamma))^4 <= sup_(gamma in hat(G)) abs(hat(f)(gamma))^2 sum_(gamma in hat(G)) abs(hat(f)(gamma))^2
+$ and so by Parseval, $
+    norm(f)_(U^2 (G))^4 = norm(hat(f))_(ell^oo (hat(G)))^4 <= norm(hat(f))_(ell^oo (hat(G)))^2 dot norm(f)_(L^2 (G))^2.
+$

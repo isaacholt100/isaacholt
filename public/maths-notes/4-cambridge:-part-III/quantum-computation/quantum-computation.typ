@@ -3,11 +3,13 @@
 #let name-abbrvs = (
     "Hidden Subgroup Problem (HSP)": "HSP",
     "Discrete Logarithm Problem (DLP)": "DLP",
-    "Amplitude Amplification Theorem/2D-subspace Lemma": "Amplitude Amplification Theorem"
+    "Amplitude Amplification Theorem/2D-subspace Lemma": "Amplitude Amplification Theorem",
+    "Lie-Trotter Product Formula": "Lie-Trotter"
 )
 #show: doc => template(doc, hidden: (), slides: false, name-abbrvs: name-abbrvs)
 
 #let poly = math.op("poly")
+#let polylog = math.op("polylog")
 #let ip(a, b) = $angle.l #a, #b angle.r$
 #let ket(arg) = $#h(0.2pt) | #h(0.2pt) arg #h(0.2pt) angle.r$
 #let bra(arg) = $angle.l #h(0.2pt) arg #h(0.2pt) | #h(0.2pt)$
@@ -623,7 +625,7 @@ We want to use a quantum system to simulate the evolution/dynamics of another qu
 #definition[
     The *exponential* of a matrix $A in CC^(n times n)$ is defined as $
         exp(A) = e^A := sum_(k = 0)^oo A^k / k!.
-    $
+    $ Note that if $[A, B] = 0$, then $exp(A) exp(B) = exp(A + B)$, but generally this does not hold when $[A, B] != 0$.
 ]<def:matrix-exponential>
 #theorem[
     If $H$ is Hermitian, then $e^(-i H t)$ is unitary for all $t in RR$.
@@ -658,6 +660,142 @@ $ i.e. for all normalised states $ket(psi)$, $norm(U ket(psi) - tilde(U) ket(psi
 ]<def:epsilon-approximation>
 #lemma[
     Let $U_1, ..., U_m, tilde(U)_1, ..., tilde(U)_m$ be unitaries. Suppose $tilde(U)_i$ $epsilon$-approximates $U_i$ for each $1 <= i <= m$. Then $
-        norm(U_n dots.c U_1 - tilde(U)_n dots.c tilde(U)_1) <= n epsilon
+        norm(U_n med dots.c med U_1 - tilde(U)_n med dots.c med tilde(U)_1) <= n epsilon
     $ So the error increases at most linearly.
+]<lem:approximation-of-unitary-product-grows-linearly>
+#definition[
+    $H$ is a *$k$-local Hamiltonian on $n$ qubits* if we can write $
+        H = sum_(j = 1)^m H_j
+    $ where each $H_j$ acts non-trivially on at most $k$ qubits, in which case we write $H_j = tilde(H)_j tp I$ (note these qubits need not be adjacent).
+
+    Note that $m <= binom(n, k) = O(n^k)$, and we usually take $k$ to be a constant.
+]
+#notation[
+    Write $U_((i))$ for the unitary $
+        I tp dots.c tp I tp U tp I tp dots.c tp I
+    $ where $U$ is in the $i$-th position, i.e. $U_((i))$ is the unitary acting on the $i$-th qubit on $n$-qubits.
+]
+#example[
+    - $H = X tp I tp I - 5 Z tp Y tp I$ is $2$-local on $3$ qubits.
+    - For the *Ising model* on an $n times n$ grid, where each qubit acts non-trivially only with its neighbours, the Hamiltonian is $
+        H = J sum_(i, j = 1)^n (Z_((i, j)) Z_((i, j + 1)) + Z_((i, j)) Z_((i + 1, j)))
+    $ where $J in RR$ is a coupling constant.
+    - For the *Heisenberg model* on a line, the Hamiltonain is $
+        H = sum_(i = 1)^(n - 1) (J_X X_((i)) X_((i + 1)) + J_Y Y_((i)) Y_((i + 1)) + J_Z Z_((i)) Z_((i + 1))),
+    $ where $J_X, J_Y, J_Z in RR$ are constants.
+]
+#theorem("Solovay-Kitaev")[
+    Let $U$ be a unitary on $k$-qubits, and $S$ be a universal set of elementary gates. Then $U$ can be $epsilon$-approximated using $O((log (1 \/ epsilon))^c)$ gates from $S$, where $c < 4$ is a constant.
+]<thm:solovay-kitaev>
+#proof[
+    Omitted.
+]
+#proposition[
+    Let $H = sum_(j = 1)^m H_j$ be a $k$-local Hamiltonian where all the local terms $H_j$ commute. Then for all $t > 0$ and $epsilon > 0$, the evolution operator $U(t) = e^(-i H t)$ can be $epsilon$-approximated by a circuit with $O(m polylog(m \/ epsilon))$ gates from any universal gate set.
+    
+    Note that $m = O(n^k)$, so the time-complexity is polynomial in $n$.
+]<prop:simulation-for-k-local-hamiltonian-with-commuting-local-terms>
+#proofhints[
+    Straightforward.
+]
+#proof[
+    Fix $t > 0$ and $epsilon > 0$. We have $
+        U(t) = e^(-i H t) = e^(-i sum_(j = 1)^m H_j) t = product_(j = 1)^m e^(-i H_j t).
+    $ Each $e^(-i H_j t)$ is a unitary that acts non-trivially on at most $k$ qubits. So we have a circuit for $e^(-i H t)$ in terms of some set of $k$-qubit gates. By @thm:solovay-kitaev, each $e^(-i H_j t)$ can be $delta$-approximated by a unitary $tilde(U)_j (t)$ circuit with $O(polylog(1 \/ delta))$ gates. By @lem:approximation-of-unitary-product-grows-linearly, we have $
+        norm(U(t) - product_(i = 1)^m tilde(U)_j (t)) < m delta.
+    $ So choosing $delta = epsilon \/ m$, we obtain a circuit of size $O(m polylog(m \/ epsilon))$ which $epsilon$-approximates $U(t)$.
+]
+#notation[
+    For $N times N$ matrices $X$ and $Y$, write $X = Y + O(epsilon)$ to mean $X = Y + E$ where $norm(E) <= epsilon$.
+]
+#lemma("Lie-Trotter Product Formula")[
+    Let $A$ and $B$ be $N times N$ matrices with $norm(A), norm(B) <= delta < 1$. Then $
+        e^(-i A) e^(-i B) = e^(-i (A + B)) + O(delta^2).
+    $
+]<lem:lie-trotter-product-formula>
+#proofhints[
+    Write $e^(-i A) = I - i A + E_A$ and show that $norm(E_A) = O(delta^2)$, do the same for two other matrices.b
+]
+#proof[
+    We have $
+        e^(-i A) & = I - i A + sum_(j = 2)^oo (-i A)^j / j! =: I - i A + E_A.
+    $ Now $
+        norm(E_A) & = norm((-i A)^2 sum_(j = 0)^oo (-i A)^j / (j + 2)!) \
+        & <= norm((-i A)^2) dot norm(sum_(j = 0)^oo (-i A)^j / (j + 2)!) quad & "by submultiplicativity" \
+        & <= norm((-i A)^2) dot sum_(j = 0)^oo norm((-i A)^j) / (j + 2)! quad & "by triangle inequality and continuity" \
+        & <= norm(A)^2 sum_(j = 0)^oo norm((-i A))^j / j! quad & "by submultiplicativity" \
+        & = delta^2 e^(delta) <= delta^2.
+    $ So $e^(-i A) = I - i A + O(delta^2)$. By the same argument, we have $
+        e^(-i B) & = I - i B + O(delta^2), \
+        e^(-i(A + B)) & = I - i(A + B) + O(2 delta^2) = I - i(A + B) + O(delta^2)
+    $ since $norm(A + B) <= norm(A) + norm(B) = 2 delta$. Hence, $
+        e^(-i A) e^(-i B) & = (I - i A + O(delta^2))(I - i B + O(delta^2)) \
+        & = I - i(A + B) + O(delta^2) \
+        & = e^(-i (A + B)) + O(delta^2),
+    $ since $norm(A B) <= delta^2$ by submultiplicativity.
+]
+#proposition[
+    There is a $poly(n, 1 \/ epsilon, t)$-time quantum algorithm for simulating the evolution operators of $k$-local Hamiltonians.
+]<prop:simulation-for-general-k-local-hamiltonian>
+#proof[
+    Let $H = sum_(j = 1)^m H_j$ be a $k$-local Hamiltonian and $U(t) = e^(-i H t)$ be its evolution operator. We can assume that not all the $H_j$ commute, otherwise we are done by @prop:simulation-for-k-local-hamiltonian-with-commuting-local-terms. Assume $t = 1$ and each $norm(H_j) <= delta$ with $delta <= 1 \/ m$, since then $norm(H_1 + dots.c + H_ell) <= ell delta$, and we need the @lem:lie-trotter-product-formula approximation to hold for all $ell in [m]$. We have $
+        & (e^(-i H_1) e^(-i H_2)) med dots.c med e^(-i H_m) \
+        & = (e^(-i (H_1 + H_2)) + O(delta^2)) e^(-i H_3) dots.c e^(-i H_m) quad & #[by @lem:lie-trotter-product-formula] \
+        & = e^(-i (H_1 + H_2)) e^(-i H_3) dots.c e^(-i H_m) + O(delta^2) quad & #[by submultiplicativity] \
+        & = (e^(-i(H_1 + H_2 + H_3)) + O((2 delta)^2)) e^(-i H_4) med dots.c med e^(-i H_m) + O(delta^2).
+    $ since each $e^(-i H_j)$ is unitary, so has unit norm. Repeatedly applying @lem:lie-trotter-product-formula, we obtain $
+        e^(-i H_1) med dots.c med e^(-i H_m) & = e^(-i (H_1 + dots.c + H_m)) + O(delta^2) + dots.c + O(((m - 1) delta)^2) \
+        & = e^(-i (H_1 + dots.c + H_m)) + O(m^3 lambda^2).
+    $ Let the $O(m^3 lambda^2)$ error be $C m^3 lambda^2$. For general $norm(H_i)$ and $t > 0$, introduce $M$ large (to be chosen later), and define $tilde(H)_j = H_j t \/ M$. Note that $norm(tilde(H)_j) <= delta t \/ M =: tilde(delta)$. Now $
+        U(t) = e^(-i(H_1 + dots.c + H_m)t) = (e^(-i (H_1 + dots.c + H_m) t \/ M))^M.
+    $ So we need the error in approximating $e^(-i H t \/ M)$ to be at most $epsilon \/ M$. So using the above error bound, we want $C m^3 tilde(delta)^2 < epsilon \/ M$, i.e. $M > C m^3 (delta t)^2 \/ epsilon$. With this choice of $M$, we have $
+        norm(e^(-i H_1 t \/ M) med dots.c med e^(-i H_m t \/ M) - e^(-i(H_1 + dots.c + H_m) t \/ M)) <= epsilon \/ M.
+    $ Hence by @lem:approximation-of-unitary-product-grows-linearly, $
+        norm(e^(-i H_1 t) med dots.c med e^(-i H_m t) - e^(-i(H_1 + dots.c + H_m) t)) <= epsilon.
+    $ The circuit is composed of $M m$ gates of the form $e^(-i H_j t \/ M)$. So the circuit size is $O(m^4 (delta t)^2 \/ epsilon)$. Recall that if $H$ is $k$-local, then $m <= binom(n, k) = O(n^k)$. So circuit size is $O(n^(4k) (delta t)^2 \/ epsilon)$ which is $poly(n, t, 1 \/ epsilon)$.
+]
+#remark[
+    - The time dependence is quadratic, but there are improved product formulae that allow the dependence of the circuit size on $t$ to be $O(t^(1 + alpha))$ for any $alpha > 0$.
+    - The $epsilon$-dependence is $poly(1 \/ epsilon)$ whereas in the commuting case it was $polylog(1 \/ epsilon)$. Again, there are methods that decrease this to $(1 \/ epsilon)^(1 \/ 2k)$.
+    - We have a circuit of size $abs(C) = O(n^(4k) (delta t)^2 \/ epsilon)$ gates of the form $e^(-i H_j t \/ M)$ approximating $e^(-i H t)$ to precision $epsilon$. If we apply @thm:solovay-kitaev to get this in some universal $2$-qubit gate set, we need to approximate each $e^(-i H_j t \/ M)$ to precision $epsilon \/ abs(C)$. @thm:solovay-kitaev requires overhead $O(log^4 abs(C) \/ epsilon) = O(log^4 ((n^(4k) (delta t)^2) / epsilon^2))$. So final complexity is $tilde(O)(n^(4k) (delta t)^2 \/ epsilon)$ TODO: add this to proof of theorem.
+]
+#algorithm("Harrow-Hassidim-Lloyd (HHL)")[
+    Given $A in CC^(N times N)$, $vd(b) in CC^N$, we want to solve $A vd(x) = vd(b)$.
+]
+#remark[
+    The best known classical algorithms require $O(poly(N) dot log(1 \/ epsilon))$ time. Just reading the inputs $A$ or $b$, or writing the solution $vd(x) = A^(-1) vd(b)$ requires $O(poly(N))$ time. Instead we focus on computing/estimating properties of the solution vector of the form $mu = x^T M x$ (quadratic expressions defined by some Hermitian matrix $M$), e.g. the total weight assigned by $x$ to a subset of indices/components. Classically, there is no better known way of doing this than computing the entire solution first. HHL can solve such tasks in $O(polylog(N) dot 1/epsilon dot kappa^2)$ time, where $kappa$ is the condition number of $A$, and when $kappa = polylog(N)$, this is an exponential speedup over the best known classical algorithms.
+]
+Preliminary requirements for HHL algorithm to be applicable:
+- $A$ is Hermitian (if not, double the system size and set $tilde(A) = mat(0, A^dagger; A, 0)$, $tilde(b) = vec(0, b)$, then solution is $tilde(x) = vec(x, 0)$ where $A vd(x) = vd(b)$).
+- $A$ is *well-conditioned*: condition number $kappa$ is defined as $kappa := norm(A^(-1)) norm(A)$. For $A$ Hermitian, $kappa = max{abs(lambda): lambda "eigenvalue of" A}/min{abs(lambda): lambda "eigenvalue of" A}$. Note $kappa := oo$ when $A$ is non-invertible. $kappa$ is measure of "how invertible" $A$ is.
+- $vd(b)$ is given as a quantum state: let $vd(b) = (b_1, ..., b_N)$, then state is $
+    ket(b) = 1/norm(b)_2 sum_(i = 1)^N b_i ket(i).
+$ We also assume that $vd(b)$ is normalised, (or that $norm(b)_2$ is efficiently computable), and that the state $ket(b)$ can be efficiently prepared on a quantum computer.
+- For the property $mu = x^T M x$, assume $M$ is Hermitian matrix, and that the corresponding measurement on $n = log N$ qubits can be efficiently implemented.
+- Assume that there is an efficient Hamiltonian simulation algorithm for $A$, i.e. we can implement $U(t) = e^(-i H t)$ in $O(poly(n) dot t)$ gates (for example, local Hamiltonians, but also a larger class, which naturally occurs in applications, is the class of locally-computable and row-sparse (every row contains at most $O(poly(n))$ non-zero entries) matrices).
+
+The quantum algorithm will work on $n = log N$ qubits and will never need to "write down" $A$, $b$, or $x = A^(-1) b$ as lists of numbers. It will output a state $ket(hat(x)')$ that is $epsilon$-close to $ket(hat(x))$, and $ket(hat(x))$ is proportional to $A^(-1) ket(b)$ in $O(poly(n) dot kappa^2 dot 1/epsilon)$. Using $ket(hat(x)')$ a further $O(poly(n) kappa^2 \/ epsilon)$ times, we can estimate any $mu = x^T M x$.
+
+The best known classical algorithm requires $O(poly(N) dot kappa dot log(1/epsilon))$ time, even with assumptions comparable to our assumptions for HHL.
+
+Note that when $epsilon$ is constant (or even $epsilon = O(1/poly(n))$) and for well-conditioned $A$, we have an exponential speedup.
+
+#algorithm("HHL")[
+    Assume that Hamiltonian simulation and phase estimation are exact, let $A = sum_(i = 1)^N lambda_i ket(v_i) bra(v_i)$, assume $lambda_"max" = 1$, and assume that $kappa(A)$ is known or bounded $<= kappa_max$. This means $abs(lambda_i) in [1\/kappa_max, 1]$ for each $i$. Work in the $n$-qubit Hilbert space spanned by ${ket(0), ..., ket(N - 1)}$.
+
+    Write $
+        ket(b) = sum_(i = 1)^N b_i ket(i) = sum_(j = 1)^N beta_j ket(v_j)
+    $ The solution vector to $A x = b$ is $ket(hat(x)) := A^(-1) ket(b) = sum_(j = 1)^N beta_j dot 1/lambda_j ket(v_j)$ (since $A^(-1) = sum_(i = 1)^N 1/lambda_j ket(v_j) bra(v_j)$). The transformation $ket(b) |-> A^(-1) ket(b)$ is linear but not unitary so cannot be directly implemented. Instead, we implemented it probabilistically using QPE, performed on $U = e^(-i A)$, which in turn is implemented by Hamiltonian simulation. At the end, we'll have a measurement step that introduces the non-unitarity. Apply $U_"PE"$ for $e^(-i A)$ with $m$ lines on the state $ket(b) ket(0)^(tp m)$, which gives $sum_i beta_i ket(v_i) ket(lambda_i)$ (assuming $e^(-i A)$ and $U_"PE"$ are exact and error-free). Consider the controlled rotation $Ctrl("Rot")$ acting on $n + 1$ qubits: $Ctrl("Rot") ket(lambda) ket(0) = ket(lambda) (cos(theta) ket(0) + sin(theta) ket(1)) = ket(lambda) (sqrt(1 - c^2 \/ lambda^2) ket(0) + c / lambda ket(1))$, with $theta = arcsin(c \/ lambda)$ and $c <= min{abs(lambda_i): i in [N]}$. Since $lambda in [1\/kappa, 1]$, $1\/lambda in [1, kappa]$ is larger than $1$, so can choose $c = kappa$ or $O(kappa)$. So in $Ctrl("Rot")$, the angle depends on the first register but not on $A$ or $b$ (so we're not sneaking extra info in here). $Ctrl("Rot")$ can be implemented efficiently using $O(poly(n))$ one and two-qubit gates (by e.g. Solovay-Kitaev). Assume we can implement $Ctrl("Rot")$ efficiently and exactly.
+    
+    Applying $Ctrl("Rot")$ to the state $U_"PE" ket(b) ket(0)$, we get $
+        sum_(j = 1)^N beta_j sqrt(1 - c^2 \/ lambda_j^2) ket(v_j) ket(lambda_j) ket(0) + beta_j c/lambda_j ket(v_j) ket(lambda_j) ket(1)
+    $
+    Now we measure the last qubit, and accept if outcome is $1$. This is called a post-selection step. The state collapses to a state proportional to $
+        sum_(j = 1)^N c/lambda_j beta_j ket(v_j) ket(lambda_j) ket(1)
+    $
+]
+#remark[
+    Uses of solving linear systems:
+    - Numerical solutions of PDEs using discretisation leads to linear systems of size far larger than original problem description.
+    - Machine learning, pattern matching etc.
 ]

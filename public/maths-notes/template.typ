@@ -15,6 +15,7 @@
 #let remark = thmplain("theorem", "Remark", ..thmstyle)
 #let proposition = thmplain("theorem", "Proposition", ..thmstyle)
 #let example = thmplain("theorem", "Example", ..thmstyle)
+#let fig-example = thmplain("theorem", "Diagram", ..thmstyle)
 #let conjecture = thmplain("theorem", "Conjecture", ..thmstyle)
 #let algorithm = thmplain("theorem", "Algorithm", ..thmstyle)
 #let notation = thmplain("theorem", "Notation", ..thmstyle)
