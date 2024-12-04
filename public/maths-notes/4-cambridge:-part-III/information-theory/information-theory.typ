@@ -1401,3 +1401,159 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
         liminf_(n -> oo) 1/n log P_e^((n)) >= -(D^* + 2 epsilon),
     $ and since $epsilon > 0$ was arbitrary, we are done.
 ]
+
+
+= Variable-rate lossless data compression
+
+#notation[
+    Let ${0, 1}^*$ denote the set of all binary strings of finite length.
+]
+#definition[
+    A *variable-rate loss compression code* of block length $n$ on a finite alphabet $A$ is an injective map $C_n: A^n -> {0, 1}^*$ which maps source strings to *codewords*.
+    
+    Each $C_n$ has an associated *length function* $L_n: A^n -> NN$, defined as $L_n (x_1^n) = "length of" C_n (x_1^n) "bits"$.
+]
+#definition[
+    A code $C_n$ is *prefix-free* if for all $x_1^n != y_1^n in {0, 1}^n$, the codeword $C_n (x_1^n)$ is not a prefix of $C_n (y_1^n)$.
+]
+#example[
+    #figure(
+        grid(
+            columns: 4,
+            column-gutter: 2em,
+            table(
+                columns: 2,
+                $x$, $C(x)$,
+                $a$, $00$,
+                $b$, $01$,
+                $c$, $10$,
+                $d$, $11$
+            ),
+            table(
+                columns: 2,
+                $x$, $C(x)$,
+                $a$, $0$,
+                $b$, $10$,
+                $c$, $110$,
+                $d$, $111$
+            ),
+            table(
+                columns: 2,
+                $x$, $C(x)$,
+                $a$, $0$,
+                $b$, $00$,
+                $c$, $110$,
+                $d$, $111$
+            ),
+            table(
+                columns: 2,
+                $x$, $C(x)$,
+                $a$, $0$,
+                $b$, $1$,
+                $c$, $00$,
+                $d$, $11$
+            ),
+        )
+    )
+    The first two codes are prefix-free, the last two are not.
+]
+#theorem("Kraft's Inequality")[
+    $==>$: for any length function $L_n: A^n -> NN$ satisfying *Kraft's inequality*: $
+        sum_(x_1^n in A^n) 2^(-L_n (x_1^n)) <= 1,
+    $ there is a prefix-free code $C_n$ on $A^n$ with length function $L_n$.
+    $<==$: the length function of any prefix-free code satisfies Kraft's inequality.
+]
+#proof[
+    $<==$: let $C_n$ be a prefix-free code with length function $L_n$. Let $L^* = max{L_n (x_1^n): x_1^n in A^n}$ and consider the complete binary tree of depth $L^*$ TODO: insert diagram. If we mark all the codewords on the tree, then the prefix-free property implies that no codeword is a descendant of any other codeword. The number of leaves of the tree is $
+        2^(L^*) & >= sum_(x_1^n in A^n) ("number of descendants of" C_n (x_1^n)) \
+        & sum_(x_1^n in A^n) 2^(L^* - L_n (x_1^n)).
+    $
+    $==>$: given a length function $L_n$ satisfying Kraft's inequality, consider the complete binary tree of depth $L^* = max{L_n (x_1^n): x_1^n in A^n}$. Then, ordering the $x_1^n in A^n$ in the order of increasing $L_n (x_1^n)$, assign the first available codeword at depth $L_n (x_1^n)$. Kraft's inequality guarantees that there will always be such a node.
+]
+
+== The codes-distributions correspondence
+
+#theorem("Codes-distributinos Correspondence")[
+    $==>$: for any PMF $Q_n$ on $A^n$, there is a prefix-free code $C_n^*$ with length function $L_n^*$ such that $
+        forall x_1^n in A^n, quad L_n^* (x_1^n) < -log Q_n (x_1^n) + 1
+    $
+    $<==$: for any prefix-free code $C_n$ with length function $L_n$, there is a PMF $Q_n$ on $A^n$ such that $
+        forall x_1^n in A^n, quad L_n (x_1^n) >= -log Q_n (x_1^n).
+    $
+]
+#proof[
+    $==>$: Take $L_n^* (x_1^n) = ceil(-log Q_n (x_1^n)) < -log Q_n (x_1^n) + 1$. $L_n^*$ satisfies Kraft's inequality: $
+        sum_(x_1^n in A^n) 2^(-L_n (x_1^n)) = sum_(x_1^n in A^n) 2^(-ceil(-log Q_n (x_1^n))) <= sum_(x_1^n in A^n) 2^(log Q_n (x_1^n)) = sum_(x_1^n in A^n) Q_n (x_1^n) = 1.
+    $
+    $<==$: define the PMF $Q_n$ on $A^n$ by $
+        Q_n (x_1^n) = 2^(-L_n (x_1^n)) / (sum_(y_1^n in A^n) 2^(-L_n (y_1^n))).
+    $ Then $
+        -log Q_n (x_1^n) = L_n (x_1^n) + log(sum_(y_1^n in A^n) 2^(-L_n (y_1^n))) <= L_n (x_1^n).
+    $ since $L_n$ satisfies Kraft's inequality so $sum_(y_1^n in A^n) 2^(-L_n (y_1^n)) <= 1$.
+]
+#theorem[
+    Let $X_1^n$ have PMF $P_n$ on $A^n$.
+    
+    $==>$: there is a prefix-free code $C_n^*$ with length function $L_n^*$ that achieves an expected description length: $
+        EE[L_n^* (X_1^n)] < H(X_1^n) + 1.
+    $
+    $<==$: for any prefix-free code $C_n$ with length function $L_n$ on $A^n$, $
+        EE[L_n (X_1^n)] >= H(X_1^n).
+    $
+]
+#proof[
+    $==>$: let $C_n^*$ be the code with length function $L_n^* (x_1^n) = ceil(-log P_n (x_1^n))$ (the $C_n^*$ in the codes-distributions correspondence). Then $
+        EE[L_n^* (X_1^n)] < EE[-log P_n (X_1^n) + 1] = H(X_1^n) + 1
+    $ by codes-distributions correspondence.
+    $<==$: let $Q_n$ be as in the codes-distributions correspondence. Then $
+        EE[L_n (X_1^n)] & >= EE[-log Q_n (X_1^n)] \
+        & = EE[log(1/(P_n (X_1^n)) dot (P_n (X_1^n))/(Q_n (X_1^n)))] \
+        & = EE[-log P_n (X_1^n)] + EE[log (P_n (X_1^n))/(Q_n (X_1^n))] \
+        & = H(X_1^n) + D(P_n || Q_n) >= H(X_1^n).
+    $
+]
+#corollary[
+    Let $vd(X) = {X_n: n in NN}$ be a stationary source with entropy rate $H = H(vd(X))$. Then $H$ is the best asymptotically achievable compression rate among all variable-rate prefix-free codes: $
+        lim_(n -> oo) inf_((C_n, L_n) "prefix-free") 1/n EE[L_n (X_1^n)] = H.
+    $
+]
+#proof[
+    By the above theorem, $
+        1/n H(X_1^n) <= inf_((C_n, L_n) "prefix-free") 1/n EE[L_n (X_1^n)] < 1/n (H(X_1^n) + 1).
+    $
+]
+
+== Shannon codes and their properties
+
+#definition[
+    The *Shannon code* for a distribution $Q_n$ on $A^n$ is the code with length function $
+        L_n (x_1^n) := ceil(-log Q_n (x_1^n)).
+    $
+]
+#definition[
+    We call the $L_n (x_1^n) = -log Q_n (x_1^n)$ for $x_1^n in A^n$ the *ideal Shannon codelengths*.
+]
+#theorem("Competitive Optimality of Shannon Codes")[
+    Let $P_n$ be a distribution on $A^n$ and $X_1^n sim P_n$. For any other PMF on $A^n$, $
+        Pr(-log Q_n (X_1^n) <= -log P_n (X_1^n) - K) <= 2^(-K).
+    $
+]
+#proof[
+    By Markov's inequality, we have $
+        Pr(-log Q_n (X_1^n) <= -log P_n (X_1^n) - K) & = Pr((Q_n (X_1^n))/(P_n (X_1^n)) >= 2^K) \
+        & <= 2^(-K) EE[(Q_n (X_1^n))/(P_n (X_1^n))] \
+        & = 2^(-K) sum_(x_1^n in A^n) P_n (x_1^n) dot (Q_n (x_1^n))/(P_n (x_1^n)) \
+        & = 2^(-K)
+    $
+]
+
+
+= Universal data compression
+
+
+= Redundancy and the price of universality
+
+#definition[
+    Suppose $x_1^n in A^n$ is generated by a memoryless source with PMF $P$ on a finite alphabet $A$, with $abs(A) = m$. The target compression is $-log P^n (x_1^n)$ bits. So if instead we use a code with respect to an arbitrary PMF $Q_n$ on $A^n$, the *redundancy* is
+
+]

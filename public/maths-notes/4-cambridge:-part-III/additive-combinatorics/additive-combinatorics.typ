@@ -799,8 +799,8 @@ Recall that given $A subset.eq FF_2^n$ of density $alpha > 0$, we have $abs(Spec
     $
 ]
 #theorem("Croot-Sisask Almost Periodicity")[
-    Let $G$ be a finite abelian group, let $epsilon > 0$, and $p in [2, oo)$. Let $A, B subset.eq G$ be such that $abs(A + B) <= K abs(A)$, and let $f: G -> CC$. Then there is $b in B$ and a set $X subset.eq B - b$ such that $abs(X) >= 2 K^(-O(epsilon^(-2) p)) abs(B)$ and $
-        norm(tau_x f * mu_A - f * mu_A)_(L^p (G)) <= epsilon norm(f)_(L^p (G)) quad forall x in X,
+    Let $G$ be a finite abelian group, let $epsilon > 0$, and $p in [2, oo)$. Let $A, B subset.eq G$ be such that $abs(A + B) <= K abs(A)$, and let $f: G -> CC$. Then there is $b in B$ and a set $X subset.eq B - b$ such that $abs(X) >= 1/2 K^(-O(epsilon^(-2) p)) abs(B)$ and $
+        norm(tau_x (f * mu_A) - f * mu_A)_(L^p (G)) <= epsilon norm(f)_(L^p (G)) quad forall x in X,
     $ where $tau_x g(y) = g(y + x)$ for all $y in G$.
 ]<thm:croot-sisask-almost-periodicity>
 #proof[
@@ -911,5 +911,109 @@ Recall that given $A subset.eq FF_2^n$ of density $alpha > 0$, we have $abs(Spec
 Note that $
     sup_(gamma in hat(G)) abs(hat(f)(gamma))^4 <= sum_(gamma in hat(G)) abs(hat(f)(gamma))^4 <= sup_(gamma in hat(G)) abs(hat(f)(gamma))^2 sum_(gamma in hat(G)) abs(hat(f)(gamma))^2
 $ and so by Parseval, $
-    norm(f)_(U^2 (G))^4 = norm(hat(f))_(ell^oo (hat(G)))^4 <= norm(hat(f))_(ell^oo (hat(G)))^2 dot norm(f)_(L^2 (G))^2.
-$
+    norm(hat(f))_(ell^oo (hat(G))) = norm(f)_(U^2 (G))^4 = norm(hat(f))_(ell^oo (hat(G)))^4 <= norm(hat(f))_(ell^oo (hat(G)))^2 dot norm(f)_(L^2 (G))^2.
+$ Moreover, if $f = f_A = indicator(A) - alpha$, then $
+    T_3 (f, f, f) = T_3 (indicator(A) - alpha, indicator(A) - alpha, indicator(A) - alpha) = T_3 (indicator(A), indicator(A), indicator(A)) - alpha^3.
+$ We may therefore reformulate the first step in the proof of @thm:meshulam as follows: if $p^n >= 2 alpha^(-2)$, then by (find lemma), $alpha^3 / 2 <= abs(alpha/p^n - alpha^3) = abs(T_3 (f_A, f_A, f_A)) <= norm(f_A)_(U^2 (FF_p^n))$. It remains to show that if $norm(f_a)_(U^2 (FF_p^n))$ is non-trivial, then there exists a subspace $V <= FF_p^n$ of bounded codimension on which $A$ has increased density.
+
+#theorem([$U^2$ Inverse Theorem])[
+    Let $f: FF_p^n -> CC$ satisfy $norm(f)_(L^oo (FF_p^n)) <= 1$ and $norm(f)_(U^2 (FF_p^n)) >= delta$ for some $delta > 0$. Then there exists $b in FF_p^n$ such that $
+        abs(EE_(x in FF_p^n) f(x) e(-x . b \/ p)) >= delta^2.
+    $ In other words, $gen(f, phi) >= delta^2$ for $phi(x) = e(-x . b \/ p)$. We say "$f$ correlates with a linear phase function".
+]
+#proof[
+    We have seen that $norm(f)_(U^2 (FF_p^n)) <= norm(hat(f))_(ell^oo (hat(FF)_p^n)) norm(f)_(L^2 (FF_p^n)) <= norm(hat(f))_(ell^oo (hat(FF)_p^n))$. So $
+        delta^2 <= norm(hat(f))_(ell^oo (hat(FF)_p^n)) = sup_(t in hat(FF)_p^n) abs(EE_(x in FF_p^n) f(x) e(-x . t \/ p)).
+    $
+]
+#definition[
+    Given $f: G -> CC$, the *$U^3$ norm* of $f$ is defined by $
+        norm(f)_(U^3 (G))^8 = EE_(x, a, b, c in G) & f(x) overline(f(x + a) f(x + b) f(x + c)) \
+        & f(x + a + b) f(x + b + c) f(x + a + c) overline(f(x + a + b + c)) \
+        = EE_(x, h_1, h_2, h_3 in G) & product_(epsilon in {0, 1}^3) cal(C)^abs(vd(epsilon)) f(x + vd(epsilon) . vd(h)),
+    $ where $cal(C) g(x) = overline(g(x))$ and $abs(vd(epsilon)) = |{i in [3]: epsilon_i = 1}|$ is the number of 1's in $vd(epsilon)$.
+
+    TODO: insert diagram of cube with vertices $x, x + a, ..., x + a + b + c$.
+]
+#remark[
+    It is easy to verify that $norm(f)_(U^3 (G))^8 = EE_(c in G) norm(Delta_c f)_(U^2 (G))^4$ where $Delta_c g(x) = g(x) overline(g(x + c))$.
+]
+#definition[
+    Given eight functions $f_epsilon: G -> CC$ for $epsilon in {0, 1}^3$, define their *$U^3$ inner product* by $
+        gen((f_epsilon)_(epsilon in {0, 1}^3))_(U^3 (G)) := EE_(x, h_1, h_2, h_3 in G) product_(epsilon in {0, 1}^3) cal(C)^abs(epsilon) f_epsilon (x + epsilon dot h)
+    $ Observe that $gen(f, f, f, f, f, f, f, f)_(U^3 (G)) = norm(f)_(U^3 (G))^8$.
+]
+#lemma("Gowers-Cauchy-Schwarz Inequality")[
+    Given $f_epsilon: G -> CC$ for $epsilon in {0, 1}^3$, $
+        abs(gen((f_epsilon)_(epsilon in {0, 1}^3))_(U^3 (G))) <= product_(epsilon in {0, 1}^3) norm(f_epsilon)_(U^3 (G)).
+    $
+]
+#proof[
+    Exercise (helpful to do for $U^2$ first).
+]
+#remark[
+    Setting $f_epsilon = f$ for $epsilon in {0, 1}^2 times {0}$ and $f_epsilon = 1$ otherwise, it follows that $
+        norm(f)_(U^2 (G))^4 <= norm(f)_(U^3 (G))^4 quad "hence" quad norm(f)_(U^2 (G)) <= norm(f)_(U^3 (G)).
+    $
+]
+#proposition[
+    Let $f_1, f_2, f_3, f_4: FF_5^n -> CC$. Then $
+        abs(T_4 (f_1, f_2, f_3, f_4)) <= min_(i in [4]) norm(f_i)_(U^3 (G)) dot product_(j != i) norm(f_j)_(L^oo (FF_5^n)).
+    $
+]
+#proof[
+    Assume $f_i = f$ for all $i$ and that $norm(f)_(L^oo (FF_5^n)) <= 1$ (we can remove these assumptions). Reparameterising (by subtracting $a + b + c + d$), we have $
+        T_4 (f, f, f, f) = EE_(a, b, c, d in FF_5^n) f(3a + 2b + c) f(2a + b - d) f(a - c - 2d) f(-b - 2c - 3d)
+    $ Now $
+        abs(T_4 (f, f, f, f))^8 & <= (EE_(a, b, c) abs(EE_d f(2a + b - d) f(a - c - 2d) f(-b - 2c - 3d))^2)^4 "by C-S" \
+        & = (EE_(d, d') EE_(a, b) f(2a + b - d) overline(f(2a + b - d')) \
+        dot EE_c f(a - c - 2d) overline(f(a - c - 2d')) f(-b - 2c - 3d) overline(f(-b - 2c - 3d')))^4 \
+        & <= EE_(d, d') EE_(a, b) abs(EE_c f(a - c - 2d) overline(f - c - 2d') f(-b - 2c - 3d) overline(f(-b - 2c - 3d'))^2)^2 \
+        & = (EE_(c, c', d, d') EE_a f(a - c - 2d) overline(f(a - c' - 2d)) overline(f(a - c - 2d')) f(a - c' - 2d') \
+        dot EE_b f(-b - 2c - 3d) overline(f(-b - 2c' - 3d)) overline(f(-b - 2c - 3d')) f(-b - 2c' - 3d'))^2 \
+        & <= EE_(c, c', d, d', a) abs(EE_b f(-b - 2c - 3d) overline(f(-b - 2c' - 3d)) overline(f(-b - 2c - 3d')) f(-b - 2c' - 3d'))^2 \
+        & = EE_(b, b', c, c', d, d') f(-b - 2c - 3d) overline(f(-b' - 2c - 3d)) overline(f(-b - 2c' - 3d)) f(-b' - 2c' - 3d) \
+        & overline(f(-b - 2c - 3d')) f(-b' - 2c - 3d') f(-b - 2c' - 3d') overline(f(-b' - 2c' - 3d'))
+    $ where all the inequalities are by Cauchy-Schwarz.
+]
+#example[
+    Let $M$ be an $FF_5^(n times n)$ be a symmetric matrix. Then $f(x) = e\(x^T M x \/ 5\)$ satisfies $norm(f)_(U^3) = 1$.
+]
+#theorem([$U^3$ Inverse Theorem])[
+    Let $f: FF_5^n -> CC$ satisfy $norm(f)_(L^oo (FF_5^n)) <= 1$ and $norm(f)_(U^3 (FF_5^n)) >= delta$ for some $delta > 0$. Then there exists a symmetric matrix $M in FF_5^(n times n)$ and $b in FF_5^n$ such that $
+        abs(EE_x f(x) e(x^T M x + b^T x \/ p)) >= c(delta),
+    $ where $c(delta)$ is a polynomial in $delta$. In other words, $abs(gen(f, phi)) >= c(delta)$ for $phi(x) = e(x^T M x + b^T x \/ p)$, and we say "$f$ correlates with a quadratic phase function".
+]
+#proof("sketch")[
+    We have $norm(f)_(U^3)^8 = EE_h norm(Delta_h f)_(U^2)^4$ where $Delta_h f(x) = f(x) overline(f(x + h))$.
+
+    + Weak linearity: if $norm(f)_(U^3)^8 >= delta^8$, then for at least a $delta^8 \/ 2$-proportion of $h in FF_5^n$, $delta^8 \/ 2 <= norm(Delta_h f)_(U^2)^4 <= norm(hat(Delta_h f))_(ell^oo)^2$. So for each such $h in FF_5^n$, there exists $t_h$ such that $abs(hat(Delta_h)(t_h))^2 >= delta^8 \/ 2$. We have #proposition[
+        Let $f: FF_5^n -> CC$ satisfy $norm(f)_(L^oo (FF_5^n)) <= 1$ and $norm(f)_(U^3 (FF_5^n)) >= delta$ for some $delta > 0$. Suppose $abs(FF_5^n) = Omega_delta (1)$. Then there exists $S subset.eq FF_5^n$ with $abs(S) = Omega_delta (abs(FF_5^n))$ and a function $phi: S -> hat(FF)_5^n$ such that:
+        - $abs(hat(Delta_h f)(phi(h))) = Omega_delta (1)$, and
+        - There are at least $Omega_delta (abs(FF_5^n)^3)$ quadruples $(s_1, s_2, s_3, s_4) in S^4$ such that $s_1 + s_2 = s_3 + s_4$ and $phi(s_1) + phi(s_2) = phi(s_3) + phi(s_4)$.
+    ]
+    + Strong linearity. If $S$ and $phi$ are as above, then there is a linear function $psi: FF_5^n -> hat(FF)_5^n$ which coincides with $phi$ for many elements of $S$. We have #proposition[
+        Let $S$ and $phi$ be as given by above proposition. Then there exists a $M in FF_5^(n times n)$ and $b in FF_5^n$ such that $psi: FF_5^n -> hat(FF)_5^n$, $psi(x) = M x + b$ satisfies $psi(x) = phi(x)$ for $Omega_delta (abs(FF_5^n))$ elements $x in S$.
+    ] #proof[
+        Consider the graph of $phi$: $Gamma = {(h, phi(h): h in S} subset.eq FF_5^n times hat(FF)_5^n$. By above proposition, $Gamma$ has $Omega_delta (abs(FF_5^n))$ additive quadruples. By Balog-Szemeredi-Gowers, there exists $Gamma' subset.eq Gamma$ with $abs(Gamma') = Omega_delta (abs(Gamma)) = Omega_delta (abs(FF_5^n))$ and $abs(Gamma' + Gamma') = O_delta (abs(Gamma'))$. Define $S' subset.eq S$ by $Gamma' = {(h, phi(h)): h in S'}$. Note that $abs(S') = Omega_delta (abs(FF_5^n))$. By Freiman-Ruzsa applied to $Gamma' subset.eq FF_5^n times hat(FF)_5^n$, there exists a subspace $H <= FF_5^n times hat(FF)_5^n$ with $abs(H) = O_delta (abs(Gamma')) = O_delta (abs(FF_5^n))$ such that $Gamma' subset.eq H$.
+
+        Denote by $pi: FF_5^n times hat(FF)_5^n$ the projection onto the first $n$ coordinates. By construction, $pi(H) supset.eq S'$. Moreover, since $abs(S') = Omega_delta (abs(FF_5^n))$, we have $
+            abs(ker(pi|_H)) = abs(H) / abs("im"(pi|_H)) <= (O_delta (abs(FF_5^n))) / abs(S') = O_delta (1).
+        $ We may thus partition $H$ into $O_delta (1)$ cosets of some subspace $H^*$ such that $pi|_H$ is injective on each coset. By averaging, there exists a coset $x + H^*$ such that $abs(Gamma' sect (x + H^*)) = Omega_delta (abs(Gamma'))= Omega_delta (abs(FF_5^n))$.
+
+        Set $Gamma'' = Gamma' sect (x + H^*)$ and define $S''$ accordingly. Now $pi|_(x + H^*)$ is injective and surjective onto $V := im(pi|_(x + H^*))$. This means there is an affine-linear map $psi: V -> hat(FF)_5^n$ such that $(h, psi(h)) in Gamma'$ for all $h in S''$.
+    ]
+    + Symmetry argument.
+    + Integration step.
+
+]
+#theorem("Szemeredi's Theorem for 4-APs")[
+    Let $A subset.eq FF_5^n$ be a set containing no non-trivial $4$-APs. Then $abs(A) = O(5^n)$.
+]
+#proof[
+    Idea: by above proposition with $f = f_A = indicator(A) - alpha$, $
+        T_4 (indicator(A), indicator(A), indicator(A), indicator(A)) - alpha^4 = T_4 (f_A, f_A, f_A, f_A) + 14 "other terms",
+    $ in which between one and three of the inputs are equal to $f_A$. These are controlled by $norm(f_A)_(U^2 (FF_5^n)) <= norm(f_A)_(U^3 (FF_5^n))$, whence $
+        abs(T_4 (indicator(A), indicator(A), indicator(A), indicator(A)) - alpha^4) <= 15 norm(f_A)_(U^3 (FF_5^n))
+    $ So if $A$ contains no non-trivial $4$-APs and $5^n > 2 alpha^(-3)$, then $norm(f_A)_(U^3 (FF_5^n)) >= alpha^4 / 30$. What can we say about functions with large $U^3$ norm?
+]

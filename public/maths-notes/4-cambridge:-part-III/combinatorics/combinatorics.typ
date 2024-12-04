@@ -5,10 +5,12 @@
 
 #let diagram-colors = (
     "red": rgb("#bf0101"),
-    "blue": rgb("#262686"),
+    "light-red": rgb("f9e5e6"),
+    "blue": rgb("#3333b2"),
     "green": rgb("#006001")
 )
 #let point-style = (radius: 0.1, stroke: none, fill: diagram-colors.red)
+#let line-style(color) = (fill: color, stroke: color, mark: (end: ">"))
 #let diamond(width, height) = {
     import cetz.draw: *
 
@@ -16,6 +18,16 @@
     line((width / 2, 0), (width, height / 2))
     line((width / 2, height), (0, height / 2))
     line((width / 2, height), (width, height / 2))
+}
+#let c-arc(centre, radius, start, stop, ..args) = {
+    let start-pos = (centre.at(0) + radius * calc.cos(start), centre.at(1) + radius * calc.sin(start))
+    return cetz.draw.arc(start-pos, radius: radius, start: start, stop: stop, ..args)
+}
+#let add-points(..points) = {
+    let points = points.pos()
+    let x = points.map(point => point.at(0)).sum()
+    let y = points.map(point => point.at(1)).sum()
+    return (x, y)
 }
 
 = Set systems
@@ -60,7 +72,7 @@
                     & emptyset &
                 $
             ),
-            cetz.canvas({
+            canvas({
                 import cetz.draw: *
 
                 draw.rect((1, 4.5), (2, 5.5), radius: 50%, name: "l3")
@@ -72,7 +84,7 @@
                 content("l1", box[$X^((1))$])
                 content("l0", box[$X^((0))$])
             }),
-            cetz.canvas({
+            canvas({
                 import cetz.draw: *
 
                 draw.rect((2, 6), (3, 7), radius: 50%, name: "l4")
@@ -95,7 +107,7 @@
 ]
 #fig-example[
     #figure(
-        cetz.canvas({
+        canvas({
             import cetz.draw: *
 
             let shift-x = 1.25
@@ -216,29 +228,114 @@
     Then put these matchings together to form a set of chains, each passing through $X^((floor(n\/2)))$.
     #fig-example[
         #figure(
-            cetz.canvas({
+            canvas({
                 import cetz.draw: *
 
-                draw.rect((2, 6), (3, 7), radius: 50%, name: "l4")
-                draw.rect((-1, 4.5), (6, 5.5), radius: 50%, name: "l3")
-                draw.rect((0, 3), (5, 4), radius: 50%, name: "l2")
-                draw.rect((1, 1.5), (4, 2.5), radius: 50%, name: "l1")
-                draw.rect((2, 0), (3, 1), radius: 50%, name: "l0")
-                content((7, 0.5), box[$X^((4))$])
+                // draw.rect((2, 6), (3, 7), radius: 50%, name: "l4")
+                // draw.rect((-1, 4.5), (6, 5.5), radius: 50%, name: "l3")
+                // draw.rect((0, 3), (5, 4), radius: 50%, name: "l2")
+                // draw.rect((1, 1.5), (4, 2.5), radius: 50%, name: "l1")
+                // draw.rect((2, 0), (3, 1), radius: 50%, name: "l0")
+                circle((0, 0), radius: (4, 0.8))
+                circle((0, 2), radius: (3, 0.6))
+                circle((0, 4), radius: (2, 0.4))
+                circle((0, -2), radius: (3, 0.6))
+                circle((0, -4), radius: (2, 0.4))
+
+                content((6, -4), $X^((n \/ 2 - 2))$)
+                content((6, -2), $X^((n \/ 2 - 1))$)
+                content((6, 0), $X^((n \/ 2))$)
+                content((6, 2), $X^((n \/ 2 + 1))$)
+                content((6, 4), $X^((n \/ 2 + 2))$)
                 // content("l3", box[$X^((3))$])
                 // content("l2", box[$X^((2))$])
                 // content("l1", box[$X^((1))$])
                 // content("l0", box[$X^((0))$])
-                let points = ((0, 5), (1, 5), (2, 5))
-                for point in points {
-                    circle(point, ..point-style)
+                let N1 = 11
+                let N2 = 5
+                let N3 = 3
+                let points1 = range(0, N1 + 1).map(i => (-3.6 + 7.2 * i / N1, 0))
+                let points2 = range(0, N2 + 1).map(i => (-2.6 + 5.2 * i / N2, 2))
+                let points3 = range(0, N3 + 1).map(i => (-1.6 + 3.2 * i / N3, 4))
+                for (i, point) in (..points1, ..points2, ..points3).enumerate() {
+                    circle(point, ..point-style, name: "point-" + str(i))
+                    circle((point.at(0), -point.at(1)), ..point-style, name: "point-n-" + str(i))
                 }
-            })
+
+                set-style(
+                    stroke: (
+                        paint: diagram-colors.red,
+                        // thickness: 1pt,
+                    )
+                )
+                line("point-12", "point-0")
+                line("point-13", "point-1")
+                line("point-14", "point-4")
+                line("point-15", "point-5")
+                line("point-16", "point-8")
+
+                line("point-17", "point-10")
+                line("point-12", "point-18")
+                line("point-13", "point-19")
+                line("point-15", "point-20")
+                line("point-17", "point-21")
+
+                line("point-n-12", "point-0")
+                line("point-n-13", "point-2")
+                line("point-n-14", "point-3")
+                line("point-n-15", "point-6")
+                line("point-n-16", "point-8")
+                line("point-n-17", "point-9")
+
+                line("point-n-18", "point-n-13")
+                line("point-n-19", "point-n-14")
+                line("point-n-20", "point-n-16")
+                line("point-n-21", "point-n-17")
+            }),
+            caption: [Example of joining matchings in the 5 middle layers, for $n$ even.]
         )
     ]
     If a subset $X^((floor(n\/2)))$ has a chain passing through it, then this chain is unique. The subsets with no chain passing through form their own one-element chain. By taking complements, it is enough to construct the matchings just for $r < n/2$ (since a matching from $X^((r))$ to $X^((r + 1))$ induces a matching from $X^((n - r - 1))$ to $X^((n - r))$: there is a correspondence between $X^((r))$ and $X^((n - r))$ by taking complements, and taking complements reverse inclusion, so edges in the induced matching are guaranteed to exist).
     
-    Let $G$ be the (bipartite) subgraph of $Q_n$ spanned by $X^((r)) union X^((r + 1))$. For any $S subset.eq X^((r))$, the number of $S$-$Gamma(S)$ edges in $G$ is $|S|(n - r)$ (counting from below) since there are $n - r$ ways to add an element. This number is $<= |Gamma(S)| (r + 1)$ (counting from above), since $r + 1$ ways to remove an element. Hence $|Gamma(S)| >= (|S| (n - r))/(r + 1) >= |S|$ as $r < n/2$. So by Hall's theorem, since there is a matching from $S$ to $Gamma(S)$, there is a matching from $X^((r))$ to $X^((r + 1))$.
+    Let $G$ be the (bipartite) subgraph of $Q_n$ spanned by $X^((r)) union X^((r + 1))$. For any $S subset.eq X^((r))$, the number of $S$-$Gamma(S)$ edges in $G$ is $|S|(n - r)$ (counting from below) since there are $n - r$ ways to add an element. This number is $<= |Gamma(S)| (r + 1)$ (counting from above), since $r + 1$ ways to remove an element.
+    #fig-example[
+        #figure(
+            canvas({
+                import cetz.draw: *
+
+                // draw.rect((2, 6), (3, 7), radius: 50%, name: "l4")
+                // draw.rect((-1, 4.5), (6, 5.5), radius: 50%, name: "l3")
+                // draw.rect((0, 3), (5, 4), radius: 50%, name: "l2")
+                // draw.rect((1, 1.5), (4, 2.5), radius: 50%, name: "l1")
+                // draw.rect((2, 0), (3, 1), radius: 50%, name: "l0")
+                circle((0, 3), radius: (4, 0.8))
+                circle((0, 0), radius: (3, 0.6))
+                set-style(
+                    stroke: diagram-colors.red,
+                    fill: diagram-colors.light-red
+                )
+                circle((0, 3), radius: (1.5, 0.5), name: "neighbourhood")
+                circle((0, 0), radius: (1.05, 0.35), name: "set")
+                line((-1.5, 3), (-1.05, 0))
+                line((1.5, 3), (1.05, 0))
+
+                set-style(
+                    stroke: (dash: "dashed", paint: diagram-colors.red)
+                )
+
+                line((-1.5, 3), (-1.95, 0))
+                line((1.5, 3), (1.95, 0))
+                line((-1.5, 3), (-1.5, 0))
+                line((1.5, 3), (1.5, 0))
+
+                content((6, 0), $X^((r))$)
+                content((6, 3), $X^((r + 1))$)    
+                content("set", $S$)
+                content("neighbourhood", $Gamma(S)$)
+            })
+        )
+    ]
+    Hence $|Gamma(S)| >= (|S| (n - r))/(r + 1) >= |S|$ as $r < n/2$. So by Hall's theorem, since there is a matching from $S$ to $Gamma(S)$, there is a matching from $X^((r))$ to $X^((r + 1))$.
 ]
 #remark[
     The proof above doesn't tell us when we have equality in Sperner's Lemma.
@@ -248,6 +345,40 @@
         partial cal(F) = partial^- cal(F) := {B in X^((r - 1)): B subset.eq cal(F) "for some" A in cal(F)}.
     $
 ]<def:shadow>
+#fig-example[
+    #figure(
+        canvas({
+            import cetz.draw: *
+
+            // draw.rect((2, 6), (3, 7), radius: 50%, name: "l4")
+            // draw.rect((-1, 4.5), (6, 5.5), radius: 50%, name: "l3")
+            // draw.rect((0, 3), (5, 4), radius: 50%, name: "l2")
+            // draw.rect((1, 1.5), (4, 2.5), radius: 50%, name: "l1")
+            // draw.rect((2, 0), (3, 1), radius: 50%, name: "l0")
+            circle((0, 0), radius: (4, 0.8))
+            circle((0, 3), radius: (3, 0.6))
+            set-style(
+                stroke: diagram-colors.red,
+                fill: diagram-colors.light-red
+            )
+            circle((0, 0), radius: (1.5, 0.5), name: "neighbourhood")
+            circle((0, 3), radius: (1.05, 0.35), name: "set")
+
+            set-style(
+                stroke: (dash: "dashed", paint: diagram-colors.red)
+            )
+
+            line((-1.5, 0), (-1.05, 3))
+            line((1.5, 0), (1.05, 3))
+
+            content((6, 0), $X^((r - 1))$)
+            content((6, 3), $X^((r))$)    
+            content("set", $cal(F)$)
+            content("neighbourhood", $partial cal(F)$)
+        }),
+        caption: [A family $cal(F) subset.eq X^((r))$ and its shadow.]
+    )
+]
 #example[
     Let $cal(F) = {123, 124, 134, 137} in [7]^((3))$. Then $partial cal(F) = {12, 13, 23, 14, 24, 34, 17, 37}$.
 ]
@@ -303,6 +434,21 @@
     $ So $ (|cal(F)_n|)/binom(n, n) + (|cal(F)_(n - 1)|)/binom(n, n - 1) + (|cal(F)_(n - 2)|)/binom(n, n - 2) <= 1. $ Continuing inductively, we obtain the result.
 
     *Method 2*: Choose uniformly at random a maximal chain $cal(C)$ (i.e. $C_0 subset.neq C_1 subset.eq dots.c subset.neq C_n$ with $abs(C_r) = r$ for all $r$). For any $r$-set $A$, $Pr(A in cal(C)) = 1\/binom(n, r)$, since all $r$-sets are equally likely. So $Pr(cal(C) "meets" cal(F)_r) = abs(cal(F)_r)\/binom(n, r)$, since the events are disjoint. Thus, $Pr(cal(C) "meets" cal(F)) = sum_(r = 0)^n abs(cal(F)_r)\/binom(n, r) <= 1$ since the events are disjoint (since $cal(F)$ is an antichain).
+    #fig-example[
+        #figure(
+            canvas({
+                import cetz.draw: *
+
+                diamond(3, 4)
+                line((0.75, 3), (1, 3), stroke: diagram-colors.red)
+                line((1.2, 2), (2.2, 2), stroke: diagram-colors.red)
+                line((2.2, 2.5), (2.5, 2.5), stroke: diagram-colors.red)
+                line((1, 0.8), (1.15, 0.8), stroke: diagram-colors.red)
+                hobby((1.5, 0), (1.4, 1), (1.5, 1.5), (1.5, 4), stroke: diagram-colors.green)
+            }),
+            caption: [A random maximal chain $cal(C)$.]
+        )
+    ]
     
     *Method 3* (same as method 2 but counting instead of using probability): The number of maximal chains is $n!$, and the number through any fixed $r$-set is $r! (n - r)!$, so $sum_r abs(cal(F)_r) r! (n - r)! <= n!$.
 ]
@@ -357,10 +503,33 @@
             A & "otherwise"
         ).
     $
-    - For $cal(F) subset.eq X^((r))$, $C_(i j)(A) = {C_(i j) (A): A in cal(F)} union {A in cal(F): C_(i j) (A) in cal(F)}$.
+    - For $cal(F) subset.eq X^((r))$, $C_(i j)(cal(F)) = {C_(i j) (A): A in cal(F)} union {A in cal(F): C_(i j) (A) in cal(F)}$.
     "replace $j$ by $i$ where possible". This definition is inspired by "colex prefers $i < j$ to $j$".
     Note that $C_(i j) (cal(F)) subset.eq X^((r))$ and $abs(C_(i j)(cal(F))) = abs(cal(F))$.
 ]<def:compression>
+#fig-example[
+    #figure(
+        canvas({
+            import cetz.draw: *
+
+            let h = 2.
+            rect((-h, -h), (h, h), name: "r")
+            content((-h, -h), box(inset: 0.2em)[$A$], anchor: "north-east")
+            content((-h, h), box(inset: 0.2em)[$A union j$], anchor: "south-east")
+            content((h, -h), box(inset: 0.2em)[$A union i$], anchor: "north-west")
+            content((h, h), box(inset: 0.2em)[$A union i j$], anchor: "south-west")
+            let delta = 0.3
+            line((-h + delta, h - delta), (h - delta, -h + delta), ..line-style(diagram-colors.red))
+            let x-axis-sep = 1
+            let y-axis-sep = 1.7
+            line((-h + delta, -h - x-axis-sep), (h - delta, -h - x-axis-sep), ..line-style(black), name: "i-axis")
+            line((-h - y-axis-sep, -h + delta), (-h - y-axis-sep, h - delta), ..line-style(black), name: "j-axis")
+            content("i-axis.mid", box(inset: (top: 0.5em))[$i$], anchor: "north")
+            content("j-axis.mid", box(inset: (right: 0.5em))[$j$], anchor: "east")
+        }),
+        caption: [Applying an $i j$-compression to $A in X^((r))$.]
+    )
+]
 #definition[
     $cal(F)$ is *$i j$-compressed* if $C_(i j) (cal(F)) = cal(F)$.
 ]<def:compressed>
@@ -379,7 +548,28 @@
 ]
 #proof[
     Let $cal(F)' = C_(i j)(cal(F))$. Let $B in partial cal(F)' - partial cal(F)$. We'll show that $i in B$, $j in.not B$, $(B union j) - i in partial cal(F) - partial cal(F)'$.
+    #fig-example[
+        #figure(
+            canvas({
+                import cetz.draw: *
 
+                let h = 2
+                rect((-h, -h), (h, h), name: "r")
+                content((-h, -h), box(inset: 0.2em)[$B - i$], anchor: "north-east")
+                content((-h, h), box(inset: 0.2em)[$(B union j) - i$], anchor: "south-east")
+                content((h, -h), box(inset: 0.2em)[$B$], anchor: "north-west")
+                content((h, h), box(inset: 0.2em)[$B union j$], anchor: "south-west")
+                let delta = 0.3
+                line((h - delta, -h + delta), (-h + delta, h - delta), ..line-style(diagram-colors.red), stroke: (dash: "dashed", paint: diagram-colors.red))
+                let x-axis-sep = 1
+                let y-axis-sep = 2.5
+                line((-h + delta, -h - x-axis-sep), (h - delta, -h - x-axis-sep), ..line-style(black), name: "i-axis")
+                line((-h - y-axis-sep, -h + delta), (-h - y-axis-sep, h - delta), ..line-style(black), name: "j-axis")
+                content("i-axis.mid", box(inset: (top: 0.5em))[$i$], anchor: "north")
+                content("j-axis.mid", box(inset: (right: 0.5em))[$j$], anchor: "east")
+            }),
+        )
+    ]
     Note that $B union x in cal(F)'$ and $B union x in.not cal(F)$ (since $B in.not partial cal(F)$) for some $x$. So $i in B union x$, $j in.not B union x$, $(B union x union j) - i in cal(F)$. We can't have $x = i$, since otherwise $(B union x union j) - i = B union j$, which gives $B in partial cal(F)$, a contradiction. So $i in B$ and $j in.not B$. Also, $B union j - i in partial cal(F)$, since $B union x union j - i in cal(F)$.
     
     Suppose $B union j - i in partial cal(F)'$: so $(B union j - i) union y in cal(F)'$ for some $y$. We cannot have $y = i$, since otherwise $B union j in cal(F)'$, so $B union j in cal(F)$ (as $j in B union j$), contradicting $B in.not partial cal(F)$. Hence $j in (B union j - i) union y$ and $i in.not (B union j - i) union y$. Thus, both $(B union j - i) union y$ and $B union y = C_(i j) ((B union j - i) union y)$ belong to $cal(F)$ (by definition of $cal(F)'$), contradicting $B in.not partial cal(F)$.
@@ -453,6 +643,28 @@
 #proof[
     Let $cal(F)' = C_(U V)(cal(F))$. For $B in partial cal(F)' - partial cal(F)$, we will show that $U subset.eq B$, $V sect B = emptyset$ and $B union V - U in partial cal(F) - partial cal(F)'$, then we will be done.
     
+    #fig-example[
+        #figure(
+            canvas({
+                import cetz.draw: *
+
+                let h = 2
+                rect((-h, -h), (h, h), name: "r")
+                content((-h, -h), box(inset: 0.2em)[$B - U$], anchor: "north-east")
+                content((-h, h), box(inset: 0.2em)[$(B union V) - U$], anchor: "south-east")
+                content((h, -h), box(inset: 0.2em)[$B$], anchor: "north-west")
+                content((h, h), box(inset: 0.2em)[$B union V$], anchor: "south-west")
+                let delta = 0.3
+                line((h - delta, -h + delta), (-h + delta, h - delta), ..line-style(diagram-colors.red), stroke: (dash: "dashed", paint: diagram-colors.red))
+                let x-axis-sep = 1
+                let y-axis-sep = 1
+                line((-h + delta, -h - x-axis-sep), (h - delta, -h - x-axis-sep), ..line-style(black), name: "i-axis")
+                line((-h - y-axis-sep, -h + delta), (-h - y-axis-sep, h - delta), ..line-style(black), name: "j-axis")
+                content("i-axis.mid", box(inset: (top: 0.5em))[$union U$], anchor: "north")
+                content("j-axis.mid", box(inset: (right: 0.5em))[$union V$], anchor: "east")
+            }),
+        )
+    ]
     We have $B union x in cal(F)'$ for some $x in X$, and $B union x in.not cal(F)$. So $U subset.eq B union x$, $V sect (B union x) = emptyset$, and $(B union x union V) - U in cal(F)$, by definition of $C_(U V)$. If $x in U$, then $exists y in V$ such that $cal(F)$ is $(U - x, V - y)$-compressed, so from $(B union x union V) - U in cal(F)$, we have $B union y in cal(F)$, contradicting $B in.not partial cal(F)$. Thus $x in.not U$, so $U subset.eq B$ and $V sect B = emptyset$. Certainly $B union V - U in partial cal(F)$ (since $(B union x union V) - U in cal(F)$), so we just need to show that $B union V - U in.not partial cal(F)'$.
     
     Assume the opposite, i.e. $(B - U) union V in partial cal(F)'$, so $(B - U) union V union w in cal(F)'$ for some $w in X$. (This also belongs to $cal(F)$, since it contains $V$). If $w in U$, then since $cal(F)$ is $(U - w, V - z)$-compressed for some $z in V$, we have $B union z = C_(U - w, V - z)((B - U) union V union w) in cal(F)$, contradicting $B in.not partial cal(F)$. So $w in.not U$, and since $V subset.eq (B - U) union V union w$ and $U sect ((B - U) union V union w) = emptyset$, by definition of $C_(U V)$, we must have that both $(B - U) union V union w$ and $B union w = C_(U V)((B - U) union V union w) in cal(F)$, contradicting $B in.not partial cal(F)$.
@@ -547,9 +759,78 @@
         - Find expression for number of times an $r$-set in $cal(F)$ is an interval all possible orderings, and find an upper bound for this using the above.
 ]
 #proof[
-    Proof 1 ("bubble down with Kruskal-Katona"): note that $A sect B != emptyset$ iff $A subset.eq.not B^c$. Let $overline(cal(F)) = {A^c: A in cal(F)} subset.eq X^((n - r))$. We have $partial^(n - 2r) overline(cal(F))$ and $cal(F)$ are disjoint families of $r$-sets (if not, then there is some $A in cal(F)$ such that $A subset.eq B^c$ for some $B in cal(F)$, but then $A sect B = emptyset$). Suppose $abs(cal(F)) > binom(n - 1, r - 1)$. Then $abs(overline(cal(F))) = abs(cal(F)) > binom(n - 1, r - 1) = binom(n - 1, n - r)$. So by Kruskal-Katona, we have $abs(partial^(n - 2r) overline(cal(F))) >= binom(n - 1, r)$. So $abs(cal(F)) + abs(partial^(n - 2r) overline(cal(F))) > binom(n - 1, r - 1) + binom(n - 1, r) = binom(n, r) = abs(X^((r)))$, a contradiction, since $cal(F), partial^(n - 2r) overline(cal(F)) subset.eq X^((r))$.
+    Proof 1 ("bubble down with Kruskal-Katona"): note that $A sect B != emptyset$ iff $A subset.eq.not B^c$.
+    #fig-example[
+        #figure(
+            canvas({
+                import cetz.draw: *
 
-    Proof 2: pick a cyclic ordering of $[n]$, i.e. a bijection $c: [n] -> ZZ\/n$. There are at most $r$ sets in $cal(F)$ that are intervals ($r$ consecutive elements) under this ordering: for $c_1 ... c_r in cal(F)$, for each $2 <= i <= r$, at most one of the two intervals $c_i ... c_(i + r - 1)$ and $c_(i - r) ... c_(i - 1)$ can belong to $cal(F)$, since they are disjoint and $cal(F)$ is intersecting (the indices of $c$ are taken $mod n$). For each $r$-set $A$, out of the $n!$ cyclic orderings, there are $n dot r! (n - r)!$ which map $A$ to an interval ($r!$ orderings inside $A$, $(n - r)!$ orderings outside $A$, $n$ choices for the start of the interval). Hence, by counting the number of times an $r$-set in $cal(F)$ is an interval under a given ordering (over all $r$-sets in $cal(F)$ and all cyclic orderings), we obtain $abs(cal(F)) n r! (n - r)! <= n! r$, i.e. $abs(cal(F)) <= binom(n - 1, r - 1)$.
+                circle((0, 0), radius: (4, 0.8))
+                circle((0, 3), radius: (4, 0.8))
+                set-style(
+                    stroke: diagram-colors.red,
+                    fill: diagram-colors.light-red
+                )
+                circle((1.8, 0), radius: (1.2, 0.5), name: "neighbourhood")
+                circle((-1.8, 3), radius: (1.2, 0.5), name: "set")
+
+                set-style(
+                    stroke: (dash: "dashed", paint: diagram-colors.red)
+                )
+
+                line((-3, 0), (-3, 3))
+                line((-0.6, 0), (-0.6, 3))
+
+                circle((1.3, 0), ..point-style, name: "A")
+                circle((2.2, 0), ..point-style, name: "B")
+                circle((-1.4, 3), ..point-style, name: "B^c")
+                content("A", box(inset: (right: 0.3em))[$A$], anchor: "east")
+                content("B", box(inset: (left: 0.3em))[$B$], anchor: "west")
+                content("B^c", box(inset: (left: 0.3em))[$B^c$], anchor: "west")
+
+                content((6, 0), $X^((r))$)
+                content((6, 3), $X^((n - r))$)    
+                content((0.3, 0), $cal(F)$)
+                content((-0.2, 3), $overline(cal(F))$)
+            }),
+        )
+    ]
+    Let $overline(cal(F)) = {A^c: A in cal(F)} subset.eq X^((n - r))$. We have $partial^(n - 2r) overline(cal(F))$ and $cal(F)$ are disjoint families of $r$-sets (if not, then there is some $A in cal(F)$ such that $A subset.eq B^c$ for some $B in cal(F)$, but then $A sect B = emptyset$). Suppose $abs(cal(F)) > binom(n - 1, r - 1)$. Then $abs(overline(cal(F))) = abs(cal(F)) > binom(n - 1, r - 1) = binom(n - 1, n - r)$. So by Kruskal-Katona, we have $abs(partial^(n - 2r) overline(cal(F))) >= binom(n - 1, r)$. So $abs(cal(F)) + abs(partial^(n - 2r) overline(cal(F))) > binom(n - 1, r - 1) + binom(n - 1, r) = binom(n, r) = abs(X^((r)))$, a contradiction, since $cal(F), partial^(n - 2r) overline(cal(F)) subset.eq X^((r))$.
+
+    Proof 2: pick a cyclic ordering of $[n]$, i.e. a bijection $c: [n] -> ZZ\/n$. There are at most $r$ sets in $cal(F)$ that are intervals ($r$ consecutive elements) under this ordering: for $c_1 ... c_r in cal(F)$, for each $2 <= i <= r$, at most one of the two intervals $c_i ... c_(i + r - 1)$ and $c_(i - r) ... c_(i - 1)$ can belong to $cal(F)$, since they are disjoint and $cal(F)$ is intersecting (the indices of $c$ are taken $mod n$).
+    #fig-example[
+        #figure(
+            canvas({
+                import cetz.draw: *
+
+                let r = 2
+                circle((0, 0), radius: r)
+                content((4, 0), $ZZ_n$)
+                // arc((r - 0.2, 0), radius: r - 0.2, start: 0deg, stop: -120deg, stroke: diagram-colors.red)
+                // arc((r - 0.2, 0), radius: r - 0.2, start: 0deg, stop: 120deg, stroke: diagram-colors.blue)
+                c-arc((0, 0), r - 0.2, -15deg, -135deg, stroke: diagram-colors.red)
+                c-arc((0, 0), r - 0.2, 0deg, 120deg, stroke: diagram-colors.blue)
+
+                circle((r, 0), radius: 0.1, fill: black, stroke: none, name: "i - 1")
+                circle((r * calc.cos(15deg), r * calc.sin(15deg)), radius: 0.1, fill: black, stroke: none, name: "i - 2")
+                circle((r * calc.cos(105deg), r * calc.sin(105deg)), radius: 0.1, fill: black, stroke: none, name: "i - r + 1")
+                circle((r * calc.cos(120deg), r * calc.sin(120deg)), radius: 0.1, fill: black, stroke: none, name: "i - r")
+                circle((r * calc.cos(-15deg), r * calc.sin(-15deg)), radius: 0.1, fill: black, stroke: none, name: "i")
+                circle((r * calc.cos(-30deg), r * calc.sin(-30deg)), radius: 0.1, fill: black, stroke: none, name: "i + 1")
+                circle((r * calc.cos(-120deg), r * calc.sin(-120deg)), radius: 0.1, fill: black, stroke: none, name: "i + r - 2")
+                circle((r * calc.cos(-135deg), r * calc.sin(-135deg)), radius: 0.1, fill: black, stroke: none, name: "i + r - 1")
+                content("i", box(inset: 0.4em)[$c_i$], anchor: "west")
+                content("i + 1", box(inset: 0.2em)[$c_(i + 1)$], anchor: "north-west")
+                content("i + r - 2", box(inset: 0.2em)[$c_(i + r - 2)$], anchor: "north")
+                content("i + r - 1", box(inset: 0.4em)[$c_(i + r - 1)$], anchor: "east")
+                content("i - 1", box(inset: 0.4em)[$c_(i - 1)$], anchor: "west")
+                content("i - 2", box(inset: 0.2em)[$c_(i - 2)$], anchor: "south-west")
+                content("i - r + 1", box(inset: 0.4em)[$c_(i - r + 1)$], anchor: "south")
+                content("i - r", box(inset: 0.2em)[$c_(i - r)$], anchor: "south-east")
+            })
+        )
+    ]
+    For each $r$-set $A$, out of the $n!$ cyclic orderings, there are $n dot r! (n - r)!$ which map $A$ to an interval ($r!$ orderings inside $A$, $(n - r)!$ orderings outside $A$, $n$ choices for the start of the interval). Hence, by counting the number of times an $r$-set in $cal(F)$ is an interval under a given ordering (over all $r$-sets in $cal(F)$ and all cyclic orderings), we obtain $abs(cal(F)) n r! (n - r)! <= n! r$, i.e. $abs(cal(F)) <= binom(n - 1, r - 1)$.
 ]
 #remark[
     - The calculation at the end of proof method 1 had to give the correct answer, as the shadow calculations would all be exact if $cal(F) = {A in X^((r)): 1 in A}$ (in this case, $cal(F)$ and $partial^(n - 2r) overline(cal(F))$ partition $X^((r))$).
@@ -574,6 +855,33 @@ We seek to answer questions of the form "how do we minimise the boundary of a se
         b(A) = {x in G: x in.not A, x y in E "for some" y in A}.
     $
 ]<def:vertex-set-boundary>
+#fig-example[
+    #figure(
+        canvas({
+            import cetz.draw: *
+
+            let h = 2
+            rect((0, 0), (h, h))
+            line((h, h), (2 * h, h))
+            line((2 * h - h * calc.cos(60deg), 0), (2 * h, h))
+            line((2 * h + h * calc.cos(60deg), 0), (2 * h, h))
+            line((2 * h - h * calc.cos(60deg), 0), (2 * h + h * calc.cos(60deg), 0))
+            circle((0, h), ..point-style, name: "1")
+            circle((h, h), ..point-style, name: "2")
+            circle((0, 0), ..point-style, fill: diagram-colors.blue, name: "3")
+            circle((h, 0), ..point-style, name: "4")
+            circle((2 * h, h), ..point-style, fill: diagram-colors.blue, name: "5")
+            circle((2 * h - h * calc.cos(60deg), 0), ..point-style, fill: black, name: "6")
+            circle((2 * h + h * calc.cos(60deg), 0), ..point-style, fill: black, name: "7")
+            let anchors = ("south", "south", "north", "north", "south", "north", "north")
+            for (i, anchor) in anchors.enumerate() {
+                let j = i + 1
+                content(str(j), box(inset: 0.4em, radius: 50%)[$#j$], anchor: anchor)
+            }
+        }),
+        caption: [$A = {1, 2, 4}$ (in red) has boundary ${3, 5}$ (in blue).]
+    )
+]
 #definition[
     An *isoperimetric inequality* on a graph $G$ is an inequality of the form $
         forall A subset.eq G, quad abs(b(A)) >= f(abs(A))
@@ -584,8 +892,68 @@ We seek to answer questions of the form "how do we minimise the boundary of a se
         N(A) = {x in G: d(x, A) <= 1}.
     $
 ]<def:vertex-set-neighbourhood>
+#fig-example[
+    Let $A subset.eq powset(X) = V(Q_3)$, $abs(A) = 4$.
+    #align(center)[#grid(
+        columns: 2,
+        column-gutter: 4em,
+        align: center + horizon,
+        figure(
+            canvas({
+                import cetz.draw: *
+
+                let shift-x = 1.25
+                let shift-y = 1.25
+                let height = 2.5
+                let (A, B, C, D, E, F, G, H) = ((0, 0), (height, 0), (0, height), (height, height), (shift-x, shift-y), (height + shift-x, shift-y), (shift-x, height + shift-y), (height + shift-x, height + shift-y))
+                let sets = ($emptyset$, $1$, $3$, $13$, $2$, $12$, $23$, $123$)
+
+                draw.rect(A, D, name: "front")
+                draw.rect(E, H, name: "back")
+                line(A, E)
+                line(B, F)
+                line(C, G)
+                line(D, H)
+
+                for (i, point) in (A, B, E, C).enumerate() {
+                    circle(point, ..point-style, name: "point-" + str(i))
+                }
+                for (i, point) in (F, D, G).enumerate() {
+                    circle(point, ..point-style, fill: diagram-colors.blue, name: "point-" + str(i))
+                }
+            }),
+            caption: [$abs(b(A)) = 3$]
+        ),
+        figure(
+            canvas({
+                import cetz.draw: *
+
+                let shift-x = 1.25
+                let shift-y = 1.25
+                let height = 2.5
+                let (A, B, C, D, E, F, G, H) = ((0, 0), (height, 0), (0, height), (height, height), (shift-x, shift-y), (height + shift-x, shift-y), (shift-x, height + shift-y), (height + shift-x, height + shift-y))
+                let sets = ($emptyset$, $1$, $3$, $13$, $2$, $12$, $23$, $123$)
+
+                draw.rect(A, D, name: "front")
+                draw.rect(E, H, name: "back")
+                line(A, E)
+                line(B, F)
+                line(C, G)
+                line(D, H)
+
+                for (i, point) in (A, B, E, F).enumerate() {
+                    circle(point, ..point-style, name: "point-" + str(i))
+                }
+                for (i, point) in (C, D, G, H).enumerate() {
+                    circle(point, ..point-style, fill: diagram-colors.blue, name: "point-" + str(i))
+                }
+            }),
+            caption: [$abs(b(A)) = 4$]
+        )
+    )]
+]
 #example[
-    A good (and natural) example for $A$ that minimises $abs(b(A))$ in the discrete cube $Q_n$ might be a ball $B(x, r) = {y in G: d(x, y) <= r}$. Let $A subset.eq powset(X) = V(Q_3)$, $abs(A) = 4$.
+    A good (and natural) example for $A$ that minimises $abs(b(A))$ in the discrete cube $Q_n$ might be a ball $B(x, r) = {y in G: d(x, y) <= r}$.
 
     A good guess is that balls are best, i.e. sets of the form $B(emptyset, r) = X^((<= r)) = X^((0)) union dots.c union X^((r))$. What if $abs(X^((<= r))) <= abs(A) <= abs(X^((<= r + 1)))$? A good guess is take $A$ with $X^((<= r)) subset.neq A subset.neq X^((<= r + 1))$. If $A = X^((<= r)) union B$, where $B subset.eq X^((r + 1))$, then $b(A) = (X^((r + 1)) - B) union partial^+ B$, so we would take $B$ to be an initial segment of lex by Kruskal-Katona. This motivates the following definition.
 ]
@@ -599,6 +967,70 @@ We want to show the initial segments of the simplicial ordering minimise the bou
         A_+^((i)) = A_+ & := {x - i: x in A, i in x}
     $ Note that $A = A_-^((i)) union \{x union i: x in A_+^((i))\}$, so we can define a family by its $i$-sections.
 ]<def:i-sections>
+#fig-example[
+    #figure(
+        canvas({
+            import cetz.draw: *
+
+            let shift-x = 1.25
+            let shift-y = 1.25
+            let height = 2.5
+            let (A, B, C, D, E, F, G, H) = ((0, 0), (height, 0), (0, height), (height, height), (shift-x, shift-y), (height + shift-x, shift-y), (shift-x, height + shift-y), (height + shift-x, height + shift-y))
+            let sets = ($emptyset$, $1$, $3$, $13$, $2$, $12$, $23$, $123$)
+
+            let shift-1 = (0, 5)
+            let shift-2 = (9, 0)
+            draw.rect(A, D)
+            draw.rect(E, H)
+            draw.rect(add-points(A, shift-1), add-points(D, shift-1))
+            draw.rect(add-points(E, shift-1), add-points(H, shift-1))
+            draw.rect(add-points(A, shift-2), add-points(D, shift-2))
+            draw.rect(add-points(E, shift-2), add-points(H, shift-2))
+            draw.rect(add-points(A, shift-1, shift-2), add-points(D, shift-1, shift-2))
+            draw.rect(add-points(E, shift-1, shift-2), add-points(H, shift-1, shift-2))
+            line(A, E)
+            line(add-points(A, shift-1), add-points(E, shift-1))
+            line(add-points(A, shift-2), add-points(E, shift-2))
+            line(add-points(A, shift-1, shift-2), add-points(E, shift-1, shift-2))
+            line(B, F)
+            line(add-points(B, shift-1), add-points(F, shift-1))
+            line(add-points(B, shift-2), add-points(F, shift-2))
+            line(add-points(B, shift-1, shift-2), add-points(F, shift-1, shift-2))
+            line(C, G)
+            line(add-points(C, shift-1), add-points(G, shift-1))
+            line(add-points(C, shift-2), add-points(G, shift-2))
+            line(add-points(C, shift-1, shift-2), add-points(G, shift-1, shift-2))
+            line(D, H)
+            line(add-points(D, shift-1), add-points(H, shift-1))
+            line(add-points(D, shift-2), add-points(H, shift-2))
+            line(add-points(D, shift-1, shift-2), add-points(H, shift-1, shift-2))
+
+            line((-1, height), add-points((-1, 0), shift-1), ..line-style(black), name: "i-axis")
+            content("i-axis.mid", box(inset: (right: 0.6em))[$i$], anchor: "east")
+
+            for (i, point) in (A, D, G, H).enumerate() {
+                circle(point, ..point-style, name: "point-" + str(i))
+            }
+            for (i, point) in (A, B, C, D, E).enumerate() {
+                circle(add-points(point, shift-1), ..point-style, name: "point-" + str(i))
+            }
+            for (i, point) in (A, B, E, C).enumerate() {
+                circle(add-points(point, shift-2), ..point-style, name: "point-" + str(i))
+            }
+            for (i, point) in (A, B, E, F, C).enumerate() {
+                circle(add-points(point, shift-1, shift-2), ..point-style, name: "point-" + str(i))
+            }
+            content((height + shift-x + 0.6, (height + shift-y) / 2), $A_-^((i))$)
+            content(add-points((height + shift-x + 0.6, (height + shift-y) / 2), shift-1), $A_+^((i))$)
+            content(add-points((height + shift-x + 1, (height + shift-y) / 2), shift-2), $C_i (A)_-^((i))$)
+            content(add-points((height + shift-x + 1, (height + shift-y) / 2), shift-1, shift-2), $C_i (A)_+^((i))$)
+
+            line((height + shift-x + 1, (height + shift-y + shift-1.at(1)) / 2), (height + shift-x + 4, (height + shift-y + shift-1.at(1)) / 2), ..line-style(black), name: "compression")
+            content("compression.mid", box(inset: 0.4em)[$C_i$], anchor: "south")
+        }),
+        caption: [$i$-compression of $A$]
+    )
+]
 #remark[
     When viewing $powset(X)$ as the $n$-dimensional cube $Q_n$, we view the $i$-sections as subgraphs of the $(n - 1)$-dimensional cube $Q_(n - 1)$ (which we view $powset(X \\ i)$ as).
 ]
@@ -1071,4 +1503,108 @@ We want to show the initial segments of the simplicial ordering minimise the bou
     Similarly: for $r$ even, if we want $abs(x sect y)$ even for all $x != y in A$, can achieve $abs(A) = binom(floor(n \/ 2), r \/ 2)$ by picture. If we want $abs(x sect y)$ odd for all $x != y in A$, can achieve $n - r + 1$ as above.
 
     Seems to be that banning $abs(x sect y) = r (mod 2)$ forces the family to be very small (poly in $n$, even a linear poly).
+    
+    Remarkably, we cannot beat linear.
+]
+#proposition[
+    Let $r$ be odd and let $A subset.eq X^((r))$ satisfy $abs(x sect y)$ even for all $x != y in A$. Then $abs(A) <= n$.
+]
+#proof[
+    Idea: find $abs(A)$ linearly independent vectors in a vector space of dimension $n$, namely $Q_n$.
+
+    View $powset(X)$ as $FF_2^n$, the $n$-dimensional vector space over $FF_2$ by identifying each $x in powset(X)$ with $overline(x)$, its characteristic sequence (where we count from the left, so ${1, 3, 4} <-> 1011000...0$). Then we have $overline(x) . overline(x) != 0$ for all $x in A$ (as $r$ is odd). Also, $overline(x) . overline(y) = 0$ for all $x != y in A$, as $abs(x sect y)$ is even. Hence the ${overline(x): x in A}$ are linearly independent (if $sum_i lambda_i overline(x_i)$, dot with $overline(x_j)$ to get $lambda_j = 0$). So $abs(A) <= n$.
+]
+#corollary[
+    Hence also, if $A subset.eq X^((r))$ with $r$ even with $abs(x sect y)$ odd for all $x != y in A$, then $abs(A) <= n + 1$.
+]
+#proof[
+    Just add $n + 1$ to each $x in A$ and apply above proposition.
+]
+Does this $mod 2$ behaviour generalise? We now show: $s$ allowed values for $abs(x sect y) mod p$ implies $abs(A) <=$ polynomial of degree $s$.
+#theorem("Frankl-Wilson")[
+    Let $p$ be prime and $A subset.eq X^((r))$. Suppose that for all $x != y in A$, we have $abs(x sect y) equiv lambda_i thick mod p$ for some $i$, where $s <= r$ and $lambda_1, ..., lambda_s in ZZ$ with no $lambda_i equiv r thick mod p$. Then $abs(A) <= binom(n, s)$.
+]<thm:frankl-wilson>
+#proof[
+    Idea: try to find $abs(A)$ linearly independent points in a vector space of dimension $binom(n, s)$, by somehow "applying" the polynomial $(t - lambda_1) med dots.c med (t - lambda_s)$ to $abs(x sect y)$.
+
+    For each $i <= j$, let $M(i, j)$ be the $binom(n, i) times binom(n, j)$ matrix with rows indexed by $X^((i))$, columns indexed by $X^((j))$, with $
+        M(i, j)_(x y) = cases(
+            1 quad & "if" x subset.eq y,
+            0 & "otherwise"
+        ), quad x in X^((i)), y in X^((j)).
+    $ Let $V$ be the vector space over $RR$ spanned by the rows of $M(s, r)$, so $dim(V) <= binom(n, s)$. For $i <= s$, consider the matrix $M(i, s) M(s, r)$. Each row of this matrix belongs to $V$, as we have left-multiplied $M(s, r)$ by a matrix. For $x in X^((i))$, $y in X^((r))$, $
+        (M(i, s) M(s, r))_(x y) = #[number of $s$-sets $z$ with $x subset.eq z$ and $z subset.eq y$] = cases(
+            0 quad & "if" x subset.eq.not y,
+            binom(r - i, s - i) & "if" x subset.eq y.
+        )
+    $ So $M(i, s) M(s, r) = binom(r - i, s - i) M(i, r)$. So all rows of $M(i, r)$ belong to $V$. Let $M(i) = M(i, r)^T M(i, r)$. Again, each row of this matrix is in $V$, since we have left-multiplied $M(i, r)$ by a matrix. For $x, y in X^((r))$, we have $
+        M(i)_(x y) = #[number of $i$-sets $z$ with $z subset.eq x$ and $z subset.eq y$] = binom(abs(x sect y), i).
+    $ Write the integer polynomial $(t - lambda_1) med dots.c med (t - lambda_s)$ as $sum_(i = 0)^s a_i binom(t, i)$ with all $a_i in ZZ$. This is possible since $t(t - 1) dots.c (t - i + 1) = i! binom(t, i)$. Let $M = sum_(i = 0)^s a_i M(i)$. Note each row of each $M(i)$ is in $V$. Then for all $x, y in X^((r))$, $
+        M_(x y) = sum a_i binom(abs(x sect y), i) = (abs(x sect y) - lambda_1) med dots.c med (abs(x sect y) - lambda_s).
+    $ So the submatrix of $M$ spanned by the rows and columns corresponding to the elements of $A$ is $
+        mat(
+            equiv.not 0 mod p, , 0;
+            , dots.down, ;
+            0, , equiv.not 0 mod p;
+        )
+    $ Hence the rows of $M$ corresponding to $A$ are linearly independent over $FF_p$, so also over $ZZ$, so also over $QQ$, so also over $RR$. So $abs(A) <= dim(V) = binom(n, s)$.
+]
+#remark[
+    - The bound in Frankl-Wilson is a _polynomial_ in $n$, even as $r$ varies!
+    - The bound is essentially the best possible: we can achieve $abs(A) = binom(n, n - r + s) approx binom(n, s)$ for large $n$ (see diagram).
+    - The condition $lambda_i equiv.not r thick mod p$ for all $i$ is necessary: indeed, if $n = a + lambda p$, $0 <= a <= p - 1$, then can have $A subset.eq X^(a + k p)$ with $abs(A) = binom(lambda, k)$ and all $abs(x sect y) equiv a thick mod p$, but $binom(lambda, k)$ is not a polynomial in $n$ (as we can choose any $k$).
+]
+#remark[
+    We do need $p$ prime. Grolmusz constructed, for each $n$, a value of $r equiv 0 mod 6$ and a family $A subset.eq [n]^((r))$ such that $forall x != y in A$, we have $abs(x sect y) equiv.not 0 mod 6$ and $abs(A) > n^(c log n \/ log log n)$, which is not a polynomial in $n$.
+]
+#corollary[
+    Let $A subset.eq [n]^((r))$ with $abs(x sect y) equiv.not r mod p$ for all $x != y in A$, where $p < r$ is prime. Then $abs(A) <= binom(n, p - 1)$.
+]
+#proof[
+    We are allowed $p - 1$ values of $abs(x sect y) mod p$, so done by @thm:frankl-wilson.
+]
+Two $(n \/ 2)$-sets in $[n]$ typically meet in $approx n \/ 4$ points, but having the exact equality $abs(x sect y) = n \/ 4$ is very unlikely. But remarkably:
+#corollary[
+    Let $p$ be prime, and $A subset.eq [4p]^((2p))$ with $abs(x sect y) != p$ for all $x != y in A$ (this is a weak constraint). Then $abs(A) <= 2 binom(4p, p - 1)$.
+]
+#proof[
+    By halving $abs(A)$ if necessary, we may assume that no $x, x^c in A$ (for any $x in [4p]^((2p))$). Then for $x != y in A$, $abs(x sect y) != 0, p, 2p$, so $abs(x sect y) equiv.not 0 mod p$. So $abs(A) <= binom(4p, p - 1)$ by above corollary.
+]
+#remark[
+    $2 binom(4p, p - 1)$ is a _tiny_ (exponentially small) fraction of $binom(4p, 2p)$. Indeed, $binom(n, n \/ 2) approx c dot 2^n \/ sqrt(n)$, for some constant $c$, whereas $binom(n, n \/ 4) <= 2 e^(-n \/ 32) 2^n$ by (find theorem).
+]
+
+== Borsuk's conjecture
+
+Let $S subset.eq RR^n$ be bonded. How few pieces can we break $S$ into, such that each piece has smaller diameter than that of $S$?
+The example of a regular $n$-simplex in $RR^n$ ($n + 1$ points, all at distance $1$) shows that we may need $n + 1$ pieces.
+#conjecture("Borsuk")[
+    $n + 1$ pieces is always sufficient.
+]
+It is known for $n = 1$ (trivial), $n = 2$ (doable), $n = 3$ (hard). Also known when $S$ is a smooth convex body in $RR^n$ (e.g. sphere), or a symmetric ($x in S => -x in S$) convex body in $RR^n$ (e.g. octohedron).
+
+However, Borsuk is massively false:
+#theorem("Kahn, Kalai")[
+    For all $n in NN$, there exists a bounded $S subset.eq RR^n$ such that to break $S$ into pieces of smaller diameter, we need at least $C^sqrt(n)$ pieces for some constant $C > 1$.
+]
+#remark[
+    - Our proof will show Borsuk is false for $n >= 2000$.
+    - We will prove it for all $n$ of the form $binom(4p, 2)$ where $p$ is prime. Then we are done for all $n in NN$ (with a different constant $C$), e.g. because there exists prime $p$ with $n \/ 2 <= p <= n$.
+]
+#proof[
+    We'll find $S subset.eq Q_n subset.eq RR^n$. In fact, $S subset.eq [n]^((r))$ for some $r$. (These are genuine ideas). We have $S subset.eq [n]^((r))$, so $forall x, y in S$, $
+        norm(x - y)^2 = "number of coordinates where" x, y "differ" = 2(r - abs(x sect y))
+    $ We seek $S$ with $min{abs(x sect y): x, y in S} = k$, but every subset of $S$ with $min{abs(x sect y): x, y in S} > k$ is very small (so need many pieces).
+
+    Identify $[n]$ with the edge set of the complete graph $K_(4p)$ on $4p$ points. For each $x in [4p]^((2p))$, let $G_x$ be the complete bipartite graph with vertex classes $x, x^c$. Let $S = {G_x: x in [4p]^((2p))}$. So $S subset.eq [n]^((4p^2))$, and $abs(S) = 1/2 binom(4p, 2p)$ (since $G_x = G_(x^c)$). Now, $
+        abs(G_x sect G_y) & = abs(x sect y) abs(x^c sect y^c) + abs(x^c sect y) abs(x sect y^c) \
+        & = abs(x sect y)^2 + abs(x^c sect y)^2 \
+        & = d^2 + (2p - d)^2, quad d = abs(x sect y),
+    $ which is minimised when $d = abs(x sect y) = p$. Now let $S' subset.eq S$ have smaller diameter than that of $S$: $S' = {G_x: x in A}$. So we must have that $forall x != y in A$, $abs(x sect y) != p$ (as otherwise diameter of $S'$ is equal to diameter of $S$). Thus $abs(A) <= 2 binom(4p, p - 1)$.
+
+    So number of pieces needed is at least $
+        (1/2 binom(4p, 2p))/(2 binom(4p, p - 1)) & >= (c dot 2^(4p) \/ sqrt(p))/(e^(-p \/ 8) 2^(4p)) quad & "for some" c \
+        & >= (c')^p quad & "for some" c' \
+        & >= (c'')^sqrt(n) quad & "for some" c''
+    $
 ]

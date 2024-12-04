@@ -788,7 +788,7 @@ Strengthened Van der Waerden says that the system $x_1 + x_2 = y_1, x_1 + 2x_2 =
     The finite subgroup problem asks whether we can find a non-trivial subgroup of $beta NN$ (e.g. find $cal(U)$ with $cal(U) + cal(U) != cal(U)$ but $cal(U) + cal(U) + cal(U) = cal(U)$). This was recently proven to be negative.
 ]
 #remark[
-    An open problem is whether an ultrafilter can "absorb" another ultrafilter, i.e. whether there exist $cal(U) != cal(V)$ such that $cal(U) + cal(U) = cal(U) + cal(V) = cal(V) + cal(U) = cal(V) + cal(V) = cal(V)$.
+    It has been recently shown that there exist $cal(U) != cal(V)$ such that $cal(U) + cal(U) = cal(U) + cal(V) = cal(V) + cal(U) = cal(V) + cal(V) = cal(V)$.
 ]
 #theorem("Hindman")[
     For any finite colouring of $NN$, there exists a sequence $(x_n)_(n in NN)$ such that $
@@ -862,4 +862,85 @@ If we $k$-colour $RR^k$, then by considering the regular simplex with $k + 1$ ve
     - any triangle is Ramsey
     - any regular $n$-gon is Ramsey
     - any Platonic solid is Ramsey
+]
+#proposition[
+    $X = {0, 1, 2}$ is not Ramsey.
+]
+#proof[
+    Recall in $RR^n$ we have $norm(x + y)_2^2 + norm(x - y)_2^2 = 2 norm(x)_2^2 + 2 norm(x)_2^2$. Every isometric copy of ${0, 1, 2}$ in any $RR^n$ is of the form ${x - y, x, x + y}$ with $norm(y)_2 = 1$. So $
+        norm(x + y)_2^2 + norm(x - y)_2^2 = 2 norm(x)_2^2 + 2.
+    $ If we can find a colouring $phi$ of $RR_(>= 0)$ such that there is no monochromatic solutions to $a + b = 2c + 2$. Colouring $RR^n$ by $c(x) = phi(norm(x)_2^2)$. We $4$-colour $RR_(>= 0)$ by $phi(x) = floor(x) thick mod 4$. Suppose $a, b, c$ all have colour $n in {0, 1, 2, 3}$. Then if $a + b = 2c + 2$, writing $a = floor(a) + {a}$, $b = floor(b) + {b}$, $c = floor(c) + {c}$, we have $2 = a + b - 2c = 4k + {a} + {b} - 2{c}$ for some $k in ZZ$, which is impossible as $-2 < {a} + {b} - 2{c} < 2$.
+]
+#remark[
+    - The proof shows that for all $n$, there is a $4$-colouring of $RR^n$ which stops every isometric copy of $X = {0, 1, 2}$ from being monochromatic.
+    - It is very important that in $a + b = 2c + 2$, the $2$ in the equation is not $0$.
+    - It will turn out that the property that made ${0, 1, 2}$ not Ramsey is "it does not lie on a sphere".
+]
+#definition[
+    A finite set $X subset.eq RR^n$ is called *spherical* if it lies on the surface of a sphere.
+]
+#example[
+    Any triangle, rectangle, and non-degenerate simplex is spherical.
+]
+#definition[
+    $x_1, ..., x_d in RR^n$ form a simplex if ${x_1 - x_d, x_2 - x_d, ..., x_(d - 1) - x_d}$ are linearly independent, i.e. if $x_1, ..., x_d$ do not lie in a $(d - 2)$-dimensional affine subspace.
+]
+#remark[
+    We want to show that if $X$ is Ramsey, then it is spherical.
+]
+#lemma[
+    ${x_1, ..., x_d} in RR^n$ is not spherical iff there exist $c_i in RR$, not all zero, such that:
+    + $sum_(i = 1)^d c_i = 0$.
+    + $sum_i c_i x_i = 0$.
+    + $sum_i c_i norm(x_i)_2^2 != 0$.
+]
+#proof[
+    $==>$: let ${x_1, ..., x_d}$ be not spherical. Since ${x_1, ..., x_d}$ are not the vertices of a simplex, there exist $c_1, ..., c_d in RR$ such that $sum_i c_i (x_i - x_d) = 0$ since $sum_(i = 1)^(d - 1) c_i x_i + (-c_1 - dots.c - c_(d - 1)) x_d = 0$. This gives the first two conditions. Note that all three conditions are invariant under translation by $v in RR^n$: $sum_i c_i (x_i + v) = 0$, $sum_i c_i norm(x_i + v)_2^2 = sum_i c_i norm(x_i)^2 + 2 c_i x_i dot v_ + c_i norm(v)_2^2 = sum_i c_i norm(x_i)^2$.
+
+    Look at a minimal subset of ${x_1, ..., x_d}$ that is not spherical. If we can show the result for WLOG ${x_1, ..., x_k}$, $k <= d$, then we can take $c_i = 0$ for all $i in [k + 1, d]$. Now ${x_2, ..., x_k}$ is spherical by minimality. Say it lies on the sphere of radius $r$, centred at $v$. By translation invariance, then we can translate the set such that ${x_2, ..., x_k}$ is centred at $0$. ${x_1, ..., x_d}$ is not spherical so does not form a $(d - 1)$-simplex, so there exist $c_i$ such that $sum_i c_i (x_i - x_k) = 0$ so $c_1 x_1 + dots.c + c_(k - 1) x_(k - 1) + (-c_1 - dots.c - c_(k - 1)) x_k = 0$. WLOG, we have $c_1 != 0$ (can assume this since the same $c_i$ work after translation). Now $
+        sum_(i = 1)^k c_i norm(x_i)^2 = c_1 norm(x_1)^2 + r^2 sum_(i = 2)^k c_i != 0
+    $ as $norm(x_1) != r$, since ${x_1, ..., x_k}$ is not spherical.
+
+    $<==$: assume for a contradiction that ${x_1, ..., x_d}$ are spherical, and lie on the sphere of radius $r$ centred at $v$. By the above argument, we can translate the set so that they are centred at the origin: this prserves all conditions and does not change the value of $sum_i c_i norm(x_i)^2$. We have $norm(x_i)^2 = r^2$ for all $i$, so $sum_i c_i norm(x_i)^2 = r^2 sum_i c_i = 0$: contradiction.
+]
+#remark[
+    In the previous proof, we had $c = (1, 1, -2)$ and $sum_i c_i norm(x_i)_2^2 = 2$.
+]
+#corollary[
+    Let $X = {x_1, ..., x_n}$ be non-spherical. Then there exist $c_1, ..., c_n$ not all $0$ with $sum_i c_i = 0$ and a $b != 0$ such that $sum_i c_i norm(x_i)^2 = b$.
+]
+#remark[
+    The above corollary is true for every isometric copy $X'$ of $X$ with _the same witnesses $c_i$ and $b$_: if $phi(X)$ is a copy of $X$ (for distance-preserving bijection $phi$), we can translate (as in proof of above lemma) and the $c_i$ and $b$ are unaffected, in such a way that $phi(0) = 0$. After that, applying a matrix $A$ that corresponds to rotation/reflection.
+]
+#theorem[
+    If $X = {x_1, ..., x_n}$ is Ramsey, then $X$ is spherical.
+]
+#proof[
+    Suppose $X$ is not spherical. Then by above lemma, there exist $c_i$ not all zero such that $sum_i c_i norm(x_i)^2 = b != 0$ and $sum_i c_i = 0$. This is also true for any isometric copy of $X'$. We will split $[0, 1)$ into $[0, delta)$, $[delta, 2 delta), ...$ for small $delta$ and colour depending on where $c_i norm(x)^2$ lies. It is enough to construct a colouring $c: RR_+ -> [k]$ such that $sum_i c_i y_i = b$ does not have a monochromatic solution, where $sum_i c_i = 0$. If we show this, then we define a colouring $c': RR^n -> [k]$ by $c' (x) = c(norm(x)^2)$.
+
+    We have $sum_(i = 1)^(n - 1) c_i (y_i - y_n) = b$. By rescaling the $c_i$, we may assume that $b = 1 \/ 2$. Now we split $[0, 1)$ into intervals $[0, delta)$, $[delta, 2 delta), ...$ where $delta$ is very small. Define the colouring $c(y) = ("interval where" {c_i y} "is", "interval where" {c_2 y} "is", ...)$. This is a a $floor(1 / delta)^(n - 1)$-colouring. Assume $y_1, ..., y_(n - 1)$ are monochromatic under $c$ such that $sum_i c_i (y_i - y_n) = 1 \/ 2$. The sum is within $(n - 1) delta$ of an integer, which is $!= 1/2$ for $delta$ small enough.
+]
+What about spherical $=>$ Ramsey? This is open.
+
+It is known that triangles, simplices, and any $n$-gon is Ramsey.
+
+We want to show that any regular $m$-gon $X = {v_1, ..., v_m}$ (with side length $1$) is Ramsey. Idea: first find a copy of $X$ such that $v_1$ and $v_2$ are monochromatic, then use a product argument to get an isometric copy of $X^N$, where $N$ is very large, such that the colouring is invariant under swapping around $v_1$ and $v_2$. Use this to find copy of $X$ on for which $v_1, v_2, v_3$ are monochromatic.
+
+#definition[
+    For a finite $A subset.eq X$, a colouring $c$ of $X^n$ is *$A$-invariant* if it is invariant under permuting the coordinates within $A$, i.e. for $vd(x) = (x_1, ..., x_n)$ and $vd(x') = (x'_1, ..., x'_n)$, if for all $i in [n]$, either $x_i = x'_i$ or $x_i, x'_i in A$, then $c(x') = c(x)$.
+
+    Note if $c$ is $X$ invariant, then $X$ is monochromatic under $c$.
+]
+#proposition[
+    Let $X subset.eq RR^d$ be finite and $A subset.eq X$. Suppose $forall k in NN$, there exists a finite $S subset.eq RR^c$ such that whenever $S$ is $k$-coloured, there exists an isometric copy of $X$ that is constant on $A$. Then $forall n, k in NN$, there exists finite $S'$ such that whenever $S'$ is $k$-coloured, there exists a copy of $X^n$ that is $A$-invariant.
+
+    So we are "boosting the colouring from $A$-constant to $A$-invariant".
+]
+#proof[
+    We use induction on $n$ (and all $k$ at once). $n = 1$ is by assumption. Suppose it is true for $n - 1$. Fix $k in NN$. Let $S$ be a finite set such that whenever $S$ is $k^abs(X)$-coloured, there exists an $A$-invariant copy of $X^(n - 1)$, and let $T$ be a finite set such that whenever $T$ is $k^abs(S)$-coloured, there exists an isometric copy of $X$ with $A$ monochromatic. We claim that $S times T$ works for $X^n$.
+
+    Let $c$ be a $k$-colouring of $S times T$. By definition of $T$, if we look at the $k^abs(S)$-colouring $c'(t) = (c(s_1, t), c(s_2, t), ..., c(s_abs(S), t))$, we have an isometric copy of $X$ with $A$ monochromatic. This induces a colouring of $S$ as follows: $c''(s) = (c(s, a), c(s, x_1), ..., c(s, x_(abs(X) - abs(A))))$ for any $a in A$ (this is well-defined as $A$ is monochromatic). This is a $k^(abs(X) - abs(A) + 1)$-colouring. So by the choice of $S$, there exists an isometric copy of $X^(n - 1)$ that is $A$-invariant. Thus we are done, since the Cartesian product of this copy with the copy of $X$ in $T$ is $A$-invariant.
+]
+#theorem("Křiž")[
+    Every regular $m$-gon is Ramsey.
 ]
