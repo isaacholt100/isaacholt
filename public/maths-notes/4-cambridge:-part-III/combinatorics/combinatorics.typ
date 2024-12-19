@@ -1380,13 +1380,30 @@ We want to show the initial segments of the simplicial ordering minimise the bou
     $
 ]
 #theorem("Vertex-isoperimetric Inequality in the Grid")[
-    Let $A subset.eq [k]^n$ and $C$ be the initial segment of simplicial on $[k]^n$ with $abs(C) = abs(A)$. Then $abs(N(C)) <= abs(N(A))$. In particular, if $
+    Let $A subset.eq [k]^n$ and $C$ be the initial segment of simplicial on $[k]^n$ with $abs(C) = abs(A)$. Then $abs(N(C)) <= abs(N(A))$. In particular, $
         abs(A) >= abs({x in [k]^n: abs(x) <= r}) quad ==> quad abs(N(A)) >= abs({x in [k]^n: abs(x) <= r + 1}).
     $
 ]<thm:vertex-isoperimetric-inequality-in-the-grid>
 #proofhints[
     - Use induction on $n$.
-    - Prove that $abs(N(C_i (A))) <= abs(N(A))$ by writing the $i$-section $N(A)_j^((i))$ as a union of three sets, doing the same for $N(C_i (A))_j^((i))$, using the fact that these three sets (for $C_i (A)$) are nested (why?).
+    - Prove that $abs(N(C_i (A))) <= abs(N(A))$ by writing the $i$-section $N(A)_j^((i))$ as a union of three sets, doing the same for $N(C_i (A))_j^((i))$, and using the fact that these three sets (for $C_i (A)$) are nested (why?).
+    - Let $B subset.eq [k]^n$, $abs(B) = abs(A)$ and $abs(N(B)) <= abs(N(A))$, and let $B$ be $i$-compressed for all $1 <= i <= n$ (find an expression to minimise which will imply $B$ has this property).
+    - Case $n = 2$:
+        - Let $r = min{abs(x): x in.not B}$, $s = max{abs(x): x in B}$.
+        - Explain why $r <= s + 1$ and that we can assume $r <= s$.
+        - Show that if $r = s$, then $abs(N(C)) <= abs(N(B))$.
+        - Explain why ${x in [k]^n: abs(x) = s} subset.eq B$ implies ${x in [k]^n: abs(x) = r} subset.eq B$, reason that this would be a contradiction. Deduce that there exist $y in B$, $y' in.not B$ such that $abs(y) = abs(y') = s$ and $y' = y plus.minus (1, -1)$.
+        - By a similar argument, show that there exist $x in.not B$, $x' in B$ with $abs(x) = abs(x') = r$ and $x' = x plus.minus (1, -1)$.
+        - Consider $B'$ which is obtained from $B$ by adding an appropriate element and removing an appropriate element.
+        - Reason that $abs(N(B')) <= abs(N(B))$, contradicting the minimality of $B$ (it helps to draw a diagram).
+    - Case $n >= 3$:
+        - For $1 <= i <= n - 1$ and $x in B$ with $x_n > 1$ and $x_i < k$ explain why $x - e_n + e_i in B$.
+        - Considering the $n$-sections of $B$, explain why $N(B)_j subset.eq B_(j - 1)$ and hence that $N(B)_j = B_(j - 1)$.
+        - TODO: add in a few more details maybe.
+        - Use this to show that $abs(N(B)) = abs(B) - abs(B_k) + abs(N(B_1))$, and similarly for $C$.
+        - Show that $abs(B_k) <= abs(C_k)$, by defining a set $D subset.eq [k]^n$ by its $n$-sections: $D_k := B_k$, and $D_(j - 1) = N(D_j)$ for all $j$, and showing that $D subset.eq C$.
+        - Show that $abs(B_1) >= abs(C_1)$, by defining a set $E subset.eq [k]^n$ by its $i$-sections: $E_1 := B_1$, $E_j = {x in [k]^(n - 1): N({x}) subset.eq E_(j - 1)}$, and showing that $C subset.eq E$.
+        - Conclude that $abs(N(B_1)) >= abs(N(C_1))$.
 ]
 #proof[
     By induction on $n$. The case $n = 1$ follows since if $A subset.eq [k]^1$ and $A != emptyset, [k]^1$, then $abs(N(A)) >= abs(A) + 1 = abs(N(C))$. Now given $n > 1$, and $A subset.eq [k]^n$, fix $1 <= i <= n$, we claim that $abs(N(C_i (A))) <= abs(N(A))$.
@@ -1398,23 +1415,24 @@ We want to show the initial segments of the simplicial ordering minimise the bou
     ]
 
     Among all $B subset.eq [k]^n$ with $abs(B) = abs(A)$ and $abs(N(B)) <= abs(N(A))$, pick one with $sum_(x in B) ("position of" x "in simplicial")$ minimal. Then $B$ is $i$-compressed for all $1 <= i <= n$. We consider the following cases:
-    - Case $n = 2$: what we know is precisely that $B$ is a down-set. Let $r = min{abs(x): x in.not B}$ and $s = max{abs(x): x in B}$. We may assume that $r <= s$, since if $r = s + 1$, then $B = {x: abs(x) <= r - 1}$, hence $B = C$. If $r = s$, then ${x: abs(x) <= r - 1} subset.eq B subset.eq {x: abs(x) <= r}$, so clearly, $abs(N(B)) >= abs(N(C))$. We cannot have ${x: abs(x) = s} subset.eq B$ because then also ${x: abs(x) = r} subset.eq B$ (as $B$ is a down-set). So there are $y, y'$ with $abs(y) = abs(y') = s$, $y in B$, $y' in.not B$, and $y' = y plus.minus (e_1 - e_2)$ (where $e_1 = (1, 0)$, $e_2 = (0, 1)$). Similarly, we cannot have ${x: abs(x) = r} sect B = emptyset$, because then ${x: abs(x) = s} sect B = emptyset$ (since $B$ is a down-set): contradiction. So there are $x, x'$ with $abs(x) = abs(x') = r$, $x in.not B$, $x' in B$, and $x' = x plus.minus (e_1 - e_2)$. Now let $B' = B union {x} \\ {y}$. From $B$ we lost at least one point in the neighbourhood (namely $z$) and gained at most one point, so $abs(N(B')) <= abs(N(B))$, but this contradicts the minimality of $B$.
-    - Case $n >= 3$: for any $1 <= i <= n - 1$ and any $x in B$ with $x_n > 1$ and $x_i < k$, we have $x - e_n + e_i in B$, since $B$ is $j$-compressed for any $j != i, n$. So, considering the $n$-sections of $B$, we have $N(B_t) subset.eq B_(t - 1)$ for all $t = 2, ..., k$. Recall that $N(B)_t = N(B_t) union B_(t + 1) union B_(t - 1)$. So in fact, $N(B)_t = B_(t - 1)$ for all $t >= 2$. Thus $
+    - Case $n = 2$: what we know is precisely that $B$ is a down-set. Let $r = min{abs(x): x in.not B}$ and $s = max{abs(x): x in B}$. We have that $r <= s + 1$ by definition. We may assume that $r <= s$, since if $r = s + 1$, then $B = {x: abs(x) <= r - 1}$ which is an initial segment of simplicial, hence $B = C$. If $r = s$, then $
+        {x in [k]^n: abs(x) <= r - 1} subset.eq B subset.eq {x in [k]^n: abs(x) <= r},
+    $ so clearly $abs(N(C)) <= abs(N(B))$. \ We cannot have ${x in [k]^n: abs(x) = s} subset.eq B$ because then also ${x in [k]^n: abs(x) = r} subset.eq B$ (as $B$ is a down-set). So there are $y, y'$ with $abs(y) = abs(y') = s$, $y in B$, $y' in.not B$, and $y' = y plus.minus (e_1 - e_2)$ (where $e_1 = (1, 0)$, $e_2 = (0, 1)$ are the standard basis vectors). Similarly, since ${x in [k]^n: abs(x) != s} subset.eq {x in [k]^n: abs(x) != r}$, we cannot have ${x in [k]^n: abs(x) = r} sect B = emptyset$, because then ${x in [k]^n: abs(x) = s} sect B = emptyset$ (since $B$ is a down-set): contradiction. So there are $x, x'$ with $abs(x) = abs(x') = r$, $x in.not B$, $x' in B$, and $x' = x plus.minus (e_1 - e_2)$. Now let $B' = B union {x} \\ {y}$. From $B$ we lost at least one point in the neighbourhood (namely the unique point $z$ which is joined to both $y$ and $y'$) and gained at most one point (the only point we might gain is the unique point $w$ which is joined to both $x$ and $x'$), so $abs(N(B')) <= abs(N(B))$, but this contradicts the minimality of $B$.
+    - Case $n >= 3$: for any $1 <= i <= n - 1$ and any $x in B$ with $x_n > 1$ and $x_i < k$, we have $x - e_n + e_i in B$, since $x - e_n + e_i < x$ in simplicial and $B$ is $j$-compressed for any $j != i, n$. So, considering the $n$-sections of $B$, we have $N\(B_j\) subset.eq B_(j - 1)$ for all $j = 2, ..., k$. Recall that $N(B)_j = N\(B_j\) union B_(j + 1) union B_(j - 1)$. So in fact, $N(B)_j = B_(j - 1)$ for all $j >= 2$. Thus $
         abs(N(B)) = underbrace(abs(B_(k - 1)), "level" k) + underbrace(abs(B_(k - 2)), "level" k - 1) + dots.c + underbrace(abs(B_1), "level" 2) + underbrace(abs(N(B_1)), "level" 1) = abs(B) - abs(B_k) + abs(N(B_1)).
-    $ Similarly, $abs(N(C)) = abs(C) - abs(C_k) + abs(N(C_1))$. So to show $abs(N(C)) <= abs(N(B))$, it is enough to show that $abs(B_k) <= abs(C_k)$ and $abs(B_1) >= abs(C_1)$ (since $B_1$, $C_1$ and their neighbourhoods are initial segments of simplicial). 
-    
-    $abs(B_k) <= abs(C_k)$: define a set $D subset.eq [k]^n$ as follows: let $D_k := B_k$, and for $t = k - 1, k - 2, ..., 1$, set $D_t := N(D_(t - 1))$. Then $D subset.eq B$, so $abs(D) <= abs(B)$. Also, $D$ is an initial segment of simplicial. So in fact, $D subset.eq C$, whence $abs(B_k) = abs(D_k) <= abs(C_k)$.
-
-    $abs(B_1) >= abs(C_1)$: define a set $E subset.eq [k]^n$ as follows: set $E_1 = B_1$ and for $t = 2, 3, ..., k$, set $E_t = {x in [k]^(n - 1): N({x}) subset.eq E_(t - 1)}$, so $E_t$ is the biggest set whose neighbourhood is contained in $E_(t - 1)$. Then $B subset.eq E$, so $abs(E) >= abs(B)$. Also, $E$ is an initial segment of simplicial. So $C subset.eq E$, whence $abs(B_1) = abs(E_1) >= abs(C_1)$. #qedhere
+    $ Similarly, $abs(N(C)) = abs(C) - abs(C_k) + abs(N(C_1))$. So to show $abs(N(C)) <= abs(N(B))$, it is enough to show that $abs(B_k) <= abs(C_k)$ and $abs(B_1) >= abs(C_1)$ (since $B_1$, $C_1$ and their neighbourhoods are initial segments of simplicial). \ $abs(B_k) <= abs(C_k)$: define a set $D subset.eq [k]^n$ by its $n$-sections as follows: let $D_k := B_k$, and for $j = k - 1, k - 2, ..., 1$, set $D_j := N\(D_(j + 1)\)$. Then $D subset.eq B$, so $abs(D) <= abs(B)$. Also, $D$ is an initial segment of simplicial, since $B_k$ is an initial segment of simplicial, and so all $n$-sections of $D$ are as well. So in fact, $D subset.eq C$, whence $abs(B_k) = abs(D_k) <= abs(C_k)$. \ $abs(B_1) >= abs(C_1)$: define a set $E subset.eq [k]^n$ as follows: set $E_1 = B_1$ and for $j = 2, 3, ..., k$, set $E_j = {x in [k]^(n - 1): N({x}) subset.eq E_(j - 1)}$, so $E_j$ is the biggest set whose neighbourhood is contained in $E_(j - 1)$. Then $B subset.eq E$, so $abs(E) >= abs(B)$. Also, $E$ is an initial segment of simplicial. So $C subset.eq E$, whence $abs(B_1) = abs(E_1) >= abs(C_1)$.
 ]
 #corollary[
-    Let $A subset.eq [k]^n$ and $abs(A) >= abs({x: abs(x) <= r})$. Then $abs(N^t (A)) >= abs({x: abs(x) <= r + t})$ for all $t$.
+    Let $A subset.eq [k]^n$ and $abs(A) >= abs({x in [k]^n: abs(x) <= r})$. Then $abs(N^j (A)) >= abs({x in [k]^n: abs(x) <= r + j})$ for all $j$.
+]
+#proofhints[
+    Trivial by above.
 ]
 #proof[
     By induction, using above.
 ]
 #remark[
-    We can check from the above corollary that, for $k$ fixed, the sequence ${[k]^n: n in NN}$ is a Levy family.
+    We can check from the above corollary that, for $k$ fixed, the sequence of grids ${[k]^n: n in NN}$ is a Levy family.
 ]
 
 == The edge-isoperimetric inequality in the grid
@@ -1451,7 +1469,7 @@ We want to show the initial segments of the simplicial ordering minimise the bou
     $A subset.eq powset(X)$ is *$t$-intersecting* if $
         forall x, y in A, quad abs(x sect y) >= t.
     $
-]
+]<def:t-intersecting-family>
 #example[
     How large can a $t$-intersecting family be? For $t = 2$, we could take ${x subset.eq X: 1, 2 in x}$, which has size $1/4 dot 2^n$, but better is ${x subset.eq X: abs(x) >= n \/ 2 + 1}$.
 ]
@@ -1459,28 +1477,30 @@ We want to show the initial segments of the simplicial ordering minimise the bou
     Let $A subset.eq powset(X)$ be $t$-intersecting, where $n equiv t mod 2$. Then $
         abs(A) <= abs(X^((>= (n + t)\/2))).
     $
+]<thm:katona-t-intersecting>
+#proofhints[
+    - Show that $N^(t - 1)(A)$ is disjoint from $overline(A) := {y^c: y in A}$.
+    - Assuming the negation of the theorem statement, show that $
+        abs(N^(t - 1)(A)) >= abs(X^((>= (n - t) \/ 2 + 1))),
+    $ and derive a contradiction (find a strict lower bound for the size of $overline(A)$).
 ]
 #proof[
-    For any $x, y in A$, we have $abs(x sect y) >= t$, so $d(x, y^c) >= t$. Writing $overline(A) = {y^c: y in A}$, we have $d(A, overline(A)) >= t$, i.e. $A_((t - 1))$ is disjoint from $overline(A)$. Suppose for a contradiction $abs(A) > abs(X^((>= (n + t) \/ 2)))$. Then by @thm:harper, we have $
+    For any $x, y in A$, we have $abs(x sect y) >= t$, so $d(x, y^c) >= t$. Writing $overline(A) = {y^c: y in A}$, we have $d\(A, overline(A)\) >= t$, i.e. $N^(t - 1)(A)$ is disjoint from $overline(A)$. Suppose for a contradiction $abs(A) > abs(X^((>= (n + t) \/ 2)))$. Then by @thm:harper, we have $
         abs(N^(t - 1)(A)) >= abs(X^((>= (n + t) \/ 2 - (t - 1)))) = abs(X^((>= (n - t) \/ 2 + 1))).
-    $ But $N^(t - 1)(A)$ is disjoint from $overline(A)$ which has size $> abs(X^((<= (n - t) \/ 2)))$, contradicting $abs(N^(t - 1)(A)) + abs(overline(A)) <= 2^n$.
+    $ But $N^(t - 1)(A)$ is disjoint from $overline(A)$ which has size $abs(overline(A)) = abs(A) > abs(X^((<= (n - t) \/ 2)))$, contradicting $abs(N^(t - 1)(A)) + abs(overline(A)) <= 2^n$.
 ]
 #example[
     What about $t$-intersecting $A$ with $A subset.eq X^((r))$? We might guess that the best is $A_0 = {x in X^((r)): [t] subset.eq x}$. We could also try $A_alpha = {x in X^((r)): abs(x sect [t + 2 alpha]) >= t + alpha}$ for $alpha = 1, ..., r - t$.
-
-    For $2$-intersecting families in $[7]^((4))$: $abs(A_0) = binom(5, 2) = 10$, $abs(A_1) = 1 + binom(4, 3) binom(3, 1) = 13$, $abs(A_2) = binom(6, 4) = 15$.
-
-    For $2$-intersecting families in $[8]^((4))$: $abs(A_0) = binom(6, 2) = 15$, $abs(A_1) = 1 + binom(4, 3) binom(4, 1) = 17$, $abs(A_2) = binom(6, 4) = 15$.
-
-    For $2$-intersecting families in $[9]^((4))$: $abs(A_0) = binom(7, 2) = 21$, $abs(A_1) = 1 + binom(4, 3) binom(5, 1) = 21$, $abs(A_2) = binom(6, 4) = 15$.
-
+    - For $2$-intersecting families in $[7]^((4))$: $abs(A_0) = binom(5, 2) = 10$, $abs(A_1) = 1 + binom(4, 3) binom(3, 1) = 13$, $abs(A_2) = binom(6, 4) = 15$.
+    - For $2$-intersecting families in $[8]^((4))$: $abs(A_0) = binom(6, 2) = 15$, $abs(A_1) = 1 + binom(4, 3) binom(4, 1) = 17$, $abs(A_2) = binom(6, 4) = 15$.
+    - For $2$-intersecting families in $[9]^((4))$: $abs(A_0) = binom(7, 2) = 21$, $abs(A_1) = 1 + binom(4, 3) binom(5, 1) = 21$, $abs(A_2) = binom(6, 4) = 15$.
     Note that $A_0$ grows quadratically, $A_1$ grows linearly, $A_2$ is constant, so $A_0$ is the largest of these for large $n$.
 ]
 #theorem[
-    Let $A subset.eq X^((r))$ be $t$-intersecting. Then, for $n$ sufficiently large, we have $abs(A) <= abs(A_0) = binom(n - t, r - t)$.
+    Let $X = [n]$ and let $A subset.eq X^((r))$ be $t$-intersecting. Then, for $n$ sufficiently large, we have $abs(A) <= abs(A_0) = binom(n - t, r - t)$.
 ]
 #proof[
-    Idea: "$A_0$ has $t - t$ degrees of freedom".
+    Idea: "$A_0$ has $r - t$ degrees of freedom".
 
     Extending $A$ to a maximal $t$-intersecting family, we must have some $x, y in A$ with $abs(x sect y) = t$ (if not, then by maximality, we have that $forall x in A, forall i in x, forall j in.not x$, $x - i union j in A$; repeating this, we have $A = X^((r))$: contradiction). We may assume that there exists $z in A$ with $x sect y subset.eq.not z$; otherwise, all $z in A$ have the $t$-set $x sect y subset.eq z$, whence $abs(A) <= binom(n - t, r - t) = abs(A_0)$. So each $w in A$ must meet $x union y union z$ in $>= t + 1$ points. Thus $
         abs(A) <= underbrace(2^(3r), #[$w$ on $x union y union z$]) dot underbrace((binom(n, r - t - 1) + binom(n, r - t - 2) + dots.c + binom(n, 0)), #[$w$ off $x union y union z$])

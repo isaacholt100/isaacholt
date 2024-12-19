@@ -28,7 +28,7 @@
 #let Pr = math.op("Pr")
 #let gen(..gens) = $angle.l #gens.pos().join(",") angle.r$
 #let Aut = math.op("Aut")
-#let Ctrl(U) = $C dash.en #U$
+#let Ctrl(U) = $C dash.en #h(0pt) #U$
 #let Rot = math.op("Rot")
 
 #set terms(indent: 16pt)
@@ -951,4 +951,70 @@ To formalise this comparison of quantum vs classical computing, we will define a
     - Quantum error correction (e.g. stabiliser codes) and fault-tolerance.
     - They give insights into the power of quantum vs classical computing.
     - They form a metaplectic representation of symplectic groups.
+]
+#example[
+    - All Pauli matrices are Clifford operations.
+    - $1$-qubit Clifford operations include $H$ (e.g. $H Z H = X$) and $S = mat(1, 0; 0, i)$.
+    - $2$-qubit Clifford operations include $Ctrl(X)$ and SWAP, e.g. $Ctrl(X_(1 2)) Z_1 Ctrl(X_(1 2)) = Z_1 Z_2$, and $Ctrl(X_(1 2)) Ctrl(X_(2 1)) Ctrl(X_(1 2)) = "SWAP"_(1 2)$.
+]
+#theorem[
+    $C in U(2^n)$ is Clifford iff it can be decomposed into a circuit of $H$, $S$ and $Ctrl(X)$ gates.
+]
+#proof[
+    Omitted.
+]
+#definition[
+    A *Clifford computation/circuit* is a circuit consisting only of Clifford gates, with a measurement in the computational basis at the end.
+]
+#example[
+    - $
+        ket(0) ket(0) -->^H ket(+) ket(0) -->^(Ctrl(X)) 1/sqrt(2) (ket(00) + ket(11))
+    $
+    - *Cat/GHZ*: $
+        ket(0)^(tp n) -->^H ket(plus)^(tp n) -->^Ctrl(X_(1 2)) dots.c -->^Ctrl(X_(1 n)) 1/sqrt(2) (ket(0)^(tp n) + ket(1)^(tp n)).
+    $
+]
+#theorem("Gottesman-Knill")[
+    Let $C$ be any $M = poly(n)$-size Clifford circuit on $n$ qubits with no intermediate measurements, let any product state $ket(alpha_1) ... ket(alpha_n)$ be the input state and let the output be a measurement on the (WLOG, by applying SWAP) first qubit line. Then the output can always be classically strongly (and so also weakly) simulated efficiently.
+]<thm:gottesman-knill>
+#proof[
+    Idea: instead of evolving the input state $ket(psi_"in")$ to $C ket(psi_"in") =: ket(psi_"end")$, we "backpropagate" the final measurement to $ket(psi_"in")$.
+
+    Noting that $Z = ket(0) bra(0) - ket(1) bra(1)$, write $Z_1 = Pi_0 - Pi_1$, where $Pi_0$ and $Pi_1$ are projectors onto the subspaces $span{ket(0)}$ and $span{ket(1...)}$. Let the unitary part of $C$ be $C_M dots.c C_1$ We have $
+        p_0 - p_1 & = braket(psi_"end", Z_1, psi_"end") = braket(psi_"in", C^dagger Z_1 C, psi_"in") \
+        & = braket(psi_"in", C_1^dagger dots.c C_M^dagger Z_1 C_M dots.c C_1, psi_"in")
+    $ $C_1^dagger dots.c C_M^dagger Z_1 C_M dots.c C_1$ is a successive conjugation of $Z_1$ be Clifford operations (each is a $1$- or $2$- qubit conjugation, hence each conjugation is a constant size computation).
+
+    By the Clifford property, we obtain $
+        p_0 - p_1 = braket(psi_"in", tilde(P)_1 tp dots.c tp tilde(P)_n, psi_"in")
+    $ where each $tilde(P)_i$ is in the Pauli group. Hence, since $ket(psi_"in") = ket(alpha_1) ... ket(alpha_n)$, the above factorises: $
+        p_0 - p_1 = product_(i = 1)^n braket(alpha_i, tilde(P)_i, alpha_i).
+    $ Each $braket(alpha_i, tilde(P)_i, alpha_i)$ is a $2 times 2$ matrix computation. So computing $p_0 - p_1$ takes $O(n)$ time classically. We also need $O(M)$ time for computing $tilde(P)_1 tp dots.c tp tilde(P)_n = C^dagger Z_1 C$. We also know $p_0 + p_1 = 1$, so we can obtain $p_0$ and $p_1$.
+]
+We now extend Clifford computations to allow intermediate ($1$-qubit) measurements in the $Z$ basis. We treat this as an extra elementary computational step (called a "measurement gate"). We are allowed to apply unitary gates to the post-measurement state.
+
+#definition[
+    Clifford computations with intermediate measurements are split into two cases: *non-adaptive* circuits cannot depend on the intermediate measurement outcomes, whereas *adaptive* circuits are allowed to.
+]
+#theorem[
+    Let $C$ be any $poly(n)$-sized Clifford circuit consisting of intermediate measurements, let $ket(psi_"in") = ket(alpha_1) ... ket(alpha_n)$ be the input state, and say we measure on the (WLOG) first qubit.
+    + If $C$ is non-adaptive, then the output is classically strongly simulable efficiently.
+    + If $C$ is adaptive, then full universal quantum computation is possible.
+]
+#proof("sketch")[
+    + Non-adaptive Clifford circuits are reducible to fully unitary Clifford circuits, using ancillary qubits and $Ctrl(X)$ gates (then done by @thm:gottesman-knill).
+    + Use the Brayvi-Kitaev of "magic states", and the fact the Clifford gates along with the gate $T = mat(1, 0; 0, e^(i pi \/ 4))$, are universal for quantum computation. Let $ket(A) = 1/sqrt(2) (ket(0) + e^(i pi \/ 4) ket(1))$ denote the $1$-qubit magic state. We'll implement the $T$ gate using the following $T$-gadget:
+    #figure(quantum-circuit(
+        lstick($ket(psi)$), 1, ctrl(1), 2, gate($S^m$), 1, rstick($T ket(psi)$), nl,
+        lstick($ket(A)$), 1, targ(), meter(), setwire(2), 2, ctrl(-1), 
+    )) TODO: finish circuit
+    Therefore we could achieve an "increas" in power from classically simulable to quantum universal by either:
+    - Allowing Clifford circuits to use non-Clifford gates, e.g. $T$, or
+    - Allowing only Clifford operations and intermediate measurements, but also these exotic resource states.
+]
+For Clifford circuits with product state inputs, single line output and intermediate measurements, we have:
++ Non-adaptive: classically strongly simulable efficiently.
++ Adaptive: full universal quantum power.
+#remark[
+    If the input is only computational basis states, then 2. becomes classically _weakly_ simulable efficiently.
 ]
