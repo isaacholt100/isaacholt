@@ -1,5 +1,7 @@
 #import "@preview/fletcher:0.5.2" as fletcher: diagram, node, edge
 #import "../../template.typ": *
+#import "../../diagram-style.typ": *
+#import "@preview/cetz:0.3.1" as cetz: canvas
 
 #let name-abbrvs = (
     "Data Processing Inequality for Entropy": "Data Processing",
@@ -46,7 +48,7 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
 ]<def:binary-entropy-function>
 #example[
     Let $x_1^n in {0, 1}^n$ be an $n$ bit string which is the realisation of binary random variables (RVs) $X_1^n = (X_1, ..., X_n)$, where the $X_i$ are independent and identically distributed (IID), with common distribution $X_i sim Bern(p)$. Let $k = abs({i in [n]: x_i = 1})$ be the number of ones in $x_1^n$. We have $
-        Pr(X_1^n = x_1^n) := P^n (x_1^n) = product_(i = 1)^n P(x_i) = p^k (1 - p)^(n - k).
+        PP(X_1^n = x_1^n) := P^n (x_1^n) = product_(i = 1)^n P(x_i) = p^k (1 - p)^(n - k).
     $ Now by the law of large numbers, the probability of ones in a random $x_1^n$ is $k\/n approx p$ with high probability for large $n$. Hence, $
         P^n (x_1^n) approx p^(n p) (1 - p)^(n (1 - p)) = 2^(-n h(p)).
     $ Note that this reveals an amazing fact: this approximation is independent of $x_1^n$, so any message we are likely to encounter has roughly the same probability $approx 2^(-n h(p))$ of occurring.
@@ -71,19 +73,19 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
     We denote a finite alphabet by $A = {a_1, ..., a_m}$.
 ]
 #notation[
-    If $X_1, ..., X_n$ are IID RVs with values in $A$, with common distribution described by a PMF $P: A -> [0, 1]$ (i.e. $P(x) = Pr(X_i = x)$ for all $x in A$), then write $X sim P$, and we say "$X$ has distribution $P$ on $A$".
+    If $X_1, ..., X_n$ are IID RVs with values in $A$, with common distribution described by a PMF $P: A -> [0, 1]$ (i.e. $P(x) = PP(X_i = x)$ for all $x in A$), then write $X sim P$, and we say "$X$ has distribution $P$ on $A$".
 ]
 #notation[
     For $i <= j$, write $X_i^j$ for the block of random variables $(X_i, ..., X_j)$, and similarly write $x_i^j$ for the length $j - i + 1$ string $(x_i, ..., x_j) in A^(i - j + 1)$.
 ]
 #notation[
     For IID RVs $X_1, ..., X_n$ with each $X_i sim P$, denote their joint PMF by $P^n: A^n -> [0, 1]$: $
-        P^n (x_1^n) = Pr(X_1^n = x_1^n) = product_(i = 1)^n Pr(X_i = x_i) = product_(i = 1)^n P(x_i),
+        P^n (x_1^n) = PP(X_1^n = x_1^n) = product_(i = 1)^n PP(X_i = x_i) = product_(i = 1)^n P(x_i),
     $ and we say that "the RVs $X_1^n$ have the product distribution $P^n$".
 ]
 #definition[
     A sequence of RVs $(Y_n)_(n in NN)$ *converges in probability* to an RV $Y$ if $forall epsilon > 0$, $
-        Pr(abs(Y_n - Y) > epsilon) -> 0 quad "as" n -> oo.
+        PP(abs(Y_n - Y) > epsilon) -> 0 quad "as" n -> oo.
     $
 ]<def:convergence-in-probability>
 #definition[
@@ -118,7 +120,7 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
         B_n^* (epsilon) := {x_1^n in A^n: 2^(-n(H + epsilon)) <= P^n (x_1^n) <= 2^(-n(H - epsilon))}
     $ satisfies $
         abs(B_n^* (epsilon)) <= 2^(n(H + epsilon)) quad & forall n in NN, quad "and" \
-        P^n (B_n^* (epsilon)) = Pr(X_1^n in B_n^* (epsilon)) --> 1 quad & "as" n -> oo
+        P^n (B_n^* (epsilon)) = PP(X_1^n in B_n^* (epsilon)) --> 1 quad & "as" n -> oo
     $
     - $(<==)$: for any sequence $(B_n)_(n in NN)$ of subsets of $A^n$, if $P(X_1^n in B_n) -> 1$ as $n -> oo$, then $forall epsilon > 0$, $
         abs(B_n) & >= (1 - epsilon) 2^(n(H - epsilon)) quad "eventually" \
@@ -132,7 +134,7 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
 #proof[
     - $(==>)$:
         - Let $epsilon > 0$. By @thm:convergence-to-common-entropy-in-probability, we have $
-            Pr(X_1^n in.not B_n^* (epsilon)) = Pr(abs(-1/n log P^n (X_1^n) - H) > epsilon) -> 0 quad "as" n -> oo.
+            PP(X_1^n in.not B_n^* (epsilon)) = PP(abs(-1/n log P^n (X_1^n) - H) > epsilon) -> 0 quad "as" n -> oo.
         $
         - By definition of $B_n^* (epsilon)$, $
             1 >= P^n (B_n^* (epsilon)) = sum_(x_1^n in B_n^* (epsilon)) P^n (x_1^n) >= abs(B_n^* (epsilon)) 2^(-n(H + epsilon)).
@@ -167,25 +169,25 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
 ]<def:code-rate>
 #definition[
     For each $n in NN$, the *error probability* of a fixed-rate code ${B_n: n in NN}$ for a source $X$ is $
-        P_e^((n)) := Pr(X_1^n in.not B_n).
+        P_e^((n)) := PP(X_1^n in.not B_n).
     $
 ]<def:code-error-probability>
-#theorem("Fixed-rate coding theorem")[
+#theorem("Fixed-rate Coding Theorem")[
     Let $X = {X_n: n in NN}$ be a memoryless source with distribution $P$ and entropy $H = H(X_i)$.
     - $(==>)$: $forall epsilon > 0$, there is a fixed-rate code ${B_n^* (epsilon): n in NN}$ with vanishing error probability ($P_e^((n)) -> 0$ as $n -> oo$) and with rate $
         R_n <= H + epsilon + 2/n quad forall n in NN.
     $
-    - $(<==)$: let ${B_n: n in NN}$ be a fixed-rate with vanishing error probabilit. Then $forall epsilon > 0$, its rate $R_n$ satisfies $
+    - $(<==)$: let ${B_n: n in NN}$ be a fixed-rate with vanishing error probability. Then $forall epsilon > 0$, its rate $R_n$ satisfies $
         R_n > H - epsilon quad "eventually".
     $
-]
+]<thm:fixed-rate-coding-theorem>
 #proofhints[
     $(==>)$: straightforward.
     $(<==)$: straightforward.
 ]
 #proof[
     - $(==>)$:
-        - Let $B_n^* (epsilon)$ be the sets of typical strings defined in AEP (@cor:aep). Then $P_e^((n)) = 1 - Pr(X_1^n in B_n^*) -> 0$ as $n -> oo$ by AEP.
+        - Let $B_n^* (epsilon)$ be the sets of typical strings defined in AEP (@cor:aep). Then $P_e^((n)) = 1 - PP(X_1^n in B_n^*) -> 0$ as $n -> oo$ by AEP.
         - Also by AEP, $R_n = 1/n (1 + ceil(log abs(B_n^*))) <= 1/n log abs(B_n^*) + 2/n <= H + epsilon + 2/n$.
     - $(<==)$:
         - WLOG let $0 < epsilon < 1\/2$. By AEP, $
@@ -204,8 +206,8 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
 ]<def:hypothesis-test>
 #definition[
     The associated *error probabilities* for a hypothesis test are $
-        e_1^((n)) = e_1^((n)) (B_n) & := Pr("declare" P | "data" sim Q) = Q^n (B_n) \
-        e_2^((n)) = e_2^((n)) (B_n) & := Pr("declare" Q | "data" sim P) = P^n (B_n^c).
+        e_1^((n)) = e_1^((n)) (B_n) & := PP("declare" P | "data" sim Q) = Q^n (B_n) \
+        e_2^((n)) = e_2^((n)) (B_n) & := PP("declare" Q | "data" sim P) = P^n (B_n^c).
     $
 ]<def:hypothesis-test-error-probability>
 #definition[
@@ -247,7 +249,7 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
 #proof[
     - $(==>)$:
         - Let $B_n^* (epsilon) = {x_1^n in A^n: 2^(n(D - epsilon)) <= (P^n (x_1^n))/(Q^n (x_1^n)) <= 2^(n(D + epsilon))}$.
-        - Then the convergence in probability of $1/n sum_(i = 1)^n log P(X_i)/Q(X_i)$ is equivalent to $Pr(X_1^n in.not B_n^*) = P^n (B_n^* (epsilon)) = e_2^((n)) -> 0$ as $n -> oo$, when $X_1^n sim P^n$.
+        - Then the convergence in probability of $1/n sum_(i = 1)^n log P(X_i)/Q(X_i)$ is equivalent to $PP(X_1^n in.not B_n^*) = P^n (B_n^* (epsilon)) = e_2^((n)) -> 0$ as $n -> oo$, when $X_1^n sim P^n$.
         - Also, $1 >= P^n (B_n^*) = sum_(x_1^n in B_n^* (epsilon)) Q^n (x_1^n) (P^n (x_1^n))/(Q^n (x_1^n)) >= 2^(n(D - epsilon)) sum_(x_1^n in B_n^* (epsilon)) Q^n (x_1^n) = 2^(n(D - epsilon)) Q^n (B_n^* (epsilon))$.
     - $(<==)$:
         - We havee $e_2^((n)) (B_n^* (epsilon)) = P^n (B_n^* (epsilon)) -> 0$ as $n -> oo$. Suppose $e_2^((n)) (B_n) = P^n (B_n^c) -> 0$. Then $P^n (B_n sect B_n^* (epsilon)) -> 1$. So eventually, $
@@ -316,6 +318,9 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
     Let $I$ be an interval, $f: I -> RR$ be convex and $X$ be an RV with values in $I$. Then $
         EE[f(X)] >= f(EE[X]).
     $ Moreover, if $f$ is strictly convex, then equality holds iff $X$ is almost surely constant.
+]<thm:jensens-inequality>
+#proof[
+    Omitted.
 ]
 #theorem("Log-sum Inequality")[
     Let $a_1, ..., a_n$, $b_1, ..., b_n$ be non-negative constants. Then $
@@ -326,7 +331,7 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
     This also holds for countably many $a_i$ and $b_i$.
 ]
 #proofhints[
-    Use Jensen's inequality with $X$ the RV such that $Pr(X = a_i/b_i) = b_i / (sum_(j = 1)^n b_j)$ for all $i in [n]$, and a suitable $f$.
+    Use Jensen's inequality with $X$ the RV such that $PP(X = a_i/b_i) = b_i / (sum_(j = 1)^n b_j)$ for all $i in [n]$, and a suitable $f$.
 ]
 #proof[
     - Define $
@@ -335,7 +340,7 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
             0 & "otherwise"
         ).
     $ $f$ is strictly convex.
-    - Let $A = sum_i a_i$, $B = sum_i b_i$. Let $X$ be the RV with $Pr(X = a_i/b_i) = b_i / B$ for all $i in [n]$.
+    - Let $A = sum_i a_i$, $B = sum_i b_i$. Let $X$ be the RV with $PP(X = a_i/b_i) = b_i / B$ for all $i in [n]$.
     - Then $EE[f(X)] = sum_i b_i / B a_i/b_i log a_i / b_i = 1/B sum_i a_i log a_i / b_i$.
     - $f(EE[X]) = EE[X] log EE[X] = sum_i a_i / b_i b_i / B log sum_i a_i / b_i b_i / B = A/B log A/B$.
     - So by Jensen's inequality, $A/B log A/B <= 1/B sum_i a_i log a_i / b_i$.
@@ -413,7 +418,7 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
     Straightforward.
 ]
 #proof[
-    Note that $P_(Y | X)(y | x) = Pr(Y = y | X = x) = PP(Y = y, X = x)/PP(X = x) = P_(X, Y)(x, y) P_X (x)$. Hence $
+    Note that $P_(Y | X)(y | x) = PP(Y = y | X = x) = PP(Y = y, X = x)/PP(X = x) = P_(X, Y)(x, y) P_X (x)$. Hence $
         H(X, Y) & = EE[-log P_(X, Y) (X, Y)] \
         & = EE[-log P_X (X) - log P_(Y | X)(Y | X)] \
         & = EE[-log P_X (X)] + EE[-log P_(Y | X)(Y | X)].
@@ -498,7 +503,7 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
     Exercise.
 ]
 #theorem("Fano's Inequality")[
-    Let $X$ and $Y$ be RVs on respective alphabets $A$ and $B$. Suppose we are interested in the RV $X$ but only are allowed to observe the possibly correlated RV $Y$. Consider the estimate $hat(X) = f(Y)$, with probability of error $P_e := Pr\(hat(X) != X\)$. Then $ H(X | Y) <= h(P_e) + P_e log (abs(A) - 1), $ where $h$ is the binary entropy function.
+    Let $X$ and $Y$ be RVs on respective alphabets $A$ and $B$. Suppose we are interested in the RV $X$ but only are allowed to observe the possibly correlated RV $Y$. Consider the estimate $hat(X) = f(Y)$, with probability of error $P_e := PP\(hat(X) != X\)$. Then $ H(X | Y) <= h(P_e) + P_e log (abs(A) - 1), $ where $h$ is the binary entropy function.
 ]
 #proofhints[
     Consider an "error" Bernoulli RV $E$ which depends on $X$ and $Y$. Use the chain rule in two directions on $H(X, E | Y)$. Merge these and split up into the cases when $E = 0$ and $E = 1$ (using )
@@ -605,7 +610,7 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
 
 #theorem[
     Let $X_1, ..., X_n$ be IID RVs with each $X_i sim Bern(lambda\/n)$, let $S_n = X_1 + dots.c + X_n$. Then $P_(S_n) -> Pois(lambda)$ in distribution as $n -> oo$, i.e. $forall k in NN$, $
-        Pr(S_n = k) -> e^(-lambda) lambda^k / k! quad "as" n -> oo
+        PP(S_n = k) -> e^(-lambda) lambda^k / k! quad "as" n -> oo
     $
 ]<thm:binomial-converges-to-poisson>
 #remark[
@@ -998,16 +1003,16 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
 ]
 #example[
     Let $vd(X) = {X_n: n in NN}$ be an irreducible, aperiodic Markov chain on a finite alphabet $A$ with transition matrix $Q$, where $
-        Q_(a b) = Pr(X_(n + 1) = b | X_n = a), quad forall a, b in A
-    $ Let $X_1 sim P_(X_1)$ be the initial distribution and $pi$ be the unique stationary distribution ($Pr(X_n = x) -> pi(x)$ as $n -> oo$). $vd(X)$ has a unique invariant distribution $pi$ to which it converges: $
-        forall x in A, quad Pr(X_n = x) -> pi(x) quad "as" n -> oo
+        Q_(a b) = PP(X_(n + 1) = b | X_n = a), quad forall a, b in A
+    $ Let $X_1 sim P_(X_1)$ be the initial distribution and $pi$ be the unique stationary distribution ($PP(X_n = x) -> pi(x)$ as $n -> oo$). $vd(X)$ has a unique invariant distribution $pi$ to which it converges: $
+        forall x in A, quad PP(X_n = x) -> pi(x) quad "as" n -> oo
     $ and hence also $
-        Pr(X_(n- 1) = x, X_n = y) = Pr(X_n = x) Q_(x y) -> pi(x) Q_(x y).
+        PP(X_(n- 1) = x, X_n = y) = PP(X_n = x) Q_(x y) -> pi(x) Q_(x y).
     $ Then by the @prop:entropy-chain-rule and conditional independence, $
         H(X_1^n) & = sum_(i = 1)^n H(X_i | X_1^(i - 1)) \
         & = H(X_1) + sum_(i = 2)^n H(X_i | X_(i - 1)) \
         & = H(X_1) - H(X_(n + 1) | X_n) + sum_(i = 1)^n H(X_(i + 1) | X_i).
-    $ By the convergence theorem for Markov chains, we have $P_(X_n) -> pi$ as $n -> oo$. $H(X | Y)$ is a continuous function of the joint distribution $P_(X, Y)$, so $H(X_n | X_(n - 1)) -> H(overline(X_1) | overline(X_0))$ as $n -> oo$, where $overline(X_0) sim pi$ and $Pr(overline(X_1) = b | overline(X_1) = a) = Q_(a b)$. We have $
+    $ By the convergence theorem for Markov chains, we have $P_(X_n) -> pi$ as $n -> oo$. $H(X | Y)$ is a continuous function of the joint distribution $P_(X, Y)$, so $H(X_n | X_(n - 1)) -> H(overline(X_1) | overline(X_0))$ as $n -> oo$, where $overline(X_0) sim pi$ and $PP(overline(X_1) = b | overline(X_1) = a) = Q_(a b)$. We have $
         1/n H(X_1^n) = 1/n (H(X_1) - H(X_(n + 1) | X_n)) + 1/n sum_(i = 1)^n H(X_(i + 1) | X_i)
     $ The first term tends to $0$ since the numerator is bounded, and the summands in the second term tend to $H(overline(X_1) | overline(X_0))$. So the entropy rate exists and is equal to $H(vd(X)) = H(overline(X_1) | overline(X_0))$.
 ]
@@ -1055,7 +1060,7 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
     Let $vd(X) = {X_n: n in ZZ}$ be a stationary source on finite alphabet $A$, and define the (left) *shift* operator $T: A^ZZ -> A^ZZ$ on sequences $A^ZZ$ by $
         (T x)_n = x_(n + 1) quad forall n in ZZ.
     $ $vd(X)$ is *ergodic* if all shift invariant events are trivial, i.e. for any measurable $B subset.eq A^ZZ$, we have $
-        T^(-1) B = B ==> Pr(X_(-oo)^oo in B) = 0 "or" 1.
+        T^(-1) B = B ==> PP(X_(-oo)^oo in B) = 0 "or" 1.
     $ Intuitively, an ergodic process is one which satisfies the general form of the strong law of large numbers.
 
     It turns out that ergodicity is equivalent to the validity of the following:
@@ -1098,8 +1103,8 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
         1/n sum_(i = 1)^n (-log P(X_i | X_(i - k)^(i - 1))) & -> EE[-log P(X_0 | X_(-k)^(-1))] \
         & =: H(X_0 | X_(-k)^(-1)) "almost surely" quad "as" n -> oo.
     $ We have $
-        & Pr(-1/n log P(X_1^n | X_(-oo)^0) - (-1/n log P_n (X_1^n)) > epsilon) & = Pr(1/n log (P_n (X_1^n))/(P(X_1^n | X_(-oo)^0)) > epsilon) \
-        = & Pr((P_n (X_1^n))/(P(X_1^n | X_(-oo)^0)) > 2^(n epsilon)) \
+        & PP(-1/n log P(X_1^n | X_(-oo)^0) - (-1/n log P_n (X_1^n)) > epsilon) & = PP(1/n log (P_n (X_1^n))/(P(X_1^n | X_(-oo)^0)) > epsilon) \
+        = & PP((P_n (X_1^n))/(P(X_1^n | X_(-oo)^0)) > 2^(n epsilon)) \
         <= & 2^(-n epsilon) EE[(P_n (X_1^n))/(P(X_1^n | X_(-oo)^0))] quad "by markov's inequality" \
         <= & 2^(-n epsilon) EE[EE[(P_n (X_1^n))/(P(X_1^n | X_(-oo)^0)) | X_(-oo)^0]] \
         = & 2^(-n epsilon) EE[sum_(x_1^n \ P(x_1^n | X_(-oo)^0) > 0) P(x_1^n | X_(-oo)^0) (P_n (x_1^n))/(P(x_1^n | X_(-oo)^0))] \
@@ -1111,8 +1116,8 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
         & = -1/n [log P_k (x_1^k) - sum_(i = 1)^k log P(X_i | X_(i - k)^(i - 1))] \
         & -> 0 "almost surely" "as" n -> oo
     $ So suffices to show that $limsup_(n -> oo) -1/n log P_n (X_1^n) <= limsup_(n -> oo) -1/n log Q_n^((k)) (X_1^n)$ almost surely. So again, let $epsilon > 0$ be arbitrary, then $
-        & Pr(-1/n log P_n (X_1^n) - (-1/n log Q_n^((k))(X_1^n)) > epsilon) \
-        & = Pr((Q_n^((k))(X_1^n))/(P_n (X_1^n)) > 2^(n epsilon)) <= 2^(-n epsilon) EE[(Q_n^((k)) (X_1^n))/(P_n (X_1^n))] "by Markov's inequality" \
+        & PP(-1/n log P_n (X_1^n) - (-1/n log Q_n^((k))(X_1^n)) > epsilon) \
+        & = PP((Q_n^((k))(X_1^n))/(P_n (X_1^n)) > 2^(n epsilon)) <= 2^(-n epsilon) EE[(Q_n^((k)) (X_1^n))/(P_n (X_1^n))] "by Markov's inequality" \
         & <= 2^(-n epsilon) sum_(x_1^n in A^n) P_n (x_1^n) (Q_n^((k))(x_1^n))/(P_n (x_1^n)) = 2^(-n epsilon)
     $ which is summable, so by Borel-Cantelli and the fact that $epsilon > 0$ was arbitrary, we have $
      limsup_(n -> oo) -1/n log P_n (X_1^n) <= limsup_(n -> oo) -1/n sum_(i = 1)^n log P(X_i | X_(i - k)^(i - 1)).
@@ -1142,7 +1147,7 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
 ]
 #proposition[
     We have $abs(cal(P)_n) <= (n + 1)^m$.
-]
+]<prop:upper-bound-on-number-of-n-types>
 #proofhints[
     Straightforward.
 ]
@@ -1208,7 +1213,7 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
     By @prop:prob-under-prod-dist-of-string-of-type, we have $1 >= P^n (T(P)) = abs(T(P)) 2^(-n H(P))$. For the lower bound, $
         1 & = sum_(x_1^n in A^n) P^n (x_1^n) \
         & = sum_(Q in cal(P)_n) P^n (T(Q)) \
-        & <= abs(cal(P)_n) P^n (T(P)) quad & #[by @lem:most-likely-type-class-under-prod-dist-is-type-class-of-that-dist] \
+        & <= abs(cal(P)_n) P^n (T(P)) & quad #[by @lem:most-likely-type-class-under-prod-dist-is-type-class-of-that-dist] \
         & <= (n + 1)^m abs(T(P)) 2^(-n H(P)).
     $
 ]
@@ -1230,30 +1235,30 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
 
 #theorem("Sanov")[
     Let $X_1^n$ be IID with common PMF $Q$ which has full support on alphabet $A$ (i.e. $Q(a) > 0$ for all $a in A$) with $abs(A) = m$. Let $hat(P)_n$ be the empirical distribution of $X_1^n$. For all $E subset.eq cal(P)$, $
-        Pr\(hat(P)_n in E\) <= (n + 1)^m 2^(-n D_0).
-    $ where $D_0 = inf{D(P || Q): P in E}$. Also, if $E = overline("int"(E))$ is equal to the closure of its interior, then $
-        lim_(n -> oo) -1/n log Pr\(hat(P)_n in E\) = D_0.
-    $
+        PP\(hat(P)_n in E\) <= (n + 1)^m 2^(-n D^*).
+    $ where $D^* = inf{D(P || Q): P in E}$. Also, if $E = overline("int"(E))$ is equal to the closure of its interior, then $
+        lim_(n -> oo) -1/n log PP\(hat(P)_n in E\) = D^* = D(P^* || Q),
+    $ where $P^* in E$.
 ]<thm:sanov>
 #proofhints[
-    - For the inequality, use that $Pr\(hat(P)_n in E\) = Pr\(hat(P)_n in E sect cal(P)_n\) = sum_(P in E sect cal(P)_n) Q^n (T(P))$. Explain why $D_0$ is finite.
-    - For the equality, use the above inequality, and explain why there is a sequence ${P_n: n in NN}$ with each $P_n in cal(P)_n$ and $P_n -> P^*$ where $D(P^* || Q) = D_0$ (why does this exist?)
+    - For the inequality, use that $PP\(hat(P)_n in E\) = PP\(hat(P)_n in E sect cal(P)_n\) = sum_(P in E sect cal(P)_n) Q^n (T(P))$. Explain why $D^*$ is finite.
+    - For the equality, use the above inequality, and explain why there is a sequence ${P_n: n in NN}$ with each $P_n in cal(P)_n$ and $P_n -> P^*$ where $D(P^* || Q) = D^*$ (why does $P^*$ exist?)
 ]
 #proof[
-    Since $Q$ has full support, for any $P in cal(P)$, we have $D(P || Q) <= -sum_(a in A) log Q(a) < oo$, so $D_0$ is finite. For the upper bound, $
-        Pr\(hat(P)_n in E\) & = Pr\(hat(P)_n in E sect cal(P)_n\) \
-        & = sum_(P in E sect cal(P)_n) Pr\(hat(P)_n = P\) \
-        & = sum_(P in E sect cal(P)_n) Pr(X_1^n in T(P)) \
+    Since $Q$ has full support, for any $P in cal(P)$, we have $D(P || Q) <= -sum_(a in A) log Q(a) < oo$, so $D^*$ is finite. For the upper bound, $
+        PP\(hat(P)_n in E\) & = PP\(hat(P)_n in E sect cal(P)_n\) \
+        & = sum_(P in E sect cal(P)_n) PP\(hat(P)_n = P\) \
+        & = sum_(P in E sect cal(P)_n) PP(X_1^n in T(P)) \
         & = sum_(P in E sect cal(P)_n) Q^n (T(P)) \
         & <= abs(E sect cal(P)_n) max{Q^n (T(P)): P in E sect cal(P)_n} \
         & <= abs(E sect cal(P)_n) max{2^(-n D(P || Q)): P in E sect cal(P)_n} quad & #[ by @crl:bounds-on-probability-of-type-class] \
         & = abs(E sect cal(P)_n) dot 2^(-n min{D(P || Q) thin : med P in E sect cal(P)_n}) \
-        & <= (n + 1)^m dot 2^(-n D_0).
-    $ So $liminf_(n -> oo) -1/n log Q^n \(hat(P)_n in E\) >= D_0$.
+        & <= (n + 1)^m dot 2^(-n D^*).
+    $ So $liminf_(n -> oo) -1/n log Q^n \(hat(P)_n in E\) >= D^*$.
     
-    For the lower bound, since $E$ is compact and $D(P || Q)$ is continuous in $P$, the infimum $D_0$ is attained by some $P^*$. (Note that since $cal(P)$ itself is compact, there is always a minimising $P^*$ but this is not necessarily in $E$). Also, note that $union.big_(n in NN) cal(P)_n$ is dense in $cal(P)$, so we can find a sequence ${P_n: n in NN} subset.eq E$ such that each $P_n in cal(P)_n$ and $P_n -> P^*$ (as a vector). Now for each $n in NN$, $
-        Pr\(hat(P)_n in E\) >= Pr\(hat(P)_n = P_n\) = Q^n (T(P_n)) >= (n + 1)^(-m) 2^(-n D(P_n || Q))
-    $ by @crl:bounds-on-probability-of-type-class. We have $D(P_n || Q) -> D(P^* || Q)$ as $n -> oo$ since $D(P || Q)$ is continuous in $P$. So $limsup_(n -> oo) -1/n log Pr\(hat(P)_n in E\) <= D(P^* || Q) = D_0$.
+    For the lower bound, since $E$ is compact and $D(P || Q)$ is continuous in $P$, the infimum $D^*$ is attained by some $P^*$. (Note that since $cal(P)$ itself is compact, there is always a minimising $P^*$ but this is not necessarily in $E$). Also, note that $union.big_(n in NN) cal(P)_n$ is dense in $cal(P)$, so we can find a sequence ${P_n: n in NN} subset.eq E$ such that each $P_n in cal(P)_n$ and $P_n -> P^*$ (as a vector). Now for each $n in NN$, $
+        PP\(hat(P)_n in E\) >= PP\(hat(P)_n = P_n\) = Q^n (T(P_n)) >= (n + 1)^(-m) 2^(-n D(P_n || Q))
+    $ by @crl:bounds-on-probability-of-type-class. We have $D(P_n || Q) -> D(P^* || Q)$ as $n -> oo$ since $D(P || Q)$ is continuous in $P$. So $limsup_(n -> oo) -1/n log PP\(hat(P)_n in E\) <= D(P^* || Q) = D^*$.
 ]
 #definition[
     For a random variable $Y$, the *log-moment generating function* of $Y$ is $Lambda: RR -> RR$ defined by $
@@ -1264,8 +1269,8 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
     Write $Lambda^* (x) = sup{lambda x - Lambda(lambda): lambda > 0}$.
 ]
 #proposition("Chernoff Bound")[
-    Let $X_1^n$ be IID RVs, let $f: A -> RR$ with mean $mu = EE[f(X_1)]$. Denote the empirical averages by $S_n := 1/n sum_(i = 1)^n f(X_i)$. Then $
-        Pr(S_n >= mu + epsilon) <= e^(-n Lambda^* (mu + epsilon)),
+    Let $X_1^n$ be IID RVs and $f: A -> RR$ have mean $mu = EE[f(X_1)]$. Denote the empirical averages by $S_n := 1/n sum_(i = 1)^n f(X_i)$. Then for all $epsilon > 0$, $
+        PP(S_n >= mu + epsilon) <= e^(-n Lambda^* (mu + epsilon)),
     $ where $Lambda$ is the log-moment generating function of the $f(X_i)$.
 ]<prop:chernoff-bound>
 #proofhints[
@@ -1273,102 +1278,169 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
 ]
 #proof[
     By Markov's inequality, for all $lambda > 0$, $
-        Pr(S_n >= mu + epsilon) = Pr(e^(n lambda S_n) >= e^(n lambda (mu + epsilon))) <= e^(-n lambda (mu + epsilon)) EE[e^(lambda n S_n)].
+        PP(S_n >= mu + epsilon) = PP(e^(n lambda S_n) >= e^(n lambda (mu + epsilon))) <= e^(-n lambda (mu + epsilon)) EE[e^(lambda n S_n)].
     $ Now since the $X_i$ are independent, $
         EE[e^(lambda n S_n)] = EE[e^(lambda sum_(i = 1)^n f(X_i))] = EE[product_(i = 1)^n e^(lambda f(X_i))] = product_(i = 1)^n EE[e^(lambda f(X_i))] = e^(n Lambda(lambda)).
     $ Hence, $
-        Pr(S_n >= mu + epsilon) <= e^(-n lambda(mu + epsilon)) e^(n Lambda(lambda)) = e^(-n (lambda(mu + epsilon) - Lambda(lambda))),
+        PP(S_n >= mu + epsilon) <= e^(-n lambda(mu + epsilon)) e^(n Lambda(lambda)) = e^(-n (lambda(mu + epsilon) - Lambda(lambda))),
     $ and this holds for all $lambda > 0$, so taking the supremum over $lambda$ gives the result.
 ]
 #example[
-    Let $X_1^n$ be IID with common PMF $Q$ on finite alphabet $A$, let $f: A -> RR$ with mean $mu = EE_(X sim Q) [f(X)]$. Denote the empirical averages by $S_n := 1/n sum_(i = 1)^n f(X_i)$. By WLLN, $Pr(S_n > mu + epsilon) -> 0$ as $n -> oo$. We want to estimate how small this probability is as a function of $n$. Typically, the way we bound $Pr(S_n >= mu + epsilon)$ is by the @prop:chernoff-bound. Alternatively, we have $
+    Let $X_1^n$ be IID with common PMF $Q$ on finite alphabet $A$, let $f: A -> RR$ with mean $mu = EE_(X sim Q) [f(X)]$. Denote the empirical averages by $S_n := 1/n sum_(i = 1)^n f(X_i)$. Let $epsilon > 0$. By WLLN, $PP(S_n >= mu + epsilon) -> 0$ as $n -> oo$. We want to estimate how small this probability is as a function of $n$. Typically, the way we bound $PP(S_n >= mu + epsilon)$ is by the @prop:chernoff-bound. Alternatively, we have $
         S_n = 1/n sum_(i = 1)^n f(X_i) = 1/n sum_(i = 1)^n sum_(a in A) bb(1)_({X_i = a}) f(a) = sum_(a in A) hat(P)_n (a) f(a) = EE_(X sim hat(P)_n) [f(X)].
-    $ Let $B$ be the event $B = {S_n >= mu + epsilon}$, then $B = \{hat(P)_n in E\}$ where $E = {P in cal(P): EE_(X sim P) [f(X)] >= mu + epsilon}$. 
-    
-    But @thm:sanov says that $Pr(S_n >= mu + epsilon) = Pr\(hat(P)_n in E\) <= (n + 1)^m e^(-n D_e (P^* || Q))$ and in fact it tells us that $D_e (P^* || Q) = inf{D_e (P || Q): P in E}$ is asymptotically the "correct" exponent: $
-        lim_(n -> oo) -1/n ln Pr(S_n >= mu + epsilon) = lim_(n -> oo) -1/n ln Pr\(hat(P)_n in E\) = D_e (P^* || Q).
-    $ Also, by the @prop:chernoff-bound, $
-        liminf_(n -> oo) -1/n Pr(S_n >= mu + epsilon) >= Lambda^* (mu + epsilon)
-    $ thus $D_e (P^* || Q) >= Lambda^* (mu + epsilon)$.
+    $ Let $B$ be the event $B = {S_n >= mu + epsilon}$, then we can write $B$ as $\{hat(P)_n in E\}$ where $E = {P in cal(P): EE_(X sim P) [f(X)] >= mu + epsilon}$. But @thm:sanov says that $PP(S_n >= mu + epsilon) = PP\(hat(P)_n in E\) <= (n + 1)^m e^(-n D_e (P^* || Q))$ and in fact it tells us that $D_e (P^* || Q) = inf{D_e (P || Q): P in E}$ is asymptotically the "correct" exponent.
 ]
 #proposition[
-    Let $X_1^n$ be IID RVs with common PMF $Q$ on alphabet $A$. We have $Lambda^* (mu + epsilon) = D_e (P^* || Q)$ TODO: fill in details.
+    Let $X_1^n$ be IID RVs with common PMF $Q$ on alphabet $A$ and $f: A -> RR$ have mean $mu = EE[f(X_1)]$. Let $P^*$ be the minimiser in @thm:sanov for the event $E = {P in cal(P): EE_(X sim P) [f(X)] >= mu + epsilon}$. Then $
+        forall epsilon > 0, quad Lambda^* (mu + epsilon) = D_e (P^* || Q),
+    $ where $Lambda$ is the log-moment generating function of the $X_i$.
+]
+#proofhints[
+    - $<=$: show that $S_n = EE_(X sim hat(P)_n) [f(X)]$, then use the @prop:chernoff-bound and @thm:sanov.
+    - $>=$: for each $lambda >= 0$, define a PMF on $A$ by $
+        P_lambda (a) = (e^(lambda f(a)))/(EE[e^(lambda f(X_1))]) Q(a).
+    $
+    - Show that $Lambda'(lambda) = EE_(Y sim P_lambda) [f(Y)]$ and $Lambda''(lambda) >= 0$.
+    - Deduce that there exists $lambda^* > 0$ such that $Lambda'(lambda^*) = mu + epsilon$, then use the definition of $P^*$ to conclude the result.
 ]
 #proof[
-    For each $lambda >= 0$, define the PMF on $A$: $
+    ($<=$): Let $epsilon > 0$. We have $
+        S_n = 1/n sum_(i = 1)^n f(X_i) = 1/n sum_(i = 1)^n sum_(a in A) bb(1)_({X_i = a}) f(a) = sum_(a in A) hat(P)_n (a) f(a) = EE_(X sim hat(P)_n) [f(X)].
+    $ So we have $PP\(hat(P)_n in E\) = PP(S_n >= mu + epsilon)$, hence $
+        Lambda^* (mu + epsilon) & <= liminf_(n -> oo) -1/n PP(S_n >= mu + epsilon) & quad #[by the @prop:chernoff-bound] \
+        & <= lim_(n -> oo) -1/n ln PP\(hat(P)_n in E\) \
+        & = D_e (P^* || Q) & quad #[by @thm:sanov].
+    $
+    ($>=$): For each $lambda >= 0$, define the PMF $P_lambda$ on $A$ by $
         P_lambda (a) = (e^(lambda f(a)))/(EE[e^(lambda f(X_1))]) Q(a).
     $ Then $
-        Lambda'(lambda) = (EE[f(X_1) e^(lambda f(X_1))])/(EE[e^(lambda f(X_1))]) = EE_(Y sim P_lambda) [f(Y)]
-    $ and also (TODO: show this explicitly), $
+        Lambda'(lambda) = (EE[f(X_1) e^(lambda f(X_1))])/(EE[e^(lambda f(X_1))]) = 1/EE[e^(lambda f(X_1))] sum_(a in A) Q(a) f(a) e^(lambda f(a)) = EE_(Y sim P_lambda) [f(Y)]
+    $ and also, a straightforward calculation shows that $
         Lambda''(lambda) = "Var"_(Y sim P_lambda) (f(Y)) >= 0.
-    $ Hence, $Lambda'(lambda)$ is increasing from $Lambda'(0) = mu$ to $lim_(lambda -> oo) Lambda'(lambda) =: f^*$, so there exists $lambda^* > 0$ such that $Lambda'(lambda^*) = mu + epsilon$. This $lambda^*$ must achieve the supremum in the definition of $Lambda^* (mu + epsilon)$: $Lambda^* (mu + epsilon) = lambda^* (mu + epsilon) - Lambda(lambda^*)$. So $EE_(Y in P_(lambda^*))[f(Y)] = Lambda'(lambda^*) = mu + epsilon$, so $P_(lambda^*) in E$, thus $
+    $ Hence, $Lambda'(lambda)$ is increasing from $Lambda'(0) = mu$ to $lim_(lambda -> oo) Lambda'(lambda) =: f^*$, so there exists $lambda^* > 0$ such that $Lambda'(lambda^*) = mu + epsilon$, hence $EE_(Y in P_(lambda^*))[f(Y)] = mu + epsilon$, so $P_(lambda^*) in E$. Thus, $
         D_e (P^* || Q) & <= D_e (P_(lambda^*) || Q) \
         & = EE_(Y sim P_(lambda^*))[log (P_(lambda^*)(Y))/Q(Y)] \
         & = EE_(Y sim P_(lambda^*))[log (e^(lambda^* f(Y)))/(EE[e^(lambda^* f(X_1))])] \
         & = lambda^* EE_(Y sim P_(lambda^*))[f(Y)] - Lambda(lambda^*) \
-        & = Lambda^* (mu + epsilon)
+        & = lambda^* (mu + epsilon) - Lambda(lambda^*) <= Lambda^* (mu + epsilon).
     $
 ]
 #corollary[
-    Let $X_1^n$ be IID RVs with common PMF $Q$ on alphabet $A$. (TODO: fill in details) the minimising $P^*$ in Sanov's theorem is unique and is given by $
+    Let $X_1^n$ be IID RVs with common PMF $Q$ on alphabet $A$. The minimiser $P^*$ in @thm:sanov for the event $E = {P in cal(P): EE_(X sim P) [f(X)] >= mu + epsilon}$ is unique and is given by $
         P^* (a) = P_(lambda^*)(a) = (e^(lambda^* f(a)))/(EE[e^(lambda^* f(X_1))]) Q(a).
     $ where $lambda^* > 0$ satisfies $EE_(Y sim P_(lambda^*))[f(Y)] = mu + epsilon$.
+]<crl:minimising-distribution-in-sanov-is-unique-for-nonempty-closed-convex-events>
+#proofhints[
+    Existence: by above proposition. Uniqueness: use a property of $D(P || Q)$ and the fact that $E$ is non-empty, convex and closed.
 ]
 #proof[
     $D(P || Q)$ is strictly convex in $P$ for fixed $Q$ and $E$ is non-empty, convex and closed, so the minimising $P^*$ is unique. The existence is by the proof of the above proposition.
 ]
 #theorem("Pythagorean Identity")[
-    Let $E subset.eq cal(P)$ be closed and convex, and let $Q in.not E$ have full support on $A$, let $P^*$ achieve the minimum in Sanov's theorem. Then $
+    Let $E subset.eq cal(P)$ be closed and convex. Let $Q in.not E$ have full support on $A$, and let $P^*$ achieve the minimum in Sanov's theorem. Then $
         forall P in E, quad D(P || Q) >= D(P || P^*) + D(P^* || Q).
     $
 ]<thm:pythagorean-identity>
+#proofhints[
+    - For $P in E$, define $overline(P)_lambda = lambda P + (1 - lambda) P^*$ for $lambda in [0, 1]$. Show that $D\(overline(P)_lambda || Q\) >= D\(overline(P)_0 || Q\)$ for all $lambda in [0, 1]$.
+    - Use the derivative of $D_e \(overline(P)_lambda || Q\)$ at $lambda = 0$ to obtain the result.
+]
 #proof[
-    Let $P in E$. Let $overline(P)_lambda = lambda P + (1 - lambda) P^*$ for $0 <= lambda <= 1$. Since $E$ is convex, $overline(P)_lambda in E$ for all $lambda in [0, 1]$, and by definition of $P^*$, $D(overline(P)_lambda || Q) >= D(P^* || Q) = D(overline(P)_0 || Q)$ for all $lambda in [0, 1]$. So we have $
-        0 & <= dif / (dif lambda) D_e (P_lambda || Q)|_(lambda = 0^+) \
-        & = diff / (dif lambda) sum_(a in A) overline(P)_lambda (a) ln (P_lambda (a))/Q(a)|_(lambda = 0^+) \
-        & = sum_(a in A) (P(a) - P^* (a)) ln (P_lambda (a))/Q(a) |_(lambda = 0^+) + sum_(a in A) (P(a) - P^* (a)) \
+    Let $P in E$. Define the mixture $overline(P)_lambda = lambda P + (1 - lambda) P^*$ for $0 <= lambda <= 1$. Since $E$ is convex, $overline(P)_lambda in E$ for all $lambda in [0, 1]$, and by definition of $P^*$, $D\(overline(P)_lambda || Q\) >= D(P^* || Q) = D\(overline(P)_0 || Q\)$ for all $lambda in [0, 1]$. So we have $
+        0 & <= lr(dif / (dif lambda) D_e \(overline(P)_lambda || Q\)|)_(lambda = 0) \
+        & = lr(dif / (dif lambda) sum_(a in A) overline(P)_lambda (a) ln (overline(P)_lambda (a))/Q(a)|)_(lambda = 0) \
+        & = lr(sum_(a in A) (P(a) - P^* (a)) ln (overline(P)_lambda (a))/Q(a) |)_(lambda = 0) + sum_(a in A) (P(a) - P^* (a)) \
         & = sum_(a in A) P(a) ln (P^* (a) P(a))/(Q(a) P(a)) - sum_(a in A) P^* (a) ln (P^* (a))/Q(a) \
         & = D_e (P || Q) - D_e (P || P^*) - D_e (P^* || Q).
     $
 ]
+#remark[
+    - The @thm:pythagorean-identity is an $L^2$-style bound: the minimiser $P^*$ can be viewed as the "orthogonal projection" of $Q$ onto $E$.
+    - The @thm:pythagorean-identity provides a quantatitive version of the uniqueness statement in @crl:minimising-distribution-in-sanov-is-unique-for-nonempty-closed-convex-events: if $D(P || Q) = D(P^* || Q)$, then $P = P^*$; additionally, if $D(P || Q) <= D(P^* || Q) + delta$ (i.e. $D(P || Q)$ is close to $D(P^* || Q)$), then $D(P || P^*) <= delta$ (i.e. $P$ is close to $P^*$).
+]
 
 == The Gibbs conditioning principle
 
+#lemma[
+    Let ${Z_n: n in NN}$ be a bounded sequence of RVs which converges to $z in RR$ in probability. Then $
+        EE[Z_n] -> c quad "as" n -> oo.
+    $
+]<lem:expectation-of-bounded-rvs-converges-to-limit-of-convergence-in-probability>
+#proofhints[
+    Use Jensen's inequality, then split the expectation into two terms, one bounded above by $epsilon$, the other $-> 0$, to show that $abs(EE[Z_n] - c) -> 0$.
+]
+#proof[
+    Let $epsilon > 0$. Since the $Z_n$ are bounded, we have $abs(Z_n) <= M$ for all $n in NN$, for some constant $M$. By @thm:jensens-inequality, $
+        abs(EE[Z_n] - z) <= EE[abs(Z_n - z)] = EE[abs(Z_n - z) dot bb(1)_{abs(Z_n - z) <= epsilon}] + EE[abs(Z_n - z) dot bb(1)_{abs(Z_n - z) > epsilon}].
+    $ The first term is bounded above by $epsilon$. The second term is bounded above by $
+        (M + abs(z)) dot EE[bb(1)_{abs(Z_n - z) > epsilon}] = (M + abs(z)) dot PP(abs(Z_n - z) > epsilon) -> 0 quad "as" n -> oo.
+    $ Thus, $limsup_(n -> oo) abs(EE[Z_n] - c) <= epsilon$, and $epsilon > 0$ was arbitrary.
+]
 #theorem("Gibbs' Conditioning Principle")[
     Let $X_1^n$ be IID with common PMF $Q$ which has full support on $A$. Let $hat(P)_n$ be the empirical distribution of $X_1^n$. If $E subset.eq cal(P)$ is closed, convex, has non-empty interior, and $Q in.not E$, then $
-        forall a in A, quad EE[hat(P)_n (a) | hat(P)_n in E)] = Pr(X_1 = a | hat(P)_n in E) -> P^* (a) quad "as" n -> oo.
+        forall a in A, quad EE\[hat(P)_n (a) | hat(P)_n in E\] = PP\(X_1 = a | hat(P)_n in E\) -> P^* (a) quad "as" quad n -> oo.
     $
+]
+#proofhints[
+    - Showing the equality is straightforward.
+    - Define $B(Q, delta) := {P in cal(P): D(P || Q) <= D(P^* || Q) + delta}$, $C = B(Q, 2 delta) sect E$ and $D = E \\ C$.
+    - Show that $PP\(hat(P)_n in D | hat(P)_n in E\) <= (n + 1)^(2m) 2^(-n delta)$.
+    - Use the @thm:pythagorean-identity and @thm:pinskers-inequality to show that $PP\(abs(hat(P)_n (a) - P^* (a)) > epsilon | hat(P)_n in E\) -> 0$.
 ]
 #proof[
     The conditional distribution of each $X_i$ given $hat(P)_n in E$ is the same, so $
-        EE[hat(P)_n (a) | hat(P)_n in E] = 1/n sum_(i = 1)^n Pr(X_i = a | hat(P)_n in E) = Pr(X_1 = a | hat(P)_n in E).
-    $ Define the relative entorpy neighbourhoods $
+        EE\[hat(P)_n (a) | hat(P)_n in E\] = 1/n sum_(i = 1)^n PP\(X_i = a | hat(P)_n in E\) = PP\(X_1 = a | hat(P)_n in E\).
+    $ Define the relative entropy neighbourhoods $
         B(Q, delta) := {P in cal(P): D(P || Q) <= D(P^* || Q) + delta},
-    $ and write $C = B(Q, 2 delta) sect E$ and $D = E \\ C$. TODO: insert diagram. Then $
-        Pr(hat(P)_n in D | hat(P)_n in E) = (Pr(hat(P)_n in D))/(Pr(hat(P)_n in E))
-    $ We have $
-        Pr(hat(P)_n in D) <= (n + 1)^m 2^(-n inf{D(P || Q): P in D}) <= (n + 1)^m 2^(-n(D(P^* || Q) + 2 delta))
-    $ and for the denominator, since ${cal(P)_n: n in NN}$ is dense in $cal(P)$, we can eventually find $P_n in cal(P)_n sect E sect B(Q, delta)$. So $Pr(hat(P)_n in E) >= Pr(hat(P)_n = P_n) >= (n + 1)^(-m) 2^(-n D(P_n || Q)) >= (n + 1)^(-m) 2^(-n(D(P^* || Q) + delta))$. Combining these, we obtain $
-        Pr(hat(P)_n in D | hat(P)_n in E) <= (n + 1)^(2m) 2^(-n delta) -> 0 quad "as" n -> oo.
-    $ Now by the Pythagorean Identity, if for some $P in E$, we have $D(P || P^*) >= 2 delta$, then $D(P || Q) >= D(P || P^*) + D(P^* || Q) >= D(P^* || Q) + 2 delta$, so $P in D$. Therefore, $
-        Pr(D(hat(P)_n || P^*) > 2 delta | hat(P)_n in E) -> 0.
-    $ Hence by Pinsker's inequality, since $delta > 0$ was arbitrary, $
-        Pr(norm(hat(P)_n - P^*)_"TV" > epsilon | hat(P)_n in E) -> 0 "as" n -> oo
-    $ for all $epsilon > 0$. In particular, $Pr(abs(hat(P)_n (a) - P^* (a)) > epsilon | hat(P)_n in E) -> 0$. So, conditional on $hat(P)_n in E$, $hat(P)_n -> P^*$ in probability as $n -> oo$. Therefore, since $(hat(P)_n (a))$ is a bounded sequence, we also have $EE[hat(P)_n (a) | hat(P)_n in E] -> P^* (a)$ as $n -> oo$.
+    $ and write $C = B(Q, 2 delta) sect E$ and $D = E \\ C$.
+    // #unmarked-fig[
+    //     #figure(
+    //         canvas({
+    //             import cetz.draw: *
+
+    //             polygon(((0, 0), (6, 0), (3, 6 * calc.sqrt(3) / 2)))
+    //             blob-2d()
+    //         })
+    //     )
+    // ]
+    Then $
+        PP\(hat(P)_n in D | hat(P)_n in E\) = (PP\(hat(P)_n in D\))/(PP\(hat(P)_n in E\)).
+    $ By @thm:sanov, $
+        PP\(hat(P)_n in D\) <= (n + 1)^m 2^(-n inf{D(P || Q): P in D}) <= (n + 1)^m 2^(-n(D(P^* || Q) + 2 delta))
+    $ and for the denominator, since ${cal(P)_n: n in NN}$ is dense in $cal(P)$, $cal(P)_n$ eventually intersects every open set in $cal(P)$, so eventually $B(Q, delta) sect E sect cal(P)_n$ is non-empty (since $E$ has non-empty interior). So we can eventually find $P_n in cal(P)_n sect E sect B(Q, delta)$. By @prop:bounds-on-size-of-type-class, $
+        PP\(hat(P)_n in E\) & >= PP\(hat(P)_n in B(Q, delta) sect E\) \
+        & >= PP\(hat(P)_n = P_n\) = Q^n (T(P_n)) \
+        & >= (n + 1)^(-m) 2^(-n D(P_n || Q)) \
+        & >= (n + 1)^(-m) 2^(-n (D(P^* || Q) + delta)),
+    $ since $P_n in B(Q, delta)$. Combining these, we obtain $
+        PP\(hat(P)_n in D | hat(P)_n in E\) <= (n + 1)^(2m) 2^(-n delta) -> 0 quad "as" n -> oo.
+    $ For $P in C$, by the @thm:pythagorean-identity, $
+        D(P^* || Q) >= D(P || Q) >= D(P || P^*) + D(P^* || Q),
+    $ thus $D(P || P^*) <= 2 delta$. So $
+        PP(D(hat(P)_n || P^*) <= 2 delta | hat(P)_n in E) >= PP(hat(P)_n in C | hat(P)_n in E) -> 1 quad "as" n -> oo.
+    $ Hence by @thm:pinskers-inequality, since $delta > 0$ was arbitrary, $
+        PP(norm(hat(P)_n - P^*)_"TV" > epsilon mid(|) hat(P)_n in E) -> 0 "as" n -> oo
+    $ for all $epsilon > 0$. Thus also, $PP\(abs(hat(P)_n (a) - P^* (a)) > epsilon | hat(P)_n in E\) -> 0$. So, conditional on $hat(P)_n in E$, $hat(P)_n -> P^*$ in probability as $n -> oo$. Therefore, since $\(hat(P)_n (a)\)$ is a bounded sequence, we also have $EE[hat(P)_n (a) | hat(P)_n in E] -> P^* (a)$ as $n -> oo$ by @lem:expectation-of-bounded-rvs-converges-to-limit-of-convergence-in-probability.
 ]
 #example[
-    TODO: complete from example 9.13 in notes
+    Suppose a fair die is rolled 1000 times, and the observed average of the rolls is at least $5$. What proportion of the rolls was a $6$?
+
+    Let $X_1^1000$ be IID RVs with uniform distribution $Q$ on $A = {1, 2, 3, 4, 5, 6}$. Let $f(x) = x$, $mu = EE[X_1^1000] = 3.5$, let $E = {P in cal(P): EE_(X sim P)[X] >= 5}$. By @crl:minimising-distribution-in-sanov-is-unique-for-nonempty-closed-convex-events, the minimiser $P^*$ is unique and is given by $
+        P^* (a) = e^(lambda^* a) / (sum_(k = 1)^6 e^(lambda^* k)), quad forall a in A,
+    $ where $lambda^* > 0$ is such that $EE_(Y sim P_(lambda^*))[Y] = 5$. We can directly compute $lambda^* approx 0.63$ and so $
+        P^* approx (0.021, 0.039, 0.14, 0.25, 0.48)
+    $ So we expect that about $48%$ of the rolls were $6$.
 ]
 
 == Error probability in fixed-rate data compression
 
-#theorem("Error Exponents for Fixed-rate Compression")[
-    Let $vd(X) = {X_n: n in NN}$ be a memoryless source with entropy $H = H(X_1)$ and with PMF $Q$ which has full support on finite alphabet $A$. For any rate $R$ with $H < log abs(A)$,
+#theorem[
+    Let $vd(X) = {X_n: n in NN}$ be a memoryless source with entropy $H = H(X_1)$ and with PMF $Q$ which has full support on finite alphabet $A$. For any rate $R$ with $H < R < log abs(A)$,
     - $==>$: There is a fixed-rate code ${B_n^*: n in NN}$ with asymptotic rate no more than $R$ bits/symbol: $
         limsup_(n -> oo) 1/n (1 + ceil(log abs(B_n^*))) = limsup_(n -> oo) 1/n log abs(B_n^*) <= R,
     $ and with probability of error $P_e^((n))$ that decays to zero exponentially fast: $
         limsup_(n -> oo) 1/n log P_e^((n)) <= -D^*,
-    $ with exponent $
+    $ where $
         D^* = inf{D(P || Q): H(P) >= R}.
     $
     - $<==$: for any fixed-rate code ${B_n: n in NN}$ with asymptotic rate no more than $R$ bits/symbol: $
@@ -1376,30 +1448,40 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
     $ then its probability of error $P_e^((n))$ cannot decay faster than exponentially with exponent $D^*$: $
         liminf_(n -> oo) 1/n log P_e^((n)) >= -D^*.
     $
+]<thm:error-exponents-for-fixed-rate-compression>
+#proofhints[
+    - $==>$: let $B_n^*$ be the codebook which is a union over an appropriate set of type classes.
+    - $<==$: explain why there is $delta > 0$ such that $inf{D(P || Q): H(P) >= R + delta} <= D^* + epsilon$.
+    - Explain why, for all $n$ large enough, there is $P_n in cal(P)_n$ such that $H(P_n) >= R + delta \/ 2$ and $D(P_n || Q) <= D^* + 2 epsilon$.
+    - Show that $abs(B_n) \/ abs(T(P_n)) -> 0$ as $n -> oo$, and hence that $P_e^((n)) >= 1/2 (n + 1)^(-m) 2^(-n (D^* + 2 epsilon))$ eventually.
 ]
 #proof[
     $==>$: define the codebook $
         B_n^* = union.big_(P in cal(P)_n \ H(P) < R) T(P).
-    $ Then $
-        abs(B_n^*) = sum_(P in cal(P)_n \ H(P) < R) <= abs(cal(P)_n) max{abs(T(P)): P in cal(P)_n} <= (n + 1)^m 2^(n R),
+    $ Then by @prop:upper-bound-on-number-of-n-types and @prop:bounds-on-size-of-type-class, $
+        abs(B_n^*) = sum_(P in cal(P)_n \ H(P) < R) abs(T(P)) <= sum_(P in cal(P)_n \ H(P) < R) 2^(n H(P)) <= (n + 1)^m 2^(n R),
     $ and so $limsup_(n -> oo) 1/n log abs(B_n^*) <= R$. For the probability of error, $
-        P_e^((n)) = Pr(X_1^n in.not B_n^*) = Q^n (union.big_(P in cal(P)_n \ H(P) >= R) T(P)) <= sum_(P in cal(P)_n \ H(P) >= R) Q^n (T(P)) <= (n + 1)^m 2^(-n D^*)
+        P_e^((n)) = PP(X_1^n in.not B_n^*) = Q^n (union.big_(P in cal(P)_n \ H(P) >= R) T(P)) <= sum_(P in cal(P)_n \ H(P) >= R) Q^n (T(P)) <= (n + 1)^m 2^(-n D^*).
     $
     $<==$: let $epsilon > 0$ be arbitrary. By continuity, there is a $delta > 0$ such that $
         inf{D(P || Q): H(P) >= R + delta} <= D^* + epsilon.
-    $ Since the $n$-types ${P_n: n in NN}$ are dense in $cal(P)$, for all $n$ large enough, we can find $P_n in cal(P)_n$ such that $H(P_n) >= R + delta \/ 2$ and $D(P_n || Q) <= D^* + 2 epsilon$. Also, by above, there is a sequence $(r_n)$ such that $1/n log abs(B_n) <= R + r_n$ and $r_n -> 0$. Now $
-        abs(B_n) / abs(T(P_n)) <= 2^(n(R + r_n)) / ((n + 1)^(-m) 2^(n H(P_n))) = (n + 1)^m 2^(n (R - H(P_n) + r_n)) <= (n + 1)^m 2^(n (r_n - delta \/ 2)) -> 0 "as" n -> oo
+    $ Since the $n$-types ${P_n: n in NN}$ are dense in $cal(P)$, for all $n$ large enough, we can find $P_n in cal(P)_n$ such that $H(P_n) >= R + delta \/ 2$ and $D(P_n || Q) <= D^* + 2 epsilon$. Also, by assumption, there is a sequence $(r_n)$ such that $1/n log abs(B_n) <= R + r_n$ and $r_n -> 0$. Now $
+        abs(B_n) / abs(T(P_n)) & <= 2^(n(R + r_n)) / ((n + 1)^(-m) 2^(n H(P_n))) = (n + 1)^m 2^(n (R - H(P_n) + r_n)) \
+        & <= (n + 1)^m 2^(n (r_n - delta \/ 2)) -> 0 quad "as" n -> oo.
     $ So $abs(B_n) \/ abs(T(P_n)) <= 1 \/ 2$ eventually. Then, for an arbitrary string $x_1^n in T(P_n)$, we have $
-        P_e^((n)) & = Pr(X_1^n in B_n^c) \
-        & >= Pr(X_1^n in T(P_n) sect B_n^c) \
-        & = abs(T(P_n) sect B_n^c) Q^n (x_1^n) \
-        & = abs(T(P_n) sect B_n^c) / abs(T(P_n)) Q^n (T(P_n)) \
+        P_e^((n)) & = PP(X_1^n in B_n^c) >= PP(X_1^n in T(P_n) sect B_n^c) \
+        & = abs(T(P_n) sect B_n^c) Q^n (x_1^n) = abs(T(P_n) sect B_n^c) / abs(T(P_n)) Q^n (T(P_n)) \
         & >= (1 - abs(T(P_n) sect B_n) / abs(T(P_n))) (n + 1)^(-m) 2^(-n D(P_n || Q)) \
         & >= (1 - abs(B_n) / abs(T(P_n))) (n + 1)^(-m) 2^(-n D(P_n || Q)) \
         & >= 1/2 (n + 1)^(-m) 2^(-n (D^* + 2 epsilon)) quad "eventually"
     $ Thus, $
         liminf_(n -> oo) 1/n log P_e^((n)) >= -(D^* + 2 epsilon),
     $ and since $epsilon > 0$ was arbitrary, we are done.
+]
+#remark[
+    - @thm:error-exponents-for-fixed-rate-compression gives the rate at which the error probabilities $P_e^((n))$ of the codes in the @thm:fixed-rate-coding-theorem decay.
+    - Note that the code $B_n^*$ is *universal*: it achieves the optimal error probability at rate $R$ _simultaneously_ for all memoryless sources with entropy $H < R$.
+    - The @thm:fixed-rate-coding-theorem says that $P_e^((n))$ cannot tend to zero if $R < H$. In fact, it is possible to show a "strong converse" of the @thm:fixed-rate-coding-theorem, which says that in this case, $P_e^((n)) -> 1$ exponentially fast.
 ]
 
 
@@ -1409,13 +1491,15 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
     Let ${0, 1}^*$ denote the set of all binary strings of finite length.
 ]
 #definition[
-    A *variable-rate loss compression code* of block length $n$ on a finite alphabet $A$ is an injective map $C_n: A^n -> {0, 1}^*$ which maps source strings to *codewords*.
+    A *variable-rate lossless compression code* of block length $n$ on a finite alphabet $A$ is an injective map $C_n: A^n -> {0, 1}^*$ which maps source strings to *codewords*. $C_n$ is also known as the *encoder*.
     
-    Each $C_n$ has an associated *length function* $L_n: A^n -> NN$, defined as $L_n (x_1^n) = "length of" C_n (x_1^n) "bits"$.
-]
+    Each $C_n$ has an associated *length function* $L_n: A^n -> NN$, defined as $
+        L_n (x_1^n) = "length of" C_n (x_1^n).
+    $
+]<def:variable-rate-code>
 #definition[
-    A code $C_n$ is *prefix-free* if for all $x_1^n != y_1^n in {0, 1}^n$, the codeword $C_n (x_1^n)$ is not a prefix of $C_n (y_1^n)$.
-]
+    A code $C_n$ is *prefix-free* if for all $x_1^n != y_1^n in {0, 1}^n$, the codeword $C_n (x_1^n)$ is not a prefix (an initial segment) of $C_n (y_1^n)$.
+]<def:variable-rate-code.prefix-free>
 #example[
     #figure(
         grid(
@@ -1457,55 +1541,74 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
     )
     The first two codes are prefix-free, the last two are not.
 ]
+#remark[
+    An advantage of prefix-free codes is that once a full codeword is received, it is guaranteed to be that codeword and not the start of another.
+]
 #theorem("Kraft's Inequality")[
-    $==>$: for any length function $L_n: A^n -> NN$ satisfying *Kraft's inequality*: $
+    - $(==>)$: for any length function $L_n: A^n -> NN$ satisfying *Kraft's inequality*: $
         sum_(x_1^n in A^n) 2^(-L_n (x_1^n)) <= 1,
     $ there is a prefix-free code $C_n$ on $A^n$ with length function $L_n$.
-    $<==$: the length function of any prefix-free code satisfies Kraft's inequality.
+    - $(<==)$: the length function of any prefix-free code satisfies Kraft's inequality.
+]<thm:krafts-inequality>
+#proofhints[
+    For both directions, consider the complete binary tree of depth $max{L_n (x_1^n): x_1^n in A^n}$.
 ]
 #proof[
-    $<==$: let $C_n$ be a prefix-free code with length function $L_n$. Let $L^* = max{L_n (x_1^n): x_1^n in A^n}$ and consider the complete binary tree of depth $L^*$ TODO: insert diagram. If we mark all the codewords on the tree, then the prefix-free property implies that no codeword is a descendant of any other codeword. The number of leaves of the tree is $
-        2^(L^*) & >= sum_(x_1^n in A^n) ("number of descendants of" C_n (x_1^n)) \
-        & sum_(x_1^n in A^n) 2^(L^* - L_n (x_1^n)).
+    $<==$: let $C_n$ be a prefix-free code with length function $L_n$. Let $L^* = max{L_n (x_1^n): x_1^n in A^n}$ and consider the complete binary tree of depth $L^*$/*TODO: insert diagram*/. If we mark all the codewords on the tree, then the prefix-free property implies that no codeword is a descendant of any other codeword. Each codeword $C_n (x_1^n)$ has $2^(L^* - L_n (x_1^n))$ descendants (possibly including itself) at depth $L^*$. The prefix-free property also implies that these descendants are disjoint for different codewords. Since the total number of leaves at depth $L^*$ is $2^(L^*)$, we have $
+        2^(L^*) & >= sum_(x_1^n in A^n) 2^(L^* - L_n (x_1^n)).
     $
-    $==>$: given a length function $L_n$ satisfying Kraft's inequality, consider the complete binary tree of depth $L^* = max{L_n (x_1^n): x_1^n in A^n}$. Then, ordering the $x_1^n in A^n$ in the order of increasing $L_n (x_1^n)$, assign the first available codeword at depth $L_n (x_1^n)$. Kraft's inequality guarantees that there will always be such a node.
+    $==>$: given a length function $L_n$ satisfying Kraft's inequality, consider the complete binary tree of depth $L^* = max{L_n (x_1^n): x_1^n in A^n}$. Then, ordering the $x_1^n in A^n$ in the order of increasing $L_n (x_1^n)$, assign to each $x_1^n$ (in order) any available node (i.e. any node that is not a prefix or descandant of any codewords already assigned) at depth $L_n (x_1^n)$. Kraft's inequality guarantees that there will always be such a node.
+]
+#remark[
+    @thm:krafts-inequality informally says "not all codelengths for prefix-free codes can be short".
 ]
 
 == The codes-distributions correspondence
 
-#theorem("Codes-distributinos Correspondence")[
-    $==>$: for any PMF $Q_n$ on $A^n$, there is a prefix-free code $C_n^*$ with length function $L_n^*$ such that $
+#theorem("Codes-distributions Correspondence")[
+    - $==>$: for any PMF $Q_n$ on $A^n$, there is a prefix-free code $C_n^*$ with length function $L_n^*$ such that $
         forall x_1^n in A^n, quad L_n^* (x_1^n) < -log Q_n (x_1^n) + 1
     $
-    $<==$: for any prefix-free code $C_n$ with length function $L_n$, there is a PMF $Q_n$ on $A^n$ such that $
-        forall x_1^n in A^n, quad L_n (x_1^n) >= -log Q_n (x_1^n).
+    - $<==$: for any prefix-free code $C_n$ with length function $L_n$, there is a PMF $Q_n$ on $A^n$ such that $
+        forall x_1^n in A^n, quad -log Q_n (x_1^n) <= L_n (x_1^n).
     $
+]<thm:codes-distributions-correspondence>
+#proofhints[
+    - $==>$: straightforward.
+    - $<==$: consider  @thm:krafts-inequality to define a suitable $Q_n$.
 ]
 #proof[
-    $==>$: Take $L_n^* (x_1^n) = ceil(-log Q_n (x_1^n)) < -log Q_n (x_1^n) + 1$. $L_n^*$ satisfies Kraft's inequality: $
+    $==>$: Let $L_n^* (x_1^n) = ceil(-log Q_n (x_1^n)) < -log Q_n (x_1^n) + 1$. $L_n^*$ satisfies Kraft's inequality: $
         sum_(x_1^n in A^n) 2^(-L_n (x_1^n)) = sum_(x_1^n in A^n) 2^(-ceil(-log Q_n (x_1^n))) <= sum_(x_1^n in A^n) 2^(log Q_n (x_1^n)) = sum_(x_1^n in A^n) Q_n (x_1^n) = 1.
-    $
+    $ So we are done by the first part of @thm:krafts-inequality.
+    
     $<==$: define the PMF $Q_n$ on $A^n$ by $
         Q_n (x_1^n) = 2^(-L_n (x_1^n)) / (sum_(y_1^n in A^n) 2^(-L_n (y_1^n))).
     $ Then $
         -log Q_n (x_1^n) = L_n (x_1^n) + log(sum_(y_1^n in A^n) 2^(-L_n (y_1^n))) <= L_n (x_1^n).
-    $ since $L_n$ satisfies Kraft's inequality so $sum_(y_1^n in A^n) 2^(-L_n (y_1^n)) <= 1$.
+    $ since $L_n$ satisfies Kraft's inequality (i.e. $sum_(y_1^n in A^n) 2^(-L_n (y_1^n)) <= 1$).
+]
+#remark[
+    - @thm:codes-distributions-correspondence says that the performance of any prefix-free can be dominated by a code with length function $L_n (x_1^n) approx -log Q_n (x_1^n)$ for some PMF $Q_n$ on $A^n$, and that for any distribution $Q_n$ such a code exists. So finding a good code is equivalent to finding a good distribution. This assumes nothing about the distribution of the source $X_1^n$ or the block length $n$.
 ]
 #theorem[
     Let $X_1^n$ have PMF $P_n$ on $A^n$.
     
-    $==>$: there is a prefix-free code $C_n^*$ with length function $L_n^*$ that achieves an expected description length: $
+    $==>$: there is a prefix-free code $C_n^*$ with length function $L_n^*$ that achieves an expected description length of $
         EE[L_n^* (X_1^n)] < H(X_1^n) + 1.
     $
     $<==$: for any prefix-free code $C_n$ with length function $L_n$ on $A^n$, $
         EE[L_n (X_1^n)] >= H(X_1^n).
     $
+]<thm:entropic-bounds-on-expected-length-of-prefix-free-codes>
+#proofhints[
+    Straightforward.
 ]
 #proof[
-    $==>$: let $C_n^*$ be the code with length function $L_n^* (x_1^n) = ceil(-log P_n (x_1^n))$ (the $C_n^*$ in the codes-distributions correspondence). Then $
-        EE[L_n^* (X_1^n)] < EE[-log P_n (X_1^n) + 1] = H(X_1^n) + 1
-    $ by codes-distributions correspondence.
-    $<==$: let $Q_n$ be as in the codes-distributions correspondence. Then $
+    $==>$: let $C_n^*$ be the code with length function $L_n^* (x_1^n) = ceil(-log P_n (x_1^n))$ as in the @thm:codes-distributions-correspondence. Then $
+        EE[L_n^* (X_1^n)] < EE[-log P_n (X_1^n) + 1] = H(X_1^n) + 1.
+    $
+    $<==$: let $Q_n$ be as in the @thm:codes-distributions-correspondence. Then $
         EE[L_n (X_1^n)] & >= EE[-log Q_n (X_1^n)] \
         & = EE[log(1/(P_n (X_1^n)) dot (P_n (X_1^n))/(Q_n (X_1^n)))] \
         & = EE[-log P_n (X_1^n)] + EE[log (P_n (X_1^n))/(Q_n (X_1^n))] \
@@ -1517,8 +1620,11 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
         lim_(n -> oo) inf_((C_n, L_n) "prefix-free") 1/n EE[L_n (X_1^n)] = H.
     $
 ]
+#proofhints[
+    Straightforward.
+]
 #proof[
-    By the above theorem, $
+    By @thm:entropic-bounds-on-expected-length-of-prefix-free-codes, $
         1/n H(X_1^n) <= inf_((C_n, L_n) "prefix-free") 1/n EE[L_n (X_1^n)] < 1/n (H(X_1^n) + 1).
     $
 ]
@@ -1526,24 +1632,31 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
 == Shannon codes and their properties
 
 #definition[
-    The *Shannon code* for a distribution $Q_n$ on $A^n$ is the code with length function $
+    A *Shannon code* for a distribution $Q_n$ on $A^n$ is a code with length function $
         L_n (x_1^n) := ceil(-log Q_n (x_1^n)).
-    $
+    $ Note this is the code used in the proof of the @thm:codes-distributions-correspondence.
+]<def:shannon-code>
+#remark[
+    - Shannon codes do not always achieve the optimal (minimal) expected description length $EE[L_n (X_1^n)]$, which is achieved instead by the Huffman code. However, the difference between the expected description lengths of these codes is less than one bit by @thm:entropic-bounds-on-expected-length-of-prefix-free-codes.
+    - Shannon codes give shorter descriptions to likely messages and longer descriptions to unlikely messages.
 ]
 #definition[
     We call the $L_n (x_1^n) = -log Q_n (x_1^n)$ for $x_1^n in A^n$ the *ideal Shannon codelengths*.
-]
+]<def:ideal-shannon-codelength>
 #theorem("Competitive Optimality of Shannon Codes")[
-    Let $P_n$ be a distribution on $A^n$ and $X_1^n sim P_n$. For any other PMF on $A^n$, $
-        Pr(-log Q_n (X_1^n) <= -log P_n (X_1^n) - K) <= 2^(-K).
+    Let $P_n$ be a distribution on $A^n$ and $X_1^n sim P_n$. For any other PMF $Q_n$ on $A^n$, $
+        PP(-log Q_n (X_1^n) <= -log P_n (X_1^n) - K) <= 2^(-K).
     $
+]<thm:competitive-optimality-of-shannon-codes>
+#proofhints[
+    Use Markov's inequality.
 ]
 #proof[
     By Markov's inequality, we have $
-        Pr(-log Q_n (X_1^n) <= -log P_n (X_1^n) - K) & = Pr((Q_n (X_1^n))/(P_n (X_1^n)) >= 2^K) \
+        PP(-log Q_n (X_1^n) <= -log P_n (X_1^n) - K) & = PP((Q_n (X_1^n))/(P_n (X_1^n)) >= 2^K) \
         & <= 2^(-K) EE[(Q_n (X_1^n))/(P_n (X_1^n))] \
         & = 2^(-K) sum_(x_1^n in A^n) P_n (x_1^n) dot (Q_n (x_1^n))/(P_n (x_1^n)) \
-        & = 2^(-K)
+        & = 2^(-K).
     $
 ]
 

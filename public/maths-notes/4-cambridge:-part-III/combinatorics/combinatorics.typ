@@ -1,15 +1,12 @@
 #import "@preview/fletcher:0.5.2" as fletcher: diagram, node, edge
 #import "@preview/cetz:0.3.1" as cetz: canvas, draw
+#import "@preview/cetz-plot:0.1.0": plot
+#import "@preview/cetz-venn:0.1.2"
+#import "@preview/suiji:0.3.0": *
 #import "../../template.typ": *
+#import "../../diagram-style.typ": *
 #show: doc => template(doc, hidden: (), slides: false)
 
-#let diagram-colors = (
-    "red": rgb("#bf0101"),
-    "light-red": rgb("f9e5e6"),
-    "blue": rgb("#3333b2"),
-    "green": rgb("#006001")
-)
-#let point-style = (radius: 0.1, stroke: none, fill: diagram-colors.red)
 #let line-style(color) = (fill: color, stroke: color, mark: (end: ">"))
 #let diamond(width, height) = {
     import cetz.draw: *
@@ -18,16 +15,6 @@
     line((width / 2, 0), (width, height / 2))
     line((width / 2, height), (0, height / 2))
     line((width / 2, height), (width, height / 2))
-}
-#let c-arc(centre, radius, start, stop, ..args) = {
-    let start-pos = (centre.at(0) + radius * calc.cos(start), centre.at(1) + radius * calc.sin(start))
-    return cetz.draw.arc(start-pos, radius: radius, start: start, stop: stop, ..args)
-}
-#let add-points(..points) = {
-    let points = points.pos()
-    let x = points.map(point => point.at(0)).sum()
-    let y = points.map(point => point.at(1)).sum()
-    return (x, y)
 }
 
 = Set systems
@@ -444,7 +431,9 @@
                 line((1.2, 2), (2.2, 2), stroke: diagram-colors.red)
                 line((2.2, 2.5), (2.5, 2.5), stroke: diagram-colors.red)
                 line((1, 0.8), (1.15, 0.8), stroke: diagram-colors.red)
-                hobby((1.5, 0), (1.4, 1), (1.5, 1.5), (1.5, 4), stroke: diagram-colors.green)
+                hobby((1.5, 0), (1.4, 1), (1.5, 1.5), (1.5, 4), stroke: diagram-colors.blue)
+                content((1.7, 1.3), $cal(C)$)
+                content((2.9, 0.9), $Q_n$)
             }),
             caption: [A random maximal chain $cal(C)$.]
         )
@@ -1047,24 +1036,116 @@ We want to show the initial segments of the simplicial ordering minimise the bou
     $A subset.eq powset(X)$ is *$i$-compressed* if $C_i (A) = A$.
 ]<def:i-compressed>
 #example[
-    Note that a set that is $i$-compressed for all $i in [n]$ is not necessarily an initial segment of simplicial, e.g. take ${emptyset, 1, 2, 12}$ in $Q_3$. However...
+    Note that a set that is $i$-compressed for all $i in [n]$ is not necessarily an initial segment of simplicial, e.g. take ${emptyset, 1, 2, 12}$ in $Q_3$.
+    #unmarked-fig[
+        #figure(
+            canvas({
+                import cetz.draw: *
+
+                let shift-x = 1.25
+                let shift-y = 1.25
+                let height = 2.5
+                let (A, B, C, D, E, F, G, H) = ((0, 0), (height, 0), (0, height), (height, height), (shift-x, shift-y), (height + shift-x, shift-y), (shift-x, height + shift-y), (height + shift-x, height + shift-y))
+
+                rect(A, D)
+                rect(E, H)
+                line(A, E)
+                line(B, F)
+                line(C, G)
+                line(D, H)
+
+                for (i, point) in (A, B, E, F).enumerate() {
+                    circle(point, ..point-style)
+                }
+            })
+        )
+    ]
+    However...
 ]
 #lemma[
     Let $B subset.eq Q_n$ be $i$-compressed for all $i in [n]$ but not an initial segment of the simplicial order. Then either:
     - $n$ is odd (say $n = 2k + 1$) and $
-        B = X^(<= k) \\ underbrace({k + 2, k + 3, ..., 2k + 1}, #[last $k$-set]) union underbrace({1, 2, ..., k + 1}, #[first $(k + 1)$-set]),
+        B = X^((<= k)) \\ underbrace({k + 2, k + 3, ..., 2k + 1}, #[last $k$-set]) union underbrace({1, 2, ..., k + 1}, #[first $(k + 1)$-set]),
     $
     - or $n$ is even (say $n = 2k$), and $
         B = X^((< k)) union {x in X^((k)): 1 in x} \\ underbrace({1, k + 2, k + 3, ..., 2k}, #[last $k$-set with $1$]) union underbrace({2, 3, ..., k + 1}, #[first $k$-set without $1$]).
     $
 ]
+#fig-example[
+    #figure(
+        grid(
+            columns: 2,
+            column-gutter: 4em,
+            canvas({
+                import cetz.draw: *
+
+                content((2.5, 6.5), [$n$ odd])
+                polygon(((2.5, 0), (0, 3), (5, 3)), name: "bottom-half", fill: diagram-colors.light-red, stroke: none)
+                polygon(((5, 3), (4.5, 3), (4.7, 2.63)), fill: diagram-colors.red, stroke: none, name: "lose")
+                polygon(((0, 3), (0.5, 3), (0.3, 3.37)), fill: diagram-colors.blue, stroke: none, name: "gain")
+                content("gain.centroid", box(inset: 0.5em)[Gain], anchor: "south-east")
+                content("lose.centroid", box(inset: 0.5em)[Lose], anchor: "north-west")
+                content("bottom-half.centroid", $X^((<= k))$)
+                diamond(5, 6)
+            }),
+            canvas({
+                import cetz.draw: *
+
+                content((2.5, 6.5), [$n$ even])
+                polygon(((0, 3), (0.3, 3.37), (2.32, 3.37), (2.32, 3)), fill: diagram-colors.light-red, stroke: none)
+                rect((2.32, 3), (2.62, 3.37), stroke: none, fill: diagram-colors.red, name: "lose")
+                rect((2.62, 3), (2.92, 3.37), stroke: none, fill: diagram-colors.blue, name: "gain")
+                polygon(((2.5, 0), (0, 3), (5, 3)), name: "bottom-half", fill: diagram-colors.light-red)
+                content("gain", box(inset: 0.5em)[Gain], anchor: "west")
+                content("lose", box(inset: 0.5em)[Lose], anchor: "south-east")
+                diamond(5, 6)
+            })
+        )
+    )
+]
 #proofhints[
     For $x in.not B$ and $y in B$, show by contradiction that any $i in [n]$ is in exactly one of $x$ and $y$ (it helps to visualise this), and deduce that no elements lie strictly between $x$ and $y$ in the simplicial ordering.
 ]
 #proof[
-    As $B$ is not an initial segment, there are $x < y$ in simplicial ordering with $x in.not B$ and $y in B$. For each $i in [n]$, assume $i in x, y$. Since the $i$-section that $y$ lives in is an initial segment of simplicial on $PP(X \\ i)$ (as $B$ is $i$-compressed), and $x - i < y - i$ in simplicial on $PP(X \\ i)$, we have that $x - i$ lives in the same $i$-section, and so $x in B$: contradiction. Similarly, $i in.not x, y$ leads to a contradiction (as then $x < y$ in simplicial on $PP(X \\ i)$). So $x = y^c$.
+    As $B$ is not an initial segment, there are $x < y$ in simplicial ordering with $x in.not B$ and $y in B$.
+    #unmarked-fig[
+        #figure(
+            canvas({
+                import cetz.draw: *
+
+                line((0, 0), (12, 0), mark: (end: ">"), fill: black, name: "order")
+                circle((5, 0), ..point-style, name: "x", fill: diagram-colors.blue)
+                circle((9, 0), ..point-style, name: "y")
+                content("x", box(inset: 0.5em)[$x$], anchor: "south")
+                content("x", box(inset: 0.5em)[$in.not B$], anchor: "north")
+                content("y", box(inset: 0.5em)[$y$], anchor: "south")
+                content("y", box(inset: 0.5em)[$in B$], anchor: "north")
+                content("order.centroid", box(inset: (top: 2em))[Simplicial order], anchor: "north")
+            })
+        )
+    ]
+    For each $i in [n]$, assume $i in x, y$. Since the $i$-section that $y$ lives in is an initial segment of simplicial on $PP(X \\ i)$ (as $B$ is $i$-compressed), and $x - i < y - i$ in simplicial on $PP(X \\ i)$, we have that $x - i$ lives in the same $i$-section, and so $x in B$: contradiction. Similarly, $i in.not x, y$ leads to a contradiction (as then $x < y$ in simplicial on $PP(X \\ i)$). So $x = y^c$.
     
-    Thus for each $y in B$, there is at most one $x < y$ with $x in.not B$ (namely $x = y^c$), and for each $x in.not B$, there is at most one $y > x$ with $y in B$ (namely $y = x^c$). So no sets lie between $x$ and $y$ in the simplicial ordering. So $B = {z: z <= y} \\ {x}$, with $x$ the predecessor of $y$, and $x = y^c$. Hence if $n = 2k + 1$, then $x$ is the last $k$-set (otherwise sizes of $x$ and $y = x^c$ don't match), and if $n = 2k$, then $x$ is the last $k$-set containing $1$.
+    Thus for each $y in B$, there is at most one $x < y$ with $x in.not B$ (namely $x = y^c$), and for each $x in.not B$, there is at most one $y > x$ with $y in B$ (namely $y = x^c$). So no sets lie between $x$ and $y$ in the simplicial ordering. So $B = {z: z <= y} \\ {x}$, with $x$ the predecessor of $y$, and $x = y^c$.
+    #unmarked-fig[
+        #figure(
+            canvas({
+                import cetz.draw: *
+
+                line((0, 0), (12, 0), mark: (end: ">"), fill: black, name: "order")
+                circle((8, 0), ..point-style, name: "x", fill: diagram-colors.blue)
+                circle((9, 0), ..point-style, name: "y")
+                content("x", box(inset: 0.5em)[$x$], anchor: "south")
+                content("x", box(inset: 0.5em)[$in.not B$], anchor: "north")
+                content("y", box(inset: 0.5em)[$y$], anchor: "south")
+                content("y", box(inset: 0.5em)[$in B$], anchor: "north")
+                content("order.centroid", box(inset: (top: 2em))[Simplicial order], anchor: "north")
+                rect((0.1, -0.25), (7.25, 0.25), fill: diagram-colors.red, stroke: none, name: "B")
+                content("B", box(inset: (bottom: 1em))[$B$], anchor: "south")
+            })
+        )
+    ]
+    Hence if $n = 2k + 1$, then $x$ is the last $k$-set (otherwise sizes of $x$ and $y = x^c$ don't match), and if $n = 2k$, then $x$ is the last $k$-set containing $1$.
 ]
 #theorem("Harper")[
     Let $A subset.eq V(Q_n)$ and let $C$ be the initial segment of the simplicial order on $powset(X) = V(Q_n)$, with $abs(C) = abs(A)$. Then $abs(N(A)) >= abs(N(C))$. So initial segments of the simplicial order minimise the boundary. In particular, if $abs(A) = sum_(i = 0)^r binom(n, i)$, then $abs(N(A)) >= sum_(i = 0)^(r + 1) binom(n, i)$.
@@ -1099,16 +1180,52 @@ We want to show the initial segments of the simplicial ordering minimise the bou
 
 ]
 #remark[
-    - If $A$ was a Hamming ball, then we would be already done by Kruskal-Katona.
-    - Conversely, Harper's theorem implies Kruskal-Katona: given $B subset.eq X^((r))$, apply Harper's theorem to $A = X^((<= r - 1)) union B$.
-    - We could also prove Harper's theorem using $U V$-compressions.
-    - Conversely, we can also prove Kruskal-Katona using these "codimension $1$" compressions.
+    - If $A$ was a Hamming ball, then we would be already done by @thm:kruskal-katona.
+    - Conversely, @thm:harper implies @thm:kruskal-katona: given $B subset.eq X^((r))$, apply @thm:harper to $A = X^((<= r - 1)) union B$.
+    - We could also prove @thm:harper using $U V$-compressions.
+    - Conversely, we can also prove @thm:kruskal-katona using these "codimension $1$" compressions.
+]
+#fig-example[
+    #figure(
+        canvas({
+            import cetz.draw: *
+
+            polygon(((0, 0), (0, 3), (3, 0)), fill: diagram-colors.light-red, stroke: none)
+            rect((0, 0), (6, 6))
+            line((4, 0), (0, 4), stroke: (dash: "dotted", thickness: 1.4pt))
+            content((-1, 1.5), $X^((< r))$)
+            for point in ((3.5, 0.2), (3, 0.6), (2.5, 1), (2.1, 1.4), (1.7, 2)) {
+                circle(point, ..point-style, fill: diagram-colors.red)
+            }
+            content((4, -0.5), $B subset.eq X^((r))$)
+        }),
+        caption: [@thm:harper implies @thm:kruskal-katona.]
+    )
 ]
 #definition[
     For $A subset.eq Q_n$ and $t in NN$, the *$t$-neighbourhood* of $A$ is $
         A_((t)) = N^t (A) := {x in Q_n: d(x, A) <= t}.
     $
 ]<def:t-neighbourhood>
+#fig-example[
+    #figure(
+        canvas({
+            import cetz.draw: *
+
+            let r = 3
+            rect((-r, -r), (r, r), name: "cube")
+            content((r + 1, 0), $Q_n$)
+            circle((0.5, -0.5), radius: 2, fill: diagram-colors.light-red, stroke: (paint: diagram-colors.red, dash: "dashed"))
+            circle((0.5, -0.5), radius: 1, fill: diagram-colors.red, stroke: none)
+            content((0.5, -0.5), box[
+                #set text(fill: white)
+                $A$
+            ])
+            content((0.5, 2), $N^t (A)$)
+        }),
+        caption: [$t$-neighbourhood of $A$.]
+    )
+]
 #corollary[
     Let $A subset.eq Q_n$ with $abs(A) >= sum_(i = 0)^r binom(n, i)$. Then $
         forall t <= n - r, quad abs(N^t (A)) >= sum_(i = 0)^(r + t) binom(n, i).
@@ -1122,6 +1239,36 @@ We want to show the initial segments of the simplicial ordering minimise the bou
 ]
 #remark[
     To get a feeling for the strength of the above corollary, we'll need some estimates on quantities such as $sum_(i = 0)^r binom(n, i)$. Note that $i = n\/2$ maximises $binom(n, i)$, while $i = (1\/2 - epsilon) n$ makes it small: we are going $epsilon sqrt(n)$ standard deviations away from the mean $n\/2$.
+    #unmarked-fig[
+        // https://math.stackexchange.com/questions/1987599/approximation-of-the-gamma-function-for-small-value
+        #let gamma(x) = calc.sqrt(2.0 * calc.pi * (x + 1/6)) * (calc.pow(x, x - 1)) / calc.exp(x)
+        #let factorial(x) = gamma(x + 1)
+        #let choose(n, i) = factorial(n) / (factorial(i) * factorial(n - i))
+        #figure(
+            canvas({
+                plot.plot(
+                    axis-style: "school-book",
+                    size: (6, 6),
+                    x-tick-step: none,
+                    y-tick-step: none,
+                    x-grid: "minor",
+                    y-grid: "minor",
+                    x-label: $i$,
+                    y-label: $binom(n, i)$,
+                    x-min: -0.2,
+                    y-min: -4,
+                    {
+                        let n = 10
+                        plot.add(
+                            samples: 500,
+                            style: (stroke: diagram-colors.red + 2pt),
+                            domain: (0, 10), x => choose(n, x)
+                        )
+                    }
+                )
+            })
+        )
+    ]
 ]
 #proposition[
     Let $0 < epsilon < 1\/4$. Then $
@@ -1182,6 +1329,24 @@ We want to show the initial segments of the simplicial ordering minimise the bou
         abs({x in Q_n: abs(f(x) - M) <= epsilon n}) / 2^n >= 1 - 4/epsilon e^(-epsilon^2 n\/ 2).
     $ So "every well-behaved function on the cube $Q_n$ is roughly constant nearly everywhere".
 ]<thm:concentration-of-measure-phenomenon>
+#fig-example[
+    #figure(
+        canvas({
+            import cetz.draw: *
+
+            rect((0, 0), (4, 4))
+            content((2, 4.5), $Q_n$)
+            let curve-points = ((0, 2.5), (1, 2.4), (2, 1.9), (3, 2.1), (4, 2.2))
+            let shifted-points = curve-points.map(point => add-points(point, (0, 1)))
+            hobby(..curve-points)
+            hobby(..shifted-points, stroke: (paint: diagram-colors.red, dash: "dashed"))
+            let shift = 0.2
+            line((4 + shift, 2.2), (4 + shift, 3.2), mark: (start: "straight", end: "straight"), name: "dist")
+            content("dist.centroid", box(inset: (left: 0.5em))[$epsilon n$], anchor: "west")
+            content((2, 1), $f(x) <= M$)
+        })
+    )
+]
 #proofhints[
     - Consider two subsets $A, B subset.eq Q_n$ of density at least $1\/2$, and apply @thm:sets-of-at-least-half-density-have-exponentially-dense-neighbourhoods on them.
     - Use the fact that $f$ is Lipschitz to find upper bound for the image of the $epsilon n$-neighbourhood of one of $A$ and $B$, similarly find a lower bound for the image of the $epsilon n$-neighbourhood of the other.
@@ -1220,6 +1385,31 @@ We want to show the initial segments of the simplicial ordering minimise the bou
     Similarly, we can define $alpha(X, epsilon)$ for any metric measure space $X$ (of finite measure and finite diameter). E.g. the sequence of spheres $\(S^n\)_(n in NN)$ is a Levy family. To prove this, we have:
     + An isoperimetric inequality on $S^n$: for $A subset.eq S^n$ and $C$ a circular cap with $abs(C) = abs(A)$, we have $abs(N^(epsilon)(A)) >= abs(N^(epsilon)(C))$.
     + An estimate: a circular cap $C$ of measure $1\/2$ is the cap of angle $pi\/2$. So $N^(epsilon)(C)$ is the circular cap of angle $pi\/2 + epsilon$. This has measure roughly equal to $integral_epsilon^(pi\/2) cos^(n - 1)(t) dif t -> 0$ as $n -> oo$.
+    #unmarked-fig[
+        #figure(
+            canvas({
+                plot.plot(
+                    axis-style: "school-book",
+                    size: (4, 4),
+                    x-tick-step: none,
+                    y-tick-step: none,
+                    x-grid: "minor",
+                    y-grid: "minor",
+                    x-min: -0.2,
+                    y-min: -0.1,
+                    x-ticks: ((0.4, $epsilon$), (calc.pi / 2, $pi \/ 2$)),
+                    {
+                        let n = 20
+                        plot.add(
+                            samples: 500,
+                            style: (stroke: diagram-colors.red + 2pt),
+                            domain: (0, calc.pi / 2), x => calc.pow(calc.cos(x), n)
+                        )
+                    }
+                )
+            })
+        )
+    ]
 ]
 #remark[
     We deduced concentration of measure from an isoperimetric inequality. Conversely, we have:
@@ -1249,13 +1439,105 @@ We want to show the initial segments of the simplicial ordering minimise the bou
         partial_e A = partial A := {x y in E: x in A, y in.not A}.
     $
 ]<def:edge-boundary>
+#fig-example[
+    #figure(
+        canvas({
+            import cetz.draw: *
+
+            let h = 2
+            rect((0, 0), (h, h))
+            line((0, 0), (0, h), stroke: diagram-colors.red + 2pt)
+            line((0, 0), (h, 0), stroke: diagram-colors.red + 2pt)
+            line((h, h), (2 * h, h), stroke: diagram-colors.red + 2pt)
+            line((2 * h - h * calc.cos(60deg), 0), (2 * h, h))
+            line((2 * h + h * calc.cos(60deg), 0), (2 * h, h))
+            line((2 * h - h * calc.cos(60deg), 0), (2 * h + h * calc.cos(60deg), 0))
+            circle((0, h), ..point-style, fill: diagram-colors.blue, name: "1")
+            circle((h, h), ..point-style, fill: diagram-colors.blue, name: "2")
+            circle((0, 0), ..point-style, fill: black, name: "3")
+            circle((h, 0), ..point-style, fill: diagram-colors.blue, name: "4")
+            circle((2 * h, h), ..point-style, fill: black, name: "5")
+            circle((2 * h - h * calc.cos(60deg), 0), ..point-style, fill: black, name: "6")
+            circle((2 * h + h * calc.cos(60deg), 0), ..point-style, fill: black, name: "7")
+            let anchors = ("south", "south", "north", "north", "south", "north", "north")
+            for (i, anchor) in anchors.enumerate() {
+                let j = i + 1
+                content(str(j), box(inset: 0.4em, radius: 50%)[$#j$], anchor: anchor)
+            }
+        }),
+        caption: [$A = {1, 2, 4}$ (in blue) has edge-boundary ${13, 34, 25}$ (in red).]
+    )
+]
 #definition[
     An *edge-isoperimetric inequality* on a graph $G$ is an inequality of the form $
         forall A subset.eq G, quad abs(partial A) >= f(abs(A)).
     $
 ]<def:edge-isoperimetric-inequality>
 #example[
-    We are interested in the case $G = Q_n$. Given $abs(A)$, which $A subset.eq Q_n$ should we take to minimise $abs(partial A)$? Let $abs(A) = 4$, $A subset.eq Q_3$. TODO: insert diagram. This suggests that subcubes are best. If $2^k < abs(A) < 2^(k + 1)$, then it is natural to take $A = powset([k]) union "some sets in" powset([k + 1])$. So we define:
+    We are interested in the case $G = Q_n$. Given $abs(A)$, which $A subset.eq Q_n$ should we take to minimise $abs(partial A)$? Let $abs(A) = 4$, $A subset.eq Q_3$.
+    #unmarked-fig[
+        #align(center)[#grid(
+            columns: 2,
+            column-gutter: 4em,
+            align: center + horizon,
+            figure(
+                canvas({
+                    import cetz.draw: *
+
+                    let shift-x = 1.25
+                    let shift-y = 1.25
+                    let height = 2.5
+                    let (A, B, C, D, E, F, G, H) = ((0, 0), (height, 0), (0, height), (height, height), (shift-x, shift-y), (height + shift-x, shift-y), (shift-x, height + shift-y), (height + shift-x, height + shift-y))
+                    let sets = ($emptyset$, $1$, $3$, $13$, $2$, $12$, $23$, $123$)
+
+                    draw.rect(A, D, name: "front")
+                    draw.rect(E, H, name: "back")
+                    line(A, E)
+                    line(B, F)
+                    line(C, G)
+                    line(D, H)
+
+                    let line-points = ((C, G), (C, D), (B, F), (B, D), (E, G), (E, F))
+                    for (p1, p2) in line-points {
+                        line(p1, p2, stroke: diagram-colors.red + 2pt)
+                    }
+                    for (i, point) in (A, B, E, C).enumerate() {
+                        circle(point, ..point-style, fill: diagram-colors.blue, name: "point-" + str(i))
+                    }
+                }),
+                caption: [$abs(partial A) = 6$]
+            ),
+            figure(
+                canvas({
+                    import cetz.draw: *
+
+                    let shift-x = 1.25
+                    let shift-y = 1.25
+                    let height = 2.5
+                    let (A, B, C, D, E, F, G, H) = ((0, 0), (height, 0), (0, height), (height, height), (shift-x, shift-y), (height + shift-x, shift-y), (shift-x, height + shift-y), (height + shift-x, height + shift-y))
+                    let sets = ($emptyset$, $1$, $3$, $13$, $2$, $12$, $23$, $123$)
+
+                    draw.rect(A, D, name: "front")
+                    draw.rect(E, H, name: "back")
+                    line(A, E)
+                    line(B, F)
+                    line(C, G)
+                    line(D, H)
+
+                    let line-points = ((A, C), (B, D), (E, G), (F, H))
+                    for (p1, p2) in line-points {
+                        line(p1, p2, stroke: diagram-colors.red + 2pt)
+                    }
+
+                    for (i, point) in (A, B, E, F).enumerate() {
+                        circle(point, ..point-style, fill: diagram-colors.blue, name: "point-" + str(i))
+                    }
+                }),
+                caption: [$abs(partial A) = 4$]
+            )
+        )]
+    ]
+    The diagram suggests that subcubes are best. If $2^k < abs(A) < 2^(k + 1)$, then it is natural to take $A = powset([k]) union "some sets in" powset([k + 1])$. If $A subset.eq Q_4$ has size $abs(A) > 2^3$, then it is natural to take all of the bottom layer and $abs(A) - 2^3$ elements in the top layer. Then the size of the edge boundary is the number of edges from the bottom layer to the top layer (i.e. $2^3 - (abs(A) - 2^3) = 2^4 - abs(A)$) plus the number of edges in the top layer. So now we want to minimise the number of edges in the top layer.
 ]
 #definition[
     For $x, y in Q_n$, $x != y$, say $x < y$ in the *binary ordering* on $Q_n$ if $max (x Delta y) in y$. Equivalently, $
@@ -1281,10 +1563,29 @@ We want to show the initial segments of the simplicial ordering minimise the bou
 ]
 #lemma[
     Let $B subset.eq Q_n$ be $i$-binary-compressed for all $1 <= i <= n$ but not an initial segment of binary. Then $
-    B = powset([n - 1]) \\ underbrace({1, 2, ..., n - 1}, #[last point in binary order in $
+    B = underbrace(powset([n - 1]), #[downstairs]) \\ underbrace({1, 2, ..., n - 1}, #[last point in binary order in $
         powset([n - 1])$]) union underbrace({n}, #[first point in binary order not in $powset([n - 1])$])
     $
 ]<lem:edge-case-for-binary-compressed-but-not-initial-segment>
+#unmarked-fig[
+    #figure(
+        canvas({
+            import cetz.draw: *
+
+            let h = 4
+            rect((0, 0), (h, h), fill: diagram-colors.light-red)
+            let shift = (0, h + 1)
+            rect(add-points((0, 0), shift), add-points((h, h), shift))
+            content((h + 0.25, h / 2), $Q_(n - 1)$, anchor: "west")
+            content(add-points((h + 0.25, h / 2), shift), $Q_(n - 1)$, anchor: "west")
+            content((h / 2, -0.5), $Q_n$)
+            rect((h - 0.5, h - 0.5), (h, h), fill: diagram-colors.red, stroke: none, name: "lose")
+            content("lose", box(inset: (left: 1em))[Lose], anchor: "west")
+            rect(add-points((0, 0), shift), add-points((0.5, 0.5), shift), fill: diagram-colors.blue, stroke: none, name: "gain")
+            content("gain", box(inset: (right: 1em))[Gain], anchor: "east")
+        })
+    )
+]
 #proofhints[
     For $x in.not B$ and $y in B$, show by contradiction that any $i in [n]$ is in exactly one of $x$ and $y$ (it helps to visualise this), and deduce that no elements lie strictly between $x$ and $y$ in the binary ordering.
 ]
@@ -1340,13 +1641,85 @@ We want to show the initial segments of the simplicial ordering minimise the bou
         exists 1 <= i <= n: abs(x_i - y_i) = 1 "and" forall j != i, quad x_j = y_j.
     $ "The distance is the $ell_1$ distance". Note that for $k = 2$, this is precisely the definition of $Q_n$.
 ]<def:grid>
+#fig-example[
+    #figure(
+        canvas({
+            import cetz.draw: *
+
+            let k = 4
+            grid((0, 0), (k, k))
+            for shift-x in range(k + 1) {
+                for shift-y in range(k + 1) {
+                    circle((shift-x, shift-y), ..point-style)
+                }
+            }
+        }),
+        caption: [The grid $[5]^2$]
+    )
+]
 #notation[
     For a point $x$ in the grid on $[k]^n$, write $abs(x)$ for $sum_(i = 1)^n abs(x_i) = norm(x)_(ell_1)$. So $x$ is joined to $y$ in the grid on $[k]^n$ iff $norm(x - y)_(ell_1) = 1$.
 ]
 #example[
-    Which sets $A subset.eq [k]^n$ (of a given size) minimise $abs(N(A))$? TODO: insert diagram. This suggests we "go up in levels" according to $abs(x) = sum_(i = 1)^n abs(x_i)$, so we'd take ${x in [k]^n: abs(x) <= r}$. If $
+    Which sets $A subset.eq [k]^n$ (of a given size) minimise $abs(N(A))$?
+    #unmarked-fig[
+        #align(center)[#grid(
+            columns: 2,
+            column-gutter: 4em,
+            figure(
+                canvas({
+                    import cetz.draw: *
+
+                    let h = 4
+                    rect((0, 0), (h, h))
+                    polygon(((0, 0), (h/calc.sqrt(2), 0), (0, h/calc.sqrt(2))), fill: diagram-colors.light-red, name: "A")
+                    content("A.centroid", $A$)
+                    let shift = (0, -0.2)
+                    line(add-points((0, 0), shift), add-points((h/calc.sqrt(2), 0), shift), mark: (start: "straight", end: "straight"), name: "r")
+                    content("r.centroid", $r$, anchor: "north")
+                })
+            ),
+            figure(
+                canvas({
+                    import cetz.draw: *
+
+                    let h = 4
+                    rect((0, 0), (h, h))
+                    rect((0, 0), (h/2, h/2), fill: diagram-colors.light-red, name: "B")
+                    content("B.center", $B$)
+                    let shift = (0, -0.2)
+                    line(add-points((0, 0), shift), add-points((h/2, 0), shift), mark: (start: "straight", end: "straight"), name: "r")
+                    content("r.centroid", $r$, anchor: "north")
+                })
+            )
+        )]
+    ]
+    In the diagram for $[k]^2$, $abs(b(A)) approx r approx sqrt(2 abs(A))$ and $abs(b(B)) = 2 r = 2 sqrt(abs(B))$ suggests we "go up in levels" according to $abs(x) = sum_(i = 1)^n abs(x_i)$, so we'd take ${x in [k]^n: abs(x) <= r}$. If $
         abs({x in [k]^n: abs(x) <= r}) < abs(A) < abs({x in [k]^n: abs(x) <= r + 1}),
-    $ then a reasonable guess is to take $A = {x in [k]^n: abs(x) <= r}$ together with some points with $x$ with $abs(x) = r + 1$. This suggests the following definition:
+    $ then a reasonable guess is to take $A = {x in [k]^n: abs(x) <= r}$ together with some points with $x$ with $abs(x) = r + 1$. As suggested in the diagram below, we should take points while obeying the motto "keep $x_1$ large":
+    #unmarked-fig[
+        #figure(
+            canvas({
+                import cetz.draw: *
+                import cetz.matrix
+                
+                set-transform(matrix.transform-rotate-dir((1.2, -1, 1.2), (0, -0.5, -.3)))
+                // axes
+                let r = 4
+                line((0, 0, 0), (r, 0, 0), mark: (end: "straight"))
+                line((0, 0, 0), (0, r, 0), mark: (end: "straight"))
+                line((0, 0, 0), (0, 0, r), mark: (end: "straight"))
+                polygon(((r/2, 0, 0), (0, r/2 + 1, 0), (0, 0, r/2)), fill: diagram-colors.light-red, stroke: diagram-colors.red, name: "simplex")
+                polygon(((r/2, 0, 0), (r/2 - 0.5, (r/2 + 1)/(r/2)*0.5, 0), (r/2 - 0.5, 0, 0.5)), fill: diagram-colors.red, stroke: none)
+                line((0.25, 0, r/2 - 0.25), (0.25, r/2 + 1 - (r/2 + 1)/(r/2)*0.25, 0), stroke: (paint: diagram-colors.red, dash: "dashed"), name: "large")
+                content("large.end", box(inset: (left: 0.5em))[$x_1$ large], anchor: "west")
+                content((r/2, 0, 0), box(inset: 0.2em)[$x_1$ small], anchor: "north-east")
+                line((r/4 - 0.2, (r/2 + 1)/(r/2)*r/4 - 0.2, 0), (r/2, r/2, 0), name: "label-line")
+                content("label-line.end", box(inset: (left: 0.5em))[$abs(x) = sum_i x_i = r + 1$], anchor: "north-west")
+            })
+        )
+    ]
+    This suggests the following definition:
 ]
 #definition[
     The *simplicial order* on the grid $[k]^n$ defines $x < y$ if either $abs(x) < abs(y)$, or $abs(x) = abs(y)$ and $x_i > y_i$, where $i = min\{j in [n]: x_j != y_j\}$.
@@ -1356,7 +1729,26 @@ We want to show the initial segments of the simplicial ordering minimise the bou
 #example[
     The elements of $[3]^2$ in ascending simplicial order are $
         (1, 1), (2, 1), (1, 2), (3, 1), (2, 2), (1, 3), (3, 2), (2, 3), (3, 3).
-    $ The elements of $[4]^2$ in ascending simplicial order are $
+    $
+    #unmarked-fig[
+        #figure(
+            canvas({
+                import cetz.draw: *
+
+                grid((0, 0), (4, 4), step: 2)
+                for shift-x in range(0, 5, step: 2) {
+                    for shift-y in range(0, 5, step: 2) {
+                        circle((shift-x, shift-y), ..point-style)
+                    }
+                }
+                let line-points = (((2, 0), (0, 2)), ((4, 0), (0, 4)), ((4, 2), (2, 4)))
+                for (p1, p2) in line-points {
+                    line(p1, p2, stroke: diagram-colors.red, mark: (end: "straight"))
+                }
+            })
+        )
+    ]
+    The elements of $[4]^2$ in ascending simplicial order are $
         & (1, 1, 1), (2, 1, 1), (1, 2, 1), (1, 1, 2), (3, 1, 1), (2, 2, 1), (2, 1, 2), (1, 3, 1), (1, 2, 2), (1, 1, 3), \
         & (4, 1, 1), (3, 2, 1), ...
     $
@@ -1366,6 +1758,45 @@ We want to show the initial segments of the simplicial ordering minimise the bou
         A_j^((i)) = A_j := {x in [k]^(n - 1): (x_1, ..., x_(i - 1), j, x_(i + 1), ..., x_(n - 1)) in A} subset.eq [k]^(n - 1).
     $ for each $1 <= j <= k$.
 ]<def:i-sections-for-grid>
+#fig-example[
+    #figure(
+        canvas({
+            import cetz.draw: *
+            import cetz.matrix
+            
+            set-transform(matrix.transform-rotate-dir((1.1, -0.5, 1.1), (0, -0.6, -.3)))
+            // axes
+            let r = 4
+            let shift-1 = (0, 0, 3)
+            let shift-2 = (0, 0, 6)
+            rect((0, 0, 0), (r, r, 0))
+            rect(add-points((0, 0, 0), shift-1), add-points((r, r, 0), shift-1))
+            rect(add-points((0, 0, 0), shift-2), add-points((r, r, 0), shift-2))
+            content((0, 0, 0), box(inset: (right: 0.5em))[$A_1$], anchor: "east")
+            content(shift-1, box(inset: (right: 0.5em))[$A_2$], anchor: "east")
+            content(shift-2, box(inset: (right: 0.5em))[$A_3$], anchor: "east")
+            line((r + 0.5, r + 0.5, 0), add-points((r + 0.5, r + 0.5, 0), shift-2), mark: (end: "straight"), name: "axis")
+            content("axis.centroid", box(inset: (left: 0.5em))[$3$], anchor: "west")
+            let points-1 = ((0.5, 0.5), (1, 0.4), (1.2, 0.35), (1.8, 0.5), (1, 1), (0.8, 1.2))
+            let points-1 = points-1.map(p => (p.at(0) * 1.5, p.at(1) * 1.5))
+            hobby(..points-1, close: true, fill: diagram-colors.light-red, stroke: diagram-colors.red)
+            let points-2 = ((0.5, 0.5), (1, 0.5), (1.3, 0.45), (2, 0.6), (1, 1.2), (0.7, 1.2))
+            // let points-2 = points-2.map(p => add-points(p, shift-1))
+            let points-2 = points-2.map(p => (p.at(1) * 2, p.at(0) * 1.7))
+            translate(z: shift-1.at(2))
+            hobby(..points-2, close: true, fill: diagram-colors.light-red, stroke: diagram-colors.red)
+            let points-3 = ((0.5, 0.6), (0.9, 0.6), (1.2, 0.65), (1.9, 0.6), (1.2, 1.1), (0.7, 1.3))
+            let points-3 = points-3.map(p => (p.at(0) * 1.6, p.at(1) * 2))
+            translate(z: shift-1.at(2))
+            set-style(
+                fill: diagram-colors.light-red,
+                stroke: diagram-colors.red
+            )
+            hobby(..points-3, close: true)
+        }),
+        caption: [The $3$-sections of $A subset.eq [k]^3$]
+    )
+]
 #definition[
     The *$i$-compression* of $A subset.eq [k]^n$ is the set $C_i (A) subset.eq [k]^n$ which is defined by its $i$-sections: $C_i (A)_j$ is the initial segment of simplicial on $[k]^(n - 1)$ of size $abs(A_j)$, for each $1 <= j <= k$.
 
@@ -1374,11 +1805,6 @@ We want to show the initial segments of the simplicial ordering minimise the bou
 #definition[
     $A subset.eq [k]^n$ is *$i$-compressed* if $C_i (A) = A$.
 ]<def:grid-i-compressed>
-#definition[
-    $A subset.eq [k]^n$ is a *down-set* if $
-        forall x in A, forall y in [k]^n, quad (y_i <= x_i thick forall 1 <= i <= n) ==> y in A.
-    $
-]
 #theorem("Vertex-isoperimetric Inequality in the Grid")[
     Let $A subset.eq [k]^n$ and $C$ be the initial segment of simplicial on $[k]^n$ with $abs(C) = abs(A)$. Then $abs(N(C)) <= abs(N(A))$. In particular, $
         abs(A) >= abs({x in [k]^n: abs(x) <= r}) quad ==> quad abs(N(A)) >= abs({x in [k]^n: abs(x) <= r + 1}).
@@ -1415,9 +1841,90 @@ We want to show the initial segments of the simplicial ordering minimise the bou
     ]
 
     Among all $B subset.eq [k]^n$ with $abs(B) = abs(A)$ and $abs(N(B)) <= abs(N(A))$, pick one with $sum_(x in B) ("position of" x "in simplicial")$ minimal. Then $B$ is $i$-compressed for all $1 <= i <= n$. We consider the following cases:
-    - Case $n = 2$: what we know is precisely that $B$ is a down-set. Let $r = min{abs(x): x in.not B}$ and $s = max{abs(x): x in B}$. We have that $r <= s + 1$ by definition. We may assume that $r <= s$, since if $r = s + 1$, then $B = {x: abs(x) <= r - 1}$ which is an initial segment of simplicial, hence $B = C$. If $r = s$, then $
+    - Case $n = 2$: what we know is precisely that $B$ is a down-set ($A subset.eq [k]^n$ is a *down-set* if $forall x in A, forall y in [k]^n, (y_i <= x_i thick forall 1 <= i <= n) ==> y in A$.)
+    #unmarked-fig[
+        #figure(
+            canvas({
+                import cetz.draw: *
+
+                let h = 4
+                polygon(((0, 0), (0, 3), (1, 3), (1, 2), (1.2, 2), (1.8, 2), (1.8, 1.6), (2.2, 1.6), (2.2, 1), (2.7, 1), (2.7, 0.5), (3.8, 0.5), (3.8, 0)), fill: diagram-colors.light-red, stroke: diagram-colors.red, name: "B")
+                content("B.centroid", $B$)
+                content((h/2, h), box(inset: (bottom: 0.5em))[$[k]^2$], anchor: "south")
+                rect((0, 0), (h, h))
+            })
+        )
+    ]
+    Let $r = min{abs(x): x in.not B}$ and $s = max{abs(x): x in B}$. We have that $r <= s + 1$ by definition. We may assume that $r <= s$, since if $r = s + 1$, then $B = {x: abs(x) <= r - 1}$ which is an initial segment of simplicial, hence $B = C$.
+    #unmarked-fig[
+        #figure(
+            canvas({
+                import cetz.draw: *
+
+                let h = 4
+                polygon(((0, 0), (0, 3), (1, 3), (1, 2), (1.2, 2), (1.8, 2), (1.8, 1.6), (2.2, 1.6), (2.2, 1), (2.7, 1), (2.7, 0.5), (3.8, 0.5), (3.8, 0)), fill: diagram-colors.light-red, stroke: diagram-colors.red, name: "B")
+                content("B.centroid", $B$)
+                content((h/2, h), box(inset: (bottom: 0.5em))[$[k]^2$], anchor: "south")
+                rect((0, 0), (h, h))
+                circle((1, 2), ..point-style)
+                circle((3.8, 0.5), ..point-style)
+                line((0, 3), (3, 0), stroke: (paint: diagram-colors.red, dash: "dashed"), name: "level-r")
+                line((0.3, 4), (4, 0.3), stroke: (paint: diagram-colors.red, dash: "dashed"), name: "level-s")
+                content("level-r.end", box(inset: (top: 0.5em))[level $r$], anchor: "north")
+                content("level-s.end", box(inset: (left: 0.5em))[level $s$], anchor: "west")
+            })
+        )
+    ]
+    If $r = s$, then $
         {x in [k]^n: abs(x) <= r - 1} subset.eq B subset.eq {x in [k]^n: abs(x) <= r},
-    $ so clearly $abs(N(C)) <= abs(N(B))$. \ We cannot have ${x in [k]^n: abs(x) = s} subset.eq B$ because then also ${x in [k]^n: abs(x) = r} subset.eq B$ (as $B$ is a down-set). So there are $y, y'$ with $abs(y) = abs(y') = s$, $y in B$, $y' in.not B$, and $y' = y plus.minus (e_1 - e_2)$ (where $e_1 = (1, 0)$, $e_2 = (0, 1)$ are the standard basis vectors). Similarly, since ${x in [k]^n: abs(x) != s} subset.eq {x in [k]^n: abs(x) != r}$, we cannot have ${x in [k]^n: abs(x) = r} sect B = emptyset$, because then ${x in [k]^n: abs(x) = s} sect B = emptyset$ (since $B$ is a down-set): contradiction. So there are $x, x'$ with $abs(x) = abs(x') = r$, $x in.not B$, $x' in B$, and $x' = x plus.minus (e_1 - e_2)$. Now let $B' = B union {x} \\ {y}$. From $B$ we lost at least one point in the neighbourhood (namely the unique point $z$ which is joined to both $y$ and $y'$) and gained at most one point (the only point we might gain is the unique point $w$ which is joined to both $x$ and $x'$), so $abs(N(B')) <= abs(N(B))$, but this contradicts the minimality of $B$.
+    $ so clearly $abs(N(C)) <= abs(N(B))$.
+    #unmarked-fig[
+        #figure(
+            canvas({
+                import cetz.draw: *
+
+                polygon(((0, 0), (0, 3), (3, 0)), fill: diagram-colors.light-red, stroke: diagram-colors.red, name: "region")
+                rect((0, 0), (6, 6))
+                line((4, 0), (0, 4), stroke: (dash: "dashed", paint: diagram-colors.red, thickness: 1.4pt))
+                content("region.centroid", $X^((< r))$)
+                for point in ((3.5, 0.2), (3, 0.6), (2.5, 1), (2.1, 1.4), (1.7, 2)) {
+                    circle(point, ..point-style, fill: diagram-colors.red)
+                }
+                content((4, -0.25), [some stuff on level $r$])
+            }),
+            caption: [Case when $r = s$]
+        )
+    ]
+    We cannot have ${x in [k]^n: abs(x) = s} subset.eq B$ because then also ${x in [k]^n: abs(x) = r} subset.eq B$ (as $B$ is a down-set).
+    #unmarked-fig[
+        #figure(
+            canvas({
+                import cetz.draw: *
+
+                rect((0, 0), (4, 4))
+                set-style(
+                    // stroke: diagram-colors.red
+                )
+                line((2.5, 0), (0, 2.5), name: "level-r")
+                line((2, 4), (4, 2), name: "level-s")
+                content("level-r.end", box(inset: (right: 0.5em))[$r$], anchor: "east")
+                content("level-s.end", box(inset: (left: 0.5em))[$s$], anchor: "west")
+                
+                hobby((2.5, 3.5), (2.3, 3.3), (1.5, 3.1), (1.4, 2.5), (2.4, 1.8), (2.5, 1.5), (1.5, 1), mark: (end: ">"))
+                for (point, name) in ((1.5, 1), (1, 1.5), (1.5, 1.5), (3, 3), (2.5, 3.5), (3, 3.5)).zip(("x", "x'", "w", "y'", "y", "z")) {
+                    circle(point, ..point-style, name: name)
+                }
+                content("x", box(inset: (top: 0.25em))[$x$ out], anchor: "north-east")
+                content("x'", box(inset: (right: 0em))[$x'$ in], anchor: "north-east")
+                content("y", box(inset: (right: 0.5em))[$y$ in], anchor: "east")
+                content("y'", box(inset: (right: 0.5em))[$y'$ out], anchor: "north-east")
+                content("w", box(inset: (bottom: 0.5em))[$w$], anchor: "south")
+                content("z", box(inset: (left: 0.5em))[$z$], anchor: "west")
+            }),
+            caption: [Case when $r < s$]
+        )
+    ]
+    So there are $y, y'$ with $abs(y) = abs(y') = s$, $y in B$, $y' in.not B$, and $y' = y plus.minus (e_1 - e_2)$ (where $e_1 = (1, 0)$, $e_2 = (0, 1)$ are the standard basis vectors). Similarly, since ${x in [k]^n: abs(x) != s} subset.eq {x in [k]^n: abs(x) != r}$, we cannot have ${x in [k]^n: abs(x) = r} sect B = emptyset$, because then ${x in [k]^n: abs(x) = s} sect B = emptyset$ (since $B$ is a down-set): contradiction. So there are $x, x'$ with $abs(x) = abs(x') = r$, $x in.not B$, $x' in B$, and $x' = x plus.minus (e_1 - e_2)$. Now let $B' = B union {x} \\ {y}$. From $B$ we lost at least one point in the neighbourhood (namely the unique point $z$ which is joined to both $y$ and $y'$) and gained at most one point (the only point we might gain is the unique point $w$ which is joined to both $x$ and $x'$), so $abs(N(B')) <= abs(N(B))$, but this contradicts the minimality of $B$.
     - Case $n >= 3$: for any $1 <= i <= n - 1$ and any $x in B$ with $x_n > 1$ and $x_i < k$, we have $x - e_n + e_i in B$, since $x - e_n + e_i < x$ in simplicial and $B$ is $j$-compressed for any $j != i, n$. So, considering the $n$-sections of $B$, we have $N\(B_j\) subset.eq B_(j - 1)$ for all $j = 2, ..., k$. Recall that $N(B)_j = N\(B_j\) union B_(j + 1) union B_(j - 1)$. So in fact, $N(B)_j = B_(j - 1)$ for all $j >= 2$. Thus $
         abs(N(B)) = underbrace(abs(B_(k - 1)), "level" k) + underbrace(abs(B_(k - 2)), "level" k - 1) + dots.c + underbrace(abs(B_1), "level" 2) + underbrace(abs(N(B_1)), "level" 1) = abs(B) - abs(B_k) + abs(N(B_1)).
     $ Similarly, $abs(N(C)) = abs(C) - abs(C_k) + abs(N(C_1))$. So to show $abs(N(C)) <= abs(N(B))$, it is enough to show that $abs(B_k) <= abs(C_k)$ and $abs(B_1) >= abs(C_1)$ (since $B_1$, $C_1$ and their neighbourhoods are initial segments of simplicial). \ $abs(B_k) <= abs(C_k)$: define a set $D subset.eq [k]^n$ by its $n$-sections as follows: let $D_k := B_k$, and for $j = k - 1, k - 2, ..., 1$, set $D_j := N\(D_(j + 1)\)$. Then $D subset.eq B$, so $abs(D) <= abs(B)$. Also, $D$ is an initial segment of simplicial, since $B_k$ is an initial segment of simplicial, and so all $n$-sections of $D$ are as well. So in fact, $D subset.eq C$, whence $abs(B_k) = abs(D_k) <= abs(C_k)$. \ $abs(B_1) >= abs(C_1)$: define a set $E subset.eq [k]^n$ as follows: set $E_1 = B_1$ and for $j = 2, 3, ..., k$, set $E_j = {x in [k]^(n - 1): N({x}) subset.eq E_(j - 1)}$, so $E_j$ is the biggest set whose neighbourhood is contained in $E_(j - 1)$. Then $B subset.eq E$, so $abs(E) >= abs(B)$. Also, $E$ is an initial segment of simplicial. So $C subset.eq E$, whence $abs(B_1) = abs(E_1) >= abs(C_1)$.
@@ -1438,9 +1945,101 @@ We want to show the initial segments of the simplicial ordering minimise the bou
 == The edge-isoperimetric inequality in the grid
 
 #example[
-    Which set $A subset.eq [k]^n$ of given size should we take to minimise $abs(partial A)$? In $[k]^2$, TODO: insert diagram. This suggests squares are best. However, TODO: insert diagram. So we have "phase transitions" at $abs(A) approx k^2 \/ 4$ and $abs(A) approx 3k^2 \/ 4$. So the extremal sets are not nested. This seems to rule out all our compression methods. And in $[k]^3$? We start with cube $[a]^3$, then square column $[a]^2 times [k]$, then "half space" $[a] times [k]^2$, then complement of square column, then copmlement of cube. So in $[k]^n$, up to $abs(A) = k^n \/ 2$, we get $n - 1$ of these "phase transitions".
+    Which set $A subset.eq [k]^n$ of given size should we take to minimise $abs(partial A)$?
+    #unmarked-fig[
+        #align(center)[#grid(
+            columns: 2,
+            column-gutter: 4em,
+            figure(
+                canvas({
+                    import cetz.draw: *
 
-    
+                    let h = 4
+                    rect((0, 0), (h, h))
+                    polygon(((0, 0), (h/calc.sqrt(2), 0), (0, h/calc.sqrt(2))), fill: diagram-colors.light-red, name: "A")
+                    content("A.centroid", $A$)
+                    let shift = (-0.2, 0)
+                    line(add-points((0, 0), shift), add-points((0, h/calc.sqrt(2)), shift), mark: (start: "straight", end: "straight"), name: "r")
+                    content("r.centroid", box(inset: (right: 0.25em))[$r$], anchor: "east")
+                }),
+                caption: [$abs(partial A) approx 2r$]
+            ),
+            figure(
+                canvas({
+                    import cetz.draw: *
+
+                    let h = 4
+                    rect((0, 0), (h, h))
+                    rect((0, 0), (h/2, h/2), fill: diagram-colors.light-red, name: "B")
+                    content("B.center", $B$)
+                    let shift = (0, 0.2)
+                    let shift-2 = (0.2, 0)
+                    line(add-points((0, h/2), shift), add-points((h/2, h/2), shift), mark: (start: "straight", end: "straight"), name: "r")
+                    line(add-points((h/2, 0), shift-2), add-points((h/2, h/2), shift-2), mark: (start: "straight", end: "straight"), name: "r-2")
+                    content("r.centroid", box(inset: (bottom: 0.25em))[$r$], anchor: "south")
+                    content("r-2.centroid", box(inset: (left: 0.25em))[$r$], anchor: "west")
+                }),
+                caption: [$abs(partial A) approx 2r$]
+            )
+        )]
+    ]
+    The diagram above for $[k]^2$ suggests squares are best. However, the diagram below shows we have "phase transitions" at $abs(A) approx k^2 \/ 4$ and $abs(A) approx 3k^2 \/ 4$. So the extremal sets are not nested.
+    #unmarked-fig[
+        #figure(
+            canvas({
+                import cetz.draw: *
+
+                let shift-1 = (5, 0)
+                let shift-2 = add-points(shift-1, shift-1)
+                let shift-3 = (0, -5)
+                let shift-4 = add-points(shift-1, shift-3)
+                let shift-5 = add-points(shift-1, shift-1, shift-3)
+
+                set-style(fill: diagram-colors.light-red, stroke: diagram-colors.red)
+                rect((0, 0), (1, 1))
+                rect(add-points((0, 0), shift-1), add-points((2, 2), shift-1))
+                rect(add-points((0, 0), shift-2), add-points((1, 4), shift-2))
+                rect(add-points((0, 0), shift-2), add-points((1, 4), shift-2))
+                rect(add-points((0, 0), shift-3), add-points((3, 4), shift-3))
+                polygon(((0, 0), (0, 4), (2, 4), (2, 2), (4, 2), (4, 0)).map(p => add-points(p, shift-4)))
+                polygon(((0, 0), (0, 4), (3, 4), (3, 3), (4, 3), (4, 0)).map(p => add-points(p, shift-5)))
+
+                content((1.1, 0.5), $r$, anchor: "west")
+                content((0.5, 1.1), $r$, anchor: "south")
+                content(add-points((2.1, 1), shift-1), $k \/ 2$, anchor: "west")
+                content(add-points((1, 2.1), shift-1), $k \/ 2$, anchor: "south")
+                content(add-points((1.1, 2), shift-2), $k$, anchor: "west")
+                content(add-points((0.5, 4.1), shift-2), $k \/ 4$, anchor: "south")
+                content(add-points((3.1, 2), shift-3), $k$, anchor: "west")
+                content(add-points((1.5, -0.1), shift-3), $3k \/ 4$, anchor: "north")
+                content(add-points((2.1, 3), shift-4), $k \/ 2$, anchor: "west")
+                content(add-points((3, 2.1), shift-4), $k \/ 2$, anchor: "south")
+                content(add-points((2.9, 3.5), shift-5), $r$, anchor: "east")
+                content(add-points((3.5, 2.9), shift-5), $r$, anchor: "north")
+
+                set-style(fill: none, stroke: black)
+                merge-path({
+                    arc-through(add-points((4, 0.5), shift-2), add-points((4.5, 0), shift-2), add-points((4, -0.5), shift-2))
+                    line(add-points((4, -0.5), shift-2), (0, -0.5))
+                    arc-through((0, -0.5), (-0.5, -1), (0, -1.5), mark: (end: ">"))
+                })
+                for (i, shift) in ((0, 0), shift-1, shift-2, shift-3, shift-4, shift-5).enumerate() {
+                    rect(add-points((0, 0), shift), add-points((4, 4), shift), name: "stage-" + str(i))
+                }
+                line("stage-0", "stage-1", mark: (end: "straight"))
+                line("stage-1", "stage-2", mark: (end: "straight"))
+                line("stage-3", "stage-4", mark: (end: "straight"))
+                line("stage-4", "stage-5", mark: (end: "straight"))
+            })
+        )
+    ]
+    This seems to rule out all our compression methods. In $[k]^3$:
+    - Start with $[a]^3$,
+    - then the square columns $[a]^2 times [k]$,
+    - then the "half spaces" $[a] times [k]^2$,
+    - then the complements of the square columns,
+    - then the complements of the cubes.
+    Generalising, in $[k]^n$, up to $abs(A) = k^n \/ 2$, we get $n - 1$ of these "phase transitions".
 ]
 #theorem("Edge-isoperimetric Inequality in the Grid")[
     Let $A subset.eq [k]^n$. If $abs(A) <= k^n \/ 2$, then $
@@ -1454,7 +2053,9 @@ We want to show the initial segments of the simplicial ordering minimise the bou
     Non-examinable.
 ]
 #remark[
-    Note that if $A = [a]^d times [k]^(n - d)$, then $abs(partial A) = d a^(d - 1) k^(n - d) = d abs(A)^(1 - 1 \/ d) k^(n \/ d - 1)$. So @thm:edge-isoperimetric-inequality-in-grid says that some set of the form $[a]^d times [k]^(n - d)$ minimises the edge boundary.
+    Note that if $A = [a]^d times [k]^(n - d)$, then $
+        abs(partial A) = d a^(d - 1) k^(n - d) = d abs(A)^(1 - 1 \/ d) k^(n \/ d - 1).
+    $ So the @thm:edge-isoperimetric-inequality-in-grid says that some set of the form $[a]^d times [k]^(n - d)$ minimises the edge boundary.
 ]
 #remark[
     Very few isoperimetric inequalities are known (even approximately), e.g. "iso in a layer": in a graph $X^((r))$, with $x, y$ joined if $abs(x sect y) = r - 1$. This is open. A nice special case is $r = n\/2$, where it is conjectured that balls are best, i.e. sets of the form ${x in [2r]^((r)): abs(x sect [r]) >= t}$.
@@ -1471,7 +2072,18 @@ We want to show the initial segments of the simplicial ordering minimise the bou
     $
 ]<def:t-intersecting-family>
 #example[
-    How large can a $t$-intersecting family be? For $t = 2$, we could take ${x subset.eq X: 1, 2 in x}$, which has size $1/4 dot 2^n$, but better is ${x subset.eq X: abs(x) >= n \/ 2 + 1}$.
+    How large can a $t$-intersecting family be? For $t = 2$, we could take ${x subset.eq X: 1, 2 in x}$, which has size $1/4 dot 2^n$, but better is ${x subset.eq X: abs(x) >= n \/ 2 + 1}$, which has size $approx 1/2 dot 2^n$.
+    #unmarked-fig[
+        #figure(
+            canvas({
+                import cetz.draw: *
+
+                polygon(((0, 3), (1.8, 3 - 3/2 * 1.8), (-1.8, 3 - 3/2 * 1.8)), fill: diagram-colors.light-red, stroke: diagram-colors.red)
+                polygon(((0, -3), (-2, 0), (0, 3), (2, 0)))
+                content((1.8, 3 - 3/2 * 1.8), box(inset: (left: 0.5em))[$n\/2 + 1$], anchor: "west")
+            })
+        )
+    ]
 ]
 #theorem([Katona's $t$-intersecting Theorem])[
     Let $A subset.eq powset(X)$ be $t$-intersecting, where $n equiv t mod 2$. Then $
@@ -1495,20 +2107,59 @@ We want to show the initial segments of the simplicial ordering minimise the bou
     - For $2$-intersecting families in $[8]^((4))$: $abs(A_0) = binom(6, 2) = 15$, $abs(A_1) = 1 + binom(4, 3) binom(4, 1) = 17$, $abs(A_2) = binom(6, 4) = 15$.
     - For $2$-intersecting families in $[9]^((4))$: $abs(A_0) = binom(7, 2) = 21$, $abs(A_1) = 1 + binom(4, 3) binom(5, 1) = 21$, $abs(A_2) = binom(6, 4) = 15$.
     Note that $A_0$ grows quadratically, $A_1$ grows linearly, $A_2$ is constant, so $A_0$ is the largest of these for large $n$.
+    #unmarked-fig(
+        figure(
+            canvas({
+                import cetz.draw: *
+
+                line((0.8, 0), (7.2, 0))
+                for i in range(1, 8) {
+                    circle((i, 0), ..point-style, fill: diagram-colors.blue, name: "point-" + str(i))
+                    content("point-" + str(i), box(inset: (bottom: 0.5em))[$#i$], anchor: "south")
+                }
+                set-style(stroke: diagram-colors.red + 2pt)
+                line((2.5, 0.25), (2.5, -0.25), name: "A0")
+                line((4.5, 0.25), (4.5, -0.25), name: "A1")
+                line((6.5, 0.25), (6.5, -0.25), name: "A2")
+                content("A0.end", box(inset: (top: 0.5em))[$A_0$], anchor: "north")
+                content("A1.end", box(inset: (top: 0.5em))[$A_1$], anchor: "north")
+                content("A2.end", box(inset: (top: 0.5em))[$A_2$], anchor: "north")
+            })
+        )
+    )
 ]
-#theorem[
+#theorem("Second Erdos-Ko-Rado Theorem")[
     Let $X = [n]$ and let $A subset.eq X^((r))$ be $t$-intersecting. Then, for $n$ sufficiently large, we have $abs(A) <= abs(A_0) = binom(n - t, r - t)$.
+]<thm:second-erdos-ko-rado>
+#proofhints[
+    - Show by contradiction that a maximal $t$-intersecting family $A' supset.eq A$ has $x, y in A'$ with $abs(x sect y) = t$.
+    - Explain why we can assume that there exists $z in A'$ with $x sect y subset.eq.not z$, and hence each $w in A'$ meets $x union y union z$ in $>= t + 1$ points.
+    - Show that $abs(A')$ is bounded above by a polynomial in $n$ of degree $r - t - 1$.
 ]
 #proof[
     Idea: "$A_0$ has $r - t$ degrees of freedom".
 
-    Extending $A$ to a maximal $t$-intersecting family, we must have some $x, y in A$ with $abs(x sect y) = t$ (if not, then by maximality, we have that $forall x in A, forall i in x, forall j in.not x$, $x - i union j in A$; repeating this, we have $A = X^((r))$: contradiction). We may assume that there exists $z in A$ with $x sect y subset.eq.not z$; otherwise, all $z in A$ have the $t$-set $x sect y subset.eq z$, whence $abs(A) <= binom(n - t, r - t) = abs(A_0)$. So each $w in A$ must meet $x union y union z$ in $>= t + 1$ points. Thus $
-        abs(A) <= underbrace(2^(3r), #[$w$ on $x union y union z$]) dot underbrace((binom(n, r - t - 1) + binom(n, r - t - 2) + dots.c + binom(n, 0)), #[$w$ off $x union y union z$])
-    $ which is a polynomial in $n$ of degree $r - t - 1$.
+    Extend $A$ to a maximal $t$-intersecting family $A'$, trivially $abs(A) <= abs(A')$. There exist $x, y in A'$ with $abs(x sect y) = t$ (if not, then by maximality, we have that $forall x in A', forall i in x, forall j in.not x$, $x \\ i union j in A'$; repeating this, we have $A' = X^((r))$: contradiction). We may assume that there exists $z in A'$ with $x sect y subset.eq.not z$; otherwise, all $z in A'$ contain the $t$-set $x sect y subset.eq z$, whence $abs(A') <= binom(n - t, r - t) = abs(A_0)$. So each $w in A'$ must meet $x union y union z$ in $>= t + 1$ points.
+    #unmarked-fig(
+        figure(
+            canvas({
+                import cetz.draw: *
+
+                cetz-venn.venn3(name: "venn", not-abc-stroke: none, padding: 0)
+                content("venn.a", $x$)
+                content("venn.b", $y$)
+                content("venn.c", $z$)
+                line("venn.ab", (rel: (0, 1)), mark: (start: "o", fill: diagram-colors.red), name: "label")
+                content("label.end", $abs(x sect y) = t$, anchor: "south")
+            })
+        )
+    )
+    Thus $
+        abs(A') <= underbrace(2^(3r), #[$w$ on $x union y union z$]) dot underbrace((binom(n, r - t - 1) + binom(n, r - t - 2) + dots.c + binom(n, 0)), #[$w$ off $x union y union z$])
+    $ which is a polynomial in $n$ of degree $r - t - 1$, so is eventually smaller than $abs(A_0) = binom(n - t, r - t)$, a polynomial in $n$ of degree $r - t$.
 ]
 #remark[
-    - The bound we obtain for $n$ would be $>= (16r)^r$ (crude) or $2 t r^3$ (careful).
-    - The theorem is often called the "second Erdos-Ko-Rado" theorem.
+    The bound we obtain for $n$ in the @thm:second-erdos-ko-rado would be $>= (16r)^r$ (crude) or $2 t r^3$ (careful).
 ]
 
 == Modular intersections
@@ -1516,34 +2167,147 @@ We want to show the initial segments of the simplicial ordering minimise the bou
 #example[
     For intersecting families, we ban $abs(x sect y) = 0$. What if we banned $abs(x sect y) = 0 mod k$ for some $k in NN$?
 
-    e.g. want $A subset.eq X^((r))$ with $abs(x sect y)$ odd for all $x != y in A$.
-    
-    Try $r$ odd: can achieve $abs(A) = binom(floor((n - 1)\/2), (r - 1)\/2)$ by the diagram. What if, still for $r$ odd, we want $abs(x sect y)$ even for all $x != y in A$. Can achieve $n - r + 1$ by picture, but this is only linear in $n$.
+    For example, for $k = 2$, we want $A subset.eq X^((r))$ with $abs(x sect y)$ odd for all $x != y in A$. When $r$ is odd, we can achieve $abs(A) = binom(floor((n - 1)\/2), (r - 1)\/2)$ by the diagram below.
+    #unmarked-fig[
+        #figure(
+            canvas({
+                import cetz.draw: *
 
-    Similarly: for $r$ even, if we want $abs(x sect y)$ even for all $x != y in A$, can achieve $abs(A) = binom(floor(n \/ 2), r \/ 2)$ by picture. If we want $abs(x sect y)$ odd for all $x != y in A$, can achieve $n - r + 1$ as above.
+                for i in range(1, 6) {
+                    circle((i, 0), ..point-style, fill: diagram-colors.blue, name: "point-" + str(i))
+                    content("point-" + str(i), box(inset: (bottom: 0.5em))[$#i$], anchor: "south")
+                }
+                line((1, -0.9), (1, -0.25), mark: (end: "straight"), name: "take")
+                content("take.start", box(inset: (top: 0.5em))[Take], anchor: "north")
+                for i in range(5) {
+                    circle((6 + i/4, 0), radius: 0.05, stroke: none, fill: black)
+                }
+                circle((8, 0), ..point-style, fill: diagram-colors.blue, name: "point-n1")
+                content("point-n1", box(inset: (bottom: 0.5em))[$n - 1$], anchor: "south")
+                circle((9, 0), ..point-style, fill: diagram-colors.blue, name: "point-n")
+                content("point-n", box(inset: (bottom: 0.5em))[$n$], anchor: "south")
+                cetz.decorations.brace((2, -0.5), (9, -0.5), flip: true, name: "brace")
+                content("brace.content", [Take $(r - 1)\/2$ pairs from here])
+                let bracket = merge-path({
+                    line((1.8, -0.1), (1.8, -0.3))
+                    line((1.8, -0.3), (3.2, -0.3))
+                    line((3.2, -0.3), (3.2, -0.1))
+                })
+                bracket
+                translate(x: 2)
+                bracket
+                translate(x: 4)
+                bracket
+            })
+        )
+    ]
+    For $r$ odd, if we want $abs(x sect y)$ even for all $x != y in A$, we can achieve $n - r + 1$ by the diagram below, but this is only linear in $n$.
+    #unmarked-fig(
+        figure(
+            canvas({
+                import cetz.draw: *
 
-    Seems to be that banning $abs(x sect y) = r (mod 2)$ forces the family to be very small (poly in $n$, even a linear poly).
-    
-    Remarkably, we cannot beat linear.
+                rect((0, 0), (6, 1), name: "first", fill: diagram-colors.light-red)
+                content("first.center", $[r - 1]$)
+                rect((0, 0), (10, 1), name: "n")
+                content("n.north", box(inset: (bottom: 0.5em))[$[n]$], anchor: "south")
+                cetz.decorations.brace((0, -0.1), (6, -0.1), name: "brace1", flip: true)
+                cetz.decorations.brace((6, -0.1), (10, -0.1), name: "brace2", flip: true)
+                content("brace1.content", [Take all of this])
+                content("brace2.content", [Take $1$ point from here])
+            })
+        )
+    )
 ]
+#example[
+    Similarly, for $r$ even, if we want $abs(x sect y)$ even for all $x != y in A$, we can achieve $abs(A) = binom(floor(n \/ 2), r \/ 2)$ by the diagram below.
+    #unmarked-fig[
+        #figure(
+            canvas({
+                import cetz.draw: *
+
+                for i in range(1, 5) {
+                    circle((i, 0), ..point-style, fill: diagram-colors.blue, name: "point-" + str(i))
+                    content("point-" + str(i), box(inset: (bottom: 0.5em))[$#i$], anchor: "south")
+                }
+                for i in range(5) {
+                    circle((5 + i/4, 0), radius: 0.05, stroke: none, fill: black)
+                }
+                circle((7, 0), ..point-style, fill: diagram-colors.blue, name: "point-n1")
+                content("point-n1", box(inset: (bottom: 0.5em))[$n - 1$], anchor: "south")
+                circle((8, 0), ..point-style, fill: diagram-colors.blue, name: "point-n")
+                content("point-n", box(inset: (bottom: 0.5em))[$n$], anchor: "south")
+                cetz.decorations.brace((1, -0.5), (8, -0.5), flip: true, name: "brace")
+                content("brace.content", [Take $r\/2$ pairs from here])
+                let bracket = merge-path({
+                    line((0.8, -0.1), (0.8, -0.3))
+                    line((0.8, -0.3), (2.2, -0.3))
+                    line((2.2, -0.3), (2.2, -0.1))
+                })
+                bracket
+                translate(x: 2)
+                bracket
+                translate(x: 4)
+                bracket
+            })
+        )
+    ]
+    If we want $abs(x sect y)$ odd for all $x != y in A$, can achieve $n - r + 1$ by the diagram below.
+    #unmarked-fig(
+        figure(
+            canvas({
+                import cetz.draw: *
+
+                rect((0, 0), (6, 1), name: "first", fill: diagram-colors.light-red)
+                content("first.center", $[r - 1]$)
+                rect((0, 0), (10, 1), name: "n")
+                content("n.north", box(inset: (bottom: 0.5em))[$[n]$], anchor: "south")
+                cetz.decorations.brace((0, -0.1), (6, -0.1), name: "brace1", flip: true)
+                cetz.decorations.brace((6, -0.1), (10, -0.1), name: "brace2", flip: true)
+                content("brace1.content", [Take all of this])
+                content("brace2.content", [Take $1$ point from here])
+            })
+        )
+    )
+]
+It seems to be that banning $abs(x sect y) = r (mod 2)$ forces the family to be very small (polynomial in $n$; in fact, a linear polynomial). Remarkably, we cannot beat linear.
 #proposition[
-    Let $r$ be odd and let $A subset.eq X^((r))$ satisfy $abs(x sect y)$ even for all $x != y in A$. Then $abs(A) <= n$.
+    Let $r$ be odd and $A subset.eq X^((r))$. If $abs(x sect y)$ is even for all $x != y in A$, then $abs(A) <= n$.
+]
+#proofhints[
+    Identify each $x in powset(X)$ with a point $overline(x)$ in an appropriate vector space, and by considering dot products, show that ${overline(x): x in A}$ is linearly independent.
 ]
 #proof[
     Idea: find $abs(A)$ linearly independent vectors in a vector space of dimension $n$, namely $Q_n$.
 
-    View $powset(X)$ as $FF_2^n$, the $n$-dimensional vector space over $FF_2$ by identifying each $x in powset(X)$ with $overline(x)$, its characteristic sequence (where we count from the left, so ${1, 3, 4} <-> 1011000...0$). Then we have $overline(x) . overline(x) != 0$ for all $x in A$ (as $r$ is odd). Also, $overline(x) . overline(y) = 0$ for all $x != y in A$, as $abs(x sect y)$ is even. Hence the ${overline(x): x in A}$ are linearly independent (if $sum_i lambda_i overline(x_i)$, dot with $overline(x_j)$ to get $lambda_j = 0$). So $abs(A) <= n$.
+    View $powset(X)$ as $FF_2^n$, the $n$-dimensional vector space over $FF_2$, by identifying each $x in powset(X)$ with $overline(x)$, its characteristic sequence (where we count from the left, so ${1, 3, 4} <-> 1011000...0$). Then we have $overline(x) . overline(x) != 0$ for all $x in A$ (as $r$ is odd). Also, $overline(x) . overline(y) = 0$ for all $x != y in A$, as $abs(x sect y)$ is even. Hence ${overline(x): x in A}$ is linearly independent (if $sum_i lambda_i overline(x_i)$, dot with $overline(x_j)$ to get $lambda_j = 0$). So $abs(A) <= n$.
 ]
 #corollary[
     Hence also, if $A subset.eq X^((r))$ with $r$ even with $abs(x sect y)$ odd for all $x != y in A$, then $abs(A) <= n + 1$.
 ]
+#proofhints[
+    Use the above proposition.
+]
 #proof[
     Just add $n + 1$ to each $x in A$ and apply above proposition.
 ]
-Does this $mod 2$ behaviour generalise? We now show: $s$ allowed values for $abs(x sect y) mod p$ implies $abs(A) <=$ polynomial of degree $s$.
+This $mod 2$ behaviour generalises: namely, allowing $s$ values for $abs(x sect y) mod p$ implies that $abs(A)$ is bounded above by a polynomial of degree $s$.
 #theorem("Frankl-Wilson")[
     Let $p$ be prime and $A subset.eq X^((r))$. Suppose that for all $x != y in A$, we have $abs(x sect y) equiv lambda_i thick mod p$ for some $i$, where $s <= r$ and $lambda_1, ..., lambda_s in ZZ$ with no $lambda_i equiv r thick mod p$. Then $abs(A) <= binom(n, s)$.
 ]<thm:frankl-wilson>
+#proofhints[
+    - For each $i <= j$, let $M(i, j)$ be the $binom(n, i) times binom(n, j)$ matrix with rows indexed by $X^((i))$, columns indexed by $X^((j))$, with $
+        M(i, j)_(x y) = cases(
+            1 quad & "if" x subset.eq y,
+            0 & "otherwise"
+        ), quad x in X^((i)), y in X^((j)).
+    $
+    - Let $V$ be the vector space over $RR$ spanned by the rows of $M(s, r)$.
+    - By finding an expression for each of its entries, show that $M(i, s) M(s, r) = binom(r - i, s - i) M(i, r)$.
+    - Let $M(i) = M(i, r)^T M(i, r)$. Explain why each row of each $M(i)$ is in $V$.
+    - Let $M = sum_(i = 0)^s a_i M(i)$, where the $a_i$ are chosen so that $M_(x y) = (abs(x sect y) - lambda_1) med dots.c med (abs(x sect y) - lambda_s)$ (explain why each $a_i in ZZ$).
+    - Consider the submatrix of $M$ spanned by the rows and columns corresponding to the elements of $A$.
+]
 #proof[
     Idea: try to find $abs(A)$ linearly independent points in a vector space of dimension $binom(n, s)$, by somehow "applying" the polynomial $(t - lambda_1) med dots.c med (t - lambda_s)$ to $abs(x sect y)$.
 
@@ -1560,7 +2324,7 @@ Does this $mod 2$ behaviour generalise? We now show: $s$ allowed values for $abs
     $ So $M(i, s) M(s, r) = binom(r - i, s - i) M(i, r)$. So all rows of $M(i, r)$ belong to $V$. Let $M(i) = M(i, r)^T M(i, r)$. Again, each row of this matrix is in $V$, since we have left-multiplied $M(i, r)$ by a matrix. For $x, y in X^((r))$, we have $
         M(i)_(x y) = #[number of $i$-sets $z$ with $z subset.eq x$ and $z subset.eq y$] = binom(abs(x sect y), i).
     $ Write the integer polynomial $(t - lambda_1) med dots.c med (t - lambda_s)$ as $sum_(i = 0)^s a_i binom(t, i)$ with all $a_i in ZZ$. This is possible since $t(t - 1) dots.c (t - i + 1) = i! binom(t, i)$. Let $M = sum_(i = 0)^s a_i M(i)$. Note each row of each $M(i)$ is in $V$. Then for all $x, y in X^((r))$, $
-        M_(x y) = sum a_i binom(abs(x sect y), i) = (abs(x sect y) - lambda_1) med dots.c med (abs(x sect y) - lambda_s).
+        M_(x y) = sum_(i = 0)^s a_i binom(abs(x sect y), i) = (abs(x sect y) - lambda_1) med dots.c med (abs(x sect y) - lambda_s).
     $ So the submatrix of $M$ spanned by the rows and columns corresponding to the elements of $A$ is $
         mat(
             equiv.not 0 mod p, , 0;
@@ -1570,61 +2334,184 @@ Does this $mod 2$ behaviour generalise? We now show: $s$ allowed values for $abs
     $ Hence the rows of $M$ corresponding to $A$ are linearly independent over $FF_p$, so also over $ZZ$, so also over $QQ$, so also over $RR$. So $abs(A) <= dim(V) = binom(n, s)$.
 ]
 #remark[
-    - The bound in Frankl-Wilson is a _polynomial_ in $n$, even as $r$ varies!
-    - The bound is essentially the best possible: we can achieve $abs(A) = binom(n, n - r + s) approx binom(n, s)$ for large $n$ (see diagram).
+    - The bound in @thm:frankl-wilson is a _polynomial_ in $n$, even as $r$ varies!
+    - The bound is essentially the best possible: we can achieve $abs(A) = binom(n, n - r + s) approx binom(n, s)$ for large $n$, as shown in the diagram below.
+    #unmarked-fig(
+        figure(
+            canvas({
+                import cetz.draw: *
+
+                rect((0, 0), (12, 1), name: "n")
+                rect((0, 0), (5, 1), name: "first", fill: diagram-colors.light-red)
+                rect((5, 0), (12, 1), name: "last")
+                content("first.center", $[r - s]$)
+                content("n.south", box(inset: (top: 0.5em))[$[n]$], anchor: "north")
+                content("last.center", [any $s$-set])
+            })
+        )
+    )
     - The condition $lambda_i equiv.not r thick mod p$ for all $i$ is necessary: indeed, if $n = a + lambda p$, $0 <= a <= p - 1$, then can have $A subset.eq X^(a + k p)$ with $abs(A) = binom(lambda, k)$ and all $abs(x sect y) equiv a thick mod p$, but $binom(lambda, k)$ is not a polynomial in $n$ (as we can choose any $k$).
+    #unmarked-fig[
+        #figure(
+            canvas({
+                import cetz.draw: *
+
+                for i in range(5) {
+                    circle((7 + i/4, -0.2), radius: 0.05, stroke: none, fill: black)
+                }
+                cetz.decorations.brace((1, -0.5), (10, -0.5), flip: true, name: "brace")
+                content("brace.content", [Take $k$ of these])
+                merge-path({
+                    line((-0.7, -0.1), (-0.7, -0.3))
+                    line((-0.7, -0.3), (0.2, -0.3))
+                    line((0.2, -0.3), (0.2, -0.1))
+                }, name: "b1")
+                content("b1.centroid", box(inset: (bottom: 0.5em))[$a$], anchor: "south")
+                line((-0.25, -1), (-0.25, -0.45), mark: (end: "straight"), name: "take")
+                content("take.start", box(inset: (top: 0.5em))[Take], anchor: "north")
+                let bracket(name) = merge-path({
+                    line((0.8, -0.1), (0.8, -0.3))
+                    line((0.8, -0.3), (2.2, -0.3))
+                    line((2.2, -0.3), (2.2, -0.1))
+                }, name: name)
+                bracket("b2")
+                content("b2.centroid", box(inset: (bottom: 0.5em))[$p$], anchor: "south")
+                translate(x: 2)
+                bracket("b3")
+                content("b3.centroid", box(inset: (bottom: 0.5em))[$p$], anchor: "south")
+                translate(x: 2)
+                bracket("b4")
+                content("b4.centroid", box(inset: (bottom: 0.5em))[$p$], anchor: "south")
+                translate(x: 4)
+                bracket("b5")
+                content("b5.centroid", box(inset: (bottom: 0.5em))[$p$], anchor: "south")
+            })
+        )
+    ]
 ]
 #remark[
     We do need $p$ prime. Grolmusz constructed, for each $n$, a value of $r equiv 0 mod 6$ and a family $A subset.eq [n]^((r))$ such that $forall x != y in A$, we have $abs(x sect y) equiv.not 0 mod 6$ and $abs(A) > n^(c log n \/ log log n)$, which is not a polynomial in $n$.
 ]
 #corollary[
     Let $A subset.eq [n]^((r))$ with $abs(x sect y) equiv.not r mod p$ for all $x != y in A$, where $p < r$ is prime. Then $abs(A) <= binom(n, p - 1)$.
+]<crl:frankl-wilson-special-case>
+#proofhints[
+    Trivial by @thm:frankl-wilson.
 ]
 #proof[
     We are allowed $p - 1$ values of $abs(x sect y) mod p$, so done by @thm:frankl-wilson.
 ]
 Two $(n \/ 2)$-sets in $[n]$ typically meet in $approx n \/ 4$ points, but having the exact equality $abs(x sect y) = n \/ 4$ is very unlikely. But remarkably:
 #corollary[
-    Let $p$ be prime, and $A subset.eq [4p]^((2p))$ with $abs(x sect y) != p$ for all $x != y in A$ (this is a weak constraint). Then $abs(A) <= 2 binom(4p, p - 1)$.
+    Let $p$ be prime, and $A subset.eq [4p]^((2p))$ with $abs(x sect y) != p$ for all $x != y in A$. Then $abs(A) <= 2 binom(4p, p - 1)$.
+]<crl:there-are-few-2p-size-sets-with-non-half-intersection>
+#proofhints[
+    Remove all complements from $A$ and use @crl:frankl-wilson-special-case.
 ]
 #proof[
-    By halving $abs(A)$ if necessary, we may assume that no $x, x^c in A$ (for any $x in [4p]^((2p))$). Then for $x != y in A$, $abs(x sect y) != 0, p, 2p$, so $abs(x sect y) equiv.not 0 mod p$. So $abs(A) <= binom(4p, p - 1)$ by above corollary.
+    By halving $abs(A)$ if necessary, we may assume that no $x, x^c in A$ (for any $x in [4p]^((2p))$). Then for $x != y in A$, $abs(x sect y) != 0, p, 2p$, so $abs(x sect y) equiv.not 0 mod p$. So $abs(A) <= binom(4p, p - 1)$ by @crl:frankl-wilson-special-case.
 ]
 #remark[
-    $2 binom(4p, p - 1)$ is a _tiny_ (exponentially small) fraction of $binom(4p, 2p)$. Indeed, $binom(n, n \/ 2) approx c dot 2^n \/ sqrt(n)$, for some constant $c$, whereas $binom(n, n \/ 4) <= 2 e^(-n \/ 32) 2^n$ by (find theorem).
+    $abs(x sect y) != p$ for all $x != y in A$ is a weak constraint, yet $2 binom(4p, p - 1)$ is a _tiny_ (exponentially small) fraction of $binom(4p, 2p)$. Indeed, $binom(n, n \/ 2) approx c dot 2^n \/ sqrt(n)$, for some constant $c$, whereas $binom(n, n \/ 4) <= 4 e^(-n \/ 32) 2^n$ by @prop:upper-bound-on-less-than-half-first-binomial-coefficients.
 ]
 
 == Borsuk's conjecture
 
-Let $S subset.eq RR^n$ be bonded. How few pieces can we break $S$ into, such that each piece has smaller diameter than that of $S$?
+Let $S subset.eq RR^n$ be bounded. How few pieces can we break $S$ into, such that each piece has smaller diameter than that of $S$?
+#fig-example[
+    #figure(
+        canvas({
+            import cetz.draw: *
+
+            scale(origin: (0, 0), x: 1.5, y: 1.5)
+            blob-2d(num-points: 16)
+            content((1.5, 0.2), $S subset.eq RR^2$)
+            line((0, 0), (0, 2))
+            line((0, 0), (-calc.sqrt(3), -1))
+            line((0, 0), (calc.sqrt(3), -1))
+            content((0, -0.5), $3$)
+            content((0.4, 0.2), $2$)
+            content((-0.4, 0.2), $1$)
+        }),
+        caption: [A partition of $S$ into three pieces]
+    )
+]
 The example of a regular $n$-simplex in $RR^n$ ($n + 1$ points, all at distance $1$) shows that we may need $n + 1$ pieces.
 #conjecture("Borsuk")[
     $n + 1$ pieces is always sufficient.
-]
-It is known for $n = 1$ (trivial), $n = 2$ (doable), $n = 3$ (hard). Also known when $S$ is a smooth convex body in $RR^n$ (e.g. sphere), or a symmetric ($x in S => -x in S$) convex body in $RR^n$ (e.g. octohedron).
+]<cnj:borsuk>
+@cnj:borsuk is true when $n = 1$ (trivial), $n = 2$ (doable), $n = 3$ (hard), and also when $S$ is a smooth convex body in $RR^n$ (e.g. sphere), or a symmetric ($x in S => -x in S$) convex body in $RR^n$ (e.g. octohedron).
 
-However, Borsuk is massively false:
+However, in general, @cnj:borsuk is massively false:
 #theorem("Kahn, Kalai")[
     For all $n in NN$, there exists a bounded $S subset.eq RR^n$ such that to break $S$ into pieces of smaller diameter, we need at least $C^sqrt(n)$ pieces for some constant $C > 1$.
 ]
 #remark[
-    - Our proof will show Borsuk is false for $n >= 2000$.
-    - We will prove it for all $n$ of the form $binom(4p, 2)$ where $p$ is prime. Then we are done for all $n in NN$ (with a different constant $C$), e.g. because there exists prime $p$ with $n \/ 2 <= p <= n$.
+    Our proof will show Borsuk is false for $n >= 2000$.
+]
+#proofhints[
+    - Prove for all $n$ of the form, $binom(4p, 2)$ for $p$ prime.
+    - For $x, y in [n]^((r))$, find an expression for $norm(x - y)^2$ in terms of $abs(x sect y)$.
+    - Identify $[n]$ with the edge set of an appropriate graph, and for each $x in [4p]^((2p))$, let $G_x$ be the complete bipartite graph with vertex classes $x$ and $x^c$.
+    - Show that the number of edges in $G_x sect G_y$ is $abs(G_x sect G_y) = abs(x sect y)^2 + (2p - abs(x sect y))^2$ and give the value of $abs(x sect y)$ which minimises this.
+    - Let $S$ be an appropriate set of size $abs(S) = 1/2 binom(4p, 2p)$. Using @crl:there-are-few-2p-size-sets-with-non-half-intersection, show that any subset $S' subset.eq S$ of smaller diameter than $S$ has size at most $2 binom(4p, p - 1)$.
+    - Use @prop:upper-bound-on-less-than-half-first-binomial-coefficients and the fact that $binom(n, n \/ 2) approx c dot 2^n \/ sqrt(n)$ to conclude the result.
 ]
 #proof[
-    We'll find $S subset.eq Q_n subset.eq RR^n$. In fact, $S subset.eq [n]^((r))$ for some $r$. (These are genuine ideas). We have $S subset.eq [n]^((r))$, so $forall x, y in S$, $
-        norm(x - y)^2 = "number of coordinates where" x, y "differ" = 2(r - abs(x sect y))
-    $ We seek $S$ with $min{abs(x sect y): x, y in S} = k$, but every subset of $S$ with $min{abs(x sect y): x, y in S} > k$ is very small (so need many pieces).
+    We will prove it for all $n$ of the form $binom(4p, 2)$ where $p$ is prime. Then we are done for all $n in NN$ (with a different constant $C$), e.g. because there exists prime $p$ with $n \/ 2 <= p <= n$. We'll find $S subset.eq Q_n subset.eq RR^n$. In fact, $S subset.eq [n]^((r))$ for some $r$. (These are genuine ideas). Since $S subset.eq [n]^((r))$, we have $forall x, y in S$, $
+        norm(x - y)^2 & = "number of coordinates where" x, y "differ" \
+        & = abs(x Delta y) = abs(x \\ y) + abs(y \\ x) = 2(r - abs(x sect y)).
+    $
+    #unmarked-fig[
+        #figure(
+            canvas({
+                import cetz.draw: *
 
-    Identify $[n]$ with the edge set of the complete graph $K_(4p)$ on $4p$ points. For each $x in [4p]^((2p))$, let $G_x$ be the complete bipartite graph with vertex classes $x, x^c$. Let $S = {G_x: x in [4p]^((2p))}$. So $S subset.eq [n]^((4p^2))$, and $abs(S) = 1/2 binom(4p, 2p)$ (since $G_x = G_(x^c)$). Now, $
-        abs(G_x sect G_y) & = abs(x sect y) abs(x^c sect y^c) + abs(x^c sect y) abs(x sect y^c) \
+                rect((-4, -1), (4, 1), name: "n")
+                circle((-1.5, 0), radius: (2, 0.6), name: "x")
+                circle((1.5, 0), radius: (2, 0.6), name: "y")
+                content("n.south", box(inset: (top: 0.5em))[$[n]$], anchor: "north")
+                content("x.center", $x$, anchor: "east")
+                content("y.center", $y$, anchor: "west")
+            })
+        )
+    ]
+    The diameter of $S$ is $max{norm(x - y): x, y in S}$, so we seek $S$ with $min{abs(x sect y): x, y in S} = k$, where every subset $S' subset.eq S$ with $min{abs(x sect y): x, y in S'} > k$ is very small (so need many pieces).
+
+    Identify $[n]$ with the edge set of the complete graph $K_(4p)$ on $4p$ points. For each $x in [4p]^((2p))$, let $G_x$ be the complete bipartite graph with vertex classes $x, x^c$. Let $S = {G_x: x in [4p]^((2p))}$. So $S subset.eq [n]^((4p^2))$, and $abs(S) = 1/2 binom(4p, 2p)$ (since $G_x = G_(x^c)$). Now, the number of edges in $G_x sect G_y$ is $
+        abs(G_x sect G_y) & = abs(x sect y) dot abs(x^c sect y^c) + abs(x^c sect y) dot abs(x sect y^c) \
         & = abs(x sect y)^2 + abs(x^c sect y)^2 \
-        & = d^2 + (2p - d)^2, quad d = abs(x sect y),
-    $ which is minimised when $d = abs(x sect y) = p$. Now let $S' subset.eq S$ have smaller diameter than that of $S$: $S' = {G_x: x in A}$. So we must have that $forall x != y in A$, $abs(x sect y) != p$ (as otherwise diameter of $S'$ is equal to diameter of $S$). Thus $abs(A) <= 2 binom(4p, p - 1)$.
+        & = d^2 + (2p - d)^2, quad "where" d = abs(x sect y),
+    $ which is minimised when $d = abs(x sect y) = p$.
+    #unmarked-fig[
+        #figure(
+            canvas({
+                import cetz.draw: *
+                import cetz.decorations: *
 
-    So number of pieces needed is at least $
+                scale(x: 6, y: 6)
+                rect((0, 0), (1, 1), name: "4p")
+                content("4p.south", box(inset: (top: 0.5em))[$[4p]$], anchor: "north")
+                set-style(stroke: diagram-colors.red)
+                line((0.5, 0), (0.5, 1))
+                flat-brace((0.01, 1.02), (0.49, 1.02), outer-curves: 0.2, amplitude: 0.05, name: "x")
+                flat-brace((0.51, 1.02), (0.99, 1.02), outer-curves: 0.2, amplitude: 0.05, name: "xc")
+                content("x.spike", box(inset: (bottom: 0.5em))[$x$], anchor: "south")
+                content("xc.spike", box(inset: (bottom: 0.5em))[$x^c$], anchor: "south")
+                set-style(stroke: diagram-colors.blue)
+                line((0, 1/4), (1, 3/4))
+                line((1/4, 1/8), (3/4, 3/8), mark: (start: "straight", end: "straight", width: 0.025cm, length: 0.2cm / 6), name: "y")
+                line((1/4, 5/8), (3/4, 7/8), mark: (start: "straight", end: "straight", width: 0.025cm, length: 0.2cm / 6), name: "yc")
+                content("y.centroid", box(inset: (left: 0.5em, top: 0.5em))[$y$], anchor: "west")
+                content("yc.centroid", box(inset: (left: 0.5em, top: 0.5em))[$y^c$], anchor: "west")
+            })
+        )
+    ]
+    Now let $S' subset.eq S$ have smaller diameter than that of $S$: $S' = {G_x: x in A}$, where $A subset.neq [4p]^(2p)$. So we must have that $forall x != y in A$, $abs(x sect y) != p$ (as otherwise diameter of $S'$ is equal to diameter of $S$). Thus $abs(A) <= 2 binom(4p, p - 1)$ by @crl:there-are-few-2p-size-sets-with-non-half-intersection.
+
+    So by @prop:upper-bound-on-less-than-half-first-binomial-coefficients, the number of pieces needed is at least $
         (1/2 binom(4p, 2p))/(2 binom(4p, p - 1)) & >= (c dot 2^(4p) \/ sqrt(p))/(e^(-p \/ 8) 2^(4p)) quad & "for some" c \
         & >= (c')^p quad & "for some" c' \
-        & >= (c'')^sqrt(n) quad & "for some" c''
+        & >= (c'')^sqrt(n) quad & "for some" c''.
     $
 ]

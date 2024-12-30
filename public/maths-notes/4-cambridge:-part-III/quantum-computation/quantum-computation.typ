@@ -1,5 +1,7 @@
 #import "@preview/quill:0.2.0": *
 #import "../../template.typ": *
+#import "../../diagram-style.typ": *
+#import "@preview/cetz:0.3.1" as cetz: canvas, draw
 #let name-abbrvs = (
     "Hidden Subgroup Problem (HSP)": "HSP",
     "Discrete Logarithm Problem (DLP)": "DLP",
@@ -11,8 +13,8 @@
 #let poly = math.op("poly")
 #let polylog = math.op("polylog")
 #let ip(a, b) = $angle.l #a, #b angle.r$
-#let ket(arg) = $#h(0.2pt) | #h(0.2pt) arg #h(0.2pt) angle.r$
-#let bra(arg) = $angle.l #h(0.2pt) arg #h(0.2pt) | #h(0.2pt)$
+#let ket(arg) = $lr(| #h(0.2pt) arg #h(0.2pt) angle.r, size: #0%)$
+#let bra(arg) = $lr(angle.l #h(0.2pt) arg #h(0.2pt) |, size: #0%)$
 #let braket(..args) = $angle.l #h(1pt) #args.pos().join(h(1pt) + "|" + h(1pt)) #h(1pt) angle.r$
 #let Ket(arg) = $lr(| #h(1pt) arg #h(1pt) angle.r)$
 #let Bra(arg) = $lr(angle.l #h(1pt) arg #h(1pt) |)$
@@ -27,8 +29,8 @@
 #let QFT = math.op("QFT")
 #let Pr = math.op("Pr")
 #let gen(..gens) = $angle.l #gens.pos().join(",") angle.r$
-#let Aut = math.op("Aut")
 #let Ctrl(U) = $C dash.en #h(0pt) #U$
+#let Aut = math.op("Aut")
 #let Rot = math.op("Rot")
 
 #set terms(indent: 16pt)
@@ -265,8 +267,7 @@
     - Similarly, for $G = ZZ\/(M_1) times dots.c times ZZ\/(M_r)$, $chi_g (h) = e^(2pi i (g_1 h_1 \/M_1 + dots.c + g_r h_r \/M_r))$ are the irreps.
 ]
 #algorithm([Quantum HSP solver for finite abelian $G$])[
-    The algorithm solves the @prb:hsp for finite abelian $G$. We work in the state space $H_abs(G) tp H_abs(X)$.
-    + Prepare the uniform superposition state $
+    + Working in the state space $H_abs(G) tp H_abs(X)$, prepare the uniform superposition state $
         1/sqrt(abs(G)) sum_(g in G) ket(g) ket(0)
     $ and query $U_f$ on it.
     + Measure the output register, then discard this register.
@@ -389,17 +390,19 @@ Quantum phase estimation is a unifying algorithmic primitive, e.g. there is an a
 ]<def:generalised-control>
 #algorithm("Quantum Phase Estimation")[
     Work over the space $\(CC^2\)^(tp n) tp CC^d$, where $\(CC^2\)^(tp n)$ is the $n$-qubit register, $CC^d$ is the "qudit" register.
-    + Apply the following circuit to $ket(0 ... 0) ket(v_phi)$: #figure(quantum-circuit(
-        lstick($"line"(n - 1)$), $H$, 3, ctrl(4), mqgate($QFT_(2^n)^(-1)$, n: 4), 1, [\ ],
-        // lstick($"line"(n - 2)$), $H$, 5, [\ ],/
-        lstick($dots.v$), [\ ],
-        lstick($"line"(1)$), $H$, 1, ctrl(2), 4, [\ ],
-        lstick($"line"(0)$), $H$, ctrl(1), 5, [\ ],
-        lstick($ket(v_phi)$), 1, $U^(2^0)$, $U^(2^1)$, midstick($dots.c$), $U^(2^(n - 1))$, 2,
-    ))
+    + Apply the following circuit to $ket(0 ... 0) ket(v_phi)$: #figure(
+        quantum-circuit(
+            lstick($"line"(n - 1)$), $H$, 3, ctrl(4), mqgate($QFT_(2^n)^(-1)$, n: 4), 1, [\ ],
+            // lstick($"line"(n - 2)$), $H$, 5, [\ ],/
+            lstick($dots.v$), [\ ],
+            lstick($"line"(1)$), $H$, 1, ctrl(2), 4, [\ ],
+            lstick($"line"(0)$), $H$, ctrl(1), 5, [\ ],
+            lstick($ket(v_phi)$), 1, $U^(2^0)$, $U^(2^1)$, midstick($dots.c$), $U^(2^(n - 1))$, 2,
+        )
+    ) We write $U_"PE"$ for this unitary part of the circuit.
     + Discard the qudit register holding $ket(v_phi)$, and measure the input qubits, yielding outcome $y_0 ... y_(n - 1)$ from lines $0, ..., n - 1$.
     + The estimate of $phi$ is $tilde(phi) = y \/ 2^n = y_0 \/ 2 + dots.c + y_(n - 1) \/ 2^n$.
-]
+]<alg:qpe>
 #remark[
     After $Ctrl(U^(2^(n - 1)))$, the input qubits are in the state $
         1/sqrt(2^n) sum_(x in {0, 1}^n) e^(2pi i phi x) ket(x).
@@ -409,7 +412,7 @@ Quantum phase estimation is a unifying algorithmic primitive, e.g. there is an a
     For all $alpha in RR$,
     + If $abs(alpha) <= pi$, then $abs(1 - e^(i alpha)) = 2 abs(sin(alpha\/2)) >= 2/pi abs(alpha)$.
     + If $alpha >= 0$, then $abs(1 - e^(i alpha)) <= alpha$.
-]
+]<lem:qpe-complex-modulus-inequalities>
 #proofhints[
     For both, think graphically.
 ]
@@ -423,7 +426,7 @@ Quantum phase estimation is a unifying algorithmic primitive, e.g. there is an a
     + For all $epsilon > 0$, $Pr(abs(tilde(phi) - phi) > epsilon) = O(1/(2^n epsilon))$. So for any desired accuracy $epsilon$, the probability of failure decays exponentially with the number of bits of precision (lines in the circuit).
 ]<thm:phase-estimation>
 #proofhints[
-    Let $delta(y) = phi - y\/2^n = phi - tilde(phi)$. Show the probability of the measuring yielding outcome $y$ is $
+    Let $delta(y) = phi - y\/2^n + epsilon_y$, where $epsilon_y in {-1, 0, 1}$ is such that $delta(y) in [-1\/2, 1\/2]$. Show the probability of the measuring yielding outcome $y$ is $
         p_y = 1/2^(2n) abs((1 - e^(2^n 2 pi i delta(y)))/(1 - e^(2pi i delta(y))))^2.
     $
     + Find an upper bound on $delta(a)$ where $a$ is the closest $n$-bit approximation of $phi$.
@@ -434,7 +437,38 @@ Quantum phase estimation is a unifying algorithmic primitive, e.g. there is an a
 #proof[
     Let $
         ket(A) = 1/sqrt(2^n) sum_(x = 0)^(2^n - 1) e^(2pi i phi x) ket(x).
-    $ Let $delta(y) = phi - y\/2^n = phi - tilde(phi)$. Since $QFT^(-1) ket(x) = 1/sqrt(2^n) sum_(y = 0)^(2^n - 1) e^(-2pi i x y \/ 2^n) ket(y)$, we have $
+    $ Let $delta(y) = phi - y\/2^n + epsilon_y$, where $epsilon_y in {-1, 0, 1}$ is such that $delta(y) in [-1\/2, 1\/2]$. $delta(y)$ can be thought of as the signed (positive if clockwise, negative if anticlockwise) arc distance between the points $y \/ 2^n$ and $phi$ on a circle of circumference $1$.
+    #unmarked-fig(
+        figure(
+            canvas({
+                import cetz.draw: *
+
+                let r = 2
+                circle((0, 0), radius: r)
+                let n = 16
+                for i in range(n) {
+                    circle((r * calc.sin(2 * calc.pi * i / n), r * calc.cos(2 * calc.pi * i / n)), ..point-style, fill: black, name: "point-" + str(i))
+                }
+                content("point-0.north", box(inset: (bottom: 0.5em))[$y = 0$], anchor: "south")
+                content("point-7.south-east", box(inset: (left: 0.25em))[$y = 7$], anchor: "north-west")
+                content("point-13.west", box(inset: (right: 0.25em))[$y = 13$], anchor: "east")
+                let phi-angle = 2rad * calc.pi * 1.5 / 16
+                circle((r * calc.cos(phi-angle), r * calc.sin(phi-angle)), ..point-style, fill: diagram-colors.red, name: "phi")
+                content("phi.north-east", box(inset: (left: 0.25em))[$phi$], anchor: "south-west")
+                let y1-angle = 2rad * calc.pi * 7 / 16
+                let y2-angle = 2rad * calc.pi * 13 / 16
+                circle((r * calc.cos(y1-angle), r * calc.sin(y1-angle)), ..point-style, fill: diagram-colors.blue)
+                circle((r * calc.cos(y2-angle), r * calc.sin(y2-angle)), ..point-style, fill: diagram-colors.blue)
+                set-style(stroke: diagram-colors.red + 2pt, mark: (end: ">", fill: diagram-colors.red))
+                c-arc((0, 0), r - 0.3, y1-angle, phi-angle + 0.01rad, name: "positive", mark: (end: ">"))
+                content("positive.arc-center", box(inset: (top: 0.5em))[$+$], anchor: "north")
+                c-arc((0, 0), r - 0.3, y2-angle - 2rad * calc.pi, phi-angle - 0.01rad, name: "negative")
+                content("negative.arc-center", box(inset: (right: 0.5em))[$-$], anchor: "east")
+            }),
+            caption: [Example when $n = 4$: the $16$ possible values of $y$ are equally spaced around the circle. $delta(13)$ is positive, $delta(7)$ is negative.]
+        )
+    )
+    Since $QFT^(-1) ket(x) = 1/sqrt(2^n) sum_(y = 0)^(2^n - 1) e^(-2pi i x y \/ 2^n) ket(y)$, we have $
         QFT^(-1) ket(A) = 1/2^n sum_(y = 0)^(2^n - 1) sum_(x = 0)^(2^n - 1) e^(2pi i x delta(y)) ket(y)
     $ so the probability of measuring outcome $y$ is $
         p_y = Pr(tilde(phi) = y/2^n) = 1/2^(2n) abs((1 - e^(2^n 2 pi i delta(y)))/(1 - e^(2pi i delta(y))))^2.
@@ -442,7 +476,7 @@ Quantum phase estimation is a unifying algorithmic primitive, e.g. there is an a
     + Let $alpha = 2^n 2pi delta(a)$, where $a$ is the closest $n$-bit approximation of $phi$. Note we can imagine the possible values of $tilde(phi)$ as lying on the unit circle, spaced by angle $(2pi) / 2^n$. This gives a visual intuition to the fact that $abs(delta(a)) <= 1/(2^(n + 1))$. Hence $abs(alpha) <= pi$, and so by the above lemma, $
         p_a = Pr(tilde(phi) = a) >= 1/(2^(2n)) ((2^(n + 2) delta(a))/(2pi delta(a)))^2 = 4/pi^2.
     $
-    + Note that $abs(1 - e^(2^n 2 pi i delta(y))) <= 2$ by the triangle inequality. Let $B = {y in {0, 1}^n: abs(delta(y)) > epsilon}$ denote the set of "bad" values of $y$. For all $y in {0, 1}^n$, we have $delta(y) in [-1, 1]$. If $abs(delta(y)) <= 1\/2$, then, by the above lemma, we have $abs(1 - e^(2pi i delta(y))) >= 4 abs(delta(y))$. If $delta(y) > 1\/2$, then $delta(y) - 1 in [-1 \/ 2, 1 \/ 2]$, so by the above lemma, $abs(1 - e^(2pi i delta(y))) >= 4 abs(delta(y) - 1)$ hence $
+    + Note that $abs(1 - e^(2^n 2 pi i delta(y))) <= 2$ by the triangle inequality. Let $B = {y in {0, 1}^n: abs(delta(y)) > epsilon}$ denote the set of "bad" values of $y$. For all $y in {0, 1}^n$, we have $delta(y) in [-1 \/ 2, 1 \/ 2]$. So by @lem:qpe-complex-modulus-inequalities, we have $abs(1 - e^(2pi i delta(y))) >= 4 abs(delta(y))$, thus $
         p_y <= 1/2^(2n) (2/(4 delta(y)))^2 = 1 / (2^(2n + 2) delta(y)^2).
     $ Let $delta^+ = min{delta(y): y in B, delta(y) > 0}$ be the smallest $delta(y)$ such that $delta(y) > epsilon$, and $delta^- = max{delta(y): y in B: delta(y) < 0}$ be the largest $delta(y)$ such that $delta(y) < -epsilon$. For all $y in B$, we have $delta(y) = delta^+ + k_y \/ 2^n$ or $delta(y) = delta^- - k_y \/ 2^n$ for some $k_y in NN$, so $abs(delta(y)) > epsilon + k_y \/ 2^n$. Note that each $k in NN$, $k = k_y$ for at most $2$ values of $y in B$. Hence, $
         Pr(abs(delta(y)) > epsilon) & = Pr(y in B) = sum_(y in B) p_y \
@@ -618,13 +652,6 @@ Amplitude amplification is an extension of the key insights in Grover's algorith
 
 We want to use a quantum system to simulate the evolution/dynamics of another quantum system, given its Hamiltonian $H$. For an $n$-qubit system, in general this requires $O(2^n)$ time on a classical computer. For some physically interesting classes of $H$, we have quantum algorithms that run in $O(poly(n))$ time.
 
-#proposition[
-    The Schrodinger equation which governs the time evolution of a physical state $ket(psi(t))$, which is given by (assuming $planck.reduce = 1$) $
-        dif / (dif t) ket(psi(t)) = -i H ket(psi(t)),
-    $ has solution $
-        ket(psi(t)) = e^(-i H t) ket(psi(0))
-    $ when $H$ is time-independent.
-]<prop:solution-to-finite-dimensional-time-independent-schrodinger-equation>
 #definition[
     The *exponential* of a matrix $A in CC^(n times n)$ is defined as $
         exp(A) = e^A := sum_(k = 0)^oo A^k / k!.
@@ -633,13 +660,47 @@ We want to use a quantum system to simulate the evolution/dynamics of another qu
 #theorem[
     If $H$ is Hermitian, then $e^(-i H t)$ is unitary for all $t in RR$.
 ]<thm:evolution-operator-is-unitary-for-hermitian-matrices>
-#definition[
-    $U(t) = e^(-i H t)$ is called the *evolution operator*. Given $H$ and $t > 0$, we want to simulate $U(t)$ accurately.
-]<def:evolution-operator>
+#proofhints[
+    Straightforward.
+]
+#proof[
+    We have $(e^(-i H t))^* = e^(i H t)$ since $H = H^*$, and since $[-i H t, i H t] = 0$, $e^(-i H t) e^(i H t) = e^0 = I$.
+]
 #proposition[
-    If $A in CC^(n times n)$ has spectrum ${(lambda_i, ket(e_i)): i in [n]}$, then $
+    If $A in CC^(n times n)$ has orthonormal spectrum ${(lambda_i, ket(e_i)): i in [n]}$, then $
         exp(A) = sum_(i = 1)^n exp(lambda_i) ket(e_i).
     $
+]<prop:exponential-of-matrix-is-exponential-applied-to-spectrum>
+#proofhints[
+    Straightforward.
+]
+#proof[
+    By orthonormality, we have $
+        A^k = (sum_(i = 1)^n lambda_i ket(e_i))^k = sum_(i = 1)^n lambda_i^k ket(e_i).
+    $ Hence, $
+        exp(A) = sum_(k = 0)^oo A^k / k! = sum_(i = 1)^n sum_(k = 0)^oo lambda_i^k / k! ket(e_i).
+    $
+]
+#definition[
+    Given a Hamiltonian $H$, the unitary $U(t) = e^(-i H t)$ is called the *evolution operator* of $H$. Given $H$ and $t > 0$, we want to simulate $U(t)$ accurately.
+]<def:evolution-operator>
+#proposition[
+    The Schrodinger equation which governs the time evolution of a physical state $ket(psi(t))$, given by (assuming $planck.reduce = 1$) $
+        dif / (dif t) ket(psi(t)) = -i H ket(psi(t)),
+    $ has solution $
+        ket(psi(t)) = e^(-i H t) ket(psi(0))
+    $ when $H$ is time-independent.
+]<prop:solution-to-finite-dimensional-time-independent-schrodinger-equation>
+#proofhints[
+    Straightforward.
+]
+#proof[
+    Let $H$ have orthonormal spectrum ${(lambda_j, ket(e_j)): j in [n]}$. By @prop:exponential-of-matrix-is-exponential-applied-to-spectrum, we have $
+        ket(psi(t)) = e^(-i H t) ket(psi(0)) = sum_(j = 1)^n e^(-i lambda_j t) ket(e_j) braket(e_j, psi(0)).
+    $ Hence, $
+        dif / (dif t) ket(psi(t)) & = sum_(j = 1)^n -i lambda_j t e^(-i lambda_j t) ket(e_j) braket(e_j, psi(0)) \
+        & = (sum_(j = 1)^n -i lambda_j ket(e_j) bra(e_j)) sum_(k = 1)^n e^(-i lambda_k t) ket(e_k) braket(e_k, psi(0))
+    $ by orthonormality.
 ]
 #definition[
     The *operator norm* (*spectral norm*) of an operator $A: H -> H$ acting on the space $H$ of states is $
@@ -651,11 +712,36 @@ We want to use a quantum system to simulate the evolution/dynamics of another qu
         norm(A) = max{abs(lambda_1), ..., abs(lambda_n)}.
     $
 ]<thm:norm-of-matrix-is-max-abs-value-of-its-eigenvalues>
+#proofhints[
+    Straightforward.
+]
+#proof[
+    Let ${(lambda_j, ket(e_j)): j in [n]}$ be the orthonormal spectrum of $A$. For $>=$, we have $
+        norm(A) >= max{norm(A ket(e_1)), ... norm(A ket(e_n))} = max{norm(lambda_1 ket(e_1)), ..., norm(lambda_n ket(e_n))} = max{abs(lambda_1), ..., abs(lambda_n)}.
+    $ For $<=$, let $ket(psi) in H$ with $norm(psi) = 1$. The $ket(e_j)$ form an orthonormal basis, so $ket(psi) = sum_(j = 1)^n a_j ket(e_j)$ for some coefficients $a_j in [-1, 1]$. Let $lambda' = max{abs(lambda_1), ..., abs(lambda_n)}$. Then $
+        norm(A ket(psi))^2 & = norm(sum_(j = 1)^n a_j lambda_j ket(e_j))^2 \
+        & = sum_(j = 1)^n abs(a_j)^2 abs(lambda_j)^2 quad & "by orthonormality" \
+        & <= sum_(j = 1)^n abs(a_j)^2 lambda'^2 = lambda'^2.
+    $
+]
 #proposition[
     The operator norm satisfies the following properties:
-    + *Submultiplicative*: $norm(A B) <= norm(A) norm(B)$
+    + *Submultiplicative*: $norm(A B) <= norm(A) dot norm(B)$.
     + *Triangle inequality*: $norm(A + B) <= norm(A) + norm(B)$.
 ]<prop:operator-norm-is-submultiplicative-and-subadditive>
+#proofhints[
+    Straightforward.
+]
+#proof[
+    + Let $ket(psi_0)$ achieve the maximum in $norm(A B) = max{norm(A B ket(psi)): ket(psi) in H, norm(ket(psi)) = 1}$. Let $b = norm(B ket(psi_0))$. We have $
+        1/b norm(A B) = 1/b norm(A B ket(psi_0)) = norm(A (B ket(psi_0))/b) <= norm(A),
+    $ hence $norm(A B) <= norm(A) dot b$, but also $b <= norm(B)$.
+    + We have $
+        norm(A + B) & = max{norm(A ket(psi) + B ket(psi)): ket(psi) in H, norm(psi) = 1} \
+        & <= max{norm(A ket(psi)) + norm(B ket(psi)): ket(psi) in H, norm(psi) = 1} \
+        & <= max{norm(A ket(psi)): ket(psi) in H, norm(psi) = 1} + max{norm(B ket(psi)): ket(psi) in H, norm(psi) = 1}.
+    $
+]
 #definition[
     Let $U, tilde(U): H -> H$ be operators. $tilde(U)$ *$epsilon$-approximates* $U$ if $
     norm(U - tilde(U)) <= epsilon,
@@ -663,9 +749,20 @@ $ i.e. for all normalised states $ket(psi)$, $norm(U ket(psi) - tilde(U) ket(psi
 ]<def:epsilon-approximation>
 #lemma[
     Let $U_1, ..., U_m, tilde(U)_1, ..., tilde(U)_m$ be unitaries. Suppose $tilde(U)_i$ $epsilon$-approximates $U_i$ for each $1 <= i <= m$. Then $
-        norm(U_n med dots.c med U_1 - tilde(U)_n med dots.c med tilde(U)_1) <= n epsilon
+        norm(U_m med dots.c med U_1 - tilde(U)_m med dots.c med tilde(U)_1) <= m epsilon.
     $ So the error increases at most linearly.
 ]<lem:approximation-of-unitary-product-grows-linearly>
+#proofhints[
+    Straightforward.
+]
+#proof[
+    By induction on $m$. The case $m = 1$ is true by assumption. Assume it is true for $m = k$. We have $
+        & norm(U_(k + 1) thick cdots thick U_1 - tilde(U)_(k + 1) thick cdots thick tilde(U)_1) \
+        = & norm(U_(k + 1) U_k thick cdots thick U_1 - tilde(U)_(k + 1) U_k thick cdots thick U_1 + tilde(U)_(k + 1) U_k thick cdots thick U_1 - tilde(U)_(k + 1) tilde(U)_k thick cdots thick tilde(U)_1) \
+        <= & norm((U_(k + 1) - tilde(U)_(k + 1)) U_k thick cdots thick U_1) + norm(tilde(U)_(k + 1) (U_k thick cdots thick U_1 - tilde(U)_k thick cdots thick tilde(U)_1)) \
+        <= & epsilon dot 1 + 1 dot k epsilon = (k + 1) epsilon
+    $ by assumption, @prop:operator-norm-is-submultiplicative-and-subadditive and the inductive hypothesis.
+]
 #definition[
     $H$ is a *$k$-local Hamiltonian on $n$ qubits* if we can write $
         H = sum_(j = 1)^m H_j
@@ -717,7 +814,7 @@ $ i.e. for all normalised states $ket(psi)$, $norm(U ket(psi) - tilde(U) ket(psi
     $
 ]<lem:lie-trotter-product-formula>
 #proofhints[
-    Write $e^(-i A) = I - i A + E_A$ and show that $norm(E_A) = O(delta^2)$, do the same for two other matrices.b
+    Write $e^(-i A) = I - i A + E_A$ and show that $norm(E_A) = O(delta^2)$, do the same for two other matrices.
 ]
 #proof[
     We have $
@@ -740,20 +837,30 @@ $ i.e. for all normalised states $ket(psi)$, $norm(U ket(psi) - tilde(U) ket(psi
 #proposition[
     There is a $poly(n, 1 \/ epsilon, t)$-time quantum algorithm for simulating the evolution operators of $k$-local Hamiltonians.
 ]<prop:simulation-for-general-k-local-hamiltonian>
+#proofhints[
+    - Let $tilde(H)_j = H_j t \/ M$ for some constant $M$ to be determined later. Show that $
+        e^(-i tilde(H)_1) med dots.c med e^(-i tilde(H)_m) = e^(-i (tilde(H)_1 + dots.c + tilde(H)_m)) + O(m^3 tilde(delta)^2),
+    $ assuming a bound on $norm(tilde(H)_j)$, which you should determine.
+    - Using that $
+        U(t) = e^(-i(H_1 + dots.c + H_m)t) = (e^(-i (H_1 + dots.c + H_m) t \/ M))^M
+    $ and the above, find an $O(...)$ lower bound for $M$.
+]
 #proof[
-    Let $H = sum_(j = 1)^m H_j$ be a $k$-local Hamiltonian and $U(t) = e^(-i H t)$ be its evolution operator. We can assume that not all the $H_j$ commute, otherwise we are done by @prop:simulation-for-k-local-hamiltonian-with-commuting-local-terms. Assume $t = 1$ and each $norm(H_j) <= delta$ with $delta <= 1 \/ m$, since then $norm(H_1 + dots.c + H_ell) <= ell delta$, and we need the @lem:lie-trotter-product-formula approximation to hold for all $ell in [m]$. We have $
-        & (e^(-i H_1) e^(-i H_2)) med dots.c med e^(-i H_m) \
-        & = (e^(-i (H_1 + H_2)) + O(delta^2)) e^(-i H_3) dots.c e^(-i H_m) quad & #[by @lem:lie-trotter-product-formula] \
-        & = e^(-i (H_1 + H_2)) e^(-i H_3) dots.c e^(-i H_m) + O(delta^2) quad & #[by submultiplicativity] \
-        & = (e^(-i(H_1 + H_2 + H_3)) + O((2 delta)^2)) e^(-i H_4) med dots.c med e^(-i H_m) + O(delta^2).
-    $ since each $e^(-i H_j)$ is unitary, so has unit norm. Repeatedly applying @lem:lie-trotter-product-formula, we obtain $
-        e^(-i H_1) med dots.c med e^(-i H_m) & = e^(-i (H_1 + dots.c + H_m)) + O(delta^2) + dots.c + O(((m - 1) delta)^2) \
-        & = e^(-i (H_1 + dots.c + H_m)) + O(m^3 lambda^2).
-    $ Let the $O(m^3 lambda^2)$ error be $E m^3 lambda^2$. For general $norm(H_i)$ and $t > 0$, introduce $M$ large (to be chosen later), and define $tilde(H)_j = H_j t \/ M$. Note that $norm(tilde(H)_j) <= delta t \/ M =: tilde(delta)$. Now $
-        U(t) = e^(-i(H_1 + dots.c + H_m)t) = (e^(-i (H_1 + dots.c + H_m) t \/ M))^M.
-    $ So we need the error in approximating $e^(-i H t \/ M)$ to be at most $epsilon \/ M$. So using the above error bound, we want $E m^3 tilde(delta)^2 < epsilon \/ M$, i.e. $M > E m^3 (delta t)^2 \/ epsilon$. With this choice of $M$, we have $
+    Let $H = sum_(j = 1)^m H_j$ be a $k$-local Hamiltonian and $U(t) = e^(-i H t)$ be its evolution operator. If all the $H_j$ commute, then we are done by @prop:simulation-for-k-local-hamiltonian-with-commuting-local-terms. Otherwise, define $tilde(H)_j = H_j t \/ M$ for each $j in [m]$, for some fixed constant $M$ to be determined later. We want each $norm(tilde(H)_j) <= tilde(delta)$ with $tilde(delta) <= 1 \/ m$, since then $norm(tilde(H)_1 + dots.c + tilde(H)_ell) <= ell tilde(delta)$, and we need the @lem:lie-trotter-product-formula approximation to hold for all $ell in [m]$. We have $
+        & (e^(-i tilde(H)_1) e^(-i tilde(H)_2)) med dots.c med e^(-i tilde(H)_m) \
+        = & (e^(-i (tilde(H)_1 + tilde(H)_2)) + O(tilde(delta)^2)) e^(-i tilde(H)_3) dots.c e^(-i tilde(H)_m) quad & #[by @lem:lie-trotter-product-formula] \
+        = & e^(-i (tilde(H)_1 + tilde(H)_2)) e^(-i tilde(H)_3) dots.c e^(-i tilde(H)_m) + O(tilde(delta)^2) quad & #[by submultiplicativity] \
+        = & (e^(-i(tilde(H)_1 + tilde(H)_2 + tilde(H)_3)) + O((2 tilde(delta))^2)) e^(-i tilde(H)_4) med dots.c med e^(-i tilde(H)_m) + O(tilde(delta)^2).
+    $ since each $e^(-i tilde(H)_j)$ is unitary, so has unit norm. Repeatedly applying @lem:lie-trotter-product-formula, we obtain $
+        e^(-i tilde(H)_1) med dots.c med e^(-i tilde(H)_m) & = e^(-i (tilde(H)_1 + dots.c + tilde(H)_m)) + O(tilde(delta)^2) + dots.c + O(((m - 1) tilde(delta))^2) \
+        & = e^(-i (tilde(H)_1 + dots.c + tilde(H)_m)) + O(m^3 tilde(delta)^2).
+    $ Let the $O(m^3 tilde(delta)^2)$ error be $E m^3 tilde(delta)^2$. Now $
+        U(t) = e^(-i(H_1 + dots.c + H_m)t) = (e^(-i (H_1 + dots.c + H_m) t \/ M))^M = (e^(-i (tilde(H)_1 + dots.c + tilde(H)_m)))^M.
+    $ So we need the error in approximating $e^(-i H t \/ M)$ to be at most $epsilon \/ M$, so we require $E m^3 tilde(delta)^2 < epsilon \/ M$. Let $delta = tilde(delta) M \/ t$ (so that $norm(H_j) <= delta$ for each $j$): we want $norm(H_j) <= delta = tilde(delta) M \/ t <= M \/ (m t)$, i.e. $M >= m t norm(H_j)$ for all $j$. So any $
+        M > max{E m^3 (delta t)^2 \/ epsilon, m t norm(H_1), ... m t norm(H_m)} = O(m^3 (delta t)^2 \/ epsilon)
+    $ suffices. We have $
         norm(e^(-i H_1 t \/ M) med dots.c med e^(-i H_m t \/ M) - e^(-i(H_1 + dots.c + H_m) t \/ M)) <= epsilon \/ M.
-    $ Hence by @lem:approximation-of-unitary-product-grows-linearly, $
+    $ and so by @lem:approximation-of-unitary-product-grows-linearly, $
         norm(e^(-i H_1 t) med dots.c med e^(-i H_m t) - e^(-i(H_1 + dots.c + H_m) t)) <= epsilon.
     $ The circuit is composed of $M m$ gates of the form $e^(-i H_j t \/ M)$, so the entire circuit consists of $O(m^4 (delta t)^2 \/ epsilon)$ of these gates. Recall that if $H$ is $k$-local, then $m <= binom(n, k) = O(n^k)$. So we have a circuit with $C = O(n^(4k) (delta t)^2 \/ epsilon)$ gates of the form $e^(-i H_j t \/ M)$ approximating $e^(-i H t)$ to precision $epsilon$. By @thm:solovay-kitaev, each of these gates can be $(epsilon \/ C)$-approximated by $O(log^4 (C \/ epsilon))$ gates from an elementary universal gate set. So the final complexity is $tilde(O)(n^(4k) (delta t)^2 \/ epsilon)$ which is $poly(n, 1 \/ epsilon, t)$.
 ]
@@ -765,15 +872,6 @@ $ i.e. for all normalised states $ket(psi)$, $norm(U ket(psi) - tilde(U) ket(psi
 
 = The Harrow-Hassidim-Lloyd (HHL) algorithm
 
-#problem("Linear System Solution Problem")[
-    / Input: matrix $A in CC^(N times N)$, vector $b in CC^N$.
-    / Task: find a vector $x in CC^N$ such that $A x = b$.
-]
-#remark[
-    The best known classical algorithms for solving linear systems require $O(poly(N) dot log(1 \/ epsilon))$ time. Note that just reading the inputs $A$ and $b$, or writing the solution $x$ requires $O(poly(N))$ time.
-    
-    Instead of computing the full solution $x$, the HHL algorithm estimates properties of $x$ of the form $mu = x^T M x$ (i.e. quadratic forms), where $M$ is Hermitian, e.g. the total weight assigned by $x$ to a subset of indices/components. Classically, there is no better known way of doing this than computing the entire solution first. HHL can solve such tasks in $O(polylog(N) dot 1/epsilon dot kappa^2)$ time, where $kappa$ is the condition number of $A$. When $kappa = polylog(N)$, this is an exponential speedup over the best known classical algorithms.
-]
 #definition[
     The *condition number* of a square matrix $A in CC^(N times N)$ is defined as $
         kappa(A) := cases(
@@ -783,10 +881,10 @@ $ i.e. for all normalised states $ket(psi)$, $norm(U ket(psi) - tilde(U) ket(psi
     $ $kappa(A)$ can be thought of a measure of "how invertible" $A$ is. We say $A$ is *well-conditioned* if $kappa(A)$ is small.
 ]<def:condition-number>
 #proposition[
-    If $A in CC^(N times N)$ is Hermitian with eigenvalues $lambda_1, ..., lambda_N$, then $
+    If $A in CC^(N times N)$ is Hermitian with non-zero eigenvalues $lambda_1, ..., lambda_N$, then $
         kappa(A) = max{abs(lambda_i): i in [N]} / min{abs(lambda_i): i in [N]}.
     $
-]
+]<prop:condition-number-of-hermitian-matrix-is-ratio-of-max-abs-eigenvalue-and-min-abs-eigenvalue>
 #proofhints[
     Straightforward.
 ]
@@ -800,14 +898,19 @@ $ i.e. for all normalised states $ket(psi)$, $norm(U ket(psi) - tilde(U) ket(psi
         & = max{abs(lambda_i): i in [N]} / min{abs(lambda_i): i in [N]}.
     $
 ]
-Preliminary requirements for HHL algorithm to be applicable:
-- We also assume that $vd(b)$ is normalised, (or that $norm(b)_2$ is efficiently computable), and that the state $ket(b)$ can be efficiently prepared on a quantum computer.
+#problem("Linear System Solution Problem")[
+    / Input: matrix $A in CC^(N times N)$, vector $b in CC^N$.
+    / Task: find a vector $x in CC^N$ such that $A x = b$.
+]
+#remark[
+    The best known classical algorithms for solving linear systems require $O(poly(N) dot log(1 \/ epsilon))$ time. Note that even just reading the inputs $A$ and $b$, or writing the solution $x$ requires $O(poly(N))$ time.
+    
+    Instead of computing the full solution $x$, the HHL algorithm estimates properties of $x$ of the form $mu = x^T M x$ (i.e. quadratic forms), where $M$ is Hermitian, e.g. the total weight assigned by $x$ to a subset of indices/components.
+]
 
 The quantum algorithm will work on $n = log N$ qubits and will never need to "write down" $A$, $b$, or $x = A^(-1) b$ as lists of numbers. It will output a state $ket(hat(x)')$ that is $epsilon$-close to $ket(hat(x))$, and $ket(hat(x))$ is proportional to $A^(-1) ket(b)$ in $O(poly(n) dot kappa^2 dot 1/epsilon)$. Using $ket(hat(x)')$ a further $O(poly(n) kappa^2 \/ epsilon)$ times, we can estimate any $mu = x^T M x$.
 
-The best known classical algorithm requires $O(poly(N) dot kappa dot log(1/epsilon))$ time, even with assumptions comparable to our assumptions for HHL.
 
-Note that when $epsilon$ is constant (or even $epsilon = O(1/poly(n))$) and for well-conditioned $A$, we have an exponential speedup.
 
 #definition[
     Given an angle $c$, define the *controlled-rotation* unitary $Ctrl(Rot)$ linearly by $
@@ -817,15 +920,29 @@ Note that when $epsilon$ is constant (or even $epsilon = O(1/poly(n))$) and for 
 
 #algorithm("HHL")[
     We are given $ket(b) = 1/norm(b)_2 sum_(i = 0)^(N - 1) b_i ket(i)$.
-    + Apply $U_"PE"$ for the unitary $e^(-i A)$ (this is implemented by Hamiltonian simulation) with $m$ bits of precision on the state $ket(b) ket(0)^(tp m)$.
+    + Apply the unitary part of for the unitary $e^(-i A)$ (this is implemented by Hamiltonian simulation) with $m$ bits of precision on the state $ket(b) ket(0)^(tp m)$.
     + Apply $Ctrl(Rot)$ to the state.
     + Perform a *post-selection* step: measure the last qubit, and if the outcome is $0$, reject and go back to step 1, otherwise accept.
     + Perform a measurement in the $M$ basis on the resulting state.
-    + Repeat all of the above $O(log(1/eta) \/ delta^2)$ times and compute the empirical mean of the measurements.
+    + Repeat all of the above $O(log(1/eta) \/ delta^2)$ times and compute the empirical mean of the measurements, where $eta$ controls the probability of success and $delta$ controls the approximation error.
+]<alg:hhl>
+#remark[
+    - We can also use HHL for non-Hermitian $A$: double the system size and set $
+        tilde(A) = mat(0, A^dagger; A, 0), quad tilde(b) = vec(0, b).
+    $ Then run HHL on $tilde(A)$ and $tilde(b)$: if $A x = b$, then $tilde(A) tilde(x) = tilde(b)$ where $tilde(x) = vec(x, 0)$.
+    - We can also use HHL for non-Hermitian $M$: run HHL on $M_1 = 1/2 \(M + M^dagger\)$ and $M_2 = 1/(2i) \(M - M^dagger\)$ (which are Hermitian) to give estimates $hat(mu)_1$ and $hat(mu)_2$, then combine to give $hat(mu) := hat(mu)_1 + i hat(mu)_2$.
+]
+#theorem("Chernoff-Hoeffding")[
+    For a random variable $X$ on $[a, b]$ with mean $mu$, define the RV $overline(X) = 1/k (X_1 + dots.c + X_k)$, where the $X_i$ are IID with same distribution as $X$. Then $
+        Pr\(abs(overline(X) - mu\) > epsilon) <= e^(-2k delta^2 \/ (b - a)^2).
+    $
+]
+#proof[
+    Omitted.
 ]
 #theorem[
-    Under the following assumptions, the HHL algorithm computes a estimate $hat(mu)$ of $mu = x^T M x$ to accuracy $delta$, with probability at least $1 - eta$, in $O(...)$ time:
-    - The state $ket(b)$ can be prepared exactly and efficiently.
+    Under the following assumptions, the @alg:hhl algorithm computes a estimate $hat(mu)$ of $mu = x^T M x$ to accuracy $delta$, with probability at least $1 - eta$, in $O(...)$ time:
+    - $norm(b)_2$ is $1$ (or is efficiently computable), and the state $ket(b)$ can be prepared exactly and efficiently.
     - The unitary $Ctrl(Rot)$ can be implemented exactly and efficiently.
     - Measurements in the $M$ basis can be performed efficiently.
     - There is an efficient Hamiltonian simulation algorithm for $A$, i.e. $U(t) = e^(-i A t)$ can be implemented with $O(poly(n) dot t)$ gates.
@@ -833,31 +950,23 @@ Note that when $epsilon$ is constant (or even $epsilon = O(1/poly(n))$) and for 
 #remark[
     The condition that there is an efficient Hamiltonian simulation algorithm for $A$ holds for local Hamiltonians, but also for the larger class, which naturally occurs in applications, of locally-computable and row-sparse (every row contains at most $O(polylog (N))$ non-zero entries) matrices.
 ]
-#remark[
-    - We can also use HHL for non-Hermitian $A$: double the system size and set $
-        tilde(A) = mat(0, A^dagger; A, 0), quad tilde(b) = vec(0, b).
-    $ Then run HHL on $tilde(A)$ and $tilde(b)$: if $A x = b$, then $tilde(A) tilde(x) = tilde(b)$ where $tilde(x) = vec(x, 0)$.
-    - We can also use HHL for non-Hermitian $M$: run HHL on $M_1 = 1/2 \(M + M^dagger\)$ and $M_2 = 1/(2i) \(M - M^dagger\)$ (which are Hermitian) to give estimates $hat(mu)_1$ and $hat(mu)_2$, then combine to give $hat(mu) := hat(mu)_1 + i hat(mu)_2$.
-]
-[
-    Assume that Hamiltonian simulation and phase estimation are exact, let $A = sum_(i = 1)^N lambda_i ket(v_i) bra(v_i)$, assume $lambda_"max" = 1$, and assume that $kappa(A)$ is known or bounded $<= kappa_max$. This means $abs(lambda_i) in [1\/kappa_max, 1]$ for each $i$. Work in the $n$-qubit Hilbert space spanned by ${ket(0), ..., ket(N - 1)}$.
-
-    Write $
+#proof[
+    For simplicity, we assume that Hamiltonian simulation and phase estimation are exact. Let $
+        A = sum_(i = 1)^N lambda_i ket(v_i) bra(v_i)
+    $ be the spectral decomposition of $A$. Assume that $max{abs(lambda_1), ..., abs(lambda_n)} = 1$ and that $kappa(A)$ is known or bounded above by some value $kappa_max$. Writing $kappa = kappa(A)$, we have by @prop:condition-number-of-hermitian-matrix-is-ratio-of-max-abs-eigenvalue-and-min-abs-eigenvalue that $abs(lambda_i) in [1\/kappa, 1]$ for each $i in [N]$. Work in the $n$-qubit Hilbert space spanned by ${ket(0), ..., ket(N - 1)}$. Write $
         ket(b) = sum_(i = 1)^N b_i ket(i) = sum_(j = 1)^N beta_j ket(v_j)
-    $ The solution vector to $A x = b$ is $ket(hat(x)) := A^(-1) ket(b) = sum_(j = 1)^N beta_j dot 1/lambda_j ket(v_j)$ (since $A^(-1) = sum_(i = 1)^N 1/lambda_j ket(v_j) bra(v_j)$). The transformation $ket(b) |-> A^(-1) ket(b)$ is linear but not unitary so cannot be directly implemented. Instead, we implemented it probabilistically using QPE, performed on $U = e^(-i A)$, which in turn is implemented by Hamiltonian simulation. At the end, we'll have a measurement step that introduces the non-unitarity. Apply $U_"PE"$ for $e^(-i A)$ with $m$ lines on the state $ket(b) ket(0)^(tp m)$, which gives $sum_i beta_i ket(v_i) ket(lambda_i)$ (assuming $e^(-i A)$ and $U_"PE"$ are exact and error-free). Consider the controlled rotation $Ctrl("Rot")$ acting on $n + 1$ qubits: $Ctrl("Rot") ket(lambda) ket(0) = ket(lambda) (cos(theta) ket(0) + sin(theta) ket(1)) = ket(lambda) (sqrt(1 - c^2 \/ lambda^2) ket(0) + c / lambda ket(1))$, with $theta = arcsin(c \/ lambda)$ and $c <= min{abs(lambda_i): i in [N]}$. Since $lambda in [1\/kappa, 1]$, $1\/lambda in [1, kappa]$ is larger than $1$, so can choose $c = 1 \/ kappa$. So in $Ctrl("Rot")$, the angle depends on the first register but not on $A$ or $b$ (so we're not sneaking extra info in here). $Ctrl("Rot")$ can be implemented efficiently using $O(poly(n))$ one and two-qubit gates (by e.g. Solovay-Kitaev). Assume we can implement $Ctrl("Rot")$ efficiently and exactly.
-    
-    Applying $Ctrl("Rot")$ to the state $U_"PE" ket(b) ket(0)$, we get $
+    $ Due to the bounds on the $abs(lambda_i)$, $A^(-1)$ exists and is equal to $sum_(i = 1)^N 1/lambda_j ket(v_j) bra(v_j)$. Thus, the solution to $A ket(x) = ket(b)$ is  $
+        ket(x) = A^(-1) ket(b) = sum_(j = 1)^N beta_j dot 1/lambda_j ket(v_j)
+    $
+    + Applying $U_"PE"$ on the state $ket(psi) := ket(b) ket(0)^(tp m)$ gives the state $
+        U_"PE" ket(psi) = sum_(i = 1)^N beta_i ket(v_i) ket(lambda_i)
+    $ (assuming $e^(-i A)$ and $U_"PE"$ are exact and error-free). Consider the controlled rotation $Ctrl("Rot")$ acting on $n + 1$ qubits: $Ctrl("Rot") ket(lambda) ket(0) = ket(lambda) (cos(theta) ket(0) + sin(theta) ket(1)) = ket(lambda) (sqrt(1 - c^2 \/ lambda^2) ket(0) + c / lambda ket(1))$, with $theta = arcsin(c \/ lambda)$ and $c <= min{abs(lambda_i): i in [N]}$. Since $lambda in [1\/kappa, 1]$, $1\/lambda in [1, kappa]$ is larger than $1$, so can choose $c = 1 \/ kappa$. So in $Ctrl("Rot")$, the angle depends on the first register but not on $A$ or $b$ (so we're not sneaking extra info in here). $Ctrl("Rot")$ can be implemented efficiently using $O(poly(n))$ one and two-qubit gates (by e.g. @thm:solovay-kitaev).
+    + Applying $Ctrl("Rot")$ to the state $U_"PE" ket(psi) tp ket(0)$ produces the state $
         sum_(j = 1)^N beta_j sqrt(1 - c^2 \/ lambda_j^2) ket(v_j) ket(lambda_j) ket(0) + beta_j c/lambda_j ket(v_j) ket(lambda_j) ket(1)
     $
-    Now we measure the last qubit, and accept if outcome is $1$. This is called a post-selection step. The state collapses to a state proportional to $
-        sum_(j = 1)^N c/lambda_j beta_j ket(v_j) ket(lambda_j) ket(1)
-    $
-    Probability of successfully preparing state $ket(x)$ which is proportional to $A^(-1) ket(b)$ is equal to probability of measurement outcome being $1$, which is $
-        p & = norm(sum_(j = 1)^N beta_j c/lambda_j ket(v_j) ket(lambda_j))^2 \
-        & = sum_(j = 1)^N abs(beta_j c \/ lambda_j)^2 \
-        & = 1/kappa^2 sum_(j = 1)^N abs(beta_j \/ lambda_j)^2 \
-        & >= 1/kappa^2 sum_(j = 1)^N abs(beta_j)^2 = 1/kappa^2
-    $ The post measurement state is $
+    + At the post-selection step, the probability of measuring outcome $1$ is (Probability of successfully preparing state $ket(x)$ which is proportional to $A^(-1) ket(b)$) is $
+        p & = norm(sum_(j = 1)^N beta_j c/lambda_j ket(v_j) ket(lambda_j))^2 = sum_(j = 1)^N abs(beta_j c \/ lambda_j)^2 >= c^2 sum_(j = 1)^N abs(beta_j)^2 = c^2 = 1/kappa^2
+    $ In this case, the post-measurement state has collapsed to (ignoring the ancillary qubit) $
         ket(hat(x)) = 1/sqrt(p) sum_(j = 1)^N beta_j c/lambda_j ket(v_j) ket(lambda_j)
     $ To boost the success probability to at least $1 - eta$, we can either repeat until the post selection step $O(log(1 \/ eta) / p) = O(log(1\/ eta) kappa^2)$ times, or use amplitude amplification: $
         U_"HHL" ket(b) = sqrt(1 - p) ket("junk") ket(0) + sqrt(p) ket(hat(x)) ket(1)
@@ -868,6 +977,9 @@ Note that when $epsilon$ is constant (or even $epsilon = O(1/poly(n))$) and for 
     By the Chernoff-Hoeffding bound, to estimate the mean $hat(mu)$ with probability at least $1 - eta$ to accuracy $delta$, we need $O(log(1 \/ eta) / delta^2)$ measurements.
 
     To estimate $p$: the post-selection step is a Bernoulli trial, with probability of outcome $1$ being $p$. So the mean is $0 dot (1 - p) + 1 dot p = p$. This can also be estimated by the empirical average, and we use the Chernoff-Hoeffding bound. Alternatively, we can use amplitude amplification in the form of quantum counting (see find example) - this gives a quadratic improvement over the above.
+]
+#remark[
+    In @alg:hhl, we want to be able to apply the transformation $ket(b) |-> A^(-1) ket(b) = ket(x)$. However, this is generally non-unitary so cannot be directly implemented. Instead, we implemented it probabilistically using @alg:qpe, performed on the unitary $U = e^(-i A)$, which in turn is implemented by Hamiltonian simulation. At the end, we'll have a measurement step that introduces the non-unitarity.
 ]
 #remark[
     Runtime of HHL:
@@ -884,35 +996,33 @@ Note that when $epsilon$ is constant (or even $epsilon = O(1/poly(n))$) and for 
 
     So the overall complexity is $O(poly(n) dot t) = O(poly(n) dot kappa dot 1/epsilon)$ (we would get $kappa^2$ without using amplitude amplification).2
 ]
-#theorem("Chernoff-Hoeffding")[
-    For a random variable $X$ on $[a, b]$ with mean $mu$, define the RV $overline(X) = 1/k (X_1 + dots.c + X_k)$, where the $X_i$ are IID with same distribution as $X$. Then $
-        Pr\(abs(overline(X) - mu\) > epsilon) <= e^(-2k delta^2 \/ (b - a)^2).
-    $
-]
 #remark[
-    HHL is an important algorithm as there are many applications of solving linear systems, for example:
-    - Numerical solutions of PDEs using discretisation leads to linear systems of size far larger than original problem description.
-    - Machine learning, pattern matching, etc.
+    The best known classical algorithm for solving linear systems requires $O(poly(N) dot kappa dot log(1/epsilon))$ time, even with assumptions comparable to our assumptions for HHL. Classically, there is no known method of estimating the quadratic forms $mu = x^T M x$ which is faster than computing $x$ first. Thus, when $epsilon$ is constant (or even $epsilon = O(1/poly(n))$) and $A$ is well-conditioned, this is an exponential speedup over the classical algorithm.
 ]
 
 
 = Clifford computations and classical simulation of quantum computation
 
-We want to know whether there is a "key quantum effect or resource" that gives quantum computing its (potential) benefits over classical computing?
+== Classical simulation of quantum computation
+
+We want to know whether there is a "key quantum effect or resource" that gives quantum computing its (potential) benefits over classical computing.
 
 To formalise this comparison of quantum vs classical computing, we will define a precise mathematical framework of classical simulation of quantum computation.
 
 #problem("Classical Simulation")[
     / Input:
         - Description of a quantum circuit $C$ as a list of $1$- and $2$- qubit gates acting on $n$ qubit lines.
-        - Description of an input product state $ket(alpha_1) tp dots.c tp ket(alpha_n)$ (note this also has a $poly(n)$-sized classical description).
-        - Designated output qubit(s) line(s).
+        - Description of an input product state $ket(alpha_1) tp cdots tp ket(alpha_n)$ (note this also has a $poly(n)$-sized classical description).
+        - Description of the designated output qubit(s) line(s).
     / Promise:
         - $C$ has size $N = abs(C) = poly(n)$.
         - We only measure one qubit, for a decision answer.
-    / Task: By (randomised) classical means only, perform in $poly(n)$ time either:
+    / Task: By (randomised) classical means only, perform in $poly(n)$ time one of the following:
         - *Weak simulation*: sample a bit from the output distribution of $C ket(alpha_1) ... ket(alpha_n)$ with the output qubit measured in the computational basis.
-        - *Strong simulation*: calculate the output probabilities $Pr("output is" 0) = p$. We want the ability to perform strong simulation to imply the ability to perform weak simulation, for multiple output qubits.
+        - *Strong simulation*: calculate the output probabilities $Pr("output is" 0) = p$. 
+]
+#remark[
+    Note that the ability to perform strong simulation implies the ability to perform weak simulation.
 ]
 #definition[
     If $C$ is classical simulable (in $poly(n)$ time), then we say there is no *quantum advantage* (up to polynomial overheads).
@@ -920,27 +1030,39 @@ To formalise this comparison of quantum vs classical computing, we will define a
 #remark[
     - Any quantum process performs a weak simulation of itself, i.e. the final measurement gives a sample from the output distribution.
     - Strong simulability is a much stronger property.
-    - "Direct" strong simulation is always possible, but generally not in polynomial time: the action of successive gates is simply matrix-vector multiplication in a $2^n$-dimensional space, and so we can compute all amplitudes of the output state in $O(2^n)$ time. Although this direct simulation isn't efficient, it shows that any function computable by a quantum computer is also classically computable.
+    - "Direct" strong simulation is always possible, but generally not in polynomial time: the action of successive gates is simply matrix-vector multiplication in a $2^n$-dimensional space, and so we can compute all amplitudes of the output state in $O(2^n)$ time. Although this direct simulation isn't efficient, it shows that any quantum-computable function is also classically computable.
 ]
 #theorem[
-    If the state is promised to be a product of (single-qubit) states at each stage of the circuit (i.e. after each gate), then the direct strong simulation can be efficiently performed.
+    If the state (including the input state) at each stage of a $poly(n)$-sized circuit $C$ is a product of (single-qubit) states, then direct strong simulation can be efficiently performed for $C$ with that input state.
+]
+#proofhints[
+    Express a state at a given stage as a product state and as a sum of computational basis states, assume that the gate acting on it acts non-trivially on the first two qubits (why can we assume this?), then express the state in the next stage as a sum of computational basis states and as a product state.
 ]
 #proof[
-    At each stage in the circuit, the state is of the form $ket(psi) = ket(alpha_1) ... ket(alpha_n) = sum_(i_1, ..., i_n in {0, 1}) c_(i_1 ... i_n) ket(i_1 ... i_n)$, and each gate $C$ acts on $2$-qubits (some trivially on one of the qubits). Suppose the gate $U_(i_1 i_2)$ acts on the $i_1$-th and $i_2$-th qubits. The action of $U_(i_1 i_2) ket(psi)$ has amplitudes $
-        tilde(c)_(i_1, ..., i_n) = sum_(k_1, k_2 in {0, 1}) U_(i_1 i_2)^(k_1 k_2) c_(k_1 k_2 i_3 ... i_n)
-    $ But $ket(psi)$ is a product so $c_(i_1 ... i_n) = a_(i_1) b_(i_2) c_(i_3) dots.c x_(i_n)$, $i_1, ..., i_n in {0, 1}$ and $
-        tilde(c)_(i_1, ..., i_n) = underbrace((sum_(k_1, k_2 in {0, 1}) U_(i_1 i_2)^(k_1 k_2) a_(k_1) b_(k_2)), #[$4 times 4$ matrix multiplication]) underbrace(c_(i_3) ... c_(i_n), #[all amplitudes of qubits \ not affected by $U_(i_1 i_2)$ remain unchanged])
-    $ By assumption, the state $U_(i_1 i_2) ket(psi)$ is also a product state. So $tilde(c)_(i_1, ..., i_n) = tilde(a)_(i_1) tilde(b)_(i_2) c_(i_3) ... x_(i_n)$ factorises again. This can be done in constant time (since it's just a $4$-dimensional vector).
+    We can assume that each gate of the circuit acts two qubits (by extending the $1$-qubit gates to act trivially on another qubit). Say at a given stage of the circuit, the state is $
+        ket(psi) = sum_(i_1, ..., i_n in {0, 1}) c_(i_1 ... i_n) ket(i_1 ... i_n),
+    $ and is transformed by a gate $U$. Suppose for simplicity that $U$ acts on the first two qubits (the same argument works for any qubit indices pair). Let $U_i^j$ denote the $(i, j)$-th entry of the matrix representation of $U$ in the computational basis. The action of $U$ on $ket(psi)$ produces the state $
+        U ket(psi) & = sum_(i_1, ..., i_n in {0, 1}) d_(i_1 ... i_n) ket(i_1 ... i_n), \
+        "where" quad d_(i_1 ... i_n) & = sum_(k_1, k_2 in {0, 1}) U_(i_1 i_2)^(k_1 k_2) c_(k_1 k_2 i_3 ... i_n).
+    $ But now since $ket(psi)$ is a product state, it can be expressed as $
+        ket(psi) = times.circle.big_(j = 1)^n (alpha_j^((0)) ket(0) + alpha_j^((1)) ket(1)),
+    $ where $c_(i_1 ... i_n) = product_(j = 1)^n alpha_j^((i_j))$. Hence, $
+        d_(i_1 ... i_n) = underbrace(sum_(k_1, k_2 in {0, 1}) U_(i_1 i_2)^(k_1 k_2) alpha_1^((k_1)) alpha_2^((k_2)), =: med gamma_(i_1 i_2)) dot product_(j = 3)^n alpha_j^((i_j)).
+    $ The first term in the product is simply an inner product of two $4$-dimensional vectors, so can be computed in $O(1)$ time. Finally, since by assumption $U ket(psi)$ is a product state, it can be expressed as $
+        U ket(psi) = times.circle.big_(j = 1)^n (beta_j^((0)) ket(0) + beta_j^((1)) ket(1)),
+    $ where $d_(i_1 ... i_n) = product_(j = 1)^n beta_j^((i_j))$. We have $beta_j^((k)) = alpha_j^((k))$ for all $k in {0, 1}$ and $j >= 3$ since $U$ acts non-trivially only on the first two qubits. $beta_0^((0)), beta_0^((1)), beta_1^((0)), beta_1^((1))$ can be determined from $gamma_00, gamma_01, gamma_10, gamma_11$ in $O(1)$ time.
+
+    So, inductively, the amplitudes of each single-qubit state which appears in each product state in the circuit can be computed, given those of the previous product state, in constant time, so the final state's amplitudes can be computed in $O(abs(C))$ time from the initial state's amplitudes.
 ]
 #remark[
-    Note a state is a product state iff it has no entanglement. So sometimes claimed that entanglement is the source of quantum speedups. However, the converse is not true, i.e. entanglement is necessary but not sufficient.
+    Recall that a state is a product state iff it has no entanglement. So it is sometimes claimed that entanglement is the source of quantum speedups. However, the converse is not true, i.e. entanglement is necessary but not sufficient.
 ]
 
 == Clifford computations
 
 #definition[
-    The $1$-qubit Pauli group $cal(P)_1$ is ${plus.minus i, plus.minus 1} times {I, X, Y, Z}$ with $X Y = i Z$ etc. The $n$-qubit Pauli group is $cal(P)_n = cal(P)_1 tp dots.c tp cal(P)_n$.
-]
+    The $1$-qubit Pauli group $cal(P)_1$ is ${plus.minus i, plus.minus 1} dot {I, X, Y, Z}$ with the usual rules $X Y = i Z$, etc. The $n$-qubit Pauli group is $cal(P)_n = cal(P)_1 tp dots.c tp cal(P)_n$.
+]<def:pauli-group>
 #definition[
     A *Clifford operation* on $n$-qubits is a unitary $C in U(2^n)$ which preserves the Pauli group under conjugation, i.e. $
         forall P in cal(P)_n, quad C^dagger P C in cal(P)_n.
@@ -950,7 +1072,6 @@ To formalise this comparison of quantum vs classical computing, we will define a
     Clifford groups are important in applications:
     - Quantum error correction (e.g. stabiliser codes) and fault-tolerance.
     - They give insights into the power of quantum vs classical computing.
-    - They form a metaplectic representation of symplectic groups.
 ]
 #example[
     - All Pauli matrices are Clifford operations.
@@ -959,62 +1080,72 @@ To formalise this comparison of quantum vs classical computing, we will define a
 ]
 #theorem[
     $C in U(2^n)$ is Clifford iff it can be decomposed into a circuit of $H$, $S$ and $Ctrl(X)$ gates.
-]
+]<thm:clifford-iff-decomposable-into-hadamard-s-and-c-not-gates>
 #proof[
     Omitted.
 ]
 #definition[
-    A *Clifford computation/circuit* is a circuit consisting only of Clifford gates, with a measurement in the computational basis at the end.
-]
+    A *Clifford computation/circuit* is a circuit consisting only of Clifford gates, with a measurement in the computational basis at the end, and possibly with intermediate (for our purposes, $1$-qubit) measurements in the $Z$ basis.
+    
+    We treat each intermediate measurement as an extra elementary computational step (called a "measurement gate"). Note we can apply unitary gates to the post-intermediate-measurement states.
+]<def:clifford-circuit>
 #example[
-    - $
-        ket(0) ket(0) -->^H ket(+) ket(0) -->^(Ctrl(X)) 1/sqrt(2) (ket(00) + ket(11))
     $
-    - *Cat/GHZ*: $
+        ket(0) ket(0) -->^H ket(+) ket(0) -->^(Ctrl(X)) 1/sqrt(2) (ket(00) + ket(11))
+    $ is a Clifford circuit. More generally, the family of *Cat/GHZ* circuits are Clifford circuits: $
         ket(0)^(tp n) -->^H ket(plus)^(tp n) -->^Ctrl(X_(1 2)) dots.c -->^Ctrl(X_(1 n)) 1/sqrt(2) (ket(0)^(tp n) + ket(1)^(tp n)).
     $
 ]
 #theorem("Gottesman-Knill")[
-    Let $C$ be any $M = poly(n)$-size Clifford circuit on $n$ qubits with no intermediate measurements, let any product state $ket(alpha_1) ... ket(alpha_n)$ be the input state and let the output be a measurement on the (WLOG, by applying SWAP) first qubit line. Then the output can always be classically strongly (and so also weakly) simulated efficiently.
+    Let $C$ be any $M = poly(n)$-size Clifford circuit on $n$ qubits with no intermediate measurements, let any product state $ket(alpha_1) ... ket(alpha_n)$ be the input state and let the output be a measurement on the (WLOG, by applying SWAP gates) first qubit line. Then the output can always be classically strongly (and so also weakly) simulated efficiently.
 ]<thm:gottesman-knill>
+#proofhints[
+    Denote by $p_i$ the probability of the measurement yielding outcome $i$ for $i = 0, 1$. Express $p_0 - p_1$ in bra-ket notation, the rest is straightforward.
+]
 #proof[
     Idea: instead of evolving the input state $ket(psi_"in")$ to $C ket(psi_"in") =: ket(psi_"end")$, we "backpropagate" the final measurement to $ket(psi_"in")$.
 
-    Noting that $Z = ket(0) bra(0) - ket(1) bra(1)$, write $Z_1 = Pi_0 - Pi_1$, where $Pi_0$ and $Pi_1$ are projectors onto the subspaces $span{ket(0)}$ and $span{ket(1...)}$. Let the unitary part of $C$ be $C_M dots.c C_1$ We have $
+    Noting that $Z = ket(0) bra(0) - ket(1) bra(1)$, write $Z_1 = Pi_0 - Pi_1$, where $Pi_0$ and $Pi_1$ are projectors onto the subspaces $span{ket(00...0)}$ and $span{ket(10...0)}$ respectively. Let the unitary part of $C$ be $C_M dots.c C_1$. Denoting by $p_i$ the probability of the measurement yielding outcome $i$ for $i = 0, 1$, we have $
         p_0 - p_1 & = braket(psi_"end", Z_1, psi_"end") = braket(psi_"in", C^dagger Z_1 C, psi_"in") \
         & = braket(psi_"in", C_1^dagger dots.c C_M^dagger Z_1 C_M dots.c C_1, psi_"in")
-    $ $C_1^dagger dots.c C_M^dagger Z_1 C_M dots.c C_1$ is a successive conjugation of $Z_1$ be Clifford operations (each is a $1$- or $2$- qubit conjugation, hence each conjugation is a constant size computation).
+    $ $C_1^dagger dots.c C_M^dagger Z_1 C_M dots.c C_1$ is a successive conjugation of $Z_1$ by Clifford operations (and each is a $1$- or $2$- qubit conjugation, hence each conjugation is a constant size computation).
 
-    By the Clifford property, we obtain $
+    By the definition of Clifford operations, we obtain $
         p_0 - p_1 = braket(psi_"in", tilde(P)_1 tp dots.c tp tilde(P)_n, psi_"in")
     $ where each $tilde(P)_i$ is in the Pauli group. Hence, since $ket(psi_"in") = ket(alpha_1) ... ket(alpha_n)$, the above factorises: $
         p_0 - p_1 = product_(i = 1)^n braket(alpha_i, tilde(P)_i, alpha_i).
-    $ Each $braket(alpha_i, tilde(P)_i, alpha_i)$ is a $2 times 2$ matrix computation. So computing $p_0 - p_1$ takes $O(n)$ time classically. We also need $O(M)$ time for computing $tilde(P)_1 tp dots.c tp tilde(P)_n = C^dagger Z_1 C$. We also know $p_0 + p_1 = 1$, so we can obtain $p_0$ and $p_1$.
+    $ Each $braket(alpha_i, tilde(P)_i, alpha_i)$ is a $2 times 2$ matrix computation. So computing $p_0 - p_1$ takes $O(n)$ time classically. We also need $O(M)$ time for computing $tilde(P)_1 tp dots.c tp tilde(P)_n = C^dagger Z_1 C$. Since we also know $p_0 + p_1 = 1$, we can obtain $p_0$ and $p_1$.
 ]
-We now extend Clifford computations to allow intermediate ($1$-qubit) measurements in the $Z$ basis. We treat this as an extra elementary computational step (called a "measurement gate"). We are allowed to apply unitary gates to the post-measurement state.
-
 #definition[
-    Clifford computations with intermediate measurements are split into two cases: *non-adaptive* circuits cannot depend on the intermediate measurement outcomes, whereas *adaptive* circuits are allowed to.
+    A Clifford circuit with intermediate measurements is *non-adaptive* if it does not depend on the intermediate measurement outcomes, and *adaptive* otherwise.
+]<def:clifford-circuit.adaptive>
+#theorem[
+    The set of Clifford gates together with the gate $T = mat(1, 0; 0, e^(i pi \/ 4))$ are a universal gate set for quantum computation.
+]<thm:cliffords-and-t-are-universal-gate-set>
+#proof[
+    Omitted.
 ]
 #theorem[
     Let $C$ be any $poly(n)$-sized Clifford circuit consisting of intermediate measurements, let $ket(psi_"in") = ket(alpha_1) ... ket(alpha_n)$ be the input state, and say we measure on the (WLOG) first qubit.
     + If $C$ is non-adaptive, then the output is classically strongly simulable efficiently.
-    + If $C$ is adaptive, then full universal quantum computation is possible.
+    + Adaptive Clifford circuits are sufficient for fully universal quantum computation.
+]<thm:adaptivity-determines-classical-strong-simulation-or-universal-quantum-computation>
+#proofhints[
+    See proof sketch.
 ]
 #proof("sketch")[
     + Non-adaptive Clifford circuits are reducible to fully unitary Clifford circuits, using ancillary qubits and $Ctrl(X)$ gates (then done by @thm:gottesman-knill).
-    + Use the Brayvi-Kitaev of "magic states", and the fact the Clifford gates along with the gate $T = mat(1, 0; 0, e^(i pi \/ 4))$, are universal for quantum computation. Let $ket(A) = 1/sqrt(2) (ket(0) + e^(i pi \/ 4) ket(1))$ denote the $1$-qubit magic state. We'll implement the $T$ gate using the following $T$-gadget:
+    + Use the Brayvi-Kitaev idea of "magic states" and @thm:cliffords-and-t-are-universal-gate-set. Let $ket(A) = 1/sqrt(2) (ket(0) + e^(i pi \/ 4) ket(1))$ denote the $1$-qubit "magic state". We'll implement the $T$ gate using the following "$T$-gadget":
     #figure(quantum-circuit(
         lstick($ket(psi)$), 1, ctrl(1), 2, gate($S^m$), 1, rstick($T ket(psi)$), nl,
-        lstick($ket(A)$), 1, targ(), meter(), setwire(2), 2, ctrl(-1), 
-    )) TODO: finish circuit
-    Therefore we could achieve an "increas" in power from classically simulable to quantum universal by either:
-    - Allowing Clifford circuits to use non-Clifford gates, e.g. $T$, or
-    - Allowing only Clifford operations and intermediate measurements, but also these exotic resource states.
+        lstick($ket(A)$), 1, targ(), meter(), setwire(2), 1, ctrl(-1, wire-count: 2, label: ((content: [Measurement: \ $m in {0, 1}$], pos: bottom))), 1, rstick("discard")
+    ))
 ]
-For Clifford circuits with product state inputs, single line output and intermediate measurements, we have:
-+ Non-adaptive: classically strongly simulable efficiently.
-+ Adaptive: full universal quantum power.
 #remark[
-    If the input is only computational basis states, then 2. becomes classically _weakly_ simulable efficiently.
+    @thm:cliffords-and-t-are-universal-gate-set and @thm:adaptivity-determines-classical-strong-simulation-or-universal-quantum-computation show we can achieve an increase in power from classically simulable to quantum universal by either:
+    - Allowing Clifford circuits to use non-Clifford gates, e.g. $T$, or
+    - Allowing only Clifford operations and intermediate measurements, but also the exotic resource "magic" states.
+]
+#remark[
+    If $C$ is a $poly(n)$-sized adaptive Clifford circuit whose only inputs are computational basis states, then the output of $C$ is classically _weakly_ simulable efficiently.
 ]

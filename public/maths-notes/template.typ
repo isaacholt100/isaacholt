@@ -26,10 +26,18 @@
 #let exercise = thmplain("theorem", "Exercise", ..thmstyle)
 #let proof = thmproof("proof", "Proof", inset: 0em, separator: [#h(0.1em).#h(0.2em)])
 #let proofhints = thmproof("proofhints", "Proof (Hints)", inset: 0em, separator: [#h(0.1em).#h(0.2em)])
+#let unmarked-fig(body) = figure(
+    body,
+    supplement: [Unmarked Figure],
+    kind: "thmenv"
+)
 
 #let to-identifier(name) = {
     if name == "Proof (Hints)" {
         return "proofhints"
+    }
+    if name == "Unmarked Figure" {
+        return "unmarked-fig"
     }
     return lower(name)
 }
@@ -88,7 +96,7 @@
         ])
     ]
     
-    show link: underline
+    show link: set text(fill: rgb("ff0000"))
 
     show ref: it => {
         let ref-name = str(it.target)
@@ -104,8 +112,13 @@
             it
         }
     }
-    show ref: set text(fill: blue)
-    show ref: underline
+    // show ref: it => box[
+    //     #it
+    // ]
+    // show ref: set text(fill: blue)
+    // show ref: underline
+
+    set figure(numbering: none)
 
     if not slides {
         outline()
@@ -115,7 +128,7 @@
 	doc
 }
 
-#let hdots = $op(dot.op dot.op dot.op)$
+#let cdots = $dot dot dot$
 #let powset = math.bb("P")
 #let dom = math.op("dom")
 #let indicator(S) = $bb(1)_#S$
