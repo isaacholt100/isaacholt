@@ -113,3 +113,11 @@ Note all random variables we deal with will be discrete, unless otherwise stated
 #proof[
     Let $X_1, ..., X_n$ be independent RVs, uniformly distributed on ${0, 1}$. By @crl:entropy-of-independent-variables-is-sum-of-entropies and @axm:normalisation, $H(X_1, ..., X_n) = n$. So the result follows by @axm:invariance.
 ]
+#proposition[
+    If $X$ is uniformly distributed on a set $A$ of size $r$, then $H(X) = log_2 (r)$.
+]
+#proof[
+    By @prop:uniformly-distributed-random-variable-on-n-bits-has-n-entropy, @axm:maximality and @axm:invariance, we have $floor(log_2 (r)) <= H(X)$ (by considering the random variable $Y$ on a set $A$ where $Y$ is uniformly distributed on a subset of $A$ of size $2^floor(log_2 (r))$). Now by @crl:entropy-of-independent-variables-is-sum-of-entropies, we similarly have that $floor(k log_2 (r)) <= H(X_1, ..., X_k) = k H(X)$ for all $k in NN$, where $X_1, ..., X_k$ are IID and have the same distribution as $X$. So we have $1/k floor(k log_2 (r)) = H(X)$, and taking the limit as $k -> oo$ gives $log_2 (r) <= H(X)$.
+
+    Following a similar argument, by @prop:uniformly-distributed-random-variable-on-n-bits-has-n-entropy, @axm:maximality, and @axm:invariance, we have $H(X) <= ceil(log_2 (r))$. By @crl:entropy-of-independent-variables-is-sum-of-entropies, we have that $k H(X) = H(X_1, ..., X_k) <= ceil(k log_2 (r))$ for all $k in NN$, which gives $H(X) <= log_2 (r)$. 
+]

@@ -90,13 +90,21 @@ Noting that $ket(phi) = sum_i braket(i, phi) ket(i)$, we define $
     hat(a)_phi^dagger = sum_i braket(i, lambda) hat(a)_i^dagger
 $ (note this is analogous to a basis transformation)
 
-=
+= The transverse-field Ising model
 
 #notation[
-    When working with $N$ qubits (an $N$ site system), write $X_j, Y_j, Z_j$ for the Pauli $X, Y, Z$ on site $j$, e.g. $X_j = 1 tp cdots tp 1 tp X tp 1 tp cdots tp 1$.
+    When working with $N$ qubits (an $N$-site system), write $X_j, Y_j, Z_j$ for the Pauli $X, Y, Z$ on site $j$, e.g. $
+        X_j = II tp cdots tp II tp X tp II tp cdots tp II,
+    $ where $X$ is in the $j$-th position.
 ]
 
 = Quantum Ising model
+
+#definition[
+    The *classical Ising model* describes the energy of a system ${z_j: j in [N]}$ as $
+        E({z_j: j in [N]}) = -J sum_()
+    $
+]<def:classical-ising-model>
 
 TODO: familiarise with classical Ising model
 

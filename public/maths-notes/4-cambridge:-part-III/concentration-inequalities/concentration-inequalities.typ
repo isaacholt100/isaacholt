@@ -15,12 +15,8 @@ Question: toss a fair coin $n = 10000$ times. How many heads?
 
 $X = sum_(i = 1)^n$, $X_i sim Bern(1 \/ 2)$. $EE[X] = 5000$. But $PP(X = 5000) = binom(10^4, 5000) dot 2^(-10^4) approx 0.008$.
 
-#theorem("Weak Law of Large Numbers")[
-    Let $X_1, ..., X_n$ be IID RVs with mean $EE[X_1] = mu$. Then, for all $epsilon > 0$, $
-        PP(abs(1/n sum_(i = 1)^n X_i - mu) > epsilon) -> 0 quad "as" n -> oo.
-    $
-]
-So $PP(X in [5000 - n epsilon, 5000 + n epsilon]) approx 1$.
+
+By WLLN, $PP(X in [5000 - n epsilon, 5000 + n epsilon]) approx 1$.
 
 #theorem("Central Limit Theorem")[
     Let $X_1, ..., X_n$ be IID RVs with mean $EE[X_1] = mu$. Let $Var(X_1) = sigma^2 < oo$. Then $1/(sigma sqrt(n)) sum_(i = 1)^n (X_i - mu) ->_D N(0, 1)$, i.e. $
@@ -49,38 +45,68 @@ Tower property of conditional expectation: $EE(EE(Z | X, Y) | Y) = EE(Z | Y)$.
 
 = The Chernoff-Cramer method
 
+#theorem("Weak Law of Large Numbers")[
+    Let $X_1, ..., X_n$ be IID RVs with mean $EE[X_1] = mu$. Then, for all $epsilon > 0$, $
+        PP(abs(1/n sum_(i = 1)^n X_i - mu) > epsilon) -> 0 quad "as" n -> oo.
+    $
+]<thm:wlln>
 #theorem("Markov's Inequality")[
     Let $Y$ be a non-negative RV. For any $t >= 0$, $
         PP(Y >= t) <= EE[Y] / t.
     $
 ]<thm:markovs-inequality>
+#proofhints[
+    Split $Y$ using indicator variables.
+]
 #proof[
-    We have $Y = Y II_({Y >= t}) + Y II_({Y < t}) >= t dot II_({Y >= t})$. Taking expectations gives the result.
+    We have $Y = Y dot II_({Y >= t}) + Y dot II_({Y < t}) >= t dot II_({Y >= t})$. Taking expectations gives the result.
 ]
 #corollary("Chebyshev's Inequality")[
-    $PP(abs(Y - EE[Y]) >= t) <= (EE[Y - EE[Y]]^2)/t^2$
+    For any RV $Y$ and $t > 0$, $
+        PP(abs(Y - EE[Y]) >= t) <= Var(Y)/t^2.
+    $
 ]<crl:chebyshevs-inequality>
+#proofhints[
+    Straightforward.
+]
 #proof[
-    Take $Z = Y - EE[Y]$ and use Markov's.
+    Take $Z = (Y - EE[Y])^2$ and use @thm:markovs-inequality.
 ]
- Let $phi: RR -> RR_+$ be non-decreasing, then $PP(phi(Y) >= phi(t)) <= EE[phi(Y)]/phi(t)$. For $phi(t) = t^2$, we can use $Var(sum_(i = 1)^n X_i) = sum_(i = 1)^n Var(X_i)$.
- #exercise[
+#corollary[
+    Let $phi: RR -> RR_+$ be non-decreasing, then $
+        PP(phi(Y) >= phi(t)) <= EE[phi(Y)]/phi(t).
+    $ For $phi(t) = t^2$, we can use $Var(sum_(i = 1)^n X_i) = sum_(i = 1)^n Var(X_i)$.
+]<crl:generalised-markovs-inequality>
+#exercise[
     Prove WLLN, assuming that $Var(X_1) < oo$, using Chebyshev's inequality.
- ]
+]
 #notation[
-    For $lambda > 0$, let $phi_lambda (t) = e^(lambda t)$.
-
-    Note $PP(Z >= t) = PP(e^(lambda Z) >= t) <= EE[e^(lambda Z)]/(phi_lambda (t)) = e^(-(lambda t - log(EE[e^(lambda Z)])))$. So if $EE[e^(lambda Z)] < oo$, then we have exponential concentration.
-
-    $F(lambda) := EE[e^(lambda Z)] = sum_(i = 0)^oo (lambda^i EE[Z^i])/(i!)$. We have $phi_Z (lambda) = log(F(lambda))$ is additive: if $Z = sum_(i = 1)^n Z_i$, $Z_i$ independent, then $phi_(Z) (lambda) = log(EE[e^(lambda Z)]) = sum_i log EE[e^(lambda Z_i)]$.
+    For $lambda > 0$, let $phi_lambda (t) = e^(lambda t)$. Write $F(lambda) := EE[e^(lambda Z)] = sum_(k = 0)^oo (lambda^k EE[Z^k])/(k!)$, and let $phi_Z (lambda) = log(F(lambda))$.
+    
+    Note that $phi_Z (lambda)$ is additive: if $Z = sum_(i = 1)^n Z_i$, with $Z_1, ..., Z_n$ independent, then $
+        phi_(Z) (lambda) = log(EE[e^(lambda Z)]) = sum_(i = 1)^n log EE[e^(lambda Z_i)] = sum_(i = 1)^n phi_(Z_i) (lambda).
+    $
 ]
-So $PP(Z >= t) <= inf_(lambda > 0) e^(-(lambda t - phi_lambda (Z))) = e^(-sup_(lambda > 0) (lambda t - phi_Z (lambda)))$. This is the Chernoff bound. We denote $phi_Z^* (t) = sup_(lambda > 0) lambda t - phi_Z (lambda)$. This is Cramer's transform of $Z$.
-
-Goal is to obtain upper bound on $phi_Z (lambda)$, as this will give concentration. The function $phi_(Z - EE[Z])(lambda)$ gives upper bounds on $PP(Z - EE[Z] >= t)$, the function $phi_(-Z + EE[Z])(lambda)$ gives upper bounds on $PP(Z - EE[Z] <= -t)$.
-
+#definition[
+    The *Cramer transform* of $Z$ is $
+        phi_Z^* (t) = sup{lambda t - phi_Z (lambda): lambda > 0}.
+    $
+]<def:cramer-transform>
 #proposition[
-    Properties of $phi_Z (lambda)$:
-    + $phi_Z (lambda)$ is convex and infinitely differentiable on $(a, b)$, where $b = sup_(lambda > 0) {EE[e^(lambda Z)] < oo}$.
-    + $phi_Z^* (t) >= 0$ and convex.
-    + If $t > EE[Z]$, then $phi_Z^* (t) = sup_(lambda in RR) (lambda t - phi_Z (lambda))$, the Fenchel-Legendre dual.
+    Let $Z$ be an RV. For all $t > 0$, $
+        PP(Z >= t) <= e^(-phi_Z^* (t)).
+    $
+]<prop:chernoff-bound>
+#proof[
+    We have $
+        PP(Z >= t) = PP(e^(lambda Z) >= e^(lambda t)) <= EE[e^(lambda Z)]/(phi_lambda (t)) = e^(-(lambda t - phi_Z (lambda))).
+    $ Taking the infimum over all $lambda > 0$ gives $PP(Z >= t) <= inf{e^(-(lambda t - phi_Z (lambda))): lambda > 0}$, which gives the result.
 ]
+#remark[
+    Our goal is to obtain an upper bound on $phi_Z (lambda)$, as this will give exponential concentration. The function $phi_(Z - EE[Z])(lambda)$ gives upper bounds on $PP(Z - EE[Z] >= t)$, the function $phi_(-Z + EE[Z])(lambda)$ gives upper bounds on $PP(Z - EE[Z] <= -t)$.
+]
+#proposition[
+    + $phi_Z (lambda)$ is convex and infinitely differentiable on $(a, b)$, where $b = sup_(lambda > 0) {EE[e^(lambda Z)] < oo}$.
+    + $phi_Z^* (t)$ is non-negative and convex.
+    + If $t > EE[Z]$, then $phi_Z^* (t) = sup_(lambda in RR) {lambda t - phi_Z (lambda)}$, the *Fenchel-Legendre* dual.
+]<prop:properties-of-phi-functions>
