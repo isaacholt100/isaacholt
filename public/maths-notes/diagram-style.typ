@@ -27,10 +27,10 @@
     let z = points.map(point => point.at(2)).sum()
     return (x, y, z)
 }
-#let blob-2d(num-points: int, dev: 0.2, seed: 42) = {
+#let blob-2d(num-points: int, dev: 0.2, radius: 1, seed: 42) = {
     let n = num-points
     let rng = gen-rng(seed)
-    let regular-points = range(n).map(i => (calc.cos(2 * calc.pi * i/n), calc.sin(2 * calc.pi * i/n)))
+    let regular-points = range(n).map(i => (radius * calc.cos(2 * calc.pi * i/n), radius * calc.sin(2 * calc.pi * i/n)))
     let shape-points = regular-points.enumerate().map(a => add-points(a.at(1), uniform(gen-rng(a.at(0)), low: -dev / 2, high: dev / 2, size: 2).at(1)))
     cetz.draw.hobby(..shape-points, close: true, fill: diagram-colors.light-red, stroke: diagram-colors.red)
 }

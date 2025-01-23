@@ -9,6 +9,11 @@
     "Lie-Trotter Product Formula": "Lie-Trotter"
 )
 #show: doc => template(doc, hidden: (), slides: false, name-abbrvs: name-abbrvs)
+#set document(
+    title: "Quantum Computation Notes",
+    author: "Isaac Holt",
+    keywords: ("quantum computing", "quantum", "quantum computation", "algorithms", "complexity")
+)
 
 #let poly = math.op("poly")
 #let polylog = math.op("polylog")
@@ -28,7 +33,6 @@
 #let tp = $times.circle$
 #let QFT = math.op("QFT")
 #let Pr = math.op("Pr")
-#let gen(..gens) = $angle.l #gens.pos().join(",") angle.r$
 #let Ctrl(U) = $C dash.en #h(0pt) #U$
 #let Aut = math.op("Aut")
 #let Rot = math.op("Rot")
@@ -45,10 +49,10 @@
     / Task: Find a non-trivial factor of $N$ in $O(poly(n))$ time, where $n = log N$.
 ]<prb:factoring>
 #definition[
-    An *efficient problem* is one that can be solved in polynomial time.
+    We say an *efficient problem* is one that can be solved in polynomial time.
 ]<def:efficient-problem>
 #remark[
-    Clasically, the best known factoring algorithm runs in $e^(O(n^(1\/3) (log n)^(2\/3)))$. Shor's algorithm (quantum) runs in $O(n^3)$ by converting factoring into period finding:
+    Clasically, the best known factoring algorithm runs in $e^(O(n^(1\/3) (log n)^(2\/3)))$. Shor's algorithm runs in $O(n^3)$ by converting factoring into period finding:
     - Given input $N$, choose $a < N$ which is coprime to $N$.
     - Define $f: ZZ -> ZZ\/N$, $f(x) = a^x mod N$. $f$ is periodic with period $r$ (the order of $a mod N$), i.e. $f(x + r) = f(x)$ for all $x in ZZ$. Finding $r$ allows us to factor $N$.
 ]
@@ -71,7 +75,7 @@
     $ The first register $ket(x)$ is the *input register*, the last register $ket(z)$ is the *output register*.
 ]<def:quantum-oracle>
 #definition[
-    The *quantum query complexity* of an algorithm is the number of times it queries $f$ (i.e. uses $U_f$).
+    The *query complexity* of an algorithm is the number of times it queries $f$ (i.e. for the quantum case, the number of times it uses $U_f$).
 ]<def:quantum-query-complexity>
 #definition[
     The *quantum Fourier transform* over $ZZ\/M$ is the unitary $QFT$ defined by its action on the computational basis: $
@@ -118,6 +122,9 @@
 ]
 #theorem("Correctness of Quantum Period Finding Algorithm")[
     When repeated, $O(log log r) = O(log log M)$ times, the quantum period finding algorithm obtains the correct value of $r$ with high probability.
+]
+#proofhints[
+    Straightforward.
 ]
 #proof[
     After querying $U_f$, we have the state $1/sqrt(M) sum_(i = 0)^(M - 1) ket(i) ket(f(i))$. Upon measuring the second register in the computational basis, the input state collapses to $ket("per") = 1/sqrt(A) sum_(j = 0)^(A - 1) ket(x_0 + j r)$, where $f(x_0) = y$ and $0 <= x_0 < r$. Applying the quantum Fourier transform to $ket("per")$ then gives Quantum Fourier Transform to $ket("per")$: $
@@ -215,7 +222,7 @@
 #example[
     The following problems are special cases of HSP:
     - The @prb:periodicity-determination: $G = ZZ\/M$, $K = gen(r) = {0, r, ..., (A - 1)r}$. The cosets are $x_0 + K = {x_0, x_0 + r, ..., x_0 + (A - 1) r}$ for each $0 <= x_0 < r$.
-    - The @prb:dlp on $(ZZ\/p)^times$: let $f: ZZ\/(p - 1) times ZZ\/(p - 1) -> (ZZ\/p)^times$ be defined by $f(a, b) = g^a x^(-b) = g^(a - L b)$. $G = ZZ\/(p - 1) times ZZ\/(p - 1)$, the hidden subgroup is $K = {lambda (L, 1): lambda in ZZ\/(p - 1)}$. (Note that if we know $K$, we can pick any $(c, d) = (lambda L, lambda) in G$ and compute $L = c/d$ to find $L$.)
+    - The @prb:dlp on $(ZZ\/p)^times$: let $f: ZZ\/(p - 1) times ZZ\/(p - 1) -> (ZZ\/p)^times$ be defined by $f(a, b) = g^a x^(-b) = g^(a - L b)$. $G = ZZ\/(p - 1) times ZZ\/(p - 1)$, the hidden subgroup is $K = {lambda (L, 1): lambda in ZZ\/(p - 1)}$. (Note that if we know $K$, we can pick any $(c, d) = (lambda L, lambda) in K$ and compute $L = c/d$ to find $L$.)
     - The @prb:graph-isomorphism: $G = S_n$, hidden subgroup is $K = Aut(G)$. Let $f_Gamma: S_n -> X$ where $X$ is set of adjacency matrices of labelled graphs on $[n]$, defined by $f_Gamma (pi) = pi(A)$. Note $abs(S_n) = abs(G) = n!$, so $log abs(G) approx n log n$, so $O(poly log abs(G)) = O(poly n)$.
 ]
 #definition[
@@ -230,6 +237,9 @@
         1/abs(G) sum_(g in G) chi_i (g) overline(chi_j (g)) = delta_(i j).
     $
 ]<thm:schurs-lemma>
+#proof[
+    Omitted.
+]
 #example[
     $chi_0: G -> CC^times$, $chi_0(g) = 1$ is the *trivial irrep*. Note that for any $chi_i != chi_0$, $sum_(g in G) chi_i (g) = 0$ by Schur's lemma.
 ]
@@ -237,7 +247,9 @@
     For finite abelian $G$, we define the *shift operators* on $H_abs(G)$ for each $k in G$ by $
         U(k): H_abs(G) & -> H_abs(G), \
         ket(g) & |-> ket(k + g).
-    $ Note that since $G$ is abelian, the $U(k)$ commute: $U(k) U(l) = U(l) U(k)$ for all $k, l in G$. Hence, they have simultaneous eigenstates, which gives an orthonormal basis for $H_abs(G)$.
+    $ Note that since $G$ is abelian, the $U(k)$ commute: $
+        U(k) U(l) = U(k + l) = U(l) U(k) quad forall k, l in G.
+    $ Hence, they have simultaneous eigenstates, which gives an orthonormal basis for $H_abs(G)$.
 ]
 #proposition[
     For each $k in G$, consider the state $
@@ -276,6 +288,9 @@
 ]
 #theorem("Correctness of Quantum HSP Solver")[
     The quantum HSP solver algorithm solves the @prb:hsp for finite abelian groups with high probability.
+]
+#proofhints[
+    Use that irreps of $G$ restricted to $K$ are irreps of $K$, and that if $O(log abs(G))$ measurements are made, then with probability at least $2\/3$, we have enough equations to determine the generators of $K$.
 ]
 #proof[
     Querying $U_f$ on the state gives $
@@ -558,7 +573,7 @@ Amplitude amplification is an extension of the key insights in Grover's algorith
 #theorem("Amplitude Amplification Theorem/2D-subspace Lemma")[
     /*Let $ket(psi) = H^(tp n) ket(0)$.*/ Let $G <= H_2^(tp n)$ be a subspace and $ket(g) = P_G ket(psi)$, $ket(b) = P_(G^perp) ket(psi)$. In the $2$-dimensional subspace $span{ket(psi), ket(g)} = span{ket(b), ket(g)}$, the unitary $
         Q = -I_ket(psi) I_G
-    $ is a rotation by angle $2 theta$, where $sin(theta) = norm(P_G ket(psi))_2^2 = abs(braket(g, g))$ is the length of the "good" projection of $ket(psi)$.
+    $ is a rotation by angle $2 theta$, where $sin(theta) = norm(P_G ket(psi))_2$ is the length of the "good" projection of $ket(psi)$.
 ]<thm:amplitude-amplification>
 #proofhints[
     Consider the matrix representation of $Q$ in the $span{ket(b), ket(g)}$ basis.
@@ -619,14 +634,14 @@ Amplitude amplification is an extension of the key insights in Grover's algorith
 ]
 
 #example("Quadratic speedup of general quantum algorithms")[
-    Let $U$ be a unitary representing a quantum algorithm/circuit, with $U ket(0...0) = alpha ket(g) + beta ket(b)$ where $ket(g)$ is a (generally non-uniform) superposition of good/correct outcomes, and $ket(b)$ is a (generally non-uniform) superposition of bad/incorrect outcomes. Note $ket(g) = sum_(x in {0, 1}^n) c_x ket(x)$ is generally a non-uniform superposition. We have $
+    Let $U$ be a unitary representing a quantum algorithm/circuit, with $U ket(0...0) = alpha ket(g) + beta ket(b)$ where $ket(g)$ is a superposition of good/correct outcomes, and $ket(b)$ is a superposition of bad/incorrect outcomes. Note $ket(g) = sum_(x in {0, 1}^n) c_x ket(x)$ is generally a non-uniform superposition. We have $
         Pr("measuring" U ket(0...0) "yields good outcome") = abs(alpha)^2.
     $ Thus, we need to run $U$ about $O(1 \/ abs(alpha)^2)$ times to succeed with high probability.
     
     Now define $ket(psi) = U ket(0...0)$ and $Q = -I_ket(psi) I_G$. We can implement $Q$ if we have a method to verify the output of $U$; so in particular, we can use this method for any NP problem. This will mean we can efficiently implement the indicator function $indicator(G)$ of good labels and therefore also $I_G$. So by the @thm:amplitude-amplification, $Q$ performs a rotation of $2theta$ where $sin(theta) = abs(alpha)$. So after approximately $
         m_"opt" approx pi \/ 4theta = O(1 \/ theta) = O(1 \/ sin(theta)) = O(1 \/ abs(alpha))
     $ (for $theta$ small) uses of $Q$, we get a good outcome with high probability.
-]
+]<exm:quadratic-speed-up-of-general-quantum-algorithm>
 #problem("Counting Problem")[
     / Input: $f: {0, 1}^n -> {0, 1}$.
     / Task: Estimate the number $k = abs(f^(-1)({1}))$ of inputs that evaluate to $1$.
@@ -640,7 +655,7 @@ Amplitude amplification is an extension of the key insights in Grover's algorith
     $ in the orthonormal basis ${ket(b), ket(g)}$ where $sin(theta) = norm(P_G ket(psi))$. The eigenvalues and eigenstates of $Q$ are $lambda_(plus.minus) = e^(plus.minus 2 i theta)$ and $ket(e_(plus.minus)) = 1/sqrt(2)(ket(b) minus.plus i ket(g))$. So we can write $ket(psi) = sin(theta) ket(g) + cos(theta) ket(b) = 1/sqrt(2) (e^(-i theta) ket(e_+) + e^(i theta) ket(e_-))$. So $ket(psi)$ is an equally-weighted superposition of eigenstates of $Q$. Write $e^(plus.minus 2 i theta) = e^(2pi i phi_(plus.minus))$ with $phi_(plus.minus) in (0, 1)$. We have $phi_+ = theta \/ pi$ and $phi_- = (-2 theta + 2pi) \/ 2pi = 1 - theta \/ pi$. When $k << N$, $sin(theta) = sqrt(k\/N) approx theta$, so using $U_"PE"$ with $m$ qubits of precision $
         U_"PE" ket(psi) = 1/sqrt(2) (e^(-i theta) ket(e_+) ket(tilde(phi)_+) + e^(i theta) ket(e_-) ket(tilde(phi)_-))
     $ Measuring the QPE output gives (with probability $1\/2$) an estimate of $phi_+ = theta \/ pi approx 1/pi sqrt(k \/ N)$ or (with probability $1\/2$) an estimate of $phi_- = 1 - theta \/ pi approx 1 - 1/pi sqrt(k \/ N)$. So in either case, we get an estimate of $sqrt(k\/N)$ (since we can tell when $k << N$ which case we are in). By the @thm:phase-estimation, with probability at least $4 \/ pi^2$, QPE with $m$ lines gives us an approximation of $sqrt(k \/ N)$ to precision $O(1\/2^m)$, using $O(2^m)$ $Ctrl(Q)$ operations, each of which requires one query to $f$. Write $delta \/ sqrt(2^n) = 1 \/ 2^m$ for some $delta > 0$. So we can estimate $sqrt(k)$ to precision $delta$, and since $Delta(x^2) = 2x Delta(x)$, we estimate $sqrt(k)$ to additive error (precision) $O(delta sqrt(k))$ using $O(2^m) = O(sqrt(N) \/ delta)$ queries to $f$.
-]
+]<exm:quantum-counting>
 #remark[
     The quantum counting algorithm is quadratically faster than the best possible classical algorithm, which is:
     - Sample random $x$ from ${0, 1}^n$, then $Pr(f(x) = 1) = k\/N$.
@@ -878,8 +893,11 @@ $ i.e. for all normalised states $ket(psi)$, $norm(U ket(psi) - tilde(U) ket(psi
             norm(A^(-1)) dot norm(A) quad & "if" A "is invertible",
             oo & "otherwise"
         ).
-    $ $kappa(A)$ can be thought of a measure of "how invertible" $A$ is. We say $A$ is *well-conditioned* if $kappa(A)$ is small.
+    $ We say $A$ is *well-conditioned* if $kappa(A)$ is small, i.e. if $kappa(A) = O(polylog(N))$.
 ]<def:condition-number>
+#remark[
+    $kappa(A)$ can be thought of a measure of "how invertible" $A$ is. As $kappa(A)$ increases, numerically computing $A^(-1)$ becomes more unstable.
+]
 #proposition[
     If $A in CC^(N times N)$ is Hermitian with non-zero eigenvalues $lambda_1, ..., lambda_N$, then $
         kappa(A) = max{abs(lambda_i): i in [N]} / min{abs(lambda_i): i in [N]}.
@@ -907,23 +925,13 @@ $ i.e. for all normalised states $ket(psi)$, $norm(U ket(psi) - tilde(U) ket(psi
     
     Instead of computing the full solution $x$, the HHL algorithm estimates properties of $x$ of the form $mu = x^T M x$ (i.e. quadratic forms), where $M$ is Hermitian, e.g. the total weight assigned by $x$ to a subset of indices/components.
 ]
-
-The quantum algorithm will work on $n = log N$ qubits and will never need to "write down" $A$, $b$, or $x = A^(-1) b$ as lists of numbers. It will output a state $ket(hat(x)')$ that is $epsilon$-close to $ket(hat(x))$, and $ket(hat(x))$ is proportional to $A^(-1) ket(b)$ in $O(poly(n) dot kappa^2 dot 1/epsilon)$. Using $ket(hat(x)')$ a further $O(poly(n) kappa^2 \/ epsilon)$ times, we can estimate any $mu = x^T M x$.
-
-
-
-#definition[
-    Given an angle $c$, define the *controlled-rotation* unitary $Ctrl(Rot)$ linearly by $
-        Ctrl(Rot) ket(x) ket(0) = ket(x) (sqrt(1 - c^2 \/ x^2) ket(0) + c/)
-    $
-]
-
 #algorithm("HHL")[
     We are given $ket(b) = 1/norm(b)_2 sum_(i = 0)^(N - 1) b_i ket(i)$.
-    + Apply the unitary part of for the unitary $e^(-i A)$ (this is implemented by Hamiltonian simulation) with $m$ bits of precision on the state $ket(b) ket(0)^(tp m)$.
-    + Apply $Ctrl(Rot)$ to the state.
+    + Apply the unitary part $U_"PE"$ of @alg:qpe for the unitary $e^(-i A)$ with $m$ bits of precision to the state $ket(b) ket(0)^(tp m)$.
+    + Append an ancillary qubit (in state $ket(0)$) to the state, then apply a controlled rotation (acting on the last $m$ qubits plus the ancillary qubit) to it.
     + Perform a *post-selection* step: measure the last qubit, and if the outcome is $0$, reject and go back to step 1, otherwise accept.
-    + Perform a measurement in the $M$ basis on the resulting state.
+    + Apply $U_"PE"^(-1)$ (the inverse of phase estimation) to the resulting state.
+    + Perform a measurement in the $M$ basis on the first $n$ qubits of the resulting state.
     + Repeat all of the above $O(log(1/eta) \/ delta^2)$ times and compute the empirical mean of the measurements, where $eta$ controls the probability of success and $delta$ controls the approximation error.
 ]<alg:hhl>
 #remark[
@@ -933,71 +941,96 @@ The quantum algorithm will work on $n = log N$ qubits and will never need to "wr
     - We can also use HHL for non-Hermitian $M$: run HHL on $M_1 = 1/2 \(M + M^dagger\)$ and $M_2 = 1/(2i) \(M - M^dagger\)$ (which are Hermitian) to give estimates $hat(mu)_1$ and $hat(mu)_2$, then combine to give $hat(mu) := hat(mu)_1 + i hat(mu)_2$.
 ]
 #theorem("Chernoff-Hoeffding")[
-    For a random variable $X$ on $[a, b]$ with mean $mu$, define the RV $overline(X) = 1/k (X_1 + dots.c + X_k)$, where the $X_i$ are IID with same distribution as $X$. Then $
-        Pr\(abs(overline(X) - mu\) > epsilon) <= e^(-2k delta^2 \/ (b - a)^2).
+    Let $X_1, ..., X_k$ be IID RVs on $[a, b]$ with mean $mu$, and let $overline(X) = 1/k (X_1 + dots.c + X_k)$. Then $
+        Pr\(abs(overline(X) - mu\) > delta) <= e^(-2k delta^2 \/ (b - a)^2).
     $
-]
+]<thm:chernoff-hoeffding>
 #proof[
     Omitted.
 ]
 #theorem[
-    Under the following assumptions, the @alg:hhl algorithm computes a estimate $hat(mu)$ of $mu = x^T M x$ to accuracy $delta$, with probability at least $1 - eta$, in $O(...)$ time:
+    If Hamiltonian simulation and phase estimation are exact, then the @alg:hhl algorithm computes a estimate $hat(mu)$ of $mu = x^T M x$ to accuracy $delta$, with probability at least $1 - eta$.
+]
+#proofsketch[
+    Let $
+        A = sum_(i = 1)^N lambda_i ket(v_i) bra(v_i)
+    $ be the spectral decomposition of $A$. For simplicity, we assume that Hamiltonian simulation and phase estimation are exact; in particular, for each $i in [N]$, $lambda_i = ell_i \/ 2^n$ for some $ell_i in {0, ... N - 1}$. Assume that $max{abs(lambda_1), ..., abs(lambda_n)} = 1$ and that $kappa(A)$ is known or bounded above by some value $kappa_max$. Writing $kappa = kappa(A)$, we have by @prop:condition-number-of-hermitian-matrix-is-ratio-of-max-abs-eigenvalue-and-min-abs-eigenvalue that $abs(lambda_i) in [1\/kappa, 1]$ for each $i in [N]$. Work in the $n$-qubit Hilbert space spanned by ${ket(1), ..., ket(N)}$. Write $
+        ket(b) = sum_(i = 1)^N b_i ket(i) = sum_(j = 1)^N beta_j ket(v_j)
+    $ Due to the bounds on the $abs(lambda_i)$, $A^(-1)$ exists and is equal to $sum_(i = 1)^N 1/lambda_j ket(v_j) bra(v_j)$. Thus, the (unnormalised) solution to $A ket(x) = ket(b)$ is  $
+        ket(x) = A^(-1) ket(b) = sum_(j = 1)^N beta_j dot 1/lambda_j ket(v_j).
+    $
+    + Applying $U_"PE"$ on the state $ket(psi) := ket(b) ket(0)^(tp m)$ gives the state $
+        U_"PE" ket(psi) = sum_(i = 1)^N beta_i ket(v_i) ket(ell_i)
+    $ (assuming $e^(-i A)$ and $U_"PE"$ are exact and error-free). Consider the controlled rotation $Ctrl("Rot")$ acting on $n + 1$ qubits, defined by the following action: for all $j in [N]$, $
+        Ctrl("Rot") ket(ell_j) ket(0) = ket(ell_j) (cos\(theta_j\) ket(0) + sin\(theta_j\) ket(1)) = ket(ell_j) (sqrt(1 - c^2 / lambda_j^2) ket(0) + c / lambda_j ket(1)),
+    $ where $theta = arcsin(c \/ lambda)$ and $c <= min{abs(lambda_j): j in [N]}$, and e.g. $Ctrl("Rot") ket(y) ket(0) = ket(y) ket(0)$ for all other $y$ (this part is not important and could be chosen to be something else which is consistent with $Ctrl("Rot")$ being unitary). By unitarity, this fully determines $Ctrl("Rot")$. \ By the above bounds on the $abs(lambda_j)$, we can choose $c = 1 \/ kappa$. So in $Ctrl("Rot")$, the angle depends on the first register but not on $A$ or $b$ (so we're not sneaking extra info in here). $Ctrl("Rot")$ can be implemented efficiently using $O(poly(n))$ one and two-qubit gates (by e.g. @thm:solovay-kitaev).
+    + Applying $Ctrl("Rot")$ to the state $U_"PE" ket(psi) tp ket(0)$ produces the state $
+        sum_(j = 1)^N beta_j sqrt(1 - c^2 \/ lambda_j^2) ket(v_j) ket(ell_j) ket(0) + beta_j c/lambda_j ket(v_j) ket(ell_j) ket(1)
+    $
+    + At the post-selection step, the probability of success (i.e. measuring outcome $1$) is (Probability of successfully preparing state $ket(x)$ is $
+        p & = norm(sum_(j = 1)^N beta_j c/lambda_j ket(v_j) ket(ell_j))^2 = sum_(j = 1)^N abs(beta_j c \/ lambda_j)^2 >= c^2 sum_(j = 1)^N abs(beta_j)^2 = c^2 = 1/kappa^2
+    $ In this case, the post-measurement state has collapsed to (ignoring the ancillary qubit) $
+        ket(phi) = 1/sqrt(p) sum_(j = 1)^N beta_j c/lambda_j ket(v_j) ket(ell_j)
+    $ To boost the success probability to at least $1 - eta$, we can either repeat the post-selection step $O(log(1 \/ eta) / p) = O(log(1\/ eta) kappa^2)$ times.
+    + Applying $U_"PE"^(-1)$ to $ket(phi)$ "uncomputes" the register holding the $ket(ell_j)$, resetting it to $ket(0)$, so gives $
+        ket(tilde(x)) = c/sqrt(p) sum_(j = 1)^N beta_j / lambda_j ket(v_j) = c/sqrt(p) ket(x).
+    $
+    + Performing a measurement on $ket(tilde(x))$ in the $M$ basis on the first $n$ qubits (i.e. measuring in the $M tp I_m$ basis on the entire state, where $I_m$ is the identity operator on $m$ qubits) yields an eigenvalue of $M$.
+    + We have $mu = braket(x, M, x) = p/c^2 braket(tilde(x), M tp I, tilde(x))$. Computing the empirical average of the measurements gives us an estimate of $tilde(mu) = braket(tilde(x), M tp I_m, tilde(x))$. By the @thm:chernoff-hoeffding bound, to estimate $tilde(mu)$ with probability at least $1 - eta$ to accuracy $delta$, we need $O(log(1 \/ eta) / delta^2)$ of the measurements in the $M$ basis. Since $c$ is known, we just need an estimate of $p$ to be able to estimate $mu$. \ To estimate $p$: the post-selection step is a Bernoulli trial, with probability of outcome $1$ being $p$. So the mean is $0 dot (1 - p) + 1 dot p = p$. This can also be estimated by the empirical average of the proportion of post-selection steps performed that succeed, and we again use the @thm:chernoff-hoeffding bound.
+]
+#remark[
+    Note that in reality @alg:hhl outputs a state $ket(tilde(x)')$ that is $epsilon$-close to $ket(tilde(x))$, rather than $ket(tilde(x))$ itself.
+    // Using $ket(tilde(x)')$ a further $O(poly(n) kappa^2 \/ epsilon)$ times, we can estimate any $mu = x^T M x$.
+]
+#remark[
+    Instead of repeating the post-selection step (step 3 of @alg:hhl) until we succeed, we can use amplitude amplification to the state before we measure, i.e. to the state $
+        U_"HHL" ket(b) = sqrt(1 - p) ket("junk") ket(0) + sqrt(p) ket(tilde(x)) ket(1),
+    $ which gives a quadratic improvement on the $O(kappa^2)$ measurements needed for success in the post-selection step.
+
+    Similarly, instead of estimating the probability $p$ using the @thm:chernoff-hoeffding bound, we could use amplitude amplification in the form of @exm:quantum-counting.
+]
+#remark[
+    In @alg:hhl, we want to be able to apply the transformation $ket(b) |-> A^(-1) ket(b) = ket(x)$. However, this is generally non-unitary so cannot be directly implemented. Instead, we implemented it probabilistically using @alg:qpe, performed on the unitary $U = e^(-i A)$, which in turn is implemented by Hamiltonian simulation. At the end, the measurement in $M$ basis re-introduces the non-unitarity.
+]
+#definition[
+    We say a matrix $A in CC^(N times N)$ is *row sparse* if each row of $A$ contains $O(polylog(N))$ non-zero entries.
+
+    More generally, $A$ is *row $s$-sparse* if each row contains at most $s$ non-zero entries.
+]<def:matrix.row-sparse>
+#definition[
+    We say an $s$-sparse matrix $A$ is *row-computable* if the entries of $A$ can be efficiently computed in the following sense: there is a (classical) $O(s)$-time algorithm $C$ which, given a row index $1 <= i <= N$ and an integer $k$, outputs the $k$-th non-zero entry  $A_(i j)$ of row $i$ and its column index $j$: $
+        C(i, k) = (j, A_(i j)).
+    $
+]
+#theorem[
+    Under the following assumptions, for row $s$-sparse $A$, HHL runs in time $O((log N) kappa^2 s^2 dot 1/epsilon)$:
     - $norm(b)_2$ is $1$ (or is efficiently computable), and the state $ket(b)$ can be prepared exactly and efficiently.
     - The unitary $Ctrl(Rot)$ can be implemented exactly and efficiently.
     - Measurements in the $M$ basis can be performed efficiently.
-    - There is an efficient Hamiltonian simulation algorithm for $A$, i.e. $U(t) = e^(-i A t)$ can be implemented with $O(poly(n) dot t)$ gates.
-]
-#remark[
-    The condition that there is an efficient Hamiltonian simulation algorithm for $A$ holds for local Hamiltonians, but also for the larger class, which naturally occurs in applications, of locally-computable and row-sparse (every row contains at most $O(polylog (N))$ non-zero entries) matrices.
 ]
 #proof[
-    For simplicity, we assume that Hamiltonian simulation and phase estimation are exact. Let $
-        A = sum_(i = 1)^N lambda_i ket(v_i) bra(v_i)
-    $ be the spectral decomposition of $A$. Assume that $max{abs(lambda_1), ..., abs(lambda_n)} = 1$ and that $kappa(A)$ is known or bounded above by some value $kappa_max$. Writing $kappa = kappa(A)$, we have by @prop:condition-number-of-hermitian-matrix-is-ratio-of-max-abs-eigenvalue-and-min-abs-eigenvalue that $abs(lambda_i) in [1\/kappa, 1]$ for each $i in [N]$. Work in the $n$-qubit Hilbert space spanned by ${ket(0), ..., ket(N - 1)}$. Write $
-        ket(b) = sum_(i = 1)^N b_i ket(i) = sum_(j = 1)^N beta_j ket(v_j)
-    $ Due to the bounds on the $abs(lambda_i)$, $A^(-1)$ exists and is equal to $sum_(i = 1)^N 1/lambda_j ket(v_j) bra(v_j)$. Thus, the solution to $A ket(x) = ket(b)$ is  $
-        ket(x) = A^(-1) ket(b) = sum_(j = 1)^N beta_j dot 1/lambda_j ket(v_j)
-    $
-    + Applying $U_"PE"$ on the state $ket(psi) := ket(b) ket(0)^(tp m)$ gives the state $
-        U_"PE" ket(psi) = sum_(i = 1)^N beta_i ket(v_i) ket(lambda_i)
-    $ (assuming $e^(-i A)$ and $U_"PE"$ are exact and error-free). Consider the controlled rotation $Ctrl("Rot")$ acting on $n + 1$ qubits: $Ctrl("Rot") ket(lambda) ket(0) = ket(lambda) (cos(theta) ket(0) + sin(theta) ket(1)) = ket(lambda) (sqrt(1 - c^2 \/ lambda^2) ket(0) + c / lambda ket(1))$, with $theta = arcsin(c \/ lambda)$ and $c <= min{abs(lambda_i): i in [N]}$. Since $lambda in [1\/kappa, 1]$, $1\/lambda in [1, kappa]$ is larger than $1$, so can choose $c = 1 \/ kappa$. So in $Ctrl("Rot")$, the angle depends on the first register but not on $A$ or $b$ (so we're not sneaking extra info in here). $Ctrl("Rot")$ can be implemented efficiently using $O(poly(n))$ one and two-qubit gates (by e.g. @thm:solovay-kitaev).
-    + Applying $Ctrl("Rot")$ to the state $U_"PE" ket(psi) tp ket(0)$ produces the state $
-        sum_(j = 1)^N beta_j sqrt(1 - c^2 \/ lambda_j^2) ket(v_j) ket(lambda_j) ket(0) + beta_j c/lambda_j ket(v_j) ket(lambda_j) ket(1)
-    $
-    + At the post-selection step, the probability of measuring outcome $1$ is (Probability of successfully preparing state $ket(x)$ which is proportional to $A^(-1) ket(b)$) is $
-        p & = norm(sum_(j = 1)^N beta_j c/lambda_j ket(v_j) ket(lambda_j))^2 = sum_(j = 1)^N abs(beta_j c \/ lambda_j)^2 >= c^2 sum_(j = 1)^N abs(beta_j)^2 = c^2 = 1/kappa^2
-    $ In this case, the post-measurement state has collapsed to (ignoring the ancillary qubit) $
-        ket(hat(x)) = 1/sqrt(p) sum_(j = 1)^N beta_j c/lambda_j ket(v_j) ket(lambda_j)
-    $ To boost the success probability to at least $1 - eta$, we can either repeat until the post selection step $O(log(1 \/ eta) / p) = O(log(1\/ eta) kappa^2)$ times, or use amplitude amplification: $
-        U_"HHL" ket(b) = sqrt(1 - p) ket("junk") ket(0) + sqrt(p) ket(hat(x)) ket(1)
-    $ Assuming we can also efficiently prepare $ket(b)$, we can apply amplitude amplification to obtain a quadratic improvement: $O(log(1 \/ eta) \/ sqrt(p)) = O(log(1\/eta) kappa)$ measurements.
+    Non-examinable.
+]
+// Runtime of HHL:
+    // - The precision dependence in Hamiltonian simulation can be made $O(log(1 \/ epsilon))$, so we neglect it.
+    // - Most of the complexity of HHL comes from QPE. Suppose we do QPE with $m$ qubits of precision $alpha = 1\/2^m$. We need to figure out how to choose $m$ and $t$ to get $epsilon$-precision at the end of HHL, i.e. $epsilon$-precision for estimating $mu$.
+    // - QPE uses $Ctrl(U)$, ..., $Ctrl(U^(2^(m - 1)))$. Can implemented $Ctrl(U) = mat(I, 0; 0, U)$ on $tilde(A) = mat(0, 0; 0, A)$. So we need to implement $e^(-i A t)$ for $t = 1, 2, 4, ..., 2^(m - 1)$. Since $(Ctrl(U))^(2^j) = e^(-i A dot 2^j)$, the total time of evolution is $t_0 = 1 + 2 + dots.c + 2^(m - 1) = O(2^m) = O(1 \/ alpha)$. After controlled rotation and post selection, we get $
+    //     ket(tilde(x)') = 1/(D') sum_(j = 1)^N beta_j c / (lambda'_j) ket(v_j) ket(lambda_j')
+    // $ where $D'^2 = p = sum_(j = 1)^N abs(beta_j)^2 abs(c \/ lambda'_j)$. We want $ket(tilde(x)')$ to be within $epsilon$ of $ket(tilde(x))$. To establish dependence of $t_0$ on $epsilon$, we use two facts about relative errors:
+    //     + $dif (1 \/ lambda) approx 1/lambda^2 dif lambda$, so $(dif (1 \/ lambda))/(1 \/ lambda) = (dif lambda) / lambda$
+    //     + If $A'$ and $B'$ approximate $A$ and $B$ to relative error $delta$, then $A' / B'$ approximates $A / B$ to relative error $delta$: $A' / B' = (A(1 + delta))/(B(1 + delta)) = A/B (1 + O(delta))$.
+    // So $1/(lambda'_j)$ approximates $1/lambda_j$ to relative error $O(eta / lambda_j) = O(kappa eta)$ since $abs(1 \/ lambda_j) <= kappa$. $D'$ approximates $D$ to relative error $O(kappa eta)$ as well, because $D$ is homogenous in $1/lambda_j$. Using (2) with $A' = beta_j c \/ lambda'_j$ and $B' = D'$, the amplitudes of $ket(tilde(x)')$ approximate those of $ket(tilde(x))$ to $O(kappa eta)$. Hence, $
+    //     norm(ket(tilde(x)') - ket(tilde(x))) = norm((1 + O(kappa eta)) ket(tilde(x)) - ket(tilde(x))) = O(kappa eta).
+    // $ So we want $O(kappa eta) = epsilon$ so take $eta = epsilon / kappa$, so $t_0 = kappa / epsilon$.
 
-    We can now estimate $mu = x^T M x = braket(x, M, x)$ by performing measurements on $hat(x)$ in the $M$ basis, and computing empirical averages: $hat(mu) = braket(hat(x), M, hat(x)) = c^2 / p braket(x, M, x)$.
+    // So the overall complexity is $O(poly(n) dot t) = O(poly(n) dot kappa dot 1/epsilon)$ (we would get $kappa^2$ without using amplitude amplification).
+#remark[
+    The condition that there is an efficient Hamiltonian simulation algorithm for $A$ holds for local Hamiltonians and for row-computable matrices.
 
-    By the Chernoff-Hoeffding bound, to estimate the mean $hat(mu)$ with probability at least $1 - eta$ to accuracy $delta$, we need $O(log(1 \/ eta) / delta^2)$ measurements.
-
-    To estimate $p$: the post-selection step is a Bernoulli trial, with probability of outcome $1$ being $p$. So the mean is $0 dot (1 - p) + 1 dot p = p$. This can also be estimated by the empirical average, and we use the Chernoff-Hoeffding bound. Alternatively, we can use amplitude amplification in the form of quantum counting (see find example) - this gives a quadratic improvement over the above.
+    Since reading $A$ and $b$ would take $poly(N)$ time if they were stored as their components, there needs to be a more efficient presentation of $A$ (e.g. row-computable matrices) and $b$ (stored as a quantum state). The only time the presentation of $A$ features in HHL is in the Hamiltonian simulation step, so requiring this to run in $poly(n, t)$ time is sufficient.
 ]
 #remark[
-    In @alg:hhl, we want to be able to apply the transformation $ket(b) |-> A^(-1) ket(b) = ket(x)$. However, this is generally non-unitary so cannot be directly implemented. Instead, we implemented it probabilistically using @alg:qpe, performed on the unitary $U = e^(-i A)$, which in turn is implemented by Hamiltonian simulation. At the end, we'll have a measurement step that introduces the non-unitarity.
-]
-#remark[
-    Runtime of HHL:
-    - The precision dependence in Hamiltonian simulation can be made $O(log(1 \/ epsilon))$, so we neglect it.
-    - Most of the complexity of HHL comes from QPE. Suppose we do QPE with $m$ qubits of precision $alpha = 1\/2^m$. We need to figure out how to choose $m$ and $t$ to get $epsilon$-precision at the end of HHL, i.e. $epsilon$-precision for estimating $mu$.
-    - QPE uses $Ctrl(U)$, ..., $Ctrl(U^(2^(m - 1)))$. Can implemented $Ctrl(U) = mat(I, 0; 0, U)$ on $tilde(A) = mat(0, 0; 0, A)$. So we need to implement $e^(-i A t)$ for $t = 1, 2, 4, ..., 2^(m - 1)$. Since $(Ctrl(U))^(2^j) = e^(-i A dot 2^j)$, the total time of evolution is $t_0 = 1 + 2 + dots.c + 2^(m - 1) = O(2^m) = O(1 \/ alpha)$. After controlled rotation and post selection, we get $
-        ket(hat(x)') = 1/(D') sum_(j = 1)^N beta_j c / (lambda'_j) ket(v_j) ket(lambda_j')
-    $ where $D'^2 = p = sum_(j = 1)^N abs(beta_j)^2 abs(c \/ lambda'_j)$. We want $ket(hat(x)')$ to be within $epsilon$ of $ket(hat(x))$. To establish dependence of $t_0$ on $epsilon$, we use two facts about relative errors:
-        + $dif (1 \/ lambda) approx 1/lambda^2 dif lambda$, so $(dif (1 \/ lambda))/(1 \/ lambda) = (dif lambda) / lambda$
-        + If $A'$ and $B'$ approximate $A$ and $B$ to relative error $xi$, then $A' / B'$ approximates $A / B$ to relative error $xi$: $A' / B' = (A(1 + xi))/(B(1 + xi)) = A/B (1 + O(xi))$.
-    So $1/(lambda'_j)$ approximates $1/lambda_j$ to relative error $O(eta / lambda_j) = O(kappa eta)$ since $abs(1 \/ lambda_j) <= kappa$. $D'$ approximates $D$ to relative error $O(kappa eta)$ as well, because $D$ is homogenous in $1/lambda_j$. Using (2) with $A' = beta_j c \/ lambda'_j$ and $B' = D'$, the amplitudes of $ket(hat(x)')$ approximate those of $ket(hat(x))$ to $O(kappa eta)$. Hence, $
-        norm(ket(hat(x)') - ket(hat(x))) = norm((1 + O(kappa eta)) ket(hat(x)) - ket(hat(x))) = O(kappa eta).
-    $ So we want $O(kappa eta) = epsilon$ so take $eta = epsilon / kappa$, so $t_0 = kappa / epsilon$.
-
-    So the overall complexity is $O(poly(n) dot t) = O(poly(n) dot kappa dot 1/epsilon)$ (we would get $kappa^2$ without using amplitude amplification).2
-]
-#remark[
-    The best known classical algorithm for solving linear systems requires $O(poly(N) dot kappa dot log(1/epsilon))$ time, even with assumptions comparable to our assumptions for HHL. Classically, there is no known method of estimating the quadratic forms $mu = x^T M x$ which is faster than computing $x$ first. Thus, when $epsilon$ is constant (or even $epsilon = O(1/poly(n))$) and $A$ is well-conditioned, this is an exponential speedup over the classical algorithm.
+    Given $s$-sparse $A$, the best known classical algorithm for computing an $epsilon$-approximation of $mu = x^T M x$ runs in $O(N s sqrt(kappa) dot log(1/epsilon))$ time, even with assumptions comparable to our assumptions for HHL. Classically, there is no known method of estimating the quadratic forms $mu = x^T M x$ which is faster than computing $x$ first. Thus, when $epsilon$ is constant (or even $epsilon = O(1/poly(n))$) and $A$ is well-conditioned and row-sparse, the HHL runtime is an exponential speedup over the classical algorithm runtime.
 ]
 
 
@@ -1061,7 +1094,7 @@ To formalise this comparison of quantum vs classical computing, we will define a
 == Clifford computations
 
 #definition[
-    The $1$-qubit Pauli group $cal(P)_1$ is ${plus.minus i, plus.minus 1} dot {I, X, Y, Z}$ with the usual rules $X Y = i Z$, etc. The $n$-qubit Pauli group is $cal(P)_n = cal(P)_1 tp dots.c tp cal(P)_n$.
+    The $1$-qubit Pauli group $cal(P)_1$ is ${plus.minus i, plus.minus 1} dot {I, X, Y, Z}$ with the usual rules $X Y = i Z$, etc. The $n$-qubit Pauli group is $cal(P)_n = cal(P)_1 tp dots.c tp cal(P)_1$.
 ]<def:pauli-group>
 #definition[
     A *Clifford operation* on $n$-qubits is a unitary $C in U(2^n)$ which preserves the Pauli group under conjugation, i.e. $

@@ -1,6 +1,11 @@
-#import "@preview/fletcher:0.5.1" as fletcher: diagram, node, edge
+#import "@preview/fletcher:0.5.2" as fletcher: diagram, node, edge
 #import "../../template.typ": *
 #show: doc => template(doc, hidden: (), slides: false)
+#set document(
+    title: "Logic and Computability Notes",
+    author: "Isaac Holt",
+    keywords: ("logic", "computability")
+)
 
 #let proves = sym.tack.r
 #let satisfies = sym.tack.r.double

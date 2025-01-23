@@ -4,6 +4,11 @@
     "Parseval's Identity": "Parseval"
 )
 #show: doc => template(doc, hidden: (), slides: false, name-abbrvs: name-abbrvs)
+#set document(
+    title: "Additive Combinatorics Notes",
+    author: "Isaac Holt",
+    keywords: ("additive combinatorics", "combinatorics")
+)
 
 #let Spec = math.op("Spec")
 #let codim = math.op("codim")
@@ -308,7 +313,7 @@ In this chapter, assume that $G$ is a _finite_ abelian group.
         forall epsilon > 0, exists N in NN: forall n >= N, abs(f(n)) <= epsilon abs(g(n)),
     $ i.e. $lim_(n -> oo) f(n)/g(n) = 0$.
     - Write $f(n) = Omega(g(n))$ if $g(n) = O(f(n))$.
-    - If the implied constant depends on a fixed parameter, this may be indicated by a subscript, e.g. $exp(p n^2) = O_p (exp(n^2))$.
+    - If the implied constant depends on a fixed parameter, this may be indicated by a subscript, e.g. $exp(p + n^2) = O_p (exp(n^2))$.
 ]
 #theorem("Hölder's Inequality")[
     Let $p, q in [1, oo]$ with $1/p + 1/q$, and $f in L^p (G)$, $g in L^q (G)$. Then $

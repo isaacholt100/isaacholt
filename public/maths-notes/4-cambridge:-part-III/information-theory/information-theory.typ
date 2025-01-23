@@ -3,6 +3,8 @@
 #import "../../diagram-style.typ": *
 #import "@preview/cetz:0.3.1" as cetz: canvas
 
+// Everything in the official lecture notes is examinable, except the proofs of Theorems 7.6, 8.1, 12.3, 12.4 and 12.6.
+
 #let name-abbrvs = (
     "Data Processing Inequality for Entropy": "Data Processing",
     "Data Processing Inequalities for Mutual Information": "Data Processing",
@@ -10,6 +12,11 @@
     "Ruzsa Triangle Inequality for Entropy": "Ruzsa Triangle Inequality"
 )
 #show: doc => template(doc, hidden: (), slides: false, name-abbrvs: name-abbrvs)
+#set document(
+    title: "Information Theory Notes",
+    author: "Isaac Holt",
+    keywords: ("information theory", "entropy", "information")
+)
 
 #let sim = sym.tilde
 #let Bern = math.op("Bern")
@@ -1652,16 +1659,177 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
     Use Markov's inequality.
 ]
 #proof[
-    By Markov's inequality, we have $
+    By Markov's inequality, we have #qed-multiline($
         PP(-log Q_n (X_1^n) <= -log P_n (X_1^n) - K) & = PP((Q_n (X_1^n))/(P_n (X_1^n)) >= 2^K) \
         & <= 2^(-K) EE[(Q_n (X_1^n))/(P_n (X_1^n))] \
         & = 2^(-K) sum_(x_1^n in A^n) P_n (x_1^n) dot (Q_n (x_1^n))/(P_n (x_1^n)) \
         & = 2^(-K).
-    $
+    $)
 ]
 
 
 = Universal data compression
+
+In this chapter, assume that we want to compress a message $x_1^n in {0, 1}^n$ where each $x_i$ is produced by an unknown distribution $P = P_(theta^*)$ which belongs to the parametric family ${P_theta sim Bern(theta): theta in (0, 1)}$. We also assume codelengths can be non-integral for simplicity, since the actual codelength differs by at most one bit.
+
+Note that in this case, $theta_"MLE" = k \/ n$ where $k$ is the number of $1$s in $x_1^n$. So the maximum likelihood distribution for $x_1^n$ amsong all $P_theta$ is its type $hat(P)_n$, and by @prop:prob-under-prod-dist-of-string-of-type, for all $theta in Theta$, $
+    -log P_(theta_"MLE")(x_1^n) = n H(hat(P)_n) <= -log P_theta^n (x_1^n).
+$
+
+
+#definition[
+    The *MLE code* first describes $hat(theta)_"MLE"$ to the decoder, then describes $x_1^n$ using the Shannon code for $P_(hat(theta)_"MLE")$.
+]<def:mle-code>
+#proposition[
+    The description length of the MLE code is $
+        n H\(hat(P)_n\) + log(n + 1).
+    $ In particular, the price of universality of the MLE code is $log n$ bits.
+]<prop:mle-code-price-of-universality>
+#proofhints[
+    Trivial.
+]
+#proof[
+    $theta_"MLE" = k \/ n$ where $k$ is the number of $1$s in $x_1^n$, so $k in {0, ..., n}$. So $k$ can be described using $log(n + 1)$ bits.
+    $x_1^n$ is described using $-log P_(theta_"MLE")^n (x_1^n) = n H(hat(P)_n)$ bits.
+]
+#proposition[
+    The expected description length of the MLE code is bounded above by $
+        n H(P_(theta^*)^n) + log(n + 1).
+    $ In particular, the price of universality in expectation of the MLE code is $log n$ bits.
+]<prop:mle-code-expected-price-of-universality>
+#proofhints[
+    Straightforward.
+]
+#proof[
+    The expected description length is #qed-multiline($
+        log(n + 1) + EE[-log P_(theta_"MLE")^n (X_1^n)] & <= log(n + 1) + EE[-log P_(theta^*)^n (X_1^n)] \
+        & = log(n + 1) + n H(P_(theta^*)).
+    $)
+]
+#definition[
+    The *counting code* first describes $theta_"MLE" = k \/ n$ to the decoder, then describes the index of $x_1^n$ in the ordered list of $binom(n, k)$ binary strings containing $k$ $1$s.
+]<def:counting-code>
+#proposition[
+    The description length of the counting code is $
+        log(n + 1) + log binom(n, k).
+    $
+]<prop:counting-code-description-length>
+#proofhints[
+    Trivial.
+]
+#proof[
+    Trivial.
+]
+#definition[
+    Given a parametric family of distributions ${P_theta: theta in Theta}$, the *uniform mixture* of ${P_theta^n: theta in Theta}$ is the PMF $Q_n$ on $A^n$ defined by $
+        Q_n (x_1^n) = integral_0^1 P_theta^n (x_1^n) dif theta.
+    $
+]<def:uniform-mixture>
+#definition[
+    The *mixture code* is the Shannon code for the uniform mixture $Q_n$ of the $P_theta^n$.
+]<def:mixture-code>
+#lemma[
+    For all $k, ell in NN_0$, $
+        integral_0^1 theta^k (1 - theta)^ell dif theta = (k! ell!)/(k + ell + 1)!.
+    $
+]<lem:closed-form-expression-for-uniform-mixture-of-bernoullis>
+#proof[
+    Exercise.
+]
+#proposition[
+    The description length of the mixture code is $
+        log(n + 1) + log binom(n, k).
+    $
+]<prop:mixture-code-description-length>
+#proofhints[
+    Straightforward.
+]
+#proof[
+    The uniform mixture is $
+        Q_n (x_1^n) = integral_0^1 theta^k (1 - theta)^(n - k) dif theta,
+    $ where $k$ is the number of $1$s in $x_1^n$. By the above lemma with $ell = n - k$, the description length is #qed-multiline($
+        -log Q_n (x_1^n) = -log (k! (n - k)!)/(n + 1)! = log(n + 1) + log binom(n, k).
+    $)
+]
+#definition[
+    The *predictive code* describes the message $x_1^n$ in steps instead of describing it all at once: having already communicated $x_1^i$, the encoder and decoder calculate the estimate $
+        hat(theta)_i = (k_i + 1)/(i + 2),
+    $ where $k_i$ is the number of $1$s in $x_1^i$. Since $hat(theta)_i$ is known to the decoder, the encoder then describes $x_(i + 1)$ using $-log P_(hat(theta)_i)(x_(i + 1))$ bits. This is repeated for each $i = 1, ..., n - 1$.
+]<def:predictive-code>
+#proposition[
+    The description length of the predictive code is $
+        log(n + 1) + log binom(n, k),
+    $ where $k$ is the number of $1$s in $x_1^n$.
+]<prop:predictive-code-description-length>
+#proofhints[
+    Straightforward.
+]
+#proof[
+    We have $k_0 = 0$ so $hat(theta)_0 = 1 \/ 2$. The description length is $
+        sum_(i = 1)^n -log P_(hat(theta)_(i - 1))(x_i) & = sum_(i = 1)^n -log (hat(theta)_(i - 1)^(x_i) (1 - hat(theta)_(i - 1))^(1 - x_i)) \
+        & = -sum_(i = 1)^n (x_i log hat(theta)_(i - 1) + (1 - x_i) log(1 - hat(theta)_(i - 1))) \
+        & = -sum_(i = 1)^n (x_i log (k_(i - 1) + 1)/(i + 1) + (1 - x_i) log (i - k_(i - 1))/(i + 1)) \
+        & = -sum_(i: x_i = 1) log(k_(i - 1)) - sum_(i: x_i = 0) log(i - k_(i - 1)) + sum_(i = 1)^n log(i + 1) \
+        & = -log(k_n !) - log((n - k_n)!) + log((n + 1)!) \
+        & = log(n + 1) + log binom(n, k).
+    $
+]
+#lemma[
+    Let $n in NN$, $0 <= k <= n$ and $p = k \/ n$. Then $
+        binom(n, k) <= 1/sqrt(2pi n p(1 - p)) dot 2^(n H(Bern(p))).
+    $
+]<lem:exponential-upper-bound-on-binomial-coefficient>
+#proof[
+    Exercise.
+]
+#definition[
+    The *Fisher information* for a parametric family of PMFS ${P_theta: theta in Theta}$ is defined as $
+        J(theta) := EE_(X sim P_theta) [(diff / (diff theta) P_theta (X))/(P_theta (X))^2].
+    $
+]<def:fisher-information>
+#proposition[
+    The description length of the counting, mixture and predictive codes is bounded above by $
+        n H\(hat(P)_n\) + 1/2 log(n J(theta_"MLE")/(2pi)) + 1.
+    $ In particular, the price of universality of the counting, mixture and predictive codes is $1/2 log n$ bits.
+]<prop:upper-bound-on-price-of-universality-of-counting-mixture-and-predictive-codes>
+#proofhints[
+    Straightforward.
+]
+#proof[
+    The description length of all three codes is $log(n + 1) + log binom(n, k)$ by @prop:counting-code-description-length, @prop:mixture-code-description-length and @prop:counting-code-description-length. By @lem:exponential-upper-bound-on-binomial-coefficient, we have $
+        log binom(n, k) <= n H(hat(P)_n) - 1/2 log(2pi n theta_"MLE" (1 - theta_"MLE")) = n H(hat(P)_n) + 1/2 log(J(theta_"MLE")/(2pi n)),
+    $ where $J(dot)$ is the Fisher information of the family of Bernoulli PMFs. This concludes the result.
+]
+#notation[
+    Partitioning the interval $[0, 1]$ into $sqrt(n)$ intervals of length $1 \/ sqrt(n)$, let $theta_"MDL"$ denote the index of the interval that $theta_"MLE"$ belongs to.
+]<ntn:mdl-estimator>
+#definition[
+    The *MDL code* first describes $theta_"MDL"$ to the decoder, then describes $x_1^n$ using the Shannon code for $P_(theta_"MDL")$.
+]<def:mdl-code>
+#remark[
+    Note that we can write the MLE as $
+        theta_"MLE" = 1/n sum_(i = 1)^n X_i = theta^* + 1/sqrt(n) (1/sqrt(n) sum_(i = 1)^n (X_i - theta^*)),
+    $ where $theta^*$ is the true underlying parameter. The term in the brackets has mean $mu = 0$ and variance $sigma^2 = theta^* (1 - theta^*)$. So by the central limit theorem, $
+        theta_"MLE" approx theta^* + 1/sqrt(n) Z, quad Z sim N(mu, sigma^2).
+    $ Hence, $theta_"MLE"$ has fluctuations of order $O(1 \/ sqrt(n))$. This suggests the MLE code strategy of describing it with $O(1 \/ n)$ accuracy is too fine-grained, and the MDL code strategy of describing it with $O(1 \/ sqrt(n))$ accuracy is more appropriate.
+]
+#proposition[
+    The description length of the MDL code is $
+        n H(hat(P)_n) + 1/2 log n + O(1).
+    $ In particular, the price of universality of the MDL code is $1/2 log n$ bits.
+]<prop:mdl-code-description-length>
+#proofhints[
+    Use that $D(P_(theta_"MLE") || P_(theta_"MDL")) = O((theta_"MLE" - theta_"MLE")^2)$ (since $D(P || Q)$ is locally quadratic in $(P - Q)$).
+]
+#proof[
+    By @prop:prob-under-prod-dist-of-string-of-type, we have $
+        -log P_(theta_"MDL")^n (x_1^n) = n D(P_(theta_"MLE") || P_(theta_"MDL")) + n H(hat(P)_n).
+    $ Since $D(P || Q)$ is locally quadratic in $(P - Q)$, the Taylor expansion gives $
+        D(P_(theta_"MLE") || P_(theta_"MDL")) = O((theta_"MLE" - theta_"MLE")^2).
+    $ Now by definition, $abs(theta_"MLE" - theta_"MDL") = O(1 \/ sqrt(n))$. Thus, $
+        n D(P_(theta_"MLE") || P_(theta_"MDL")) = O(1),
+    $ which concludes the result.
+]
 
 
 = Redundancy and the price of universality
@@ -1669,67 +1837,124 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
 == Redundancy
 
 #definition[
-    Suppose $x_1^n in A^n$ is generated by a memoryless source with PMF $P$ on a finite alphabet $A$, with $abs(A) = m$. The target compression is $-log P^n (x_1^n)$ bits. So if instead we use a code with respect to an arbitrary PMF $Q_n$ on $A^n$, the *redundancy* is $rho_n (x_1^n; P, Q_n) = -log Q_n (x_1^n) - (-log P^n (x_1^n)) = log (P^n (x_1^n))/(Q^n (x_1^n))$.
-
-    The *minimax maximal redundancy* is $
-        rho_n^* = min_(Q_n) max_P max_(x_1^n) log (P^n (x_1^n))/(Q_n (x_1^n))
-    $ and the *minimax average redundancy* is $
-        overline(rho)_n = min_(Q_n) max_P EE_(P^n) [log (P^n (x_1^n))/(Q_n (x_1^n))] = sup_P D(P^n || Q_n)
+    Suppose $x_1^n in A^n$ is generated by a memoryless source with PMF $P$ on a finite alphabet $A$, with $abs(A) = m$. The *redundancy* on $x_1^n$ of a code with length function $L_n$ is the difference between $L_n (x_1^n)$ and the target compression of $-log P^n (x_1^n)$ bits (the ideal Shannon codelength with respect to $P^n$), so is given by $
+        L_n (x_1^n) - (-log P^n (x_1^n)).
+    $ If we use the Shannon code with respect to an arbitrary PMF $Q_n$ on $A^n$, the redundancy is $
+        rho_n (x_1^n; P, Q_n) = -log Q_n (x_1^n) - (-log P^n (x_1^n)) = log (P^n (x_1^n))/(Q^n (x_1^n)).
+    $
+]<def:redundancy>
+#remark[
+    Note that by the @thm:codes-distributions-correspondence, we can restrict our attention to (ideal) Shannon codes (assuming that we ignore integer codelength constraints).
+]
+#definition[
+    The *worst-case maximal redundancy* of the Shannon code with respect to $Q_n$ is its largest redundancy over all strings and all source distributions: $
+        sup_(P in cal(P)) max_(x_1^n in A^n) log (P^n (x_1^n))/(Q_n (x_1^n)).
+    $
+]<def:worst-case-maximal-redundancy>
+#definition[
+    The *minimax maximal redundancy* $rho_n^*$ over the class of all IID source distributions on $A^n$ is the shortest possible worst-case maximal redundancy: $
+        rho_n^* = inf_(Q_n) sup_(P in cal(P)) max_(x_1^n in A^n) log (P^n (x_1^n))/(Q_n (x_1^n)).
+    $
+]<def:minimax-maximal-redundancy>
+#definition[
+    The *worst-case average redundancy* of the Shannon code with respect to $Q_n$ is its largest average redundancy over all source distributions: $
+        sup_(P in cal(P)) EE_(X_1^n sim P^n) [log (P^n (X_1^n))/(Q_n (X_1^n))] = sup_(P in cal(P)) D(P^n || Q_n).
+    $
+]<def:worst-case-average-redundancy>
+#definition[
+    The *minimax average redundancy* over the class of all IID source distributions on $A^n$ is the shortest possible worst-case average redundancy $
+        overline(rho)_n = inf_(Q_n) sup_(P in cal(P)) D(P^n || Q_n).
     $
 ]
-We will see that $
-    (m - 1)/2 log n - C' <= overline(rho)_n <= rho_n^* <= (m - 1)/2 log n + C
-$ for some constants $C, C'$.
 
 == Shtarkov's upper bound
 
 #theorem("Normalised Maximum Likelihood Code")[
-    Let $cal(P) = {P_theta: theta in Theta}$ be an arbitrary parametric family of distributions on a finite alphabet $B$. Then $
-        rho^* (Theta) := min_Q max_theta max_x log (P_theta (x))/Q(x) = log Z
-    $ where $
-        Z = sum_(x in B) max_(theta in Theta) P_theta (x).
+    Let ${P_theta: theta in Theta}$ be a parametric family of distributions on a finite alphabet $B$. Denote the minimax maximal redundancy over ${P_theta: theta in Theta}$ by $
+        rho^* (Theta) := inf_Q sup_(theta in Theta) max_(x in B) log (P_theta (x))/Q(x).
+    $ Then $rho^* (Theta) = log Z$, where $
+        Z = sum_(x in B) sup_(theta in Theta) P_theta (x).
     $
+]<thm:normalised-maximum-likelihood-code>
+#proofhints[
+    - For $<=$, consider a suitable distribution $Q^*$ which is defined using $Z$.
+    - For $>=$, use that for every $Q$, $Q(x) <= Q^* (x)$ for at least one $x$.
 ]
 #proof[
-    Let $Q^* (x) = 1/Z max_(theta in Theta) P_theta (x)$. We have $
-        rho^* (Theta) & <= max_theta max_x log (P_theta (x))/(Q^* (x)) \
-        & = max_x log (max_theta P_theta (x))/(Q^* (x)) = log Z.
+    Define the distribution $Q^*$ on $B$ by $Q^* (x) = 1/Z sup_(theta in Theta) P_theta (x)$. We have $
+        rho^* (Theta) & <= sup_(theta in Theta) max_(x in B) log (P_theta (x))/(Q^* (x)) \
+        & = max_(x in B) sup_(theta in Theta) log (P_theta (x))/(Q^* (x)) \
+        & = max_(x in B) log (sup_(theta in Theta) P_theta (x))/(Q^* (x)) = max_(x in B) log Z = log Z.
     $ For the lower bound, note that for every $Q$, $Q(x) <= Q^* (x)$ for at least one $x$, say $x^*$. Therefore, $
-        rho^* (theta) >= min_Q max_theta log (P_theta (x^*))/(Q^* (x^*)) = min_Q log Z = log Z.
-    $
+        sup_(theta in Theta) max_(x in B) log (P_theta (x))/Q(x) >= sup_(theta in Theta) log (P_theta (x^*))/(Q(x^*)) >= sup_(theta in Theta) log (P_theta (x^*))/(Q^* (x^*)) = log (sup_(theta in Theta) P_theta (x^*))/(Q^* (x^*)) = log Z.
+    $ Taking the minimum over all $Q$ gives that $rho^* (Theta) >= log Z$ which concludes the result.
 ]
-
-Now consider the $(m - 1)$-dimensional parametric family $cal(P) = {P_theta^n: theta in Theta}$, where $Theta = {theta in [0, 1]^(m - 1): sum_(i = 1)^(m - 1) theta_i <= 1}$ and writing $A = {a_1, ..., a_m}$, $
-    P_theta (a_i) = cases(
-        theta_i quad & "if" i != m,
-        1 - sum_(j = 1)^(m - 1) theta_j quad & "if" i = m
-    ).
-$ Then applying the previous theorem to this parametric family consisting of all memoryless sources on $A$ gives $
-    rho_n^* = log(sum_(x_1^n) max_theta P_theta^n (x_1^n)) = log(sum_(x_1^n) hat(P)_(x_1^n)^n (x_1^n))
-$ evaluating this gives:
 #definition[
     The *Gamma function* is defined as $
         Gamma(z) := integral_0^oo x^(z - 1) e^(-x) dif x.
-    $
-]
+    $ Note that for all $n in NN$, $Gamma(n + 1) = n!$.
+]<def:gamma-function>
 #theorem("Shtarkov")[
     The minimax maximal redundancy over the class of all memoryless sources on $A$ satisfies, for all $n in NN$, $
         rho_n^* <= (m - 1)/2 log (n / 2) + log Gamma(1 \/ 2)/Gamma(m \/ 2) + C' / sqrt(n)
     $ for a constant $C$ depending only on $m$.
 ]<thm:shtarkov>
-#theorem("von Neumann minimax")[
-    TODO.
+#proof("Sketch")[
+    // Consider the $(m - 1)$-dimensional parametric family $cal(P) = {P_theta^n: theta in Theta}$, where $Theta = {theta in [0, 1]^(m - 1): sum_(i = 1)^(m - 1) theta_i <= 1}$ and writing $A = {a_1, ..., a_m}$, $
+    //     P_theta (a_i) = cases(
+    //         theta_i quad & "if" i != m,
+    //         1 - sum_(j = 1)^(m - 1) theta_j quad & "if" i = m
+    //     ).
+    // $ Then applying the previous theorem to this parametric family consisting of all memoryless sources on $A$ gives $
+    //         rho_n^* = log(sum_(x_1^n) max_theta P_theta^n (x_1^n)) = log(sum_(x_1^n) hat(P)_(x_1^n)^n (x_1^n))
+    //     $ Evaluating this (after some length calculations) gives the result.
+    By @thm:normalised-maximum-likelihood-code applied to the parametric family of all IID distributions $P^n$ on $A^n$, we have $
+        rho_n^* = log (sum_(x_1^n in A^n) sup_P P^n (x_1^n)).
+    $ By @prop:prob-under-prod-dist-of-string-of-type, the MLE in this family is the empirical distribution $hat(P)_n = hat(P)_(x_1^n)$, so $
+        rho_n^* = log (sum_(x_1^n in A^n) hat(P)_(x_1^n)^n (x_1^n)).
+    $ Evaluating this (after some length calculations) gives the result.
 ]
+
+== Rissanen's lower bound
+
+#definition[
+    Let ${W(y | x): x in A, y in B}$ be a family of conditional PMFs $W(dot | x)$, describing the distribution of the output $y$ of a discrete *channel* with input $x$. The *capacity* of the channel is $
+        C = sup I(X; Y),
+    $ where the supremum is over all jointly distribution RVs $(X, Y)$, where $X$ has an arbitrary distribution and the distribution of $Y$ given $X$ is $PP(Y = y | X = x) = W(y | x)$.
+]<def:channel-capacity>
 #theorem("Redundancy-capacity Theorem")[
-    Let $cal(P) = {P_theta: theta in Theta}$ be a "nice" parametric family of distributions on a finite alphabet $B$. Then $
-        overline(rho)(Theta) := min_Q max_(theta in Theta) D(P_theta || Q) = max_pi = I(underline(theta); X),
-    $ where the max is over all probability distributions $pi$ on $Theta$, $underline(theta) sim pi$ and $X | underline(theta) = theta sim P_theta$ (so the pair of RVs $(underline(theta), X)$ has joint distribution $pi(theta) P_theta (x)$).
+    Let $cal(P) = {P_theta: theta in Theta}$ be a "nice" parametric family of distributions on a finite alphabet $B$. Denote the minimax average redundancy over ${P_theta: theta in Theta}$ by $
+        overline(rho)(Theta) := min_Q max_(theta in Theta) D(P_theta || Q).
+    $ Then $overline(rho)(Theta)$ is equal to the capacity of the channel with input $theta$ and output $X sim P_theta$: $
+        overline(rho)(Theta) = max_pi I(T; X),
+    $ where the maximum is over all probability distributions $pi$ on $Theta$, $T sim pi$ and $X | T = theta sim P_theta$ (so the pair of RVs $(T, X)$ has joint distribution $pi(theta) P_theta (x)$).
 ]
 #proof[
     Omitted (non-examinable).
 ]
+#definition[
+    The standard parameterisation of the set of PMFS on $A = {a_1, ..., a_m}$ is ${P_theta: theta in Theta}$, where $Theta = {theta in [0, 1]^(m - 1): sum_(i = 1)^(m - 1) theta_i <= 1}$ and $
+        P_theta (a_i) = cases(
+            theta_i quad & "if" i != m,
+            1 - sum_(j = 1)^(m - 1) theta_j quad & "if" i = m
+        ).
+    $
+]
 #theorem("Rissanen")[
-    Let ${Q_n: n in NN}$ be an arbitrary sequence of distributions on $A^n$, where $abs(A) = m$. Then for all $epsilon > 0$, there exists a constant $C'$ and a subset $Theta_0 subset.eq Theta$ of volume less than $epsilon$ such that for all $theta in.not Theta_0$, $
-        D(P_theta^n || Q_n) >= (m - 1)/2 log n - C'' quad "eventually".
-    $ for some constant $C''$. In particular, $overline(rho)_n >= (m - 1)/2 log n - C'''$ eventually.
+    Let ${Q_n: n in NN}$ be an arbitrary sequence of distributions on $A^n$, where $abs(A) = m$. Then for all $epsilon > 0$, there exists a constant $C$ and a subset $Theta_0 subset.eq Theta$ of volume less than $epsilon$ such that for all $theta in.not Theta_0$, $
+        D(P_theta^n || Q_n) >= (m - 1)/2 log n - C quad "eventually".
+    $ In particular, $overline(rho)_n >= (m - 1)/2 log n - C'$ eventually for some constant $C'$.
+]
+#proof[
+    Non-examinable.
+]
+#corollary[
+    We have (eventually) $
+        (m - 1)/2 log n - C' <= overline(rho)_n <= rho_n^* <= (m - 1)/2 log n + C
+    $ for some constants $C, C'$.
+]
+#remark[
+    The above bound has a probabilistic interpretation: there exists a sequence of distributions ${Q_n: n in NN}$ which are "uniformly close" to all product distributions: $
+        -log Q_n (x_1^n) approx -log P^n (x_1^n) + (m - 1)/2 log n,
+    $ for all $P in cal(P)$ and $x_1^n in A^n$. Moreover, the error term $(m - 1)/2 log n$ is the best possible (up to addition of constants).
 ]

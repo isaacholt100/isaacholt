@@ -6,8 +6,11 @@
     inset: 0em,
     separator: [#h(0.1em)#h(0.2em)],
     namefmt: x => [(#x)],
+    base: "heading",
+    // numbering: "1.1"
     base_level: 1,
 )
+
 #let theorem = thmplain("theorem", "Theorem", ..thmstyle)
 #let lemma = thmplain("theorem", "Lemma", ..thmstyle)
 #let corollary = thmplain("theorem", "Corollary", ..thmstyle)
@@ -26,6 +29,7 @@
 #let exercise = thmplain("theorem", "Exercise", ..thmstyle)
 #let proof = thmproof("proof", "Proof", inset: 0em, separator: [#h(0.1em).#h(0.2em)])
 #let proofhints = thmproof("proofhints", "Proof (Hints)", inset: 0em, separator: [#h(0.1em).#h(0.2em)])
+#let proofsketch = thmproof("proofsketch", "Proof (Sketch)", inset: 0em, separator: [#h(0.1em).#h(0.2em)])
 #let unmarked-fig(body) = figure(
     body,
     supplement: [Unmarked Figure],
@@ -35,6 +39,9 @@
 #let to-identifier(name) = {
     if name == "Proof (Hints)" {
         return "proofhints"
+    }
+    if name == "Proof (Sketch)" {
+        return "proofsketch"
     }
     if name == "Unmarked Figure" {
         return "unmarked-fig"
@@ -96,11 +103,14 @@
         ])
     ]
     
-    show link: set text(fill: rgb("ff0000"))
+    show link: set text(fill: rgb("f00000"))
 
     show ref: it => {
         let ref-name = str(it.target)
-        if it.element != none and it.element.func() == figure and it.element.caption != none {
+        if it.element == none {
+            return it
+        }
+        if it.element.func() == figure and it.element.caption != none {
             let full-name = str(it.element.caption.body.text)
             let name = if full-name in name-abbrvs {
                 name-abbrvs.at(full-name)
@@ -110,6 +120,17 @@
             link(it.target, name)
         } else {
             it
+            // it.element.fields()
+            // counter(it.target)
+            // let num = context { // apply the heading's numbering style
+            //     let count = it.element.counter.at(it.target)
+            //     numbering(it.element.numbering, ..(2, 3))
+            // }
+            // [#it.element.supplement #it.element.numbering #link(it.target, num)]
+            // counter(it.target).get()
+            // it.fields()
+            // [#it.element.supplement #link(it.target, it.element.numbering)]
+            // it
         }
     }
     // show ref: it => box[
@@ -136,3 +157,8 @@
 #let supp = math.op("supp")
 #let vd(v) = math.bold(v)
 #let span = math.op("span")
+
+#let qed-multiline(eq) = grid(
+    columns: (1fr, auto, 1fr),
+    [], eq, align(right + bottom)[#thm-qed-show]
+)

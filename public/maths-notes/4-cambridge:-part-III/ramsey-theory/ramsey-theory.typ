@@ -4,6 +4,11 @@
     "Consistency": "Consistency Theorem"
 )
 #show: doc => template(doc, hidden: (), slides: false, name-abbrvs: name-abbrvs)
+#set document(
+    title: "Ramsey Theory Notes",
+    author: "Isaac Holt",
+    keywords: ("ramsey theory", "colourings")
+)
 
 #let clr(c) = [
     #set text(fill: eval(c))
@@ -945,6 +950,7 @@ We want to show that any regular $m$-gon $X = {v_1, ..., v_m}$ (with side length
     Every regular $m$-gon is Ramsey.
 ]
 #proof[
+    // TODO: see Maria's email for more complete version
     Let $X = {v_1, ..., v_m}$ be a regular $m$-gon. We will find an isometric copy of $sqrt(m) X$ of the form $(v_1, ..., v_m)$, $(v_2, ..., v_m, v_1)$, $(v_3, ..., v_m, v_1, v_2)$, ..., $(v_m, v_1, ..., v_(m - 1))$. We will show by induction on $r$ and all $k in NN$ at once that we can find an isometric copy of $X$ with ${v_1, ..., v_r}$ monochromatic.
 
     Fix a $k$-colouring. $r = 1$ is trivial, as just a point. $r = 2$ is true as it is two points at a fixed distance which we showed is Ramsey. Assume true for $r$ and all $k$. ${v_1, ..., v_r}$ is Ramsey, so for all $k$, exists $S$ such that whenever $S$ is $k$-coloured, there is a monochromatic isometric copy of ${v_1, ..., v_r}$. Fix a $k$-colouring $c$. By our product argument, there exists $S$ and $N$ such that we have an isometric copy of $X^N$ (we will choose $N$ to be as big as we want) on which the colouring ${v_1, ..., v_r}$-invariant.

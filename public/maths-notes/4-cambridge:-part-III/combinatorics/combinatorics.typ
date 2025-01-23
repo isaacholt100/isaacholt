@@ -5,7 +5,13 @@
 #import "@preview/suiji:0.3.0": *
 #import "../../template.typ": *
 #import "../../diagram-style.typ": *
+
 #show: doc => template(doc, hidden: (), slides: false)
+#set document(
+    title: "Combinatorics Notes",
+    author: "Isaac Holt",
+    keywords: ("combinatorics", "graphs", "discrete")
+)
 
 #let line-style(color) = (fill: color, stroke: color, mark: (end: ">"))
 #let diamond(width, height) = {
@@ -1276,21 +1282,28 @@ We want to show the initial segments of the simplicial ordering minimise the bou
     $ For $epsilon$ fixed and $n -> oo$, the upper bound is an exponentially small fraction of $2^n$.
 ]<prop:upper-bound-on-less-than-half-first-binomial-coefficients>
 #proofhints[
-    - For $1 <= i <= floor((1\/2 - epsilon) n)$, show that $binom(n, i - 1)\/binom(n, i) <= 1 - 2 epsilon$, use this to show that $sum_(i = 0)^floor((1\/2 - epsilon)n) binom(n, i) <= 1/(2 epsilon) binom(n, floor((1\/2 - epsilon) n))$.
-    - TODO.
+    - Let $L = floor((1\/2 - epsilon) n)$ and $M = floor((1\/2 - epsilon \/ 2)n)$.
+    - For $1 <= i <= L$, show that $binom(n, i - 1)\/binom(n, i) <= 1 - 2 epsilon$, use this to show that $
+        sum_(i = 0)^L binom(n, i) <= 1/(2 epsilon) binom(n, L).
+    $
+    - Use the same argument to show that $
+        binom(n, L) <= binom(n, M) (1 - epsilon)^(M - L).
+    $
+    - Use that $1 - epsilon <= e^(-epsilon)$ to conclude the result.
 ]
 #proof[
     Let $L = floor((1\/2 - epsilon) n)$. For $1 <= i <= L$, $
         binom(n, i - 1)\/binom(n, i) = i/(n - i + 1) <= ((1\/2 - epsilon)n)/((1\/2 + epsilon)n) = (1\/2 - epsilon)/(1\/2 + epsilon) = 1 - (2 epsilon)/(1\/2 + epsilon) <= 1 - 2 epsilon.
     $ Hence by induction, $binom(n, i) <= (1 - 2 epsilon)^(L - i) binom(n, L)$ for each $0 <= i <= L$, and so $
-        sum_(i = 0)^L binom(n, i) <= 1/(2 epsilon) binom(n, L) = 1/(2 epsilon) binom(n, floor((1\/2 - epsilon) n))
-    $ (since this is the sum of geometric progression). The same argument tells us that $
-        binom(n, floor((1\/2 - epsilon)n)) & <= binom(n, floor(1 \/2 - epsilon\/2)n) (1 - 2 epsilon/2)^(epsilon n \/2 - 1) \
+        sum_(i = 0)^L binom(n, i) <= 1/(2 epsilon) binom(n, L)
+    $ (since this is the sum of geometric progression). Let $M = floor((1\/2 - epsilon \/ 2)n)$. It is easy to show that $M - L > epsilon n \/ 2 - 1$. By the same argument as above, $binom(n, i) <= (1 - 2 epsilon / 2)^(M - i) binom(n, M)$ for each $0 <= i <= M$. In particular, $
+        binom(n, L) & <= binom(n, M) (1 - 2 epsilon/2)^(M - L) \
+        binom(n, L) & <= binom(n, M) (1 - epsilon)^(epsilon n \/2 - 1) \
         & <= 2^n dot 2 (1 - epsilon)^(epsilon n \/2) \
         & <= 2^n dot 2 e^(-epsilon^2 n\/2)
-    $ since $1 - epsilon <= e^(-epsilon)$ (we include $-1$ in the exponent due to taking floors). Then $
+    $ since $1 - epsilon <= e^(-epsilon)$. Combining with the previous upper bound, we obtain #qed-multiline($
         sum_(i = 0)^L binom(n, i) <= 1/(2 epsilon) dot 2 e^(-epsilon^2 n\/2) dot 2^n.
-    $
+    $)
 ]
 #theorem[
     Let $0 < epsilon < 1 \/ 4$, $A subset.eq Q_n$. If $abs(A) \/ 2^n >= 1 \/ 2$, then $
@@ -1748,7 +1761,7 @@ We want to show the initial segments of the simplicial ordering minimise the bou
             })
         )
     ]
-    The elements of $[4]^2$ in ascending simplicial order are $
+    The elements of $[4]^3$ in ascending simplicial order are $
         & (1, 1, 1), (2, 1, 1), (1, 2, 1), (1, 1, 2), (3, 1, 1), (2, 2, 1), (2, 1, 2), (1, 3, 1), (1, 2, 2), (1, 1, 3), \
         & (4, 1, 1), (3, 2, 1), ...
     $
@@ -2423,8 +2436,8 @@ Let $S subset.eq RR^n$ be bounded. How few pieces can we break $S$ into, such th
         canvas({
             import cetz.draw: *
 
-            scale(origin: (0, 0), x: 1.5, y: 1.5)
-            blob-2d(num-points: 16)
+            scale(origin: (0, 0), x: 1.4, y: 1.4)
+            blob-2d(num-points: 16, radius: 1)
             content((1.5, 0.2), $S subset.eq RR^2$)
             line((0, 0), (0, 2))
             line((0, 0), (-calc.sqrt(3), -1))
@@ -2455,7 +2468,7 @@ However, in general, @cnj:borsuk is massively false:
     - Identify $[n]$ with the edge set of an appropriate graph, and for each $x in [4p]^((2p))$, let $G_x$ be the complete bipartite graph with vertex classes $x$ and $x^c$.
     - Show that the number of edges in $G_x sect G_y$ is $abs(G_x sect G_y) = abs(x sect y)^2 + (2p - abs(x sect y))^2$ and give the value of $abs(x sect y)$ which minimises this.
     - Let $S$ be an appropriate set of size $abs(S) = 1/2 binom(4p, 2p)$. Using @crl:there-are-few-2p-size-sets-with-non-half-intersection, show that any subset $S' subset.eq S$ of smaller diameter than $S$ has size at most $2 binom(4p, p - 1)$.
-    - Use @prop:upper-bound-on-less-than-half-first-binomial-coefficients and the fact that $binom(n, n \/ 2) approx c dot 2^n \/ sqrt(n)$ to conclude the result.
+    - Use @prop:upper-bound-on-less-than-half-first-binomial-coefficients and the fact that $binom(n, n \/ 2) approx c dot 2^n \/ sqrt(n)$ to conclude the result. #qedhere
 ]
 #proof[
     We will prove it for all $n$ of the form $binom(4p, 2)$ where $p$ is prime. Then we are done for all $n in NN$ (with a different constant $C$), e.g. because there exists prime $p$ with $n \/ 2 <= p <= n$. We'll find $S subset.eq Q_n subset.eq RR^n$. In fact, $S subset.eq [n]^((r))$ for some $r$. (These are genuine ideas). Since $S subset.eq [n]^((r))$, we have $forall x, y in S$, $
@@ -2509,9 +2522,9 @@ However, in general, @cnj:borsuk is massively false:
     ]
     Now let $S' subset.eq S$ have smaller diameter than that of $S$: $S' = {G_x: x in A}$, where $A subset.neq [4p]^(2p)$. So we must have that $forall x != y in A$, $abs(x sect y) != p$ (as otherwise diameter of $S'$ is equal to diameter of $S$). Thus $abs(A) <= 2 binom(4p, p - 1)$ by @crl:there-are-few-2p-size-sets-with-non-half-intersection.
 
-    So by @prop:upper-bound-on-less-than-half-first-binomial-coefficients, the number of pieces needed is at least $
+    So by @prop:upper-bound-on-less-than-half-first-binomial-coefficients, the number of pieces needed is at least #qed-multiline($
         (1/2 binom(4p, 2p))/(2 binom(4p, p - 1)) & >= (c dot 2^(4p) \/ sqrt(p))/(e^(-p \/ 8) 2^(4p)) quad & "for some" c \
         & >= (c')^p quad & "for some" c' \
         & >= (c'')^sqrt(n) quad & "for some" c''.
-    $
+    $)
 ]
