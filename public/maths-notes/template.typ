@@ -22,6 +22,7 @@
 #let conjecture = thmplain("theorem", "Conjecture", ..thmstyle)
 #let algorithm = thmplain("theorem", "Algorithm", ..thmstyle)
 #let notation = thmplain("theorem", "Notation", ..thmstyle)
+#let postulate = thmplain("theorem", "Postulate", ..thmstyle)
 #let note = thmplain("theorem", "Note", ..thmstyle)
 #let fact = thmplain("theorem", "Fact", ..thmstyle)
 #let axiom = thmplain("theorem", "Axiom", ..thmstyle)
@@ -96,8 +97,11 @@
         }
     }
 
+    // show math.equation.where(block: true): set block(breakable: true)
+    // show math.equation.where(block: true): set align(center)
+
     show math.equation.where(block: true): e => [
-        #box(width: 100%, inset: 0em, [
+        #block(width: 100%, inset: 0em, breakable: true, [
             #set align(center)
             #e
         ])

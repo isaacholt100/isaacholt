@@ -140,3 +140,13 @@ $. If $ket(n) in S^perp$, then $ket(n) braket(n, tilde(m)^((n))) = (ket(n) bra(n
     ket(tilde(m)^((n))) = (I - G delta H)^(-1) ket(psi_tilde(m))
 $
 Now for $ket(n) in S$, we have $(E_tilde(m) - E_0) braket(n, tilde(m)^((n))) = braket(n, underbrace(delta H (I - G delta H)^(-1), =: A^((tilde(m)))), psi_tilde(m)) = sum_(n' in S) underbrace(braket(n, A^((tilde(m))), n'), H_(n n')^("eff")) underbrace(braket(n', tilde(m)^((n))), delta_(n'))$. $H_(n n')^("eff"))$ is a $d_G times d_G$ "effective" Hamiltonian.
+
+Now $
+    delta E_(plus.minus) & = braket("GS"_plus.minus, delta H (II - G delta H)^(-1), "GS"_plus.minus) \
+    & = underbrace(braket("GS"_(plus.minus), delta H, "GS"_plus.minus), = 0) + braket("GS"_plus.minus, delta H G delta H, "GS"_plus.minus) + braket("GS"_plus.minus, delta H G delta G delta H, "GS"_plus.minus) + dots.c
+$ and $G delta H ket("GS"_plus.minus) = -G h sum_j X_j ket("GS"_plus.minus) approx h / J sum_j X_j ket("GS"_plus.minus)$. So $braket("GS"_plus.minus, delta H G delta H, "GS"_plus.minus) approx -N h^2 / J braket("GS"_plus.minus, "GS"_plus.minus)$. Note this is independent of $p$.
+
+Also, $
+    braket("GS"_plus.minus, delta H (G delta H)^(m - 1), "GS"_plus.minus) & -> (delta epsilon^((m)))/2 braket("GS"_plus.minus, product_(j = 1)^N X_j, "GS"_plus.minus), quad m >= N \
+    & = plus.minus (delta epsilon^((m)))/2 braket("GS"_plus.minus, "GS"_plus.minus)
+$
