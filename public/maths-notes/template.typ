@@ -55,6 +55,7 @@
         font: "New Computer Modern",
 		size: if slides { 24pt } else { 12pt },
 	)
+    set par(justify: true)
     set page(paper: if slides {
         "presentation-16-9"
     } else {
@@ -107,7 +108,26 @@
         ])
     ]
     
-    show link: set text(fill: rgb("f00000"))
+    // show link: set text(fill: rgb("f00000"))
+
+    let styled-link = (color, it) => {
+        highlight(stroke: 0.5pt + color, fill: none)[#it]
+    }
+    show link: it => {
+        if type(it.dest) == str {
+            return styled-link(rgb("66ffff"), it)
+        }
+        if (type(it.dest) == location or type(it.dest) == label) and (query(it.dest).first().at("kind", default: none) == math.equation or query(it.dest).first().at("func", default: none) == math.equation) {
+            if it.body.text.contains(")") {
+                return [(#[#link(it.dest, it.body.text.replace(")", "").replace("(", ""))])]
+            }
+        } else {
+            if it.body.has("children") {
+                return [#it.body.children.slice(0, -2).join("") #link(it.dest, it.body.children.at(-1))]
+            }
+        }
+        styled-link(rgb("ff0000"), it)
+    }
 
     show ref: it => {
         let ref-name = str(it.target)

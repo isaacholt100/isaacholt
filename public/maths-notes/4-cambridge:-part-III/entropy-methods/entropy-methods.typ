@@ -209,8 +209,8 @@ Note all random variables we deal with will be discrete, unless otherwise stated
     Use that $H(X | Y, Z = z) <= H(Z | Z = z)$.
 ]
 #proof[
-    Either:
-    + Use that $(Y, Z)$ determines $Z$ and @crl:data-processing.
+    // Either:
+    // + Use that $(Y, Z)$ determines $Z$ and @crl:data-processing.
     + $H(X | Y, Z) = sum_z PP(Z = z) H(X | Y, Z = z) <= sum_z PP(Z = z) H(X | Z = z) = H(X | Z)$.
 ]
 #remark[
@@ -220,5 +220,99 @@ Note all random variables we deal with will be discrete, unless otherwise stated
         H(X, Y, Z) <= H(X, Z) + H(Y, Z) - H(Z)
     $ and $
         H(X, Y, Z) + H(Z) <= H(X, Z) + H(Y, Z).
+    $
+]
+#lemma[
+    Let $X, Y, Z$ be RVs with $Z = f(Y)$. Then $H(X | Y) <= H(X | Z)$.
+]<lmm:conditional-data-processing>
+#proofhints[
+    Straightforward.
+]
+#proof[
+    We have $
+        H(X | Y) & = H(X, Y) - H(Y) = H(X, Y, Z) - H(Y, Z) \
+        & <= H(X, Z) - H(Z) = H(X | Z)
+    $ by @prop:submodularity.
+]
+#lemma[
+    Let $X, Y, Z$ be RVs with $Z = f(X) = g(Y)$. Then $
+        H(X, Y) + H(Z) <= H(X) + H(Y).
+    $
+]<lmm:subadditivity-with-additional-difference>
+#proofhints[
+    Straightforward.
+]
+#proof[
+    By @prop:submodularity, we have $H(X, Y, Z) + H(Z) <= H(X, Z) + H(Y, Z)$, which implies the result, since $Z$ depends on $X$ and $Y$.
+]
+#lemma[
+    Let $X$ be an RV taking values in a finite set $A$ and let $Y$ be uniform on $A$. If $H(X) = H(Y)$, then $X$ is uniform.
+]<lmm:entropy-is-maximal-only-if-x-is-uniform>
+#proofhints[
+    Use Jensen's inequality.
+]
+#proof[
+    Let $p_a = PP(X = a)$. Then $
+        H(X) = sum_(a in A) p_a log(1 \/ p_a) = abs(A) dot EE_(a in A) p_a log(1 / p_a).
+    $ The function $x |-> x log (1 \/ x)$ is concave on $[0, 1]$. So by Jensen's inequality, $
+        H(X) <= abs(A) dot (EE_(a in A) p_a) dot log (1 / (EE_(a in A) p_a)) = log abs(A) = H(Y),
+    $ with equality iff $a |-> p_a$ is constant, i.e. $X$ is uniform.
+]
+#corollary[
+    If $H(X, Y) = H(X) + H(Y)$, then $X$ and $Y$ are independent.
+]<crl:joint-entropy-maximised-only-if-independent>
+#proofhints[
+    Go through the proof of subadditivity and check when equality holds.
+]
+#proof[
+    We go through the proof of subadditivity and check when equality holds. Suppose that $X$ is uniform on $A$. Then $
+        H(X | Y) = sum_y PP(Y = y) H(X | Y = y) <= H(X),
+    $ with equality iff $H(X | Y = y)$ is uniform on $A$ for all $y$ (by @lmm:entropy-is-maximal-only-if-x-is-uniform), which implies that $X$ and $Y$ are independent.
+
+    At the last stage of the proof, we said $H(X | Y) = H(X | Y, W) = H(X | W) <= H(X)$, where $W$ was uniform. So equality holds only if $X$ and $W$ are independent, which implies (since $Y$ depends on $W$), that $X$ and $Y$ are independent.
+]
+#definition[
+    Let $X$ and $Y$ be RVs. The *mutual information* $
+        I(X : Y) & := H(X) + H(Y) - H(X, Y) \
+        & = H(X) - H(X | Y) \
+        & = H(Y) - H(Y | X).
+    $
+]<def:mutual-information>
+#remark[
+    @prop:subadditivity is equivalent to the statement that $I(X: Y) >= 0$, and @crl:joint-entropy-maximised-only-if-independent implies that $I(X : Y) = 0$ iff $X$ and $Y$ are independent.
+
+    Note that $H(X, Y) = H(X) + H(Y) - I(X : Y)$ (note the similarity to the inclusion-exclusion formula for two sets).
+]
+#definition[
+    Let $X, Y, Z$ be RVs. The *conditional mutual information* of $X$ and $Y$ given $Z$ is $
+        I(X : Y | Z) & := sum_z PP(Z = z) I(X | Z = z : Y | Z = z) \
+        & = sum_z PP(Z = z) (H(X | Z = z) + H(Y | Z = z) - H(X, Y | Z = z)) \
+        & = H(X | Z) + H(Y | Z) - H(X, Y | Z) \
+        & = H(X, Z) + H(Y, Z) - H(X, Y, Z) - H(Z).
+    $ @prop:submodularity is equivalent to the statement that $I(X : Y | Z) >= 0$.
+]<def:conditional-mutual-information>
+
+
+= A special case of Sidorenko's conjecture
+
+#definition[
+    Let $G$ be a bipartite graph with (finite) vertex sets $X$ and $Y$ and density $alpha$ (defined to be $abs(E(G))/(abs(X) dot abs(Y))$). Let $H$ be another (think of it as small) bipartite graph with vertex sets $U$ and $V$ and $m$ edges. Now let $phi: U -> X$ and $psi: V -> Y$. We say that $(phi, psi)$ is a *homomorphism* if $phi(x) phi(y) in E(G)$ for every edge $x y in E(H)$.
+]<def:bipartite-graph-homomorphism>
+#conjecture("Sidorenko's Conjecture")[
+    For every $G, H$, for random $phi: U -> X$, $psi: V -> Y$, $
+        PP((phi, psi) "is a homomorphism") >= alpha^m.
+    $
+]<cnj:sidorenko>
+#remark[
+    @cnj:sidorenko is not hard to prove when $H$ is the complete bipartite graph $K_(r, s)$.
+]
+#theorem[
+    @cnj:sidorenko is true if $H$ is a path of length $3$.
+]<thm:sidorenko-true-if-h-is-path-of-length-3>
+#proof[
+    We want to show that if $G$ is a bipartite graph of density $alpha$ with vertex sets $X, Y$ of size $m$ and $n$, and we choose $x_1, x_2 in X$, $y_1, y_2 in Y$ independently at random, then $PP(x_1 y_1, x_2 y_1, x_2 y_2 in E(G)) >= alpha^3$.
+
+    It would be enough to let $P$ be a path of length $3$ chosen uniformly at random and show that $H(P) >= log (alpha^3 m^2 n^2)$. Instead, we shall define a different RV taking values in the set of all paths of length $3$. To do this, let $(X_1, Y_1)$ be a random edge of $G$ (with $X_1 in X$, $Y_1 in Y$). Now let $X_2$ be a random neighbour of $Y_1$ and $Y_2$ be a random neighbour of $X_2$. It will be enough to prove that $
+        H(X_1, Y_1, X_2, Y_2) >= log(alpha^3 m^2 n^2).
     $
 ]

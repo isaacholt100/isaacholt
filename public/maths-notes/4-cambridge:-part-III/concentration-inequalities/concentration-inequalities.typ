@@ -232,3 +232,53 @@ Tower property of conditional expectation: $EE(EE(Z | X, Y) | Y) = EE(Z | Y)$.
         psi_Y (lambda) = psi_Y (0) + lambda'_Y (0) lambda + psi''_Y (xi) lambda^2 / 2 = psi''_Y (xi) lambda^2 / 2 <= lambda^2 (b - a)^2 / 8,
     $ for some $xi in [0, lambda]$, since $EE_(Y sim P)[Y] = EE_(Y sim P_0)[Y] = 0$.
 ]
+#remark[
+    The distribution $P_lambda$ in the above proof is called the *exponentially tilted* distribution.
+]
+#theorem("Hoeffding's Inequality")[
+    Let $X_1, ..., X_n$ be independent RVs where each $X_i$ takes values in $[a_i, b_i]$. Then for all $t >= 0$, $
+        PP(sum_(i = 1)^n (X_i - EE[X_i]) >= t) <= exp(-(2t^2) / (sum_(i = 1)^n (b_i - a_i)^2)).
+    $
+]<thm:hoeffdings-inequality>
+#proof[
+    Apply @lem:hoeffding to $X_i - EE[X_i]$ and use the additivity of $psi_(sum_(i = 1)^n X_i) (lambda)$.
+]
+#remark[
+    A drawback of @thm:hoeffdings-inequality is that the bound does not involve $Var(X_i)$. This is addressed by Bennett's inequality:
+]
+#theorem("Bennett's Inequality")[
+    Let $X_1, ..., X_n$ be independent RVs with $EE[X_i] = 0$ and $abs(X_i) <= c$ for all $i$. Let $nu = Var(X_1) + dots.c + Var(X_n)$. Then for all $t >= 0$, $
+        PP(sum_(i = 1)^n X_i >= t) <= exp(-nu / c^2 h_1 ((c t)/nu)),
+    $ where $h_1 (x) = (1 + x) log(1 + x) - x$ for $x > 0$.
+]<thm:bennetts-inequality>
+#proof[
+    Denote $sigma_i^2 = Var(X_I)$. We have $
+        EE[e^(lambda X_i)] & = sum_(k = 0)^oo (lambda^k EE[X_i^k])/k! \
+        & = 1 + sum_(k = 1)^oo (lambda^k EE[X_i^(k - 2) X_i^2])/k! \
+        & <= 1 + sigma_i^2 / c^2 sum_(k = 2)^oo (lambda^k c^k)/k! \
+        & = 1 + sigma_i^2 / c^2 (sum_(k = 0)^oo (lambda^k c^k)/k! - lambda c - 1) \
+        & = 1 + sigma_i^2 / c^2 (e^(lambda c) - lambda c - 1).
+    $ So $psi_(X_i)(lambda) = log(1 + sigma_i^2 / c^2 (e^(lambda c) - lambda c - 1)) <= sigma_i^2 / c^2 (e^(lambda c) - lambda c - 1)$. So by additivity of $psi$, we have $
+        psi_(sum_(i = 1)^n X_i)(lambda) <= nu / c^2 e^(lambda c) - nu/c^2 lambda c - nu / c^2.
+    $ So for $t >= 0$, $
+        psi_(sum X_i)^* (t) >= sup_(lambda in RR) {lambda t - nu / c^2 e^(lambda c) + nu / c lambda + nu / c^2} =: sup_(lambda in RR) {g(lambda)}
+    $ We have $g'(lambda) = t - nu / c e^(lambda c) + nu / c$ which is $0$ iff $t + nu / c = nu / c e^(lambda c)$, i.e. iff $lambda = 1/c log(1 + t c / v) =: lambda^*$. So $
+        psi_(sum X_i)^* (t) & >= 1/c t log (1 + (t c)/nu) - nu / c^2 (1 + (t c)/nu) + nu/c^2 log(1 + (t c)/nu) + nu / c^2 \
+        & = nu/c^2 ((1 + (t c)/(nu)) log(1 + (t c)/nu) - (t c)/nu) \
+        & = nu/c^2 h_1 ((t c)/nu).
+    $ So we are done by the @prop:chernoff-bound.
+]
+#remark[
+    We can show that $h_1 (x) >= x^2 / (2(x/3 + 1))$ for $x >= 0$. So by @thm:bennetts-inequality, we obtain $
+        PP(sum_(i = 1)^n X_i >= t) <= exp(-t^2 / (2((t c)/3 + nu))),
+    $ which is *Bernstein's inequality*. If $nu >> c t$, then this yields a sub-Gaussian tail bound, and if $nu << t c$, then this yields an exponential bound. So Bernstein misses a log factor.
+]
+#remark[
+    If $Z sim "Pois"(lambda)$, then $psi_(Z)(lambda) = nu(e^lambda - lambda - 1)$
+]
+
+
+= The variance method
+
+== The Efron-Stein inequality
+
