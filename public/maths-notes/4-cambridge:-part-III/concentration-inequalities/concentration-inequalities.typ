@@ -10,6 +10,7 @@
 #let Bern = math.op("Bern")
 #let Var = math.op("Var")
 #let Geom = math.op("Geom")
+#let Pois = math.op("Pois")
 
 Question: toss a fair coin $n = 10000$ times. How many heads?
 
@@ -41,13 +42,25 @@ Question 3: Let $(X_1, ..., X_n), (Y_1, ..., Y_n)$ be IID. What is the longest c
 
 Principle: a smooth function of many independent random variables concentrates around its mean.
 
-Tower property of conditional expectation: $EE(EE(Z | X, Y) | Y) = EE(Z | Y)$.
-
+#theorem("Law of Total Expectation")[
+    We have $EE_Y [EE_X [X | Y]] = EE_X [X]$.
+]<thm:law-of-total-expectation>
+#theorem("Tower Property of Conditional Expectation")[
+    We have $EE[EE[Z | X, Y] | Y] = EE[Z | Y]$.
+]<thm:tower-property-of-conditional-expectation>
+#theorem[
+    We have $EE[f(Y) X | Y] = f(Y) EE[X | Y]$.
+]<thm:conditional-expectation-commutes-with-function-of-rv>
 #theorem("Holder's Inequality")[
     Let $p >= 1$ and $1 \/ p + 1 \/ q = 1$. Then $
         EE[X Y] <= EE[abs(X)^p]^(1 \/ p) dot EE[abs(X)^q]^(1 \/ q).
     $
 ]<thm:holders-inequality>
+#definition[
+    The *conditional variance* of $Y$ given $X$ is the random variable $
+        Var(Y | X) := EE[(Y - EE[Y | X])^2 | X].
+    $
+]
 
 = The Chernoff-Cramer method
 
@@ -209,7 +222,7 @@ Tower property of conditional expectation: $EE(EE(Z | X, Y) | Y) = EE(Z | Y)$.
 == Hoeffding's and related inequalities
 
 #lemma("Hoeffding's Lemma")[
-    Let $Y$ be a RV with $EE[Y] = 0$ and $Y in [a, b]$ almost surely (with probability $1$). $psi''_Y (lambda) <= (b - a)^2 \/ 4$ and $Y in cal(G)((b - a)^2 \/ 4)$.
+    Let $Y$ be a RV with $EE[Y] = 0$ and $Y in [a, b]$ almost surely. Then $psi''_Y (lambda) <= (b - a)^2 \/ 4$ and $Y in cal(G)((b - a)^2 \/ 4)$.
 ]<lem:hoeffding>
 #proofhints[
     - Define a new distribution based on $lambda$, which should be obvious after expanding $psi'_Y (lambda)$.
@@ -240,28 +253,37 @@ Tower property of conditional expectation: $EE(EE(Z | X, Y) | Y) = EE(Z | Y)$.
         PP(sum_(i = 1)^n (X_i - EE[X_i]) >= t) <= exp(-(2t^2) / (sum_(i = 1)^n (b_i - a_i)^2)).
     $
 ]<thm:hoeffdings-inequality>
+#proofhints[
+    Straightforward.
+]
 #proof[
-    Apply @lem:hoeffding to $X_i - EE[X_i]$ and use the additivity of $psi_(sum_(i = 1)^n X_i) (lambda)$.
+    By @lem:hoeffding, $X_i - EE[X_i] in cal(G)((b_i - a_i^2) \/ 4)$ for all $i$. By @prop:properties-of-sub-gaussian-rv (part 2), we have $
+        sum_(i = 1)^n (X_i - EE[X_i]) in cal(G)(1/4 sum_(i = 1)^n (b_i - a_i)^2).
+    $ Hence, by @prop:properties-of-sub-gaussian-rv (part 1), we are done.
 ]
 #remark[
-    A drawback of @thm:hoeffdings-inequality is that the bound does not involve $Var(X_i)$. This is addressed by Bennett's inequality:
+    A drawback of @thm:hoeffdings-inequality is that the bound does not involve $Var(X_i)$ the variance could be much smaller than the upper bound of $(b_i - a_i)^2 \/ 4$. This is addressed by Bennett's inequality:
 ]
 #theorem("Bennett's Inequality")[
     Let $X_1, ..., X_n$ be independent RVs with $EE[X_i] = 0$ and $abs(X_i) <= c$ for all $i$. Let $nu = Var(X_1) + dots.c + Var(X_n)$. Then for all $t >= 0$, $
-        PP(sum_(i = 1)^n X_i >= t) <= exp(-nu / c^2 h_1 ((c t)/nu)),
+        PP(sum_(i = 1)^n X_i >= t) <= exp(-nu / c^2 dot h_1 ((c t)/nu)),
     $ where $h_1 (x) = (1 + x) log(1 + x) - x$ for $x > 0$.
 ]<thm:bennetts-inequality>
+#proofhints[
+    - Show that $EE[e^(lambda X_i)] = 1 + Var(X_i)/c^2 (e^(lambda c) - lambda c - 1)$.
+    - Deduce that $psi_(sum_i X_i) <= nu_c^2 (e^(lambda c) - lambda c - 1)$.
+    - Find an upper lower for $psi_(sum_i X_i)^* (t)$.
+]
 #proof[
-    Denote $sigma_i^2 = Var(X_I)$. We have $
-        EE[e^(lambda X_i)] & = sum_(k = 0)^oo (lambda^k EE[X_i^k])/k! \
-        & = 1 + sum_(k = 1)^oo (lambda^k EE[X_i^(k - 2) X_i^2])/k! \
-        & <= 1 + sigma_i^2 / c^2 sum_(k = 2)^oo (lambda^k c^k)/k! \
+    Denote $sigma_i^2 = Var(X_i) = EE[X_i^2] - EE[X_i]^2 = EE[X_i]^2$. The MGF of $X_i$ is $
+        EE[e^(lambda X_i)] & = sum_(k = 0)^oo lambda^k/k! EE[X_i^k] = 1 + sum_(k = 2)^oo lambda^k/k! EE[X_i^(k - 2) X_i^2] \
+        & <= 1 + c^(k - 2) sum_(k = 2)^oo lambda^k/k! EE[X_i^2] = 1 + sigma_i^2 / c^2 sum_(k = 2)^oo (lambda^k c^k)/k! \
         & = 1 + sigma_i^2 / c^2 (sum_(k = 0)^oo (lambda^k c^k)/k! - lambda c - 1) \
         & = 1 + sigma_i^2 / c^2 (e^(lambda c) - lambda c - 1).
     $ So $psi_(X_i)(lambda) = log(1 + sigma_i^2 / c^2 (e^(lambda c) - lambda c - 1)) <= sigma_i^2 / c^2 (e^(lambda c) - lambda c - 1)$. So by additivity of $psi$, we have $
         psi_(sum_(i = 1)^n X_i)(lambda) <= nu / c^2 e^(lambda c) - nu/c^2 lambda c - nu / c^2.
-    $ So for $t >= 0$, $
-        psi_(sum X_i)^* (t) >= sup_(lambda in RR) {lambda t - nu / c^2 e^(lambda c) + nu / c lambda + nu / c^2} =: sup_(lambda in RR) {g(lambda)}
+    $ So for $t >= 0 = EE[sum_i X_i]$, by @prop:properties-of-log-mgf-and-cramer-transform, $
+        psi_(sum_i X_i)^* (t) >= sup_(lambda in RR) {lambda t - nu / c^2 e^(lambda c) + nu / c lambda + nu / c^2} =: sup_(lambda in RR) {g(lambda)}
     $ We have $g'(lambda) = t - nu / c e^(lambda c) + nu / c$ which is $0$ iff $t + nu / c = nu / c e^(lambda c)$, i.e. iff $lambda = 1/c log(1 + t c / v) =: lambda^*$. So $
         psi_(sum X_i)^* (t) & >= 1/c t log (1 + (t c)/nu) - nu / c^2 (1 + (t c)/nu) + nu/c^2 log(1 + (t c)/nu) + nu / c^2 \
         & = nu/c^2 ((1 + (t c)/(nu)) log(1 + (t c)/nu) - (t c)/nu) \
@@ -269,12 +291,12 @@ Tower property of conditional expectation: $EE(EE(Z | X, Y) | Y) = EE(Z | Y)$.
     $ So we are done by the @prop:chernoff-bound.
 ]
 #remark[
-    We can show that $h_1 (x) >= x^2 / (2(x/3 + 1))$ for $x >= 0$. So by @thm:bennetts-inequality, we obtain $
-        PP(sum_(i = 1)^n X_i >= t) <= exp(-t^2 / (2((t c)/3 + nu))),
-    $ which is *Bernstein's inequality*. If $nu >> c t$, then this yields a sub-Gaussian tail bound, and if $nu << t c$, then this yields an exponential bound. So Bernstein misses a log factor.
+    We can show that $h_1 (x) >= x^2 / (2(x \/ 3 + 1))$ for $x >= 0$. So by @thm:bennetts-inequality, we obtain $
+        PP(sum_(i = 1)^n X_i >= t) <= exp(-t^2 / (2(c t \/ 3 + nu))),
+    $ which is *Bernstein's inequality*. If $nu >> c t$, then this yields a sub-Gaussian tail bound, and if $nu << c t$, then this yields an exponential bound. So Bernstein misses a log factor.
 ]
 #remark[
-    If $Z sim "Pois"(lambda)$, then $psi_(Z)(lambda) = nu(e^lambda - lambda - 1)$
+    If $Z sim Pois(lambda)$, then $psi_(Z - nu)(lambda) = nu(e^lambda - lambda - 1)$.
 ]
 
 
@@ -282,3 +304,67 @@ Tower property of conditional expectation: $EE(EE(Z | X, Y) | Y) = EE(Z | Y)$.
 
 == The Efron-Stein inequality
 
+#notation[
+    Denote $X^((i)) = (X_(1:(i - 1)), X_((i + 1):n))$ and for $i < j$, denote $X_(i:j) = (X_i, ..., X_j)$.
+]
+#notation[
+    Denote $E_i Z = EE[Z | X_(1:i)]$, $E_0 Z = EE[Z]$, $E^((i)) = EE[Z | X^((i))]$, and $Var^((i))(Z) = Var(Z | X^((i)))$.
+]
+We want to study the concentration of $Z = f(X_1, ..., X_n)$ for independent $X_i$. If $Z = sum_i X_i$, then $Var(sum_i X_i) = sum_i Var(X_i)$ if $EE[X_i X_j] = 0$ for all $i != j$, which holds if the $X_i$ are independent.
+#theorem("Efron-Stein Inequality")[
+    Let $X_1, ..., X_n$ be independent and let $Z = f(X_1, ..., X_n)$. Then $
+        Var(Z) <= sum_(i = 1)^n EE[(Z - E^((i)) Z)^2] = EE[sum_(i = 1)^n Var^((i))(Z)].
+    $
+]<thm:efron-stein-inequality>
+#proofhints[
+    - The @thm:law-of-total-expectation and @thm:tower-property-of-conditional-expectation will come in handy a lot...
+    - Let $Delta_i = E_i Z - E_(i - 1) Z$. Show that $EE[Delta_i] = 0$.
+    - Show that the $Delta_i$ are uncorrelated, i.e. $EE[Delta_i Delta_j] = EE[Delta_i] EE[Delta_j]$.
+    - Show that $Delta_i = E_i (Z - E^((i)) Z)$.
+]
+#proof[
+    Let $Delta_i = E_i Z - E_(i - 1) Z$. By the @thm:law-of-total-expectation, we have $
+        EE[Delta_i] = EE[EE[Z | X_(1:i)]] - EE[EE[Z | X_(1:(i - 1))]] = EE[Z] - EE[Z] = 0.
+    $ Also, note that $Z - EE[Z] = EE[Z | X_(1:n)] - EE[Z] = sum_(i = 1)^n Delta_i$. We claim that the $Delta_i$ are uncorrelated, i.e. $EE[Delta_i Delta_j] = EE[Delta_i] EE[Delta_j] = 0$ for $i != j$. Indeed, for $i < j$, by the @thm:law-of-total-expectation, we can write $
+        EE[Delta_i Delta_j] = EE[EE[Delta_i Delta_j | X_(1:i)]] = EE[Delta_i EE[Delta_j | X_(1:i)]],
+    $ since $Delta_i$ is a function of $X_(1:i)$. But $
+        EE[Delta_j | X_(1: i)] & = EE(E_j Z - E_(j - 1) Z | X_(1:i)) \
+        & = EE[EE[Z | X_(1:j)] | X_(1:i)] - EE[EE[Z | X_(1:(j - 1))] | X_(1:i)] \
+        & = EE[Z | X_(1:i)] - EE[Z | X_(1:i)] = E_i Z - E_i Z = 0,
+    $ where on the third line we used the @thm:tower-property-of-conditional-expectation. Hence, the $Delta_i$ are uncorrelated, which implies $
+        Var(Z) = Var(Z - EE[Z]) = sum_(i = 1)^n Var(Delta_i) = sum_(i = 1)^n EE[Delta_i^2] - EE[Delta_i]^2 = sum_(i = 1)^n EE[Delta_i^2].
+    $ Now $
+        E_i (E^((i)) Z) & = EE[E^((i)) Z | X_(1:i)] \
+        & = EE[E^((i)) Z | X_(1:(i - 1)), X_i] \
+        & = EE[EE[Z | X^((i))] | X_(1:(i - 1))] \
+        & = EE[Z | X_(1:(i - 1))] \
+        & = E_(i - 1) Z,
+    $ where on the third line we used that $X_i$ and $X^((i))$ are independent, and on the fourth line we used the @thm:tower-property-of-conditional-expectation. So we can rewrite $Delta_i = E_i Z - E_(i - 1) Z = E_i (Z - E^((i)) Z)$, and so by Jensen's inequality $
+        Delta_i^2 & = (E_i (Z - E^((i)) Z))^2 = EE[Z - E^((i)) Z | X_(1:i)]^2 \
+        & <= EE[(Z - E^((i)) Z)^2 | X_(1:i)] = E_i ((Z - E^((i)) Z)^2).
+    $ Hence, by the @thm:law-of-total-expectation, $
+        Var(Z) & = sum_(i = 1)^n EE[Delta_i^2] <= sum_(i = 1)^n EE[E_i ((Z - E^((i)) Z)^2)] \
+        & = sum_(i = 1)^n EE[EE[(Z - E^((i)) Z)^2 | X_(1:i)]] = sum_(i = 1)^n EE[(Z - E^((i)) Z)^2].
+    $ Finally, we have $EE[E^((i)) (Z - E^((i)) Z)^2] = EE[Var(Z | X^((i)))] = EE[Var^((i)) (Z)]$, which gives the equality in the theorem statement.
+]
+#theorem[
+    Let $X_1, ..., X_n$ be independent and $f$ be square integrable. Let $Z = f(X_1, ..., X_n)$. Then $
+        Var(Z) <= EE[sum_(i = 1)^n (Z - E^((i)) Z)^2] =: nu.
+    $ Moreover, if $X'_1, ..., X'_n$ are IID copies of $X_1, ..., X_n$, and $Z'_i = f(X_(1:(i - 1)), X'_i, X_((i + 1):n))$, then $
+        nu = 1/2 EE[sum_(i = 1)^n (Z - Z'_i)^2] = EE[sum_(i = 1)^n (Z - Z'_i)_+^2] = EE[sum_(i = 1)^n (Z - Z'_i)_-^2],
+    $ where $X_+ = max{0, X}$ and $X_- = max{-X, 0}$. Moreover, $
+        nu = sum_(i = 1)^n inf_(Z_i) EE[(Z - Z_i)^2],
+    $ where the infimum is over all $X^((i))$-measurable and square-integrable RVs $Z_i$.
+]
+#proofhints[
+    - First part is straightforward.
+    - For second part, show that $Var^((i)) (Z) = 1/2 Var^((i))(Z - Z'_i)$.
+    - For last part, use that $Var(X) = inf_a EE[(X - a)^2]$.
+]
+#proof[
+    The first part follows instantly from the @thm:efron-stein-inequality by linearity of expectation. Now $Var(X) = 1/2 Var(X - Y)$, if $X$ and $Y$ are IID. Conditional on $X^((i))$, $Z$ and $Z'_i$ are independent. Hence, since $EE[Z] = EE[Z'_i]$, $
+        Var^((i)) (Z) = 1/2 Var^((i))(Z - Z'_i) = 1/2 EE[(Z - Z'_i)^2].
+    $ Thus we have $
+        nu = 1/2 sum_(i = 1)^n EE[(Z - Z'_i)^2].
+    $ Finally, recall that $Var(X) = inf_a EE[(X - a)^2]$, with equality if $a = EE[X]$. So $Var^((i))(Z) = inf_(Z_i) E^((i)) ((Z - Z_i)^2)$, with equality if $Z_i = E^((i)) Z$. Taking expectations and summing completes the proof.
+]

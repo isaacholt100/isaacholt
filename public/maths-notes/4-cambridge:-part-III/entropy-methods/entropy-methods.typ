@@ -115,7 +115,7 @@ Note all random variables we deal with will be discrete, unless otherwise stated
 ]
 #proposition[
     If $X$ is uniformly distributed on a set $A$ of size $n$, then $H(X) = log n$.
-]
+]<prop:entropy-of-uniform-rv-is-log-of-support-size>
 #proofhints[
     Straightforward.
 ]
@@ -262,7 +262,7 @@ Note all random variables we deal with will be discrete, unless otherwise stated
     If $H(X, Y) = H(X) + H(Y)$, then $X$ and $Y$ are independent.
 ]<crl:joint-entropy-maximised-only-if-independent>
 #proofhints[
-    Go through the proof of subadditivity and check when equality holds.
+    Go through the proof of @prop:subadditivity and check when equality holds.
 ]
 #proof[
     We go through the proof of subadditivity and check when equality holds. Suppose that $X$ is uniform on $A$. Then $
@@ -304,15 +304,15 @@ Note all random variables we deal with will be discrete, unless otherwise stated
     $
 ]<cnj:sidorenko>
 #remark[
-    @cnj:sidorenko is not hard to prove when $H$ is the complete bipartite graph $K_(r, s)$.
+    @cnj:sidorenko is not hard to prove when $H$ is the complete bipartite graph $K_(r, s)$ (the case $K_(2, 2)$ can be proved using Cauchy-Schwarz: exercise).
 ]
 #theorem[
     @cnj:sidorenko is true if $H$ is a path of length $3$.
 ]<thm:sidorenko-true-if-h-is-path-of-length-3>
 #proof[
-    We want to show that if $G$ is a bipartite graph of density $alpha$ with vertex sets $X, Y$ of size $m$ and $n$, and we choose $x_1, x_2 in X$, $y_1, y_2 in Y$ independently at random, then $PP(x_1 y_1, x_2 y_1, x_2 y_2 in E(G)) >= alpha^3$.
+    We want to show that if $G$ is a bipartite graph of density $alpha$ with vertex sets $X, Y$ of size $m$ and $n$, and we choose $x_1, x_2 in X$, $y_1, y_2 in Y$ independently at random, then $PP(x_1 y_1, y_1 x_2, x_2 y_2 in E(G)) >= alpha^3$.
 
-    It would be enough to let $P$ be a path of length $3$ chosen uniformly at random and show that $H(P) >= log (alpha^3 m^2 n^2)$. Instead, we shall define a different RV taking values in the set of all paths of length $3$. To do this, let $(X_1, Y_1)$ be a random edge of $G$ (with $X_1 in X$, $Y_1 in Y$). Now let $X_2$ be a random neighbour of $Y_1$ and $Y_2$ be a random neighbour of $X_2$. It will be enough to prove that $
+    It would be enough to let $P$ be a path of length $3$ chosen uniformly at random and show that $H(P) >= log (alpha^3 m^2 n^2)$ (by @prop:entropy-of-uniform-rv-is-log-of-support-size). Instead, we shall define a different RV taking values in the set of all paths of length $3$ (including degenerate paths). To do this, let $(X_1, Y_1)$ be a random edge of $G$ (with $X_1 in X$, $Y_1 in Y$). Now let $X_2$ be a random neighbour of $Y_1$ and $Y_2$ be a random neighbour of $X_2$. It will be enough to prove that $
         H(X_1, Y_1, X_2, Y_2) >= log(alpha^3 m^2 n^2).
     $
 ]

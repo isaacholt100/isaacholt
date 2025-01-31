@@ -168,4 +168,48 @@ Consider a presentation $genrel(a_i | r_j) tilde.equiv G$ and let $X$ be the ass
 ]
 #definition[
     A disc diagram $D$ is said to be *over $X$* if it is equipped with a combinatorial map $D -> X$. Equivalently, each edge of $D$ is oriented and labelled by some $a_i$, so that the boundary of each $2$-cell reads some $r_j^(plus.minus 1)$, thought of as a cyclic word.
+
+    The *boundary cycle* reads a word $w' in A^*$, which reduces to some $w in normalclosure(R) <= F(A)$.
+
+    $D$ is said to be a *van Kampen diagram* for $w'$.
+]
+#lemma("van Kampen's Lemma")[
+    If $w in normalclosure(R)$, then a van Kampen diagram exists for $w$.
+]
+#proof[
+    Since $w in normalclosure(R)$, there are $k_i in F(A)$ and $r_i in R$ such that $
+        w =_(F(A)) product_(i = 1)^ell k_i r_i^(plus.minus 1) k_i^(-1) =: w_0 in A^*.
+    $ It is easy to write down a van Kampen diagram $D_0$ for $w_0$: (see diagram). If $w_0$ is reduced, we are done, because $w =_(A^*) w_0$. Otherwise, $w_0$ contains a "cancelling pair of consecutive edges" $e_1, e_2$, labelled $a, a^(-1)$ for some $a in A union A^(-1)$. We now simplify $D_0$ to produce a new disc diagram $D_1$ with shorter boundary word $w_1$. There are two cases:
+    - If the origin of $e_1$ is also the terminus of $e_2$: (see diagram) in this case, $D_0 = D_1 or D'$, where $partial D' = a a^(-1)$.
+    - Otherwise, (see diagram).
+    In either case, $w_1 = partial D_1$ is obtained from $w_0$ by cancelling a pair. Therefore we may proceed by induction on the length of $w_0$. Eventually, we build $D_n$ with $w_n = partial D_n$ reduced, so $w_n = w$ and $D_n$ is the required van Kampen diagram.
+]
+#remark[
+    The proof shows that the minimal number of $2$-cells in a van Kampen diagram for $w$ is equal to the minimal $ell$ such that $w = product_(i = 1)^ell k_i r_i^(plus.minus 1) k_i^(-1)$. This number is called the *area* of $w$.
+]
+#example[
+    Let $G = ZZ^2 = genrel(a, b | [a, b])$. Let $w = a^n b^n a^(-n) b^(-n) = [a^n, b^n]$. (see diagram) We shall see on the first example sheet that $D$ is minimal, so the area of $w$ is $n^2$.
+]
+#definition[
+    Let $P = genrel(A | R)$ be a presentation. Define $
+        d_P: NN & -> NN, \
+        ell & |-> max{"Area"(w): w in normalclosure(R), "length"(w) = ell}.
+    $ $d_P$ is called the *Dehn function* of $P$.
+]
+
+
+= Basics of geometric group theory
+
+== Cayley graphs
+
+#definition[
+    A graph is a one-dimensional cell-complex.
+]
+#example[
+    (see diagram)
+]
+#definition[
+    Let $G$ be a group with a generating set $S$. A *Cayley graph* $"Cay"_S (G)$ is defined as follows:
+    - The vertex set is $G$.
+    - The edges are as follows: there is an edge between $g$ and $g s$ for each $g in G$ and each $s in S$.
 ]

@@ -103,13 +103,13 @@ Note we always work with finite-dimensional Hilbert spaces, so take $HH = CC^N$.
     Conversely, given a POVM ${E_n}_n$, we can define a general measurement $\{sqrt(E_n)\}_n$.
 ]<def:povm>
 #remark[
-    Note that any operation transforming a normalised quantum state must map it to a normalised quantum state, and so the operation must be unitary.
+    Any transformation on a normalised quantum state must map it to a normalised quantum state, and so the operation must be unitary.
 ]
 #definition[
     The *Pauli matrice* are $
         sigma_0 & = II = mat(1, 0; 0, 1), quad sigma_X = X = mat(0, 1; 1, 0), \
         sigma_Y & = Y = mat(0, -i; i, 0), quad sigma_Z = Z = mat(1, 0; 0, -1).
-    $
+    $ The Pauli matrices are unitaries, and we can think of them as quantum logical gates.
 ]<def:pauli-matrices>
 #definition[
     The *trace* of $T: HH -> HH$ is $
@@ -121,11 +121,20 @@ Note we always work with finite-dimensional Hilbert spaces, so take $HH = CC^N$.
         tr(A ket(phi) bra(phi)) = braket(phi, A, phi).
     $
 ]
-#proof[
+#proofhints[
     Straightforward.
 ]
+#proof[
+    $tr(A ket(phi) bra(phi)) = sum_i braket(i, A, phi) braket(phi, i)$ for an orthonormal basis ${ket(i)}$. Any basis where $ket(phi) = ket(j)$ for some $j$ instantly yields the result. Alternatively, we have $
+        tr(A ket(phi) bra(phi)) = sum_i braket(i, A, phi) braket(phi, i) = sum_i braket(phi, i) braket(i, A, phi) = braket(phi, I, A, phi) = braket(phi, A, phi).
+    $
+]
+Suppose we don't fully know the state of the system, but know that it is $ket(phi_i)$ with probability $p_i$. We want to be able to consider the $sum_i p_i ket(phi_i)$ as a state, but this isn't normalised (except when some $p_i = 1$). To solve this issue, we assume each $ket(phi_i)$ to the rank-one projector $ket(phi_i) bra(phi_i)$, and we describe the unknown state by $rho = sum_i p_i ket(phi_i) bra(phi_i)$. This gives rise to the following definition:
 #definition[
-    A *density matrix/operator* is a Hermitian linear operator $rho in B(HH)$ which is positive semi-definite and satisfies $tr rho = 1$.
+    A *density matrix/operator* is a linear operator $rho in B(HH)$ which is:
+    - Hermitian,
+    - Positive semi-definite, and
+    - Satisfies $tr rho = 1$.
 ]
 
 == Postulates of quantum mechanics (Heisenberg picture)
@@ -136,22 +145,25 @@ Note we always work with finite-dimensional Hilbert spaces, so take $HH = CC^N$.
 #postulate[
     Given an isolated physical system, its evolution is described by a unitary. If the state of the system at time $t_1$ is $ket(phi_1)$ and at time $t_2$ is $ket(phi_2)$, then there exists a unitary $U_(t_1, t_2)$ such that $ket(phi_2) = U_(t_1, t_2) ket(phi_1)$.
 ]
-This can be generalised with the Schrodinger equation: the time evolution of a closed quantum system is given by $i planck.reduce dif / (dif t) ket(phi(t)) = H ket(phi(t))$. $H$ is called the *Hamiltonian* and is generally time-dependent. Let the spectral decomposition of $H$ be $
-    H = sum_i E_i ket(E_i) bra(E_i),
-$ where the $E_i$ are the energy eigenvalues and the $ket(E_i)$ are the energy eigenstates (stationary states).
+This can be generalised with the Schrodinger equation: the time evolution of a closed quantum system is given by $i planck.reduce dif / (dif t) ket(phi(t)) = H ket(phi(t))$. The Hermitian operator $H$ is called the *Hamiltonian* and is generally time-dependent.
+#definition[
+    Let the spectral decomposition of $H$ be $
+        H = sum_i E_i ket(E_i) bra(E_i),
+    $ where the $E_i$ are the *energy eigenvalues* and the $ket(E_i)$ are the *energy eigenstates* (or *stationary states*).
 
-The minimum energy is called the *ground state energy* and its associated eigenstate is called the *ground state*. The *gap* of $H$ is the (absolute) difference between the ground state energy and the next largest energy eigenvalue. The states $ket(E_i)$ are called stationary, since they evolve as $ket(E_i) -> exp(-i E_i t \/ planck.reduce) ket(E_i)$.
+    The minimum energy is called the *ground state energy* and its associated eigenstate is called the *ground state*. The *(spectral) gap* of $H$ is the (absolute) difference between the ground state energy and the next largest energy eigenvalue. When the gap is strictly positive, we say the system is *gapped*. The states $ket(E_i)$ are called *stationary*, since they evolve as $ket(E_i) -> exp(-i E_i t \/ planck.reduce) ket(E_i)$.
+]<def:hamiltonian-ground-state>
 
 We have $ket(phi(t_2)) = U(t_1, t_2) ket(phi(t_1))$ where $U(t_1, t_2) = exp(-i H(t_2 - t_1) \/ planck.reduce)$ which is a unitary. In fact, any unitary $U$ can be written in the form $U = exp(i K)$ for some Hermitian $K$.
 
 #postulate[
-    Given a physical system with associated Hilbert space $HH$, quantum measurements in the system are described by a collection of measurements ${M_n}_n subset.eq B(HH)$ such that $sum_n M_n^* M_n = II$, as in @def:measurement. The index $n$ refers to the measurement outcomes that may occur in the experiment, and given a state $ket(phi)$ before measurement, the probability that $ket(n)$ occurs is $
+    Given a physical system with associated Hilbert space $HH$, quantum measurements in the system are described by a collection of measurements ${M_n}_n subset.eq B(HH)$ such that $sum_n M_n^* M_n = II$, as in @def:measurement. The index $n$ refers to the measurement outcomes that may occur in the experiment, and given a state $ket(phi)$ before measurement, the probability that $n$ occurs is $
         p(n) = braket(phi, M_n^* M_n, phi).
     $ The state of the system after measurement is $1/sqrt(p(n)) M_n ket(phi)$
-]
+]<pst:heisenberg-measurement>
 #postulate[
     Given a composite physical system, its state space $HH$ is also composite and corresponds to the tensor product of the individual state spaces $HH_i$ of each component: $HH = HH_1 tp cdots tp HH_N$. If the state in each system $i$ is $ket(phi_i)$, then the state in the composite system is $ket(phi_1) tp cdots tp ket(phi_N)$.
-]
+]<pst:heisenberg-composite-system>
 #definition[
     Given $ket(phi) in H_1 tp cdots tp H_N$, $ket(phi)$ is *entangled* if it cannot be written as a tensor product of the form $ket(phi_1) tp cdots tp ket(phi_n)$. Otherwise, it is *separable* or a *product state*.
 ]
@@ -163,11 +175,19 @@ We have $ket(phi(t_2)) = U(t_1, t_2) ket(phi(t_1))$ where $U(t_1, t_2) = exp(-i 
 
 #postulate[
     Given an isolated physical system, the state of the system is completely described by its density operator, which is Hermitian, positive semi-definite and has trace one.
+
+    If we know the system is in state $rho_i$ with probability $p_i$, then the state of the system is $sum_i p_i rho_i$.
 ]
 *Pure states* are of the form $rho = ket(phi) bra(phi)$, *mixed states* are of the form $rho = sum_i p_i ket(phi_i) bra(phi_i)$.
 #postulate[
-    Given an isolated physical system, its evolution is described by a unitary. If the state of the system is at $t_1$ is $rho_1$ and is $rho_2$ at time $t_2$, then there is a unitary $U$ depending only on $t_1, t_2$ such that $rho_2 = U rho_1 U^*$.
+    Given an isolated physical system, its evolution is described by a unitary. If the state of the system is $rho_1$ at time $t_1$ and is $rho_2$ at time $t_2$, then there is a unitary $U$ depending only on $t_1, t_2$ such that $rho_2 = U rho_1 U^*$.
 ]
 #postulate[
-    After measurement ${M_n}_n$, the probability of observing $n$ is $p(n) = tr (M_n^* M_n rho)$ and the state after measurement is $1/p(n) M_n rho M_n^*$.
+    The same as @pst:heisenberg-measurement, except we specify that after measurement ${M_n}_n$, the probability of observing $n$ is $p(n) = tr (M_n^* M_n rho)$ and the state after measurement is $1/p(n) M_n rho M_n^*$.
+]
+#postulate[
+    The same as @pst:heisenberg-composite-system, except that the state of the composite system is $rho = rho_1 tp cdots tp rho_n$, where $rho_i$ is the state of $i$th individual system.
+]
+#remark[
+    The Heisenberg and Schrodinger postulates are mathematically equivalent.
 ]
