@@ -2,17 +2,12 @@
 #import "../../template.typ": *
 #import "../../diagram-style.typ": *
 #import "@preview/cetz:0.3.1" as cetz: canvas, draw
-#let name-abbrvs = (
-    "Hidden Subgroup Problem (HSP)": "HSP",
-    "Discrete Logarithm Problem (DLP)": "DLP",
-    "Amplitude Amplification Theorem/2D-subspace Lemma": "Amplitude Amplification Theorem",
-    "Lie-Trotter Product Formula": "Lie-Trotter"
-)
-#show: doc => template(doc, hidden: (), slides: false, name-abbrvs: name-abbrvs)
+
+#show: doc => template(doc, hidden: (), slides: false, name-abbrvs: (:))
 #set document(
-    title: "Quantum Computation Notes",
+    title: "Quantum Information Theory Notes",
     author: "Isaac Holt",
-    keywords: ("quantum computing", "quantum", "quantum computation", "algorithms", "complexity")
+    keywords: ("quantum information")
 )
 
 #let poly = math.op("poly")
@@ -75,7 +70,7 @@ Note we always work with finite-dimensional Hilbert spaces, so take $HH = CC^N$.
 #definition[
     A *quantum measurement* is a collection of measurement operators ${M_n}_n subset.eq B(HH)$ which satisfies $sum_n M_n^* M_n = II$, the identity operator.
 
-    Given $ket(phi)$, the probability that $ket(n)$ occurs after this operation is $p(n) = braket(phi, M_n^* M_n, phi)$. After performing this operation, the state of the system is $1/sqrt(p(n)) M_n ket(phi)$.
+    Given $ket(phi)$, the probability that $ket(n)$ occurs after this operation is $p(n) = braket(phi, M_n^* M_n, phi)$. After performing this operation, the state of the system is $1/sqrt(p(n)) M_n ket(phi)$. This is the *Born rule*.
 ]<def:measurement>
 #example[
     A measurement in the computational basis is $M_0 = ket(0) bra(0)$, $M_1 = ket(1) bra(1)$. Note $M_0$ and $M_1$ are self-adjoint. Let $ket(psi) = alpha_0 ket(0) + alpha_1 ket(1)$. Then $p(i) = braket(phi, M_i, phi) = abs(alpha_i)^2$. The state after measurement is $alpha_i / abs(alpha_i) ket(i)$, which is equivalent to $ket(i)$.
@@ -93,12 +88,12 @@ Note we always work with finite-dimensional Hilbert spaces, so take $HH = CC^N$.
     $
 ]<def:observable>
 #definition[
-    $T: HH -> HH$ is *positive (semi-definite)* if $braket(psi, T, psi) >= 0$ for all $ket(psi) in H$.
+    $T: HH -> HH$ is *positive (semi-definite)* (written $T >= 0$) if $braket(psi, T, psi) >= 0$ for all $ket(psi) in H$.
 ]
 #definition[
-    A *POVM (positive operator valued measurement)* is a collection ${E_n}_n$ where $E_n = M_n^* M_n$ for a general measurement ${M_n}_n$. Note that each $E_n$ is positive.
+    A *POVM (positive operator valued measurement)* is a collection ${E_n}_n$ where each $E_n = M_n^* M_n$ for a general measurement ${M_n}_n$ (i.e. each $E_n$ is positive and Hermitian, and $sum_n E_n = II$).
 
-    Note that $sum_n E_n = II$ and the probability of obtaining outcome $m$ on $ket(psi)$ is $p(m) = braket(psi, E_m, psi)$. We use POVMs when we care only about the probabilities of the different measurement outcomes, and not the post-measurement states.
+    Note that the probability of obtaining outcome $m$ on $ket(psi)$ is $p(m) = braket(psi, E_m, psi)$. We use POVMs when we care only about the probabilities of the different measurement outcomes, and not the post-measurement states.
 
     Conversely, given a POVM ${E_n}_n$, we can define a general measurement $\{sqrt(E_n)\}_n$.
 ]<def:povm>
@@ -190,4 +185,82 @@ We have $ket(phi(t_2)) = U(t_1, t_2) ket(phi(t_1))$ where $U(t_1, t_2) = exp(-i 
 ]
 #remark[
     The Heisenberg and Schrodinger postulates are mathematically equivalent.
+]
+
+// == Quantum projective measurements and the Born rule
+
+// Let $A in B(HH)$ be Hermitian, with spectral decomposition $A = sum_n a_n P_n$. If the eigenvalue $a_n$ is non-degenerate, then $P_n$ is a rank-one projector: $P_n = ket(phi_n) bra(phi_n)$. The outcome of the measurement is $a_n$. If the system is in state $ket(psi)$ before the measurement, then the probability that the outcome is $a_n$ is given by $p(a_n) = braket(psi, P_n, psi)$, and as a result of the measurement, the state of the system becomes $1/sqrt(p(a_n)) P_n ket(psi)$. This is the *Born rule*.
+
+== States, entanglement and measurements
+
+#theorem("Schmidt Decomposition")[
+    Let $ket(psi)$ be a pure state in a bipartite system $HH_(A B) = HH_A tp HH_B$, where $HH_A$ has dimension $N_A$ and $HH_B$ has dimension $N_B >= N_A$. Then there exist orthonormal states ${ket(e_i): i in [N_A]} subset.eq HH_A$ and ${ket(f_i): i in [N_A]} subset.eq HH_B$ such that $
+        ket(psi) = sum_(i = 1)^(N_A) lambda_i ket(e_i) tp ket(f_i),
+    $ where $lambda_i >= 0$ and $sum_i lambda_i^2 = 1$.
+    
+    The $lambda_i$ are unique up to re-ordering. The $lambda_i$ are called the *Schmidt coefficients* and the number of $lambda_i > 0$ is the *Schmidt rank* of the state.
+]<thm:schmidt-decomposition>
+#proof[
+    Let $ket(psi) = sum_(k = 1)^(N_A) sum_(ell = 1)^(N_B) beta_(k ell) ket(phi_k) tp ket(phi_ell)$ for orthonormal bases ${ket(phi_k): k in [N_A]} subset.eq HH_A$, ${ket(chi_ell): ell in [N_B]} subset.eq HH_B$. Let $(beta_(k ell))$ have singular value decomposition $
+        U mat(Sigma, 0) V,
+    $ where $U$ is an $N_B times N_B$ unitary, $Sigma$ is an $N_A times N_A$ diagonal matrix with non-negative entries, and $V$ is an $N_A times N_A$ unitary. So $
+        beta_(k ell) = sum_(i = 1)^(N_A) sum_(j = 1)^(N_B) U_(k i) Sigma_(i j) V_(j ell) = sum_(i = 1)^(N_A) Sigma_(i i) U_(k i) V_(i ell).
+    $ Hence, $
+        ket(psi) = sum_(k, ell) sum_i Sigma_(i i) U_(k i) ket(phi_k) tp V_(i ell) ket(chi_ell) = sum_i Sigma_(i i) underbrace((sum_k U_(k i) ket(phi_k)), ket(e_i)) tp underbrace((sum_ell V_(j ell) ket(chi_ell)), ket(j_B)).
+    $
+]
+#proposition[
+    $ket(psi)$ is entangled iff its Schmidt rank is $> 1$. Otherwise, it is separable (i.e. a product state).
+]
+#definition[
+    Let $ket(psi)$ be a pure state in a bipartite system $HH_(A B) = HH_A tp HH_B$, where $HH_A$ has dimension $N_A$ and $HH_B$ has dimension $N_B >= N_A$. $ket(psi)$ is *maximally entangled* if all its Schmidt coefficients are equal (to $1 \/ sqrt(N_A)$).
+]
+#notation[
+    Write $S(HH) = {rho in B(HH): rho = rho^dagger, rho >= 0, tr p = 1}$ for the set of density matrices on $HH$.
+]
+#definition[
+    The *partial trace* over $B$, $tr_B$, on the bipartite system $HH_(A B) = HH_A tp HH_B$ is the operator defined linearly by $
+        tr_B: S(HH_(A B)) & -> S(HH_A), \
+        ket(a_1) bra(a_2) tp ket(b_1) bra(b_2) & |-> tr (ket(b_1) bra(b_2)) dot ket(a_1) bra(a_2).
+    $ Note that if $rho_(A B) = rho_A tp rho_B$, then $tr_B rho_(A B) = tr(rho_B) dot rho_A = rho_A$.
+]<def:partial-trace>
+#definition[
+    Let $rho_(A B)$ be a density matrix in $S(HH_(A B))$. $rho_A = tr_B (rho_(A B))$ is called the *reduced density matrix* or *marginal* of $rho_(A B)$ in $A$
+]<def:reduced-density-matrix>
+#proposition[
+    Let $M_A in B(HH_A)$. We have $
+        tr (M_A rho_A) = tr((M_A tp II_B) rho_(A B)).
+    $ for all $rho_(A B) in S(HH_(A B))$, $rho_A = tr_B (rho_(A B))$. In fact, this can be taken to be an equivalent definition of partial trace.
+]
+#remark[
+    Let $rho_(A B) = ket(psi) bra(psi) in S(HH_(A B))$ be a pure state and let $r_psi$ be its Schmidt rank. Then $
+        rho_A = tr_B (ket(psi) bra(psi)) = sum_(k = 1)^(r_psi) p_k ket(u_k) bra(u_k).
+    $ So $rho_A$ is pure iff $r_psi = 1$, i.e. iff $ket(psi)$ is separable.
+]
+#proposition[
+    Let $rho_(A B) in B(HH_(A B))$ and $rho_A = tr_B (rho_(A B))$. Then:
+    + $tr rho_A = tr rho_(A B)$.
+    + If $rho_(A B) >= 0$, then $rho_A >= 0$.
+    + If $rho_(A B)$ is a density matrix then $rho_A$ is a density matrix.
+    + We have $
+        braket(phi_i, rho_A, phi_i) = sum_k braket(phi_i tp psi_k, rho_(A B), phi_i tp psi_k),
+    $ for an orthonormal bases ${ket(phi_i)}$ and ${ket(psi_k)}$.
+    + If $rho_(A B) = sigma_A tp sigma_B$ and $tr(sigma_B) = 1$, then $sigma_A = rho_A$.
+]
+#proof[
+    + This follows from linearity of trace and the fact that $tr(rho tp sigma) = tr(rho) dot tr(sigma)$.
+    + By 1, $braket(psi, rho_A, psi) = tr(rho_A ket(psi) bra(psi)) = tr(rho_(A B) (ket(psi) bra(psi) tp II)) >= 0$.
+    + From 1 and 2, by definition.
+    // + $braket(psi_i, rho_A, rho_i) = tr(rho_A ket(phi_i) bra(phi_i)) = tr(rho_(A B) (ket(phi_i) bra(phi_i) tp II)) =$
+]
+#definition[
+    Let $rho_A in SS(H_A)$ be a (pure or mixed) state. We may introduce an auxiliary space $HH_R$ of dimension $"rank"(rho_A)$ and construct a pure state $ket(psi_(A R)) in HH_A tp HH_R$ such that $rho_A = tr_R (ket(psi_(A R)) bra(psi_(A R)))$.
+]
+#remark[
+    Let ${M_n^A}_n$ be a POVM in $HH_A$. Then ${M_n^A tp II_B}_n$ is a POVM in $HH_(A B)$.
+]
+#theorem("Naimark")[
+    For every POVM ${E_n}_(n = 1)^m subset.eq B(HH)$, there is a state $ket(psi) in CC^m$ and a projective measurement ${P_n}_(n = 1)^m subset.eq B(HH tp CC^m)$ such that $
+        tr (rho E_n) = tr((rho tp ket(psi) bra(psi)) P_n) quad forall n in [m], forall rho in S(HH).
+    $
 ]

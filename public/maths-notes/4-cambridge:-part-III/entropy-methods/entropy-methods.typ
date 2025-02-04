@@ -8,6 +8,7 @@
 )
 
 #let sim = sym.tilde
+#let per = math.op("per")
 
 = The Khinchin axioms for entropy
 
@@ -314,5 +315,53 @@ Note all random variables we deal with will be discrete, unless otherwise stated
 
     It would be enough to let $P$ be a path of length $3$ chosen uniformly at random and show that $H(P) >= log (alpha^3 m^2 n^2)$ (by @prop:entropy-of-uniform-rv-is-log-of-support-size). Instead, we shall define a different RV taking values in the set of all paths of length $3$ (including degenerate paths). To do this, let $(X_1, Y_1)$ be a random edge of $G$ (with $X_1 in X$, $Y_1 in Y$). Now let $X_2$ be a random neighbour of $Y_1$ and $Y_2$ be a random neighbour of $X_2$. It will be enough to prove that $
         H(X_1, Y_1, X_2, Y_2) >= log(alpha^3 m^2 n^2).
+    $ We can choose $X_1, Y_1$ in three equivalent ways:
+    + Pick an edge uniformly from all edges
+    + Pick a vertex $x$ with probability proportional to its degree $d(x)$, and then a random neighbour $Y$ of $x$.
+    + Same as above with $x$ and $y$ exchanged.
+    It follows that $Y_1 = y$ with probability $deg(y) \/ abs(E(G))$, so $X_2 Y_1$ is uniform in $E(G)$, so $X_2 = x'$ with probability $d(x') \/ abs(E(G))$, so $X_2 Y_2$ is uniform in $E(G)$.
+
+    Let $U_A$ be the uniform distribution on $A$. Therefore, $
+        H(X_1, Y_1, X_2, Y_2) & = H(X_1) + H(Y_1 | X_1) + H(X_2 | X_1, Y_1) + H(Y_2 | X_1, Y_1, X_2) \
+        & = H(X_1) + H(Y_1 | X_1) + H(X_2 | Y_1) + H(Y_2 | X_2) \
+        & = H(X_1) + H(X_1, Y_1) - H(X_1) + H(X_2, Y_1) - H(Y_1) + H(X_2, Y_2) - H(Y_2) \
+        & = 3 H(U_(E(G))) - H(Y_1) - H(X_2) \
+        & >= 3 H(U_(E(G))) - H(U_Y) - H(U_X) \
+        & = 3 log(alpha m n) - log n - log m \
+        & = log(alpha^3 m^2 n^2).
+    $ So we are done, by @axm:maximality. Alternative finish to the proof: let $X', Y'$ be uniform in $X, Y$ and independent of each other and $X_1, Y_1, X_2, Y_2$. Then $
+        H(X_1, Y_1, X_2, Y_2, X', Y') & = H(X_1, Y_1, X_2, Y_2) + H(U_X) + H(U_Y) \
+        & >= 3 H(U_(E(G)))
+    $ by above. So by @axm:maximality, the number of paths of length $3$ times $abs(X)$ times $abs(Y)$ is $>= abs(E(G))^3$.
+]
+
+
+= Brigner's theorem
+
+#definition[
+    Let $A$ be an $n times n$ matrix over $RR$. The *permanent* of $A$ is $
+        per(A) := sum_(sigma in S_n) product_(i = 1)^n A_(i sigma(i)),
+    $ i.e. "the determinant without the signs".
+]<def:matrix-permanent>
+#remark[
+    Let $G$ be a bipartite graph with vertex sets $X, Y$ of size $n$. Given $(x, y) in X times Y$, let $
+        A_(x y) = cases(1 quad & "if" x y in E(G), 0 quad & "if" x y in.not E(G)),
+    $ i.e. $A$ is the bipartite adjacency matrix of $G$. Then $per(A)$ is the number of perfect matchings in $G$.
+
+    Brigman's theorem concerns how large $per(A)$ can be if $A$ is a $0, 1$ matrix and the sum of the entries in the $i$-th row is $d_i$.
+]
+#example[
+    (TODO: insert diagram) Let $G$ be a disjoint union of $K_(a_i, a_i)$'s, $i = 1, ..., k$, with $a_1 + dots.c + a_k = n$. Then the number of perfect matchings in $G$ is $product_(i = 1)^k a_i !$.
+]
+#theorem("Brigman")[
+    Let $G$ be a bipartite graph with vertex sets $X, Y$ of size $n$. Then the number of perfect matchings in $G$ is at most $
+        product_(x in X) (deg(x)!)^(1 \/ deg(x)).
     $
+]<thm:brigman>
+#proof("(by Radhakrishnan)")[
+    Each (perfect) matching corresponds to a bijection $sigma: X -> Y$ such that $x sigma(x) in E(G)$ for all $x in X$. Let $sigma$ be chosen uniformly from all such bijections. Then by @lem:chain-rule, $
+        H(sigma) = H(sigma(x_1)) + H(sigma(x_2) | sigma(x_1)) + dots.c + H(sigma(x_n) | sigma(x_1), ..., sigma(x_(n - 1))),
+    $ where $x_1, ..., x_n$ is some enumeration of $X$. $H(sigma(x_1)) <= log deg(x_1)$. $H(sigma(x_2) | sigma(x_1)) <= EE_sigma log deg_(x_1)^sigma (x_2)$, where $deg_(x_1)^sigma (x_2) = abs(N(x_2) \\ {sigma(x_1)})$. In general, $
+        H(sigma(x_i) | sigma(x_1), ..., sigma(x_(i - 1))) <= EE_sigma log deg_(x_1, ..., x_(i - 1))^sigma (x_i),
+    $ where $deg_(x_1, ..., x_(i - 1))^sigma (x_i) = abs(N(x_i) \\ {sigma(x_1), ..., sigma(x_(i - 1))})$.
 ]
