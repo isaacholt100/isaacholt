@@ -1,10 +1,10 @@
 #import "@preview/fletcher:0.5.2" as fletcher: diagram, node, edge
 #import "@preview/cetz:0.3.1" as cetz: canvas, draw
+#import "../../diagram-style.typ": *
 #import "@preview/cetz-plot:0.1.0": plot
 #import "@preview/cetz-venn:0.1.2"
 #import "@preview/suiji:0.3.0": *
 #import "../../template.typ": *
-#import "../../diagram-style.typ": *
 
 #show: doc => template(doc, hidden: (), slides: false)
 #set document(

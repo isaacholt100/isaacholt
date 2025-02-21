@@ -39,3 +39,5 @@ von Neumann measurements: $sum_i P_i = II$, $P_i P_j = delta_(i j) P_i$. Then wh
 Let $A_0 = sqrt(II - dif t sum_i L_i^dagger L_i)$, ${L_i}$ are Limdblod operators, $A_i = sqrt(dif t) L_i$. This gives $
     (dif rho)/(dif t) = i [H, rho] + sum_i L_i rho L_i^dagger - 1/2 sum_i (L_i^dagger L_i rho + rho L_i^dagger L_i).
 $
+
+Ky-Fan principle for Hermitian matrices: $lambda_1 = max_(P_1) tr(P_1 rho) = max_(ket(psi)) braket(psi, rho, psi)$, $lambda_1 + lambda_2 = max_(P_2) tr(P_2 rho)$, $lambda_1 + lambda_2 + lambda_3 = max_(P_3) tr(P_3 rho)$. $P_i$ are projectors.

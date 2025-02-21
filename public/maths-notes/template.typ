@@ -98,7 +98,7 @@
         }
     }
 
-    // show math.equation.where(block: true): set block(breakable: true)
+    show math.equation.where(block: true): set block(breakable: true)
     // show math.equation.where(block: true): set align(center)
 
     show math.equation.where(block: true): e => [
