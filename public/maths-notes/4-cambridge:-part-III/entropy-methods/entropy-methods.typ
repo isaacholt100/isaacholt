@@ -6,7 +6,7 @@
 #set document(
     title: "Entropy Methods in Combinatorics Notes",
     author: "Isaac Holt",
-    keywords: ("combinatorics", "entropy")
+    keywords: ("combinatorics", "entropy"),
 )
 
 #let line-style(color) = (fill: color, stroke: color, mark: (end: ">"))
@@ -84,7 +84,7 @@ Note all random variables we deal with will be discrete, unless otherwise stated
 ]
 #proof[
     The case $n = 2$ is @axm:additivity. In general, $
-        H(X_1, ..., X_n) = H(X_1, ..., X_(n - 1)) + H(X_n | X_1, ..., X_(n - 1)),    
+        H(X_1, ..., X_n) = H(X_1, ..., X_(n - 1)) + H(X_n | X_1, ..., X_(n - 1)),
     $ so the result follows by induction.
 ]
 #lemma[
@@ -385,8 +385,8 @@ Bregman's theorem concerns how large $per(A)$ can be if $A$ is a $0, 1$ matrix a
                 content((10, -2), $K_(a_k, a_k)$)
 
                 for i in range(-1, 2) {
-                    circle((i/2, 1), ..point-style, name: "circle-1-t-" + str(i))
-                    circle((i/2, -1), ..point-style, name: "circle-1-b-" + str(i))
+                    circle((i / 2, 1), ..point-style, name: "circle-1-t-" + str(i))
+                    circle((i / 2, -1), ..point-style, name: "circle-1-b-" + str(i))
                 }
                 for i in range(-1, 2) {
                     for j in range(-1, 2) {
@@ -395,25 +395,25 @@ Bregman's theorem concerns how large $per(A)$ can be if $A$ is a $0, 1$ matrix a
                 }
 
                 for i in range(0, 2) {
-                    circle((i/2 - 0.25 + 4, 1), ..point-style, name: "circle-2-t-" + str(i))
-                    circle((i/2 - 0.25 + 4, -1), ..point-style, name: "circle-2-b-" + str(i))
+                    circle((i / 2 - 0.25 + 4, 1), ..point-style, name: "circle-2-t-" + str(i))
+                    circle((i / 2 - 0.25 + 4, -1), ..point-style, name: "circle-2-b-" + str(i))
                 }
                 for i in range(0, 2) {
                     for j in range(0, 2) {
                         line("circle-2-t-" + str(i), "circle-2-b-" + str(j), mark: none)
                     }
                 }
-                
+
                 for i in range(-1, 3) {
-                    circle((i/2 - 0.25 + 10, 1), ..point-style, name: "circle-3-t-" + str(i))
-                    circle((i/2 - 0.25 + 10, -1), ..point-style, name: "circle-3-b-" + str(i))
+                    circle((i / 2 - 0.25 + 10, 1), ..point-style, name: "circle-3-t-" + str(i))
+                    circle((i / 2 - 0.25 + 10, -1), ..point-style, name: "circle-3-b-" + str(i))
                 }
                 for i in range(-1, 3) {
                     for j in range(-1, 3) {
                         line("circle-3-t-" + str(i), "circle-3-b-" + str(j), mark: none)
                     }
                 }
-            })
+            }),
         )
     ]
 ]
@@ -423,7 +423,7 @@ Bregman's theorem concerns how large $per(A)$ can be if $A$ is a $0, 1$ matrix a
     $
 ]<thm:brigman>
 #proofhints[
-    - For an enumeration $x_1, ..., x_n$ of $X$ and random matching (a bijection)  $sigma$, show that $H(sigma) <= log deg (x_1) + EE_sigma log deg_(x_1)^sigma (x_2) + dots.c + EE_sigma log deg_(x_1, ..., x_(n - 1))^sigma (x_n)$ (find a suitable expression for $deg_(x_1, ..., x_(i - 1))^sigma (x_i)$).
+    - For an enumeration $x_1, ..., x_n$ of $X$ and random matching (a bijection) $sigma$, show that $H(sigma) <= log deg (x_1) + EE_sigma log deg_(x_1)^sigma (x_2) + dots.c + EE_sigma log deg_(x_1, ..., x_(n - 1))^sigma (x_n)$ (find a suitable expression for $deg_(x_1, ..., x_(i - 1))^sigma (x_i)$).
     - Find another expression for $deg_(x_1, ..., x_(i - 1))^sigma (x_i)$ in terms of $deg(x)$.
     - Show that the average of $log deg_(x_1, ..., x_(i - 1))^sigma (x_i)$ is $1/d(x) (log(d(x)!))$.
 ]
@@ -483,7 +483,7 @@ Bregman's theorem concerns how large $per(A)$ can be if $A$ is a $0, 1$ matrix a
                 hobby((-2, 0), (-2.5, 0.8), (-3, 1), stroke: diagram-colors.blue)
                 circle((-2, 0), ..point-style, fill: black)
                 circle((-3, 1), ..point-style, fill: black)
-            })
+            }),
         )
     ]
     Call such a union a *cover of $G$ by edges and even cycles*. If we are given such a cover, then the number of pairs $(M_1, M_2)$ that could give rise to it is $2^k$, where $k$ is the number of even cycles. Now let's build a bipartite graph $G_2$ out of $G$. $G_2$ has two vertex sets $V_1, V_2$, which are both copies of $V(G)$. Join $x in V_1$ to $y in V_2$ iff $x y in E(G)$.
@@ -503,7 +503,7 @@ Bregman's theorem concerns how large $per(A)$ can be if $A$ is a $0, 1$ matrix a
                 line(C, D)
                 line(C, E)
             }),
-            caption: [$G_2$ if $G$ is the triangle graph]
+            caption: [$G_2$ if $G$ is the triangle graph],
         )
     ]
     By @thm:brigman, the number of perfect matchings in $G_2$ is at most $product_(x in V(G)) (d(x)!)^(1 \/ d(x))$. Each matching gives a permutation $sigma$ of $V(G)$ such that $x sigma(x) in E(G)$ for all $x in V(G)$. Each such $sigma$ has a cycle decomposition, and each cycle gives a cycle in $G$. So $sigma$ gives a cover of $V(G)$ by isolated vertices, edges and cycles (not necessarily all even). Given such a cover with $k$ cycles, each cycle can be directed in two ways, so the number of $sigma$ that give rise to it is $= 2^k$. So there is an injection from $M times M$ to the set of matchings of $G_2$, since every cover by edges and and even cycles is a cover by vertices, edges and cycles. So $abs(M)^2 <= product_(x in V(G)) (d(x)!)^(1 \/ d(x))$.
@@ -646,7 +646,7 @@ Bregman's theorem concerns how large $per(A)$ can be if $A$ is a $0, 1$ matrix a
     $ (Note that we always have $abs(P_([n] \\ {i})^(-1) (u)) in {0, 1, 2}$). The number of points of the second kind is $abs(partial_i A)$. So $
         H(X_i | X_(\\ i)) & = sum_u PP(X_(\\ i) = u) H(X_i | X_(\\ i = u)) \
         & = sum_(u in.not partial_i A) PP(X_(\\ i) = u) \
-        & = 1 - sum_(u in partial_i A) PP(X_(\\ i) = u) \ 
+        & = 1 - sum_(u in partial_i A) PP(X_(\\ i) = u) \
         & = 1 - abs(partial_i A)/abs(A).
     $ So $
         H(X) & >= sum_(i = 1)^n (1 - abs(partial_i A)/abs(A)) \
@@ -780,6 +780,9 @@ We start by proving the diagonal case, i.e. where $x = y$.
 #proofhints[
     - Let $psi = 1 \/ phi$. Show that equality holds when $x = psi, 0, 1$.
     - Let $f(x) = h(x^2) - phi dot x dot h(x)$. Show that $f'''(x) = 0$ iff $-phi x^3 - 4x^2 + 3 phi x - 4 + 2phi = 0$. (Advice: use natural logs and find expressions for $h'(x)$, $h''(x)$ and $h'''(x)$ first).
+    - Explain why $f'''$ has at most two roots in $(0, 1)$ and so $f$ has at most five roots in $[0, 1]$.
+    - Show that $f$ has a double root at $0$ and at $psi$.
+    - Explain why $f$ must have constant sign on $[0, 1]$, and by considering small $x$, show that there is $x$ with $f(x) > 0$.
 ]
 #proof[
     Write $psi = 1 \/ phi = 1/2 (sqrt(5) - 1)$. Then $psi^2 = 1 - psi$. So $h(psi^2) = h(1 - psi) = h(psi)$ and $phi psi = 1$, so $h(psi^2) = phi dot psi dot h(psi)$. So equality holds when $x = psi$, and also when $x = 0, 1$.
@@ -802,5 +805,187 @@ We start by proving the diagonal case, i.e. where $x = y$.
     $ which is zero iff $
         & -12 + 12x + 8 - 16x^2 + 3 phi (1 + x - x^2 - x^3) - phi(1 - 3x^2 - 2x^3) \
         = & -phi x^3 - 4x^2 + 3 phi x - 4 + 2phi = 0.
+    $ So the numerator of $f'''(x)$ is a cubic with negative leading coefficient and constant term, so it has a negative root, so it has at most two roots in $(0, 1)$. It follows (by Rolle's theorem) that $f$ has at most five roots in $[0, 1]$, up to multiplicity. But $
+        f'(x) = 2x (log(1 - x^2) - log(x^2)) + phi(x log x + (1 - x) log(1 - x)) - phi x (log(1 - x) - log x)
+    $ So $f'(0) = 0$, so $f$ has a double root at $0$. Now $
+        f'(psi) & = 2 psi(log psi - 2 log psi) + phi(psi log psi + 2(1 - psi) log psi) - (2log psi - log psi) \
+        & = -2 psi log psi + log psi + 2 phi log psi - 2 log psi \
+        & = 2 log psi (-psi + phi - 1) \
+        & = 2 phi log psi (-psi^2 - 1 - psi) = 0
+    $ So there is a double root at $psi$. Also, $f(1) = 0$. So $f$ is either non-negative on all of $[0, 1]$ or non-positive on all of $[0, 1]$. If $x$ is small, $
+        f(x) & = x^2 log 1/x^2 + (1 - x^2) log 1/(1 - x^2) - phi x (x log 1/x + (1 - x) log 1/(1 - x)) \
+        & = 2x^2 log 1/x - phi x^2 log 1/x + O(x^2).
+    $ So, because $2 > phi$, there exists $x$ such that $f(x) > 0$.
+]
+#lemma[
+    The function $f(x, y) = h(x y)/(x h(y) + y h(x))$ is minimised on $(0, 1)^2$ at a point where $x = y$.
+]<lem:boppana-for-two-variables>
+#proofhints[
+    - Show that we can extend $f$ continuously to the boundary by setting $f(x, y) = 1$ whenever $x$ or $y$ is $0$ or $1$ (for the case when $x$ or $y$ tend to $0$ separately, consider an expansion for $x y$ small, and for the case when $x$ and $y$ tend to $1$, consider when one of $x$ or $y$ is $1$).
+    - Pick any point in $(0, 1)^2$ to show that $f$ is minimised somewhere in that region.
+    - Let $(x^*, y^*)$ be a minimum with $f(x^*, y^*) = alpha$. Let $g(x) = h(x) \/ x$.
+    - By considering the expression $g(x y) - alpha(g(x) + g(y))$ and partial derivatives, show that $x^* g'(x^*) = y^* g'(y^*)$.
+    - Show that $x g'(x)$ is an injection by considering its derivative.
+]
+#proof[
+    We can extend $f$ continuously to the boundary by setting $f(x, y) = 1$ whenever $x$ or $y$ is $0$ or $1$. To see this, note first that it is easy if neither $x$ nor $y$ is $0$. If either $x$ or $y$ is small then $h(x y) = -x y (log x + log y) + O(x y)$, and $
+        x h(y) + y h(x) & = -x (y log y + O(y)) - y (x log x + O(x)) \
+        & = h(x y) quad "up to" O(x y)
+    $ So it tends to $1$ again.
+
+    We can check that $f(1 \/ 2, 1 \/ 2) < 1$, so $f$ is minimised somewhere in $(0, 1)^2$. Let $(x^*, y^*)$ be a minimum with $f(x^*, y^*) = alpha$. For convenience, let $g(x) = h(x) \/ x$ and note that $f(x, y) = g(x y)/(g(x) + g(y))$. Also, $g(x y) - alpha(g(x) + g(y)) >= 0$ with equality at $(x^*, y^*)$. So the partial derivatives of the LHS are both $0$ at $(x^*, y^*)$: $
+        y^* g'(x^* y^*) - alpha g'(x^*) & = 0 \
+        x^* g'(x^* y^*) - alpha g'(y^*) & = 0.
+    $ So $x^* g'(x^*) = y^* g'(y^*)$. So it is enough to prove that $x g'(x)$ is an injection. We have $
+        g'(x) = (h'(x)) / x - h(x)/x^2
+    $ so $
+        x g'(x) & = h'(x) - h(x)/x \
+        & = log(1 - x) - log x + (x log x + (1 - x) log(1 - x))/x \
+        & = log(1 - x)/x.
+    $ Differentiating gives $
+        -1/(x (1 - x)) - log(1 - x)/x^2 = (-x - (1 - x) log(1 - x))/(x^2 (1 - x))
+    $ The numerator differentiates to $-1 + 1 + log(1 - x)$ which is negative. Also, it equals $0$ at $0$, so it has a constant sign. Thus, $x g'(x)$ is indeed an injection.
+]
+Combining this with @lem:boppana we get that $
+    h(x y) >= phi/2 (x h(y) + y h(x))
+$ This allows us to take $p = 1 - 1/phi = (3 - sqrt(5)) / 2$.
+
+
+= Entropy in additive combinatorics
+
+We shall need two "simple" results from additive combinatorics due to Imre Ruzsa.
+
+#definition[
+    Let $G$ be an abelian group and let $A, B subset.eq G$. The *sumset* $A + B$ of $A$ and $B$ is the set $
+        {x + y: x in A, y in B}
+    $ and the *difference set* $A - B$ is the set $
+        {x - y: x in A, y in B}.
+    $ Write $2A$ for $A + A$, $3A$ for $A + A + A$, etc.
+]<def:sum-and-difference-sets>
+#definition[
+    The *Ruzsa distance* $d(A, B)$ is $
+        abs(A - B) / (abs(A)^(1 \/ 2) dot abs(B)^(1 \/ 2)).
     $
+]<def:ruzsa-distance>
+#lemma("Ruzsa Triangle Inequality")[
+    $d(A, C) <= d(A, B) dot d(B, C)$.
+]<lem:ruzsa-triangle-inequality>
+#proofhints[
+    Expand the stated inequality and consider an appropriate injection.
+]
+#proof[
+    This is equivalent to the statement $
+        abs(A - C) dot abs(B) <= abs(A - B) dot abs(B - C).
+    $ For each $x in A - C$, pick $a(x) in A$, $c(x) in C$ such that $x = a(x) - c(x)$. Define the map $
+        phi: (A - C) times B & -> (A - B) times (B - C), \
+        (x, b) & |-> (a(x) - b, b - c(x)).
+    $ Adding the coordinates of $phi(x, b)$ gives $x$, so we can calculate $a(x)$ and $c(x)$ from $phi(x, b)$, and hence $b$. So $phi$ is an injection.
+]
+#lemma("Ruzsa Covering Lemma")[
+    Let $G$ be an abelian group and let $A, B subset.eq G$ be finite. Then $A$ can be covered by at most $abs(A + B) \/ abs(B)$ translates of $B - B$.
+]<lem:ruzsa-covering-lemma>
+#proofhints[
+    Consider a maximal subset ${x_1, ..., x_k} subset.eq A$ such that the $x_i + B$ are disjoint.
+]
+#proof[
+    Let ${x_1, ..., x_k}$ be a maximal subset of $A$ such that the sets $x_i + B$ are disjoint. Then for all, $a in A$, there exists $i$ such that $(a + B) inter (x_i + B) != emptyset$, i.e. $a in (x_i + (B - B))$. So $A$ can be covered by $k$ translates of $B - B$. But since the $x_i + B$ are disjoint, $
+        abs(B) k = abs({x_1, ..., x_k} + B) <= abs(A + B).
+    $
+]
+Let $X, Y$ be discrete random variables taking values in an abelian group. What is $X + Y$ when $X$ and $Y$ are independent? For each $z$, $PP(X + Y = z) = sum_(x + y = z) PP(X = x) PP(Y = y)$. Writing $p_x$ and $q_y$ for $PP(X = x)$ and $PP(Y = y)$, this gives $
+    sum_(x + y = z) p_x p_y = (p * q)(z)
+$ where $p(x) = p_x$, $q(y) = q_y$. So sums of independent random variables correspond to convolutions.
+#definition[
+    Let $G$ be an abelian group and let $X, Y$ be $G$-valued random variables. The *(entropic) Ruzsa distance* between $X$ and $Y$ is $
+        d(X; Y) & = H(X' - Y') - 1/2 H(X) - 1/2 H(Y) \
+        & = H(X' - Y') - 1/2 H(X') - 1/2 H(Y').
+    $ where $X', Y'$ are independent copies of $X, Y$.
+]<def:entropic-ruzsa-distance>
+#lemma[
+    If $A, B$ are finite subsets of $G$ and $X, Y$ are uniform on $A, B$ respectively, then $
+        d(X; Y) <= log d(A, B).
+    $
+]<lem:entropic-ruzsa-distance-upper-bound-for-uniform-variables>
+#proofhints[
+    Straightforward.
+]
+#proof[
+    WLOG $X, Y$ are independent. Then $
+        d(X, Y) & = H(X - Y) - 1/2 H(X) - 1/2 H(Y) \
+        & <= log abs(A - B) - 1/2 log abs(A) - 1/2 log abs(B) = log d(A, B).
+    $
+]
+#lemma[
+    Let $X, Y$ be $G$-valued random variables. Then $
+        H(X - Y) >= max{H(X), H(Y)} - I(X: Y).
+    $
+]<lem:lower-bound-for-entropy-of-difference-of-rvs>
+#proofhints[
+    Use that $H(X - Y) >= H(X - Y | Y)$ and $H(X - Y) >= H(X - Y | X)$.
+]
+#proof[
+    We have $
+        H(X - Y) & >= H(X - Y | Y) #[by @prop:subadditivity] \
+        & = H(X - Y, Y) - H(Y) \
+        & = H(X, Y) - H(Y) #[by @axm:invariance] \
+        & = H(X) + H(Y) - H(Y) - I(X: Y) \
+        & = H(X) - I(X: Y).
+    $ We use @axm:invariance with the bijection $(x, y) |-> (x - y, y)$. By symmetry, we also have $H(X - Y) >= H(Y) - I(X: Y)$.
+]
+#corollary[
+    If $X, Y$ are $G$-valued RVs, then $d(X; Y) >= 0$.
+]<crl:entropic-ruzsa-distance-is-non-negative>
+#proofhints[
+    Straightforward.
+]
+#proof[
+    WLOG $X$ and $Y$ are independent. Then $I(X: Y) = 0$, so $H(X - Y) >= max{H(X), H(Y)} >= 1/2 (H(X) + H(Y))$.
+]
+#lemma[
+    If $X, Y$ are $G$-valued RVs, then $d(X; Y) = 0$ iff there is some (finite) subgroup $H$ of $G$ such that $X$ and $Y$ are uniform on cosets of $H$.
+]<lem:criterion-for-zero-entropic-ruzsa-distance>
+#proofhints[
+    - $<==$: straightforward.
+    - $==>$: assume WLOG that $X$ and $Y$ are independent. By considering entropy, explain why $X - Y$ and $Y$ are independent.
+    - Deduce that for $X$ supported on $A$ and $Y$ supported on $B$, for all $z in A - B$ and $y_1, y_2 in B$, $PP(X = y_1 + z) = PP(X = y_2 + z)$, and show that this implies that $z + B subset.eq A$.
+    - Deduce that $A = B + z$ for all $z in A - B$, and so that $A - x$ is constant over $x in A$.
+    - Deduce that $A - A$ is a subgroup.
+]
+#proof[
+    $<==$: If $X, Y$ are uniform on $x + H, y + H$ then $X' - Y'$ is uniform on $(x - y) + H$, so $H(X' - Y') = H(X) = H(Y)$.
+
+    $==>$: WLOG $X$ and $Y$ are independent. We have $H(X - Y) = 1/2 (H(X) + H(Y))$. So equality must hold throughout the proof of @lem:lower-bound-for-entropy-of-difference-of-rvs and @crl:entropic-ruzsa-distance-is-non-negative, thus $H(X - Y | Y) = H(X - Y)$. Therefore, $X - Y$ and $Y$ are independent. So for every $z in A - B$ and $y_1, y_2 in B$, $
+        PP(X - Y = z | Y = y_1) = PP(X - Y = z | Y = y_2),
+    $ where $A = {x: PP(X = x) != 0}$ and $B = {y: PP(Y = y) != 0}$. We can write this as $
+        PP(X = y_1 + z) = PP(X = y_2 + z)
+    $ So $PP(X = x)$ is constant on $z + B$. In particular, $z + B subset.eq A$ ($PP(X = x)$ must be non-zero on $z + B$, as otherwise $(z + B) inter A = emptyset$, i.e. $z in.not A - B$). By the same argument, $A - z subset.eq B$. So $A = B + z$ for all $z in A - B$. So for every $x in A$ and $y in B$, $A = B + x - y$, so $A - x = B - y$. Hence, $A - x$ is the same for every $x in A$. Therefore, $A - x = union_(x in A) (A - x) = A - A$ for all $x in A$. It follows that $
+        A - A + A - A = (A - A) - (A - A) = A - x - (A - x) = A - A.
+    $ So $A - x = A - A$ is a subgroup, and so $A$ is a coset of $A - A$. $B = A + x$, so $B$ is also a coset of $A - A$. Also, as stated above, $X$ is uniform on $z + B = A$ and $Y$ is uniform on $A - z = B$.
+]
+#lemma("Entropic Ruzsa Triangle Inequality")[
+    Let $X, Y, Z$ be $G$-valued random variables. Then $d(X; Z) <= d(X; Y) + d(Y; Z)$.
+]<lem:entropic-ruzsa-triangle-inequality>
+#proofhints[
+    Simplify the desired inequality and use @lmm:subadditivity-with-additional-difference (where $X - Z$ depends on two different (pairs of) random variables).
+]
+#proof[
+    We must show (assuming WLOG that $X, Y, Z$ are independent) that $
+        & H(X - Z) - 1/2 H(X) - 1/2 H(Z) \
+        <= & H(X - Y) - 1/2 H(X) - 1/2 H(Y) + H(Y - Z) - 1/2 H(Y) - 1/2 H(Z),
+    $ i.e. that $H(X - Z) + H(Y) <= H(X - Y) + H(Y - Z)$. Since $X - Z$ depends on $(X - Y, Y - Z)$ and on $(X, Z)$, by @lmm:subadditivity-with-additional-difference, $
+        H(X - Y, Y - Z, X, Z) + H(X - Z) <= H(X - Y, Y - Z) + H(X, Z)
+    $ i.e. $H(X, Y, Z) + H(X - Z) <= H(X, Z) + H(X - Y, Y - Z)$. By independence and @prop:subadditivity, we get $H(X - Z) + H(Y) <= H(X - Y) + H(Y - Z)$.
+]
+#lemma("Submodularity for Sums")[
+    If $X, Y, Z$ are independent $G$-valued RVs, then $
+        H(X + Y + Z) + H(Z) <= H(X + Z) + H(Y + Z).
+    $
+]<lem:submodularity-for-sums>
+#proofhints[
+    Use @lmm:subadditivity-with-additional-difference.
+]
+#proof[
+    $X + Y + Z$ is a function of $(X + Z, Y)$ and of $(X, Y + Z)$. Therefore, by @lmm:subadditivity-with-additional-difference, $
+        H(X + Z, Y, X, Y + Z) + H(X + Y + Z) <= H(X + Z, Y) + H(X, Y + Z),
+    $ thus $H(X, Y, Z) + H(X + Y + Z) <= H(X + Z) + H(Y) + H(X) + H(Y + Z)$. By independence and cancelling equal terms, we get the desired inequality.
 ]

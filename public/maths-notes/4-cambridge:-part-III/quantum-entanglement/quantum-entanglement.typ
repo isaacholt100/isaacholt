@@ -41,3 +41,34 @@ Let $A_0 = sqrt(II - dif t sum_i L_i^dagger L_i)$, ${L_i}$ are Limdblod operator
 $
 
 Ky-Fan principle for Hermitian matrices: $lambda_1 = max_(P_1) tr(P_1 rho) = max_(ket(psi)) braket(psi, rho, psi)$, $lambda_1 + lambda_2 = max_(P_2) tr(P_2 rho)$, $lambda_1 + lambda_2 + lambda_3 = max_(P_3) tr(P_3 rho)$. $P_i$ are projectors.
+
+#theorem("Quantum Steering")[
+    Let $ket(psi)$ be a pure state in $HH = HH_A tp HH_B$ and let $rho_B = tr_A (ket(psi) bra(psi))$. A POVM measurement on system $A$ can produce the ensemble ${(p_i, rho_i): i in [M]}$ at system $B$ iff $rho_B = sum_(i = 1)^M p_i rho_i$.
+]<thm:quantum-steering>
+#remark[
+    The @thm:quantum-steering theorem is also known as the Hughston, Jozsa, Wootters theorem.
+]
+#definition[
+    An *entanglement monotone* is a function on the set of quantum states in $HH_A tp HH_B$ which does not increase, on average, under local transformations on $HH_A$ and $HH_B$. In particular, it is invariant under local unitary operations.
+]<def:entanglement-monotone>
+#theorem("Vidal")[
+    A function of a bipartite pure state is an entanglement monotone iff it is a concave unitarily invariant function of its local density matrix.
+]<thm:vidal>
+#example[
+    Let $HH = HH_A tp HH_B$ with $n = min{dim HH_A, dim HH_B}$. A family of entanglement monotones on $HH$ is given by $
+        mu_m (ket(psi)) = -sum_(i = 1)^m lambda_i,
+    $ for each $m in [n]$, where $lambda_1, ..., lambda_n$ are the Schmidt coefficients of $ket(psi)$ in decreasing order.
+]
+#definition[
+    Let $x, y in RR^n$, and let $x^((i))$ denote the $i$-th largest element of $x$. We say $x$ *weakly majorises* $y$, written $y prec_w x$, if $
+        sum_(i = 1)^m y^((i)) <= sum_(i = 1)^m x^((i)) quad forall m in [n].
+    $ $x$ *majorises* $y$ if it weakly majorises $y$ and $sum_(i = 1)^n x_i = sum_(i = 1)^n y_i$.
+]<def:majorisation>
+#theorem[
+    The probabilistic transformation $ket(psi) |-> {(p_i, ket(psi_i)): i in [M]}$ can be accomplished using LOCC iff $
+        lambda(ket(psi)) prec sum_(i = 1)^M p_i lambda(ket(psi_i)),
+    $ where $lambda(ket(phi))$ denotes the vector of Schmidt coefficients of $ket(phi)$.
+]
+#theorem("Bennett")[
+    
+]

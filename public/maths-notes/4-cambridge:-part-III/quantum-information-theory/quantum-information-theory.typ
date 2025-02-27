@@ -618,3 +618,93 @@ $
 #proof[
     This follows from the @prop:ppt-criterion and @prop:entangled-states-with-ppt-exist-iff-non-decomposable-maps-exist combined with the fact that every positive $Lambda$ on a Hilbert space of dimension $2 tp 2$ or $2 tp 3$ is decomposable.
 ]
+
+
+= Quantum hypothesis testing
+
+The goal of quantum hypothesis testing is to distinguish between quantum states by using measurements. Given quantum states, the goal is to minimise the errors in distinguishing them. There are two main frameworks:
+- Binary/simple hypothesis testing: we have a null hypothesis $rho_0$ and a alternative hypothesis $rho_1$. The focus is on minimising either the Type I error (false positive) for a given bound on the Type II error (false negative), or vice versa.
+- Quantum state discrimination: states are given with prior probabilities, and the goal is to maximise the probability of correct identification.
+
+== Quantum state discrimination
+
+Given an ensemble ${rho_1, ..., rho_n} subset.eq S(HH)$ of density operators with corresponding probabilities ${p_1, ..., p_n}$, where $p_i >= 0$ and $sum_(i = 1)^n p_i = 1$. This can be interpreted as a set of $n$ hypotheses (the $rho_i$) with corresponding a priori probability $p_i$. The goal is to maximise the average probability of correct identification of the hypothesis. To discriminate among the hypothesis, we use a POVM $M = {M_1, ..., M_n}$, and we want to maximise $
+    cal(P)(M) := sum_(j = 1)^n tr(M_j p_j rho_j).
+$
+#notation[
+    Write $cal(M) = span{(M_1, ..., M_n) in B(HH)^n, M_i >= 0, sum_i M_i = II}$ for the span of the set of POVMs with $n$ operators, and write $cal(P)(cal(M)) = sup_(M in cal(M)) cal(P)(M)$.
+]
+#notation[
+    For any POVM $M$, write $L = sum_(i = 1)^n M_i p_i rho_i$, so that $cal(P)(M) = tr(L)$.
+]
+#definition[
+    A *maximum likelihood measurement* (or *optimal measurement*) is a measurement (POVM) that achieves the supremum (i.e. the optimal probability) in $cal(P)(cal(M))$.
+]
+#proposition[
+    The supremum in $cal(P)(cal(M))$ is always attained, i.e. there is a measurement $M^*$ such that $cal(P)(cal(M)) = cal(P)(M^*)$.
+]<prop:mle-always-exists>
+#proofhints[
+    Explain why $M$ is compact, the rest is straightforward.
+]
+#proof[
+    For each $M in cal(M)$, each $M_i >= 0$, and $sum_i M_i = II$, which says that $cal(M)$ is compact.
+    Also, the map $M |-> sum_(i = 1)^n tr(M_i p_i rho_i)$ is linear (and bounded), so is continuous, and so achieves its supremum on $cal(M)$.
+]
+#remark[
+    Note that since also for each $M in cal(M)$, each $M_i >= 0$, we have that $cal(M)$ is convex.
+]
+#theorem[
+    Let ${rho_1, ..., rho_n}$ be an ensemble with probabilities ${p_1, ..., p_n}$. For $M = {M_1, ..., M_n}$ and $L = sum_(i = 1)^n M_i p_i rho_i$, TFAE:
+    + $M$ is an optimal measurement, i.e. $cal(P)(M) = cal(P)(cal(M))$.
+    + For all $i in [n]$, $1/2 (L + L^*) >= p_i rho_i$.
+    + For all $i in [n]$, $L >= p_i rho_i$.
+    + There exists $K in B(HH)$ such that for all $i in [n]$, $K >= p_i rho_i$ and $(K - p_i rho_i) M_i = 0$.
+    + $cal(P)(M) = min{tr(A): A in cal(A)}$, where $cal(A) = {A in B(HH): A >= p_i rho_i med forall i}$.
+]<thm:equivalent-conditions-for-optimal-measurements>
+#remark[
+    - The inequalities in 3. and 4. of @thm:equivalent-conditions-for-optimal-measurements imply that $L$ and $K$ are Hermitian.
+    - $L = K$ and are equal to a minimiser in 5. of @thm:equivalent-conditions-for-optimal-measurements.
+    - The uniqueness of $K$ does not necessarily imply uniqueness of the optimal measurement.
+]
+#proofhints[
+    - $1 => 2$: assume the opposite, let $P$ be the orthogonal projector onto the negative eigenspace of $L + L^* - 2 p_i rho_i$. For fixed $epsilon > 0$, define $M'_j = (II - epsilon P) M_j (II - epsilon P) + epsilon(2 - epsilon) P delta_(i j)$. Verify that $M'$ is a POVM and that $
+        cal(P)(M') = cal(P)(M) + epsilon tr(P(2p_i rho_i - L - L^*)) - epsilon^2 tr(p_i rho_i P) + epsilon^2 sum_(j = 1)^n tr(P M_j P p_j rho_j).
+    $
+    - $3 => 1$: for any POVM $M' = {M'_1, ..., M'_n}$, show that $cal(P)(M) - cal(P)(M') >= 0$ (recall the properties of a POVM).
+    - $2 => 1$: use simple modification of the $3 => 1$ proof.
+    - $2 => 3$: use that $
+        sum_(j = 1)^n tr((1/2 (L + L^*) - p_j rho_j) M_j) = tr(1/2 (L + L^*) - L) = 0
+    $
+    - $3 => 4$: straightforward.
+    - $4 => 1$: show that $tr(L) = cal(P)(M)$, show that $cal(P)(M) - cal(P)(M') >= 0$ for any POVM $M' = {M'_1, ..., M'_n}$.
+    - $4 => 5$: show that $cal(P)(M) = tr(K)$.
+    - $5 => 4$: should be straightforward by now.
+]
+#proof[
+    - $1. => 2.$: assume the opposite, i.e. that there exists $i in [n]$ such that $1/2 (L + L^*) gt.eq.not p_i rho_i$, i.e. $L + L^* - 2 p_i rho_i$ is not positive semi-definite. Let $P$ be the orthogonal projector onto the negative eigenspace of $L + L^* - 2 p_i rho_i$. In particular, $P$ is non-zero. Fix $epsilon in [0, 2]$ and define $
+        M'_j = (II - epsilon P) M_j (II - epsilon P) + epsilon(2 - epsilon) P delta_(i j).
+    $ It is straightforward to check that $M'$ is a POVM and that $
+        cal(P)(M') = cal(P)(M) + epsilon tr(P(2p_i rho_i - L - L^*)) - epsilon^2 tr(p_i rho_i P) + epsilon^2 sum_(j = 1)^n tr(P M_j P p_j rho_j)
+    $ By construction, $tr(P(2p_i rho_i - L - L^*)) >= 0$. Since the last two terms are $O(epsilon^2)$, for $epsilon$ small enough, $cal(P)(M') > cal(P)(M)$, which contradicts our assumption that $cal(P)(M) = cal(P)(cal(M))$.
+    - $3 => 1$ and $2 => 1$: let $M'$ be another POVM. Since $cal(P)(M) = tr(L)$, we have $
+        cal(P)(M) - cal(P)(M') & = tr(L) - sum_(j = 1)^n tr(M'_j p_j rho_j) \
+        & = tr(L sum_(j = 1)^n M'_j) - sum_(j = 1)^n tr(M'_j p_j rho_j) \
+        & = sum_(j = 1)^n tr(M'_j (L - p_j rho_j))
+    $ By $3$, $L >= p_j rho_j$, hence $cal(P)(M) - cal(P)(M') >= 0$. For $2 => 1$, since $tr(L) = tr(L^*)$, we can replace $L$ in the above proof by $1/2 (L + L^*)$.
+    - $2 => 3$: using that $tr(L) = tr(L^*)$, we have $
+        sum_(j = 1)^n tr((1/2 (L + L^*) - p_j rho_j) M_j) = tr(1/2 (L + L^*) - L) = 0
+    $ Since $1/2 (L + L^*) >= p_j rho_j$, all the terms $1/2 (L + L^*) - p_j rho_j$ are positive, so $(1/2 (L + L^*) - p_j rho_j) M_j = 0$ since the sums of the traces are $0$. Summing over $j$ gives $1/2 (L + L^*) = L$, so $L$ is Hermitian.
+    - $3 => 4$: choosing $K = L$, it is straightforward to check the conditions are satisfied.
+    - $4 => 1$: since $K M_j = p_j rho_j M_j$ for all $j$, it is straightforward to show that $cal(P)(M) = tr(L) = tr(K)$ by summing over $j$ and taking the trace. Letting $M'$ be another POVM, we have $
+        cal(P)(M) - cal(P)(M') & = sum_(j = 1)^n tr(K M'_j) - tr(p_j rho_j M'_j) \
+        & = sum_(j = 1)^n tr((K - p_j rho_j) M'_j) >= 0
+    $ since $K - p_j rho_j >= 0$.
+    - $4 => 5$: it is straightforward to show that $
+        cal(P)(M) = tr(K).
+    $ We have $K in cal(A)$ and for all $A in cal(A)$, $
+        tr(K) = sum_(j = 1)^n tr(K M_j) = sum_(j = 1)^n tr(p_j rho_j M_j) <= sum_(j = 1)^n tr(A M_j) = tr(A)
+    $ So $cal(P)(M) = tr(K) = min{tr(A): A in cal(A)}$. The argument in reverse shows the converse.
+    - $5 => 4$: let $A in cal(A)$ be such that $tr(A) = cal(P)(M) = tr(L)$. Then $
+        0 & = tr(A - L) = tr(A sum_(i = 1)^n M_i - L) = sum_(i = 1)^n tr((A - p_i rho_i) M_i)
+    $ Since $A >= p_i rho_i$ for all $i$, each term on the RHS is $>= 0$, and so $tr((A - p_i rho_i) M_i) = 0$, but $(A - p_i rho_i) M_i >= 0$, so we can take $K = A$.
+]

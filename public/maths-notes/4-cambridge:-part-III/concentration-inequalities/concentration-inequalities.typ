@@ -158,7 +158,7 @@ Principle: a smooth function of many independent random variables concentrates a
         & = integral_(-oo)^oo 1/sqrt(2 pi sigma^2) e^(-(x^2 - 2 lambda sigma^2 x + lambda^2 sigma^4) \/ 2 sigma^2) e^(lambda^2 sigma^2 / 2) dif x \
         & = integral_(-oo)^oo 1/sqrt(2 pi sigma^2) e^(-(x - lambda sigma^2)^2 \/ 2 sigma^2) e^(lambda^2 sigma^2 / 2) dif x \
         & = e^(lambda^2 sigma^2 \/ 2).
-    $ By @prop:properties-of-log-mgf-and-cramer-transform, for $t > 0 = EE[Z]$, the Cramer transform is $
+    $ So $psi_Z (lambda) = (lambda^2 sigma^2) / 2$. By @prop:properties-of-log-mgf-and-cramer-transform, for $t > 0 = EE[Z]$, the Cramer transform is $
         psi_Z^* (t) = sup_(lambda in RR) {lambda t - lambda^2 sigma^2 \/ 2} =: sup_(lambda in RR) g(lambda).
     $ We have $g' (lambda) = t - lambda sigma^2 = 0$ iff $lambda = t \/ sigma^2$. So $psi_Z^* (t) = t^2 \/ sigma^2 - sigma^2 t^2 \/ 2 sigma^4 = t^2 \/ 2 sigma^2$. So @prop:chernoff-bound gives $
         PP(Z >= t) <= e^(-t^2 \/ 2 sigma^2).
@@ -166,8 +166,8 @@ Principle: a smooth function of many independent random variables concentrates a
 ]
 #definition[
     Let $X$ be an RV with $EE[X] = 0$. $X$ is *sub-Gaussian* with variance parameter $nu$ if $
-        psi_X (lambda) <= (lambda^2 nu)/2 quad forall lambda in RR.
-    $ The set of all such variables is denoted $cal(G)(nu)$.
+        psi_X (lambda) <= (lambda^2 nu)/2 quad forall lambda in RR,
+    $ i.e. if its log MGF is less than that of a normally distributed random variable with mean $0$ and variance $nu$. The set of all such sub-Gaussian variables is denoted $cal(G)(nu)$.
 ]<def:sub-gaussian>
 #proposition[
     For any sub-Gaussian RV $X$,
@@ -426,14 +426,15 @@ Let $X_1, ..., X_n$ be real-valued random variables, and let $Z = f(X_1, ..., X_
 ]<thm:convex-poincare-inequality>
 #proofhints[
     - Let $Z_i = inf_(x'_i) f(X_(1:(i - 1)), x'_i, X_((i + 1):n))$. Let $X'_i$ be the value for which the infimum is achieved (why is it achieved?).
-    - Use that $abs(Z - Z_i)^2 <= abs(X_i - X'_i) dot (diff f) / (diff x_i) (X)$.
+    - Use that $abs(Z - Z_i)^2 <= abs(X_i - X'_i)^2 dot ((diff f) / (diff x_i) (X))^2$.
 ]
 #proof[
-    Let $Z_i = inf_(x'_i) f(X_(1:(i - 1)), x'_i, X_((i + 1):n))$. Let $X'_i$ be the value for which the infimum is achieved (since $f$ is continuous and the domain $[0, 1]^n$ we consider is compact). Denote $overline(X)^((i)) = (X_(1:(i - 1)), X'_i, X_((i + 1):n))$. Note that since $f$ is separately convex, $
-        abs(Z - Z_i)^2 = abs(f(X_(1:n)) - f(overline(X)^((i))))  <= abs(X_i - X'_i) dot (diff f) / (diff x_i) (X_(1:n)).
+    Let $Z_i = inf_(x'_i) f(X_(1:(i - 1)), x'_i, X_((i + 1):n))$. Let $X'_i$ be the value for which the infimum is achieved (since $f$ is continuous and the domain $[0, 1]^n$ we consider is compact). Denote $overline(X)^((i)) = (X_(1:(i - 1)), X'_i, X_((i + 1):n))$. Note that since $f$ is separately convex and $X'_i$ is a minimiser  (so $f(X'_((i))) <= f(X)$), $
+        abs(Z - Z_i)^2 = abs(f(X_(1:n)) - f(overline(X)^((i))))^2 <= abs(X_i - X'_i)^2 dot ((diff f) / (diff x_i) (X_(1:n)))^2.
     $ By the @thm:efron-stein, $
         Var(Z) & <= sum_(i = 1)^n EE[(Z - Z_i)^2] \
-        & <= sum_(i = 1)^n EE[(X_i - X'_i)^2 ((diff f) / (diff x_i) (X_(1:n)))^2] <= sum_(i = 1)^n EE[((diff f) / (diff x_i) (X_(1:n)))^2] = EE[norm(nabla f(X_(1:n)))^2].
+        & <= sum_(i = 1)^n EE[(X_i - X'_i)^2 ((diff f) / (diff x_i) (X_(1:n)))^2] \
+        & <= sum_(i = 1)^n EE[((diff f) / (diff x_i) (X_(1:n)))^2] = EE[norm(nabla f(X_(1:n)))^2].
     $
 ]
 #example[
@@ -592,8 +593,8 @@ In the following section, let $A$ be a discrete (countable) alphabet and let $X$
 #proof[
     Exercise.
 ]
-#notation[
-    For PMFs $Q, P$ on $A$, write $Q << P$ if $P(x) = 0 => Q(x) = 0$ for all $x in A$.
+#definition[
+    For PMFs $Q, P$ on $A$, $Q$ is *absolutely continuous* with respect to $P$, written $Q << P$, if $P(x) = 0 => Q(x) = 0$ for all $x in A$.
 ]
 #definition[
     Let $Q, P$ be PMFs on $A$ such that $Q << P$ (which means if $P(x) = 0$, then $Q(x) = 0$). The *relative entropy* between $Q$ and $P$ is $
@@ -951,33 +952,27 @@ In the following section, let $A$ be a discrete (countable) alphabet and let $X$
 #remark[
     - If the same condition for the negative part $(dot)_-$ holds, then we get the analogous left tail bound.
     - If $max_(x in {-1, 1}^n) sum_(i = 1)^n (f(x) - f(overline(x)^((i))))^2 <= nu$, then $Z - EE[Z] in cal(G)(nu \/ 2)$. In fact, more careful analysis shows that $Z - EE[Z] in cal(G)(nu \/ 4)$.
+    - If $f$ has bounded differences with constants $c_i$ where $sum_(i = 1)^n c_i^2 <= nu$, then $f$ also satisfies $
+        max_(x in {-1, 1}^n) sum_(i = 1)^n (f(x) - f(overline(x)^((i))))^2 <= nu
+    $ so $Z - EE[Z] in cal(G)(nu \/ 4)$. @thm:mcdiarmids-inequality also gives $Z - EE[Z] in cal(G)(nu \/ 4)$ under stronger assumptions. So we are able to prove a result that is as strong as @thm:mcdiarmids-inequality but under a weaker assumption.
     - The @thm:efron-stein gives $
         Var(Z) <= EE[sum_(i = 1)^n (Z - Z'_i)_+^2] = 1/2 EE[sum_(i = 1)^n (Z - overline(Z)^((i)))^2] <= nu \/ 2
     $ if $EE[sum_(i = 1)^n (Z - overline(Z)^((i)))^2] <= nu$. Note that this a weaker result, but makes a weaker assumption than @thm:concentration-on-the-hypercube.
-    - If $f$ has bounded differences with constants $c_i$, then $f$ satisfies the assumption with $1/4 sum_(i = 1)^n c_i^2 =: nu \/ 4$.
-    - @thm:mcdiarmids-inequality gives $Z - EE[Z] in cal(G)(nu \/ 4)$ under stronger assumptions. Can we relax the assumption of bounded differences in general?
 ]
 
-== The modified log-Sobolev inequality
+== The modified log-Sobolev inequality (MLSI)
 
-#theorem("Modified Log-Sobolev Inequality")[
-    Let $X_1, ..., X_n$ be independent RVs taking values on $A$. Let $f: A^n -> RR$ and $Z = f(X)$. Let $f_i (X^((i))): A^(n - 1) -> RR$ and $Z_i = f_i (X^((i)))$ for each $i in [n]$. Then $
-        Ent(e^(lambda Z)) <= sum_(i = 1)^n EE[e^(lambda Z) phi(-lambda(Z - Z_i))] quad forall lambda > 0,
-    $ where $phi(x) = e^x - x - 1$.
-]
-#remark[
-    For $lambda > 0$ and $Z >= Z_i$, we may use the inequality $phi(-x) <= x^2 \/ 2$ for $x >= 0$ to give a simpler upper bound: $
-        Ent(e^(lambda Z)) <= lambda^2 / 2 sum_(i = 1)^n EE[e^(lambda Z) (Z - Z_i)^2].
-    $
-]
 #lemma("Variational Principle for Entropy")[
     For any non-negative random variable $Y$, $
         Ent(Y) = inf_(u > 0) EE[Y (log Y - log u) - (Y - u)]
-    $
+    $ and the infimum is achieved at $u = EE[Y]$.
 ]<lem:variational-principle-for-entropy>
+#proofhints[
+    Use the inequality $log x <= x - 1$.
+]
 #proof[
     We have $
-        Ent(Y) - EE[Y log Y + Y log u + (Y - u)] & = EE[Y log u/EE[Y] + Y - u] \
+        Ent(Y) - EE[Y log Y + Y log u - (Y - u)] & = EE[Y log u/EE[Y] + Y - u] \
         & <= EE[Y]/EE[Y] u - EE[Y] + EE[Y] - u = 0
     $ since $log x <= x - 1$. For $u = EE[Y]$, $
         EE[Y log Y] - EE[Y log u + Y - u] = Ent(Y).
@@ -986,5 +981,197 @@ In the following section, let $A$ be a discrete (countable) alphabet and let $X$
 #remark[
     This is an entropy analogue of $Var(Y) = inf_(a in RR) EE[(Y - a)^2]$. In fact, for any convex function $phi$, we can prove that the infimum $
         inf_(u > 0) EE[phi(Y) - phi(u) - phi'(u)(Y - u)]
-    $ is achieved when $u = EE[Y]$. @lem:variational-principle-for-entropy is a special case for $phi(x) = x log x$.
+    $ is achieved when $u = EE[Y]$. The @lem:variational-principle-for-entropy is a special case for $phi(x) = x log x$.
 ]
+#theorem("Modified Log-Sobolev Inequality")[
+    Let $X_1, ..., X_n$ be independent RVs taking values on $A$. Let $f: A^n -> RR$ and $Z = f(X)$. Let $f_i: A^(n - 1) -> RR$ be an arbitrary function and $Z_i = f_i (X^((i)))$ for each $i in [n]$. Then $
+        Ent(e^(lambda Z)) <= sum_(i = 1)^n EE[e^(lambda Z) phi(-lambda(Z - Z_i))] quad forall lambda > 0,
+    $ where $phi(x) = e^x - x - 1$.
+    
+    For $lambda > 0$ and $Z >= Z_i$, we may use the inequality $phi(-x) <= x^2 \/ 2$ for $x >= 0$ to give a simpler upper bound: $
+        Ent(e^(lambda Z)) <= lambda^2 / 2 sum_(i = 1)^n EE[e^(lambda Z) (Z - Z_i)^2].
+    $
+]<thm:mlsi>
+#proofhints[
+    Use @thm:tensorisation-of-entropy and the @lem:variational-principle-for-entropy, with $u = Y_i$ (conditional on $X^((i))$).
+]
+#proof[
+    Let $Y = e^(lambda Z)$ and $Y_i = e^(lambda Z_i)$. By @thm:tensorisation-of-entropy, $
+        Ent(Y) <= EE[sum_(i = 1)^n Ent^((i))(Y)]
+    $ We will bound each of the $n$ terms on the RHS. Conditional on $X^((i))$, take $u = Y_i$ (note that $u > 0$). By the @lem:variational-principle-for-entropy, $
+        Ent^((i))(Y) & <= EE[Y log Y/Y_i - (Y - Y_i) | X^((i))] \
+        & = EE[e^(lambda Z) lambda (Z - Z_i) - (e^(lambda Z) - e^(lambda Z_i)) | X^((i))] \
+        & = EE[e^(lambda Z) (lambda(Z - Z_i) + e^(-lambda (Z - Z_i)) - 1) | X^((i))] \
+        & = EE[e^(lambda Z) phi(-lambda (Z - Z_i)) | X^((i))].
+    $ The result follows by summing and taking expectations.
+]
+#theorem("Relaxed Bounded Differences")[
+    Let $Z = f(X_1, ..., X_n)$ for independent RVs $X_1, ..., X_n$ which take values on $A$ and $f: A^n -> RR$. Let $
+        Z_i = inf_(x'_i) f(X_(1:(i - 1)), x'_i, X_((i + 1):n)).
+    $ Suppose that $
+        sum_(i = 1)^n (Z - Z_i)^2 <= nu
+    $ almost surely for some $nu > 0$. Then for all $t > 0$, $
+        PP(Z - EE[Z] >= t) <= e^(-t^2 \/ 2 nu).
+    $
+]<thm:relaxed-bounded-differences>
+#proofhints[
+    Straightforward.
+]
+#proof[
+    By the @thm:mlsi, $
+        Ent(e^(lambda Z)) & <= lambda^2 / 2 EE[e^(lambda Z) sum_(i = 1)^n (Z - Z_i)^2] <= (lambda^2 nu)/2 EE[e^(lambda Z)]
+    $ The result follows by @thm:herbsts-argument and the @prop:chernoff-bound.
+]
+#remark[
+    If $Z_i = sup_(x'_i) f(X_(1:(i - 1)), x'_i, X_((i + 1):n))$ and $sum_(i = 1)^n (Z - Z_i)^2 <= nu$, then we also obtain a left tail bound. If this condition holds for the supremum and the infimum, then $Z in cal(G)(nu)$.
+]
+
+== Concentration of convex Lipschitz functions
+
+Let $f: [0, 1]^n -> RR$ be separately convex and $1$-Lipschitz. The @thm:convex-poincare-inequality says that $Var(f(X)) <= EE[norm(nabla f(X))^2] <= 1$.
+#theorem[
+    Let $f: [0, 1]^n -> RR$ be separately convex and $1$-Lipschitz. Let $Z = f(X_1, ..., X_n)$ where $X_1, ..., X_n$ are independent and are supported on $[0, 1]$. Then for all $t > 0$, $
+        PP(Z - EE[Z] >= t) <= e^(-t^2 \/ 2),
+    $ so $Z - EE[Z]$ has a sub-Gaussian right tail.
+]
+#proofhints[
+    - You may assume the partial derivatives of $f$ exist.
+    - Find an appropriate upper bound for $sum_(i = 1)^n (f(X) - f(X'_((i))))^2$, where $X'_((i)) = (X_(1:(i - 1)), X'_i, X_((i + 1):n))$ and $X'_i$ is the value for which the infimum is achieved (why is the infimum achieved?).
+    - Conclude using @thm:relaxed-bounded-differences.
+]
+#proof[
+    We may assume the partial derivatives of $f$ exist (by approximating $f$ as a sequence of differentiable functions if necessary). By @thm:relaxed-bounded-differences, it is enough to show that $sum_(i = 1)^n (Z - Z_i)^2 <= 1$, where $Z_i = inf_(x'_i) f(X_(1:(i - 1)), x'_i, X_((i + 1):n))$. We have $
+        sum_(i = 1)^n (Z - Z_i)^2 = sum_(i = 1)^n (f(X) - f(X'_((i))))^2,
+    $ where $X'_((i)) = (X_(1:(i - 1)), X'_i, X_((i + 1):n))$ and $X'_i$ is the value for which the infimum is achieved. (The infimum is achieved since $f$ is continuous and $[0, 1]$ is compact) By convexity and the fact that $X'_i$ is a minimiser (so $f(X'_((i))) <= f(X)$), $
+        sum_(i = 1)^n (f(X) - f(X'_((i))))^2 <= & sum_(i = 1)^n (X_i - X'_i)^2 (diff / (diff x_i) f(X))^2 \
+        <= & sum_(i = 1)^n (diff / (diff x_i) f(X))^2 \
+        = & norm(nabla f(X))^2 <= 1
+    $ since $f$ is $1$-Lipschitz.
+]
+#remark[
+    The proof wouldn't work for a left-tail bound, since $-f$ is concave not convex. The entropy method does not seem to give a left tail.
+]
+#remark[
+    The naive bound using just the Lipschitz-ness of $f$ would give $sum_(i = 1)^n (Z - Z_i)^2 <= n$, so convexity gives a big improvement.
+]
+
+
+= The transport method
+
+#definition[
+    Let $Omega$ be a countable set and $cal(A)$ be a collection of subsets of $Omega$ which is a $sigma$-algebra. A *probability space* is $(Omega, cal(A), P)$, where $P$ is a probability measure.
+]<def:probability-space>
+#definition[
+    A *real-valued RV* $Z$ is a map $Omega -> RR$.
+    We define $
+        PP(Z in A) = sum_(omega in Omega: X(omega) in A) P(omega)
+    $ for $A subset.eq RR$. We define $EE[Z] = sum_(omega in Omega) P(omega) Z(omega)$. If $Q << P$, write $EE_Q [Z] = sum_(omega in Omega) Q(omega) Z(omega)$.
+]<def:real-valued-rv>
+#theorem("Variational Representation for log-MGF and Relative Entropy")[
+    Let $(Omega, A, P)$ be a countable probability space and $Z$ be a random variable with $EE[abs(Z)] < oo$. Then $
+        log EE[e^Z] = log EE_P [e^Z] = sup_(Q << P) (EE_Q [Z] - D(Q || P))
+    $ where the supremum is taken over all probability measures $Q$ that are absolutely continuous with respect to $P$ such that $EE_Q [abs(Z)] < oo$.
+
+    Conversely, fix $Q << P$. Then $
+        D(Q || P) = sup_Z (EE_Q Z - log EE_P [e^Z]),
+    $ where the supremum is over all RVs $Z$ such that $EE_P [abs(Z)], EE_Q [abs(Z)] < oo$.
+]<thm:variational-formulae-for-log-mgf-and-relative-entropy>
+#proofhints[
+    Define $
+        Q^* (omega) = (e^(Z(omega)) P(omega))/(EE_P [e^Z])
+    $ and show that $0 <= D(Q || P) + log EE_P [e^Z] - EE_Q [Z]$. When is equality achieved?
+]
+#proof[
+    // Assume first that $EE[abs(Z) e^Z] < oo$. // TODO: why assume EE[abs(Z) e^Z] < oo and not EE[e^Z] < oo?
+    Define $ 
+        Q^* (omega) = (e^(Z(omega)) P(omega))/(EE_P [e^Z]).
+    $ Note that $Q^*$ is a valid PMF. For any $Q << P$ such that $EE_Q [abs(Z)] < oo$, we have $
+        0 & <= D(Q || Q^*) \
+        & = EE_(Y sim Q) [log Q(Y)/(Q^* (Y))] \
+        & = EE_(Y sim Q) [log (Q(Y)/P(Y) P(Y)/(Q^* (Y)))] \
+        & = EE_(Y sim Q) [log Q(Y)/P(Y)] + EE_Q [log (P(Y) EE_(Z sim P) [e^Z])/(P(Y) e^Z)] \
+        & = D(Q || P) + log EE_P [e^Z] - EE_Q [Z]
+    $ Hence $log EE[e^Z] >= EE_Q Z - D(Q || P)$, with equality iff $Q = Q^*$. The result follows since $Q^* << P$.
+    // If $EE[abs(Z) e^Z] = oo$, we can take $
+    //     Q_n (omega) = (e^(Z(omega)) P(omega) II_{abs(Z(omega)) <= n})/EE[e^Z; abs(Z) <= n]
+    // $
+    For the second statement, note that $D(Q || P) >= EE_Q [Z] - log EE[e^Z]$, for any $Q << P$ and $Z$. There is equality if $Z(omega) = log Q(omega)/P(omega)$.
+    (Note that $EE_Q [abs(Z)] = EE_Q [abs(log Q/P)] < oo$ since $D(Q || P) < oo$ and the negative part of $x log x$ is finitely bounded.)
+    // If $D(Q || P) = oo$, set $
+    //     Z_n (omega) = min{(log Q(omega)/P(omega))_+, n},
+    // $ and take $n -> oo$.
+    // 
+    Note it can be shown that the result holds when $D(Q || P) < oo$ and when $EE_P [e^Z] = oo$.
+]
+#corollary[
+    For all $lambda in RR$, we have $
+        log EE_P [e^(lambda (Z - EE_P [Z]))] = sup_(Q << P) (lambda(EE_Q Z - EE_P Z) - D(Q || P))
+    $
+]
+#theorem("Marton's Argument")[
+    Let $P$ be a PMF and $Z sim P$. If there exists $nu > 0$ such that $
+        EE_Q [Z] - EE_P [Z] <= sqrt(2 nu D(Q || P))
+    $ for all PMFs $Q$ such that $Q << P$, then $
+        log EE_P [e^(lambda(Z - EE_P [Z]))] <= (lambda^2 nu)/2 quad forall lambda > 0,
+    $ (and so also $PP(Z - EE[Z] >= t) <= e^(-t^2 \/ 2nu)$ by the @prop:chernoff-bound). Conversely, if there exists $nu > 0$ such that $log EE_P [e^(lambda(Z - EE_P [Z]))] <= (lambda^2 nu)/2$ for all $lambda > 0$, then $
+        EE_Q [Z] - EE_P [Z] <= sqrt(2 nu D(Q || P))
+    $ for all $Q << P$.
+]<thm:martons-argument>
+#proofhints[
+    - Show that $log EE_P [e^(lambda(Z - EE[Z]))] <= sup_(t >= 0) (lambda sqrt(2 nu t) - t)$.
+    - For converse, may assume that $EE_Q [Z] - EE_P [Z] >= 0$ (why?). The proof is similar to the first proof.
+]
+#proof[
+    By the @thm:variational-formulae-for-log-mgf-and-relative-entropy, $
+        log EE_P [e^(lambda(Z - EE[Z]))] & = sup_(Q << P) (lambda (EE_Q [Z] - EE_P [Z]) - D(Q || P)) \
+        & <= sup_(Q << P) (lambda sqrt(2 nu D(Q || P)) - D(Q || P)) \
+        & <= sup_(t >= 0) (lambda sqrt(2 nu t) - t).
+    $ Let $f(t) = lambda sqrt(2 nu t) - t$. Then $f'(t) = 0$ iff $t = (lambda^2 nu)/2$, and so the $sup_(t >= 0) f(t) = (lambda^2 nu)/2$.
+
+    For the converse, we may assume that $EE_Q [Z] - EE_P [Z] >= 0$, since otherwise we are trivially done. By @thm:variational-formulae-for-log-mgf-and-relative-entropy, for all $lambda > 0$, $
+        D(Q || P) >= lambda (EE_Q [Z] - EE_P [Z]) - log EE_P e^(lambda (Z - EE_P [Z])) >= lambda (EE_Q [Z] - EE_P [Z]) - (lambda^2 nu)/2
+    $ Taking the supremum over $lambda > 0$, we obtain $
+        D(Q || P) >= sup_(lambda > 0) (lambda (EE_Q [Z] - EE_P [Z]) - (lambda^2 nu)/2)
+    $ Differentiating the RHS, we see that it is maximised when $lambda = 1/nu (EE_Q [Z] - EE_P [Z])$, and so $
+        D(Q || P) >= (EE_Q [Z] - EE_P [Z])^2 / (2nu).
+    $
+]
+
+== Concentration via Marton's argument
+
+#definition[
+    Let $P, Q$ be distributions on $A$. Let $X sim P$ and $Y sim Q$. A *coupling* $pi$ is a joint distribution on $(X, Y)$ such that $X$ has marginal $P$ (w.r.t $pi$) and $Y$ has marginal $Q$ (w.r.t. $pi$). Write $Pi(P, Q)$ for the set of all couplings.
+]<def:coupling>
+#example[
+    $P times.circle Q$ is the independent coupling.
+]
+#lemma[
+    $f: A^n -> RR$ such that $f(y) - f(x) <= sum_(i = 1)^n c_i d(x_i, y_i)$ for some constants $c_i$ and distance $d(dot, dot)$. Let $X sim P_1 times.circle cdots times.circle P_n =: P$, $Z = f(X)$. Let $C > 0$ be such that $
+        inf_(pi in Pi(P, Q)) sum_(i = 1)^n EE_pi [d(X_i, Y_i)]^2 <= 2 C D(Q || P).
+    $ for all $Q << P$. Then $
+        PP(Z - EE[Z] >= t) <= e^(-t^2 \/ 2 nu),
+    $ where $nu = C sum_(i = 1)^n c_i$.
+]<lem:concentration-via-marton>
+#proofhints[
+    Let $Q << P$ and $Y sim Q$. Show that $
+        EE_Q [Z] - EE_P [Z] <= (sum_(i = 1)^n c_i^2)^(1 \/ 2) (sum_(i = 1)^n EE_pi [d(X_i, Y_i)]^2)^(1 \/ 2),
+    $ and conclude the result using @thm:martons-argument.
+]
+#proof[
+    Let $Q << P$ and $Y sim Q$. Then $
+        EE_Q [Z] - EE_P [Z] & = EE[f(Y)] - EE[f(X)] \
+        & = EE_pi [f(Y) - f(X)] quad "for all" pi in Pi(P, Q) \
+        & <= EE_pi [sum_(i = 1)^n c_i d(X_i, Y_i)] \
+        & = sum_(i = 1)^n c_i EE_pi [d(X_i, Y_i)] \
+        & <= (sum_(i = 1)^n c_i^2)^(1 \/ 2) (sum_(i = 1)^n EE_pi [d(X_i, Y_i)]^2)^(1 \/ 2) quad "by Cauchy-Schwarz"
+    $ So $
+        EE_Q [Z] - EE_P [Z] <= (sum_(i = 1)^n c_i^2)^(1 \/ 2) (inf_(pi in Pi(P, Q)) sum_(i = 1)^n EE_pi [d(X_i, Y_i)]^2)^(1 \/ 2)
+    $ Since $
+        inf_(pi in Pi(P, Q)) sum_(i = 1)^n EE_pi [d(X_i, Y_i)]^2 <= 2 C D(Q || P)
+    $ we have $EE_Q [Z] - EE_P [Z] <= sqrt(2 nu D(Q || P))$, where $nu = C sum_(i = 1)^n c_i$. The result follows by @thm:martons-argument.
+]
+#definition[
+    Let $X sim P$ and $Y sim Q$. The *transportation cost* from $Q$ to $P$ w.r.t a distance $d(dot, dot)$ is $
+        inf_(pi in Pi(P, Q)) EE_pi d(X, Y).
+    $
+]<def:transportation-cost>
