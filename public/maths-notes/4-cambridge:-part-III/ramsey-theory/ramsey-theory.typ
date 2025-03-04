@@ -617,14 +617,14 @@ Strengthened Van der Waerden says that the system $x_1 + x_2 = y_1, x_1 + 2x_2 =
     A *filter* on $NN$ is a non-empty collection $cal(F)$ of subsets of $NN$ such that:
     - $emptyset in.not cal(F)$,
     - If $A in cal(F)$ and $A subset.eq B$, then $B in cal(F)$, i.e. $cal(F)$ is an *up-set*.
-    - If $A, B in cal(F)$ then $A sect B in cal(F)$, i.e. $cal(F)$ is closed under finite intersections.
+    - If $A, B in cal(F)$ then $A inter B in cal(F)$, i.e. $cal(F)$ is closed under finite intersections.
     A filter is a notion of "large" subsets of $NN$.
 ]<def:filter>
 #example[
     - $cal(F)_1 = {A subset.eq NN: 1 in A}$ is a filter.
     - $cal(F)_2 = {A subset.eq NN: 1, 2 in A}$ is a filter.
     - $cal(F)_3 = {A subset.eq NN: A^c "finite"}$ is a filter, called the *cofinite filter*.
-    - $cal(F)_4 = {A subset.eq NN: A "infinite"}$ is not a filter, since it contains $2 NN$ and $2 NN + 1$ but not $emptyset = (2 NN) sect (2 NN + 1)$.
+    - $cal(F)_4 = {A subset.eq NN: A "infinite"}$ is not a filter, since it contains $2 NN$ and $2 NN + 1$ but not $emptyset = (2 NN) inter (2 NN + 1)$.
     - $cal(F)_5 = {A subset.eq NN: 2 NN \\ A "finite"}$ is a filter.
 ]
 #definition[
@@ -642,7 +642,7 @@ Strengthened Van der Waerden says that the system $x_1 + x_2 = y_1, x_1 + 2x_2 =
     Straightforward.
 ]
 #proof[
-    If $B in.not cal(U)_x$, then $x in B^c$ so $B^c in cal(U)_x$, but $B^c sect B = emptyset$, so $cal(U)_x union {B}$ is not a filter.
+    If $B in.not cal(U)_x$, then $x in B^c$ so $B^c in cal(U)_x$, but $B^c inter B = emptyset$, so $cal(U)_x union {B}$ is not a filter.
 ]
 #example[
     - $cal(F)_1 = {A subset.eq NN: 1 in A}$ is an ultrafilter.
@@ -654,12 +654,12 @@ Strengthened Van der Waerden says that the system $x_1 + x_2 = y_1, x_1 + 2x_2 =
     A filter $cal(F)$ is an ultrafilter iff for all $A subset.eq NN$, either $A in cal(F)$ or $A^c in cal(F)$.
 ]<prop:ultrafilter-iff-contains-each-set-xor-complement>
 #proofhints[
-    $<==$: straightforward. $==>$: show if $A in.not cal(F)$, then $exists B in cal(F)$ such that $A sect B = emptyset$.
+    $<==$: straightforward. $==>$: show if $A in.not cal(F)$, then $exists B in cal(F)$ such that $A inter B = emptyset$.
 ]
 #proof[
-    $<==$: since $A sect A^c = emptyset in.not cal(F)$.
+    $<==$: since $A inter A^c = emptyset in.not cal(F)$.
 
-    $==>$: let $cal(F)$ is an ultrafilter. We cannot have $A, A^c in cal(F)$ as $A sect A^c = emptyset in.not cal(F)$. Suppose there is $A subset.eq NN$ such that $A, A^c in.not cal(F)$. By maximality of $cal(F)$, since $A in.not cal(F)$, then $exists B in cal(F)$ such that $A sect B = emptyset$ (suppose not, then $cal(F)' = {S subset.eq NN: S supset.eq A sect B "for some" B in cal(F)}$ extends $cal(F)$). Similarly, $exists C in cal(F)$ such that $A^c sect C = emptyset$. So we have $C subset.eq A$, so $B sect C = emptyset in.not cal(F)$: contradiction (or also $C subset.eq A ==> A in cal(F)$: contradiction).
+    $==>$: let $cal(F)$ is an ultrafilter. We cannot have $A, A^c in cal(F)$ as $A inter A^c = emptyset in.not cal(F)$. Suppose there is $A subset.eq NN$ such that $A, A^c in.not cal(F)$. By maximality of $cal(F)$, since $A in.not cal(F)$, then $exists B in cal(F)$ such that $A inter B = emptyset$ (suppose not, then $cal(F)' = {S subset.eq NN: S supset.eq A inter B "for some" B in cal(F)}$ extends $cal(F)$). Similarly, $exists C in cal(F)$ such that $A^c inter C = emptyset$. So we have $C subset.eq A$, so $B inter C = emptyset in.not cal(F)$: contradiction (or also $C subset.eq A ==> A in cal(F)$: contradiction).
 ]
 #corollary[
     Let $cal(U)$ be an ultrafilter and $A = B union C in cal(U)$. Then $B in U$ or $C in U$.
@@ -668,7 +668,7 @@ Strengthened Van der Waerden says that the system $x_1 + x_2 = y_1, x_1 + 2x_2 =
     Straightforward.
 ]
 #proof[
-     If not, then $B^c, C^c in cal(U)$ by @prop:ultrafilter-iff-contains-each-set-xor-complement, hence $B^c sect C^c = (B union C)^c = A^c in cal(U)$: contradiction.
+     If not, then $B^c, C^c in cal(U)$ by @prop:ultrafilter-iff-contains-each-set-xor-complement, hence $B^c inter C^c = (B union C)^c = A^c in cal(U)$: contradiction.
 ]
 #proposition[
     Every filter is contained in an ultrafilter.
@@ -680,7 +680,7 @@ Strengthened Van der Waerden says that the system $x_1 + x_2 = y_1, x_1 + 2x_2 =
     Let $cal(F)_0$ be a filter. By Zorn's Lemma, it is enough to show that every non-empty chain of filters has an upper bound. Let ${cal(F)_i: i in I}$ be a chain of filters in the poset of filters containing $cal(F)_0$, partially ordered by inclusion, and set $cal(F) = union.big_(i in I) cal(F)_i$.
     - $emptyset in.not cal(F)$ since $emptyset in.not cal(F)_i$ for each $i in I$.
     - If $A in cal(F)$ and $A subset.eq B$, then $A in cal(F)_i$ for some $i in I$, so $B in cal(F)_i$, so $B in cal(F)$.
-    - Let $A, B in cal(F)$, so $A in cal(F)_i$ and $B in cal(F)_j$ for some $i, j$. WLOG, $cal(F)_i subset.eq cal(F)_j$, so $A sect B in cal(F)_j$, so $A sect B in cal(F)$.
+    - Let $A, B in cal(F)$, so $A in cal(F)_i$ and $B in cal(F)_j$ for some $i, j$. WLOG, $cal(F)_i subset.eq cal(F)_j$, so $A inter B in cal(F)_j$, so $A inter B in cal(F)$.
     $cal(F)$ is an upper bound for the chain, so we are done.
 ]
 #proposition[
@@ -700,7 +700,7 @@ Strengthened Van der Waerden says that the system $x_1 + x_2 = y_1, x_1 + 2x_2 =
 #definition[
     Define a topology on $beta NN$ by its base (basis), which consists of $
         C_A := {cal(U) in beta NN: A in cal(U)}
-    $ for each $A subset.eq NN$. The sets above indeed form a base: we have $union.big_(A subset.eq NN) C_A = beta NN$, and $C_A sect C_B = C_(A sect B)$, since $A sect B in cal(U)$ iff $A, B in cal(U)$. The open sets are of the form $union.big_(i in I) C_(A_i)$ and the closed sets are of the form $sect.big_(i in I) C_(A_i)$.
+    $ for each $A subset.eq NN$. The sets above indeed form a base: we have $union.big_(A subset.eq NN) C_A = beta NN$, and $C_A inter C_B = C_(A inter B)$, since $A inter B in cal(U)$ iff $A, B in cal(U)$. The open sets are of the form $union.big_(i in I) C_(A_i)$ and the closed sets are of the form $inter.big_(i in I) C_(A_i)$.
 ]<def:topology-on-ultrafilters>
 #remark[
     $beta NN \\ C_A = C_(A^c)$, since $A in.not cal(U)$ iff $A^c in cal(U)$. We can view $NN$ as being embedded in $beta NN$ by identifying $n in NN$ with $tilde(n) := cal(U)_n$, the principal ultrafilter at $n$. Each point in $NN$ under this correspondence is isolated in $beta NN$, since $C_({n}) = {tilde(n)}$ is an open neighbourhood of $tilde(n)$. Also, $NN$ is dense in $beta NN$, since for every $n in A$, $tilde(n) in C_A$, so every non-empty open set in $beta NN$ intersects $NN$.
@@ -709,9 +709,9 @@ Strengthened Van der Waerden says that the system $x_1 + x_2 = y_1, x_1 + 2x_2 =
     $beta NN$ is a compact Hausdorff topological space.
 ]<thm:topology-on-ultrafilters-is-compact-and-hausdorff>
 #proof[
-    Hausdorff: let $cal(U) != cal(V)$ be ultrafilters, so there is $A in cal(U)$ such that $A in.not cal(V)$. But then $A^c in cal(V)$, so $cal(U) in C_A$, $cal(V) in C_(A^c)$, and $C_A sect C_(A^c)$ is open.
+    Hausdorff: let $cal(U) != cal(V)$ be ultrafilters, so there is $A in cal(U)$ such that $A in.not cal(V)$. But then $A^c in cal(V)$, so $cal(U) in C_A$, $cal(V) in C_(A^c)$, and $C_A inter C_(A^c)$ is open.
 
-    Compact: it is compact iff every open admits a finite subcover iff a collection of open sets such that no finite subcollection covers $beta NN$, they don't cover $beta NN$ iff for every collection of closed sets such that they have finite intersection property ($(F_i)_(i in I)$, $sect_(i in J) F_i != emptyset$ for all $J$ finite), then their intersection is non-empty. We can assume each $F_i$ is a basis set, i.e. $F_i = C_(A_i)$ for some $A_i in NN$. Suppose ${C_(A_i): i in I}$ have teh finite intersection property. First, $C_(A_(i_1)) sect dots.c sect C_(A_(i_k)) = C_(A_(i_1) sect dots.c sect A_(i_k)) != emptyset$, hence $sect.big_(j = 1)^k A_(i_j) != emptyset$. So let $cal(F) = {A: A supset.eq A_(i_1) sect dots.c sect A_(i_k) "for some" A_(i_1), ..., A_(i_n)}$. We have $emptyset in.not cal(F)$, if $B supset.eq A in cal(F)$ then $B in cal(F)$, and if $A, B in cal(F)$, then $A sect B in cal(F)$. Hence $cal(F)$ is a filter. $cal(F)$ extends to an ultrafilter $cal(U)$. Note that $(forall i, A_i in cal(U)) <==> (cal(U) in C_(A_i) forall i)$. So $U in sect C_(A_i)$, so $sect C_(A_i) != emptyset$.
+    Compact: it is compact iff every open admits a finite subcover iff a collection of open sets such that no finite subcollection covers $beta NN$, they don't cover $beta NN$ iff for every collection of closed sets such that they have finite intersection property ($(F_i)_(i in I)$, $sect_(i in J) F_i != emptyset$ for all $J$ finite), then their intersection is non-empty. We can assume each $F_i$ is a basis set, i.e. $F_i = C_(A_i)$ for some $A_i in NN$. Suppose ${C_(A_i): i in I}$ have teh finite intersection property. First, $C_(A_(i_1)) inter dots.c inter C_(A_(i_k)) = C_(A_(i_1) inter dots.c inter A_(i_k)) != emptyset$, hence $inter.big_(j = 1)^k A_(i_j) != emptyset$. So let $cal(F) = {A: A supset.eq A_(i_1) inter dots.c inter A_(i_k) "for some" A_(i_1), ..., A_(i_n)}$. We have $emptyset in.not cal(F)$, if $B supset.eq A in cal(F)$ then $B in cal(F)$, and if $A, B in cal(F)$, then $A inter B in cal(F)$. Hence $cal(F)$ is a filter. $cal(F)$ extends to an ultrafilter $cal(U)$. Note that $(forall i, A_i in cal(U)) <==> (cal(U) in C_(A_i) forall i)$. So $U in inter C_(A_i)$, so $inter C_(A_i) != emptyset$.
 ]
 #remark[
     - $beta NN$ can be viewed as a subset of ${0, 1}^(powset(NN))$ (so each ultrafilter is viewed as a function $powset(NN) -> {0, 1}$). The topology on $beta NN$ is the restriction of the product topology on ${0, 1}^powset(NN)$. Also, $beta NN$ is a closed subset of ${0, 1}^powset(NN)$, so is compact by Tychonov's theorem (TODO: look up statement of this theorem).
@@ -733,7 +733,7 @@ Strengthened Van der Waerden says that the system $x_1 + x_2 = y_1, x_1 + 2x_2 =
 ]<prop:ultrafilter-quantification-distributes-over-logical-connectives>
 #proof[
     Let $A = {x in NN: p(x)}$ and $B = {x in NN: q(x)}$. We have
-    + $A sect B in cal(U)$ iff $A in cal(U)$ and $B in cal(U)$ by definition.
+    + $A inter B in cal(U)$ iff $A in cal(U)$ and $B in cal(U)$ by definition.
     + $A union B in cal(U)$ iff $A in cal(U)$ and $B in cal(U)$ by (find result).
     + $A in.not cal(U)$ iff $A^c in cal(U)$ by (find result).
 ]
@@ -752,7 +752,7 @@ Strengthened Van der Waerden says that the system $x_1 + x_2 = y_1, x_1 + 2x_2 =
     For any ultrafilters $cal(U)$ and $cal(V)$, $cal(U) + cal(V)$ is an ultrafilter.
 ]
 #proof[
-    We have $emptyset in.not cal(U) + cal(V)$. If $A in cal(U) + cal(V)$ and $A subset.eq B$, then $B in cal(U) + cal(V)$. If $A, B in cal(U) + cal(V)$, then $(forall_cal(U) x forall_cal(V) y med (x + y in A)) and (forall_cal(U) x forall_cal(V) y med (x + y in B))$, so by above proposition, we have $forall_cal(U) x forall_cal(V) y (x + y in A and x + y in B)$, i.e. $forall_cal(U) x forall cal(V) y med (x + y in A sect B)$, i.e. $A sect B in cal(U) + cal(V)$. Hence $cal(U) + cal(V)$ is a filter.
+    We have $emptyset in.not cal(U) + cal(V)$. If $A in cal(U) + cal(V)$ and $A subset.eq B$, then $B in cal(U) + cal(V)$. If $A, B in cal(U) + cal(V)$, then $(forall_cal(U) x forall_cal(V) y med (x + y in A)) and (forall_cal(U) x forall_cal(V) y med (x + y in B))$, so by above proposition, we have $forall_cal(U) x forall_cal(V) y (x + y in A and x + y in B)$, i.e. $forall_cal(U) x forall cal(V) y med (x + y in A inter B)$, i.e. $A inter B in cal(U) + cal(V)$. Hence $cal(U) + cal(V)$ is a filter.
 
     Suppose that $A in.not cal(U) + cal(V)$, i.e. $not (forall_cal(U) x forall_cal(V) y med (x + y in A))$. Then by above proposition twice, we have $forall_cal(U) x forall_cal(V) y med not (x + y in A)$. So $forall_cal(U) x forall_cal(V) y med (x + y in A^c)$, i.e. $A^c in cal(U) + cal(V)$.
 ]
@@ -781,7 +781,7 @@ Strengthened Van der Waerden says that the system $x_1 + x_2 = y_1, x_1 + 2x_2 =
 #proof[
     For $M subset.eq beta NN$, define $M + M := {x + y: x, y in M}$. We seek a non-empty, compact $M subset.eq beta NN$ which is minimal such that $M + M subset.eq M$, and hope to show that $M$ is a singleton.
 
-    Such an $M$ exists ($beta NN$ is one such), so the set of all such $M$ is non-empty. By Zorn's Lemma, it suffices to show that if ${M_i: i in I}$ is a chain of such sets, then $M = sect.big_(i in I) M_i$ (an upper bound with respect to the partial ordering $supset.eq$) is another such set. This $M$ will be compact as an intersection of closed sets, since $beta NN$ is compact and Hausdorff, so any subspace is closed iff it is compact. Also, $M + M subset.eq M$: for $x, y in M$, we have $x, y in M_i$ so $x + y in M_i + M_i subset.eq M_i$ for all $i in I$, so $x + y in M$. Finally, $M$ is non-empty: ${M_i: i in I}$ have the finite intersection property, as they are a chain, and are closed, so their intersection is non-empty.
+    Such an $M$ exists ($beta NN$ is one such), so the set of all such $M$ is non-empty. By Zorn's Lemma, it suffices to show that if ${M_i: i in I}$ is a chain of such sets, then $M = inter.big_(i in I) M_i$ (an upper bound with respect to the partial ordering $supset.eq$) is another such set. This $M$ will be compact as an intersection of closed sets, since $beta NN$ is compact and Hausdorff, so any subspace is closed iff it is compact. Also, $M + M subset.eq M$: for $x, y in M$, we have $x, y in M_i$ so $x + y in M_i + M_i subset.eq M_i$ for all $i in I$, so $x + y in M$. Finally, $M$ is non-empty: ${M_i: i in I}$ have the finite intersection property, as they are a chain, and are closed, so their intersection is non-empty.
 
     So by Zorn's lemma, there exists such a minimal $M$. Given $x in M$, we have $M + x = M$, since $M + x != emptyset$, $M + x$ is compact (as the continuous image of a compact set) and $(M + x) + (M + x) = (M + x + M) + x subset.eq (M + M + M) + x subset.eq M + x$, so by minimality of $M$, $M + x = M$.
 
@@ -849,7 +849,7 @@ If we $k$-colour $RR^k$, then by considering the regular simplex with $k + 1$ ve
 #proof[
     If $X$ is Euclidean Ramsey then take $S$ finite in $RR^n$ (for $k$ colours).
 
-    $<==$: we use a compactness proof. Suppose not, therefore for any finite $S subset.eq RR^n$, there is a bad $k$-colouring (i.e. no monochromatic isometric copy of $X$). The space of all $k$-colourings is $[k]^((RR^n))$, which is compact by Tychonov (TODO: add this statement). Consider the set $C_(X')$ of colourings under which $X'$ is not monochromatic. $C_(X')$ is closed. Look at ${C_(X'): X' "isometric copy of" X}$. It has the finite intersection property, because any finite $S$ has a bad $k$-colouring. Therefore, $sect.big C_(X') != emptyset$, so there exists a $k$-colouring of $RR^n$ with no monochromatic isometric copy of $X$ in $S$.
+    $<==$: we use a compactness proof. Suppose not, therefore for any finite $S subset.eq RR^n$, there is a bad $k$-colouring (i.e. no monochromatic isometric copy of $X$). The space of all $k$-colourings is $[k]^((RR^n))$, which is compact by Tychonov (TODO: add this statement). Consider the set $C_(X')$ of colourings under which $X'$ is not monochromatic. $C_(X')$ is closed. Look at ${C_(X'): X' "isometric copy of" X}$. It has the finite intersection property, because any finite $S$ has a bad $k$-colouring. Therefore, $inter.big C_(X') != emptyset$, so there exists a $k$-colouring of $RR^n$ with no monochromatic isometric copy of $X$ in $S$.
 ]
 #lemma[
     If $X subset.eq RR^n$ and $Y subset.eq RR^m$ are both Ramsey, then $X times Y subset.eq RR^(n + m)$ is also Ramsey.

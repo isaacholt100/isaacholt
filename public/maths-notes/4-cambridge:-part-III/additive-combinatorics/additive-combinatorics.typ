@@ -51,10 +51,10 @@
     Let $A, B subset.eq ZZ\/p$ for $p$ prime. If $|A| + |B| >= p + 1$, then $A + B = ZZ\/p$.
 ]
 #proofhints[
-    Consider $A sect (g - B)$ for $g in ZZ\/p$.
+    Consider $A inter (g - B)$ for $g in ZZ\/p$.
 ]
 #proof[
-    Note that $g in A + B$ iff $A sect (g - B) != emptyset$ where ($g - B = {g} - B$). Let $g in ZZ\/p$, then use inclusion-exclusion on $|A sect (g - B)|$ to conclude result.
+    Note that $g in A + B$ iff $A inter (g - B) != emptyset$ where ($g - B = {g} - B$). Let $g in ZZ\/p$, then use inclusion-exclusion on $|A inter (g - B)|$ to conclude result.
 ]
 #theorem("Cauchy-Davenport")[
     Let $p$ be prime, $A, B subset.eq ZZ\/p$ be non-empty. Then $
@@ -65,12 +65,12 @@
     - Assume $|A| + |B| < p + 1$, and WLOG that $1 <= |A| <= |B|$ and $0 in A$ (by translation).
     - Induct on $|A|$.
     - Let $a in A$, find $B'$ such that $0 in B'$, $a in.not B'$ and $|B'| = |B|$ (use fact that $p$ is prime).
-    - Apply induction with $A sect B'$ and $A union B'$, while reasoning that $(A sect B') + (A union B') subset.eq A + B'$.
+    - Apply induction with $A inter B'$ and $A union B'$, while reasoning that $(A inter B') + (A union B') subset.eq A + B'$.
 ]
 #proof[
     Assume $|A| + |B| < p + 1$, and WLOG that $1 <= |A| <= |B|$ and $0 in A$ (by translation). We use induction on $|A|$. $|A| = 1$ is trivial. Let $|A| >= 2$ and let $0 != a in A$. Then since $p$ is prime, ${a, 2a, ..., p a} = ZZ\/p$. There exists $m >= 0$ such that $m a in B$ but $(m + 1)a in.not B$ (why?). Let $B' = B - m a$, so $0 in B'$, $a in.not B'$ and $|B'| = |B|$.
     
-    Now $1 <= |A sect B'| < |A|$ (why?) so the inductive hypothesis applies to $A sect B'$ and $A union B'$. Since $(A sect B') + (A union B') subset.eq A + B'$ (why?), we have $|A + B| = |A + B'| >= |(A sect B') + (A union B')| >= |A sect B'| + |A union B'| - 1 = |A| + |B| - 1$.
+    Now $1 <= |A inter B'| < |A|$ (why?) so the inductive hypothesis applies to $A inter B'$ and $A union B'$. Since $(A inter B') + (A union B') subset.eq A + B'$ (why?), we have $|A + B| = |A + B'| >= |(A inter B') + (A union B')| >= |A inter B'| + |A union B'| - 1 = |A| + |B| - 1$.
 ]
 #example[
     Cauchy-Davenport does not hold general abelian groups (e.g. $ZZ\/n$ for $n$ composite): for example, let $A = B = {0, 2, 4} subset.eq ZZ\/6$, then $A + B = {0, 2, 4}$ so $|A + B| = 3 < min{6, |A| + |B| - 1}$.
@@ -165,7 +165,7 @@
 #proof[
     Choose maximal $X subset.eq 2A - A$ such that the translates $x + A$ with $x in X$ are disjoint. Such an $X$ cannot be too large: $forall x in X$, $x + A subset.eq 3A - A$, so by @thm:plunneckes-inequality, since $abs(3A - A) <= K^4 abs(A)$, $
         abs(X) abs(A) = abs(union.big_(x in X) (x + A)) <= abs(3A - A) <= K^4 abs(A).
-    $ Hence $abs(X) <= K^4$. We next show that $2A - A subset.eq X + A - A$. Indeed, if, $y in 2A - A$ and $y in.not X$, then by maximality of $X$, then $(y + A) sect (x + A) != emptyset$ for some $x in X$. If $y in X$, then $y in X + A - A$. It follows from above, by induction, that $forall ell >= 2$, $ell A - A subset.eq (ell - 1)X + A - A$: $
+    $ Hence $abs(X) <= K^4$. We next show that $2A - A subset.eq X + A - A$. Indeed, if, $y in 2A - A$ and $y in.not X$, then by maximality of $X$, then $(y + A) inter (x + A) != emptyset$ for some $x in X$. If $y in X$, then $y in X + A - A$. It follows from above, by induction, that $forall ell >= 2$, $ell A - A subset.eq (ell - 1)X + A - A$: $
         ell A - A & = A + (ell - 1)A - A \
         & subset.eq (ell - 2)X + 2A - A \
         & subset.eq (ell - 2)X + X + A - A \
@@ -181,7 +181,7 @@
 ]
 #theorem("Polynomial Freiman-Ruzsa Theorem")[
     Let $A subset.eq FF_p^n$ be such that $abs(A + A) <= K abs(A)$. Then there exists a subspace $H subset.eq FF_p^n$ of size at most $C_1 (K) abs(A)$ such that for some $x in FF_p^n$, $
-        abs(A sect (x + H)) >= abs(A)/(C_2 (K)),
+        abs(A inter (x + H)) >= abs(A)/(C_2 (K)),
     $ where $C_1 (K)$ and $C_2 (K)$ are polynomial in $K$.
 ]
 #proof[
@@ -196,7 +196,7 @@
     Let $V subset.eq FF_p^n$ be a subspace. Then $E(V) = abs(V)^3$. On the other hand, if $A subset.eq ZZ\/p$ is chosen at random from $ZZ\/p$ (where each $a in ZZ\/p$ is included with probability $alpha > 0$), with high probability, $E(A) = alpha^4 p^3 = alpha abs(A)^3$.
 ]
 #definition[
-    For $A, B subset.eq G$, the *representation function* is $r_(A + B) (x) := abs({(a, b) in A times B: a + b = x}) = abs(A sect (x - B))$.
+    For $A, B subset.eq G$, the *representation function* is $r_(A + B) (x) := abs({(a, b) in A times B: a + b = x}) = abs(A inter (x - B))$.
 ]
 #lemma[
     Let $emptyset != A, B subset.eq G$ for an abelian group $G$. Then $
@@ -218,7 +218,7 @@
         & = sum_(x in A + B) r_(A + B) (x)^2 \
         & >= (sum_(x in A + B) r_(A + B) (x))^2/(abs(A + B)) quad #[by @thm:cauchy-schwarz]
     $ But now $
-        sum_(x in G) r_(A + B) (x) & = sum_(x in G) abs(A sect (x - B)) = sum_(x in G) sum_(y in G) indicator(A)(y) indicator(x - B) (y) \
+        sum_(x in G) r_(A + B) (x) & = sum_(x in G) abs(A inter (x - B)) = sum_(x in G) sum_(y in G) indicator(A)(y) indicator(x - B) (y) \
         & = sum_(x in G) sum_(y in G) indicator(A)(y) indicator(B)(x - y) = abs(A) abs(B).
     $
     Note that the same argument works for $abs(A - B)$.
@@ -236,38 +236,38 @@
     The converse of the above lemma does not hold: e.g. let $G$ be a (class of) abelian group(s). Then there exist constants $theta, eta > 0$ such that for all $n$ large enough, there exists $A subset.eq G$ with $abs(A) >= n$ satisfying $E(A) >= eta abs(A)^3$, and $abs(A + A) >= theta abs(A)^2$.
 ]
 #definition[
-    Given $A subset.eq G$ and $gamma > 0$, let $P_gamma := {x in G: abs(A sect (x + A)) >= gamma abs(A)}$ be the set of *$gamma$-popular differences* of $A$.
+    Given $A subset.eq G$ and $gamma > 0$, let $P_gamma := {x in G: abs(A inter (x + A)) >= gamma abs(A)}$ be the set of *$gamma$-popular differences* of $A$.
 ]
 #lemma[
     Let $A subset.eq G$ be finite such that $E(A) = eta abs(A)^3$ for some $eta > 0$. Then $forall c > 0$, there is a subset $X subset.eq A$ with $abs(X) >= eta/3 abs(A)$ such that for all $(16c)$-proportion of pairs $(a, b) in X^2$, $a - b in P_(c eta)$.
 ]
 #proof[
-    We use a technique called "dependent random choice". Let $U = {x in G: abs(A sect (x + A)) <= 1/2 eta abs(A)}$. Then $
-        sum_(x in U) abs(A sect (x + A))^2 & <= 1/2 eta abs(A) sum_(x in G) abs(A sect (x + A)) \
+    We use a technique called "dependent random choice". Let $U = {x in G: abs(A inter (x + A)) <= 1/2 eta abs(A)}$. Then $
+        sum_(x in U) abs(A inter (x + A))^2 & <= 1/2 eta abs(A) sum_(x in G) abs(A inter (x + A)) \
         & = 1/2 eta abs(A)^3 = 1/2 E(A).
-    $ For $0 <= i <= ceil(log_2 eta^(-1))$, let $Q_i = {x in G: abs(A) \/ 2^(i + 1) < abs(A sect (x + A)) <= abs(A) \/ 2^i}$ and set $delta_i = eta^(-1) 2^(-2i)$. Then $
+    $ For $0 <= i <= ceil(log_2 eta^(-1))$, let $Q_i = {x in G: abs(A) \/ 2^(i + 1) < abs(A inter (x + A)) <= abs(A) \/ 2^i}$ and set $delta_i = eta^(-1) 2^(-2i)$. Then $
         sum_(i = 0)^(ceil(log_2 eta^(-1))) delta_i abs(Q_i) & = sum_i abs(Q_i) / (eta 2^(2i)) \
         & = 1 / (eta abs(A)^2) sum_i abs(A)^2 / 2^(2i) abs(Q_i) \
-        & = 1 / (eta abs(A)^2) sum_i abs(A)^2 / 2^(2i) sum_(x in.not U) indicator({abs(A) \/ 2^(i + 1) < abs(A sect (x + A)) <= abs(A) \/ 2^i}) \
-        & >= 1 / (eta abs(A)^2) sum_(x in.not U) abs(A sect (x + A))^2 \
+        & = 1 / (eta abs(A)^2) sum_i abs(A)^2 / 2^(2i) sum_(x in.not U) indicator({abs(A) \/ 2^(i + 1) < abs(A inter (x + A)) <= abs(A) \/ 2^i}) \
+        & >= 1 / (eta abs(A)^2) sum_(x in.not U) abs(A inter (x + A))^2 \
         & >= 1 / (eta abs(A)^2) dot 1/2 E(A) = 1/2 abs(A).
     $ Let $S = {(a, b) in A^2: a - b in.not P_(c eta)}$. Now $
-        sum_i sum_((a, b) in S) abs((A - a) sect (A - b) sect Q_i) & <= sum_((a, b) in S) abs((A - a) sect (A - b)) \
-        & = sum_((a, b) in S) abs(A sect (a - b + A)) \
+        sum_i sum_((a, b) in S) abs((A - a) inter (A - b) inter Q_i) & <= sum_((a, b) in S) abs((A - a) inter (A - b)) \
+        & = sum_((a, b) in S) abs(A inter (a - b + A)) \
         & <= sum_((a, b) in S) c eta abs(A) quad "by definition of" S \
         & = abs(S) c eta abs(A) \
         & <= c eta abs(A)^3 = 2 c eta abs(A)^2 dot 1/2 abs(A) \
         & <= 2 c eta abs(A)^2 sum_i delta_i abs(Q_i) quad "by above inequality".
     $ Hence $exists i_0$ such that $
-        sum_((a, b) in S) abs((A - a) sect (A - b) sect Q_(i_0)) <= 2 c eta abs(A)^2 delta_(i_0) abs(Q_(i_0)).
+        sum_((a, b) in S) abs((A - a) inter (A - b) inter Q_(i_0)) <= 2 c eta abs(A)^2 delta_(i_0) abs(Q_(i_0)).
     $ Let $Q = Q_(i_0)$, $delta = delta_(i_0)$, $lambda = 2^(-i_0)$, so that $
-        sum_((a, b) in S) abs((A - a) sect (A - b) sect Q) <= 2 c eta abs(A)^2 delta abs(Q).
-    $ Given $x in G$, let $X(x) = A sect (x + A)$. Then $
-        EE_(x in Q) abs(X(x)) = 1/abs(Q) sum_(x in Q) abs(A sect (x + A)) >= 1/2 lambda abs(A).
+        sum_((a, b) in S) abs((A - a) inter (A - b) inter Q) <= 2 c eta abs(A)^2 delta abs(Q).
+    $ Given $x in G$, let $X(x) = A inter (x + A)$. Then $
+        EE_(x in Q) abs(X(x)) = 1/abs(Q) sum_(x in Q) abs(A inter (x + A)) >= 1/2 lambda abs(A).
     $ Define $T(x) = {(a, b) in X(x)^2: a - b in P^(c eta)}$. Then $
-        EE_(x in Q) abs(T(x)) & = EE_(x in Q) abs({(a, b) in (A sect (x + A))^2: a - b in.not P_(c eta)}) \
-        & = 1/abs(Q) sum_(x in Q) abs({(a, b) in S: x in (A - a) sect (A - b)}) \
-        & = 1/abs(Q) sum_((a, b) in S) abs((A - a) sect (A - b) sect Q) \
+        EE_(x in Q) abs(T(x)) & = EE_(x in Q) abs({(a, b) in (A inter (x + A))^2: a - b in.not P_(c eta)}) \
+        & = 1/abs(Q) sum_(x in Q) abs({(a, b) in S: x in (A - a) inter (A - b)}) \
+        & = 1/abs(Q) sum_((a, b) in S) abs((A - a) inter (A - b) inter Q) \
         & <= 1/abs(Q) 2 c eta abs(A)^2 delta abs(Q) = 2 c eta delta abs(A)^2 = 2c lambda^2 abs(A)^2.
     $ Therefore, $
         EE_(x in Q) (abs(X(x))^2 - (16c)^(-1) abs(T(x))) & >= (EE_(x in Q) abs(X(x)))^2 - (16c)^(-1) EE_(x in Q) abs(T(x)) #[by @thm:cauchy-schwarz] \
@@ -479,8 +479,8 @@ In this chapter, assume that $G$ is a _finite_ abelian group.
     Given $A, B subset.eq G$, $
         (indicator(A) * indicator(B))(x) & = EE_(y in G) indicator(A)(y) indicator(B)(x - y) \
         & = EE_(y in G) indicator(A)(y) indicator(x - B)(y) \
-        & = EE_(y in G) indicator(A sect (x - B))(y) \
-        & = abs(A sect (x - B)) / abs(G) = 1/abs(G) r_(A + B)(x).
+        & = EE_(y in G) indicator(A inter (x - B))(y) \
+        & = abs(A inter (x - B)) / abs(G) = 1/abs(G) r_(A + B)(x).
     $ In particular, $supp(indicator(A) * indicator(B)) = A + B$.
 ]
 #lemma[
@@ -529,12 +529,12 @@ In this chapter, assume that $G$ is a _finite_ abelian group.
 ]
 #lemma[
     Let $A subset.eq FF_p^n$ have density $alpha$ with $sup_(t != 0) abs(hat(bb(1))_A (t)) >= rho alpha$ for some $rho > 0$. Then there exists a subspace $V <= FF_p^n$ with $codim(V) = 1$ and $x in FF_p^n$ such that $
-        abs(A sect (x + V)) >= alpha(1 + rho/2) abs(V).
+        abs(A inter (x + V)) >= alpha(1 + rho/2) abs(V).
     $
 ]<lem:a-large-fourier-coefficient-implies-a-codimension-one-intersecting-subspace>
 #proofhints[
     - Let $V = gen(t)^perp$ for some suitable $t$ (can determine later).
-    - Define $a_j = abs(A sect (v_j + V))/abs(v_j + V) - alpha$ for each $j in [p]$, where $x . v_j = j$.
+    - Define $a_j = abs(A inter (v_j + V))/abs(v_j + V) - alpha$ for each $j in [p]$, where $x . v_j = j$.
     - Show that $hat(bb(1))_A (t) = EE_(j in [p]) a_j e(-j\/p)$.
     - Show that $EE_(j in [p]) a_j + abs(a_j) >= rho alpha$.
 ]
@@ -542,7 +542,7 @@ In this chapter, assume that $G$ is a _finite_ abelian group.
     Let $t != 0$ be such that $abs(hat(bb(1))_A (t)) >= rho alpha$ and let $V = gen(t)^perp$. Write $v_j + V = {x in FF_p^n: x . t = j}$ for $j in [p]$ for the $p$ distinct cosets of $V$. Then $
         hat(bb(1))_A (t) & = hat(f)_A (t) = EE_(x in FF_p^n) (indicator(A) (x) - alpha) e(-x . t \/ p) \
         & = EE_(j in [p]) EE_(x in v_j + V) (indicator(A)(x) - alpha)e(-j\/p) \
-        & = EE_(j in [p]) (abs(A sect (v_j + V))/abs(v_j + V) - alpha) e(-j\/p) \
+        & = EE_(j in [p]) (abs(A inter (v_j + V))/abs(v_j + V) - alpha) e(-j\/p) \
         & =: EE_(j in [p]) a_j e(-j\/p).
     $ By the triangle inequality, $EE_(j in [p]) abs(a_j) >= rho alpha$. Note that $EE_(j in [p]) a_j = 0$. So $EE_(j in [p]) a_j + abs(a_j) >= rho alpha$, so $exists j in [p]$ such that $a_j + abs(a_j) >= rho alpha$, hence $a_j >= rho alpha\/2$. So take $x = v_j$.
 ]
@@ -596,11 +596,11 @@ In this chapter, assume that $G$ is a _finite_ abelian group.
         abs(T_3 (indicator(A), indicator(A), indicator(A)) - alpha^3) <= sup_(t != 0) abs(hat(bb(1))_A (t)) dot alpha.
     $ So provided that $p^n >= 2alpha^(-2)$, we have $T_3 (indicator(A), indicator(A), indicator(A)) <= alpha^3 \/ 2$, so $abs(T_3 (indicator(A), indicator(A), indicator(A)) - alpha^3) >= alpha^3 \/ 2$, hence $
         sup_(t != 0) abs(hat(bb(1))_A (t)) >= alpha^2 / 2.
-    $ So by @lem:a-large-fourier-coefficient-implies-a-codimension-one-intersecting-subspace with $rho = alpha/2$, there exists a subspace $V <= FF_p^n$ of codimension $1$ and $x in FF_p^n$ such that $abs(A sect (x + V)) >= (alpha + alpha^2 \/ 4) abs(V)$.
+    $ So by @lem:a-large-fourier-coefficient-implies-a-codimension-one-intersecting-subspace with $rho = alpha/2$, there exists a subspace $V <= FF_p^n$ of codimension $1$ and $x in FF_p^n$ such that $abs(A inter (x + V)) >= (alpha + alpha^2 \/ 4) abs(V)$.
     
     We iterate this observation: let $A_0 = A$, $V_0 = FF_p^n$, $alpha_0 = abs(A_0) \/ abs(V_0)$. At this $i$-th step, we are given a set $A_(i - 1) subset.eq V_(i - 1)$ of density $alpha_(i - 1)$ with no non-trivial $3$-APs. Provided that $p^(dim(V_(i - 1))) >= 2 alpha_(i - 1)^(-2)$, there exists a subspace $V_i <= V_(i - 1)$ of codimension $1$ and $x_i in V_(i - 1)$ such that $
-        abs((A - x_i) sect V_i) = abs(A sect (x_i + V_i)) >= (alpha_(i - 1) + alpha_(i - 1)^2 \/ 4) abs(V_i)
-    $ So set $A_i = (A - x_i) sect V_i$. $A_i$ has density $alpha_i >= alpha_(i - 1) + alpha_(i - 1)^2 \/ 4$, and contains no non-trivial $3$-APs (since the translate $A - x_i$ contains no non-trivial $3$-APs). Through this iteration, the density increases:
+        abs((A - x_i) inter V_i) = abs(A inter (x_i + V_i)) >= (alpha_(i - 1) + alpha_(i - 1)^2 \/ 4) abs(V_i)
+    $ So set $A_i = (A - x_i) inter V_i$. $A_i$ has density $alpha_i >= alpha_(i - 1) + alpha_(i - 1)^2 \/ 4$, and contains no non-trivial $3$-APs (since the translate $A - x_i$ contains no non-trivial $3$-APs). Through this iteration, the density increases:
     - from $alpha$ to $2 alpha$ in at most $alpha\/(alpha^2 \/ 4) = 4 alpha^(-1)$ steps,
     - from $2 alpha$ to $4 alpha$ in at most $(2 alpha)\/((2 alpha)^2 \/ 4) = 2 alpha^(-1)$ steps.
     - and so on, ...
@@ -612,9 +612,9 @@ In this chapter, assume that $G$ is a _finite_ abelian group.
     The current largest known subset of $FF_3^n$ containing no non-trivial $3$-APs has size $2.2202^n$.
 ]
 #lemma[
-    Let $A subset.eq [N]$ be of density $alpha > 0$ and contain no non-trivial $3$-APs, with $N > 50 alpha^(-2)$. Let $p$ be a prime with $p in [N\/3, 2N\/3]$, and write $A' = A sect [p] subset.eq ZZ\/p$. Then one of the following holds:
+    Let $A subset.eq [N]$ be of density $alpha > 0$ and contain no non-trivial $3$-APs, with $N > 50 alpha^(-2)$. Let $p$ be a prime with $p in [N\/3, 2N\/3]$, and write $A' = A inter [p] subset.eq ZZ\/p$. Then one of the following holds:
     + $sup_(t != 0) abs(hat(bb(1))_(A')(t)) >= alpha^2 \/ 10$ (where the Fourier coefficient is computed in $ZZ\/p$).
-    + There exists an interval $J subset.eq [N]$ of length $>= N\/3$ such that $abs(A sect J) >= alpha(1 + alpha\/400) abs(J)$.
+    + There exists an interval $J subset.eq [N]$ of length $>= N\/3$ such that $abs(A inter J) >= alpha(1 + alpha\/400) abs(J)$.
 ]
 #proofhints[
     - Show that we can assume $abs(A') >= alpha(1 - alpha\/200) p$.
@@ -622,9 +622,9 @@ In this chapter, assume that $G$ is a _finite_ abelian group.
 #proof[
     TODO: fill in details in proof.
 
-    We may assume that $abs(A') = abs(A sect [p]) >= alpha(1 - alpha\/200) p$, since otherwise $abs(A sect [p + 1, N]) >= alpha N - (alpha(1 - alpha\/200) p) = alpha(N - p) + alpha^2 / 200 p >= (alpha + alpha^2 \/ 400)(N - p)$ since $p >= N\/3$, which implies case 2 with $J = [p + 1, N]$.
+    We may assume that $abs(A') = abs(A inter [p]) >= alpha(1 - alpha\/200) p$, since otherwise $abs(A inter [p + 1, N]) >= alpha N - (alpha(1 - alpha\/200) p) = alpha(N - p) + alpha^2 / 200 p >= (alpha + alpha^2 \/ 400)(N - p)$ since $p >= N\/3$, which implies case 2 with $J = [p + 1, N]$.
 
-    Let $A'' = A' sect [p\/3, 2p\/3]$. Note that all $3$-APs of the form $(x, x + d, x + 2d) in A' times A'' times A''$ are in fact APs in $[N]$. If $abs(A' sect [p\/3])$ or $abs(A' sect [2p\/3, p])$ is at least $2/5 abs(A')$, then again we are in case 2. So we may assume that $abs(A'') >= abs(A')\/5$. Now as in above lemmas, we have $
+    Let $A'' = A' inter [p\/3, 2p\/3]$. Note that all $3$-APs of the form $(x, x + d, x + 2d) in A' times A'' times A''$ are in fact APs in $[N]$. If $abs(A' inter [p\/3])$ or $abs(A' inter [2p\/3, p])$ is at least $2/5 abs(A')$, then again we are in case 2. So we may assume that $abs(A'') >= abs(A')\/5$. Now as in above lemmas, we have $
         alpha'' / p = abs(A'') / p^2 = T_3 (indicator(A'), indicator(A''), indicator(A'')) = alpha' (alpha'')^2 + sum_(t) overline(hat(bb(1))_(A')(t) hat(bb(1))_(A'')(t)) hat(bb(1))_(2 dot A'')(t)
     $ where $alpha' = abs(A') \/ p$ and $alpha'' = abs(A'') \/ p$. So as before, $
         (alpha' alpha'') / 2 & <= sup_(t != 0) abs(indicator(A')(t)) dot alpha''
@@ -639,7 +639,7 @@ In this chapter, assume that $G$ is a _finite_ abelian group.
     Let $u = floor(sqrt(m))$ and consider $0, t, ..., u t$. By the pigeonhole principle, there exists $0 <= v < w <= u$ such that $abs(w t - v t) = abs((w - v)t) <= p\/u$. Set $s = w - v$, so $abs(s t) <= p\/u$. Divide $[m]$ into residue classes $mod s$, each of which has size at least $m\/s >= m\/u$. But each residue class can be divided into APsof the form $a, a + s, ..., a + d s$ for some $epsilon u \/ 2 < d <= epsilon u$. The diameter of the image of each progression under $phi$ is $abs(d s t) <= d p \/ u <= epsilon u p \/ u = epsilon p$.
 ]
 #lemma[
-    Let $A subset.eq [N]$ be of density $alpha > 0$, let $p$ be prime with $p in [N\/3, 2N\/3]$, and write $A' = A sect [p] subset.eq ZZ\/p$. Suppose that $abs(hat(bb(1))_(A')(t)) >= alpha^2 \/ 20$ for some $t != 0$. Then there exists a progression $P subset.eq [N]$ of length at least $alpha^2 sqrt(N) \/ 500$ such that $abs(A sect P) >= alpha(1 + alpha\/80) abs(P)$.
+    Let $A subset.eq [N]$ be of density $alpha > 0$, let $p$ be prime with $p in [N\/3, 2N\/3]$, and write $A' = A inter [p] subset.eq ZZ\/p$. Suppose that $abs(hat(bb(1))_(A')(t)) >= alpha^2 \/ 20$ for some $t != 0$. Then there exists a progression $P subset.eq [N]$ of length at least $alpha^2 sqrt(N) \/ 500$ such that $abs(A inter P) >= alpha(1 + alpha\/80) abs(P)$.
 ]
 #proof[
     Let $epsilon = alpha^2 \/ 40pi$ and use above lemma to partition $[p]$ into progressions $P_i$ of length $>= epsilon sqrt(p\/2) >= alpha^2 \/ 40pi sqrt(N \/ 3) / 2 >= alpha^ sqrt(N) \/ 500$, and $"diam"(phi(P_i)) <= epsilon p$. Fix one $x_i$ from each of the $P_i$. Then $
@@ -887,7 +887,7 @@ Recall that given $A subset.eq FF_2^n$ of density $alpha > 0$, we have $abs(Spec
 
     We claim that there exists $P in W$ such that $abs(supp(P)) >= dim(W)$. Indeed, pick $P in W$ with maximal support. If $abs(supp(P)) < dim(W)$, then there would be a non-zero polynomial $Q in W$ vanishing on $supp(P)$, in which case $supp(P + Q) supset.neq supp(P)$, contradicting the maximality of $supp(P)$.
 
-    Now by assumption, ${a + a': a != a' in A} sect 2 dot A = emptyset$, so any polynomial that vanishes on $(2 dot A)^c$ also vanishes on ${a + a': a != a' in A}$. Thus by above lemma, $
+    Now by assumption, ${a + a': a != a' in A} inter 2 dot A = emptyset$, so any polynomial that vanishes on $(2 dot A)^c$ also vanishes on ${a + a': a != a' in A}$. Thus by above lemma, $
         m_d - (3^n - abs(A)) <= dim(W) <= abs(supp(P)) & = abs({x in FF_3^n: P(x) != 0}) \
         & = abs({a in A: P(2a) != 0}) <= 2 m_(d \/ 2).
     $ Hence, $abs(A) <= 3^n - m_d + 2 m_(d \/ 2)$. But the monomials in $M_n \\ M_n^d$ are in bijection with the ones in $M_(2n - d)$ by $x_1^(alpha_1) dots.c x_n^(alpha_n) <--> x_1^(2 - alpha_1) dots.c x_n^(2 - alpha_n)$, whence $3^n - m_d = m_(2n - d)$. Thus, setting $d = 4n \/ 3$, we have $
@@ -1004,9 +1004,9 @@ $ We may therefore reformulate the first step in the proof of @thm:meshulam as f
 
         Denote by $pi: FF_5^n times hat(FF)_5^n$ the projection onto the first $n$ coordinates. By construction, $pi(H) supset.eq S'$. Moreover, since $abs(S') = Omega_delta (abs(FF_5^n))$, we have $
             abs(ker(pi|_H)) = abs(H) / abs("im"(pi|_H)) <= (O_delta (abs(FF_5^n))) / abs(S') = O_delta (1).
-        $ We may thus partition $H$ into $O_delta (1)$ cosets of some subspace $H^*$ such that $pi|_H$ is injective on each coset. By averaging, there exists a coset $x + H^*$ such that $abs(Gamma' sect (x + H^*)) = Omega_delta (abs(Gamma'))= Omega_delta (abs(FF_5^n))$.
+        $ We may thus partition $H$ into $O_delta (1)$ cosets of some subspace $H^*$ such that $pi|_H$ is injective on each coset. By averaging, there exists a coset $x + H^*$ such that $abs(Gamma' inter (x + H^*)) = Omega_delta (abs(Gamma'))= Omega_delta (abs(FF_5^n))$.
 
-        Set $Gamma'' = Gamma' sect (x + H^*)$ and define $S''$ accordingly. Now $pi|_(x + H^*)$ is injective and surjective onto $V := im(pi|_(x + H^*))$. This means there is an affine-linear map $psi: V -> hat(FF)_5^n$ such that $(h, psi(h)) in Gamma'$ for all $h in S''$.
+        Set $Gamma'' = Gamma' inter (x + H^*)$ and define $S''$ accordingly. Now $pi|_(x + H^*)$ is injective and surjective onto $V := im(pi|_(x + H^*))$. This means there is an affine-linear map $psi: V -> hat(FF)_5^n$ such that $(h, psi(h)) in Gamma'$ for all $h in S''$.
     ]
     + Symmetry argument.
     + Integration step.

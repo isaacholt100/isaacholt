@@ -1,10 +1,14 @@
 #import "@preview/fletcher:0.5.2" as fletcher: diagram, node, edge
-#import "@preview/cetz:0.3.1" as cetz: canvas, draw
+#import "@preview/cetz:0.3.3" as cetz: canvas, draw
 #import "../../diagram-style.typ": *
 #import "@preview/cetz-plot:0.1.0": plot
 #import "@preview/cetz-venn:0.1.2"
 #import "@preview/suiji:0.3.0": *
 #import "../../template.typ": *
+// #import "@preview/touying:0.6.1": *
+// #import themes.university: *
+
+// #show: university-theme
 
 #show: doc => template(doc, hidden: (), slides: false)
 #set document(
@@ -392,11 +396,11 @@
     For equality in Local LYM, we must have that $forall A in cal(F)$, $forall i in A$, $forall j in.not A$, we must have $(A - {i}) union {j} in cal(F)$, i.e. $cal(F) = emptyset$ or $X^((r))$ for some $r$.
 ]
 #notation[
-    Write $cal(F)_r$ for $cal(F) sect X^((r))$.
+    Write $cal(F)_r$ for $cal(F) inter X^((r))$.
 ]
 #theorem("LYM Inequality")[
     Let $cal(F) subset.eq powset(X)$ be an antichain. Then $
-        sum_(r = 0)^n (|cal(F) sect X^((r))|)/binom(n, r) <= 1,
+        sum_(r = 0)^n (|cal(F) inter X^((r))|)/binom(n, r) <= 1,
     $ i.e. the proportions of each layer occupied add to $<= 1$.
 ]<thm:lym-inequality>
 #fig-example[
@@ -592,10 +596,10 @@
     - Any initial segment of colex is left-compressed, but the converse is false, e.g. ${123, 124, 125, 126}$ is left-compressed.
 ]
 #definition[
-    Let $U, V subset.eq X$, $abs(U) = abs(V)$, $U sect V = emptyset$ and $max U < max V$. Define the *$U V$-compression* $C_(U V)$ as:
+    Let $U, V subset.eq X$, $abs(U) = abs(V)$, $U inter V = emptyset$ and $max U < max V$. Define the *$U V$-compression* $C_(U V)$ as:
     - For $A subset.eq X$, $
         C_(U V)(A) = cases(
-            (A - V) union U & "if" V subset.eq A\, U sect A = emptyset,
+            (A - V) union U & "if" V subset.eq A\, U inter A = emptyset,
             A & "otherwise"
         ).
     $
@@ -616,27 +620,27 @@
     E.g. $cal(F) = {147, 157}$ has $abs(partial cal(F)) = 5$, but $C_(23, 14)(cal(F)) = {237, 157}$ has $abs(partial C_(23, 14)(cal(F))) = 6$.
 ]
 #lemma[
-    Let $cal(F) subset.eq X^((r))$ be $U V$-compressed for all $U, V subset.eq X$ with $abs(U) = abs(V)$, $U sect V = emptyset$ and $max U < max V$. Then $cal(F)$ is an initial segment of colex.
+    Let $cal(F) subset.eq X^((r))$ be $U V$-compressed for all $U, V subset.eq X$ with $abs(U) = abs(V)$, $U inter V = emptyset$ and $max U < max V$. Then $cal(F)$ is an initial segment of colex.
 ]
 #proofhints[
     Suppose not, consider a compression for appropriate $U$ and $V$.
 ]
 #proof[
-    Suppose not, then there exists $A, B in X^((r))$ with $B < A$ in colex but $A in cal(F)$, $B in.not cal(F)$. Let $V = A \\ B$, $U = B \\ A$. Then $abs(V) = abs(U)$, $U sect V = emptyset$, and $max V > max U$ (since $max(A Delta B) in A$, by definition of colex). Since $cal(F)$ is $U V$-compressed, we have $C_(U V)(A) = B in C_(U V)(cal(F)) = cal(F)$, contradiction.
+    Suppose not, then there exists $A, B in X^((r))$ with $B < A$ in colex but $A in cal(F)$, $B in.not cal(F)$. Let $V = A \\ B$, $U = B \\ A$. Then $abs(V) = abs(U)$, $U inter V = emptyset$, and $max V > max U$ (since $max(A Delta B) in A$, by definition of colex). Since $cal(F)$ is $U V$-compressed, we have $C_(U V)(A) = B in C_(U V)(cal(F)) = cal(F)$, contradiction.
 ]
 #lemma[
-    Let $U, V subset.eq X$, $abs(U) = abs(V)$, $U sect V = emptyset$, $max U < max V$. For $cal(F) subset.eq X^((r))$, suppose that $
+    Let $U, V subset.eq X$, $abs(U) = abs(V)$, $U inter V = emptyset$, $max U < max V$. For $cal(F) subset.eq X^((r))$, suppose that $
         forall u in U, exists v in V: quad cal(F) "is" #[$(U - u, V - v)$-compressed].
     $ Then $abs(partial C_(U V)(cal(F))) <= abs(partial cal(F))$.
 ]
 #proofhints[
     - Let $cal(F)' = C_(U V)(cal(F))$, $B in partial cal(F)' - partial cal(F)$.
-    - Show that $U subset.eq B$ and $V sect B = emptyset$.
+    - Show that $U subset.eq B$ and $V inter B = emptyset$.
     - Reason that $(B - U) union V in partial cal(F)$.
     - Show that $(B - U) union V in.not partial cal(F)'$ by contradiction.
 ]
 #proof[
-    Let $cal(F)' = C_(U V)(cal(F))$. For $B in partial cal(F)' - partial cal(F)$, we will show that $U subset.eq B$, $V sect B = emptyset$ and $B union V - U in partial cal(F) - partial cal(F)'$, then we will be done.
+    Let $cal(F)' = C_(U V)(cal(F))$. For $B in partial cal(F)' - partial cal(F)$, we will show that $U subset.eq B$, $V inter B = emptyset$ and $B union V - U in partial cal(F) - partial cal(F)'$, then we will be done.
     
     #fig-example[
         #figure(
@@ -660,9 +664,9 @@
             }),
         )
     ]
-    We have $B union x in cal(F)'$ for some $x in X$, and $B union x in.not cal(F)$. So $U subset.eq B union x$, $V sect (B union x) = emptyset$, and $(B union x union V) - U in cal(F)$, by definition of $C_(U V)$. If $x in U$, then $exists y in V$ such that $cal(F)$ is $(U - x, V - y)$-compressed, so from $(B union x union V) - U in cal(F)$, we have $B union y in cal(F)$, contradicting $B in.not partial cal(F)$. Thus $x in.not U$, so $U subset.eq B$ and $V sect B = emptyset$. Certainly $B union V - U in partial cal(F)$ (since $(B union x union V) - U in cal(F)$), so we just need to show that $B union V - U in.not partial cal(F)'$.
+    We have $B union x in cal(F)'$ for some $x in X$, and $B union x in.not cal(F)$. So $U subset.eq B union x$, $V inter (B union x) = emptyset$, and $(B union x union V) - U in cal(F)$, by definition of $C_(U V)$. If $x in U$, then $exists y in V$ such that $cal(F)$ is $(U - x, V - y)$-compressed, so from $(B union x union V) - U in cal(F)$, we have $B union y in cal(F)$, contradicting $B in.not partial cal(F)$. Thus $x in.not U$, so $U subset.eq B$ and $V inter B = emptyset$. Certainly $B union V - U in partial cal(F)$ (since $(B union x union V) - U in cal(F)$), so we just need to show that $B union V - U in.not partial cal(F)'$.
     
-    Assume the opposite, i.e. $(B - U) union V in partial cal(F)'$, so $(B - U) union V union w in cal(F)'$ for some $w in X$. (This also belongs to $cal(F)$, since it contains $V$). If $w in U$, then since $cal(F)$ is $(U - w, V - z)$-compressed for some $z in V$, we have $B union z = C_(U - w, V - z)((B - U) union V union w) in cal(F)$, contradicting $B in.not partial cal(F)$. So $w in.not U$, and since $V subset.eq (B - U) union V union w$ and $U sect ((B - U) union V union w) = emptyset$, by definition of $C_(U V)$, we must have that both $(B - U) union V union w$ and $B union w = C_(U V)((B - U) union V union w) in cal(F)$, contradicting $B in.not partial cal(F)$.
+    Assume the opposite, i.e. $(B - U) union V in partial cal(F)'$, so $(B - U) union V union w in cal(F)'$ for some $w in X$. (This also belongs to $cal(F)$, since it contains $V$). If $w in U$, then since $cal(F)$ is $(U - w, V - z)$-compressed for some $z in V$, we have $B union z = C_(U - w, V - z)((B - U) union V union w) in cal(F)$, contradicting $B in.not partial cal(F)$. So $w in.not U$, and since $V subset.eq (B - U) union V union w$ and $U inter ((B - U) union V union w) = emptyset$, by definition of $C_(U V)$, we must have that both $(B - U) union V union w$ and $B union w = C_(U V)((B - U) union V union w) in cal(F)$, contradicting $B in.not partial cal(F)$.
 ]
 #theorem("Kruskal-Katona")[
     Let $cal(F) subset.eq X^((r))$, $1 <= r <= n$, let $cal(C)$ be the initial segment of colex on $X^((r))$ with $abs(cal(C)) = abs(cal(F))$. Then $abs(partial cal(C)) <= abs(partial cal(F))$.
@@ -670,12 +674,12 @@
     In particular, if $abs(cal(F)) = binom(k, r)$, then $abs(partial cal(F)) >= binom(k, r - 1)$.
 ]<thm:kruskal-katona>
 #proofhints[
-    - Let $Gamma = {(U, V) in powset(X) times powset(X): abs(U) = abs(V) > 0, U sect V = emptyset, max U < max V} union {(emptyset, emptyset)}$.
+    - Let $Gamma = {(U, V) in powset(X) times powset(X): abs(U) = abs(V) > 0, U inter V = emptyset, max U < max V} union {(emptyset, emptyset)}$.
     - Define a sequence $cal(F)_0, cal(F)_1, ...$ of $U V$-compressions where $(U, V) in Gamma$, choosing $abs(U) = abs(V) > 0$ minimal each time. Show that this $(U, V)$ satisfies condition of above lemma.
     - Reason that sequence terminates by considering $sum_(A in cal(F)_k) sum_(i in A) 2^i$.
 ]
 #proof[
-    Let $Gamma = {(U, V) in powset(X) times powset(X): abs(U) = abs(V) > 0, U sect V = emptyset, max U < max V} union {(emptyset, emptyset)}$. Define a sequence $cal(F)_0, cal(F)_1, ...$ of set systems in $X^((r))$ as follows: set $cal(F)_0 = cal(F)$. Having chosen $cal(F)_0, ..., cal(F)_k$, if $cal(F)_k$ is $(U V)$-compressed for all $(U, V) in Gamma$ then stop. Otherwise, choose $(U, V) in Gamma$ with $abs(U) = abs(V) > 0$ minimal, such that $cal(F)_k$ is not $(U V)$-compressed.
+    Let $Gamma = {(U, V) in powset(X) times powset(X): abs(U) = abs(V) > 0, U inter V = emptyset, max U < max V} union {(emptyset, emptyset)}$. Define a sequence $cal(F)_0, cal(F)_1, ...$ of set systems in $X^((r))$ as follows: set $cal(F)_0 = cal(F)$. Having chosen $cal(F)_0, ..., cal(F)_k$, if $cal(F)_k$ is $(U V)$-compressed for all $(U, V) in Gamma$ then stop. Otherwise, choose $(U, V) in Gamma$ with $abs(U) = abs(V) > 0$ minimal, such that $cal(F)_k$ is not $(U V)$-compressed.
     
     Note that $forall u in U$, $exists v in V$ such that $(U - u, V - v) in Gamma$ (namely $v = min(V)$). So by the above lemma, $abs(partial C_(U V) (cal(F)_k)) <= abs(partial cal(F)_k)$. Set $cal(F)_(k + 1) = C_(U V) (cal(F)_k)$, and continue. The sequence must terminate, as $sum_(A in cal(F)_k) sum_(i in A) 2^i$ is strictly decreasing with $k$. The final term $cal(B) = cal(F)_k$ satisfies $abs(cal(B)) = abs(cal(F))$, $abs(partial cal(B)) <= abs(partial cal(F))$, and is $(U V)$-compressed for all $(U, V) in Gamma$. So $cal(B) = cal(C)$ by lemma before previous lemma.
 ]
@@ -718,7 +722,7 @@
 == Intersecting families
 
 #definition[
-    A family $cal(F) in powset(X)$ is *intersecting* if for all $A, B in cal(F)$, $A sect B != emptyset$.
+    A family $cal(F) in powset(X)$ is *intersecting* if for all $A, B in cal(F)$, $A inter B != emptyset$.
 
     We are interested in finding intersecting families of maximum size.
 ]<def:family.intersecting>
@@ -740,7 +744,7 @@
     - If $r > n/2$, then $cal(F) = X^((r))$ is intersecting.
     - If $r = n/2$, then choose one of $A$ and $A^c$ for all $A in X^((r))$. This gives $abs(cal(F)) = 1/2 binom(n, r)$.
     - If $r < n/2$, then $cal(F) = {A in X^((r)): 1 in A}$ has size $binom(n - 1, r - 1) = r/n binom(n, r)$ (since the probability of a random $r$-set containing $1$ is $r/n$). If $(n, r) = (8, 3)$, then $abs(cal(F)) = binom(7, 2) = 21$.
-    - Let $cal(F) = {A in X^((r)): abs(A sect {1, 2, 3}) >= 2}$. If $(n, r) = (8, 3)$, then $abs(cal(F)) = 1 + binom(3, 2) binom(5, 1) = 16 < 21$ (since $1$ set $A$ has $abs(B sect [3]) = 3$, $15$ sets $A$ have $abs(A sect [3]) = 2$).
+    - Let $cal(F) = {A in X^((r)): abs(A inter {1, 2, 3}) >= 2}$. If $(n, r) = (8, 3)$, then $abs(cal(F)) = 1 + binom(3, 2) binom(5, 1) = 16 < 21$ (since $1$ set $A$ has $abs(B inter [3]) = 3$, $15$ sets $A$ have $abs(A inter [3]) = 2$).
 ]
 #theorem("Erdos-Ko-Rado")[
     Let $cal(F) subset.eq X^((r))$ be an intersecting family, where $r < n/2$. Then $abs(cal(F)) <= binom(n - 1, r - 1)$.
@@ -754,7 +758,7 @@
         - Find expression for number of times an $r$-set in $cal(F)$ is an interval all possible orderings, and find an upper bound for this using the above.
 ]
 #proof[
-    Proof 1 ("bubble down with Kruskal-Katona"): note that $A sect B != emptyset$ iff $A subset.eq.not B^c$.
+    Proof 1 ("bubble down with Kruskal-Katona"): note that $A inter B != emptyset$ iff $A subset.eq.not B^c$.
     #fig-example[
         #figure(
             canvas({
@@ -790,7 +794,7 @@
             }),
         )
     ]
-    Let $overline(cal(F)) = {A^c: A in cal(F)} subset.eq X^((n - r))$. We have $partial^(n - 2r) overline(cal(F))$ and $cal(F)$ are disjoint families of $r$-sets (if not, then there is some $A in cal(F)$ such that $A subset.eq B^c$ for some $B in cal(F)$, but then $A sect B = emptyset$). Suppose $abs(cal(F)) > binom(n - 1, r - 1)$. Then $abs(overline(cal(F))) = abs(cal(F)) > binom(n - 1, r - 1) = binom(n - 1, n - r)$. So by Kruskal-Katona, we have $abs(partial^(n - 2r) overline(cal(F))) >= binom(n - 1, r)$. So $abs(cal(F)) + abs(partial^(n - 2r) overline(cal(F))) > binom(n - 1, r - 1) + binom(n - 1, r) = binom(n, r) = abs(X^((r)))$, a contradiction, since $cal(F), partial^(n - 2r) overline(cal(F)) subset.eq X^((r))$.
+    Let $overline(cal(F)) = {A^c: A in cal(F)} subset.eq X^((n - r))$. We have $partial^(n - 2r) overline(cal(F))$ and $cal(F)$ are disjoint families of $r$-sets (if not, then there is some $A in cal(F)$ such that $A subset.eq B^c$ for some $B in cal(F)$, but then $A inter B = emptyset$). Suppose $abs(cal(F)) > binom(n - 1, r - 1)$. Then $abs(overline(cal(F))) = abs(cal(F)) > binom(n - 1, r - 1) = binom(n - 1, n - r)$. So by Kruskal-Katona, we have $abs(partial^(n - 2r) overline(cal(F))) >= binom(n - 1, r)$. So $abs(cal(F)) + abs(partial^(n - 2r) overline(cal(F))) > binom(n - 1, r - 1) + binom(n - 1, r) = binom(n, r) = abs(X^((r)))$, a contradiction, since $cal(F), partial^(n - 2r) overline(cal(F)) subset.eq X^((r))$.
 
     Proof 2: pick a cyclic ordering of $[n]$, i.e. a bijection $c: [n] -> ZZ\/n$. There are at most $r$ sets in $cal(F)$ that are intervals ($r$ consecutive elements) under this ordering: for $c_1 ... c_r in cal(F)$, for each $2 <= i <= r$, at most one of the two intervals $c_i ... c_(i + r - 1)$ and $c_(i - r) ... c_(i - 1)$ can belong to $cal(F)$, since they are disjoint and $cal(F)$ is intersecting (the indices of $c$ are taken $mod n$).
     #fig-example[
@@ -1083,7 +1087,7 @@ We want to show the initial segments of the simplicial ordering minimise the bou
             columns: 2,
             column-gutter: 4em,
             canvas({
-                import cetz.draw: *
+                import cetz.draw: content
 
                 content((2.5, 6.5), [$n$ odd])
                 polygon(((2.5, 0), (0, 3), (5, 3)), name: "bottom-half", fill: diagram-colors.light-red, stroke: none)
@@ -1095,7 +1099,7 @@ We want to show the initial segments of the simplicial ordering minimise the bou
                 diamond(5, 6)
             }),
             canvas({
-                import cetz.draw: *
+                import cetz.draw: content, rect
 
                 content((2.5, 6.5), [$n$ even])
                 polygon(((0, 3), (0.3, 3.37), (2.32, 3.37), (2.32, 3)), fill: diagram-colors.light-red, stroke: none)
@@ -1194,7 +1198,7 @@ We want to show the initial segments of the simplicial ordering minimise the bou
 #fig-example[
     #figure(
         canvas({
-            import cetz.draw: *
+            import cetz.draw: line, rect, content, circle
 
             polygon(((0, 0), (0, 3), (3, 0)), fill: diagram-colors.light-red, stroke: none)
             rect((0, 0), (6, 6))
@@ -1370,7 +1374,7 @@ We want to show the initial segments of the simplicial ordering minimise the bou
     $ But $f$ is Lipschitz, so $x in N^(epsilon n)(A) ==> f(x) <= M + epsilon n$, so $N^(epsilon n)(A) subset.eq {x in Q_n: f(x) <= M + epsilon n} =: L$. Thus, $
         abs(L) / 2^n >= 1 - 2/epsilon e^(-epsilon^2 n\/2).
     $ Similarly, let $U = {x in Q_n: f(x) >= M - epsilon n}$, then $abs(U) \/ 2^n >= 1 - 2/epsilon e^(-epsilon^2 n \/ 2)$. Hence, we have $
-        abs(L sect U) / 2^n & = abs(L) / 2^n + abs(U) / 2^n - abs(L union U) / 2^n \
+        abs(L inter U) / 2^n & = abs(L) / 2^n + abs(U) / 2^n - abs(L union U) / 2^n \
         & >= 1 - 2/epsilon e^(-epsilon^2 n \/ 2) + 1 - 2/epsilon e^(-epsilon^2 n \/ 2) - 1 \
         & = 1 - 4/epsilon e^(-epsilon^2 n \/ 2).
     $
@@ -1681,7 +1685,7 @@ We want to show the initial segments of the simplicial ordering minimise the bou
             column-gutter: 4em,
             figure(
                 canvas({
-                    import cetz.draw: *
+                    import cetz.draw: rect, content, line
 
                     let h = 4
                     rect((0, 0), (h, h))
@@ -1714,6 +1718,7 @@ We want to show the initial segments of the simplicial ordering minimise the bou
         #figure(
             canvas({
                 import cetz.draw: *
+                import "../../diagram-style.typ": polygon
                 import cetz.matrix
                 
                 set-transform(matrix.transform-rotate-dir((1.2, -1, 1.2), (0, -0.5, -.3)))
@@ -1859,6 +1864,7 @@ We want to show the initial segments of the simplicial ordering minimise the bou
         #figure(
             canvas({
                 import cetz.draw: *
+                import "../../diagram-style.typ": polygon
 
                 let h = 4
                 polygon(((0, 0), (0, 3), (1, 3), (1, 2), (1.2, 2), (1.8, 2), (1.8, 1.6), (2.2, 1.6), (2.2, 1), (2.7, 1), (2.7, 0.5), (3.8, 0.5), (3.8, 0)), fill: diagram-colors.light-red, stroke: diagram-colors.red, name: "B")
@@ -1873,6 +1879,7 @@ We want to show the initial segments of the simplicial ordering minimise the bou
         #figure(
             canvas({
                 import cetz.draw: *
+                import "../../diagram-style.typ": polygon
 
                 let h = 4
                 polygon(((0, 0), (0, 3), (1, 3), (1, 2), (1.2, 2), (1.8, 2), (1.8, 1.6), (2.2, 1.6), (2.2, 1), (2.7, 1), (2.7, 0.5), (3.8, 0.5), (3.8, 0)), fill: diagram-colors.light-red, stroke: diagram-colors.red, name: "B")
@@ -1895,6 +1902,7 @@ We want to show the initial segments of the simplicial ordering minimise the bou
         #figure(
             canvas({
                 import cetz.draw: *
+                import "../../diagram-style.typ": polygon
 
                 polygon(((0, 0), (0, 3), (3, 0)), fill: diagram-colors.light-red, stroke: diagram-colors.red, name: "region")
                 rect((0, 0), (6, 6))
@@ -1937,7 +1945,7 @@ We want to show the initial segments of the simplicial ordering minimise the bou
             caption: [Case when $r < s$]
         )
     ]
-    So there are $y, y'$ with $abs(y) = abs(y') = s$, $y in B$, $y' in.not B$, and $y' = y plus.minus (e_1 - e_2)$ (where $e_1 = (1, 0)$, $e_2 = (0, 1)$ are the standard basis vectors). Similarly, since ${x in [k]^n: abs(x) != s} subset.eq {x in [k]^n: abs(x) != r}$, we cannot have ${x in [k]^n: abs(x) = r} sect B = emptyset$, because then ${x in [k]^n: abs(x) = s} sect B = emptyset$ (since $B$ is a down-set): contradiction. So there are $x, x'$ with $abs(x) = abs(x') = r$, $x in.not B$, $x' in B$, and $x' = x plus.minus (e_1 - e_2)$. Now let $B' = B union {x} \\ {y}$. From $B$ we lost at least one point in the neighbourhood (namely the unique point $z$ which is joined to both $y$ and $y'$) and gained at most one point (the only point we might gain is the unique point $w$ which is joined to both $x$ and $x'$), so $abs(N(B')) <= abs(N(B))$, but this contradicts the minimality of $B$.
+    So there are $y, y'$ with $abs(y) = abs(y') = s$, $y in B$, $y' in.not B$, and $y' = y plus.minus (e_1 - e_2)$ (where $e_1 = (1, 0)$, $e_2 = (0, 1)$ are the standard basis vectors). Similarly, since ${x in [k]^n: abs(x) != s} subset.eq {x in [k]^n: abs(x) != r}$, we cannot have ${x in [k]^n: abs(x) = r} inter B = emptyset$, because then ${x in [k]^n: abs(x) = s} inter B = emptyset$ (since $B$ is a down-set): contradiction. So there are $x, x'$ with $abs(x) = abs(x') = r$, $x in.not B$, $x' in B$, and $x' = x plus.minus (e_1 - e_2)$. Now let $B' = B union {x} \\ {y}$. From $B$ we lost at least one point in the neighbourhood (namely the unique point $z$ which is joined to both $y$ and $y'$) and gained at most one point (the only point we might gain is the unique point $w$ which is joined to both $x$ and $x'$), so $abs(N(B')) <= abs(N(B))$, but this contradicts the minimality of $B$.
     - Case $n >= 3$: for any $1 <= i <= n - 1$ and any $x in B$ with $x_n > 1$ and $x_i < k$, we have $x - e_n + e_i in B$, since $x - e_n + e_i < x$ in simplicial and $B$ is $j$-compressed for any $j != i, n$. So, considering the $n$-sections of $B$, we have $N\(B_j\) subset.eq B_(j - 1)$ for all $j = 2, ..., k$. Recall that $N(B)_j = N\(B_j\) union B_(j + 1) union B_(j - 1)$. So in fact, $N(B)_j = B_(j - 1)$ for all $j >= 2$. Thus $
         abs(N(B)) = underbrace(abs(B_(k - 1)), "level" k) + underbrace(abs(B_(k - 2)), "level" k - 1) + dots.c + underbrace(abs(B_1), "level" 2) + underbrace(abs(N(B_1)), "level" 1) = abs(B) - abs(B_k) + abs(N(B_1)).
     $ Similarly, $abs(N(C)) = abs(C) - abs(C_k) + abs(N(C_1))$. So to show $abs(N(C)) <= abs(N(B))$, it is enough to show that $abs(B_k) <= abs(C_k)$ and $abs(B_1) >= abs(C_1)$ (since $B_1$, $C_1$ and their neighbourhoods are initial segments of simplicial). \ $abs(B_k) <= abs(C_k)$: define a set $D subset.eq [k]^n$ by its $n$-sections as follows: let $D_k := B_k$, and for $j = k - 1, k - 2, ..., 1$, set $D_j := N\(D_(j + 1)\)$. Then $D subset.eq B$, so $abs(D) <= abs(B)$. Also, $D$ is an initial segment of simplicial, since $B_k$ is an initial segment of simplicial, and so all $n$-sections of $D$ are as well. So in fact, $D subset.eq C$, whence $abs(B_k) = abs(D_k) <= abs(C_k)$. \ $abs(B_1) >= abs(C_1)$: define a set $E subset.eq [k]^n$ as follows: set $E_1 = B_1$ and for $j = 2, 3, ..., k$, set $E_j = {x in [k]^(n - 1): N({x}) subset.eq E_(j - 1)}$, so $E_j$ is the biggest set whose neighbourhood is contained in $E_(j - 1)$. Then $B subset.eq E$, so $abs(E) >= abs(B)$. Also, $E$ is an initial segment of simplicial. So $C subset.eq E$, whence $abs(B_1) = abs(E_1) >= abs(C_1)$.
@@ -1966,6 +1974,7 @@ We want to show the initial segments of the simplicial ordering minimise the bou
             figure(
                 canvas({
                     import cetz.draw: *
+                    import "../../diagram-style.typ": polygon
 
                     let h = 4
                     rect((0, 0), (h, h))
@@ -2001,6 +2010,7 @@ We want to show the initial segments of the simplicial ordering minimise the bou
         #figure(
             canvas({
                 import cetz.draw: *
+                import "../../diagram-style.typ": polygon
 
                 let shift-1 = (5, 0)
                 let shift-2 = add-points(shift-1, shift-1)
@@ -2071,7 +2081,7 @@ We want to show the initial segments of the simplicial ordering minimise the bou
     $ So the @thm:edge-isoperimetric-inequality-in-grid says that some set of the form $[a]^d times [k]^(n - d)$ minimises the edge boundary.
 ]
 #remark[
-    Very few isoperimetric inequalities are known (even approximately), e.g. "iso in a layer": in a graph $X^((r))$, with $x, y$ joined if $abs(x sect y) = r - 1$. This is open. A nice special case is $r = n\/2$, where it is conjectured that balls are best, i.e. sets of the form ${x in [2r]^((r)): abs(x sect [r]) >= t}$.
+    Very few isoperimetric inequalities are known (even approximately), e.g. "iso in a layer": in a graph $X^((r))$, with $x, y$ joined if $abs(x inter y) = r - 1$. This is open. A nice special case is $r = n\/2$, where it is conjectured that balls are best, i.e. sets of the form ${x in [2r]^((r)): abs(x inter [r]) >= t}$.
 ]
 
 
@@ -2081,7 +2091,7 @@ We want to show the initial segments of the simplicial ordering minimise the bou
 
 #definition[
     $A subset.eq powset(X)$ is *$t$-intersecting* if $
-        forall x, y in A, quad abs(x sect y) >= t.
+        forall x, y in A, quad abs(x inter y) >= t.
     $
 ]<def:t-intersecting-family>
 #example[
@@ -2090,6 +2100,7 @@ We want to show the initial segments of the simplicial ordering minimise the bou
         #figure(
             canvas({
                 import cetz.draw: *
+                import "../../diagram-style.typ": polygon
 
                 polygon(((0, 3), (1.8, 3 - 3/2 * 1.8), (-1.8, 3 - 3/2 * 1.8)), fill: diagram-colors.light-red, stroke: diagram-colors.red)
                 polygon(((0, -3), (-2, 0), (0, 3), (2, 0)))
@@ -2110,12 +2121,12 @@ We want to show the initial segments of the simplicial ordering minimise the bou
     $ and derive a contradiction (find a strict lower bound for the size of $overline(A)$).
 ]
 #proof[
-    For any $x, y in A$, we have $abs(x sect y) >= t$, so $d(x, y^c) >= t$. Writing $overline(A) = {y^c: y in A}$, we have $d\(A, overline(A)\) >= t$, i.e. $N^(t - 1)(A)$ is disjoint from $overline(A)$. Suppose for a contradiction $abs(A) > abs(X^((>= (n + t) \/ 2)))$. Then by @thm:harper, we have $
+    For any $x, y in A$, we have $abs(x inter y) >= t$, so $d(x, y^c) >= t$. Writing $overline(A) = {y^c: y in A}$, we have $d\(A, overline(A)\) >= t$, i.e. $N^(t - 1)(A)$ is disjoint from $overline(A)$. Suppose for a contradiction $abs(A) > abs(X^((>= (n + t) \/ 2)))$. Then by @thm:harper, we have $
         abs(N^(t - 1)(A)) >= abs(X^((>= (n + t) \/ 2 - (t - 1)))) = abs(X^((>= (n - t) \/ 2 + 1))).
     $ But $N^(t - 1)(A)$ is disjoint from $overline(A)$ which has size $abs(overline(A)) = abs(A) > abs(X^((<= (n - t) \/ 2)))$, contradicting $abs(N^(t - 1)(A)) + abs(overline(A)) <= 2^n$.
 ]
 #example[
-    What about $t$-intersecting $A$ with $A subset.eq X^((r))$? We might guess that the best is $A_0 = {x in X^((r)): [t] subset.eq x}$. We could also try $A_alpha = {x in X^((r)): abs(x sect [t + 2 alpha]) >= t + alpha}$ for $alpha = 1, ..., r - t$.
+    What about $t$-intersecting $A$ with $A subset.eq X^((r))$? We might guess that the best is $A_0 = {x in X^((r)): [t] subset.eq x}$. We could also try $A_alpha = {x in X^((r)): abs(x inter [t + 2 alpha]) >= t + alpha}$ for $alpha = 1, ..., r - t$.
     - For $2$-intersecting families in $[7]^((4))$: $abs(A_0) = binom(5, 2) = 10$, $abs(A_1) = 1 + binom(4, 3) binom(3, 1) = 13$, $abs(A_2) = binom(6, 4) = 15$.
     - For $2$-intersecting families in $[8]^((4))$: $abs(A_0) = binom(6, 2) = 15$, $abs(A_1) = 1 + binom(4, 3) binom(4, 1) = 17$, $abs(A_2) = binom(6, 4) = 15$.
     - For $2$-intersecting families in $[9]^((4))$: $abs(A_0) = binom(7, 2) = 21$, $abs(A_1) = 1 + binom(4, 3) binom(5, 1) = 21$, $abs(A_2) = binom(6, 4) = 15$.
@@ -2145,14 +2156,14 @@ We want to show the initial segments of the simplicial ordering minimise the bou
     Let $X = [n]$ and let $A subset.eq X^((r))$ be $t$-intersecting. Then, for $n$ sufficiently large, we have $abs(A) <= abs(A_0) = binom(n - t, r - t)$.
 ]<thm:second-erdos-ko-rado>
 #proofhints[
-    - Show by contradiction that a maximal $t$-intersecting family $A' supset.eq A$ has $x, y in A'$ with $abs(x sect y) = t$.
-    - Explain why we can assume that there exists $z in A'$ with $x sect y subset.eq.not z$, and hence each $w in A'$ meets $x union y union z$ in $>= t + 1$ points.
+    - Show by contradiction that a maximal $t$-intersecting family $A' supset.eq A$ has $x, y in A'$ with $abs(x inter y) = t$.
+    - Explain why we can assume that there exists $z in A'$ with $x inter y subset.eq.not z$, and hence each $w in A'$ meets $x union y union z$ in $>= t + 1$ points.
     - Show that $abs(A')$ is bounded above by a polynomial in $n$ of degree $r - t - 1$.
 ]
 #proof[
     Idea: "$A_0$ has $r - t$ degrees of freedom".
 
-    Extend $A$ to a maximal $t$-intersecting family $A'$, trivially $abs(A) <= abs(A')$. There exist $x, y in A'$ with $abs(x sect y) = t$ (if not, then by maximality, we have that $forall x in A', forall i in x, forall j in.not x$, $x \\ i union j in A'$; repeating this, we have $A' = X^((r))$: contradiction). We may assume that there exists $z in A'$ with $x sect y subset.eq.not z$; otherwise, all $z in A'$ contain the $t$-set $x sect y subset.eq z$, whence $abs(A') <= binom(n - t, r - t) = abs(A_0)$. So each $w in A'$ must meet $x union y union z$ in $>= t + 1$ points.
+    Extend $A$ to a maximal $t$-intersecting family $A'$, trivially $abs(A) <= abs(A')$. There exist $x, y in A'$ with $abs(x inter y) = t$ (if not, then by maximality, we have that $forall x in A', forall i in x, forall j in.not x$, $x \\ i union j in A'$; repeating this, we have $A' = X^((r))$: contradiction). We may assume that there exists $z in A'$ with $x inter y subset.eq.not z$; otherwise, all $z in A'$ contain the $t$-set $x inter y subset.eq z$, whence $abs(A') <= binom(n - t, r - t) = abs(A_0)$. So each $w in A'$ must meet $x union y union z$ in $>= t + 1$ points.
     #unmarked-fig(
         figure(
             canvas({
@@ -2163,7 +2174,7 @@ We want to show the initial segments of the simplicial ordering minimise the bou
                 content("venn.b", $y$)
                 content("venn.c", $z$)
                 line("venn.ab", (rel: (0, 1)), mark: (start: "o", fill: diagram-colors.red), name: "label")
-                content("label.end", $abs(x sect y) = t$, anchor: "south")
+                content("label.end", $abs(x inter y) = t$, anchor: "south")
             })
         )
     )
@@ -2178,9 +2189,9 @@ We want to show the initial segments of the simplicial ordering minimise the bou
 == Modular intersections
 
 #example[
-    For intersecting families, we ban $abs(x sect y) = 0$. What if we banned $abs(x sect y) = 0 mod k$ for some $k in NN$?
+    For intersecting families, we ban $abs(x inter y) = 0$. What if we banned $abs(x inter y) = 0 mod k$ for some $k in NN$?
 
-    For example, for $k = 2$, we want $A subset.eq X^((r))$ with $abs(x sect y)$ odd for all $x != y in A$. When $r$ is odd, we can achieve $abs(A) = binom(floor((n - 1)\/2), (r - 1)\/2)$ by the diagram below.
+    For example, for $k = 2$, we want $A subset.eq X^((r))$ with $abs(x inter y)$ odd for all $x != y in A$. When $r$ is odd, we can achieve $abs(A) = binom(floor((n - 1)\/2), (r - 1)\/2)$ by the diagram below.
     #unmarked-fig[
         #figure(
             canvas({
@@ -2214,7 +2225,7 @@ We want to show the initial segments of the simplicial ordering minimise the bou
             })
         )
     ]
-    For $r$ odd, if we want $abs(x sect y)$ even for all $x != y in A$, we can achieve $n - r + 1$ by the diagram below, but this is only linear in $n$.
+    For $r$ odd, if we want $abs(x inter y)$ even for all $x != y in A$, we can achieve $n - r + 1$ by the diagram below, but this is only linear in $n$.
     #unmarked-fig(
         figure(
             canvas({
@@ -2233,7 +2244,7 @@ We want to show the initial segments of the simplicial ordering minimise the bou
     )
 ]
 #example[
-    Similarly, for $r$ even, if we want $abs(x sect y)$ even for all $x != y in A$, we can achieve $abs(A) = binom(floor(n \/ 2), r \/ 2)$ by the diagram below.
+    Similarly, for $r$ even, if we want $abs(x inter y)$ even for all $x != y in A$, we can achieve $abs(A) = binom(floor(n \/ 2), r \/ 2)$ by the diagram below.
     #unmarked-fig[
         #figure(
             canvas({
@@ -2265,7 +2276,7 @@ We want to show the initial segments of the simplicial ordering minimise the bou
             })
         )
     ]
-    If we want $abs(x sect y)$ odd for all $x != y in A$, can achieve $n - r + 1$ by the diagram below.
+    If we want $abs(x inter y)$ odd for all $x != y in A$, can achieve $n - r + 1$ by the diagram below.
     #unmarked-fig(
         figure(
             canvas({
@@ -2283,9 +2294,9 @@ We want to show the initial segments of the simplicial ordering minimise the bou
         )
     )
 ]
-It seems to be that banning $abs(x sect y) = r (mod 2)$ forces the family to be very small (polynomial in $n$; in fact, a linear polynomial). Remarkably, we cannot beat linear.
+It seems to be that banning $abs(x inter y) = r (mod 2)$ forces the family to be very small (polynomial in $n$; in fact, a linear polynomial). Remarkably, we cannot beat linear.
 #proposition[
-    Let $r$ be odd and $A subset.eq X^((r))$. If $abs(x sect y)$ is even for all $x != y in A$, then $abs(A) <= n$.
+    Let $r$ be odd and $A subset.eq X^((r))$. If $abs(x inter y)$ is even for all $x != y in A$, then $abs(A) <= n$.
 ]
 #proofhints[
     Identify each $x in powset(X)$ with a point $overline(x)$ in an appropriate vector space, and by considering dot products, show that ${overline(x): x in A}$ is linearly independent.
@@ -2293,10 +2304,10 @@ It seems to be that banning $abs(x sect y) = r (mod 2)$ forces the family to be 
 #proof[
     Idea: find $abs(A)$ linearly independent vectors in a vector space of dimension $n$, namely $Q_n$.
 
-    View $powset(X)$ as $FF_2^n$, the $n$-dimensional vector space over $FF_2$, by identifying each $x in powset(X)$ with $overline(x)$, its characteristic sequence (where we count from the left, so ${1, 3, 4} <-> 1011000...0$). Then we have $overline(x) . overline(x) != 0$ for all $x in A$ (as $r$ is odd). Also, $overline(x) . overline(y) = 0$ for all $x != y in A$, as $abs(x sect y)$ is even. Hence ${overline(x): x in A}$ is linearly independent (if $sum_i lambda_i overline(x_i)$, dot with $overline(x_j)$ to get $lambda_j = 0$). So $abs(A) <= n$.
+    View $powset(X)$ as $FF_2^n$, the $n$-dimensional vector space over $FF_2$, by identifying each $x in powset(X)$ with $overline(x)$, its characteristic sequence (where we count from the left, so ${1, 3, 4} <-> 1011000...0$). Then we have $overline(x) . overline(x) != 0$ for all $x in A$ (as $r$ is odd). Also, $overline(x) . overline(y) = 0$ for all $x != y in A$, as $abs(x inter y)$ is even. Hence ${overline(x): x in A}$ is linearly independent (if $sum_i lambda_i overline(x_i)$, dot with $overline(x_j)$ to get $lambda_j = 0$). So $abs(A) <= n$.
 ]
 #corollary[
-    Hence also, if $A subset.eq X^((r))$ with $r$ even with $abs(x sect y)$ odd for all $x != y in A$, then $abs(A) <= n + 1$.
+    Hence also, if $A subset.eq X^((r))$ with $r$ even with $abs(x inter y)$ odd for all $x != y in A$, then $abs(A) <= n + 1$.
 ]
 #proofhints[
     Use the above proposition.
@@ -2304,9 +2315,9 @@ It seems to be that banning $abs(x sect y) = r (mod 2)$ forces the family to be 
 #proof[
     Just add $n + 1$ to each $x in A$ and apply above proposition.
 ]
-This $mod 2$ behaviour generalises: namely, allowing $s$ values for $abs(x sect y) mod p$ implies that $abs(A)$ is bounded above by a polynomial of degree $s$.
+This $mod 2$ behaviour generalises: namely, allowing $s$ values for $abs(x inter y) mod p$ implies that $abs(A)$ is bounded above by a polynomial of degree $s$.
 #theorem("Frankl-Wilson")[
-    Let $p$ be prime and $A subset.eq X^((r))$. Suppose that for all $x != y in A$, we have $abs(x sect y) equiv lambda_i thick mod p$ for some $i$, where $s <= r$ and $lambda_1, ..., lambda_s in ZZ$ with no $lambda_i equiv r thick mod p$. Then $abs(A) <= binom(n, s)$.
+    Let $p$ be prime and $A subset.eq X^((r))$. Suppose that for all $x != y in A$, we have $abs(x inter y) equiv lambda_i thick mod p$ for some $i$, where $s <= r$ and $lambda_1, ..., lambda_s in ZZ$ with no $lambda_i equiv r thick mod p$. Then $abs(A) <= binom(n, s)$.
 ]<thm:frankl-wilson>
 #proofhints[
     - For each $i <= j$, let $M(i, j)$ be the $binom(n, i) times binom(n, j)$ matrix with rows indexed by $X^((i))$, columns indexed by $X^((j))$, with $
@@ -2318,11 +2329,11 @@ This $mod 2$ behaviour generalises: namely, allowing $s$ values for $abs(x sect 
     - Let $V$ be the vector space over $RR$ spanned by the rows of $M(s, r)$.
     - By finding an expression for each of its entries, show that $M(i, s) M(s, r) = binom(r - i, s - i) M(i, r)$.
     - Let $M(i) = M(i, r)^T M(i, r)$. Explain why each row of each $M(i)$ is in $V$.
-    - Let $M = sum_(i = 0)^s a_i M(i)$, where the $a_i$ are chosen so that $M_(x y) = (abs(x sect y) - lambda_1) med dots.c med (abs(x sect y) - lambda_s)$ (explain why each $a_i in ZZ$).
+    - Let $M = sum_(i = 0)^s a_i M(i)$, where the $a_i$ are chosen so that $M_(x y) = (abs(x inter y) - lambda_1) med dots.c med (abs(x inter y) - lambda_s)$ (explain why each $a_i in ZZ$).
     - Consider the submatrix of $M$ spanned by the rows and columns corresponding to the elements of $A$.
 ]
 #proof[
-    Idea: try to find $abs(A)$ linearly independent points in a vector space of dimension $binom(n, s)$, by somehow "applying" the polynomial $(t - lambda_1) med dots.c med (t - lambda_s)$ to $abs(x sect y)$.
+    Idea: try to find $abs(A)$ linearly independent points in a vector space of dimension $binom(n, s)$, by somehow "applying" the polynomial $(t - lambda_1) med dots.c med (t - lambda_s)$ to $abs(x inter y)$.
 
     For each $i <= j$, let $M(i, j)$ be the $binom(n, i) times binom(n, j)$ matrix with rows indexed by $X^((i))$, columns indexed by $X^((j))$, with $
         M(i, j)_(x y) = cases(
@@ -2335,9 +2346,9 @@ This $mod 2$ behaviour generalises: namely, allowing $s$ values for $abs(x sect 
             binom(r - i, s - i) & "if" x subset.eq y.
         )
     $ So $M(i, s) M(s, r) = binom(r - i, s - i) M(i, r)$. So all rows of $M(i, r)$ belong to $V$. Let $M(i) = M(i, r)^T M(i, r)$. Again, each row of this matrix is in $V$, since we have left-multiplied $M(i, r)$ by a matrix. For $x, y in X^((r))$, we have $
-        M(i)_(x y) = #[number of $i$-sets $z$ with $z subset.eq x$ and $z subset.eq y$] = binom(abs(x sect y), i).
+        M(i)_(x y) = #[number of $i$-sets $z$ with $z subset.eq x$ and $z subset.eq y$] = binom(abs(x inter y), i).
     $ Write the integer polynomial $(t - lambda_1) med dots.c med (t - lambda_s)$ as $sum_(i = 0)^s a_i binom(t, i)$ with all $a_i in ZZ$. This is possible since $t(t - 1) dots.c (t - i + 1) = i! binom(t, i)$. Let $M = sum_(i = 0)^s a_i M(i)$. Note each row of each $M(i)$ is in $V$. Then for all $x, y in X^((r))$, $
-        M_(x y) = sum_(i = 0)^s a_i binom(abs(x sect y), i) = (abs(x sect y) - lambda_1) med dots.c med (abs(x sect y) - lambda_s).
+        M_(x y) = sum_(i = 0)^s a_i binom(abs(x inter y), i) = (abs(x inter y) - lambda_1) med dots.c med (abs(x inter y) - lambda_s).
     $ So the submatrix of $M$ spanned by the rows and columns corresponding to the elements of $A$ is $
         mat(
             equiv.not 0 mod p, , 0;
@@ -2363,7 +2374,7 @@ This $mod 2$ behaviour generalises: namely, allowing $s$ values for $abs(x sect 
             })
         )
     )
-    - The condition $lambda_i equiv.not r thick mod p$ for all $i$ is necessary: indeed, if $n = a + lambda p$, $0 <= a <= p - 1$, then can have $A subset.eq X^(a + k p)$ with $abs(A) = binom(lambda, k)$ and all $abs(x sect y) equiv a thick mod p$, but $binom(lambda, k)$ is not a polynomial in $n$ (as we can choose any $k$).
+    - The condition $lambda_i equiv.not r thick mod p$ for all $i$ is necessary: indeed, if $n = a + lambda p$, $0 <= a <= p - 1$, then can have $A subset.eq X^(a + k p)$ with $abs(A) = binom(lambda, k)$ and all $abs(x inter y) equiv a thick mod p$, but $binom(lambda, k)$ is not a polynomial in $n$ (as we can choose any $k$).
     #unmarked-fig[
         #figure(
             canvas({
@@ -2403,29 +2414,29 @@ This $mod 2$ behaviour generalises: namely, allowing $s$ values for $abs(x sect 
     ]
 ]
 #remark[
-    We do need $p$ prime. Grolmusz constructed, for each $n$, a value of $r equiv 0 mod 6$ and a family $A subset.eq [n]^((r))$ such that $forall x != y in A$, we have $abs(x sect y) equiv.not 0 mod 6$ and $abs(A) > n^(c log n \/ log log n)$, which is not a polynomial in $n$.
+    We do need $p$ prime. Grolmusz constructed, for each $n$, a value of $r equiv 0 mod 6$ and a family $A subset.eq [n]^((r))$ such that $forall x != y in A$, we have $abs(x inter y) equiv.not 0 mod 6$ and $abs(A) > n^(c log n \/ log log n)$, which is not a polynomial in $n$.
 ]
 #corollary[
-    Let $A subset.eq [n]^((r))$ with $abs(x sect y) equiv.not r mod p$ for all $x != y in A$, where $p < r$ is prime. Then $abs(A) <= binom(n, p - 1)$.
+    Let $A subset.eq [n]^((r))$ with $abs(x inter y) equiv.not r mod p$ for all $x != y in A$, where $p < r$ is prime. Then $abs(A) <= binom(n, p - 1)$.
 ]<crl:frankl-wilson-special-case>
 #proofhints[
     Trivial by @thm:frankl-wilson.
 ]
 #proof[
-    We are allowed $p - 1$ values of $abs(x sect y) mod p$, so done by @thm:frankl-wilson.
+    We are allowed $p - 1$ values of $abs(x inter y) mod p$, so done by @thm:frankl-wilson.
 ]
-Two $(n \/ 2)$-sets in $[n]$ typically meet in $approx n \/ 4$ points, but having the exact equality $abs(x sect y) = n \/ 4$ is very unlikely. But remarkably:
+Two $(n \/ 2)$-sets in $[n]$ typically meet in $approx n \/ 4$ points, but having the exact equality $abs(x inter y) = n \/ 4$ is very unlikely. But remarkably:
 #corollary[
-    Let $p$ be prime, and $A subset.eq [4p]^((2p))$ with $abs(x sect y) != p$ for all $x != y in A$. Then $abs(A) <= 2 binom(4p, p - 1)$.
+    Let $p$ be prime, and $A subset.eq [4p]^((2p))$ with $abs(x inter y) != p$ for all $x != y in A$. Then $abs(A) <= 2 binom(4p, p - 1)$.
 ]<crl:there-are-few-2p-size-sets-with-non-half-intersection>
 #proofhints[
     Remove all complements from $A$ and use @crl:frankl-wilson-special-case.
 ]
 #proof[
-    By halving $abs(A)$ if necessary, we may assume that no $x, x^c in A$ (for any $x in [4p]^((2p))$). Then for $x != y in A$, $abs(x sect y) != 0, p, 2p$, so $abs(x sect y) equiv.not 0 mod p$. So $abs(A) <= binom(4p, p - 1)$ by @crl:frankl-wilson-special-case.
+    By halving $abs(A)$ if necessary, we may assume that no $x, x^c in A$ (for any $x in [4p]^((2p))$). Then for $x != y in A$, $abs(x inter y) != 0, p, 2p$, so $abs(x inter y) equiv.not 0 mod p$. So $abs(A) <= binom(4p, p - 1)$ by @crl:frankl-wilson-special-case.
 ]
 #remark[
-    $abs(x sect y) != p$ for all $x != y in A$ is a weak constraint, yet $2 binom(4p, p - 1)$ is a _tiny_ (exponentially small) fraction of $binom(4p, 2p)$. Indeed, $binom(n, n \/ 2) approx c dot 2^n \/ sqrt(n)$, for some constant $c$, whereas $binom(n, n \/ 4) <= 4 e^(-n \/ 32) 2^n$ by @prop:upper-bound-on-less-than-half-first-binomial-coefficients.
+    $abs(x inter y) != p$ for all $x != y in A$ is a weak constraint, yet $2 binom(4p, p - 1)$ is a _tiny_ (exponentially small) fraction of $binom(4p, 2p)$. Indeed, $binom(n, n \/ 2) approx c dot 2^n \/ sqrt(n)$, for some constant $c$, whereas $binom(n, n \/ 4) <= 4 e^(-n \/ 32) 2^n$ by @prop:upper-bound-on-less-than-half-first-binomial-coefficients.
 ]
 
 == Borsuk's conjecture
@@ -2464,16 +2475,16 @@ However, in general, @cnj:borsuk is massively false:
 ]
 #proofhints[
     - Prove for all $n$ of the form, $binom(4p, 2)$ for $p$ prime.
-    - For $x, y in [n]^((r))$, find an expression for $norm(x - y)^2$ in terms of $abs(x sect y)$.
+    - For $x, y in [n]^((r))$, find an expression for $norm(x - y)^2$ in terms of $abs(x inter y)$.
     - Identify $[n]$ with the edge set of an appropriate graph, and for each $x in [4p]^((2p))$, let $G_x$ be the complete bipartite graph with vertex classes $x$ and $x^c$.
-    - Show that the number of edges in $G_x sect G_y$ is $abs(G_x sect G_y) = abs(x sect y)^2 + (2p - abs(x sect y))^2$ and give the value of $abs(x sect y)$ which minimises this.
+    - Show that the number of edges in $G_x inter G_y$ is $abs(G_x inter G_y) = abs(x inter y)^2 + (2p - abs(x inter y))^2$ and give the value of $abs(x inter y)$ which minimises this.
     - Let $S$ be an appropriate set of size $abs(S) = 1/2 binom(4p, 2p)$. Using @crl:there-are-few-2p-size-sets-with-non-half-intersection, show that any subset $S' subset.eq S$ of smaller diameter than $S$ has size at most $2 binom(4p, p - 1)$.
     - Use @prop:upper-bound-on-less-than-half-first-binomial-coefficients and the fact that $binom(n, n \/ 2) approx c dot 2^n \/ sqrt(n)$ to conclude the result. #qedhere
 ]
 #proof[
     We will prove it for all $n$ of the form $binom(4p, 2)$ where $p$ is prime. Then we are done for all $n in NN$ (with a different constant $C$), e.g. because there exists prime $p$ with $n \/ 2 <= p <= n$. We'll find $S subset.eq Q_n subset.eq RR^n$. In fact, $S subset.eq [n]^((r))$ for some $r$. (These are genuine ideas). Since $S subset.eq [n]^((r))$, we have $forall x, y in S$, $
         norm(x - y)^2 & = "number of coordinates where" x, y "differ" \
-        & = abs(x Delta y) = abs(x \\ y) + abs(y \\ x) = 2(r - abs(x sect y)).
+        & = abs(x Delta y) = abs(x \\ y) + abs(y \\ x) = 2(r - abs(x inter y)).
     $
     #unmarked-fig[
         #figure(
@@ -2489,13 +2500,13 @@ However, in general, @cnj:borsuk is massively false:
             })
         )
     ]
-    The diameter of $S$ is $max{norm(x - y): x, y in S}$, so we seek $S$ with $min{abs(x sect y): x, y in S} = k$, where every subset $S' subset.eq S$ with $min{abs(x sect y): x, y in S'} > k$ is very small (so need many pieces).
+    The diameter of $S$ is $max{norm(x - y): x, y in S}$, so we seek $S$ with $min{abs(x inter y): x, y in S} = k$, where every subset $S' subset.eq S$ with $min{abs(x inter y): x, y in S'} > k$ is very small (so need many pieces).
 
-    Identify $[n]$ with the edge set of the complete graph $K_(4p)$ on $4p$ points. For each $x in [4p]^((2p))$, let $G_x$ be the complete bipartite graph with vertex classes $x, x^c$. Let $S = {G_x: x in [4p]^((2p))}$. So $S subset.eq [n]^((4p^2))$, and $abs(S) = 1/2 binom(4p, 2p)$ (since $G_x = G_(x^c)$). Now, the number of edges in $G_x sect G_y$ is $
-        abs(G_x sect G_y) & = abs(x sect y) dot abs(x^c sect y^c) + abs(x^c sect y) dot abs(x sect y^c) \
-        & = abs(x sect y)^2 + abs(x^c sect y)^2 \
-        & = d^2 + (2p - d)^2, quad "where" d = abs(x sect y),
-    $ which is minimised when $d = abs(x sect y) = p$.
+    Identify $[n]$ with the edge set of the complete graph $K_(4p)$ on $4p$ points. For each $x in [4p]^((2p))$, let $G_x$ be the complete bipartite graph with vertex classes $x, x^c$. Let $S = {G_x: x in [4p]^((2p))}$. So $S subset.eq [n]^((4p^2))$, and $abs(S) = 1/2 binom(4p, 2p)$ (since $G_x = G_(x^c)$). Now, the number of edges in $G_x inter G_y$ is $
+        abs(G_x inter G_y) & = abs(x inter y) dot abs(x^c inter y^c) + abs(x^c inter y) dot abs(x inter y^c) \
+        & = abs(x inter y)^2 + abs(x^c inter y)^2 \
+        & = d^2 + (2p - d)^2, quad "where" d = abs(x inter y),
+    $ which is minimised when $d = abs(x inter y) = p$.
     #unmarked-fig[
         #figure(
             canvas({
@@ -2520,7 +2531,7 @@ However, in general, @cnj:borsuk is massively false:
             })
         )
     ]
-    Now let $S' subset.eq S$ have smaller diameter than that of $S$: $S' = {G_x: x in A}$, where $A subset.neq [4p]^(2p)$. So we must have that $forall x != y in A$, $abs(x sect y) != p$ (as otherwise diameter of $S'$ is equal to diameter of $S$). Thus $abs(A) <= 2 binom(4p, p - 1)$ by @crl:there-are-few-2p-size-sets-with-non-half-intersection.
+    Now let $S' subset.eq S$ have smaller diameter than that of $S$: $S' = {G_x: x in A}$, where $A subset.neq [4p]^(2p)$. So we must have that $forall x != y in A$, $abs(x inter y) != p$ (as otherwise diameter of $S'$ is equal to diameter of $S$). Thus $abs(A) <= 2 binom(4p, p - 1)$ by @crl:there-are-few-2p-size-sets-with-non-half-intersection.
 
     So by @prop:upper-bound-on-less-than-half-first-binomial-coefficients, the number of pieces needed is at least #qed-multiline($
         (1/2 binom(4p, 2p))/(2 binom(4p, p - 1)) & >= (c dot 2^(4p) \/ sqrt(p))/(e^(-p \/ 8) 2^(4p)) quad & "for some" c \

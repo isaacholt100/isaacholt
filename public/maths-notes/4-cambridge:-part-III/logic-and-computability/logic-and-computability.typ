@@ -511,8 +511,8 @@ We will inductively define a provability relation by enforcing rules that implem
     In any lattice, $and$ and $or$ are idempotent. Moreover, we can define an ordering by setting $a <= b$ if $a and b = a$.
 ]
 #example[
-    - For every set $I$, the powerset $powset(I)$ of $I$ with $and = sect$ and $or = union$ is the prototypical Boolean algebra.
-    - More generally, the clopen subsets of a topological space form a Boolean algebra with $and = sect$ and $or = union$.
+    - For every set $I$, the powerset $powset(I)$ of $I$ with $and = inter$ and $or = union$ is the prototypical Boolean algebra.
+    - More generally, the clopen subsets of a topological space form a Boolean algebra with $and = inter$ and $or = union$.
     - In particular, the set of finite and cofinite subsets of $ZZ$ is a Boolean algebra.
 ]
 #proposition[
@@ -624,9 +624,9 @@ Classical completeness states that $Gamma proves_"CPC" A$ iff $Gamma satisfies_2
     For any poset $S$, the set $T(S) = {U subset.eq S: U "is a terminal segment of" S}$ can be made into a Heyting algebra, and the way this is done is unique.
 ]
 #proof[
-    Order the terminal segments by $subset.eq$. Meets and joins are $sect$ and $union$, so we just need to define $=>$. For $U, V in T(S)$, define $(U => V) := {s in S: (s arrow.t) sect U subset.eq V}$. To show this is a valid definition, let $U, V, W in T(S)$. We have $
-        W subset.eq (U => V) & "iff" (w arrow.t) sect U subset.eq V "for all" w in W
-    $ which happens if for every $w in W$ and $u in U$, we have if $w <= u$, then $u in V$. But $W$ is a terminal segment, so this is the same as saying that $W sect U subset.eq V$.
+    Order the terminal segments by $subset.eq$. Meets and joins are $inter$ and $union$, so we just need to define $=>$. For $U, V in T(S)$, define $(U => V) := {s in S: (s arrow.t) inter U subset.eq V}$. To show this is a valid definition, let $U, V, W in T(S)$. We have $
+        W subset.eq (U => V) & "iff" (w arrow.t) inter U subset.eq V "for all" w in W
+    $ which happens if for every $w in W$ and $u in U$, we have if $w <= u$, then $u in V$. But $W$ is a terminal segment, so this is the same as saying that $W inter U subset.eq V$.
 ]
 #definition[
     Let $P$ be a set of primitive propositions. A *Kripke model* is a teriple $(S, <=, forces)$ where $(S, <=)$ is a poset (whose elements are called "worlds" or "states" and whose ordering is called the "accessibility relation"), and $forces subset.eq S times P$ is a binary relation called "forcing" satisfying the *persistence property*: if $p in P$ is such that $s forces p$ and $s <= s'$, then $s' forces p$.

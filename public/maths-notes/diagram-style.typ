@@ -1,4 +1,4 @@
-#import "@preview/cetz:0.3.1" as cetz
+#import "@preview/cetz:0.3.3" as cetz
 #import "@preview/suiji:0.3.0": *
 
 #let diagram-colors = (

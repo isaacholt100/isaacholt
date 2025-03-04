@@ -77,7 +77,7 @@
 - *Closure of $A$*: complement of interior of complement: $overline(A) := {x in X: U union A != nothing "for every open set" U "with" x in U} = X - (X - A)^0$. It is the smallest closed set containing $A$.
 - *Boundary of $A$*: closure without interior: $diff A := overline(A) - A^0$
 - *Exterior of $A$*: complement of closure: $A^e := X - overline(A) = (X - A)^0$
-- $A "is open" <==> diff A sect A = nothing <==> A = A^0$
+- $A "is open" <==> diff A inter A = nothing <==> A = A^0$
 - $A "is closed" <==> diff A subset.eq A <==> A = overline(A)$
 - For simple sets in $RR^n$ or $CC^n$, closure (or interior) is obtained by replacing by replacing strict inequality with equality (or vice versa).
 - Sequence ${x_n}$ *converges to* $x in X$ if $lim_(n -> oo) d(x_n, x) = 0$ or equivalently, $ forall epsilon > 0, exists N in NN, forall n > N, d(x_n, x) < epsilon $
@@ -91,7 +91,7 @@
 - *Preimage*: $f^(-1)(U) := {x in X_1: f(x) in U}$
 - *Properties of preimage*:
 	- $f^(-1)(A union B) = f^(-1)(A) union f^(-1)(B)$
-	- $f^(-1)(A sect B) = f^(-1)(A) sect f^(-1)(B)$
+	- $f^(-1)(A inter B) = f^(-1)(A) inter f^(-1)(B)$
 	- $f^(-1)(A - B) = f^(-1)(A) - f^(-1)(B)$
 - $f: X_1 -> X_2 "continuous" & <==> f^(-1)(U) "open in" X_1 forall "open" U subset.eq X_2 \ & <==> f^(-1)(F) "closed in" X_1 forall "closed" F subset.eq X_2$
 - $f: X_1 -> X_2 "continuous at" x in X_1 <==> f^(-1)(U) "open in" X_1 forall "open" U subset.eq X_2 "containing" f(x)$
@@ -253,7 +253,7 @@
 - *Uniqueness of analytic continuation theorem*: let $D' subset D$ non-empty domains, $f: D' -> CC$ holomorphic. Then exists at most one holomorphic $g: D -> CC$ such that $ forall z in D', quad f(z) = g(z) $ If $g$ exists, it is *analytic continuation of $f$ to $D$*.
 - Let $D$ domain, $f, g: D -> CC$ holomorphic, $B_r(a) subset D$. If $f(z) = g(z)$ on $B_r(a)$ then $f(z) = g(z)$ on $D$.
 - Let $S subset C$, $w in S$.
-	- $w$ *isolated point of $S$* if for some $epsilon > 0$, $B_epsilon(w) sect S = {w}$.
+	- $w$ *isolated point of $S$* if for some $epsilon > 0$, $B_epsilon(w) inter S = {w}$.
 	- $w$ *non-isolated point of $S$* if $forall epsilon > 0$, exists $w != z in S$ such that $z in B_epsilon(w)$.
 - *Identity theorem*: Let $f, g: D -> CC$ holomorphic on domain $D$. If $S := {z in D: f(z) = g(z)}$ contains non-isolated point, then $f(z) = g(z)$ on $D$.
 - Let $D subset.eq CC$ domain, $u: D -> RR$ *harmonic* if has continuous second order partial derivatives and satisfies *Laplace's equation*: $ u_(x x) + u_(y y) = 0 $

@@ -1,7 +1,7 @@
 #import "@preview/fletcher:0.5.2" as fletcher: diagram, node, edge
 #import "../../template.typ": *
 #import "../../diagram-style.typ": *
-#import "@preview/cetz:0.3.1" as cetz: canvas
+#import "@preview/cetz:0.3.3" as cetz: canvas
 
 // Everything in the official lecture notes is examinable, except the proofs of Theorems 7.6, 8.1, 12.3, 12.4 and 12.6.
 
@@ -136,7 +136,7 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
 ]<cor:aep>
 #proofhints[
     - $(==>)$: straightforward.
-    - $(<==)$: show that $P^n (B_n sect B_n^* (epsilon)) -> 1$ as $n -> oo$.
+    - $(<==)$: show that $P^n (B_n inter B_n^* (epsilon)) -> 1$ as $n -> oo$.
 ]
 #proof[
     - $(==>)$:
@@ -147,10 +147,10 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
             1 >= P^n (B_n^* (epsilon)) = sum_(x_1^n in B_n^* (epsilon)) P^n (x_1^n) >= abs(B_n^* (epsilon)) 2^(-n(H + epsilon)).
         $
     - $(<==)$:
-        - We have $P^n (B_n sect B_n^* (epsilon)) = P^n (B_n) + P^n (B_n^* (epsilon)) - P^n (B_n union B_n^* (epsilon)) >= P^n (B_n) + P^n (B_n^* (epsilon)) - 1$, so $P^n (B_n sect B_n^* (epsilon)) -> 1$.
-        - So $P^n (B_n sect B_n^* (epsilon)) >= 1 - epsilon$ eventually, and so $
-            1 - epsilon & <= P^n (B_n sect B_n^* (epsilon)) = sum_(x_1^n in B_n sect B_n^* (epsilon)) P^n (x_1^n) \
-            & <= abs(B_n sect B_n^* (epsilon)) 2^(-n(H - epsilon)) <= abs(B_n) 2^(-n(H - epsilon)).
+        - We have $P^n (B_n inter B_n^* (epsilon)) = P^n (B_n) + P^n (B_n^* (epsilon)) - P^n (B_n union B_n^* (epsilon)) >= P^n (B_n) + P^n (B_n^* (epsilon)) - 1$, so $P^n (B_n inter B_n^* (epsilon)) -> 1$.
+        - So $P^n (B_n inter B_n^* (epsilon)) >= 1 - epsilon$ eventually, and so $
+            1 - epsilon & <= P^n (B_n inter B_n^* (epsilon)) = sum_(x_1^n in B_n inter B_n^* (epsilon)) P^n (x_1^n) \
+            & <= abs(B_n inter B_n^* (epsilon)) 2^(-n(H - epsilon)) <= abs(B_n) 2^(-n(H - epsilon)).
         $
 ]
 #remark[
@@ -251,7 +251,7 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
     - $(==>)$:
         - Let $B_n^* (epsilon) = {x_1^n in A^n: 2^(n(D - epsilon)) <= (P^n (x_1^n))/(Q^n (x_1^n)) <= 2^(n(D + epsilon))}$. The rest is straightforward (use above remark).
     - $(<==)$:
-        - Show that $P^n (B_n^* (epsilon) sect B_n) -> 1$ as $n -> oo$, use that $1/2 = 2^(-n (1\/n))$.
+        - Show that $P^n (B_n^* (epsilon) inter B_n) -> 1$ as $n -> oo$, use that $1/2 = 2^(-n (1\/n))$.
 ]
 #proof[
     - $(==>)$:
@@ -259,8 +259,8 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
         - Then the convergence in probability of $1/n sum_(i = 1)^n log P(X_i)/Q(X_i)$ is equivalent to $PP(X_1^n in.not B_n^*) = P^n (B_n^* (epsilon)) = e_2^((n)) -> 0$ as $n -> oo$, when $X_1^n sim P^n$.
         - Also, $1 >= P^n (B_n^*) = sum_(x_1^n in B_n^* (epsilon)) Q^n (x_1^n) (P^n (x_1^n))/(Q^n (x_1^n)) >= 2^(n(D - epsilon)) sum_(x_1^n in B_n^* (epsilon)) Q^n (x_1^n) = 2^(n(D - epsilon)) Q^n (B_n^* (epsilon))$.
     - $(<==)$:
-        - We havee $e_2^((n)) (B_n^* (epsilon)) = P^n (B_n^* (epsilon)) -> 0$ as $n -> oo$. Suppose $e_2^((n)) (B_n) = P^n (B_n^c) -> 0$. Then $P^n (B_n sect B_n^* (epsilon)) -> 1$. So eventually, $
-            1/2 <= P^n (B_n sect B_n^* (epsilon)) & = sum_(x_1^n in B_n sect B_n^* (epsilon)) P^n (x_1^n) (Q^n (x_1^n))/(Q^n (x_1^n)) \
+        - We havee $e_2^((n)) (B_n^* (epsilon)) = P^n (B_n^* (epsilon)) -> 0$ as $n -> oo$. Suppose $e_2^((n)) (B_n) = P^n (B_n^c) -> 0$. Then $P^n (B_n inter B_n^* (epsilon)) -> 1$. So eventually, $
+            1/2 <= P^n (B_n inter B_n^* (epsilon)) & = sum_(x_1^n in B_n inter B_n^* (epsilon)) P^n (x_1^n) (Q^n (x_1^n))/(Q^n (x_1^n)) \
             & <= 2^(n(D + epsilon)) sum_(x_1^n in B_n) Q^n (x_1^n) \
             & = 2^(n(D + epsilon)) Q^n (B_n) = 2^(n(D + epsilon)) e_1^((n)) (B_n)
         $
@@ -1248,18 +1248,18 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
     $ where $P^* in E$.
 ]<thm:sanov>
 #proofhints[
-    - For the inequality, use that $PP\(hat(P)_n in E\) = PP\(hat(P)_n in E sect cal(P)_n\) = sum_(P in E sect cal(P)_n) Q^n (T(P))$. Explain why $D^*$ is finite.
+    - For the inequality, use that $PP\(hat(P)_n in E\) = PP\(hat(P)_n in E inter cal(P)_n\) = sum_(P in E inter cal(P)_n) Q^n (T(P))$. Explain why $D^*$ is finite.
     - For the equality, use the above inequality, and explain why there is a sequence ${P_n: n in NN}$ with each $P_n in cal(P)_n$ and $P_n -> P^*$ where $D(P^* || Q) = D^*$ (why does $P^*$ exist?)
 ]
 #proof[
     Since $Q$ has full support, for any $P in cal(P)$, we have $D(P || Q) <= -sum_(a in A) log Q(a) < oo$, so $D^*$ is finite. For the upper bound, $
-        PP\(hat(P)_n in E\) & = PP\(hat(P)_n in E sect cal(P)_n\) \
-        & = sum_(P in E sect cal(P)_n) PP\(hat(P)_n = P\) \
-        & = sum_(P in E sect cal(P)_n) PP(X_1^n in T(P)) \
-        & = sum_(P in E sect cal(P)_n) Q^n (T(P)) \
-        & <= abs(E sect cal(P)_n) max{Q^n (T(P)): P in E sect cal(P)_n} \
-        & <= abs(E sect cal(P)_n) max{2^(-n D(P || Q)): P in E sect cal(P)_n} quad & #[ by @crl:bounds-on-probability-of-type-class] \
-        & = abs(E sect cal(P)_n) dot 2^(-n min{D(P || Q) thin : med P in E sect cal(P)_n}) \
+        PP\(hat(P)_n in E\) & = PP\(hat(P)_n in E inter cal(P)_n\) \
+        & = sum_(P in E inter cal(P)_n) PP\(hat(P)_n = P\) \
+        & = sum_(P in E inter cal(P)_n) PP(X_1^n in T(P)) \
+        & = sum_(P in E inter cal(P)_n) Q^n (T(P)) \
+        & <= abs(E inter cal(P)_n) max{Q^n (T(P)): P in E inter cal(P)_n} \
+        & <= abs(E inter cal(P)_n) max{2^(-n D(P || Q)): P in E inter cal(P)_n} quad & #[ by @crl:bounds-on-probability-of-type-class] \
+        & = abs(E inter cal(P)_n) dot 2^(-n min{D(P || Q) thin : med P in E inter cal(P)_n}) \
         & <= (n + 1)^m dot 2^(-n D^*).
     $ So $liminf_(n -> oo) -1/n log Q^n \(hat(P)_n in E\) >= D^*$.
     
@@ -1390,7 +1390,7 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
 ]
 #proofhints[
     - Showing the equality is straightforward.
-    - Define $B(Q, delta) := {P in cal(P): D(P || Q) <= D(P^* || Q) + delta}$, $C = B(Q, 2 delta) sect E$ and $D = E \\ C$.
+    - Define $B(Q, delta) := {P in cal(P): D(P || Q) <= D(P^* || Q) + delta}$, $C = B(Q, 2 delta) inter E$ and $D = E \\ C$.
     - Show that $PP\(hat(P)_n in D | hat(P)_n in E\) <= (n + 1)^(2m) 2^(-n delta)$.
     - Use the @thm:pythagorean-identity and @thm:pinskers-inequality to show that $PP\(abs(hat(P)_n (a) - P^* (a)) > epsilon | hat(P)_n in E\) -> 0$.
 ]
@@ -1399,7 +1399,7 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
         EE\[hat(P)_n (a) | hat(P)_n in E\] = 1/n sum_(i = 1)^n PP\(X_i = a | hat(P)_n in E\) = PP\(X_1 = a | hat(P)_n in E\).
     $ Define the relative entropy neighbourhoods $
         B(Q, delta) := {P in cal(P): D(P || Q) <= D(P^* || Q) + delta},
-    $ and write $C = B(Q, 2 delta) sect E$ and $D = E \\ C$.
+    $ and write $C = B(Q, 2 delta) inter E$ and $D = E \\ C$.
     // #unmarked-fig[
     //     #figure(
     //         canvas({
@@ -1414,8 +1414,8 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
         PP\(hat(P)_n in D | hat(P)_n in E\) = (PP\(hat(P)_n in D\))/(PP\(hat(P)_n in E\)).
     $ By @thm:sanov, $
         PP\(hat(P)_n in D\) <= (n + 1)^m 2^(-n inf{D(P || Q): P in D}) <= (n + 1)^m 2^(-n(D(P^* || Q) + 2 delta))
-    $ and for the denominator, since ${cal(P)_n: n in NN}$ is dense in $cal(P)$, $cal(P)_n$ eventually intersects every open set in $cal(P)$, so eventually $B(Q, delta) sect E sect cal(P)_n$ is non-empty (since $E$ has non-empty interior). So we can eventually find $P_n in cal(P)_n sect E sect B(Q, delta)$. By @prop:bounds-on-size-of-type-class, $
-        PP\(hat(P)_n in E\) & >= PP\(hat(P)_n in B(Q, delta) sect E\) \
+    $ and for the denominator, since ${cal(P)_n: n in NN}$ is dense in $cal(P)$, $cal(P)_n$ eventually intersects every open set in $cal(P)$, so eventually $B(Q, delta) inter E inter cal(P)_n$ is non-empty (since $E$ has non-empty interior). So we can eventually find $P_n in cal(P)_n inter E inter B(Q, delta)$. By @prop:bounds-on-size-of-type-class, $
+        PP\(hat(P)_n in E\) & >= PP\(hat(P)_n in B(Q, delta) inter E\) \
         & >= PP\(hat(P)_n = P_n\) = Q^n (T(P_n)) \
         & >= (n + 1)^(-m) 2^(-n D(P_n || Q)) \
         & >= (n + 1)^(-m) 2^(-n (D(P^* || Q) + delta)),
@@ -1476,9 +1476,9 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
         abs(B_n) / abs(T(P_n)) & <= 2^(n(R + r_n)) / ((n + 1)^(-m) 2^(n H(P_n))) = (n + 1)^m 2^(n (R - H(P_n) + r_n)) \
         & <= (n + 1)^m 2^(n (r_n - delta \/ 2)) -> 0 quad "as" n -> oo.
     $ So $abs(B_n) \/ abs(T(P_n)) <= 1 \/ 2$ eventually. Then, for an arbitrary string $x_1^n in T(P_n)$, we have $
-        P_e^((n)) & = PP(X_1^n in B_n^c) >= PP(X_1^n in T(P_n) sect B_n^c) \
-        & = abs(T(P_n) sect B_n^c) Q^n (x_1^n) = abs(T(P_n) sect B_n^c) / abs(T(P_n)) Q^n (T(P_n)) \
-        & >= (1 - abs(T(P_n) sect B_n) / abs(T(P_n))) (n + 1)^(-m) 2^(-n D(P_n || Q)) \
+        P_e^((n)) & = PP(X_1^n in B_n^c) >= PP(X_1^n in T(P_n) inter B_n^c) \
+        & = abs(T(P_n) inter B_n^c) Q^n (x_1^n) = abs(T(P_n) inter B_n^c) / abs(T(P_n)) Q^n (T(P_n)) \
+        & >= (1 - abs(T(P_n) inter B_n) / abs(T(P_n))) (n + 1)^(-m) 2^(-n D(P_n || Q)) \
         & >= (1 - abs(B_n) / abs(T(P_n))) (n + 1)^(-m) 2^(-n D(P_n || Q)) \
         & >= 1/2 (n + 1)^(-m) 2^(-n (D^* + 2 epsilon)) quad "eventually"
     $ Thus, $

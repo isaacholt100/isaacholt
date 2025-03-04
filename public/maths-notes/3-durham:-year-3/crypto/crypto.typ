@@ -967,7 +967,7 @@ $ So $G = mat(1, 2, 0, 3, 4; 0, 0, 1, 5, 6)$ is generator matrix for $C$ and $di
     - $"Ham"_2 (r)$ is perfect: we have $|"Ham"_2 (r)| = 2^k = 2^(2^r - r - 1)$, $t = floor((d - 1)/2) = 1$. $|S(c, 1)| = 1 + n = 2^r$ and the $S(c, 1)$ are disjoint, so $|union_(c in C) S(c, 1)| = 2^(2^r - r - 1) dot 2^r = 2^n$.
 ]
 #definition[
-    Can define Hamming codes for $q > 2$. Consider $FF_q^r$ for $r >= 2$. $vd(v), vd(w) in FF_q^r - {0}$ are *equivalent* if $vd(v) = lambda dot vd(w)$ for some $lambda in FF_q^times$. For $vd(v) in FF_q^r - {0}$, set $ L_(vd(v)) = {vd(w) in FF_q^r: vd(w) "equivalent to" vd(v)} = {lambda vd(v): lambda in FF_q^times} $ Note $|L_(vd(v))| = q - 1$ and $w in L_(vd(v))$ iff $L_(vd(w)) = L_(vd(v))$. Also, if $L_(vd(v)) != L_(vd(w))$ then $L_(vd(v)) sect L_(vd(w)) = emptyset$. Hence the $L_(vd(v))$ partition $FF_q^r - {0}$ and there are $(q^r - 1)\/(q - 1)$ of them.
+    Can define Hamming codes for $q > 2$. Consider $FF_q^r$ for $r >= 2$. $vd(v), vd(w) in FF_q^r - {0}$ are *equivalent* if $vd(v) = lambda dot vd(w)$ for some $lambda in FF_q^times$. For $vd(v) in FF_q^r - {0}$, set $ L_(vd(v)) = {vd(w) in FF_q^r: vd(w) "equivalent to" vd(v)} = {lambda vd(v): lambda in FF_q^times} $ Note $|L_(vd(v))| = q - 1$ and $w in L_(vd(v))$ iff $L_(vd(w)) = L_(vd(v))$. Also, if $L_(vd(v)) != L_(vd(w))$ then $L_(vd(v)) inter L_(vd(w)) = emptyset$. Hence the $L_(vd(v))$ partition $FF_q^r - {0}$ and there are $(q^r - 1)\/(q - 1)$ of them.
 ]
 #example[
     For $q = 3$, $r = 2$ there are $(3^2 - 1)\/(3 - 1) = 4$ sets: $ L_((0, 1)) & = {(0, 1), (0, 2)}, quad L_((1, 0)) & = {(1, 0), (2, 0)}, \ L_((1, 1)) & = {(1, 1), (2, 2)}, quad L_((1, 2)) & = {(1, 2), (2, 1)} $

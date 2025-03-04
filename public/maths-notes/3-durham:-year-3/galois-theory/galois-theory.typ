@@ -746,7 +746,7 @@
 #example[
      - If $m$ is prime, then $FF_(p^m)$ has only one proper subfield $FF_p$, so $m N_p (m) = |FF_(p^m)| - |FF_p| = p^m - p$.
      - The proper subfields of $FF_(p^4)$ are $FF_p$ and $FF_(p^2)$, but $FF_p subset FF_(p^2)$, so $4 N_p (4) = |FF_(p^4)| - |FF_(p^2)|$.
-     - $FF_p (alpha) != FF_(p^6)$ iff $alpha in FF_(p^3) union FF_(p^2)$. Since $FF_(p^3) sect FF_(p^2) = FF_p$, we have $6 N_p (6) = |FF_(p^6)| - |FF_(p^3)| - |FF_(p^2)| + |FF_p| = p^6 - p^3 - p^2 + p$.
+     - $FF_p (alpha) != FF_(p^6)$ iff $alpha in FF_(p^3) union FF_(p^2)$. Since $FF_(p^3) inter FF_(p^2) = FF_p$, we have $6 N_p (6) = |FF_(p^6)| - |FF_(p^3)| - |FF_(p^2)| + |FF_p| = p^6 - p^3 - p^2 + p$.
 ]
 #proposition[
     We have $ p^n = sum_(m | n) m N_p (m) $ which we can use recursively to compute any $N_p (m)$.

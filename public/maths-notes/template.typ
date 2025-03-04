@@ -1,5 +1,5 @@
-#import "@preview/polylux:0.4.0": *
 #import "@preview/ctheorems:1.1.3": *
+// #import "@preview/touying:0.6.1": *
 
 #let thmstyle = (
     titlefmt: strong,
@@ -77,8 +77,10 @@
             none
         } else {
             if slides {
-                polylux-slide[
+                [
+                    #colbreak(weak: true)
                     #it
+                    #colbreak(weak: true)
                 ]
             } else {
                 it
@@ -89,9 +91,11 @@
 
     show heading: it => {
         if slides {
-            polylux-slide[
+            [
+                #pagebreak(weak: true)
                 #set align(center + horizon)
                 #it
+                #pagebreak(weak: true)
             ]
         } else {
             it

@@ -1,7 +1,7 @@
 #import "@preview/quill:0.2.0": *
 #import "../../template.typ": *
 #import "../../diagram-style.typ": *
-#import "@preview/cetz:0.3.1" as cetz: canvas, draw
+#import "@preview/cetz:0.3.3" as cetz: canvas, draw
 #import "../../diagram-style.typ": *
 
 #let line-style(color) = (fill: color, stroke: color, mark: (end: ">"))
@@ -707,4 +707,68 @@ $
     - $5 => 4$: let $A in cal(A)$ be such that $tr(A) = cal(P)(M) = tr(L)$. Then $
         0 & = tr(A - L) = tr(A sum_(i = 1)^n M_i - L) = sum_(i = 1)^n tr((A - p_i rho_i) M_i)
     $ Since $A >= p_i rho_i$ for all $i$, each term on the RHS is $>= 0$, and so $tr((A - p_i rho_i) M_i) = 0$, but $(A - p_i rho_i) M_i >= 0$, so we can take $K = A$.
+]
+#example[
+    Let $rho_1, ..., rho_n$ be pairwise commuting states, so there exists an orthonormal basis ${ket(i): i in [n]}$ in which they can be simultaneously diagonalised. Let $K$ be as in 4. of the above theorem. Then $K$ has diagonal entries $braket(j, K, j) = max_i braket(j, p_i rho_i, j)$. By construction, $K$ has minimal trace among all $A >= p_i rho_i$ for all $i$. Thus, $
+        max_M cal(P)(M) = sum_j max_i braket(j, p_i rho_i, j).
+    $
+]
+#example[
+    Let $rho_1, ..., rho_n$ be pure states, each with associated a priori probability $1 \/ n$. For simplicity, assume that $
+        sum_(i = 1)^n p_i rho_i = II/d
+    $ (with $d <= n$). Define $M_i = d/n rho_i$ for each $i in [n]$. ${M_i}_(i = 1)^n$ is a POVM which describes a maximum likelihood measurement. Since the $rho_i$ are pure states, $rho_i^2 = rho_i$, so for $L = sum_(i = 1)^n M_i p_i rho_i$, we have $
+        p_i rho_i <= L & = sum_(i = 1)^n M_i p_i rho_i = d/n sum_(i = 1)^n 1/n p_i^2 = d/n sum_(i = 1)^n p_i rho_i = II/n
+    $ for all $i$. Hence, $M$ is an optimal measurement.
+]
+
+== Binary hypothesis testing
+
+Let $rho_1$ and $rho_2$ be density matrices with probability $p$ and $1 - p$. Consider the POVM $M = (M_1, M_2) = (II, II - P)$ with $P$ an orthogonal projection. Assigning $P$ to $rho_1$ and $II - P$ to $rho_2$, the error is $
+    cal(E)(M) := p tr(rho_1 (II - P)) + (1 - p) tr(rho_2 P)
+$ and $
+    cal(P)(M) = p tr(rho_1 P) + (1 - p) tr(rho_2 (II - P))
+$ Note that $cal(P)(M) + cal(E)(M) = 1$.
+#theorem("Quantum Neyman-Pearson")[
+    We have $
+        cal(E)(M) >= 1/2 (1 - norm(p rho_1 - (1 - p) rho_2)_1)
+    $ with equality iff $P$ is a projection onto $(p_1 rho_1 - (1 - p) rho_2)_+$, the positive eigensubspace of $p_1 rho_1 - (1 - p) rho_2$.
+]<thm:quantum-neyman-pearson>
+#proof[
+    For every Hermitian $A$, we can write $A = A_+ + A_-$, where $A_+$ is the positive part and $A_-$ is the negative part. We have $
+        tr(A_+) = 1/2 (norm(A)_1 + tr(A))
+    $ since $norm(A)_1 = tr(abs(A)) = tr(A_+ - A_-)$ and $tr(A) = tr(A_+ + A_-)$. Now $
+        cal(E)(M) & = p tr(rho_1 (II - P)) + (1 - p) tr(p_2 P) \
+        & = p - p tr(rho_1 P) + (1 - p) tr(p_2 P) \
+        & = p - tr(P (p rho_1 - (1 - p) rho_2)) =: p - tr(P A)
+    $ So maximum of above is attained iff $P A_+ = A_+$ and $P A_- = 0$, i.e. $P$ is an orthonormal projection onto $A_+$. Hence, $
+        min_M cal(E)(M) & = p - tr((p rho_1 - (1 - p) rho_2)_+) \
+        & = p - 1/2 (norm(p rho_1 - (1 - p) rho_2)_1 + tr(p rho_1 - (1 - p) rho_2) \
+        & = 1/2 (1 - norm(p rho_1 - (1 - p) rho_2)_1)
+    $ Alternatively, we could define $L = P p rho_1 + (II - P) (1 - p) rho_2$ which satisfies $L >= p rho_1$ and $L >= (1 - p) rho_2$.
+]
+Now assume we have $m$ copies of $rho_1$ and $rho_2$, and we can treat them as single density matrices: $rho_1^(tp m)$ and $rho_2^(tp m)$. For the optimal measurement, thke error rate is $
+    cal(E)_m^"opt" = 1/2 (1 - norm(p rho_1^(tp m) - (1 - p) rho_2^(tp m)))
+$ It can be shown that $cal(E)_m^"opt"$ decays exponentially with $m$, i.e. $cal(E)_m^"opt" <= K e^(-xi m)$, $K, xi > 0$. Note that this is independent of $p$.
+#lemma[
+    If $A, B in B(HH)$ are positive, then $forall s in [0, 1]$, $tr((A^s - B^s) A^(1 - s)) <= tr((A - B)_+)$.
+]
+#proof[
+    Consequence of operator monotonicity of $z |-> z^s$ for all $s in [0, 1]$ (details omitted).
+]
+#theorem("Quantum Chernoff Bound")[
+    Let $p != 0, 1$. Then $
+        xi := lim_(m -> oo) (-1/m log (cal(E)_m^"opt")) = -log(inf_(s in [0, 1]) tr(rho_1^(1 - s) rho_2^s))
+    $
+]<thm:quantum-chernoff-bound>
+#proof[
+    By the above lemma, $
+        1/2 (tr(A + B) + norm(A - B)_1) & = tr(A) - tr((A - B)_+) \
+        & <= tr(A) - tr((A^s - B^s) A^(1 - s)) = tr(B^s A^(1 - s))
+    $ Let $A = p rho_1^(tp m)$ and $B = (1 - p) rho_2^(tp m)$. Then $
+        cal(E)_m^"opt" = 1/2 (1 - norm(p rho_1^(tp m) - (1 - p) rho_2^(tp m))) & <= (1 - p)^s p^(1 - s) tr(rho_1^(1 - s) rho_2^s)^m
+    $ Hence $
+        cal(E)_m^"opt" <= inf_(s in [0, 1]) p^(1 - s) (1 - p)^s tr(rho_1^(1 - s) rho_2^s)^m <= inf_(s in [0, 1]) tr(rho_1^(1 - s) rho_2^s)^m
+    $ so $
+        -1/m log cal(E)_m^"opt" >= -log inf_(s in [0, 1]) tr(rho_1^(1 - s) rho_2^s)
+    $ And we can take the limit $m -> oo$. Equality is achieved for $rho_1, rho_2$ such that $[rho_1, rho_2] = 0$.
 ]

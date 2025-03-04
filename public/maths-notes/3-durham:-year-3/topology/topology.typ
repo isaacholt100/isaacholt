@@ -105,7 +105,7 @@
     *Topology* on set $X$ is $tau subset.eq cal(P)(X)$ with:
     - $nothing in tau$, $X in tau$.
     - *Closure under arbitrary unions*: if $forall i in I, U_i in tau$, then $ union.big_(i in I) U_i in tau $
-    - *Closure under finite intersections*: $U_1, U_2 in tau ==> U_1 sect U_2 in tau$ (this is equivalent to $U_1, ..., U_n in tau ==> sect.big_(i in [n]) U_i in tau$).
+    - *Closure under finite intersections*: $U_1, U_2 in tau ==> U_1 inter U_2 in tau$ (this is equivalent to $U_1, ..., U_n in tau ==> inter.big_(i in [n]) U_i in tau$).
     $(X, tau)$ is *topological space*. Elements of $tau$ are *open* subsets of $X$. $A subset.eq X$ *closed* if $X - A$ is open.
 ]
 #definition[
@@ -125,10 +125,10 @@
     - Finite unions of closed sets are closed
 ]
 #proposition[
-    For topological space $(X, tau)$ and $A subset.eq X$, the *induced (subspace) topology on $A$* $ tau_A = {A sect U: U in tau} $ is a topology on $A$.
+    For topological space $(X, tau)$ and $A subset.eq X$, the *induced (subspace) topology on $A$* $ tau_A = {A inter U: U in tau} $ is a topology on $A$.
 ]
 #example[
-    Let $X = RR$ with standard topology induced by metric $d(x, y) = |x - y|$. Let $A = [1, 5]$. Then $lr([1, 3)) = A sect (0, 3)$ and $[1, 5] = A sect (0, 6)$ are open in $A$.
+    Let $X = RR$ with standard topology induced by metric $d(x, y) = |x - y|$. Let $A = [1, 5]$. Then $lr([1, 3)) = A inter (0, 3)$ and $[1, 5] = A inter (0, 6)$ are open in $A$.
 ]
 #example[
     Consider $RR$ with standard topology $tau$. Then
@@ -139,13 +139,13 @@
     Metrics $d_p$ for $p in lr([1, oo))$ and $d_oo$ all induce same topology on $RR^n$, called the *standard topology* on $RR^n$.
 ]
 #definition[
-    $(X, tau)$ is *Hausdorff* if $ forall x != y in X, exists U, V in tau: U sect V = nothing and x in U, y in V $
+    $(X, tau)$ is *Hausdorff* if $ forall x != y in X, exists U, V in tau: U inter V = nothing and x in U, y in V $
 ]
 #lemma[
     Any metric space $(M, d)$ with topology induced by $d$ is Hausdorff.
 ]
 #example[
-    Let $|X| >= 2$ with indiscrete topology. Then $X$ is not Hausdorff, since $tau = {X, nothing}$ and if $x != y in X$, only open set containing $x$ is $X$ (same for $y$). But $X sect X = X != nothing$.
+    Let $|X| >= 2$ with indiscrete topology. Then $X$ is not Hausdorff, since $tau = {X, nothing}$ and if $x != y in X$, only open set containing $x$ is $X$ (same for $y$). But $X inter X = X != nothing$.
 ]
 #definition[
     *Furstenberg's topology on $ZZ$*: define $U subset.eq ZZ$ to be open if $ forall a in U, exists 0 != d in ZZ: a + d ZZ := {a + d n: n in ZZ} subset.eq U $
@@ -187,8 +187,8 @@
     - Note $ det(A) = sum_(sigma in "sym"(n)) ("sgn"(sigma) product_(i = 1)^n a_(i, sigma(i))) $ is a polynomial in the entries of $A$ so is continuous function from $M_n (RR)$ to $RR$.
     - $"GL"_n (RR) = {A in M_n (RR): det(A) != 0} = det^(-1) (RR - {0})$ is open.
     - $"SL"_n (RR) = {A in M_n (RR): det(A) = 1} = det^(-1) ({1})$ is closed.
-    - $O(n) = {A in M_n (RR): A A^T = I}$ is closed: $f_(i, j) (A) = \(A A^T\)_(i, j)$ is continuous and $ O(n) = sect.big_(1 <= i, j <= n) \(f_(i, j)\)^(-1) \(\{delta_(i, j)\}\) $
-    - $"SO"(n) = O(n) sect "SL"_n (RR)$ is closed.
+    - $O(n) = {A in M_n (RR): A A^T = I}$ is closed: $f_(i, j) (A) = \(A A^T\)_(i, j)$ is continuous and $ O(n) = inter.big_(1 <= i, j <= n) \(f_(i, j)\)^(-1) \(\{delta_(i, j)\}\) $
+    - $"SO"(n) = O(n) inter "SL"_n (RR)$ is closed.
 ]
 #definition[
     For $X, Y$ topological spaces, $h: X -> Y$ is *homeomorphism* if $h$ is bijective, continuous and $h^(-1)$ is continuous. $X$ and $Y$ are *homeomorphic*, $X tilde.equiv Y$. $h$ induces bijection between $tau_X$ and $tau_Y$ which commutes with unions and intersections.
@@ -216,10 +216,10 @@
 #definition[
     For topological space $X$, $x in X$, $A subset.eq X$:
     - *Open neighbourhood of $x$* is open set $N$, $x in N$.
-    - $x$ is *limit point* of $A$ if every open neighbourhood $N$ of $x$ satisfies $ (N - {x}) sect A != nothing $
+    - $x$ is *limit point* of $A$ if every open neighbourhood $N$ of $x$ satisfies $ (N - {x}) inter A != nothing $
 ]
 #corollary[
-    $x$ is not limit point of $A$ iff exists neighbourhood $N$ of $x$ with $ A sect N = cases({x} & "if" x in A, nothing & "if" x in.not A) $
+    $x$ is not limit point of $A$ iff exists neighbourhood $N$ of $x$ with $ A inter N = cases({x} & "if" x in A, nothing & "if" x in.not A) $
 ]
 #example[
     Let $X = RR$ with standard topology.
@@ -230,7 +230,7 @@
 #definition[
     Let $A subset.eq X$.
     - *Interior* of $A$ is largest open set contained in $A$: $ A^circle.small := union.big_(U "open" \ U subset.eq A) U $
-    - *Closure* of $A$ is smallest closed set containing $A$: $ overline(A) := sect.big_(F "closed" \ A subset.eq F) F $ If $overline(A) = X$, $A$ is *dense* in $X$.
+    - *Closure* of $A$ is smallest closed set containing $A$: $ overline(A) := inter.big_(F "closed" \ A subset.eq F) F $ If $overline(A) = X$, $A$ is *dense* in $X$.
 ]
 #lemma[
     - $overline(X - A) = X - A^circle.small$
@@ -273,7 +273,7 @@
 #theorem[
     Let $X$ be a set and collection $cal(B) subset.eq cal(P)(X)$ be such that:
     - $forall x in X, exists B in cal(B): x in B$
-    - If $x in B_1 sect B_2$ with $B_1, B_2 in cal(B)$, then $exists B_3 in cal(B): x in B_3 subset.eq B_1 sect B_2$.
+    - If $x in B_1 inter B_2$ with $B_1, B_2 in cal(B)$, then $exists B_3 in cal(B): x in B_3 subset.eq B_1 inter B_2$.
     Then there is unique topology $tau_(cal(B))$ on $X$ for which $cal(B)$ is a basis. We say $cal(B)$ *generates* $tau_(cal(B))$. We have $tau_B = {union_(i in I) B_i: B_i in cal(B), I "indexing set"}$.
 ]
 
@@ -320,7 +320,7 @@
 ]
 #example[
     - $RR$ with standard topology is connected.
-    - $QQ$ with induced topology from $RR$ is not connected (consider $L = QQ sect \(-oo, sqrt(2)\)$ and $QQ - L = QQ sect \(sqrt(2), oo\)$).
+    - $QQ$ with induced topology from $RR$ is not connected (consider $L = QQ inter \(-oo, sqrt(2)\)$ and $QQ - L = QQ inter \(sqrt(2), oo\)$).
     - The connected subsets of $RR$ are the intervals.
 ]
 #definition[
@@ -350,7 +350,7 @@
     - $X = lr((0, 1])$ and $Y = (0, 1)$ are not homeomorphic (consider $h(1) = p in Y$).
 ]
 #definition[
-    Let $A = B union C$, $B sect C = emptyset$, then $B$ and $C$ are *complementary subsets* of $A$.
+    Let $A = B union C$, $B inter C = emptyset$, then $B$ and $C$ are *complementary subsets* of $A$.
 ]
 #remark[
     If complementary $B$ and $C$ open in $A$, then $B$ and $C$ clopen in $A$. So if $B, C != emptyset$ then $A$ not connected.
@@ -362,7 +362,7 @@
     Let $X$ topological space, $Z subset.eq X$ connected. If $Z subset.eq Y subset.eq overline(Z)$ then $Y$ is connected. In particular, with $Y = overline(Z)$, the closure of a connected set is connected.
 ]
 #proposition[
-    Let $A_i subset.eq X$ connected, $i in I$, $A_i sect A_j != emptyset$ and $union_(i in I) A_i = X$. Then $X$ is connected.
+    Let $A_i subset.eq X$ connected, $i in I$, $A_i inter A_j != emptyset$ and $union_(i in I) A_i = X$. Then $X$ is connected.
 ]
 #theorem[
     If $X$ and $Y$ are connected then $X times Y$ is connected.
@@ -382,7 +382,7 @@
 #proposition[
     In a topological space $X$:
     - Every $p in X$ is in a unique component.
-    - If $C_1 != C_2$ are components, then $C_1 sect C_2 = emptyset$.
+    - If $C_1 != C_2$ are components, then $C_1 inter C_2 = emptyset$.
     - $X$ is the union of its components.
     - Every component is closed in $X$.
 ]
@@ -425,7 +425,7 @@
     Let $X$ have topology with basis $cal(B)$. Then $X$ is compact iff every cover $\(B_i\)_(i in I)$ of $X$, $B_i in cal(B)$, admits a finite subcover of $X$.
 ]
 #remark[
-    To determine compactness of $Y subset.eq X$ with induced topology, consider open covers $Y = union_(i in I) (U_i sect Y)$ for $U_i$ open in $X$, which is equivalent to $Y subset.eq union_(i in I) U_i$.
+    To determine compactness of $Y subset.eq X$ with induced topology, consider open covers $Y = union_(i in I) (U_i inter Y)$ for $U_i$ open in $X$, which is equivalent to $Y subset.eq union_(i in I) U_i$.
 ]
 #example[
     $[0, 1]$ is compact.
@@ -675,7 +675,7 @@
 #definition[
     A *finite simplicial complex* $K subset RR^N$ is finite union of simplices in $RR^N$ such that
     - If $sigma^n$ is simplex in $K$ and $tau^r$ is $r$-face of $sigma^n$, then $tau^r$ is simplex in $K$.
-    - If $sigma_1^n$ and $sigma_2^m$ are simplices in $K$ with $sigma_1^n sect sigma_2^m != nothing$, then there exists $r in {0, ..., min(n, m)}$ and $r$-simplex $tau^r$ in $K$ such that $tau^r$ is $r$-face of both $sigma_1^n$ and $sigma_2^m$ and $sigma_1^n sect sigma_2^m = tau^r$.
+    - If $sigma_1^n$ and $sigma_2^m$ are simplices in $K$ with $sigma_1^n inter sigma_2^m != nothing$, then there exists $r in {0, ..., min(n, m)}$ and $r$-simplex $tau^r$ in $K$ such that $tau^r$ is $r$-face of both $sigma_1^n$ and $sigma_2^m$ and $sigma_1^n inter sigma_2^m = tau^r$.
     *Dimension* of $K$ is maximum value of $n$ for which there is an $n$-simplex in $K$.
 ]
 #remark[
@@ -756,7 +756,7 @@
 
 #definition[
     Let $S$ be Hausdorff, compact, connected topological space.
-    - $S$ is *surface* if for all $x in S$, there exists $U subset.eq S$ such that $x in U$ and $U tilde.equiv E^2$ or $U tilde.equiv E^2 sect (RR times RR_(>=0)) =: E^2 sect RR_+^2$.
+    - $S$ is *surface* if for all $x in S$, there exists $U subset.eq S$ such that $x in U$ and $U tilde.equiv E^2$ or $U tilde.equiv E^2 inter (RR times RR_(>=0)) =: E^2 inter RR_+^2$.
     - *Boundary* of $S$, $diff S$, is set of all $x in S$ such that there is not a $U subset.eq S$ with $x in U$ and $U tilde.equiv E^2$.
     - *Interior* of $S$ is $"int"(S) := S - diff S$.
     - $S$ is *closed surface* if $diff S = emptyset$ ($S$ is *locally Euclidean of dimension 2*).
@@ -781,10 +781,10 @@
     Let $X$ topological space, triangulated by connected finite simplicial complex $K$, $dim(K) = 2$. Then $X$ is closed surface iff for every vertex $v in K$, $St(v, K) tilde.equiv E^2$.
 ]
 #remark[
-    This means $X$ is closed surface if open star of every vertex of triangulation of $X$ is homeomorphic to union of two copies of $E^2 sect RR_+^2$ glued along the parts of their boundaries that are contained in $E^2 sect RR_+^2$.
+    This means $X$ is closed surface if open star of every vertex of triangulation of $X$ is homeomorphic to union of two copies of $E^2 inter RR_+^2$ glued along the parts of their boundaries that are contained in $E^2 inter RR_+^2$.
 ]
 #remark[
-    If we remove an edge from the open star of a vertex, and this produces a disjoint union of open sets, the original space cannot be a surface, since removing a segment from $E^2$ yields a connected space and removing a segment from $E^2 sect RR_+^2$ yields either a connected space or a disjoint union of two non-open sets.
+    If we remove an edge from the open star of a vertex, and this produces a disjoint union of open sets, the original space cannot be a surface, since removing a segment from $E^2$ yields a connected space and removing a segment from $E^2 inter RR_+^2$ yields either a connected space or a disjoint union of two non-open sets.
 ]
 #definition[
     *Real projective plane* is closed surface arising from identifying the edges of the unit square with the following: $ PP := (I times I)\/tilde, quad (x, 0) tilde (1 - x, 1), quad (0, y) tilde (1, 1 - y) $ It may also be defined as quotient of $S^2$ by identifying diametrically opposite points: $ PP = S^2 \/ tilde, quad forall x in S^2, quad x tilde -x $
@@ -1214,7 +1214,7 @@ where, for the first diagram, a horizontal path at fixed $t$ is given by $ s |->
     - $ideal(x, y | x y x^(-1) y^(-1), y^2) tilde.equiv ZZ times ZZ\/2$.
 ]
 #definition[
-    Let $G_1, G_2$ finitely presented groups, $G_1 sect G_2 = emptyset$, given by $ G_1 = ideal(x_1, ..., x_n | r_1, ..., r_m), quad G_2 = ideal(y_1, ..., y_k | s_1, ..., s_ell) $ *Free product* of $G_1$ and $G_2$ is the finitely presented group $ G_1 * G_2 := ideal(x_1, ..., x_n, y_1, ..., y_m | r_1, ..., r_k, s_1, ..., s_ell) $ If $H$ is another group and there exist homomorphisms $i_1: H -> G_1$, $i_2: H -> G_2$, then *amalgamated product* of $G_1$ and $G_2$ with respect to $H$ is $ G_1 *_H G_2 := ideal(x_1, ..., x_n, y_1, ..., y_k | r_1, ..., r_m, s_1, ..., s_ell, i_1 (h) i_2 (h)^(-1) thick forall h in H) $ i.e. we impose the additional relations $i_1 (h) = i_2 (h)$ for all $h in H$, on $G_1 * G_2$. $G_1 *_H G_2$ is finitely presented iff $H$ is finitely generated.
+    Let $G_1, G_2$ finitely presented groups, $G_1 inter G_2 = emptyset$, given by $ G_1 = ideal(x_1, ..., x_n | r_1, ..., r_m), quad G_2 = ideal(y_1, ..., y_k | s_1, ..., s_ell) $ *Free product* of $G_1$ and $G_2$ is the finitely presented group $ G_1 * G_2 := ideal(x_1, ..., x_n, y_1, ..., y_m | r_1, ..., r_k, s_1, ..., s_ell) $ If $H$ is another group and there exist homomorphisms $i_1: H -> G_1$, $i_2: H -> G_2$, then *amalgamated product* of $G_1$ and $G_2$ with respect to $H$ is $ G_1 *_H G_2 := ideal(x_1, ..., x_n, y_1, ..., y_k | r_1, ..., r_m, s_1, ..., s_ell, i_1 (h) i_2 (h)^(-1) thick forall h in H) $ i.e. we impose the additional relations $i_1 (h) = i_2 (h)$ for all $h in H$, on $G_1 * G_2$. $G_1 *_H G_2$ is finitely presented iff $H$ is finitely generated.
 ]
 #example[
     - If $H tilde.equiv bb(1)$, then $G_1 *_H G_2 = G_1 * G_2$.
@@ -1273,23 +1273,23 @@ where, for the first diagram, a horizontal path at fixed $t$ is given by $ s |->
 #theorem("van Kampen's theorem")[
     Let $(K, v_0)$ be based, connected finite simplicial complex. Suppose there exists connected simplicial subcomplexes $A, B subset.eq K$ such that:
     - $K = A union B$
-    - $A sect B$ is path-connected simplicial subcomplex.
-    - $v_0 in A sect B$.
-    Then $ pi_1 (K, v_0) tilde.equiv pi_1 (A, v_0) *_(pi_1 (A sect B, x_0)) pi_1 (B, x_0) $ where the homomorphisms $(i_A)_*: pi_1 (A sect B, v_0) -> pi_1 (A, v_0)$, $(i_B)_*: pi_1 (A sect B, v_0) -> pi_1 (B, v_0)$ are those induced from the respective inclusion maps $i_A: A sect B -> A$, $i_B: A sect B -> B$.
+    - $A inter B$ is path-connected simplicial subcomplex.
+    - $v_0 in A inter B$.
+    Then $ pi_1 (K, v_0) tilde.equiv pi_1 (A, v_0) *_(pi_1 (A inter B, x_0)) pi_1 (B, x_0) $ where the homomorphisms $(i_A)_*: pi_1 (A inter B, v_0) -> pi_1 (A, v_0)$, $(i_B)_*: pi_1 (A inter B, v_0) -> pi_1 (B, v_0)$ are those induced from the respective inclusion maps $i_A: A inter B -> A$, $i_B: A inter B -> B$.
 ]
 #proof[
-    - Find maximal tree $L_(A sect B)$ in $A sect B$. Extend to maximal trees $L_A$ in $A$, $L_B$ in $B$. Then $L = L_A union L_B$ is maximal tree in $K$.
-    - Extend $L_(A sect B)$, $L_A$, $L_B$ to maximal simply connected subcomplexes to $M_(A sect B)$, $M_A$, $M_B$. Then $M = M_A union M_B$ is maximal simply connected subcomplex in $K$.
+    - Find maximal tree $L_(A inter B)$ in $A inter B$. Extend to maximal trees $L_A$ in $A$, $L_B$ in $B$. Then $L = L_A union L_B$ is maximal tree in $K$.
+    - Extend $L_(A inter B)$, $L_A$, $L_B$ to maximal simply connected subcomplexes to $M_(A inter B)$, $M_A$, $M_B$. Then $M = M_A union M_B$ is maximal simply connected subcomplex in $K$.
     - By the algorithm, $pi_1 (K, v_0) tilde.equiv ideal("directed 1-simplices in" M^c | "relations from 2-simplices in" M^c)$ where $ {"directed 1-simplices in" M^c} = & D_A union D_B \ := & {"directed 1-simplices in" A - M_A} \ union & {"directed 1-simplices in" B - M_B} $ and $ {"2-simplices in" M^c} = & {"2-simplices in" A - M_A} \ union & {"2-simplices in" B - M_B} $
-    - However, $D_A sect D_B = {"directed 1-simplices in" (A sect B) - M_(A sect B)}$. So to avoid counting homotopy classes of twice, we identify corresponding generators in thre free product $pi_1 (A, v) * pi_1 (B, v_0)$, which gives the amalgamated product.
+    - However, $D_A inter D_B = {"directed 1-simplices in" (A inter B) - M_(A inter B)}$. So to avoid counting homotopy classes of twice, we identify corresponding generators in thre free product $pi_1 (A, v) * pi_1 (B, v_0)$, which gives the amalgamated product.
 ]
 #example[
-    Let $W_2$ be *figure 8 space* - the one-point union of two copies of $S^1$, i.e. two copies of $S^1$ joined at single point (the base point) $w_0$. So $W_2 = A union B$ where $A = B = S^1$, $A sect B = {p}$, the one-point space, is path-connected. $pi_1 ({p}, w_0) tilde.equiv bb(1)$. So $ pi_1 (W_2, w_0) & tilde.equiv pi_1 (S^1, w_0) *_(bb(1)) pi_1 (S^1, w_0) \ & = pi_1 (S^1, w_0) * pi_1 (S^1, w_0) \ & tilde.equiv ideal(x) * ideal(y) \ & = ideal(x, y) = F^2 $
+    Let $W_2$ be *figure 8 space* - the one-point union of two copies of $S^1$, i.e. two copies of $S^1$ joined at single point (the base point) $w_0$. So $W_2 = A union B$ where $A = B = S^1$, $A inter B = {p}$, the one-point space, is path-connected. $pi_1 ({p}, w_0) tilde.equiv bb(1)$. So $ pi_1 (W_2, w_0) & tilde.equiv pi_1 (S^1, w_0) *_(bb(1)) pi_1 (S^1, w_0) \ & = pi_1 (S^1, w_0) * pi_1 (S^1, w_0) \ & tilde.equiv ideal(x) * ideal(y) \ & = ideal(x, y) = F^2 $
 ]
 #example[
-    - Decompose torus as $TT = A union B$ where $A$ is small closed disc in $TT$, $B$ is closure of the remainder (i.e. remainder together with circle boundary of the disc) so $A sect B = S^1$.
-    - $B$ is homotopy equivalent to the figure-eight space so $pi_1 (B) tilde.equiv ideal(x, y)$. $A$ is contractible so $pi_1 (A) tilde.equiv bb(1)$, and $pi_1 (A sect B) tilde.equiv ideal(z)$. But the loop going once around $A sect B$ is homotopy equivalent to the loop going along the boundary of unit square whose quotient gives $TT$, which corresponds to $x y x^(-1) y^(-1)$.
-    - So by van Kampen's theorem, $ pi_1 (TT) & tilde.equiv pi_1 (A) *_(pi_1 (A sect B)) pi_1 (B) \ & tilde.equiv bb(1) *_(ideal(z)) ideal(x, y) \ & = ideal(x, y | z) \ & = ideal(x, y | x y x^(-1) y^(-1)) tilde.equiv ZZ^2 $ since the image of $z$ under the homomorphism $h_1: pi_1 (A sect B) -> A$ must be $e$.
+    - Decompose torus as $TT = A union B$ where $A$ is small closed disc in $TT$, $B$ is closure of the remainder (i.e. remainder together with circle boundary of the disc) so $A inter B = S^1$.
+    - $B$ is homotopy equivalent to the figure-eight space so $pi_1 (B) tilde.equiv ideal(x, y)$. $A$ is contractible so $pi_1 (A) tilde.equiv bb(1)$, and $pi_1 (A inter B) tilde.equiv ideal(z)$. But the loop going once around $A inter B$ is homotopy equivalent to the loop going along the boundary of unit square whose quotient gives $TT$, which corresponds to $x y x^(-1) y^(-1)$.
+    - So by van Kampen's theorem, $ pi_1 (TT) & tilde.equiv pi_1 (A) *_(pi_1 (A inter B)) pi_1 (B) \ & tilde.equiv bb(1) *_(ideal(z)) ideal(x, y) \ & = ideal(x, y | z) \ & = ideal(x, y | x y x^(-1) y^(-1)) tilde.equiv ZZ^2 $ since the image of $z$ under the homomorphism $h_1: pi_1 (A inter B) -> A$ must be $e$.
 ]
 
 = Euler characteristics and the classification of closed surfaces
@@ -1360,7 +1360,7 @@ where, for the first diagram, a horizontal path at fixed $t$ is given by $ s |->
     The $G$-Euler characteristic of surface $S$ does not depend on choice of good graph $G$.
 ]
 #proof[
-    - Let $G_1, G_2$ be good graphs on $S$. If $diff S != nothing$, consider $diff S$ as (possibly) disconnected graph with ${"vertices"} = {"all vertices in" (G_1 union G_2) sect diff S}$.
+    - Let $G_1, G_2$ be good graphs on $S$. If $diff S != nothing$, consider $diff S$ as (possibly) disconnected graph with ${"vertices"} = {"all vertices in" (G_1 union G_2) inter diff S}$.
     - Position $G_1$ such that it crosses $G_2$ in only isolated points in $int(S) = S - diff S$. Add new vertices at these interior intersection points.
     - Now $G_1 union G_2$ is common enlargment of $G_1$ and $G_2$ and a good graph, so result follows by above lemma.
 ]
@@ -1383,17 +1383,17 @@ where, for the first diagram, a horizontal path at fixed $t$ is given by $ s |->
     For $n$-dimensional finite simplicial complex $K$, Euler characteristic is defined as $ sum_(k = 0)^n (-1)^k ("number of " k #h(0em) "-simplices in" K) $
 ]
 #lemma("Union Lemma")[
-    Let $K = A union B$ be $2$-dimensional finite simplicial complex with $A$, $B$, $A sect B$ simplicial sub-complexes. Then $ chi(K) = chi(A union B) = chi(A) + chi(B) - chi(A sect B) $
+    Let $K = A union B$ be $2$-dimensional finite simplicial complex with $A$, $B$, $A inter B$ simplicial sub-complexes. Then $ chi(K) = chi(A union B) = chi(A) + chi(B) - chi(A inter B) $
 ]
 #proof[
-    Express number of vertices, edges and faces of $A union B$ in terms of those of $A$, $B$ and $A sect B$.
+    Express number of vertices, edges and faces of $A union B$ in terms of those of $A$, $B$ and $A inter B$.
 ]
 #lemma[
     Let $X$, $Y$ surfaces. Then $ chi(X \# Y) = chi(X) + chi(Y) - 2 $
 ]
 #proof[
     - For closed surface $X$, $chi(X - "open disc") = chi(X) - 1$ (justify using triangulations).
-    - Use Union lemma with $A = X - "open disc"$, $B = Y - "open disc"$, $A sect B = S^1$.
+    - Use Union lemma with $A = X - "open disc"$, $B = Y - "open disc"$, $A inter B = S^1$.
 ]
 #lemma[
     Let $S$ be surface, let $S_M$ be $S$ with cross-cap attached. Then $ chi(S_M) = chi(S) - 1 $
@@ -1407,8 +1407,8 @@ where, for the first diagram, a horizontal path at fixed $t$ is given by $ s |->
 ]
 #proof[
     - $S_H = A union B$, where $A = (S - 2 "open discs")$, $B$ is cylinder.
-    - $A sect B$ is disjoint union of $S^1$ and $S^1$, $S^1 product.co S_1$.
-    - Use Union lemma to show $chi(A sect B) = 0$.
+    - $A inter B$ is disjoint union of $S^1$ and $S^1$, $S^1 product.co S_1$.
+    - Use Union lemma to show $chi(A inter B) = 0$.
     - Use Union lemma again to deduce the result.
 ]
 
@@ -1448,7 +1448,7 @@ where, for the first diagram, a horizontal path at fixed $t$ is given by $ s |->
     Let $L$ be maximal tree in $K$.
     - $L^*$ is connected.
     - $Theta(L) union Theta(L^*) = K^((2)) tilde.equiv K$.
-    - $Theta(L) sect Theta(L^*) = "boundary of disc" Theta(L) tilde.equiv S^1$.
+    - $Theta(L) inter Theta(L^*) = "boundary of disc" Theta(L) tilde.equiv S^1$.
 ]
 #theorem[
     Let $K$ finite simplicial complex that triangulates closed surface. Then $chi(K) = 1 + chi(L^*) <= 2$ (where $L$ is maximal tree in $K$) with equality iff $K tilde.equiv S^2$.

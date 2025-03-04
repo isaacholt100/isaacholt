@@ -21,10 +21,10 @@
     $f: X -> Y$ *surjective* if $Y = f(X)$.
 ]
 #proposition[
-    Let $f: X -> Y$, $A, B subset.eq X$, then $ f(A sect B) & subset.eq f(A) sect f(B), \ f(A union B) & = f(A) union f(B), \ f(X) - f(A) & subset.eq f(X - A) $
+    Let $f: X -> Y$, $A, B subset.eq X$, then $ f(A inter B) & subset.eq f(A) inter f(B), \ f(A union B) & = f(A) union f(B), \ f(X) - f(A) & subset.eq f(X - A) $
 ]
 #proposition[
-    Let $f: X -> Y$, $C, D subset.eq Y$, then $ f^(-1)(C sect D) & = f^(-1) (C) sect f^(-1)(D), \ f^(-1)(C union D) & = f^(-1)(C) union f^(-1)(D), \ f^(-1)(Y - C) & = X - f^(-1)(C) $
+    Let $f: X -> Y$, $C, D subset.eq Y$, then $ f^(-1)(C inter D) & = f^(-1) (C) inter f^(-1)(D), \ f^(-1)(C union D) & = f^(-1)(C) union f^(-1)(D), \ f^(-1)(Y - C) & = X - f^(-1)(C) $
 ]
 
 == The real numbers
@@ -244,7 +244,7 @@
 == The structure theorem for open sets
 
 #definition[
-    Collection ${A_i: i in I}$ of sets is *(pairwise) disjoint* if $n != m ==> A_n sect A_m = nothing$.
+    Collection ${A_i: i in I}$ of sets is *(pairwise) disjoint* if $n != m ==> A_n inter A_m = nothing$.
 ]
 #theorem("Structure theorem for open sets")[
     Let $U subset.eq RR$ open. Then exists countable collection of disjoint open intervals ${I_n: n in NN}$ such that $U = union_(n in NN) I_n$.
@@ -262,7 +262,7 @@
     Set of accumulation points $E'$ of $E$ is closed.
 ]
 #definition[
-    $E subset.eq RR$ is *isolated* if $ forall x in E, exists epsilon > 0: (x - epsilon, x + epsilon) sect E = {x} $
+    $E subset.eq RR$ is *isolated* if $ forall x in E, exists epsilon > 0: (x - epsilon, x + epsilon) inter E = {x} $
 ]
 #proposition[
     $E$ is isolated iff it has no accumulation points.
@@ -277,13 +277,13 @@
 == The middle-third Cantor set
 
 #proposition[
-    Let ${F_n: n in NN}$ be collection of non-empty nested closed sets (so $F_(n + 1) subset.eq F_n$), one of which is bounded. Then $ sect.big_(n in NN) F_n != emptyset $
+    Let ${F_n: n in NN}$ be collection of non-empty nested closed sets (so $F_(n + 1) subset.eq F_n$), one of which is bounded. Then $ inter.big_(n in NN) F_n != emptyset $
 ]
 #definition[
     The *middle third Cantor set* is defined by:
     - Define $C_0 := [0, 1]$
     - Given $C_n = union_(i = 1)^(2^n) [a_i, b_i]$, $a_1 < b_1 < a_2 < dots.h.c < a_(2^n) < b_(2^n)$, with $|b_i - a_i| = 3^(-n)$, define $ C_(n + 1) := union_(i = 1)^(2^n) [a_i, a_i + 3^(-(n + 1))] union [b_i - 3^(-(n + 1)), b_i] $ which is a union of $2^(n + 1)$ disjoint intervals, with all differences in endpoints equalling $3^(-(n + 1))$.
-    - The *middle third Cantor set* is $ C := sect.big_(n in NN_0) C_n $ Observe that if $a$ is an endpoint of an interval in $C_n$, it is contained in $C$.
+    - The *middle third Cantor set* is $ C := inter.big_(n in NN_0) C_n $ Observe that if $a$ is an endpoint of an interval in $C_n$, it is contained in $C$.
 ]
 #proposition[
     The middle third Cantor set is closed, non-empty and equal to its set of accumulation points. Hence it is perfect and so uncountable.
@@ -339,16 +339,16 @@
     $E^c = RR - E$.
 ]
 #proposition[
-    Let $E = (a, oo)$. Then $ forall A subset.eq RR, quad mu^*(A) = mu^*(A sect E) + mu^*(A sect E^c) $
+    Let $E = (a, oo)$. Then $ forall A subset.eq RR, quad mu^*(A) = mu^*(A inter E) + mu^*(A inter E^c) $
 ]
 #definition[
-    $E subset.eq RR$ is *Lebesgue measurable* if $ forall A subset.eq RR, quad mu^*(A) = mu^*(A sect E) + mu^*(A sect E^c) $ Collection of such sets is $cal(F)_(mu^*)$.
+    $E subset.eq RR$ is *Lebesgue measurable* if $ forall A subset.eq RR, quad mu^*(A) = mu^*(A inter E) + mu^*(A inter E^c) $ Collection of such sets is $cal(F)_(mu^*)$.
 ]
 #lemma("Excision Property")[
     Let $E$ Lebesgue measurable set with finite measure and $E subset.eq B$, then $ mu^*(B - E) = mu^*(B) - mu^*(E) $
 ]
 #proposition[
-    If $E_1, ..., E_n$ Lebesgue measurable then $union_(k = 1)^n E_k$ is Lebesgue measurable. If $E_1, ..., E_n$ disjoint then $ mu^*(A sect union.big_(k = 1)^n E_k) = sum_(k = 1)^n mu^*(A sect E_k) $ for any $A subset.eq RR$. In particular, for $A = RR$, $ mu^*(union.big_(k = 1)^n E_k) = sum_(k = 1)^n mu^*(E_k) $
+    If $E_1, ..., E_n$ Lebesgue measurable then $union_(k = 1)^n E_k$ is Lebesgue measurable. If $E_1, ..., E_n$ disjoint then $ mu^*(A inter union.big_(k = 1)^n E_k) = sum_(k = 1)^n mu^*(A inter E_k) $ for any $A subset.eq RR$. In particular, for $A = RR$, $ mu^*(union.big_(k = 1)^n E_k) = sum_(k = 1)^n mu^*(E_k) $
 ]
 #remark[
     Not every set is Lebesgue measurable.
@@ -427,13 +427,13 @@
 #theorem[
     Every measure $m$ satisfies:
     - If ${A_k}_(k in NN)$ is ascending collection of measurable sets, then $ m(union.big_(k in NN) A_k) = lim_(k -> oo) m(A_k) $
-    - If ${B_k}_(k in NN)$ is descending collection of measurable sets and $m(B_1) < oo$, then $ m(sect.big_(k in NN) B_k) = lim_(k -> oo) m(B_k) $
+    - If ${B_k}_(k in NN)$ is descending collection of measurable sets and $m(B_1) < oo$, then $ m(inter.big_(k in NN) B_k) = lim_(k -> oo) m(B_k) $
 ]
 
 == An approximation result for Lebesgue measure
 
 #definition[
-    *Borel $sigma$-algebra* $cal(B)(RR)$ is smallest $sigma$-algebra containing all intervals: for any other $sigma$-algebra $cal(F)$ containing all intervals, $cal(B)(RR) subset.eq cal(F)$. $ cal(B)(RR) := sect.big {cal(F): cal(F) " " sigma "-algebra containing all intervals"} $ $E in cal(B)(RR)$ is *Borel* or *Borel measurable*.
+    *Borel $sigma$-algebra* $cal(B)(RR)$ is smallest $sigma$-algebra containing all intervals: for any other $sigma$-algebra $cal(F)$ containing all intervals, $cal(B)(RR) subset.eq cal(F)$. $ cal(B)(RR) := inter.big {cal(F): cal(F) " " sigma "-algebra containing all intervals"} $ $E in cal(B)(RR)$ is *Borel* or *Borel measurable*.
 ]
 #lemma[
     All open subsets of $RR$, closed subsets of $RR$, $G_delta$ sets and $F_sigma$ sets are Borel.

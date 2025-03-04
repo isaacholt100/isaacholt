@@ -1,5 +1,5 @@
 #import "../../template.typ": *
-#import "@preview/cetz:0.3.1" as cetz: canvas, draw
+#import "@preview/cetz:0.3.3" as cetz: canvas, draw
 #import "../../diagram-style.typ": *
 
 #show: doc => template(doc, hidden: (), slides: false)
@@ -586,7 +586,7 @@ Bregman's theorem concerns how large $per(A)$ can be if $A$ is a $0, 1$ matrix a
     $ Each $(X_i, X_j)$ (for $i != j$) is supported in the set of edges of $G$, given a direction, so $H(X_i, X_j) <= log(2m)$ by @axm:maximality.
 ]
 #definition[
-    Let $V$ be a set of size $n$ and let $cal(G)$ be a set of graphs, all with vertex set $V$. Then $cal(G)$ is *$Delta$-intersecting* (triangle-intersecting) if $G_1 sect G_2$ contains a triangle for all $G_1, G_2 in cal(G)$.
+    Let $V$ be a set of size $n$ and let $cal(G)$ be a set of graphs, all with vertex set $V$. Then $cal(G)$ is *$Delta$-intersecting* (triangle-intersecting) if $G_1 inter G_2$ contains a triangle for all $G_1, G_2 in cal(G)$.
 ]<def:triangle-intersecting>
 #theorem[
     If $abs(V) = n$, then a $Delta$-intersecting family of graphs with vertex set $V$ has size at most $2^(binom(n, 2) - 2)$.
@@ -597,9 +597,9 @@ Bregman's theorem concerns how large $per(A)$ can be if $A$ is a $0, 1$ matrix a
     - Give an expression for the probability that an edge $e$ is in a random $G_R$. By considering $X_(G_R)$ taking values in the above family, conclude.
 ]
 #proof[
-    Let $cal(G)$ be a $Delta$-intersecting family and let $X$ be chosen uniformly at random from $cal(G)$. We write $V^((2))$ for the set of (unordered) pairs of elements of $V$. We think of any $G in cal(G)$ as a characteristic function from $V^((2))$ to ${0, 1}$. So $X = (X_e: e in V^((2)))$, $X_e in {0, 1}$ (where we fix an ordering of $V^((2))$). For each $R subset.eq V$, let $G_R$ be the graph $K_R union K_(V \\ R)$. For each $R$, we shall look at the projection $X_(G_R)$, which we can think of as taking values in the set ${G sect G_R: G in cal(G)} =: cal(G)_R$.
+    Let $cal(G)$ be a $Delta$-intersecting family and let $X$ be chosen uniformly at random from $cal(G)$. We write $V^((2))$ for the set of (unordered) pairs of elements of $V$. We think of any $G in cal(G)$ as a characteristic function from $V^((2))$ to ${0, 1}$. So $X = (X_e: e in V^((2)))$, $X_e in {0, 1}$ (where we fix an ordering of $V^((2))$). For each $R subset.eq V$, let $G_R$ be the graph $K_R union K_(V \\ R)$. For each $R$, we shall look at the projection $X_(G_R)$, which we can think of as taking values in the set ${G inter G_R: G in cal(G)} =: cal(G)_R$.
 
-    Note that if $G_1, G_2 in cal(G)$, $R subset.eq [n]$, then $G_1 sect G_2 sect G_R != emptyset$, since $G_1 sect G_2$ contains a triangle, which must intersect $G_R$ by the pigeonhole principle (the triangle contains $3$ vertices, one of which is contained in one of the two components of $G_R$). Thus, $cal(G)_R$ is an intersecting family, so has size at most $2^(abs(E(G_R)) - 1)$. By @lem:probabilistic-shearer, $
+    Note that if $G_1, G_2 in cal(G)$, $R subset.eq [n]$, then $G_1 inter G_2 inter G_R != emptyset$, since $G_1 inter G_2$ contains a triangle, which must intersect $G_R$ by the pigeonhole principle (the triangle contains $3$ vertices, one of which is contained in one of the two components of $G_R$). Thus, $cal(G)_R$ is an intersecting family, so has size at most $2^(abs(E(G_R)) - 1)$. By @lem:probabilistic-shearer, $
         H(X) <= 2 dot EE_R [H(X_(G_R))] <= 2 dot EE_R [abs(E(G_R)) - 1] = 2 dot (1/2 binom(n, 2) - 1) = binom(n, 2) - 2,
     $ since each $e$ belongs to $G_R$ with probability $1 \/ 2$ (and so $EE_R [abs(E(G_R))] = 1/2 binom(n, 2)$).
 ]
@@ -988,4 +988,81 @@ $ where $p(x) = p_x$, $q(y) = q_y$. So sums of independent random variables corr
     $X + Y + Z$ is a function of $(X + Z, Y)$ and of $(X, Y + Z)$. Therefore, by @lmm:subadditivity-with-additional-difference, $
         H(X + Z, Y, X, Y + Z) + H(X + Y + Z) <= H(X + Z, Y) + H(X, Y + Z),
     $ thus $H(X, Y, Z) + H(X + Y + Z) <= H(X + Z) + H(Y) + H(X) + H(Y + Z)$. By independence and cancelling equal terms, we get the desired inequality.
+]
+#lemma[
+    Let $G$ be an abelian group and let $X$ be a $G$-valued random variable. Then $d(X; -X) <= 2 d(X; X)$.
+]<lem:negation-of-rv-at-most-doubles-self-entropic-distance>
+#proofhints[
+    Consider independent copies $X_1, X_2, X_3$ of $X$, use @lem:lower-bound-for-entropy-of-difference-of-rvs.
+]
+#proof[
+    Let $X_1, X_2, X_3$ be independent copies of $X$. Then by @lem:lower-bound-for-entropy-of-difference-of-rvs, $
+        d(X; -X) & = H(X_1 + X_2) - 1/2 H(X_1) - 1/2 H(X_2) \
+        & <= H(X_1 + X_2 - X_3) - H(X) \
+        & <= H(X_1 - X_3) + H(X_2 - X_3) - H(X_3) - H(X) \
+        & = 2 d(X; X)
+    $ by @lem:submodularity-for-sums and since $X_1, X_2, X_3$ are all copies of $X$.
+]
+#corollary[
+    Let $X$ and $Y$ be $G$-valued random variables. Then $d(X; -Y) <= 5 d(X; Y)$.
+]
+#proofhints[
+    Straightforward.
+]
+#proof[
+    By the @lem:entropic-ruzsa-triangle-inequality, $
+        d(X; -Y) & <= d(X; Y) + d(Y; -Y) \
+        & <= d(X; Y) + 2 d(Y; Y) \
+        & <= d(X; Y) + 2(d(Y; X) + d(X; Y)) = 5 d(X; Y).
+    $
+]
+#definition[
+    Let $X, Y, U, V$ be $G$-valued random variables. The *conditional distance* is $
+        d(X | U; Y | V) & = sum_(u, v) PP(U = u) PP(V = v) d(X | U = u; Y | V = v).
+    $
+]<def:conditional-distance>
+#definition[
+    Let $X, Y, U$ be $G$-valued random variables. The *simultaneous conditional distance* of $X$ to $Y$ given $U$ is $
+        d(X; Y || U) := sum_u PP(U = u) d(X | U = u; Y | U = u).
+    $
+]<def:simultaneous-conditional-distance>
+#definition[
+    We say that $X', Y'$ are *conditionally independent trials* of $X, Y$ given $U$ if $X'$ is distributed like $X$, $Y'$ like $Y$, and for each $u$, $X' | U = u$ is distributed like $X | U = u$, $Y' | U = u$ is distributed like $Y | U = u$, and $X' | U = u$ and $Y' | U = u$ are independent.
+
+    In that case, $d(X; Y || U) = H(X' - Y' | U) - 1/2 H(X' | U) - 1/2 H(Y' | U)$.
+]<def:conditionally-independent-trials>
+#lemma("Entropic BSG Theorem")[
+    Let $A, B$ be $G$-valued RVs. Then $
+        d(A; B || A + B) <= 3 I(A: B) + 2 H(A + B) - H(A) - H(B).
+    $
+]<lem:entropic-bsg-theorem>
+#proofhints[
+    - Let $A', B'$ be conditionally independent trials of $A, B$ given $A + B$.
+    - Show that $H(A' | A + B) = H(A) + H(B) - I(A: B) - H(A + B)$.
+    - Let $(A_1, B_1)$ and $(A_2, B_2)$ be conditionally independent trials of $(A, B)$ given $A + B$.
+    - Explain why $H(A_1 - B_2) <= H(A_1 - B_2, A_1) + H(A_1 - B_2, B_1) - H(A_1 - B_2, A_1, B_1)$.
+    - Use that $A_1 + B_1 = A_2 + B_2$ to bound each of the first two terms on the RHS of the above, and rewrite the $H(A_1 - B_2, A_1, B_1)$ term, using the conditional independence of $(A_1, B_1)$ and $(A_2, B_2)$, to conclude the result.
+]
+#proof[
+    We have $
+        d(A, B || A + B) = H(A' - B' | A + B) - 1/2 H(A' | A + B) - 1/2 H(B' | A + B),
+    $ where $A', B'$ are conditionally independent trials of $A, B$ given $A + B$. Now $
+        H(A' | A + B) & = H(A | A + B) = H(A, A + B) - H(A + B) \
+        & = H(A, B) - H(A + B) \
+        & = H(A) + H(B) - I(A: B) - H(A + B).
+    $ Similarly, $H(B' | A + B) = H(A) + H(B) - I(A: B) - H(A + B)$, so $
+        1/2 H(A' | A + B) + 1/2 H(B' | A + B)
+    $ is also the same. By @prop:subadditivity, $H(A' - B' | A + B) <= H(A' - B')$. Let $(A_1, B_1)$ and $(A_2, B_2)$ be conditionally independent trials of $(A, B)$ given $A + B$ (here, $A_1$ plays the role of $A'$, $B_2$ plays the role of $B'$, and each comes with another RV since we know the value of $A + B$). Then $H(A' - B') = H(A_1 - B_2)$. By @prop:submodularity, $
+        H(A_1 - B_2) <= H(A_1 - B_2, A_1) + H(A_1 - B_2, B_1) - H(A_1 - B_2, A_1, B_1)
+    $ Also, $
+        H(A_1 - B_2, A_1) = H(A_1, B_2) <= H(A_1) + H(B_2) = H(A) + H(B)
+    $ and since $A_1 + B_1 = A_2 + B_2$, $
+        H(A_1 - B_2, B_1) = H(A_2 - B_1, B_1) = H(A_2, B_1) <= H(A) + H(B).
+    $ Finally, since $A_1 + B_1 = A_2 + B_2$, $ // TODO: why do we have this?
+        H(A_1 - B_2, A_1, B_1) & = H(A_1, B_1, A_2, B_2) \
+        & = H(A_1, B_1, A_2, B_2 | A + B) + H(A + B) \
+        & = 2 H(A, B | A + B) + H(A + B) \
+        & = 2 H(A, B) - H(A + B) \
+        & = 2 H(A) + 2 H(B) - 2 I(A: B) - H(A + B).
+    $ where the third line is by conditional independence of $(A_1, B_1)$ and $(A_2, B_2)$. Adding or subtracting as appropriate all these terms gives the required inequality.
 ]

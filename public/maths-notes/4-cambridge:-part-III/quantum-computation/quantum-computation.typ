@@ -1,7 +1,7 @@
 #import "@preview/quill:0.2.0": *
 #import "../../template.typ": *
 #import "../../diagram-style.typ": *
-#import "@preview/cetz:0.3.1" as cetz: canvas, draw
+#import "@preview/cetz:0.3.3" as cetz: canvas, draw
 #let name-abbrvs = (
     "Hidden Subgroup Problem (HSP)": "HSP",
     "Discrete Logarithm Problem (DLP)": "DLP",
