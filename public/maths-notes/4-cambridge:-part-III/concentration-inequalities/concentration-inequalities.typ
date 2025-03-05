@@ -831,14 +831,14 @@ In the following section, let $A$ be a discrete (countable) alphabet and let $X$
         & = lambda nu / 2
     $ So $psi(lambda) <= lambda^2 nu / 2$.
 ]
-#theorem("McDiarmid's Inequality")[
+#theorem("Bounded Differences Inequality")[
     Let $X = (X_1, ..., X_n)$, where the $X_i$ are independent. Let $f$ have bounded differences with constants $c_i$. Let $Z = f(X)$. Then for all $t > 0$, $
         PP(Z - EE[Z] >= t), PP(Z - EE[Z] <= -t) <= e^(-2t^2 \/ sum_(i = 1)^n c_i^2) = e^(-t^2 \/ 2 nu),
     $ where $nu = 1/4 sum_(i = 1)^n c_i^2$.
-]<thm:mcdiarmids-inequality>
+]<thm:bounded-differences-inequality>
 #proofhints[
     - Use @lem:hoeffding and an equality from the proof of @thm:herbsts-argument to show that $(Ent^((i)) (e^(lambda Z)))/EE[e^(lambda Z) | X^((i))] <= 1/8 lambda^2 c_i^2$ (you should use an integral somewhere).
-    - Use @thm:tensorisation-of-entropy and @thm:herbsts-argument to show that $Z - EE[Z]$ is sub-Gaussian with parameter $nu$.
+    - Use @thm:tensorisation-of-entropy and @thm:herbsts-argument to show that $Z - EE[Z]$ has sub-Gaussian right tail with parameter $nu$.
     - Why does the result also hold for $-f$?
 ]
 #proof[
@@ -846,7 +846,7 @@ In the following section, let $A$ be a discrete (countable) alphabet and let $X$
         Ent(e^(lambda Z)) <= EE[sum_(i = 1)^n Ent^((i))(e^(lambda Z))]
     $ Write $f_(X^((i)))(x_i) = f(X_(1:(i - 1)), x_i, X_((i + 1):n))$. Conditional on $X^((i))$, $f_(X^((i)))$ takes values on an interval of length $<= c_i$ by the bounded differences property.
 
-    The second step is to apply @lem:hoeffding. Let $psi_i (lambda) = log EE[e^(lambda Z) | X^((i))] - lambda EE[Z | X^((i))]$. As in the proof of @thm:herbsts-argument, we have $
+    The second step is to apply @lem:hoeffding. Let $psi_i (lambda) = log EE[e^(lambda(Z - EE[Z])) | X^((i))]$. As in the proof of @thm:herbsts-argument, we have $
         Ent(e^(lambda Z))/EE[e^(lambda Z)] & = lambda psi'_(Z - EE[Z])(lambda) - psi_(Z - EE[Z])(lambda).
     $ Note that this holds for the random variable $Z | X^((i)) = x^((i))$, for any value of $x^((i))$. By @lem:hoeffding, we have $psi''_i (lambda) <= c_i^2 \/ 4$, and so $
         (Ent^((i)) (e^(lambda Z)))/EE[e^(lambda Z) | X^((i))] & = lambda psi'_i (lambda) - psi_i (lambda)= integral_0^lambda theta psi''_i (theta) dif theta \
@@ -954,7 +954,7 @@ In the following section, let $A$ be a discrete (countable) alphabet and let $X$
     - If $max_(x in {-1, 1}^n) sum_(i = 1)^n (f(x) - f(overline(x)^((i))))^2 <= nu$, then $Z - EE[Z] in cal(G)(nu \/ 2)$. In fact, more careful analysis shows that $Z - EE[Z] in cal(G)(nu \/ 4)$.
     - If $f$ has bounded differences with constants $c_i$ where $sum_(i = 1)^n c_i^2 <= nu$, then $f$ also satisfies $
         max_(x in {-1, 1}^n) sum_(i = 1)^n (f(x) - f(overline(x)^((i))))^2 <= nu
-    $ so $Z - EE[Z] in cal(G)(nu \/ 4)$. @thm:mcdiarmids-inequality also gives $Z - EE[Z] in cal(G)(nu \/ 4)$ under stronger assumptions. So we are able to prove a result that is as strong as @thm:mcdiarmids-inequality but under a weaker assumption.
+    $ so $Z - EE[Z] in cal(G)(nu \/ 4)$. @thm:bounded-differences-inequality also gives $Z - EE[Z] in cal(G)(nu \/ 4)$ under stronger assumptions. So we are able to prove a result that is as strong as @thm:bounded-differences-inequality but under a weaker assumption.
     - The @thm:efron-stein gives $
         Var(Z) <= EE[sum_(i = 1)^n (Z - Z'_i)_+^2] = 1/2 EE[sum_(i = 1)^n (Z - overline(Z)^((i)))^2] <= nu \/ 2
     $ if $EE[sum_(i = 1)^n (Z - overline(Z)^((i)))^2] <= nu$. Note that this a weaker result, but makes a weaker assumption than @thm:concentration-on-the-hypercube.
@@ -1150,7 +1150,7 @@ Let $f: [0, 1]^n -> RR$ be separately convex and $1$-Lipschitz. The @thm:convex-
         inf_(pi in Pi(P, Q)) sum_(i = 1)^n EE_pi [d(X_i, Y_i)]^2 <= 2 C D(Q || P).
     $ for all $Q << P$. Then $
         PP(Z - EE[Z] >= t) <= e^(-t^2 \/ 2 nu),
-    $ where $nu = C sum_(i = 1)^n c_i$.
+    $ where $nu = C sum_(i = 1)^n c_i^2$.
 ]<lem:concentration-via-marton>
 #proofhints[
     Let $Q << P$ and $Y sim Q$. Show that $
@@ -1168,10 +1168,44 @@ Let $f: [0, 1]^n -> RR$ be separately convex and $1$-Lipschitz. The @thm:convex-
         EE_Q [Z] - EE_P [Z] <= (sum_(i = 1)^n c_i^2)^(1 \/ 2) (inf_(pi in Pi(P, Q)) sum_(i = 1)^n EE_pi [d(X_i, Y_i)]^2)^(1 \/ 2)
     $ Since $
         inf_(pi in Pi(P, Q)) sum_(i = 1)^n EE_pi [d(X_i, Y_i)]^2 <= 2 C D(Q || P)
-    $ we have $EE_Q [Z] - EE_P [Z] <= sqrt(2 nu D(Q || P))$, where $nu = C sum_(i = 1)^n c_i$. The result follows by @thm:martons-argument.
+    $ we have $EE_Q [Z] - EE_P [Z] <= sqrt(2 nu D(Q || P))$, where $nu = C sum_(i = 1)^n c_i^2$. The result follows by @thm:martons-argument.
 ]
 #definition[
     Let $X sim P$ and $Y sim Q$. The *transportation cost* from $Q$ to $P$ w.r.t a distance $d(dot, dot)$ is $
-        inf_(pi in Pi(P, Q)) EE_pi d(X, Y).
+        inf_(pi in Pi(P, Q)) EE_pi [d(X, Y)].
     $
 ]<def:transportation-cost>
+#definition[
+    Let $P$ and $Q$ be distributions on the same space $(Omega, cal(A))$. The *total variation distance* between $P$ and $Q$ is $
+        d_"TV" (P, Q) := sup_(A in cal(A)) abs(P(A) - Q(A)).
+    $
+]<def:total-variation-distance>
+#proposition[
+    We have the alternative expressions $
+        d_"TV" (P, Q) = 1/2 sum_(omega in Omega) abs(P(omega) - Q(omega)) = sum_(omega in Omega) (P(omega) - Q(omega))_+ = 1 - sum_(omega in Omega) min{P(omega), Q(omega)}
+    $
+]<prop:expressions-for-total-variation-distance>
+#proofhints[
+    - For second inequality, consider the $+$ and $-$ parts.
+    - For the first inequality, show $<=$ by splitting sum over $A$ and $A^c$ for $A in cal(A)$, show $>=$ by considering $A^* = {omega: P(omega) >= Q()}$
+]
+#proof[
+    For the first inequality: for any $A in cal(A)$, by the triangle inequality, $
+        sum_(omega in Omega) abs(P(omega) - Q(omega)) & = sum_(omega in A) abs(P(omega) - Q(omega)) + sum_(omega in A^c) abs(P(omega) - Q(omega)) \
+        & >= P(A) - Q(A) + Q(A^c) - P(A^c) = 2(P(A) - Q(A))
+    $ and similarly $sum_(omega in Omega) abs(P(omega) - Q(omega)) >= 2(Q(A) - P(A))$. Let $A^* = {omega: P(omega) >= Q(omega)}$. Then $
+        d_"TV" (P, Q) & >= P(A^*) - Q(A^*) \
+        & = sum_(omega in Omega) (P(omega) - Q(omega))_+
+        & = 1/2 sum_(omega in Omega) abs(P(omega) - Q(omega)),
+    $ since $sum_(omega in Omega) (P(omega) - Q(omega))^+ = sum_(omega in Omega) (P(omega) - Q(omega))_-$. For the third inequality
+]
+#theorem("Marton's Transport Cost Inequality")[
+    Let $P = P_1 times.circle cdots times.circle P_n$ and $Q << P$. Let $X sim P$ and $Y sim Q$. Then $
+        inf_(pi in Pi(P, Q)) sum_(i = 1)^n EE_pi [II_{X_i != Y_i}]^2 = inf_(pi in Pi(P, Q)) sum_(i = 1)^n PP(X_i != Y_i)^2 <= 1/2 D(Q || P).
+    $
+]<thm:martons-transport-cost-inequality>
+#remark[
+    We can recover the @thm:bounded-differences-inequality from @thm:martons-transport-cost-inequality: the conditions of @lem:concentration-via-marton are satisfied with $C = 1/4$, since $f$ having bounded differences with constant $c_i$ implies $
+        f(y) - f(x) <= sum_(i = 1)^n c_i d(x_i, y_i),
+    $ where $d(x_i, y_i) = II_{x_i != y_i}$. This gives the concentration bound.
+]
