@@ -1066,3 +1066,133 @@ $ where $p(x) = p_x$, $q(y) = q_y$. So sums of independent random variables corr
         & = 2 H(A) + 2 H(B) - 2 I(A: B) - H(A + B).
     $ where the third line is by conditional independence of $(A_1, B_1)$ and $(A_2, B_2)$. Adding or subtracting as appropriate all these terms gives the required inequality.
 ]
+
+
+= A proof of Marton's conjecture in $FF_2^n$
+
+We shall prove the following theorem.
+#theorem("Green, Manners, Tao, Gowers")[
+    There is a polynomial $p$ with the following property: if $n in NN$ and $A subset.eq FF_2^n$ is such that $abs(A + A) <= C abs(A)$, then there is a subspace $H subset.eq FF_2^n$ of size at most $abs(A)$ such that $A$ is contained in the union of at most $p(C)$ translates of $H$. Equivalently, there exists $K subset.eq FF_2$, $abs(K) <= p(C)$, such that $A subset.eq K + H$.
+]<thm:green-manners-tao-gowers>
+In fact, we shall prove the following statement:
+#theorem("EPFR")[
+    Let $G = FF_2^n$. There is an absolute constant $alpha$ with the following property:
+    
+    Let $X, Y$ be $G$-valued random variables. Then there exists a subgroup $H$ of $G$ such that $
+        d(X; U_H) + d(U_H; Y) <= alpha d(X; Y),
+    $ where $U_H$ is a random variable distributed uniformly on $H$.
+]<thm:epfr>
+#lemma[
+    Let $X$ be a discrete random variable and write $p_x = PP(X = x)$. Then there exists $x$ such that $p_x >= 2^(-H(X))$.
+]<lem:rv-has-some-mass-greater-than-negative-exponential-of-entropy>
+#proofhints[
+    By contradiction.
+]
+#proof[
+    If not, then $H(X) = sum_x p_x log(1 \/ p_x) > H(X) sum_x p_x = H(X)$: contradiction.
+]
+#proposition[
+    @thm:epfr implies @thm:green-manners-tao-gowers.
+]<prop:epfr-implies-green-manners-tao-gowers>
+#proofhints[
+    - Let $A subset.eq FF_2^n$ and $abs(A + A) <= C abs(A)$. Let $U_H$ be uniformly distributed on $H$, let $X$ and $Y$ be independent copies of $U_A$. Show that $d(X; U_H) <= 1/2 alpha log C$.
+    - Deduce that there exists $z$ such that $
+        PP(X + U_H = z) >= abs(A)^(-1 \/ 2) abs(H)^(-1 \/ 2) C^(-alpha \/ 2)
+    $ and find an expression for the LHS.
+    - Let $B = A inter (z + H)$. Show that $A$ can be covered by at most $abs(A + B)/abs(B)$ translates of $H$.
+    - Use that $B subset.eq A, z + H$ to show that $
+        abs(A + B)/abs(B) <= C^(alpha \/ 2 + 1) abs(A)^(1 \/ 2) / abs(H)^(1 \/ 2) <= C^(alpha + 1).
+    $
+    - Consider the cases $abs(H) <= abs(A)$ and $abs(H) > abs(A)$: if the latter, then consider a subgroup $H'$ of $H$ of size between $abs(A) \/ 2$ and $abs(A)$ (why does this exist?).
+]
+#proof[
+    Let $A subset.eq FF_2^n$ and $abs(A + A) <= C abs(A)$. Let $X$ and $Y$ be independent copies of $U_A$. Then by @thm:epfr, there exists a subgroup $H$ such that $d(X; U_H) + d(U_H; X) <= alpha d(X; Y)$, so $d(X; U_H) <= alpha / 2 d(X; Y)$. But since we are in $FF_2^n$, $
+        d(X; Y) & = H(U_A - U'_A) - 1/2 H(U_A) - 1/2 H(U'_A) = H(U_A + U'_A) - H(U_A) \
+        & <= log C abs(A) - log abs(A) = log C,
+    $ by @axm:maximality. So $d(X; U_H) <= 1/2 alpha log C$, i.e. $
+        H(X + U_H) & <= 1/2 H(X) + 1/2 H(U_H) + 1/2 alpha log C \
+        & = 1/2 log abs(A) + 1/2 log abs(H) + 1/2 alpha log C.
+    $ Therefore by @lem:rv-has-some-mass-greater-than-negative-exponential-of-entropy, there exists $z$ such that $
+        PP(X + U_H = z) >= abs(A)^(-1 \/ 2) abs(H)^(-1 \/ 2) C^(-alpha \/ 2).
+    $ But $PP(X + U_H = z) = (A inter (z - H))/(abs(A) abs(H)) = (A inter (z + H))/(abs(A) abs(H))$. So there exists $z in G$ such that $
+        abs(A inter (z + H)) >= C^(-alpha \/ 2) abs(A)^(-1 \/ 2) abs(H)^(-1 \/ 2).
+    $ Let $B = A inter (z + H)$. Let $B = A inter (z + H)$. By @lem:ruzsa-covering-lemma, we can cover $A$ by at most $abs(A + B)/abs(B)$ translates of $B - B = B + B$. But $B subset.eq z + H$ so $B + B subset.eq 2z + H + H = H$. So $A$ can be covered by at most $abs(A + B)/abs(B)$ translates of $H$. But since $B subset.eq A$, $abs(A + B) <= abs(A + A) <= C abs(A)$. So $
+        abs(A + B)/abs(B) <= (C abs(A))/(C^(-alpha \/ 2) abs(A)^(1 \/ 2) abs(H)^(1 \/ 2)) = C^(alpha \/ 2 + 1) abs(A)^(1 \/ 2) / abs(H)^(1 \/ 2).
+    $ Since $B$ is contained in $z + H$, $abs(H) >= C^(-alpha \/ 2) abs(A)^(1 \/ 2) abs(H)^(1 \/ 2)$, which implies $abs(H) >= C^(-alpha) abs(A)$. So $
+        C^(alpha \/ 2 + 1) abs(A)^(1 \/ 2)/abs(H)^(1 \/ 2) <= C^(alpha + 1).
+    $ If $abs(H) <= abs(A)$, then we are done (with polynomial $p(x) = x^(alpha + 1)$). Otherwise, since $B subset.eq A$, $abs(A) >= C^(-alpha \/ 2) abs(A)^(1 \/ 2) abs(H)^(1 \/ 2)$, which implies $abs(H) <= C^alpha abs(A)$. Pick a subgroup $H'$ of $H$ of size between $abs(A) \/ 2$ and $abs(A)$. Then $H$ is a union of $abs(H) \/ abs(H') <= 2 C^alpha$ translates of $H'$, so $A$ is a union of at most $2 C^(2 alpha + 1)$ translates of $H'$.
+]
+Now we reduce further. We shall prove the following statement.
+#theorem("EPFR'")[
+    There is an absolute constant $eta > 0$ such that if $X$ and $Y$ are any two $FF_2^n$-valued RVs, with $d(X; Y) > 0$, then there exist $FF_2^n$-valued RVs $U$ and $V$ such that $
+        tau_(X, Y) (U; V) := d(U; V) + eta (d(U; X) + d(V; Y)) < d(X; Y).
+    $
+]<thm:epfr-dash>
+#proposition[
+    @thm:epfr-dash with constant $eta$ implies @thm:epfr with constant $1 \/ eta$.
+]<prop:epfr-dash-implies-epfr>
+#proofhints[
+    - By compactness, we can find $FF_2^n$-valued RVs $U, V$ such that $tau_(X, Y) (U; V)$ is minimised.
+    - Assuming that $d(U; V) != 0$, use the @lem:ruzsa-triangle-inequality to derive a contradiction.
+    - Conclude using @lem:criterion-for-zero-entropic-ruzsa-distance.
+]
+#proof[
+    By compactness, we can find $FF_2^n$-valued RVs $U, V$ such that $tau_(X, Y) (U; V)$ is minimised. If $d(U; V) != 0$, then by @thm:epfr-dash, there exist $FF_2^n$-valued RVs $Z, W$ such that $tau_(U V)(Z; W) < d(U; V)$. But then by the @lem:ruzsa-triangle-inequality, $
+        tau_(X, Y) (Z; W) & = d(Z; W) + eta (d(Z; X) + d(W; Y)) \
+        & <= d(Z; W) + eta (d(Z; U) + d(W; V)) + eta (d(U; X) + d(V; Y)) \
+        & < d(U; V) + eta (d(U; X) + d(V; Y)) \
+        & = tau_(X, Y)(U; V),
+    $ which is a contradiction. It follows that $d(U; V) = 0$. So by @lem:criterion-for-zero-entropic-ruzsa-distance, there exists $H$ such that $U$ and $V$ are uniform on cosets of $H$, so $
+        eta (d(U; X) + d(V; Y)) = eta (d(U_H; X) + d(U_H; Y)) < d(X; Y),
+    $ since $d(dot; dot)$ is invariant under constant shifts of either of its arguments. This gives @thm:epfr with constant $1 \/ eta$.
+]
+#notation[
+    Write $tau_(X, Y)(U | Z; V | W)$ for $sum_(z, w) PP(Z = z) PP(W = w) tau_(X, Y)(U | Z = z; V | W = w)$ and $tau_(X, Y) (U; V || Z)$ for $sum_z PP(Z = z) tau_(X, Y) (U | Z = z; V = Z = z)$.
+]
+#remark[
+    If we can prove @thm:epfr-dash for conditioned random variables, then by averaging, we get it for some pair of random variables (e.g. of the form $U | Z = z$ and $V | W = w$).
+]
+#lemma("Fibring")[
+    Let $G$ and $H$ be abelian groups and let $phi: G -> H$ be a homomorphism. Let $X, Y$ be $G$-valued random variables. Then $
+        d(X; Y) = d(phi(X); phi(Y)) + d(X | phi(X); Y | phi(Y)) + I(X - Y: (phi(X), phi(Y)) | phi(X) - phi(Y)).
+    $
+]<lem:fibring>
+#proofhints[
+    - May assume WLOG that $X$ and $Y$ are independent.
+    - Use @lem:data-processing-adds-no-information and @axm:additivity.
+]
+#proof[
+    We may assume WLOG that $X$ and $Y$ are independent. We have $
+        d(X; Y) & = H(X - Y) - 1/2 H(X) - 1/2 H(Y) \
+        & = H(phi(X) - phi(Y)) + H(X - Y | phi(X) - phi(Y)) \
+        & - 1/2 H(phi(X)) - 1/2 H(X | phi(X)) - 1/2 H(phi(Y)) - 1/2 H(Y | phi(Y)) \
+        & = d(phi(X); phi(Y)) + d(X | phi(X); Y | phi(Y)) \
+        & + H(X - Y | phi(X) - phi(Y)) - H(X - Y | phi(X), phi(Y))
+    $ But the last line equals $
+        & H(X - Y | phi(X) - phi(Y)) - H(X - Y | phi(X), phi(Y), phi(X) - phi(Y)) \
+        = & I(X - Y: (phi(X), phi(Y)) | phi(X) - phi(Y)).
+    $
+]
+We shall be interested in the following special case.
+#corollary[
+    Let $G = FF_2^n$ and let $X_1, X_2, X_3, X_4$ be independent $G$-valued RVs. Then $
+        d(X_1; X_3) + d(X_2; X_4) & = d((X_1, X_2); (X_3, X_4)) \
+        & = d(X_1 + X_2; X_3 + X_4) + d(X_1 | X_1 + X_2; X_3 | X_3 + X_4) \
+        & + I(X_1 + X_3, X_2 + X_4: X_1 + X_2, X_3 + X_4 | X_1 + X_2 + X_3 + X_4).
+    $
+]<crl:fibring-for-pairs>
+#proofhints[
+    Straightforward.
+]
+#proof[
+    The first equality is easy to see. For the second, apply @lem:fibring with $X = (X_1, X_2)$, $Y = (X_3, X_4)$ and $phi(x, y) = x + y$.
+]
+We shall now set $W = X_1 + X_2 + X_3 + X_4$.
+
+Recall that $d(X; Y || X + Y) <= 3 I(X: Y) + 2 H(X + Y) - H(X) - H(Y)$. Equivalently, $I(X: Y) >= 1/3 (d(X; Y || X + Y) + H(X) + H(Y) - 2 H(X + Y))$. Applying this to the mutual information term in @crl:fibring-for-pairs, we get that it is at least $
+    & 1/3 d(X_1 + X_3, X_2 + X_4; X_1 + X_2, X_3 + X_4 || X_2 + X_3, W) + 1/3 H(X_1 + X_3, X_2 + X_4 | W) \
+    & + 1/3 H(X_1 + X_2, X_3 + X_4 | W) - 2/3 H(X_2 + X_3, X_2 + X_3 | W).
+$ which simplifies to $
+    & 1/3 d(X_1 + X_3, X_2 + X_4; X_1 + X_2, X_3 + X_4 || X_2 + X_3, W) \
+    & + 1/3 H(X_1 + X_3 | W) + 1/3 H(X_1 + X_2 | W) - 2/3 H(X_2 + X_3 | W)
+$
