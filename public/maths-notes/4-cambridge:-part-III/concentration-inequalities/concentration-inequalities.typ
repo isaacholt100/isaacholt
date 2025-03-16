@@ -383,7 +383,7 @@ We want to study the concentration of $Z = f(X_1, ..., X_n)$ for independent $X_
 ]<crl:bound-on-variance-of-function-with-bounded-differences>
 #proofhints[
     Consider the random variable $
-        Z_i = 1/2 (sup_(x_i in A) f(X_(1:(i - 1)), x_i, X_((i + 1):n)) - inf_(x_i in A) f(X_(1:(i - 1)), x_i, X_((i + 1):n))).
+        Z_i = 1/2 (sup_(x_i in A) f(X_(1:(i - 1)), x_i, X_((i + 1):n)) + inf_(x_i in A) f(X_(1:(i - 1)), x_i, X_((i + 1):n))).
     $
 ]
 #proof[
@@ -831,14 +831,14 @@ In the following section, let $A$ be a discrete (countable) alphabet and let $X$
         & = lambda nu / 2
     $ So $psi(lambda) <= lambda^2 nu / 2$.
 ]
-#theorem("McDiarmid's Inequality")[
+#theorem("Bounded Differences Inequality")[
     Let $X = (X_1, ..., X_n)$, where the $X_i$ are independent. Let $f$ have bounded differences with constants $c_i$. Let $Z = f(X)$. Then for all $t > 0$, $
         PP(Z - EE[Z] >= t), PP(Z - EE[Z] <= -t) <= e^(-2t^2 \/ sum_(i = 1)^n c_i^2) = e^(-t^2 \/ 2 nu),
     $ where $nu = 1/4 sum_(i = 1)^n c_i^2$.
-]<thm:mcdiarmids-inequality>
+]<thm:bounded-differences-inequality>
 #proofhints[
     - Use @lem:hoeffding and an equality from the proof of @thm:herbsts-argument to show that $(Ent^((i)) (e^(lambda Z)))/EE[e^(lambda Z) | X^((i))] <= 1/8 lambda^2 c_i^2$ (you should use an integral somewhere).
-    - Use @thm:tensorisation-of-entropy and @thm:herbsts-argument to show that $Z - EE[Z]$ is sub-Gaussian with parameter $nu$.
+    - Use @thm:tensorisation-of-entropy and @thm:herbsts-argument to show that $Z - EE[Z]$ has sub-Gaussian right tail with parameter $nu$.
     - Why does the result also hold for $-f$?
 ]
 #proof[
@@ -846,7 +846,7 @@ In the following section, let $A$ be a discrete (countable) alphabet and let $X$
         Ent(e^(lambda Z)) <= EE[sum_(i = 1)^n Ent^((i))(e^(lambda Z))]
     $ Write $f_(X^((i)))(x_i) = f(X_(1:(i - 1)), x_i, X_((i + 1):n))$. Conditional on $X^((i))$, $f_(X^((i)))$ takes values on an interval of length $<= c_i$ by the bounded differences property.
 
-    The second step is to apply @lem:hoeffding. Let $psi_i (lambda) = log EE[e^(lambda Z) | X^((i))] - lambda EE[Z | X^((i))]$. As in the proof of @thm:herbsts-argument, we have $
+    The second step is to apply @lem:hoeffding. Let $psi_i (lambda) = log EE[e^(lambda(Z - EE[Z])) | X^((i))]$. As in the proof of @thm:herbsts-argument, we have $
         Ent(e^(lambda Z))/EE[e^(lambda Z)] & = lambda psi'_(Z - EE[Z])(lambda) - psi_(Z - EE[Z])(lambda).
     $ Note that this holds for the random variable $Z | X^((i)) = x^((i))$, for any value of $x^((i))$. By @lem:hoeffding, we have $psi''_i (lambda) <= c_i^2 \/ 4$, and so $
         (Ent^((i)) (e^(lambda Z)))/EE[e^(lambda Z) | X^((i))] & = lambda psi'_i (lambda) - psi_i (lambda)= integral_0^lambda theta psi''_i (theta) dif theta \
@@ -954,7 +954,7 @@ In the following section, let $A$ be a discrete (countable) alphabet and let $X$
     - If $max_(x in {-1, 1}^n) sum_(i = 1)^n (f(x) - f(overline(x)^((i))))^2 <= nu$, then $Z - EE[Z] in cal(G)(nu \/ 2)$. In fact, more careful analysis shows that $Z - EE[Z] in cal(G)(nu \/ 4)$.
     - If $f$ has bounded differences with constants $c_i$ where $sum_(i = 1)^n c_i^2 <= nu$, then $f$ also satisfies $
         max_(x in {-1, 1}^n) sum_(i = 1)^n (f(x) - f(overline(x)^((i))))^2 <= nu
-    $ so $Z - EE[Z] in cal(G)(nu \/ 4)$. @thm:mcdiarmids-inequality also gives $Z - EE[Z] in cal(G)(nu \/ 4)$ under stronger assumptions. So we are able to prove a result that is as strong as @thm:mcdiarmids-inequality but under a weaker assumption.
+    $ so $Z - EE[Z] in cal(G)(nu \/ 4)$. @thm:bounded-differences-inequality also gives $Z - EE[Z] in cal(G)(nu \/ 4)$ under stronger assumptions. So we are able to prove a result that is as strong as @thm:bounded-differences-inequality but under a weaker assumption.
     - The @thm:efron-stein gives $
         Var(Z) <= EE[sum_(i = 1)^n (Z - Z'_i)_+^2] = 1/2 EE[sum_(i = 1)^n (Z - overline(Z)^((i)))^2] <= nu \/ 2
     $ if $EE[sum_(i = 1)^n (Z - overline(Z)^((i)))^2] <= nu$. Note that this a weaker result, but makes a weaker assumption than @thm:concentration-on-the-hypercube.
@@ -1150,7 +1150,7 @@ Let $f: [0, 1]^n -> RR$ be separately convex and $1$-Lipschitz. The @thm:convex-
         inf_(pi in Pi(P, Q)) sum_(i = 1)^n EE_pi [d(X_i, Y_i)]^2 <= 2 C D(Q || P).
     $ for all $Q << P$. Then $
         PP(Z - EE[Z] >= t) <= e^(-t^2 \/ 2 nu),
-    $ where $nu = C sum_(i = 1)^n c_i$.
+    $ where $nu = C sum_(i = 1)^n c_i^2$.
 ]<lem:concentration-via-marton>
 #proofhints[
     Let $Q << P$ and $Y sim Q$. Show that $
@@ -1168,10 +1168,263 @@ Let $f: [0, 1]^n -> RR$ be separately convex and $1$-Lipschitz. The @thm:convex-
         EE_Q [Z] - EE_P [Z] <= (sum_(i = 1)^n c_i^2)^(1 \/ 2) (inf_(pi in Pi(P, Q)) sum_(i = 1)^n EE_pi [d(X_i, Y_i)]^2)^(1 \/ 2)
     $ Since $
         inf_(pi in Pi(P, Q)) sum_(i = 1)^n EE_pi [d(X_i, Y_i)]^2 <= 2 C D(Q || P)
-    $ we have $EE_Q [Z] - EE_P [Z] <= sqrt(2 nu D(Q || P))$, where $nu = C sum_(i = 1)^n c_i$. The result follows by @thm:martons-argument.
+    $ we have $EE_Q [Z] - EE_P [Z] <= sqrt(2 nu D(Q || P))$, where $nu = C sum_(i = 1)^n c_i^2$. The result follows by @thm:martons-argument.
 ]
 #definition[
     Let $X sim P$ and $Y sim Q$. The *transportation cost* from $Q$ to $P$ w.r.t a distance $d(dot, dot)$ is $
-        inf_(pi in Pi(P, Q)) EE_pi d(X, Y).
+        inf_(pi in Pi(P, Q)) EE_pi [d(X, Y)].
     $
 ]<def:transportation-cost>
+#definition[
+    Let $P$ and $Q$ be distributions on the same space $(Omega, cal(A))$. The *total variation distance* between $P$ and $Q$ is $
+        d_"TV" (P, Q) := sup_(A in cal(A)) abs(P(A) - Q(A)).
+    $
+]<def:total-variation-distance>
+#proposition[
+    Let $A^* = {omega in Omega: P(omega) >= Q(omega)}.$ We have the alternative expressions $
+        d_"TV" (P, Q) & = 1/2 sum_(omega in Omega) abs(P(omega) - Q(omega)) = sum_(omega in Omega) (P(omega) - Q(omega))_+ \
+        & = P(A^*) - Q(A^*) = 1 - sum_(omega in Omega) min{P(omega), Q(omega)}.
+    $
+]<prop:expressions-for-total-variation-distance>
+#proofhints[
+    - For second equality, consider the $+$ and $-$ parts.
+    - For the first equality, show $<=$ by splitting sum over $A$ and $A^c$ for $A in cal(A)$, show $>=$ by considering $A^* = {omega: P(omega) >= Q(omega)}$.
+    - For the third equality, show the fourth expression is equal to the third.
+]
+#proof[
+    For the first inequality: for any $A in cal(A)$, by the triangle inequality, $
+        sum_(omega in Omega) abs(P(omega) - Q(omega)) & = sum_(omega in A) abs(P(omega) - Q(omega)) + sum_(omega in A^c) abs(P(omega) - Q(omega)) \
+        & >= P(A) - Q(A) + Q(A^c) - P(A^c) = 2(P(A) - Q(A))
+    $ and similarly $sum_(omega in Omega) abs(P(omega) - Q(omega)) >= 2(Q(A) - P(A))$. Conversely, $
+        d_"TV" (P, Q) & >= P(A^*) - Q(A^*) \
+        & = sum_(omega in Omega) (P(omega) - Q(omega))_+
+        & = 1/2 sum_(omega in Omega) abs(P(omega) - Q(omega)),
+    $ since $sum_(omega in Omega) (P(omega) - Q(omega))^+ = sum_(omega in Omega) (P(omega) - Q(omega))_-$. For the third inequality, $
+        1 - sum_(omega in Omega) min{P(omega), Q(omega)} & = sum_(omega in Omega) P(omega) - min{P(omega), Q(omega)} \
+        & = sum_(omega in Omega) (P(omega) - Q(omega))_+
+    $
+]
+#lemma[
+    Let $P$ and $Q$ be distributions on the same space. Then if $X sim P$ and $Y sim Q$, $
+        inf_(pi in Pi(P, Q)) PP_pi (X != Y) = d_"TV" (P, Q) in [0, 1].
+    $
+]<lem:expression-for-total-variation-distance-in-terms-of-couplings>
+#proofhints[
+    Show that LHS $>=$ RHS by taking a supremum and infimum, then consider $
+        pi(omega_1, omega_2) = cases(
+            min{P(omega), Q(omega)} quad & "if" omega_1 = omega_2 = omega,
+            1/(d_"TV" (P, Q)) (P(omega_1) - Q(omega_1)) (Q(omega_2) - P(omega_2)) quad & "if" (omega_1, omega_2) in A^* times (A^*)^c,
+            0 quad & "otherwise".
+        )
+    $
+]
+#proof[
+    Let $pi in Pi(P, Q)$ and $A in cal(A)$. Since $abs(II_{X in A} - II_({Y in A})) <= II_({X != Y})$ We have $
+        abs(P(A) - Q(A)) & = abs(EE_pi [II_({X in A}) - II_({Y in A})]) \
+        & <= EE_pi [abs(II_{X in A} - II_({Y in A}))] \
+        & <= EE[II_({X != Y})] quad "pointwise" \
+        & = PP(X != Y).
+    $ Taking the supremum over all $A in cal(A)$ and the infimum over all couplings gives $d_"TV" (P, Q) <= inf_(pi in Pi(P, Q)) PP(X != Y)$. We will construct $pi$ such that $PP(X != Y) = d_"TV" (P, Q)$. Intuitively, we want to place as much mass as possible on the "diagonal", i.e. make $pi(omega, omega)$ as large as possible.
+
+    For $(omega_1, omega_2) in Omega times Omega$, let $
+        pi(omega_1, omega_2) = cases(
+            min{P(omega), Q(omega)} quad & "if" omega_1 = omega_2 = omega,
+            1/(d_"TV" (P, Q)) (P(omega_1) - Q(omega_1)) (Q(omega_2) - P(omega_2)) quad & "if" (omega_1, omega_2) in A^* times (A^*)^c,
+            0 quad & "otherwise".
+        )
+    $ Clearly, $PP_pi (X = Y) = sum_(omega in Omega) pi(omega, omega) = sum_(omega in Omega) min{P(omega), Q(omega)}$, and so by @prop:expressions-for-total-variation-distance, $PP_pi (X != Y) = 1 - sum_(omega in Omega) min{P(omega), Q(omega)} = d_"TV" (P, Q)$. Also, $pi$ is indeed a valid coupling: $
+        sum_(omega_1 in Omega) pi(omega_1, omega_2) & = sum_(omega_1 in A^*) (P(omega_1) - Q(omega_1)) (Q(omega_2) - P(omega_2))/(d_"TV" (P, Q)) II_({omega_2 in (A^*)^c}) + min{P(omega_2), Q(omega_2)} \
+        & = Q(omega_2),
+    $ and similarly $sum_(omega_2 in Omega) pi(omega_1, omega_2) = P(omega_1)$.
+]
+#definition[
+    The minimising coupling $
+        pi(omega_1, omega_2) = cases(
+            min{P(omega), Q(omega)} quad & "if" omega_1 = omega_2 = omega,
+            1/(d_"TV" (P, Q)) (P(omega_1) - Q(omega_1)) (Q(omega_2) - P(omega_2)) quad & "if" (omega_1, omega_2) in A^* times (A^*)^c,
+            0 quad & "otherwise".
+        )
+    $ in the proof of @lem:expression-for-total-variation-distance-in-terms-of-couplings is called the *optimal total variation coupling*.
+]<def:optimal-total-variation-coupling>
+#lemma("Pinsker's Inequality")[
+    Let $P$ and $Q$ be PMFs such that $Q << P$. Then $
+        d_"TV" (P, Q)^2 <= 1/2 D(Q || P).
+    $
+]<lem:pinskers-inequality>
+#proofhints[
+    Let $Y(omega) = Q(omega)/P(omega)$ and $Z = II_({Y >= 1})$. Use @lem:hoeffding and @thm:martons-argument.
+]
+#proof[
+    Let $Y(omega) = Q(omega)/P(omega)$. Let $Z = II_({Y >= 1})$. By @lem:hoeffding, $
+        psi_(Z - EE[Z])(lambda) <= lambda^2 / 8.
+    $ But then by @thm:martons-argument, $
+        EE_Q [Z] - EE_P [Z] <= sqrt(2 dot 1/4 dot D(Q || P)),
+    $ i.e. $d_"TV" (P, Q) = Q(A) - P(A) <= sqrt(1/2 dot D(Q || P))$, where $A = {omega in Omega: Q(omega) >= P(omega)}$, by @prop:expressions-for-total-variation-distance.
+]
+#theorem("Marton's Transport Cost Inequality")[
+    Let $P = P_1 times.circle cdots times.circle P_n$ and $Q << P$. Let $X sim P$ and $Y sim Q$. Then $
+        inf_(pi in Pi(P, Q)) sum_(i = 1)^n EE_pi [II_{X_i != Y_i}]^2 = inf_(pi in Pi(P, Q)) sum_(i = 1)^n PP_pi (X_i != Y_i)^2 <= 1/2 D(Q || P).
+    $
+]<thm:martons-transport-cost-inequality>
+// #proofhints[
+//     - Use induction on $n$, $n = 1$ case is straightforward.
+//     - Assume that for every $n <= k$, there exists a coupling $pi_n$ on $(X_(1:n), Y_(1:n))$ such that $sum_(i = 1)^n PP(X_i != Y_i)^2 <= 1/2 D(Q || P)$.
+//     - Let $pi_(k + 1)(x_(1:(k + 1)), y_(1:(k + 1))) = pi_k (x_(1:k), y_(1:k)) dot pi_(y_(1:k))(x_(k + 1), y_(k + 1))$.
+// ]
+#proof[ // TODO: I'm not comfortable with most of this proof
+    We use induction on $n$. The $n = 1$ case follows from @lem:expression-for-total-variation-distance-in-terms-of-couplings and @lem:pinskers-inequality. Assume that for every $n <= k$, there exists a coupling $pi_n$ on $(X_(1:n), Y_(1:n))$ such that $sum_(i = 1)^n PP(X_i != Y_i)^2 <= 1/2 D(Q || P)$. We will extend it to a coupling $pi_(k + 1)$ on $(X_(1:(k + 1)), Y_(1:(k + 1)))$. Write $
+        sum_(i = 1)^(k + 1) PP(X_i != Y_i)^2 = sum_(i = 1)^k PP(X_i != Y_i)^2 + PP(X_(k + 1) != Y_(k + 1))^2
+    $ For fixed $y_(1:k)$, let $pi_(y_(1:k)) in Pi(P_(X_(k + 1)), Q_(Y_(k + 1) | Y_(1:k) = y_(1:k)))$ be the optimal total variation coupling of $X_(k + 1)$ and $Y_(k + 1) | Y_(1:k) = y_(1:k)$.
+    Define $
+        pi_(k + 1)(x_(1:(k + 1)), y_(1:(k + 1))) & := pi_k (x_(1:k), y_(1:k)) dot pi_(y_(1:k))(x_(k + 1), y_(k + 1)) \
+        & = PP(X_(1:k) = x_(1:k), Y_(1:k) = y_(1:k)) PP(X_(k + 1) = x_(k + 1)) PP(Y_(k + 1) = y_(k + 1) | X_(k + 1) = x_(k + 1))
+    $ This new coupling has two properties: // TODO: not quite sure why these both hold
+    + Given $(X_(1:k), Y_(1:k))$, the distribution of $(X_(k + 1), Y_(k + 1))$ depends only on $Y_(1:k)$, i.e. $X_(1:k) - Y_(1:k) - (X_(k + 1), Y_(k + 1))$ form a Markov chain.
+    + Also, $X_(k + 1)$ is independent of $(X_(1:k), Y_(1:k))$.
+    These properties imply that $(X_(k + 1), Y_(k + 1))| X_(1:k) = x_(1:k), Y_(1:k) = y_(1:k) sim pi_(y_(1:k))$. // TODO: also not sure why this follows
+    Hence, $
+        PP(X_(k + 1) != Y_(k + 1) | X_(1:k) & = x_(1:k), Y_(1:k) = y_(1:k)) = d_"TV" (P_(X_(k + 1)), Q_(Y_(k + 1) | Y_(1:k) = y_(1:k))) \
+        & <= sqrt(1/2 D(Q_(Y_(k + 1) | Y_(1:k) = y_(1:k)) || P_(X_(k + 1))))
+    $ by the $n = 1$ result. Taking expectation over $pi_k$ on the LHS gives $
+        PP(X_(k + 1) != Y_(k + 1)) & = EE_(pi_k) [PP(X_(k + 1) != Y_(k + 1) | X_(1:k), Y_(1:k))] \
+        & <= EE_(Q_(Y_(1:k)))[sqrt(1/2 D(Q_(Y_(k + 1) | Y_(1:k)) || P_(X_(k + 1))))]
+    $ Squaring and using Jensen's inequality gives $
+        PP(X_(k + 1) != Y_(k + 1))^2 & <= 1/2 EE_(Q_(Y_(1:k))) [D(Q_(Y_(k + 1) | Y_(1:k)) || P_(X_(k + 1)))] \
+        & = 1/2 D(Q_(Y_(k + 1) | Y_(1:k)) || P_(X_(k + 1)) | Q_(Y_(1:k)))
+    $ By the induction hypothesis, $
+        sum_(i = 1)^(k + 1) PP(X_1 != Y_i)^2 & <= 1/2 (D(Q_(Y_(1:k)) || P_(X_(1:k))) + D(Q_(Y_(k + 1) | Y_(1:k)) || P_(X_(k + 1)) | Q_(Y_(1:k)))) \
+        & = 1/2 D(Q_(Y_(1:(k + 1))) || P_(X_(1:(k + 1))))
+    $ by the @prop:relative-entropy-chain-rule.
+    // We have $
+    //     & sum_(i = 1)^k PP(X_i != Y_i)^2 + PP(X_(k + 1) != Y_(k + 1))^2 \
+    //     <= & 1/2 D(Q_(Y_(1:k)) || P_(X_(1:k))) + (EE[PP(X_(k + 1) != Y_(k + 1) | X_(1:k) = x_(1:k), Y_(1:k) = y_(1:k))])^2 quad "by induction hypothesis"
+    // $ For fixed $x_(1:k), y_(1:k)$, $
+    //     PP(X_(k + 1) != Y_(k + 1) | X_(1:k) = x_(1:k), Y_(1:k) = y_(1:k))^2 <= 1/2 D(Q_(Y_(k + 1) | Y_(1:k) = y_(1:k)) || P_(X_(k + 1)))
+    // $ So by Jensen, $
+    //     PP(X_(k + 1) != Y_(k + 1))^2 & <= EE[PP(X_(k + 1) != Y_(k + 1) | X_(1:k) = x_(1:k), Y_(1:k) = y_(1:k))^2] \
+    //     & = 1/2 EE[D(Q_(Y_(k + 1) | Y_(1:k)) || P_(X_(k + 1)))] \
+    //     & = 1/2 D(Q_(Y_(k + 1) | Y_(1:k)) | P_(X_(k + 1)) | Q_(Y_(1:k)))
+    // $
+]
+#remark[
+    We can recover the @thm:bounded-differences-inequality from @thm:martons-transport-cost-inequality: the conditions of @lem:concentration-via-marton are satisfied with $C = 1/4$, since $f$ having bounded differences with constant $c_i$ implies $
+        f(y) - f(x) <= sum_(i = 1)^n c_i d(x_i, y_i),
+    $ where $d(x_i, y_i) = II_{x_i != y_i}$. This gives the concentration bound.
+]
+
+== Talagrand's inequality
+
+#lemma[
+    Let $P$ and $Q$ be distributions on the same space $(Omega, cal(A))$. Then $
+        inf_(pi in Pi(P, Q)) sum_(i = 1)^n EE[PP(X_i != Y_i | X)^2] = d_2^2 (Q, P).
+    $
+]
+#proof[
+    We have $
+        PP(X = Y | X = x) = PP(X = x, Y = x) / PP(X = x) <= min{1, Q(x)/P(x)}.
+    $ So for any coupling $pi$, $
+        EE_pi [PP(X != Y | X)^2] >= EE_P [(1 - min{1, Q(X)/P(X)})^2] = EE_P [(1 - Q(X)/P(X))_+^2] = d_2^2 (Q, P).
+    $
+]
+#definition[
+    *Marton's divergence* is $
+        d_2^2 (Q, P) = EE[(1 - Q(X)/P(X))_+^2] = sum_(omega: P(omega) > 0) (P(omega) - Q(omega))_+^2 / P(omega).
+    $
+]<def:martons-divergence>
+#lemma("Pinsker's Inequality for Marton Divergence")[
+    Let $P, Q$ be distributions on the same space $(Omega, A)$ with $Q << P$. Then $
+        d_2^2 (Q, P) <= 2 D(Q || P).
+    $
+]<lem:pinskers-inequality-for-marton-divergence>
+#proof[
+    Let $h(t) = (1 - t) log(1 - t) + t$ for $0 <= t <= 1$ and $q(X) = Q(X)/P(X)$. Then $
+        D(Q || P) = EE [h(1 - q(X))].
+    $ We have $h(t) = -(1 - t) log(1 + t/(1 - t)) + t >= -t + t >= 0$. $h(t) >= t^2 \/ 2$ for $t in [0, 1]$ since $log x <= x - 1$, and $h'(t) = -1 - log(1 - t) + 1 = -log(1 - t)$. Hence, $
+        dif / (dif t) (h(t) - t^2 / 2) = -log(1 - t) - t >= (1 - t) + 1 - t = 0.
+    $ So we have $
+        D(Q || P) = EE[h(1 - q(X))] >= EE[h((1 - q(X))_+)] >= EE[(1 - q(X))_+^2 / 2] = 1/2 d_2^2 (Q, P).
+    $ where first inequality is since $h >= 0$.
+]
+#theorem("Marton's Conditional Transport Cost Inequality")[
+    Let $X = (X_1, ..., X_n)$, $X sim P = P_1 times.circle cdots times.circle P_n$, and let $Q << P$. Then $
+        inf_(pi in Pi(P, Q)) sum_(i = 1)^n EE_pi [P(X_i != Y_i | X)^2] <= 2 D(Q || P).
+    $
+]<thm:martons-conditional-transport-cost-inequality>
+#proofhints[
+    Explain why $PP(X = Y | X = x) <= min{1, Q(x) \/ P(x)}$, then take expectation.
+]
+#proof[
+    The $n = 1$ case follows by the above two lemmas. Now we use induction on $n$. Assume that for every $n <= k$, there exists a $pi_k in Pi(P, Q)$ such that $sum_(i = 1)^n EE[PP(X_i != Y_i | X)^2] <= 2 D(Q || P)$. We will find a coupling $pi_(k + 1)$ such that $
+        sum_(i = 1)^k EE[PP(X_i != Y_i | X_(1:(k + 1)))^2] + EE[PP(X_(k + 1) != Y_(k + 1)) | X_(1:(k + 1))] & = sum_(i = 1)^(k + 1) EE[PP(X_i != Y_i | X_(1:(k + 1)))^2] \
+        & <= D(Q_(Y_(1:(k + 1))) || P_(X_(1:(k + 1))))
+    $ For fixed $y_(1:k)$, let $pi_(y_(1:k))$ be the optimal total variation coupling of $X_(k + 1)$ and $Y_(k + 1) | Y_(1:k) = y_(1:k)$. Let $
+        pi_(k + 1)(x_(1:(k + 1)), y_(1:(k + 1))) = pi_k (x_(1:k), y_(1:k)) dot pi_(y_(1:k)) (x_(k + 1), y_(k + 1)).
+    $ This coupling has two properties:
+    - $X_(1:k) - Y_(1:k) - (X_(k + 1), Y_(k + 1))$ form a Markov chain.
+    - $X_(k + 1)$ is independent of $(X_(1:k), Y_(1:k))$. By the induction hypothesis, $
+        sum_(i = 1)^k EE_(pi_(k + 1)) [PP(X_i != Y_i | X_(1:(k + 1)))] & = sum_(i = 1)^k EE_(pi_(k + 1)) [PP(X_i != Y_i | X_(1:k))^2] "by second property" \
+        & <= 2 D(Q_(Y_(1:k)) || P_(X_(1:k))).
+    $ We want to show $
+        EE[PP(X_(k + 1) != Y_(k + 1) | X_(1:(k + 1)))^2] <= 2 D(Q_(Y_(k + 1) | Y_(1:k)) || P_(X_(k + 1)) | Q_(Y_(1:k)))
+    $ From the $n = 1$ case, we know that $
+        EE_(pi_(y_(1:k))) [PP(X_(k + 1) != Y_(k + 1) | X_(k + 1), Y_(1:k) = y_(1:k))^2] <= 2 D(Q_(Y_(k + 1) | Y_(1:k) = y_(1:k)) || P_(X_(k + 1))).
+    $ By the two properties of $pi_(k + 1)$, $
+        PP(X_(k + 1) != Y_(k + 1) | X_(k + 1), Y_(1:k) = y_(1:k)) = PP(X_(k + 1) != Y_(k + 1) | X_(1:(k + 1)), Y_(1:k) = y_(1:k))
+    $ Taking $EE_(Y_(1:k))(dot)$ in the above, we obtain $
+        EE PP(X_(k + 1) != Y_(k + 1) | X_(1:(k + 1)), Y_(1:k))^2 = EE PP(X_(k + 1) != Y_(k + 1) | X_(k + 1), Y_(k + 1))^2 <= 2 D(Q_(Y_(k + 1) | Y_(1:k)) || P_(X_(k + 1)) | Q_(Y_(1:k)))
+    $ The LHS is equal to $
+        & EE EE[EE[II_({X_(k + 1) != Y_(k + 1)}) | X_(1:(k + 1)), Y_(1:k)]^2 | X_(1:(k + 1))] \
+        & >= EE EE[EE[II_({X_(k + 1) != Y_(k + 1)}) | X_(1:(k + 1)), Y_(1:k)] | X_(1:(k + 1))]^2 quad "by Jensen" \
+        & = EE EE[II_({X_(k + 1) != Y_(k + 1)}) | X_(1:(k + 1))]^2 quad "by tower property" \
+        & = EE PP(X_(k + 1) != Y_(k + 1) | X_(1:(k + 1)))^2
+    $ So $sum_(i = 1)^k EE PP(X_i != Y_i | X_(1:(k + 1)))^2 + EE PP(X_(k + 1) != Y_(k + 1) | X_(1:k))^2 <= 2 D(Q_(Y_(1:k)) || P_(X_(1:k))) + 2 D(Q_(Y_(k + 1) | Y_(1:k)) || P_(X_(k + 1)) | Q_(Y_(1:k))) = 2 D(Q || P)$ by the @prop:relative-entropy-chain-rule.
+]
+#definition[
+    $f: A^n -> RR$ satisfies the *one-sided bounded differences* property if $
+        f(y) - f(x) <= sum_(i = 1)^n II_({x_i != y_i}) c_i (x) quad forall x, y in A^n,
+    $ where $c_i: A^n -> RR_(>= 0)$.
+]<def:one-sided-bounded-differences>
+#remark[
+    We can't apply results for bounded differences on functions with this property, since it is a weaker property.
+]
+#remark[
+    By @thm:relaxed-bounded-differences, if $sum_(i = 1)^n (Z_i - Z)^2 <= nu$, where $Z_i = sup_(x_i) f(X_(1:(i - 1)), x_i, X_((i + 1):n))$, then $PP(Z - EE[Z] <= -t) <= e^(-t^2 \/ 2 nu)$. Under one-sided bounded differences, $
+        0 <= sum_(i = 1)^n (Z_i - Z)^2 <= sum_(i = 1)^n c_i (X)^2 <= sup_(x in A^n) sum_(i = 1)^n c_i (x)^2 =: nu_oo,
+    $ so we obtain the left-tail bound $PP(Z - EE[Z] <= -t) <= e^(-t^2 \/ 2 nu_oo)$. But now if $Z_i = inf_(x_i) f(X_(1:(i - 1)), x_i, X_((i + 1):n))$, with infimum achieved at $(X')^((i)) = (X_(1:(i - 1)), x'_i, X_((i + 1):n))$, then $
+        0 <= sum_(i = 1)^n (Z - Z_i)^2 <= sum_(i = 1)^n c_i ((X')^((i)))^2.
+    $ We generally can't say that this is $<= sup_(x in A^n) sum_(i = 1)^n c_i (x)^2$, so can't immediately deduce a right tail bound.
+
+    However, the transport method gives us a right-tail bound with a better parameter $nu = EE[sum_(i = 1)^n c_i (X)^2] <= nu_oo$.
+]
+#theorem("Talagrand's One-sided Bounded Differences Inequality")[
+    Let $X = (X_1, ..., X_n) sim P_1 times.circle cdots times.circle P_n$, $X_i$ independent. Let $f: A^n -> RR$ be a function with one-sided bounded differences with associated functions $c_i$. Let $Z = f(X)$ and let $nu = EE[sum_(i = 1)^n c_i (X)^2]$. Then $
+        psi_(Z - EE[Z])(lambda) <= (lambda^2 nu)/2 quad forall lambda > 0
+    $ which implies that $
+        PP(Z - EE[Z] >= t) <= e^(-t^2 \/ 2nu) quad forall t > 0.
+    $
+]<thm:talagrands-inequality>
+#proofhints[
+    - For $Q << P$ and $pi in Pi(P, Q)$, show that, using @thm:law-of-total-expectation, $
+        EE_Q [Z] - EE_P [Z] <= sum_(i = 1)^n EE_pi [c_i (X) PP(X_i != Y_i | X)],
+    $ where $PP(X_i != Y_i | X) = EE_pi [II_({X_i != Y_i}) | X]$.
+    - Apply Cauchy-Schwarz twice.
+    - Conclude using @thm:martons-argument.
+]
+#proof[
+    Let $Q << P$. Then for all $pi in Pi(P, Q)$, $
+        EE_Q [Z] - EE_P [Z] & = EE_pi [f(Y) - f(X)] \
+        & <= EE_pi [sum_(i = 1)^n c_i (X) II_({X_i != Y_i})] quad "by assumption" \
+        & = sum_(i = 1)^n EE_pi EE_pi [II_({X_i != Y_i}) c_i (X) | X] quad #[by @thm:law-of-total-expectation] \
+        & = sum_(i = 1)^n EE_pi [c_i (X) PP(X_i != Y_i | X)] \
+        & <= sum_(i = 1)^n (EE_pi [c_i (X)^2])^(1 \/ 2) (EE_pi [PP(X_i != Y_i | X)^2])^(1 \/ 2) quad "by Cauchy-Schwarz" \
+        & <= (sum_(i = 1)^n EE_pi [c_i (X)^2])^(1 \/ 2) (sum_(i = 1)^n EE[PP(X_i != Y_i | X)^2])^(1 \/ 2) quad "by Cauchy-Schwarz"
+    $ where we write $PP(X_i != Y_i | X) = EE_pi [II_({X_i != Y_i}) | X]$. We claim that $
+        inf_(pi in Pi(P, Q)) sum_(i = 1)^n EE[PP(X_i != Y_i | X)^2] <= 2 D(Q || P).
+    $ This will imply that $
+        EE_Q [Z] - EE_P [Z] <= sqrt(nu dot 2 dot D(Q || P)) 
+    $ amd so by @thm:martons-argument, $psi_(Z - EE[Z])(lambda) <= (lambda^2 nu)/2$ for all $lambda > 0$, which gives the right tail bound by the @prop:chernoff-bound.
+
+    Now we prove the claim:
+]
+
+= Log-concave random variables

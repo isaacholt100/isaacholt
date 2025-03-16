@@ -629,10 +629,13 @@ The goal of quantum hypothesis testing is to distinguish between quantum states 
 == Quantum state discrimination
 
 Given an ensemble ${rho_1, ..., rho_n} subset.eq S(HH)$ of density operators with corresponding probabilities ${p_1, ..., p_n}$, where $p_i >= 0$ and $sum_(i = 1)^n p_i = 1$. This can be interpreted as a set of $n$ hypotheses (the $rho_i$) with corresponding a priori probability $p_i$. The goal is to maximise the average probability of correct identification of the hypothesis. To discriminate among the hypothesis, we use a POVM $M = {M_1, ..., M_n}$, and we want to maximise $
-    cal(P)(M) := sum_(j = 1)^n tr(M_j p_j rho_j).
-$
+    cal(P)(M) := sum_(j = 1)^n tr(M_j p_j rho_j) = sum_(j = 1)^n p_j tr(M_j rho_j).
+$ Note that the interpretation is as follows: we have an unknown quantum state $rho$ which is distributed over $S(HH)$, where $rho = rho_i$ with probability $p_i$. Given that $rho = rho_i$, the probability of the measurement $M$ yielding the (correct) outcome $i$ is $tr(M_j rho_j)$. So $cal(P)(M)$ is the expected value of the probability of measuring the correct outcome.
 #notation[
     Write $cal(M) = span{(M_1, ..., M_n) in B(HH)^n, M_i >= 0, sum_i M_i = II}$ for the span of the set of POVMs with $n$ operators, and write $cal(P)(cal(M)) = sup_(M in cal(M)) cal(P)(M)$.
+]
+#notation[
+    Write $sigma_i = p_i rho_i$.
 ]
 #notation[
     For any POVM $M$, write $L = sum_(i = 1)^n M_i p_i rho_i$, so that $cal(P)(M) = tr(L)$.
@@ -709,30 +712,40 @@ $
     $ Since $A >= p_i rho_i$ for all $i$, each term on the RHS is $>= 0$, and so $tr((A - p_i rho_i) M_i) = 0$, but $(A - p_i rho_i) M_i >= 0$, so we can take $K = A$.
 ]
 #example[
-    Let $rho_1, ..., rho_n$ be pairwise commuting states, so there exists an orthonormal basis ${ket(i): i in [n]}$ in which they can be simultaneously diagonalised. Let $K$ be as in 4. of the above theorem. Then $K$ has diagonal entries $braket(j, K, j) = max_i braket(j, p_i rho_i, j)$. By construction, $K$ has minimal trace among all $A >= p_i rho_i$ for all $i$. Thus, $
-        max_M cal(P)(M) = sum_j max_i braket(j, p_i rho_i, j).
+    Let $rho_1, ..., rho_n$ be pairwise commuting states, so there exists an orthonormal basis ${ket(i): i in [n]}$ in which they can be simultaneously diagonalised. Let $K$ be the diagonal operator with diagonal entries $braket(j, K, j) = max_i braket(j, p_i rho_i, j)$. By construction, $K$ has minimal trace among all operators $A$ such that $A >= p_i rho_i$ for all $i$ (and $K$ is such an operator). Thus, by point 5 of @thm:equivalent-conditions-for-optimal-measurements, $
+        cal(P)(cal(M)) = min{tr(A): A >= p_i rho_i forall i} = tr(K) = sum_(j = 1)^n braket(j, K, j) = sum_j max_i braket(j, p_i rho_i, j).
     $
 ]
 #example[
     Let $rho_1, ..., rho_n$ be pure states, each with associated a priori probability $1 \/ n$. For simplicity, assume that $
-        sum_(i = 1)^n p_i rho_i = II/d
+        sum_(i = 1)^n p_i rho_i = II_d/d
     $ (with $d <= n$). Define $M_i = d/n rho_i$ for each $i in [n]$. ${M_i}_(i = 1)^n$ is a POVM which describes a maximum likelihood measurement. Since the $rho_i$ are pure states, $rho_i^2 = rho_i$, so for $L = sum_(i = 1)^n M_i p_i rho_i$, we have $
-        p_i rho_i <= L & = sum_(i = 1)^n M_i p_i rho_i = d/n sum_(i = 1)^n 1/n p_i^2 = d/n sum_(i = 1)^n p_i rho_i = II/n
-    $ for all $i$. Hence, $M$ is an optimal measurement.
+        L & = sum_(i = 1)^n M_i p_i rho_i = d/n sum_(i = 1)^n p_i rho_i^2 = d/n sum_(i = 1)^n p_i rho_i = II/n >= p_i rho_i
+    $ for all $i$. Hence, $M$ is an optimal measurement by point 3 of @thm:equivalent-conditions-for-optimal-measurements.
 ]
 
 == Binary hypothesis testing
 
-Let $rho_1$ and $rho_2$ be density matrices with probability $p$ and $1 - p$. Consider the POVM $M = (M_1, M_2) = (II, II - P)$ with $P$ an orthogonal projection. Assigning $P$ to $rho_1$ and $II - P$ to $rho_2$, the error is $
-    cal(E)(M) := p tr(rho_1 (II - P)) + (1 - p) tr(rho_2 P)
-$ and $
+Let $rho_1$ and $rho_2$ be density matrices with a priori probability $p$ and $1 - p$. Consider the POVM $M = (M_1, M_2) = (II, II - P)$ with $P$ an orthogonal projection. Assigning $P$ to $rho_1$ and $II - P$ to $rho_2$, the probability of error is $
+    cal(E)(M) := p tr(rho_1 (II - P)) + (1 - p) tr(rho_2 P).
+$ Also, $
     cal(P)(M) = p tr(rho_1 P) + (1 - p) tr(rho_2 (II - P))
 $ Note that $cal(P)(M) + cal(E)(M) = 1$.
+#definition[
+    Let $HH$ be a finite dimensional Hilbert space. For $p in [1, oo)$, the *Schatten $p$-norm* is defined as $
+        norm(dot)_p: B(HH) & -> [0, oo), \
+        norm(A) & = tr(abs(A)^p)^(1 \/ p).
+    $ We can also define $norm(A)_oo = lim_(p -> oo) norm(A)_p = max_i {abs(lambda_i)}$, where $lambda_i$ are the eigenvalues of $A$.
+]<def:schatten-p-norm>
 #theorem("Quantum Neyman-Pearson")[
     We have $
         cal(E)(M) >= 1/2 (1 - norm(p rho_1 - (1 - p) rho_2)_1)
     $ with equality iff $P$ is a projection onto $(p_1 rho_1 - (1 - p) rho_2)_+$, the positive eigensubspace of $p_1 rho_1 - (1 - p) rho_2$.
 ]<thm:quantum-neyman-pearson>
+#proofhints[
+    - Let $A = p rho_1 - (1 - p) rho_2$. By considering the positive and negative parts $A_+$ and $A^-$ of $A$, show that $tr(A_+) = 1/2 (norm(A)_1 + tr(A))$.
+    - Also show that $cal(E)(M) = p - tr(P A)$, and explain why the minimum (over $P$) of this is attained iff $P A_+ = A_+$ and $P A_- = 0$.
+]
 #proof[
     For every Hermitian $A$, we can write $A = A_+ + A_-$, where $A_+$ is the positive part and $A_-$ is the negative part. We have $
         tr(A_+) = 1/2 (norm(A)_1 + tr(A))
@@ -744,14 +757,14 @@ $ Note that $cal(P)(M) + cal(E)(M) = 1$.
         min_M cal(E)(M) & = p - tr((p rho_1 - (1 - p) rho_2)_+) \
         & = p - 1/2 (norm(p rho_1 - (1 - p) rho_2)_1 + tr(p rho_1 - (1 - p) rho_2) \
         & = 1/2 (1 - norm(p rho_1 - (1 - p) rho_2)_1)
-    $ Alternatively, we could define $L = P p rho_1 + (II - P) (1 - p) rho_2$ which satisfies $L >= p rho_1$ and $L >= (1 - p) rho_2$.
+    $ Alternatively, we could define $L = P p rho_1 + (II - P) (1 - p) rho_2$ which satisfies $L >= p rho_1$ and $L >= (1 - p) rho_2$, hence is an optimal measurement, hence $1 = cal(P)(M) + cal(E)(M) <= tr(L) + cal(E)(M)$.
 ]
-Now assume we have $m$ copies of $rho_1$ and $rho_2$, and we can treat them as single density matrices: $rho_1^(tp m)$ and $rho_2^(tp m)$. For the optimal measurement, thke error rate is $
-    cal(E)_m^"opt" = 1/2 (1 - norm(p rho_1^(tp m) - (1 - p) rho_2^(tp m)))
-$ It can be shown that $cal(E)_m^"opt"$ decays exponentially with $m$, i.e. $cal(E)_m^"opt" <= K e^(-xi m)$, $K, xi > 0$. Note that this is independent of $p$.
+Now assume we have $m$ copies of $rho_1$ and $rho_2$, and we can treat them as single density matrices: $rho_1^(tp m)$ and $rho_2^(tp m)$. For the optimal measurement, the error rate is $
+    cal(E)_m^"opt" = 1/2 (1 - norm(p rho_1^(tp m) - (1 - p) rho_2^(tp m))_1)
+$ It can be shown that $cal(E)_m^"opt"$ decays exponentially with $m$, i.e. $cal(E)_m^"opt" <= K e^(-xi m)$, $K, xi > 0$. Note that this upper bound is independent of $p$.
 #lemma[
     If $A, B in B(HH)$ are positive, then $forall s in [0, 1]$, $tr((A^s - B^s) A^(1 - s)) <= tr((A - B)_+)$.
-]
+]<lem:quantum-chernoff-bound-lemma>
 #proof[
     Consequence of operator monotonicity of $z |-> z^s$ for all $s in [0, 1]$ (details omitted).
 ]
@@ -760,15 +773,149 @@ $ It can be shown that $cal(E)_m^"opt"$ decays exponentially with $m$, i.e. $cal
         xi := lim_(m -> oo) (-1/m log (cal(E)_m^"opt")) = -log(inf_(s in [0, 1]) tr(rho_1^(1 - s) rho_2^s))
     $
 ]<thm:quantum-chernoff-bound>
+#proofhints[
+    - Show that $1/2 (tr(A + B) - norm(A - B)_1) <= tr(B^s A^(1 - s))$ for positive $A, B in B(HH)$ and $s in [0, 1]$.
+    - Now take $A = p rho_1^(tp m)$ and $B = (1 - p) rho_2^(tp m)$ to show inequality in the theorem statement.
+    - To show equality, consider $
+        hat(rho)_1 & = sum_(j, k) lambda_j^((1)) abs(braket(psi_j^((1)), psi_k^((2)))) ket(j k) bra(j k) \
+        hat(rho)_2 & = sum_(j, k) lambda_j^((2)) abs(braket(psi_j^((1)), psi_k^((2)))) ket(j k) bra(j k),
+    $ where $rho_i = sum_j lambda_j^((i)) ket(psi_j^((i))) bra(psi_j^((i)))$, and use that equality is achieved when applied to commuting operators.
+]
 #proof[
-    By the above lemma, $
-        1/2 (tr(A + B) + norm(A - B)_1) & = tr(A) - tr((A - B)_+) \
+    By @lem:quantum-chernoff-bound-lemma, $
+        1/2 (tr(A + B) - norm(A - B)_1) & = 1/2 (2 tr(A) - tr(A - B) - tr((A - B)_+) + tr((A - B)_-) \
+        & = tr(A) - tr((A - B)_+) \
         & <= tr(A) - tr((A^s - B^s) A^(1 - s)) = tr(B^s A^(1 - s))
-    $ Let $A = p rho_1^(tp m)$ and $B = (1 - p) rho_2^(tp m)$. Then $
-        cal(E)_m^"opt" = 1/2 (1 - norm(p rho_1^(tp m) - (1 - p) rho_2^(tp m))) & <= (1 - p)^s p^(1 - s) tr(rho_1^(1 - s) rho_2^s)^m
+    $ Let $A = p rho_1^(tp m)$ and $B = (1 - p) rho_2^(tp m)$. Then by above and @thm:quantum-neyman-pearson, $
+        cal(E)_m^"opt" = 1/2 (1 - norm(p rho_1^(tp m) - (1 - p) rho_2^(tp m))_1) & <= (1 - p)^s p^(1 - s) tr(rho_1^(1 - s) rho_2^s)^m
     $ Hence $
         cal(E)_m^"opt" <= inf_(s in [0, 1]) p^(1 - s) (1 - p)^s tr(rho_1^(1 - s) rho_2^s)^m <= inf_(s in [0, 1]) tr(rho_1^(1 - s) rho_2^s)^m
     $ so $
         -1/m log cal(E)_m^"opt" >= -log inf_(s in [0, 1]) tr(rho_1^(1 - s) rho_2^s)
-    $ And we can take the limit $m -> oo$. Equality is achieved for $rho_1, rho_2$ such that $[rho_1, rho_2] = 0$.
+    $ And we can take the limit $m -> oo$.
+    
+    To show equality: given $rho_1, rho_2$ we can construct $hat(rho)_1, hat(rho)_2$ such that $[hat(rho)_1, hat(rho)_2] = 0$ and $tr(hat(rho)_1^(1 - s) hat(rho)_2^s) = tr(rho_1^(1 - s) rho_2^s)$: explicitly, let $rho_i = sum_j lambda_j^((i)) ket(psi_j^((i))) bra(psi_j^((i)))$, then we define $
+        hat(rho)_1 & = sum_(j, k) lambda_j^1 abs(braket(psi_j^((1)), psi_k^((2)))) ket(j k) bra(j k) \
+        hat(rho)_2 & = sum_(j, k) lambda_j^2 abs(braket(psi_j^((1)), psi_k^((2)))) ket(j k) bra(j k),
+    $ where ${ket(i j)}$ is an orthonormal basis of $HH tp HH$. $hat(rho)_1, hat(rho)_2$ achieve equality in the above inequality.
+]
+
+== The pretty good measurement
+
+#definition[
+    Given a collection of states ${rho_i}_(i = 1)^n$ with associated prior probability ${p_i}_(i = 1)^n$, the *pretty good measurement* is $M^P = {M_i^P}_(i = 1)^n$, where $
+        M_i^P & = R^(-1 \/ 2) p_i rho_i R^(-1 \/ 2) + 1/n (II - R^(-1 \/ 2) R R^(-1 \/ 2)) = R^(-1 \/ 2) p_i rho_i R^(-1 \/ 2) + 1/n II_({ker R}) \
+        R & = sum_(i = 1)^n p_i rho_i,
+    $ where $R^(-1)$ is the Moore-Penrose pseudo-inverse.
+]<def:pretty-good-measurement>
+#definition[
+    Given a collection of states ${rho_i}_(i = 1)^n$ with associated prior probability ${p_i}_(i = 1)^n$, the *square measurement* is $M^S = {M_i^S}_(i = 1)^n$, where $
+        M_i^S & = S^(-1 \/ 2) p_i^2 rho_i^2 S^(-1 \/ 2) + 1/n (II - S^(-1 \/ 2) S S^(-1 \/ 2)), \
+        S & = sum_(i = 1)^n p_i^2 rho_i^2.
+    $
+]<def:square-measurement>
+#theorem("Holder's Inequality")[
+    For $p, q in [1, oo]$ and $1/p + 1/q = 1$, we have $
+        norm(A B)_1 = tr(abs(A B)) <= norm(A)_p norm(B)_q.
+    $
+]<thm:holders-inequality>
+#definition[
+    Let $I$ be an interval. $f: I -> RR$ is *operator convex* on $I$ if $
+        f(lambda A + (1 - lambda) B) <= lambda f(A) + (1 - lambda) f(B),
+    $ for all $A, B$ Hermitian with spectra in $I$ and all $lambda in [0, 1]$.
+]
+#theorem("Jensen's Inequality")[
+    Let $f$ be continuous on an interval $I$. TFAE:
+    - $f$ is operator convex on $I$.
+    - For each $n in NN$, $
+        f(sum_(i = 1)^n A_i^* X_i A_i) <= sum_(i = 1)^n A_i^* f(X_i) A_i,
+    $ for all $X_1, ..., X_n$ which are bounded self-adjoint operators whose spectra are contained in $I$ and all operators $A_1, ..., A_n$ are operators which satisfy $sum_(i = 1)^n A_i^* A_i = II$.
+    - $f(V^* X V) <= V^* f(X) V$ for all Hermitian $X$ with spectrum in $I$ and all isometries $V$.
+]<thm:jensens-inequality>
+#proposition[
+    We have $
+        tr(S^(1 \/ 2))^2 <= cal(P)(M^S) <= cal(P)_"opt" <= tr(S^(1 \/ 2)).
+    $
+]<prop:square-measurement-probability-bounds>
+#proofhints[
+    - For simplicity, assume $S$ is invertible. For first inequality, write $S^(1 \/ 2) = S S^(-1 \/ 2)$, use cyclicity to introduce $sigma_i^(1 \/ 2)$ where appropriate, then use @thm:jensens-inequality.
+    - For third inequality, explain why $sigma_i <= S^(1 \/ 2)$ for each $i$, and use that for any POVM $M$, $A |-> tr(M_i A)$ is an operator monotone.
+]
+#proof[
+    For simplicity, assume $S$ is invertible. // TODO: why can we assume this?
+    The second inequality follows by definition. For the first, we have (letting $sigma_i = p_i rho_i$) $
+        tr(S^(1 \/ 2))^2 & = tr(S S^(-1 \/ 2))^2 = tr(sum_(i = 1)^n p_i^2 rho_i^2 S^(-1 \/ 2))^2 \
+        & = (sum_(i = 1)^n tr(sigma_i \(sigma_i^(1 \/ 2) S^(-1 \/ 2) sigma_i^(1 \/ 2)\)))^2 quad "by cyclicity" \
+        & <= sum_(i = 1)^n tr(sigma_i \(sigma_i^(1 \/ 2) S^(-1 \/ 2) sigma_i^(1 \/ 2)\)^2) quad #[by @thm:jensens-inequality] \ // TODO: don't get how Jensen's is used here?
+        & = sum_(i = 1)^n tr(sigma_i^2 S^(-1 \/ 2) sigma_i S^(-1 \/ 2)) quad "by cyclicity" \
+        & = sum_(i = 1)^n tr(sigma_i M_i^S) quad "by cyclicity" \
+        & = cal(P)(M^S).
+    $ For the third inequality, note that $sigma_i^2 <= sum_j sigma_j^2 = S$ for each $i$, since the $sigma_i$ are positive semi-definite. Since $z |-> z^(1 \/ 2)$ is operator monotone, we have $sigma_i <= S^(1 \/ 2)$ for each $i in [n]$. Also, for any POVM $M = {M_i}$, $A |-> tr(M_i A)$ is operator monotone, hence $tr(M_i sigma_i) <= tr(M_i S^(1 \/ 2))$. Summing over $i$, we obtain $
+        sum_i tr(M_i sigma_i) <= sum_i tr(M_i S^(1 \/ 2)) = tr((sum_i M_i) S^(1 \/ 2)) = tr(II dot S^(1 \/ 2)) = tr(S^(1 \/ 2)).
+    $
+]
+#proposition[
+    We have $
+        (cal(P)_"opt")^2 <= cal(P)(M^P) <= cal(P)_"opt".
+    $
+]<prop:pretty-good-measurement-probability-bounds>
+#proofhints[
+    For simplicity, assume $R$ is invertible. For the first inequality, show that for any POVM $M$, $(sum_(i = 1)^n tr(M_i sigma_i))^2 <= cal(P)(M^P)$, using cyclicity to introduce $R^(1 \/ 4)$ and $R^(-1 \/ 4)$ where appropriate, @thm:holders-inequality, Cauchy-Schwarz, the fact that $norm(M_i)_oo <= 1$. Use the fact that $A B A >= 0$ if $A, B >= 0$.
+]
+#proof[
+    For simplicity, assume $R$ is invertible. The second inequality follows from the definition. For the first, let $M = {M_i}_(i = 1)^n$ be a POVM. Then $
+        (sum_(i = 1)^n tr(M_i sigma_i))^2 & = (sum_(i = 1)^n tr((R^(1 \/ 4) M_i R^(1 \/ 4)) dot (R^(-1 \/ 4) sigma_i R^(-1 \/ 4))))^2 \
+        & <= (sum_(i = 1)^n norm(R^(1 \/ 4) M_i R^(1 \/ 4))_2 norm(R^(-1 \/ 4) sigma_i R^(-1 \/ 4)))^2 quad "by Holder" \
+        & <= sum_(i = 1)^n norm(R^(1 \/ 4) M_i R^(1 \/ 4))_2^2 dot sum_(i = 1)^n norm(R^(-1 \/ 4) sigma_i R^(-1 \/ 4))_2^2 quad "by Cauchy-Schwarz"
+    $ The first term in the final product is $
+        sum_(i = 1)^n norm(R^(1 \/ 4) M_i R^(1 \/ 4))_2^2 & = sum_(i = 1)^n tr((R^(1 \/ 4) M_i R^(1 \/ 4))^2) = sum_(i = 1)^n tr(R^(1 \/ 2) M_i R^(1 \/ 2) M_i) \
+        & <= sum_(i = 1)^n tr(R^(1 \/ 2) M_i R^(1 \/ 2)) = tr(R) = 1,
+    $ where the inequality follows from @thm:holders-inequality, since $norm(M_i)_oo <= 1$. (Note that $R^(1 \/ 4) M_i R^(1 \/ 4)$ is PSD since $M_i$ and $R^(1 \/ 4)$ are, so can ignore absolute values.) The second term is $
+        sum_(i = 1)^n norm(R^(-1 \/ 4) sigma_i R^(-1 \/ 4))_2^2 = sum_(i = 1)^n tr(M_i^P sigma_i) = cal(P)(M^P).
+    $
+]
+#corollary[
+    Since $cal(E)(M) = 1 - cal(P)(M)$ and $cal(E)_"opt" = 1 - cal(P)_"opt"$, we have $
+        (P_"opt")^2 <= cal(P)(M^P), cal(P)(M^S) <= cal(P)_"opt", quad "and" quad cal(E)_"opt" <= cal(E)(M^P), cal(E)(M^S) <= 2 cal(E)_"opt".
+    $
+]<crl:pretty-good-and-square-error-bounds>
+
+== Asymmetric hypothesis testing
+
+#definition[
+    Given $m$ copies of states $rho$ and $sigma$ that we want to classify with a POVM $(P_m, II - P_m)$, the *Type I error* is $alpha_m (P_m) = tr(rho^(tp m) (II - P_m))$, and the *Type II error* is $beta_m (P_m) = tr(sigma^(tp m) P_m)$.
+]
+Note by the @thm:quantum-chernoff-bound, we have $
+    liminf_(m -> oo) -1/m log alpha_m (P_m) >= xi, quad liminf_(m -> oo) -1/m log beta_m (P_m) >= xi.
+$
+#theorem("Quantum Stein's Lemma")[
+    Let $rho, sigma in S(HH)$, $epsilon in (0, 1)$, let $beta_m$ be minimised over all POVMs $(P_m, II - P_m)$ subject to $alpha_m (P_m) <= epsilon$. Then $
+        lim_(m -> oo) -1/m log beta_m = D(rho || sigma),
+    $ where $D(rho || sigma) = tr(rho (log rho - log sigma))$ is the relative entropy between $rho$ and $sigma$.
+]<thm:quantum-steins-lemma>
+#proof[
+    First we show that $lim_(m -> oo) -1/m log beta_m <= D(rho || sigma)$.
+    
+    It can be shown that for $A, B$ positive semi-definite, $tr((A - B)_+) <= tr(A^(1 + s) B^(-s))$ for all $s in [0, 1]$. Let $A - B = sum_i mu_i Q_i$ be the spectral decomposition of $A - B$, and let $J(X) = sum_i Q_i X Q_i$ be the pinching on the eigenbasis of $A - B$. This satisfies $[J(A), J(B)] = 0$; also, $tr(A^(1 + s) B^(-s))$ is non-increasing under CPTP maps (i.e. $tr(Phi(A)^(1 + s) Phi(B)^(-s)) <= tr(A^(1 + s) B^(-s))$ for all $A, B$ positive semi-definite and quantum channels $Phi$). We also have $tr((A - B)_+) = tr((T(A) - T(B))_+)$. Combining these facts, we can assume WLOG that $A$ and $B$ are diagonal matrices. In this case, the inequality $tr((A - B)_+) <= tr(A^(1 + s) B^(-s))$ is simply due to the the fact that $a - b <= a (a \/ b)^s$ for all $a, b > 0$.
+
+    Take $A = rho^(tp m)$ and $B = e^(lambda m) sigma^(tp m)$, with $lambda$ a constant to be specified later. Then $
+        tr((rho^(tp m) - e^(lambda m) sigma^(tp m)) P_m) & <= tr((rho^(tp m))^(1 + s) e^(-lambda m s) (sigma^(tp m))^(-s)) \
+        & = e^(-lambda m s) tr(rho^(1 + s) sigma^(-s))^m
+    $ Note that $alpha_m (P_m) <= epsilon$ by assumption, i.e. $1 - epsilon <= tr(rho^(tp m) P_m)$. So by the above inequality, $
+        (1 - epsilon) - e^(lambda m) beta_m (P_m) & <= tr(rho^(tp m) P_m) - e^(lambda m) tr(sigma^(tp m) P_m) <= e^(-lambda m s) tr(rho^(1 + s) sigma^(-s))^m \
+        & = e^(-lambda m s) e^(m f(s)) = e^(m (-lambda s + f(s)))
+    $ where $f(s) = log tr(rho^(1 + s) sigma^(-s))$. So we have $
+        1 - epsilon - e^(m (-lambda s + f(s))) <= e^(lambda m) beta_m (P_m) \
+        "i.e." quad beta_m (P_m) >= e^(-lambda m)((1 - epsilon) - e^(m (f(s) - lambda s)))
+    $ Clearly $f(0) = 0$ and it can be shown that $f'(0) = D(rho || sigma)$. So take $lambda = D(rho || sigma) + delta$ for any $delta > 0$. Then $exists s in (0, 1]$ such that $lambda s > f(s)$, hence $e^(m (f(s) - lambda s)) < 1$ for all $m in NN$. This gives $
+        limsup_(m -> oo) -1/m log beta_m (P_m) & <= limsup_(m -> oo) -1/m log(e^(-lambda m) ((1 - epsilon) - e^(m (f(s) - lambda s)))) \
+        & = limsup_(m -> oo) (lambda -1/m log((1 - epsilon) - e^(m (f(s) - lambda s)))) \
+        & <= lambda <= D(rho || sigma) + delta.
+    $ Since $delta > 0$ was arbitrary, this shows inequality.
+    
+    For equality: let $sigma^(tp m) = sum_(i = 1)^k lambda_i P_i$ be the spectral decomposition of $sigma^(tp m)$. Define the completely positive linear map $T: B(HH^(tp m)) -> B(HH^(tp m))$ by $T(X) = sum_(i = 1)^k P_i X P_i$ (this is called a *pinching* on the eigenbasis of $sigma^(tp m)$). Now $
+        D(T(rho^(tp m)) || sigma^(tp m)) & = D(T(rho^(tp m)) || T(sigma^(tp m))) <= D(rho^(tp m) || sigma^(tp m)) quad "by data-processing" \
+        & = m D(rho || sigma) quad "by addivity" \
+        & <= D(T(rho^(tp m)) || sigma^(tp m)) + d log(m + 1). // TODO: why?
+    $ By the inequality, have $D(rho || sigma) = lim_(m -> oo) 1/m D(T(rho^(tp m)) || sigma^(tp m))$. Also, since the pinching $T$ satisfies $[T(rho^(tp m)), sigma^(tp m)] = 0$, the RHS is interpretable as a classical relative entropy, and classical Stein's lemma has equality. // TODO: if we have this, why do we need to show the inequality in the above part?
 ]

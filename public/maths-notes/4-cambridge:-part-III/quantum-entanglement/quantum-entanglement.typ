@@ -72,3 +72,7 @@ Ky-Fan principle for Hermitian matrices: $lambda_1 = max_(P_1) tr(P_1 rho) = max
 #theorem("Bennett")[
     
 ]
+#theorem[
+    Fundamental theorem of MPS: $ket(psi(A)) = ket(psi(B))$ iff $exists phi, X$ such that $B^i = e^(i phi) X A^i X^(-1)$.
+]
+Smith normal form: if matrix $M$ has integer entries, can write $M = U Sigma V^T$, where $det(U), det(V) = plus.minus 1$, $U, V$ have integer entries, $Sigma$ is diagonal with entries 
