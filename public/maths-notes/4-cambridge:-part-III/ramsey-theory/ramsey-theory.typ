@@ -10,6 +10,7 @@
     keywords: ("ramsey theory", "colourings")
 )
 
+
 #let clr(c) = [
     #set text(fill: eval(c))
     #c
@@ -59,6 +60,19 @@
 #theorem([Ramsey's Theorem for $r$-sets])[
     Let $NN^((r))$ be finitely coloured. Then there exists a monochromatic infinite set.
 ]
+#proof[
+    - 
+        - asdf
+        -    asdf
+    
+    - $
+        a^2 + b^2 = c^2
+    $
+]
+asdf
+sdfasdfasdf $
+    a^2 + b^2 = c^2. + e^((x)).    
+$
 #proof[
     - $r = 1$: use pigeonhole principle.
     - $r = 2$: Ramsey's theorem for pairs.
@@ -711,7 +725,7 @@ Strengthened Van der Waerden says that the system $x_1 + x_2 = y_1, x_1 + 2x_2 =
 #proof[
     Hausdorff: let $cal(U) != cal(V)$ be ultrafilters, so there is $A in cal(U)$ such that $A in.not cal(V)$. But then $A^c in cal(V)$, so $cal(U) in C_A$, $cal(V) in C_(A^c)$, and $C_A inter C_(A^c)$ is open.
 
-    Compact: it is compact iff every open admits a finite subcover iff a collection of open sets such that no finite subcollection covers $beta NN$, they don't cover $beta NN$ iff for every collection of closed sets such that they have finite intersection property ($(F_i)_(i in I)$, $sect_(i in J) F_i != emptyset$ for all $J$ finite), then their intersection is non-empty. We can assume each $F_i$ is a basis set, i.e. $F_i = C_(A_i)$ for some $A_i in NN$. Suppose ${C_(A_i): i in I}$ have teh finite intersection property. First, $C_(A_(i_1)) inter dots.c inter C_(A_(i_k)) = C_(A_(i_1) inter dots.c inter A_(i_k)) != emptyset$, hence $inter.big_(j = 1)^k A_(i_j) != emptyset$. So let $cal(F) = {A: A supset.eq A_(i_1) inter dots.c inter A_(i_k) "for some" A_(i_1), ..., A_(i_n)}$. We have $emptyset in.not cal(F)$, if $B supset.eq A in cal(F)$ then $B in cal(F)$, and if $A, B in cal(F)$, then $A inter B in cal(F)$. Hence $cal(F)$ is a filter. $cal(F)$ extends to an ultrafilter $cal(U)$. Note that $(forall i, A_i in cal(U)) <==> (cal(U) in C_(A_i) forall i)$. So $U in inter C_(A_i)$, so $inter C_(A_i) != emptyset$.
+    Compact: it is compact iff every open admits a finite subcover iff a collection of open sets such that no finite subcollection covers $beta NN$, they don't cover $beta NN$ iff for every collection of closed sets such that they have finite intersection property ($(F_i)_(i in I)$, $inter_(i in J) F_i != emptyset$ for all $J$ finite), then their intersection is non-empty. We can assume each $F_i$ is a basis set, i.e. $F_i = C_(A_i)$ for some $A_i in NN$. Suppose ${C_(A_i): i in I}$ have teh finite intersection property. First, $C_(A_(i_1)) inter dots.c inter C_(A_(i_k)) = C_(A_(i_1) inter dots.c inter A_(i_k)) != emptyset$, hence $inter.big_(j = 1)^k A_(i_j) != emptyset$. So let $cal(F) = {A: A supset.eq A_(i_1) inter dots.c inter A_(i_k) "for some" A_(i_1), ..., A_(i_n)}$. We have $emptyset in.not cal(F)$, if $B supset.eq A in cal(F)$ then $B in cal(F)$, and if $A, B in cal(F)$, then $A inter B in cal(F)$. Hence $cal(F)$ is a filter. $cal(F)$ extends to an ultrafilter $cal(U)$. Note that $(forall i, A_i in cal(U)) <==> (cal(U) in C_(A_i) forall i)$. So $U in inter C_(A_i)$, so $inter C_(A_i) != emptyset$.
 ]
 #remark[
     - $beta NN$ can be viewed as a subset of ${0, 1}^(powset(NN))$ (so each ultrafilter is viewed as a function $powset(NN) -> {0, 1}$). The topology on $beta NN$ is the restriction of the product topology on ${0, 1}^powset(NN)$. Also, $beta NN$ is a closed subset of ${0, 1}^powset(NN)$, so is compact by Tychonov's theorem (TODO: look up statement of this theorem).

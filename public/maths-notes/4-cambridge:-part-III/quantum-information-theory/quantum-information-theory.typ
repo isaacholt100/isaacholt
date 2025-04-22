@@ -67,13 +67,13 @@ Note we always work with finite-dimensional Hilbert spaces, so take $HH = CC^N$.
     $
 ]<def:operator-norm>
 #notation[
-    Let $B(HH)$ denote the space of bounded linear operators, i.e. $T$ such that $norm(T) < oo$.
+    Let $BB(HH)$ denote the space of bounded linear operators, i.e. $T$ such that $norm(T) < oo$.
 ]
 #notation[
     Denote the dual of the operator $T$ by $T^*$, i.e. the operator that satisfies $braket(y, T(x)) = braket(T^* (y), x)$ for all $x, y in HH$.
 ]
 #definition[
-    A *quantum measurement* is a collection of measurement operators ${M_n}_n subset.eq B(HH)$ which satisfies $sum_n M_n^* M_n = II$, the identity operator.
+    A *quantum measurement* is a collection of measurement operators ${M_n}_n subset.eq BB(HH)$ which satisfies $sum_n M_n^* M_n = II$, the identity operator.
 
     Given $ket(phi)$, the probability that $ket(n)$ occurs after this operation is $p(n) = braket(phi, M_n^* M_n, phi)$. After performing this operation, the state of the system is $1/sqrt(p(n)) M_n ket(phi)$. This is the *Born rule*.
 ]<def:measurement>
@@ -83,7 +83,7 @@ Note we always work with finite-dimensional Hilbert spaces, so take $HH = CC^N$.
     Note that $ket(psi)$ and $e^(i theta) ket(psi)$ are operationally identical: the phase does not affect the measurement probabilities.
 ]
 #definition[
-    A quantum measurement ${M_n}_n subset.eq B(HH)$ is *projective measurement* if the $M_n$ are orthogonal projections (i.e. they are self-adjoint (Hermitian) and $M_n M_m = delta_(n m) M_n$).
+    A quantum measurement ${M_n}_n subset.eq BB(HH)$ is *projective measurement* if the $M_n$ are orthogonal projections (i.e. they are self-adjoint (Hermitian) and $M_n M_m = delta_(n m) M_n$).
 ]<def:measurement.projective>
 #definition[
     An *observable* is a Hermitian operator, which we can express as its spectral decomposition $
@@ -131,7 +131,7 @@ Note we always work with finite-dimensional Hilbert spaces, so take $HH = CC^N$.
 ]
 Suppose we don't fully know the state of the system, but know that it is $ket(phi_i)$ with probability $p_i$. We want to be able to consider the $sum_i p_i ket(phi_i)$ as a state, but this isn't normalised (except when some $p_i = 1$). To solve this issue, we assume each $ket(phi_i)$ to the rank-one projector $ket(phi_i) bra(phi_i)$, and we describe the unknown state by $rho = sum_i p_i ket(phi_i) bra(phi_i)$. This gives rise to the following definition:
 #definition[
-    A *density matrix/operator* is a linear operator $rho in B(HH)$ which is:
+    A *density matrix/operator* is a linear operator $rho in BB(HH)$ which is:
     - Hermitian,
     - Positive semi-definite, and
     - Satisfies $tr rho = 1$.
@@ -157,7 +157,7 @@ This can be generalised with the Schrodinger equation: the time evolution of a c
 We have $ket(phi(t_2)) = U(t_1, t_2) ket(phi(t_1))$ where $U(t_1, t_2) = exp(-i H(t_2 - t_1) \/ planck.reduce)$ which is a unitary. In fact, any unitary $U$ can be written in the form $U = exp(i K)$ for some Hermitian $K$.
 
 #postulate[
-    Given a physical system with associated Hilbert space $HH$, quantum measurements in the system are described by a collection of measurements ${M_n}_n subset.eq B(HH)$ such that $sum_n M_n^* M_n = II$, as in @def:measurement. The index $n$ refers to the measurement outcomes that may occur in the experiment, and given a state $ket(phi)$ before measurement, the probability that $n$ occurs is $
+    Given a physical system with associated Hilbert space $HH$, quantum measurements in the system are described by a collection of measurements ${M_n}_n subset.eq BB(HH)$ such that $sum_n M_n^* M_n = II$, as in @def:measurement. The index $n$ refers to the measurement outcomes that may occur in the experiment, and given a state $ket(phi)$ before measurement, the probability that $n$ occurs is $
         p(n) = braket(phi, M_n^* M_n, phi).
     $ The state of the system after measurement is $1/sqrt(p(n)) M_n ket(phi)$
 ]<pst:heisenberg-measurement>
@@ -194,7 +194,7 @@ We have $ket(phi(t_2)) = U(t_1, t_2) ket(phi(t_1))$ where $U(t_1, t_2) = exp(-i 
 
 // == Quantum projective measurements and the Born rule
 
-// Let $A in B(HH)$ be Hermitian, with spectral decomposition $A = sum_n a_n P_n$. If the eigenvalue $a_n$ is non-degenerate, then $P_n$ is a rank-one projector: $P_n = ket(phi_n) bra(phi_n)$. The outcome of the measurement is $a_n$. If the system is in state $ket(psi)$ before the measurement, then the probability that the outcome is $a_n$ is given by $p(a_n) = braket(psi, P_n, psi)$, and as a result of the measurement, the state of the system becomes $1/sqrt(p(a_n)) P_n ket(psi)$. This is the *Born rule*.
+// Let $A in BB(HH)$ be Hermitian, with spectral decomposition $A = sum_n a_n P_n$. If the eigenvalue $a_n$ is non-degenerate, then $P_n$ is a rank-one projector: $P_n = ket(phi_n) bra(phi_n)$. The outcome of the measurement is $a_n$. If the system is in state $ket(psi)$ before the measurement, then the probability that the outcome is $a_n$ is given by $p(a_n) = braket(psi, P_n, psi)$, and as a result of the measurement, the state of the system becomes $1/sqrt(p(a_n)) P_n ket(psi)$. This is the *Born rule*.
 
 == States, entanglement and measurements
 
@@ -205,10 +205,13 @@ We have $ket(phi(t_2)) = U(t_1, t_2) ket(phi(t_1))$ where $U(t_1, t_2) = exp(-i 
     
     The $lambda_i$ are unique up to re-ordering. The $lambda_i$ are called the *Schmidt coefficients* and the number of $lambda_i > 0$ is the *Schmidt rank* of the state.
 ]<thm:schmidt-decomposition>
+#proofhints[
+    Use the singular value decomposition of the matrix of amplitudes of $ket(psi)$.
+]
 #proof[
     Let $ket(psi) = sum_(k = 1)^(N_A) sum_(ell = 1)^(N_B) beta_(k ell) ket(phi_k) tp ket(phi_ell)$ for orthonormal bases ${ket(phi_k): k in [N_A]} subset.eq HH_A$, ${ket(chi_ell): ell in [N_B]} subset.eq HH_B$. Let $(beta_(k ell))$ have singular value decomposition $
         U mat(Sigma, 0) V,
-    $ where $U$ is an $N_B times N_B$ unitary, $Sigma$ is an $N_A times N_A$ diagonal matrix with non-negative entries, and $V$ is an $N_A times N_A$ unitary. So $
+    $ where $U$ is an $N_A times N_A$ unitary, $Sigma$ is an $N_A times N_A$ diagonal matrix with non-negative entries, and $V$ is an $N_B times N_B$ unitary. So $
         beta_(k ell) = sum_(i = 1)^(N_A) sum_(j = 1)^(N_B) U_(k i) Sigma_(i j) V_(j ell) = sum_(i = 1)^(N_A) Sigma_(i i) U_(k i) V_(i ell).
     $ Hence, $
         ket(psi) = sum_(k, ell) sum_i Sigma_(i i) U_(k i) ket(phi_k) tp V_(i ell) ket(chi_ell) = sum_i Sigma_(i i) underbrace((sum_k U_(k i) ket(phi_k)), ket(e_i)) tp underbrace((sum_ell V_(j ell) ket(chi_ell)), ket(j_B)).
@@ -221,24 +224,24 @@ We have $ket(phi(t_2)) = U(t_1, t_2) ket(phi(t_1))$ where $U(t_1, t_2) = exp(-i 
     Let $ket(psi)$ be a pure state in a bipartite system $HH_(A B) = HH_A tp HH_B$, where $HH_A$ has dimension $N_A$ and $HH_B$ has dimension $N_B >= N_A$. $ket(psi)$ is *maximally entangled* if all its Schmidt coefficients are equal (to $1 \/ sqrt(N_A)$).
 ]
 #notation[
-    Write $S(HH) = {rho in B(HH): rho = rho^dagger, rho >= 0, tr p = 1}$ for the set of density matrices on $HH$.
+    Write $SS(HH) = {rho in BB(HH): rho = rho^dagger, rho >= 0, tr p = 1}$ for the set of density matrices on $HH$.
 ]
 #definition[
     The *partial trace* over $B$, $tr_B$, on the bipartite system $HH_(A B) = HH_A tp HH_B$ is the operator defined linearly by $
-        tr_B: S(HH_(A B)) & -> S(HH_A), \
+        tr_B: SS(HH_(A B)) & -> SS(HH_A), \
         ket(a_1) bra(a_2) tp ket(b_1) bra(b_2) & |-> tr (ket(b_1) bra(b_2)) dot ket(a_1) bra(a_2).
     $ Note that if $rho_(A B) = rho_A tp rho_B$, then $tr_B rho_(A B) = tr(rho_B) dot rho_A = rho_A$.
 ]<def:partial-trace>
 #definition[
-    Let $rho_(A B)$ be a density matrix in $S(HH_(A B))$. $rho_A = tr_B (rho_(A B))$ is called the *reduced density matrix* or *marginal* of $rho_(A B)$ in $A$
+    Let $rho_(A B)$ be a density matrix in $SS(HH_(A B))$. $rho_A = tr_B (rho_(A B))$ is called the *reduced density matrix* or *marginal* of $rho_(A B)$ in $A$
 ]<def:reduced-density-matrix>
 #proposition[
     Let $M_A in B(HH_A)$. We have $
         tr (M_A rho_A) = tr((M_A tp II_B) rho_(A B)).
-    $ for all $rho_(A B) in S(HH_(A B))$, $rho_A = tr_B (rho_(A B))$. In fact, this can be taken to be an equivalent definition of partial trace.
-]
+    $ for all $rho_(A B) in SS(HH_(A B))$, $rho_A = tr_B (rho_(A B))$. In fact, this can be taken to be an equivalent definition of partial trace.
+]<prop:equivalent-definition-of-partial-trace>
 #remark[
-    Let $rho_(A B) = ket(psi) bra(psi) in S(HH_(A B))$ be a pure state and let $r_psi$ be its Schmidt rank. Then $
+    Let $rho_(A B) = ket(psi) bra(psi) in SS(HH_(A B))$ be a pure state and let $r_psi$ be its Schmidt rank. Then $
         rho_A = tr_B (ket(psi) bra(psi)) = sum_(k = 1)^(r_psi) p_k ket(u_k) bra(u_k).
     $ So $rho_A$ is pure iff $r_psi = 1$, i.e. iff $ket(psi)$ is separable.
 ]
@@ -252,9 +255,17 @@ We have $ket(phi(t_2)) = U(t_1, t_2) ket(phi(t_1))$ where $U(t_1, t_2) = exp(-i 
     $ for an orthonormal bases ${ket(phi_i)}$ and ${ket(psi_k)}$.
     + If $rho_(A B) = sigma_A tp sigma_B$ and $tr(sigma_B) = 1$, then $sigma_A = rho_A$.
 ]
+#proofhints[
+    + Straightforward.
+    + Use @prop:equivalent-definition-of-partial-trace.
+    + Straightforward.
+]
 #proof[
     + This follows from linearity of trace and the fact that $tr(rho tp sigma) = tr(rho) dot tr(sigma)$.
-    + By 1, $braket(psi, rho_A, psi) = tr(rho_A ket(psi) bra(psi)) = tr(rho_(A B) (ket(psi) bra(psi) tp II)) >= 0$.
+    + By @prop:equivalent-definition-of-partial-trace, $
+        braket(psi, rho_A, psi) & = tr(rho_A ket(psi) bra(psi)) = tr(rho_(A B) (ket(psi) bra(psi) tp II)) \
+        & = sum_i tr(rho_(A B) ket(psi) bra(psi) tp ket(i) bra(i)) = sum_i (bra(psi) tp bra(i)) rho_(A B) (ket(psi) tp ket(i)) >= 0.
+    $
     + From 1 and 2, by definition.
     // + $braket(psi_i, rho_A, rho_i) = tr(rho_A ket(phi_i) bra(phi_i)) = tr(rho_(A B) (ket(phi_i) bra(phi_i) tp II)) =$
 ]
@@ -265,8 +276,8 @@ We have $ket(phi(t_2)) = U(t_1, t_2) ket(phi(t_1))$ where $U(t_1, t_2) = exp(-i 
     Let ${M_n^A}_n$ be a POVM in $HH_A$. Then ${M_n^A tp II_B}_n$ is a POVM in $HH_(A B)$.
 ]
 #theorem("Naimark")[
-    For every POVM ${E_n}_(n = 1)^m subset.eq B(HH)$, there is a state $ket(psi) in CC^m$ and a projective measurement ${P_n}_(n = 1)^m subset.eq B(HH tp CC^m)$ such that $
-        tr (rho E_n) = tr((rho tp ket(psi) bra(psi)) P_n) quad forall n in [m], forall rho in S(HH).
+    For every POVM ${E_n}_(n = 1)^m subset.eq BB(HH)$, there is a state $ket(psi) in CC^m$ and a projective measurement ${P_n}_(n = 1)^m subset.eq B(HH tp CC^m)$ such that $
+        tr (rho E_n) = tr((rho tp ket(psi) bra(psi)) P_n) quad forall n in [m], forall rho in SS(HH).
     $
 ]
 
@@ -276,10 +287,10 @@ We have $ket(phi(t_2)) = U(t_1, t_2) ket(phi(t_1))$ where $U(t_1, t_2) = exp(-i 
 == Quantum channels
 
 #definition[
-    A *quantum channel* is a linear map $T: S(HH_"in") -> S(HH_"out")$ which satisfies:
-    - *Preserves trace*: $tr(T(rho)) = tr(rho)$ for all $rho in S(HH_"in")$.
+    A *quantum channel* is a linear map $T: SS(HH_"in") -> SS(HH_"out")$ which satisfies:
+    - *Preserves trace*: $tr(T(rho)) = tr(rho)$ for all $rho in SS(HH_"in")$.
     - *Positive*: if $rho >= 0$, then $T(rho) >= 0$.
-    - *Completely positive*: for all $rho, sigma$ if $rho tp sigma >= 0$, then $(T tp II_n)(rho tp sigma) = T(rho) tp sigma >= 0$ (note that this implies the second condition, but the converse is false).
+    - *Completely positive*: for all $n in NN$, $(T tp II_n)$ is positive (note that this implies the second condition, but the converse is false).
     So quantum channels are completely positive trace-preserving (CPTP) maps. We may depict a quantum channel $T$ as follows:
     #unmarked-fig[
         #figure(
@@ -321,7 +332,17 @@ We have $ket(phi(t_2)) = U(t_1, t_2) ket(phi(t_1))$ where $U(t_1, t_2) = exp(-i 
     Note that the partial transpose is useful for detecting entanglement but is not physically implementable (as not CP).
 ]
 #definition[
-    Let $T: B(CC^(d times d)) -> B(CC^(d' times d'))$ be a linear map. The *Choi-Jamiolkowski matrix* $C in B(CC^(d') tp CC^d)$ of $T$ is defined as $
+    The *Hilbert-Schmidt inner product* of $A, B in B(CC^d)$ is $
+        braket(A, B)_"HS" := tr(A^* B).
+    $
+]<def:hilbert-schmidt-inner-product>
+#definition[
+    Let $T: B(CC^d) -> B(CC^d')$ be a linear map. The *adjoint* of $T$ is the unique linear map $T^*: B(CC^d') -> B(CC^d)$ which satisfies $
+        gen(T(A), B)_"HS" = gen(A, T^*(B))_"HS" quad forall A in B(CC^d), B in B(CC^d').
+    $
+]<def:superoperator-adjoint>
+#definition[
+    Let $T: B(CC^d) -> B(CC^(d'))$ be a linear map. The *Choi-Jamiolkowski matrix* $C in B(CC^(d') tp CC^d)$ of $T$ is defined as $
         C := (T tp id_d) ket(phi) bra(phi).
     $ Note that in fact, $C in S(CC^d' tp CC^d)$ is a density matrix if $T$ is a quantum channel.
 ]<def:choi-jamiolkowski-matrix>
@@ -330,17 +351,13 @@ We have $ket(phi(t_2)) = U(t_1, t_2) ket(phi(t_1))$ where $U(t_1, t_2) = exp(-i 
         braket(i j, C, k ell) & = 1/d sum_(m,n = 1)^d braket(i j, (T (ket(n) bra(m)) tp ket(n) bra(m)), k ell) \
         & = 1/d sum_(m, n = 1)^d braket(j, n) dot braket(m, ell) dot braket(i, T(ket(n) bra(m)), k) = 1/d braket(i, T(ket(j) bra(ell)), k),
     $ and so we can determine any entry of any $T(rho)$ by linearity. This state-channel duality is called the *Choi-Jamiolkowski isomorphism*, and can be expressed as $
-        tr(A T(B)) = d tr (C A tp B^T) quad forall A in B(CC^(d')), B in B(CC^d).
+        tr(A T(B)) = d tr (C (A tp B^T)) quad forall A in B(CC^(d')), B in B(CC^d).
     $ Indeed, let $FF ket(i j) = ket(j i)$ be the flip operator: note that $FF^(T_2) = d ket(phi) bra(phi)$, then if $d = d'$, $
         d tr(C (A tp B^T)) & = d tr((T tp id_d) (ket(phi) bra(phi)) (A tp B^T)) \
+        & = tr((T tp id_d) FF^(T_2) (A tp B^T)) \
         & = tr(FF^(T_2) (T^* (A) tp B^T)) = tr(T^* (A) tp B) = tr(A T(B)). // TODO: I don't understand the first and third equalities on this line
     $
 ]
-#definition[
-    The *Hilbert-Schmidt inner product* of $A, B in B(CC^d)$ is $
-        braket(A, B)_"HS" := tr(A^* B).
-    $
-]<def:hilbert-schmidt-inner-product>
 #theorem("Characterisation of Quantum Channels")[
     Let $T: B(CC^d) -> B(CC^d')$ be a linear map. TFAE:
     + $T$ is a quantum channel.
@@ -411,9 +428,9 @@ We have $ket(phi(t_2)) = U(t_1, t_2) ket(phi(t_1))$ where $U(t_1, t_2) = exp(-i 
     $ The Kraus operators are $M_0 = sqrt(1 - p) dot II$, $M_1 = sqrt(p) ket(0) bra(0)$, $M_2 = sqrt(p) ket(1) bra(1)$. We have $M_0^2 + M_1^2 + M_2^2 = II$. The map is $T(rho) = (1 - p \/ 2) rho + 1/2 p Z rho Z$.
 ]
 #definition[
-    A density matrix $rho in S(HH_A tp HH_B)$ is *separable* if it can be expressed as a convex combination $
+    A density matrix $rho in SS(HH_A tp HH_B)$ is *separable* if it can be expressed as a convex combination $
         rho = sum_i p_i rho_i^A tp sigma_i^B,
-    $ where $p_i >= 0$, $sum_i p_i = 1$, and $rho_i^A in S(HH_A)$ and $sigma_i^B in S(HH_B)$.
+    $ where $p_i >= 0$, $sum_i p_i = 1$, and $rho_i^A in SS(HH_A)$ and $sigma_i^B in SS(HH_B)$.
 ]<def:separable-density-matrix>
 #definition[
     A quantum channel $T$ is *entanglement breaking* if its Choi-Jamiolkowski matrix is separable. This is equivalent to the existence of a POVM ${M_k}$ and a set of density matrices ${rho_k}$ such that $T(rho) = sum_k tr(M_k rho) rho_k$.
@@ -424,9 +441,9 @@ We have $ket(phi(t_2)) = U(t_1, t_2) ket(phi(t_1))$ where $U(t_1, t_2) = exp(-i 
 #remark[
     Let $ket(psi) in HH_A tp HH_B$, $d = min{dim H_A, dim H_B}$, not necessarily normalised. The Schmidt decomposition is $
         ket(psi) = sum_(j = 1)^d lambda_j ket(e_j) tp ket(f_j),
-    $ $lambda_j >= 0$, $sum_j lambda_j^2 = braket(psi, psi)$, ${e_j}$, ${f_j}$ orthonormal bases.
+    $ where $lambda_j >= 0$, $sum_(j = 1)^d lambda_j^2 = braket(psi, psi)$, and ${ket(e_j): j in [d]}$ and ${ket(f_j): j in [d]}$ orthonormal bases.
 
-    The reduced density operators of $ket(psi)$ are diagonal in the bases ${ket(e_j)}$, ${ket(f_j)}$, with eigenvalues $lambda_j^2$. Conversely, if $rho_A in S(HH_A)$ has spectral decomposition $rho_A = sum_j lambda_j ket(e_j) bra(e_j)$, then $ket(psi)$ provides a purification for $rho_A = tr_B (ket(psi) bra(psi))$; the minimal dilation space we can choose, $HH_min$ has dimension $"rank"(rho_A)$. If $ket(psi) in HH_A tp HH_min$, then all other purifications of $rho_A$ are of the form $ket(psi') = (II_A tp V) ket(psi)$, with $V in B(HH_min, HH_B)$ an isometry. Hence, all purifications are related by $II_A tp U$ with $U$ an isometry.
+    The reduced density operators of $ket(psi)$ are diagonal in the bases ${ket(e_j)}$, ${ket(f_j)}$, with eigenvalues $lambda_j^2$. Conversely, if $rho_A in SS(HH_A)$ has spectral decomposition $rho_A = sum_j lambda_j ket(e_j) bra(e_j)$, then $ket(psi)$ provides a purification for $rho_A = tr_B (ket(psi) bra(psi))$; the minimal dilation space we can choose, $HH_min$ has dimension $"rank"(rho_A)$. If $ket(psi) in HH_A tp HH_min$, then all other purifications of $rho_A$ are of the form $ket(psi') = (II_A tp V) ket(psi)$, with $V in B(HH_min, HH_B)$ an isometry. Hence, all purifications are related by $II_A tp U$ with $U$ an isometry.
 ]
 #proposition("Equivalence of Ensembles")[
     Let ${ket(psi_j): j in [M]}$ and ${ket(phi_ell): ell in [N]}$ be (not necessarily normalised) ensembles. Then $
@@ -493,7 +510,7 @@ Assume evolution is $
     rho_(S E)(t) = rho_S (t) tp rho_E |->^(dif t) rho_(S E)(t + dif t) = rho_S (t + dif t) tp rho_E (t + dif t) = rho_S (t + dif t) tp rho_E
 $
 #definition[
-    A *quantum Markov semigroup* is a $1$-parameter continuous semigroup ${T_t: t >= 0}$ of quantum channels (so each $T_t: S(HH) -> S(HH)$).
+    A *quantum Markov semigroup* is a $1$-parameter continuous semigroup ${T_t: t >= 0}$ of quantum channels (so each $T_t: SS(HH) -> SS(HH)$).
 
     Note that $T_0 = II$ and $T_s compose T_t = T_(t + s)$. We have $
         dif / (dif t) T_t = cal(L) compose T_t = T_t compose cal(L),
@@ -527,7 +544,7 @@ $
     - The maximum value of $S_"ENT" (rho)$ is $log(d)$, and is achieved iff $ket(psi)$ is maximally entangled, i.e. $lambda_i = 1 \/ d$ for all $i in [d]$.
 ]<prop:properties-of-entanglement-entropy>
 #proposition("PPT Criterion")[
-    Let $rho in S(HH_A tp HH_B)$. If $rho^(T_A)$ has a negative eigenvalue, then $rho$ is entangled.
+    Let $rho in SS(HH_A tp HH_B)$. If $rho^(T_A)$ has a negative eigenvalue, then $rho$ is entangled.
 ]<prop:ppt-criterion>
 #proofhints[
     Prove the contrapositive.
@@ -549,7 +566,7 @@ $
     The entanglement witness corresponding to the transposition map is the flip operator $F$.
 ]
 #proposition[
-    Let $HH_(A B) = HH_A tp HH_B$ and let $rho in S(HH_(A B))$. Then $rho$ is separable iff $(Lambda tp id_B)(rho) >= 0$ for every positive map $Lambda: B(HH_A) -> B(HH_A)$.
+    Let $HH_(A B) = HH_A tp HH_B$ and let $rho in SS(HH_(A B))$. Then $rho$ is separable iff $(Lambda tp id_B)(rho) >= 0$ for every positive map $Lambda: B(HH_A) -> B(HH_A)$.
 ]<prop:positive-map-criterion-for-separability>
 #proofhints[
     - $==>$: straightforward.
@@ -585,7 +602,7 @@ $
     since $rho^(T_A)$ and $rho^(T_B)$ differ only by a global transposition.
 ]
 #definition[
-    A map $Lambda: B(HH) -> B(HH)$ is called *decomposable* if $Lambda = Lambda_1 + Lambda_2 compose Theta$, where $Lambda_1$ and $Lambda_2$ are positive maps and $Theta$ is a partial transpose. Otherwise, it is called *non-decomposable*.
+    A map $Lambda: BB(HH) -> BB(HH)$ is called *decomposable* if $Lambda = Lambda_1 + Lambda_2 compose Theta$, where $Lambda_1$ and $Lambda_2$ are positive maps and $Theta$ is a partial transpose. Otherwise, it is called *non-decomposable*.
 ]<def:decomposable-map>
 #example[
     The entanglement witness corresponding to a decomposable map $Lambda = Lambda_1 + Lambda_2 compose Theta$ is $omega = Q_1 + Q_2^T$, where $Q_i = d(Lambda_i tp II)(ket(phi) bra(phi))$ is the entanglement witness of $Lambda_i$ // TODO: my notes have Lambda^*_i instead here?
@@ -628,11 +645,11 @@ The goal of quantum hypothesis testing is to distinguish between quantum states 
 
 == Quantum state discrimination
 
-Given an ensemble ${rho_1, ..., rho_n} subset.eq S(HH)$ of density operators with corresponding probabilities ${p_1, ..., p_n}$, where $p_i >= 0$ and $sum_(i = 1)^n p_i = 1$. This can be interpreted as a set of $n$ hypotheses (the $rho_i$) with corresponding a priori probability $p_i$. The goal is to maximise the average probability of correct identification of the hypothesis. To discriminate among the hypothesis, we use a POVM $M = {M_1, ..., M_n}$, and we want to maximise $
+Given an ensemble ${rho_1, ..., rho_n} subset.eq SS(HH)$ of density operators with corresponding probabilities ${p_1, ..., p_n}$, where $p_i >= 0$ and $sum_(i = 1)^n p_i = 1$. This can be interpreted as a set of $n$ hypotheses (the $rho_i$) with corresponding a priori probability $p_i$. The goal is to maximise the average probability of correct identification of the hypothesis. To discriminate among the hypothesis, we use a POVM $M = {M_1, ..., M_n}$, and we want to maximise $
     cal(P)(M) := sum_(j = 1)^n tr(M_j p_j rho_j) = sum_(j = 1)^n p_j tr(M_j rho_j).
-$ Note that the interpretation is as follows: we have an unknown quantum state $rho$ which is distributed over $S(HH)$, where $rho = rho_i$ with probability $p_i$. Given that $rho = rho_i$, the probability of the measurement $M$ yielding the (correct) outcome $i$ is $tr(M_j rho_j)$. So $cal(P)(M)$ is the expected value of the probability of measuring the correct outcome.
+$ Note that the interpretation is as follows: we have an unknown quantum state $rho$ which is distributed over $SS(HH)$, where $rho = rho_i$ with probability $p_i$. Given that $rho = rho_i$, the probability of the measurement $M$ yielding the (correct) outcome $i$ is $tr(M_j rho_j)$. So $cal(P)(M)$ is the expected value of the probability of measuring the correct outcome.
 #notation[
-    Write $cal(M) = span{(M_1, ..., M_n) in B(HH)^n, M_i >= 0, sum_i M_i = II}$ for the span of the set of POVMs with $n$ operators, and write $cal(P)(cal(M)) = sup_(M in cal(M)) cal(P)(M)$.
+    Write $cal(M) = span{(M_1, ..., M_n) in BB(HH)^n, M_i >= 0, sum_i M_i = II}$ for the span of the set of POVMs with $n$ operators, and write $cal(P)(cal(M)) = sup_(M in cal(M)) cal(P)(M)$.
 ]
 #notation[
     Write $sigma_i = p_i rho_i$.
@@ -661,8 +678,8 @@ $ Note that the interpretation is as follows: we have an unknown quantum state $
     + $M$ is an optimal measurement, i.e. $cal(P)(M) = cal(P)(cal(M))$.
     + For all $i in [n]$, $1/2 (L + L^*) >= p_i rho_i$.
     + For all $i in [n]$, $L >= p_i rho_i$.
-    + There exists $K in B(HH)$ such that for all $i in [n]$, $K >= p_i rho_i$ and $(K - p_i rho_i) M_i = 0$.
-    + $cal(P)(M) = min{tr(A): A in cal(A)}$, where $cal(A) = {A in B(HH): A >= p_i rho_i med forall i}$.
+    + There exists $K in BB(HH)$ such that for all $i in [n]$, $K >= p_i rho_i$ and $(K - p_i rho_i) M_i = 0$.
+    + $cal(P)(M) = min{tr(A): A in cal(A)}$, where $cal(A) = {A in BB(HH): A >= p_i rho_i med forall i}$.
 ]<thm:equivalent-conditions-for-optimal-measurements>
 #remark[
     - The inequalities in 3. and 4. of @thm:equivalent-conditions-for-optimal-measurements imply that $L$ and $K$ are Hermitian.
@@ -733,7 +750,7 @@ $ Also, $
 $ Note that $cal(P)(M) + cal(E)(M) = 1$.
 #definition[
     Let $HH$ be a finite dimensional Hilbert space. For $p in [1, oo)$, the *Schatten $p$-norm* is defined as $
-        norm(dot)_p: B(HH) & -> [0, oo), \
+        norm(dot)_p: BB(HH) & -> [0, oo), \
         norm(A) & = tr(abs(A)^p)^(1 \/ p).
     $ We can also define $norm(A)_oo = lim_(p -> oo) norm(A)_p = max_i {abs(lambda_i)}$, where $lambda_i$ are the eigenvalues of $A$.
 ]<def:schatten-p-norm>
@@ -763,7 +780,7 @@ Now assume we have $m$ copies of $rho_1$ and $rho_2$, and we can treat them as s
     cal(E)_m^"opt" = 1/2 (1 - norm(p rho_1^(tp m) - (1 - p) rho_2^(tp m))_1)
 $ It can be shown that $cal(E)_m^"opt"$ decays exponentially with $m$, i.e. $cal(E)_m^"opt" <= K e^(-xi m)$, $K, xi > 0$. Note that this upper bound is independent of $p$.
 #lemma[
-    If $A, B in B(HH)$ are positive, then $forall s in [0, 1]$, $tr((A^s - B^s) A^(1 - s)) <= tr((A - B)_+)$.
+    If $A, B in BB(HH)$ are positive, then $forall s in [0, 1]$, $tr((A^s - B^s) A^(1 - s)) <= tr((A - B)_+)$.
 ]<lem:quantum-chernoff-bound-lemma>
 #proof[
     Consequence of operator monotonicity of $z |-> z^s$ for all $s in [0, 1]$ (details omitted).
@@ -774,7 +791,7 @@ $ It can be shown that $cal(E)_m^"opt"$ decays exponentially with $m$, i.e. $cal
     $
 ]<thm:quantum-chernoff-bound>
 #proofhints[
-    - Show that $1/2 (tr(A + B) - norm(A - B)_1) <= tr(B^s A^(1 - s))$ for positive $A, B in B(HH)$ and $s in [0, 1]$.
+    - Show that $1/2 (tr(A + B) - norm(A - B)_1) <= tr(B^s A^(1 - s))$ for positive $A, B in BB(HH)$ and $s in [0, 1]$.
     - Now take $A = p rho_1^(tp m)$ and $B = (1 - p) rho_2^(tp m)$ to show inequality in the theorem statement.
     - To show equality, consider $
         hat(rho)_1 & = sum_(j, k) lambda_j^((1)) abs(braket(psi_j^((1)), psi_k^((2)))) ket(j k) bra(j k) \
@@ -889,7 +906,7 @@ Note by the @thm:quantum-chernoff-bound, we have $
     liminf_(m -> oo) -1/m log alpha_m (P_m) >= xi, quad liminf_(m -> oo) -1/m log beta_m (P_m) >= xi.
 $
 #theorem("Quantum Stein's Lemma")[
-    Let $rho, sigma in S(HH)$, $epsilon in (0, 1)$, let $beta_m$ be minimised over all POVMs $(P_m, II - P_m)$ subject to $alpha_m (P_m) <= epsilon$. Then $
+    Let $rho, sigma in SS(HH)$, $epsilon in (0, 1)$, let $beta_m$ be minimised over all POVMs $(P_m, II - P_m)$ subject to $alpha_m (P_m) <= epsilon$. Then $
         lim_(m -> oo) -1/m log beta_m = D(rho || sigma),
     $ where $D(rho || sigma) = tr(rho (log rho - log sigma))$ is the relative entropy between $rho$ and $sigma$.
 ]<thm:quantum-steins-lemma>
@@ -919,3 +936,255 @@ $
         & <= D(T(rho^(tp m)) || sigma^(tp m)) + d log(m + 1). // TODO: why?
     $ By the inequality, have $D(rho || sigma) = lim_(m -> oo) 1/m D(T(rho^(tp m)) || sigma^(tp m))$. Also, since the pinching $T$ satisfies $[T(rho^(tp m)), sigma^(tp m)] = 0$, the RHS is interpretable as a classical relative entropy, and classical Stein's lemma has equality. // TODO: if we have this, why do we need to show the inequality in the above part?
 ]
+
+
+= Distances and entropy measures
+
+#notation[
+    In this section, $log$ denotes the base two logarithm.
+]
+
+== Quantum entropies
+
+#definition[
+    Let $rho in SS(HH)$ be a density matrix. The *von Neumann entropy* of $rho$ is given by $
+        S(rho) := -tr(rho log rho).
+    $
+]<def:von-neumann-entropy>
+#remark[
+    - The von Neumann entropy extends the classical Shannon entropy of a discrete probability distribution ${p_i}$, given by $-sum_i p_i log p_i$. In particular, treating the eigenvalues ${lambda_i}$ of $rho$ as a distribution, it is easy to see that the von Neumann entropy of $rho$ is the Shannon entropy of the distribution ${lambda_i}$ (since if $rho = U D U^*$ for diagonal $D$ and unitary $U$, then $log rho = U log(D) U^*$, where $log(D)$ is computed entrywise).
+    - It quantifies the quantum information content per letter of ensemble (the minimum number of qubits per letter that are necessary to reliably encode a message).
+    - It also quantifies the amount of entanglement of a bipartite pure state.
+]
+#proposition[
+    Properties of von Neumann entropy: let $rho in SS(HH)$ with $dim HH = d$, then
+    - If $rho = ket(psi) bra(psi)$ is pure, then $S(rho) = 0$.
+    - *Unitary invariance*: $S(U rho U^(-1)) = S(rho)$ for every unitary $U$.
+    - $S(rho) <= log d$.
+    - *Concavity*: for $p_i >= 0$ and $sum_i p_i = 1$, we have $
+        S(sum_i p_i rho_i) >= sum_i p_i S(rho_i)
+    $
+    - *Subadditivity*: for all $rho_(A B) in SS(HH_A tp HH_B)$, with $rho_A = tr_B (rho_(A B))$ and $rho_B = tr_A (rho_(A B))$, $
+        S(rho_(A B)) <= S(rho_A) + S(rho_B).
+    $
+    - *Additivity*: for all $rho_(A B) = rho_A tp rho_B in SS(HH_A tp HH_B)$, we have $
+        S(rho_(A B)) = S(rho_A) + S(rho_B).
+    $
+    - *Strong subadditivity*: for all $rho_(A B C) in SS(HH_A tp HH_B tp HH_C)$, $
+        S(rho_(A B C)) + S(rho_B) <= S(rho_(A B)) + S(rho_(B C))
+    $
+    - *Araki-Lieb inequality*: for all $rho_(A B) in SS(HH_A tp HH_B)$, $
+        S(rho_(A B)) >= abs(S(rho_A) - S(rho_B)).
+    $
+]<prop:properties-of-von-neumann-entropy>
+#remark[
+    If $rho_(A B)$ is pure, then $S(rho_(A B)) = 0$ by @prop:properties-of-von-neumann-entropy, and so by the Araki-Lieb inequality, $S(rho_A) = S(rho_B)$. However, in this case they don't have to be equal to $0$.
+]
+#corollary[
+    Let $rho_(S E) = rho_S tp rho_E in SS(HH_S tp HH_E)$. Then by additivity, $S(rho_(S E)) = S(rho_S) + S(rho_E)$. Consider the evolution $
+        rho_(S E) |-> U rho_(S E) U^* = rho'_(S E).
+    $ Then by unitary invariance and subadditivity, $
+        S(rho_S) + S(rho_E) = S(rho_(S E)) = S(rho'_(S E)) <= S(rho'_S) + S(rho'_E).
+    $ This descrbies the second law of thermodynamics.
+]
+#definition[
+    Let $rho_(A B) in SS(HH_A tp HH_B)$, $rho_A = tr_B (rho_(A B))$, $rho_B = tr_A (rho_(A B))$. The *quantum mutual information* is $
+        I_rho (A: B) = S(rho_A) + S(rho_B) - S(rho_(A B)).
+    $ By subadditivity of von Neumann entropy, this is always non-negative.
+]<def:quantum-mutual-information>
+#definition[
+    Let $rho_(A B C) in SS(HH_A tp HH_B tp HH_C)$. The *conditional mutual information* is $
+        I_rho (A : C | B) := S(rho_(A B)) + S(rho_(B C)) - S(rho_(A B C)) - S(rho_B)
+    $ which is always non-negative by strong subadditivity of von Neumann entropy.
+]<def:conditional-mutual-information>
+#definition[
+    For $rho_(A B) in SS(HH_A tp HH_B)$, the *conditional entropy* is $
+        H(A | B)_rho := S(rho_(A B)) - S(rho_B).
+    $
+]<def:conditional-entropy>
+#proposition[
+    - $H(A | B)_rho >= -log(dim HH_A)$, so can be negative! This is different to the classical case.
+    - $S(rho_A) >= H(A | B)_rho$.
+]
+#definition[
+    The *quantum (Umegaki) relative entropy* of $rho, sigma in SS(HH)$ is $
+        D(rho || sigma) := cases(
+            tr(rho (log rho - log sigma)) quad & "if" ker sigma subset.eq ker rho,
+            oo quad & "otherwise".
+        )
+    $ It is a quantum analogue of the classical relative entropy (the Kullback-Leibler divergence).
+]<def:umegaki-relative-entropy>
+#definition[
+    The *Belavkin-Staszewski relative entropy* of $rho, sigma in SS(HH)$ is $
+        hat(D)(rho || sigma) = tr(rho log (rho^(1 \/ 2) sigma^(-1) rho^(1 \/ 2))).
+    $
+]<def:belavkin-staszewski-relative-entropy>
+#proposition[
+    We have $D(rho || sigma) <= hat(D)(rho || sigma)$, with equality iff $[rho, sigma] = 0$.
+]
+#proposition[
+    Properties of quantum relative entropy:
+    - $rho |-> D(rho || sigma)$ and $rho |-> hat(D)(rho || sigma)$ are continuous.
+    - *Non-negativity*: $D(rho || sigma) >= 0$ with equality iff $rho = sigma$, and similarly for $hat(D)$.
+    - *Unitary invariance*: $D(U rho U^* || U sigma U^*) = D(rho || sigma)$, and similarly for $hat(D)$.
+    - *Additivity*: $
+        D(rho_A tp rho_B || sigma_A tp sigma_B) = D(rho_A || sigma_A) + D(rho_B || sigma_B),
+    $ and similarly for $hat(D)$.
+    - *Superadditivity*: $
+        D(rho_(A B) || sigma_A tp sigma_B) >= D(rho_A || sigma_A) + D(rho_B || sigma_B).
+    $
+    - *Data-processing inequality*: for every quantum channel $T$ and $rho, sigma in SS(HH)$, $
+        D(T(rho) || T(sigma)) <= D(rho || sigma),
+    $ and similarly for $hat(D)$.
+]<prop:properties-of-quantum-relative-entropy>
+#remark[
+    The quantum (Umegaki) relative entropy can be defined as the unique function satisfying the properties of @prop:properties-of-quantum-relative-entropy.
+]
+
+== Divergences
+
+#definition[
+    For $alpha in (0, 1) union (1, oo)$, the *Rényi divergence* between PMFs ${p_i}$ and ${q_i}$ is $
+        D_alpha ({p_i} || {q_i}) = 1/(alpha - 1) log (sum_i p_i^alpha q_i^(1 - alpha))/(sum_i p_i). // TODO: why do we need to divide by the sum - isn't it always 1?
+    $ Note that $lim_(alpha -> 1) D_alpha (p || q) = D(p || q)$ where $
+        D(p || q) = sum_i p_i log p_i / q_i
+    $ is the Kullback-Leibler divergence.
+]<def:Rényi-divergence>
+#definition[
+    A *quantum divergence* (with parameter $alpha$) is a function $DD_alpha (dot || dot): SS(HH) times SS(HH) -> RR_(>= 0)$ which can be expressed as $DD_alpha (dot || dot) = g(Q(dot || dot))$ where $g$ is continuous and strictly monotone, and satisfies:
+    - *Positive semidefiniteness*: $DD_alpha (rho || sigma) >= 0$ with equality iff $rho = sigma$.
+    - *Data processing inequality*: $DD_alpha (T(rho) || T(sigma)) <= DD_alpha (rho || sigma)$ for every quantum channel $T$.
+    - *Additivity*: $$
+    - *Joint convexity*: if $alpha > 1$, then for all ${p_i}$ such that each $p_i >= 0$ and $sum_i p_i = 1$, $
+        Q(sum_i p_i rho_i || sum_i p_i sigma_i) <= sum_i p_i Q(rho_i || sigma_i),
+    $ // TODO: alpha isn't in scope here: is this just for regular quantum Rényi divergence, or any of the quantum divergences defined below (e.g. minimal and maximal divergences)
+    - *Joint concavity*: if $alpha in (0, 1)$, then for all ${p_i}$ such that each $p_i >= 0$ and $sum_i p_i = 1$, $
+        Q(sum_i p_i rho_i || sum_i p_i sigma_i) >= sum_i p_i Q(rho_i || sigma_i),
+    $
+    - *Dominance*: for all $X, Y, Y' in BB(HH)$ positive with $Y <= Y'$, we have $DD_alpha (X || Y) >= DD_alpha (X || Y')$.
+    Note that unlike in the classical case, there are multiple families of functions which satisfy these axioms.
+]<def:axioms-of-quantum-Rényi-divergence>
+#definition[
+    Given orthogonal projections $P_1, ..., P_n$ (i.e. each $P_i = P_i^*$ and $sum_i P_i = II$), we define the *pinching map* $cal(P): BB(HH) -> BB(HH)$ by $
+        cal(P)(L) = sum_(j = 1)^n P_j L P_j = sum_(k = 1)^n U_k L U_k^*,
+    $ where $U_k = sum_(j = 1)^n e^(2pi i j k \/ n) P_j$. It is easy to see that $cal(P)$ is a CPTP map.
+]<def:pinching-map>
+#remark[
+    For $H = sum_j lambda_j ket(e_j) bra(e_j)$ Hermitian, we can set $P_lambda = sum_(j: lambda_j = lambda) ket(e_j) bra(e_j)$ so that $H = sum_lambda lambda P_lambda$. We can then define the pinching map $cal(P)_H: L -> sum_lambda P_lambda L P_lambda$ of $H$. This has the following properties:
+    - $P_H (L) >= 1/abs("spec"(H)) L$: note that $abs("spec"(H^(tp n))) = O("poly"(n))$.
+    - $[P_H (L), H] = 0$.
+    - $tr(P_H (L) H) = tr(L H)$.
+    - We can express $P_H$ as an integral: $P_H (L) = integral H^(i t) L H^(-i t) mu(dif t)$. 
+]
+#definition[
+    For $rho, sigma in SS(HH)$, let $Delta = sigma^(-1 \/ 2) rho sigma^(-1 \/ 2) = sum_(k = 1)^m lambda_k Pi_k$ be the spectral decomposition. Define $q_k = tr(sigma Pi_k)$ and $p_k = lambda_k q_k$ for each $k in [m]$ (note $p$ and $q$ can be interpreted as classical probability distributions). The *preparation map* of $rho$ and $sigma$ is $
+        Lambda(L) = sum_(k = 1)^m braket(k, L, k) 1/q(k) sigma^(1 \/ 2) Pi_k sigma^(1 \/ 2).
+    $ It is easy to see that $Lambda(p) = rho)$ and $Lambda(q) = sigma$ (where we interpret $p$ and $q$ as the matrices $"diag"(p) = sum_(k = 1)^m p_k ket(k) bra(k)$ and $"diag"(q) = sum_(k = 1)^m q_k ket(k) bra(k)$). Note that $Lambda$ is a CPTP map.
+]<def:preparation-map>
+#definition[
+    For $rho, sigma in SS(HH)$ and $alpha in (0, 1) union (1, oo)$, the *minimal/sandwiched Rényi divergence* is $
+        tilde(D)_alpha (rho || sigma) := 1/(alpha - 1) log tr((sigma^((1 - alpha) \/ 2 alpha) rho sigma^((1 - alpha) \/ 2 alpha))^(alpha)) & = lim_(n -> oo) 1/n DD_alpha (cal(P)_(sigma^(tp n)) (rho^(tp n)) || sigma^(tp n)) \ // TODO: where does this DD_alpha come from? is it the classical divergence?
+        & = lim_(n -> oo) 1/n DD_alpha (cal(P)_(sigma^(tp n))(rho^(tp n)) || cal(P)_(sigma^(tp n))(sigma^(tp n))),
+    $ where $cal(P)_(sigma^(tp n))$ is the pinching map of $sigma^(tp n)$ and $DD_alpha$ is _any_ quantum divergence. By the data processing inequality, this is at most $lim_(n -> oo) 1/n DD_alpha (rho^(tp n) || sigma^(tp n)) = DD_alpha (rho || sigma)$.
+]<def:minimal-Rényi-divergence>
+#definition[
+    For $alpha in (1, 2)$, the *geometric mean* of $rho, sigma in SS(HH)$ is $
+        sigma \#_alpha rho = sigma^(1 \/ 2) (sigma^(-1 \/ 2) rho sigma^(-1 \/ 2))^alpha sigma^(1 \/ 2).
+    $
+]
+#definition[
+    For $rho, sigma in SS(HH)$ and $alpha in (1, 2)$, the *maximal/geometric Rényi divergence* of $rho$ and $sigma$ is $
+        hat(D)_alpha (rho || sigma) = 1/(alpha - 1) log tr(sigma (sigma^(-1 \/ 2) rho sigma^(-1 \/2 ))^alpha) = 1/(alpha - 1) log tr(sigma \#_alpha rho) = DD_alpha (p || q),
+    $ where $p$ and $q$ are as in @def:preparation-map and $DD_alpha$ is _any_ quantum divergence. (Again, we interpret $p$ and $q$ as diagonal matrices.) Note that this is at least $DD_alpha (rho || sigma) = DD_alpha (Lambda(p) || Lambda(q))$ by the (classical) data processing inequality, where $Lambda$ is the preparation map of $rho$ and $sigma$.
+]<def:maximal-Rényi-divergence>
+#proposition[
+    - We have $hat(D)_alpha (rho || sigma) >= tilde(D)_alpha (rho || sigma)$ with equality iff $[rho, sigma] = 0$.
+    - $lim_(alpha -> 1) hat(D)_alpha (rho || sigma) = hat(D)(rho || sigma)$.
+    - $lim_(alpha -> 1) tilde(D)_alpha (rho || sigma) = D(rho || sigma)$.
+]
+#definition[
+    For $alpha in (0, 1) union (1, oo)$ and $rho, sigma in SS(HH)$, the *Petz Rényi divergence* is $
+        overline(D)_alpha (rho || sigma) = 1/(alpha - 1) log tr(rho^alpha sigma^(1 - alpha)).
+    $ We have $lim_(alpha -> 1) overline(D)_alpha (rho || sigma) = D(rho || sigma)$.
+]<def:petz-Rényi-divergence>
+#definition[
+    The *max relative entropy* is $
+        D_max (rho || sigma) = inf{lambda > 0: rho <= 2^lambda sigma}.
+    $ We have $D_max (rho || sigma) = lim_(alpha -> oo) overline(D)_alpha (rho || sigma)$.
+]<def:max-relative-entropy>
+#proposition[
+    For all $alpha in (1, 2)$, $
+        D(rho || sigma) <= tilde(D)_alpha (rho || sigma) <= overline(D)_alpha (rho || sigma) <= hat(D)_alpha (rho || sigma) <= D_max (rho || sigma).
+    $
+]
+
+== Applications
+
+Recall the setting of binary hypothesis testing from the previous chapter. Given $n$ copies of the states $rho, sigma in SS(HH)$, the null hypothesis is $rho^(tp n)$ and the alternative hypothesis is $sigma^(tp n)$. We want to discriminate between both by considering POVMs $M_n = {P_n, II - P_n}$, with $P_n$ an orthogonal projection.
+
+Type I (first kind) error occurs if we wrongly conclude that alternative hypothesis is correct, with probability $alpha_n (P_n; rho) := tr(rho^(tp n) (II - P_n))$. Type II (second kind) error occurs if we wrongly conclude that the null hypothesis is correct, with probability $beta_n (P_n; sigma) := tr(sigma^(tp n) P_n)$.
+
+By @thm:quantum-neyman-pearson, we have $
+    min_(M_n "POVM") 1/2 (alpha_n (P_n; rho) + beta_n (P_n; sigma)) = 1/2 (1 - norm(p rho^(tp n) - (1 - p) sigma^(tp n))_1),
+$ and taking the limit as $n -> oo$ gives $
+    lim_(n -> oo) -1/n log min_(M_n "POVM") 1/2 (alpha_n (P_n; rho) + beta_n (P_n; sigma)) & = max_(s in [0, 1]) -tr(rho^s sigma^(1 - s)) \
+    & = -min_(s in [0, 1]) log overline(Q)_s (rho || sigma) \
+    & = max_(s in [0, 1]) (1 - s) overline(D)_s (rho || sigma),
+$ where $overline(D)_s (rho || sigma)$ is the Petz Rényi divergence, and $overline(Q)_s = tr(rho^s sigma^(1 - s))$ is as in @def:axioms-of-quantum-Rényi-divergence.
+
+So the interpretation of the Petz Rényi divergence is that it provides optimal exponential rate for the combined errors in binary hypothesis testing.
+
+Similarly, we can consider the setting of asymmetric hypothesis testing. By the @thm:quantum-steins-lemma, $
+    lim_(n -> oo) -1/n log beta_n (P_n; sigma) = D(rho || sigma),
+$ so the relative entropy can be interpreted as being the optimal exponential rate for the type II error in binary hypothesis, subject to the type I error being bounded by a certain constant.
+
+For probability distributions $P$ and $Q$ and $alpha in (1, oo)$, we have $D_alpha (P || Q) = sum_x P(x) (P(x)/(Q(x)))^(alpha - 1)$. We have the chain rule for classical Rényi divergence: $
+    D_alpha (P_(X Y) || Q_(X, Y)) <= D_alpha (P_X || Q_X) + max_x D(P_(Y | X = x) || Q_(Y | X = x)).
+$
+#definition[
+    Let $DD_alpha$ be a quantum Rényi divergence. We can extend this to a *Rényi divergence of quantum channels* by defining, for quantum channels $T_1, T_2$, $
+        DD_alpha (T_1 || T_2) := sup_(rho in SS(HH)) DD_alpha (T_1 (rho) || T_2 (rho)).
+    $
+]<def:quantum-channel-divergence>
+#lemma[
+    For $rho, sigma in SS(HH)$, $alpha in (0, 1) union (1, 2]$, we have $
+        hat(D)_alpha (rho || sigma) = inf_(P, Q, Lambda) D_alpha (P || Q)
+    $ where $Lambda(P) = rho$, $Lambda(Q) = sigma$, $Lambda$ is a quantum channel.
+
+    The infimum is attained by the following: let $sigma^(-1 \/ 2) rho sigma^(-1 \/ 2) = sum_x lambda_x Pi_x$, define $Lambda(L) = sum_x braket(x, L, x)/Q(x) sigma^(1 \/ 2) Pi_x sigma^(1 \/ 2)$, with $Q(x) = tr(sigma Pi_x)$, $P(x) = lambda_x Q(x)$.
+]<lem:infimum-expression-for-geometric-renyi-divergence>
+// #lemma[
+//     Let $rho, sigma in SS(HH)$, $T_1, T_2$ be quantum channels, $alpha in (0, 1) union (1, oo)$. Then $$
+// ]
+#theorem("Chain Rule for Quantum Channels")[
+    Let $rho, sigma in SS(HH)$, $T_1, T_2$ be quantum channels and $alpha in (0, 1) union (1, oo)$, then $
+        DD_alpha (T_1 (rho) || T_2 (sigma)) <= hat(D)_alpha (rho || sigma) + DD_alpha (T_1 || T_2).
+    $ for any quantum Rényi divergence $DD_alpha$. In particular, $hat(D)_alpha (T_1 (rho) || T_2 (sigma)) <= hat(D)_alpha (rho || sigma) + hat(D)_alpha (T_1 || T_2)$.
+]<thm:chain-rule-for-quantum-channels>
+#proofhints[
+    - Let $P$, $Q$, $Lambda$ be as in @lem:infimum-expression-for-geometric-renyi-divergence, show that $T_1 (rho) = sum_x P(x) T_1 (Lambda(ket(x) bra(x)))$, similarly for $T_2 (sigma)$.
+    - Explain why $
+        1/(alpha - 1) log sum_x P(x)^alpha Q(x)^(1 - alpha) dot 2^(DD_alpha (T_1 (Lambda(ket(x) bra(x))) || T_2 (Lambda(ket(x) bra(x))))),
+    $ split the sum by the taking a maximum over the second terms in the sum.
+]
+#proof[
+    By @lem:infimum-expression-for-geometric-renyi-divergence, there are $P$ and $Q$ such that $Lambda(P) = rho$ and $Lambda(Q) = sigma$. So we have, by linearity of quantum channels, $
+        T_1 (rho) & = T_1 (Lambda(P)) = T_1 (Lambda(sum_x P(x) ket(x) bra(x))) = sum_x P(x) T_1 (Lambda(ket(x) bra(x))) \
+        T_2 (sigma) & = T_2 (Lambda(Q)) = T_2 (Lambda(sum_x Q(x) ket(x) bra(x))) = sum_x Q(x) T_2 (Lambda(ket(x) bra(x)))
+    $ Then (since we can treat these classically as they are diagonal) $
+        DD_alpha (T_1 (rho) || T_2 (sigma)) & = DD_alpha (sum_x P(x) T_1 (Lambda(ket(x) bra(x))) mid(||) sum_x Q(x) T_2 (Lambda(ket(x) bra(x)))) \
+        & <= 1/(alpha - 1) log sum_x P(x)^alpha Q(x)^(1 - alpha) dot 2^(DD_alpha (T_1 (Lambda(ket(x) bra(x))) || T_2 (Lambda(ket(x) bra(x))))) \
+        & <= D_alpha (P || Q) + max_x DD_alpha (T_1 (Lambda(ket(x) bra(x))) || T_2 (Lambda(ket(x) bra(x)))) \
+        & <= hat(D)_alpha (Lambda(rho) || Lambda(sigma)) + DD_alpha (T_1 || T_2) \
+        & <= hat(D)_alpha (rho || sigma) + DD_alpha (T_1 || T_2),
+    $ where the final inequality is by data-processing.
+    // TODO: I don't get the first inequality
+]
+#definition[
+    The *regularised Rényi divergence* between quantum channels $T_1$ and $T_2$ is $
+        DD_alpha^"reg" (T_1 || T_2) := lim_(n -> oo) 1/n DD_alpha (T_1^(tp n) || T_2^(tp n))
+    $ This equals $DD_alpha (T_1 || T_2)$ if $DD_alpha$ is the geometric Rényi divergence, but this generally does not hold for other quantum divergences.
+]
+#theorem("Schumacher")[
+    Let ${ket(psi(x)), p(x)}_x$ be an ensemble of states $ket(psi(x))$ with probabilities $p(x)$. Let $rho = sum_x p(x) ket(psi(x)) bra(psi(x))$. Then the optimal rate of compression is given by the von Neumann entropy of $rho$.
+]<thm:schumacher>

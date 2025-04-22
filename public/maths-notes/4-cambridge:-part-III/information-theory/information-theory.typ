@@ -56,7 +56,7 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
 #example[
     Let $x_1^n in {0, 1}^n$ be an $n$ bit string which is the realisation of binary random variables (RVs) $X_1^n = (X_1, ..., X_n)$, where the $X_i$ are independent and identically distributed (IID), with common distribution $X_i sim Bern(p)$. Let $k = abs({i in [n]: x_i = 1})$ be the number of ones in $x_1^n$. We have $
         PP(X_1^n = x_1^n) := P^n (x_1^n) = product_(i = 1)^n P(x_i) = p^k (1 - p)^(n - k).
-    $ Now by the law of large numbers, the probability of ones in a random $x_1^n$ is $k\/n approx p$ with high probability for large $n$. Hence, $
+    $ Now by the law of large numbers, the proportion of ones in a random $x_1^n$ is $k\/n approx p$ with high probability for large $n$. Hence, $
         P^n (x_1^n) approx p^(n p) (1 - p)^(n (1 - p)) = 2^(-n h(p)).
     $ Note that this reveals an amazing fact: this approximation is independent of $x_1^n$, so any message we are likely to encounter has roughly the same probability $approx 2^(-n h(p))$ of occurring.
 ]
@@ -70,7 +70,7 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
 ]
 #remark[
     - The closer $p$ is to $1/2$ (intuitively, the more random the messages are), the larger the entropy $h(p)$, and the larger the number of typical strings $abs(B_n)$.
-    - Assuing we ignore non-typical strings, which have vanishingly small probability for large $n$, the "compression rate" of the above method is $h(p)$, since we encode $n$ bit strings using $n h(p)$ strings. $h(p) < 1$ unless the message is uniformly distributed over all of ${0, 1}^n$.
+    - Assuing we ignore non-typical strings, which have vanishingly small probability for large $n$, the "compression rate" of the above method is $h(p)$, since we encode $n$-bit strings using $n h(p)$-bit strings. $h(p) < 1$ unless the message is uniformly distributed over all of ${0, 1}^n$.
     - So the closer $p$ is to $0$ or $1$ (intuitively, the less random the messages are), the smaller the entropy $h(p)$, so the greater the compression rate we can achieve.
 ]
 
@@ -118,7 +118,7 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
 #proof[
     We have $
         P^n (X_1^n) & = product_(i = 1)^n P(X_i) \
-        ==> 1/n log P^n (X_1^n) & = 1/n sum_(i = 1)^n log P(X_i) -> EE[-log P(X_1)] quad "in probability"
+        ==> -1/n log P^n (X_1^n) & = -1/n sum_(i = 1)^n log P(X_i) -> EE[-log P(X_1)] quad "in probability"
     $ by the weak law of large numbers (WLLN) for the IID RVs $Y_i = -log P(X_i)$.
 ]
 #corollary("Asymptotic Equipartition Property (AEP)")[
@@ -129,7 +129,7 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
         abs(B_n^* (epsilon)) <= 2^(n(H + epsilon)) quad & forall n in NN, quad "and" \
         P^n (B_n^* (epsilon)) = PP(X_1^n in B_n^* (epsilon)) --> 1 quad & "as" n -> oo
     $
-    - $(<==)$: for any sequence $(B_n)_(n in NN)$ of subsets of $A^n$, if $P(X_1^n in B_n) -> 1$ as $n -> oo$, then $forall epsilon > 0$, $
+    - $(<==)$: for any sequence $(B_n)_(n in NN)$ of subsets of $A^n$, if $PP(X_1^n in B_n) -> 1$ as $n -> oo$, then $forall epsilon > 0$, $
         abs(B_n) & >= (1 - epsilon) 2^(n(H - epsilon)) quad "eventually" \
         "i.e." exists N in NN: forall n >= N, quad abs(B_n) & >= (1 - epsilon) 2^(n(H - epsilon)).
     $
@@ -167,7 +167,7 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
 #definition[
     A *fixed-rate lossless compression code* for a source $X$ consists of a sequence of *codebooks* ${B_n: n in NN}$, where each $B_n subset.eq A^n$ is a set of source strings of length $n$.
 
-    Assume the encoder and decoder share the codebooks, each of which is sorted. To send $x_1^n$, an encoder checks with $x_1^n in B_n$; if so, they send the index of $x_1^n$ in $B_n$, along with a flag bit $1$, which requires $1 + ceil(log abs(B_n))$ bits. Otherwise, they send $x_1^n$ uncompressed, along with a flag bit $0$ to indicate an "error", which requires $1 + ceil(log abs(A)) = 1 + ceil(n log abs(A))$ bits.
+    Assume the encoder and decoder share the codebooks, each of which is sorted. To send $x_1^n$, an encoder checks if $x_1^n in B_n$; if so, they send the index of $x_1^n$ in $B_n$, along with a flag bit $1$, which requires $1 + ceil(log abs(B_n))$ bits. Otherwise, they send $x_1^n$ uncompressed, along with a flag bit $0$ to indicate an "error", which requires $1 + ceil(log abs(A^n)) = 1 + ceil(n log abs(A))$ bits.
 ]<def:fixed-rate-code>
 #definition[
     For each $n in NN$, the *rate* of a fixed-rate code ${B_n: n in NN}$ for a source $X$ is $
@@ -190,7 +190,7 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
 ]<thm:fixed-rate-coding-theorem>
 #proofhints[
     $(==>)$: straightforward.
-    $(<==)$: straightforward.
+    $(<==)$: explain why $0 < epsilon < 1 \/ 2$ WLOG.
 ]
 #proof[
     - $(==>)$:
@@ -460,8 +460,8 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
         & = EE[log (P_(Y | X)(Y | X))/(P_Y (Y))] \
         & = EE[log (P_(Y | X)(Y | X) P_X (X))/(P_Y (Y) P_X (X))] \
         & = EE[log (P_(X, Y)(X, Y))/(P_X (X) P_Y (Y))] \
-        & = D(P_(X, Y) || P_X P_Y).
-    $ This is non-negative iff $P_(X, Y) = P_X P_Y$, i.e. $X$ and $Y$ are independent.
+        & = D(P_(X, Y) || P_X P_Y) >= 0,
+    $ with equality iff $P_(X, Y) = P_X P_Y$, i.e. $X$ and $Y$ are independent.
 ]
 #definition[
     Discrete RVs $X$ and $Z$ are *conditionally independent given $Y$* if:
@@ -578,10 +578,10 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
     - Then show for general PMFs by using data processing, where $f = indicator(B)$ for $B = {x in A: P(x) > Q(x)}$.
 ]
 #proof[
-    First, assume that $P$ and $Q$ are the PMFs of the distributions $Bern(p)$ and $Bern(q)$ for some $0 <= q <= p <= 1$ ($q <= p$ WLOG since we can simultaneously interchange both $P$ with $1 - P$ and $Q$ with $1 - Q$ if necessary). Let $
+    First, assume that $P$ and $Q$ are the PMFs of the distributions $Bern(p)$ and $Bern(q)$ for some $0 <= q <= p <= 1$ ($q <= p$ WLOG since we can simultaneously interchange both $p$ with $1 - p$ and $q$ with $1 - q$ if necessary). Let $
         Delta(p, q) = (2 ln 2) D(P || Q) - norm(P - Q)_"TV"^2 = 2p ln p/q + 2(1 - p) ln (1 - p)/(1 - q) - (2(p - q))^2.
     $ Since $Delta(p, p) = 0$ for all $p$, it suffices to show that $(partial Delta(p, q))/(partial q) <= 0$. Indeed, $
-        (partial Delta(p, q))/(partial q) = -2 p/q + 2 (1 - p)/(1 - q) + 8(p - q) = 2(q - p)(1/(q(1 - q)) - 4) <= 0
+        (partial Delta(p, q))/(partial q) = 2 p/q - 2 (1 - p)/(1 - q) - 8(q - p ) = 2(q - p)(1/(q(1 - q)) - 4) <= 0
     $ since $q(1 - q) <= 1/4$ for all $q in [0, 1]$.
 
     Now, assume $P$ and $Q$ are general PMFs and let $B = {x in A: P(x) > Q(x)}$ and $f = indicator(B)$. Define the RVs $X sim P$ and $X' sim Q$, and let $P_f$ and $Q_f$ be the respective PMFs of the RVs $f(X)$ and $f(X')$. Note that $f(X) sim Bern(p)$, $f(X') sim Bern(q)$ where $p = P(B)$ and $q = Q(B)$. Then $

@@ -1,4 +1,4 @@
-#import "@preview/quill:0.2.0": *
+#import "@preview/quill:0.6.1": *
 #import "../../template.typ": *
 #import "../../diagram-style.typ": *
 #import "@preview/cetz:0.3.3" as cetz: canvas, draw
@@ -99,7 +99,7 @@
 #lemma("Boosting success probability")[
     If a process succeeds with probability $p$ on one trial, then $
         Pr("at least one success in" t "trials") = 1 - (1 - p)^t > 1 - delta
-    $ for $t = log(1\/d)/p$.
+    $ for $t = O(log(1\/d)/p)$.
 ]
 #proofhints[
     Trivial.
@@ -342,12 +342,13 @@
 ]
 #theorem("Schur Orthogonality")[
     Let $chi_1, ..., chi_m$ be a complete set of irreps for $G$ with respective dimensions $d_1, ..., d_m$, and let $i in [m]$, $j, k in [d_i]$. Then $
-        sum_(g in G) chi_(i, j k)(g) overline(chi_(i', j' k')(g)) = abs(G) delta_(i i') delta_(j j') delta_(k k').
+        1/abs(G) sum_(g in G) chi_(i, j k)(g) overline(chi_(i', j' k')(g)) = 1/d_i delta_(i i') delta_(j j') delta_(k k').
     $
 ]<thm:schur-orthogonality>
+// TODO: this should have a normalisation factor of $1/d_i$. you can check this by looking at a 2d representation of D_n. check this with Sathya
 #definition[
     The *Fourier basis* for a group $G$ consists of $
-        ket(chi_(i, j k)) = 1/sqrt(abs(G)) sum_(g in G) overline(chi_(i, j k)(g)) ket(g)
+        ket(chi_(i, j k)) = sqrt(d_i / abs(G)) sum_(g in G) overline(chi_(i, j k)(g)) ket(g)
     $ for each $i in [n]$ and $j, k in [d_i]$. Note that by Schur orthogonality, this is an orthonormal basis.
 ]
 #remark[
@@ -380,7 +381,7 @@ Quantum phase estimation is a unifying algorithmic primitive, e.g. there is an a
 #remark[
     If $U$ is given as a circuit, we can implement the controlled-$U$ operation, $Ctrl(U)$, by controlling each elementary gate in the circuit of $U$.
 
-    If $U$ is given as a black box, we need more information. Note that $U$ is equivalent to $U' = e^(i theta) U$ and $ket(psi)$ is equivalent to $e^(i theta) ket(psi)$, but $Ctrl(U)$ is not equivalent to $Ctrl(U')$. Given an eigenstate $ket(alpha)$ with known phase $e^(i alpha)$ (so $U ket(alpha) = e^(i alpha) ket(alpha)$), we have $U' ket(alpha) = e^(i(theta + alpha)) ket(alpha)$. so $U$ and $U'$ can be distinguished using this additional information. The following circuit implements $Ctrl(U)$ (the top two lines end in state $Ctrl(U) ket(a) ket(xi)$):
+    If $U$ is given as a black box, we need more information. Note that $U$ is equivalent to $U' = e^(i theta) U$ and $ket(psi)$ is equivalent to $e^(i theta) ket(psi)$, but $Ctrl(U)$ is not equivalent to $Ctrl(U')$. It suffices to be given an eigenstate $ket(alpha)$ with known phase $e^(i alpha)$ (so $U ket(alpha) = e^(i alpha) ket(alpha)$): we have $U' ket(alpha) = e^(i(theta + alpha)) ket(alpha)$. so $U$ and $U'$ can be distinguished using this additional information. The following circuit implements $Ctrl(U)$ (the top two lines end in state $Ctrl(U) ket(a) ket(xi)$):
 
     #figure(quantum-circuit(
         lstick($"control" quad ket(a)$), 2, ctrl(1), 1, ctrl(1), $X$, $P(-alpha)$, $X$, rstick($ket(a)$), [\ ],
@@ -388,7 +389,7 @@ Quantum phase estimation is a unifying algorithmic primitive, e.g. there is an a
         lstick($ket(alpha)$), 2, swap(0), $U$, swap(0), 3, rstick($ket(alpha)$)
     ))
     
-    where $P(-alpha) = mat(1, 0; 0, e^(-i alpha))$, and $circle.small.filled dash #h(0em) times dash #h(0em) times$ denotes the controlled SWAP operation.
+    where $P(-alpha) = mat(1, 0; 0, e^(-i alpha))$, and $circle.small.filled dash #h(0em) times dash #h(0em) times$ denotes the controlled SWAP operation. We can prove the top two lines end in the state $Ctrl(U) ket(a) ket(xi)$ by checking the action of the circuit for $ket(a) = ket(0)$ and $ket(a) = ket(1)$.
 ]
 #definition[
     For a unitary $U$, the *generalised control* unitary $Ctrl(U)$ is defined linearly by $
@@ -654,12 +655,12 @@ Amplitude amplification is an extension of the key insights in Grover's algorith
         Q = mat(cos(2 theta), -sin(2theta); sin(2 theta), cos(2 theta))
     $ in the orthonormal basis ${ket(b), ket(g)}$ where $sin(theta) = norm(P_G ket(psi))$. The eigenvalues and eigenstates of $Q$ are $lambda_(plus.minus) = e^(plus.minus 2 i theta)$ and $ket(e_(plus.minus)) = 1/sqrt(2)(ket(b) minus.plus i ket(g))$. So we can write $ket(psi) = sin(theta) ket(g) + cos(theta) ket(b) = 1/sqrt(2) (e^(-i theta) ket(e_+) + e^(i theta) ket(e_-))$. So $ket(psi)$ is an equally-weighted superposition of eigenstates of $Q$. Write $e^(plus.minus 2 i theta) = e^(2pi i phi_(plus.minus))$ with $phi_(plus.minus) in (0, 1)$. We have $phi_+ = theta \/ pi$ and $phi_- = (-2 theta + 2pi) \/ 2pi = 1 - theta \/ pi$. When $k << N$, $sin(theta) = sqrt(k\/N) approx theta$, so using $U_"PE"$ with $m$ qubits of precision $
         U_"PE" ket(psi) = 1/sqrt(2) (e^(-i theta) ket(e_+) ket(tilde(phi)_+) + e^(i theta) ket(e_-) ket(tilde(phi)_-))
-    $ Measuring the QPE output gives (with probability $1\/2$) an estimate of $phi_+ = theta \/ pi approx 1/pi sqrt(k \/ N)$ or (with probability $1\/2$) an estimate of $phi_- = 1 - theta \/ pi approx 1 - 1/pi sqrt(k \/ N)$. So in either case, we get an estimate of $sqrt(k\/N)$ (since we can tell when $k << N$ which case we are in). By the @thm:phase-estimation, with probability at least $4 \/ pi^2$, QPE with $m$ lines gives us an approximation of $sqrt(k \/ N)$ to precision $O(1\/2^m)$, using $O(2^m)$ $Ctrl(Q)$ operations, each of which requires one query to $f$. Write $delta \/ sqrt(2^n) = 1 \/ 2^m$ for some $delta > 0$. So we can estimate $sqrt(k)$ to precision $delta$, and since $Delta(x^2) = 2x Delta(x)$, we estimate $sqrt(k)$ to additive error (precision) $O(delta sqrt(k))$ using $O(2^m) = O(sqrt(N) \/ delta)$ queries to $f$.
+    $ Measuring the QPE output gives (with probability $1\/2$) an estimate of $phi_+ = theta \/ pi approx 1/pi sqrt(k \/ N)$ or (with probability $1\/2$) an estimate of $phi_- = 1 - theta \/ pi approx 1 - 1/pi sqrt(k \/ N)$. So in either case, we get an estimate of $sqrt(k\/N)$ (since we can tell when $k << N$ which case we are in). By the @thm:phase-estimation, with probability at least $4 \/ pi^2$, QPE with $m$ lines gives us an approximation of $sqrt(k \/ N)$ to precision $O(1\/2^m)$, using $O(2^m)$ $Ctrl(Q)$ operations, each of which requires one query to $f$. Write $delta \/ sqrt(2^n) = 1 \/ 2^m$ for some $delta > 0$. So we can estimate $sqrt(k)$ to precision $delta$, and since $Delta(x^2) = 2x Delta(x)$, we estimate $k$ to additive error (precision) $O(delta sqrt(k))$ using $O(2^m) = O(sqrt(N) \/ delta)$ queries to $f$.
 ]<exm:quantum-counting>
 #remark[
     The quantum counting algorithm is quadratically faster than the best possible classical algorithm, which is:
     - Sample random $x$ from ${0, 1}^n$, then $Pr(f(x) = 1) = k\/N$.
-    - Draw $m$ samples $x_1, ..., x_m$, then the estimate is $tilde(k) = ell N \/ m$, where $m = |{i in [m]: f(x_i) = 1}|$.
+    - Draw $m$ samples $x_1, ..., x_m$, then the estimate is $tilde(k) = ell/m N$, where $ell = |{i in [m]: f(x_i) = 1}|$.
     We need $m = O(N\/delta^2)$ to estimate $k$ to high precision.
 ]
 
@@ -683,7 +684,7 @@ We want to use a quantum system to simulate the evolution/dynamics of another qu
 ]
 #proposition[
     If $A in CC^(n times n)$ has orthonormal spectrum ${(lambda_i, ket(e_i)): i in [n]}$, then $
-        exp(A) = sum_(i = 1)^n exp(lambda_i) ket(e_i).
+        exp(A) = sum_(i = 1)^n exp(lambda_i) ket(e_i) bra(e_i).
     $
 ]<prop:exponential-of-matrix-is-exponential-applied-to-spectrum>
 #proofhints[
@@ -691,9 +692,9 @@ We want to use a quantum system to simulate the evolution/dynamics of another qu
 ]
 #proof[
     By orthonormality, we have $
-        A^k = (sum_(i = 1)^n lambda_i ket(e_i))^k = sum_(i = 1)^n lambda_i^k ket(e_i).
+        A^k = (sum_(i = 1)^n lambda_i ket(e_i) bra(e_i))^k = sum_(i = 1)^n lambda_i^k ket(e_i) bra(e_i).
     $ Hence, $
-        exp(A) = sum_(k = 0)^oo A^k / k! = sum_(i = 1)^n sum_(k = 0)^oo lambda_i^k / k! ket(e_i).
+        exp(A) = sum_(k = 0)^oo A^k / k! = sum_(i = 1)^n sum_(k = 0)^oo lambda_i^k / k! ket(e_i) bra(e_i).
     $
 ]
 #definition[
@@ -707,7 +708,7 @@ We want to use a quantum system to simulate the evolution/dynamics of another qu
     $ when $H$ is time-independent.
 ]<prop:solution-to-finite-dimensional-time-independent-schrodinger-equation>
 #proofhints[
-    Straightforward.
+    Use the spectral decomposition.
 ]
 #proof[
     Let $H$ have orthonormal spectrum ${(lambda_j, ket(e_j)): j in [n]}$. By @prop:exponential-of-matrix-is-exponential-applied-to-spectrum, we have $
@@ -842,7 +843,7 @@ $ i.e. for all normalised states $ket(psi)$, $norm(U ket(psi) - tilde(U) ket(psi
         & = delta^2 e^(delta) <= delta^2.
     $ So $e^(-i A) = I - i A + O(delta^2)$. By the same argument, we have $
         e^(-i B) & = I - i B + O(delta^2), \
-        e^(-i(A + B)) & = I - i(A + B) + O(2 delta^2) = I - i(A + B) + O(delta^2)
+        e^(-i(A + B)) & = I - i(A + B) + O(4 delta^2) = I - i(A + B) + O(delta^2)
     $ since $norm(A + B) <= norm(A) + norm(B) = 2 delta$. Hence, $
         e^(-i A) e^(-i B) & = (I - i A + O(delta^2))(I - i B + O(delta^2)) \
         & = I - i(A + B) + O(delta^2) \

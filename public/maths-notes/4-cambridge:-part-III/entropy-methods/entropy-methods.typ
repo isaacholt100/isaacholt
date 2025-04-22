@@ -27,7 +27,7 @@ Note all random variables we deal with will be discrete, unless otherwise stated
     If $X$ is uniform on ${0, 1}$ (i.e. $X sim "Bern"(1\/2)$), then $H(X) = 1$.
 ]<axm:normalisation>
 #axiom("Invariance")[
-    If $Y = f(X)$ for some bijection $f$, then $H(Y) = H(X)$.
+    If $X$ takes values in $A$, $Y$ takes values in $B$, $f: A -> B$ is a bijection and $PP(X = a) = PP(Y = f(a))$ for all $a in A$, then $H(Y) = H(X)$ (i.e. the entropy of $X$ depends only on its distribution).
 ]<axm:invariance>
 #axiom("Extendability")[
     If $X$ takes values on a set $A$, $B$ is disjoint from $A$, $Y$ takes values in $A union.sq B$, and for all $a in A$, $PP(Y = a) = PP(X = a)$, then $H(Y) = H(X)$.
@@ -104,10 +104,10 @@ Note all random variables we deal with will be discrete, unless otherwise stated
     If $X$ takes only one value, then $H(X) = 0$.
 ]<lem:single-valued-random-variables-have-zero-entropy>
 #proofhints[
-    Use that $X$ and $X$ are independent.
+    Consider an independent copy of $X$.
 ]
 #proof[
-    $X$ and $X$ are independent (verify). So by @lem:entropy-of-two-independent-variables-is-sum-of-entropies, $H(X, X) = 2 H(X)$. But by @axm:invariance, $H(X, X) = H(X)$. So $H(X) = 0$.
+    Let $X'$ be an independent copy of $X$. $(X, X')$ takes only one value, so $H(X, X') = H(X)$ by @axm:invariance. But by independence, $H(X, X') = H(X) + H(X') = 2 H(X)$, so $H(X) = 0$.
 ]
 #proposition[
     If $X$ is uniformly distributed on a set of size $2^n$, then $H(X) = n$.
@@ -134,7 +134,7 @@ Note all random variables we deal with will be discrete, unless otherwise stated
 ]<thm:khinchin>
 #proofhints[
     - Explain why it is enough to prove for when the $p_a$ are rational.
-    - Pick $n in NN$ such that $p_a = m_a / n$, $m_a in NN_0$. Let $Z$ be uniform on $[n]$. Let ${E_a: a in A}$ be a partition of $[n]$ into sets with $abs(E_a) = m_a$.
+    - Pick $n in NN$ such that $p_a = m_a / n$, $m_a in NN_0$. Let $Z$ be uniform on $[n]$. Let ${E_a: a in A}$ be a partition of $[n]$ such that $X = a <=> Z in E_a$.
 ]
 #proof[
     First we do the case where all $p_a in QQ$. Pick $n in NN$ such that $p_a = m_a / n$, $m_a in NN_0$. Let $Z$ be uniform on $[n]$. Let ${E_a: a in A}$ be a partition of $[n]$ into sets with $abs(E_a) = m_a$. By @axm:invariance, we may assume that $X = a <=> Z in E_a$. Then $
@@ -172,7 +172,7 @@ Note all random variables we deal with will be discrete, unless otherwise stated
     - Let $p_(a b) = PP(X = a, Y = b)$. Explain why it is enough to show for the case when the $p_(a b)$ are rational.
     - Pick $n$ such that $p_(a b) = m_(a b) \/ n$ with each $m_(a b) in NN_0$. Partition $[n]$ into sets $E_(a b)$ of size $m_(a b)$. Let $Z$ be uniform on $[n]$.
     - Show that if $X$ (or $Y$) is uniform, then $H(X | Y) <= H(X)$ and $H(X, Y) <= H(X) + H(Y)$.
-    - Let $E_b = union_a E_(a b)$ for each $b$. So $Y = b$ iff $Z = E_b$. Now define an RV $W$ as follows: if $Y = b$, then $W$ is uniformly distributed in $E_b$. Use conditional independence to conclude the result.
+    - Let $E_b = union_a E_(a b)$ for each $b$. We can assume $Y = b$ iff $Z in E_b$. Now define an RV $W$ as follows: if $Y = b$, then $W$ is uniformly distributed in $E_b$. Use conditional independence of $X$ and $W$ given $Y$ to conclude the result.
 ]
 #proof[
     Note that for any two RVs $X, Y$, $
@@ -211,10 +211,11 @@ Note all random variables we deal with will be discrete, unless otherwise stated
     $
 ]<prop:submodularity>
 #proofhints[
-    Use that $H(X | Y, Z = z) <= H(Z | Z = z)$.
+    Use that $H(X | Y, Z = z) <= H(X | Z = z)$ (why?).
 ]
 #proof[
     $H(X | Y, Z) = sum_z PP(Z = z) H(X | Y, Z = z) <= sum_z PP(Z = z) H(X | Z = z) = H(X | Z)$.
+    // TODO: how can we justify the first equality here? it doesn't just come straight from the definition of conditional entropy
 ]
 #remark[
     @prop:submodularity can be expressed in several equivalent ways. Expanding using @axm:additivity gives $
@@ -270,9 +271,9 @@ Note all random variables we deal with will be discrete, unless otherwise stated
 #proof[
     We go through the proof of subadditivity and check when equality holds. Suppose that $X$ is uniform on $A$. Then $
         H(X | Y) = sum_y PP(Y = y) H(X | Y = y) <= H(X),
-    $ with equality iff $H(X | Y = y)$ is uniform on $A$ for all $y$ (by @lmm:entropy-is-maximal-only-if-x-is-uniform), which implies that $X$ and $Y$ are independent.
+    $ with equality iff $X | Y = y$ is uniform on $A$ for all $y$ (by @lmm:entropy-is-maximal-only-if-x-is-uniform), which implies that $X$ and $Y$ are independent.
 
-    At the last stage of the proof, we said $H(X | Y) = H(X | Y, W) = H(X | W) <= H(X)$, where $W$ was uniform. So equality holds only if $X$ and $W$ are independent, which implies (since $Y$ depends on $W$), that $X$ and $Y$ are independent.
+    At the last stage of the proof, we said $H(X | Y) = H(X | Y, W) = H(X | W) <= H(X)$, where $W$ was uniform, i.e. $H(W | X) <= H(W)$. So equality holds only if $X$ and $W$ are independent, which implies (since $Y$ depends on $W$), that $X$ and $Y$ are independent.
 ]
 #definition[
     Let $X$ and $Y$ be RVs. The *mutual information* $
@@ -299,11 +300,11 @@ Note all random variables we deal with will be discrete, unless otherwise stated
 = A special case of Sidorenko's conjecture
 
 #definition[
-    Let $G$ be a bipartite graph with (finite) vertex sets $X$ and $Y$ and density $alpha$ (defined to be $abs(E(G))/(abs(X) dot abs(Y))$). Let $H$ be another (think of it as small) bipartite graph with vertex sets $U$ and $V$ and $m$ edges. Now let $phi: U -> X$ and $psi: V -> Y$. We say that $(phi, psi)$ is a *homomorphism* if $phi(x) phi(y) in E(G)$ for every edge $x y in E(H)$.
+    Let $G$ be a bipartite graph with (finite) vertex sets $X$ and $Y$ and density $alpha$ (defined to be $abs(E(G))/(abs(X) dot abs(Y))$). Let $H$ be another (think of it as small) bipartite graph with vertex sets $U$ and $V$. Now let $phi: U -> X$ and $psi: V -> Y$. We say that $(phi, psi)$ is a *homomorphism* if $phi(x) psi(y) in E(G)$ for every edge $x y in E(H)$.
 ]<def:bipartite-graph-homomorphism>
 #conjecture("Sidorenko's Conjecture")[
     For every $G, H$, for random $phi: U -> X$, $psi: V -> Y$, $
-        PP((phi, psi) "is a homomorphism") >= alpha^m.
+        PP((phi, psi) "is a homomorphism") >= alpha^abs(E(H)).
     $
 ]<cnj:sidorenko>
 #remark[
@@ -327,6 +328,7 @@ Note all random variables we deal with will be discrete, unless otherwise stated
     + Pick a vertex $x$ with probability proportional to its degree $deg(x)$, and then a random neighbour $Y$ of $x$.
     + Same as above with $x$ and $y$ exchanged.
     By the equivalence, it follows that $Y_1 = y$ with probability $deg(y) \/ abs(E(G))$, so $X_2 Y_1$ is uniform in $E(G)$, so $X_2 = x'$ with probability $d(x') \/ abs(E(G))$, so $X_2 Y_2$ is uniform in $E(G)$.
+    // TODO: why are X_1, X_2 and Y_1, Y_2 independent? as if we know X_1, then we know X_2 must lie at most two edges away from X_1
 
     Let $U_A$ be the uniform distribution on $A$. Therefore, by the @lem:chain-rule, $
         H(X_1, Y_1, X_2, Y_2) & = H(X_1) + H(Y_1 | X_1) + H(X_2 | X_1, Y_1) + H(Y_2 | X_1, Y_1, X_2) \
@@ -336,14 +338,14 @@ Note all random variables we deal with will be discrete, unless otherwise stated
         & >= 3 H(U_(E(G))) - H(U_Y) - H(U_X) \
         & = 3 log(alpha m n) - log n - log m \
         & = log(alpha^3 m^2 n^2).
-    $ So we are done, by @axm:maximality. Alternative finish to the proof: let $X', Y'$ be uniform in $X, Y$ and independent of each other and $X_1, Y_1, X_2, Y_2$. Then by the above inequality and @crl:entropy-of-independent-variables-is-sum-of-entropies, $
+    $ So we are done, by @axm:maximality (since $H(P) >= H(X_1, Y_1, X_2, Y_2)$). Alternative finish to the proof: let $X', Y'$ be uniform in $X, Y$ and independent of each other and $X_1, Y_1, X_2, Y_2$. Then by the above inequality and @crl:entropy-of-independent-variables-is-sum-of-entropies, $
         H(X_1, Y_1, X_2, Y_2, X', Y') & = H(X_1, Y_1, X_2, Y_2) + H(U_X) + H(U_Y) \
         & >= 3 H(U_(E(G))).
     $ So by @axm:maximality, the number of paths of length $3$ times $abs(X)$ times $abs(Y)$ is $>= abs(E(G))^3$.
 ]
 
 
-= Brigner's theorem
+= Bregman's theorem
 
 #definition[
     Let $A$ be an $n times n$ matrix over $RR$. The *permanent* of $A$ is $
@@ -424,7 +426,9 @@ Bregman's theorem concerns how large $per(A)$ can be if $A$ is a $0, 1$ matrix a
 ]<thm:brigman>
 #proofhints[
     - For an enumeration $x_1, ..., x_n$ of $X$ and random matching (a bijection) $sigma$, show that $H(sigma) <= log deg (x_1) + EE_sigma log deg_(x_1)^sigma (x_2) + dots.c + EE_sigma log deg_(x_1, ..., x_(n - 1))^sigma (x_n)$ (find a suitable expression for $deg_(x_1, ..., x_(i - 1))^sigma (x_i)$).
-    - Find another expression for $deg_(x_1, ..., x_(i - 1))^sigma (x_i)$ in terms of $deg(x)$.
+    - Explain why $
+        deg_(x_1, ..., x_(i - 1))^sigma (x_i) = d(x_i) - |{j: sigma^(-1)(y_j) "comes earlier than" x_i "in" x_1, ..., x_n}.
+    $
     - Show that the average of $log deg_(x_1, ..., x_(i - 1))^sigma (x_i)$ is $1/d(x) (log(d(x)!))$.
 ]
 #proof("(by Radhakrishnan)")[
@@ -440,6 +444,7 @@ Bregman's theorem concerns how large $per(A)$ can be if $A$ is a $0, 1$ matrix a
     Key idea: we now regard $x_1, ..., x_n$ as a _random_ enumeration of $X$ and take the average. For each $x in X$, define the *contribution* of $x$ to be $log(d_(x_1, ..., x_(i - 1))^sigma (x_i))$, where $x_i = x$. We shall now fix $sigma$ and $x in X$. Let the neighbours of $x$ be $y_1, ..., y_k$. Then one of the $y_j$ will be $sigma(x)$, say $y_h$. Then $d_(x_1, ..., x_(i - 1))^sigma (x_i)$ (given that $x_i = x$) is $
         d(x) - abs({j: sigma^(-1)(y_j) "comes earlier than" x = sigma^(-1)(y_h)}).
     $ All positions of $sigma^(-1)(y_h)$ are equally likely, so the average contribution of $x$ is $ // TODO: what do we take this average over?
+    // TODO: how are they equally likely? sigma^(-1) (y_h) = x is fixed
         & 1/d(x) (log d(x) + log (d(x) - 1) + dots.c + log(1)) \
         = & 1/d(x) log d(x)!.
     $ By linearity of expectation, $
@@ -456,9 +461,9 @@ Bregman's theorem concerns how large $per(A)$ can be if $A$ is a $0, 1$ matrix a
 ]<thm:kahn-lovasz>
 #proofhints[
     - Let $M$ be the set of $1$-factors of $G$ and let $(M_1, M_2)$ be a uniformly random element of $M times M$.
-    - Given a cover of $G$ by $M_1$ and $M_2$, find an expression for the number of pairs $(M'_1, M'_2)$ that could give rise to it, in terms of the number of even cycles.
+    - Given a cover of $G$ by $M_1$ and $M_2$, find an expression for the number of pairs $(M'_1, M'_2)$ that give rise to it, in terms of the number of even cycles.
     - Let $G_2$ be the bipartite graph with two vertex sets $V_1, V_2$, which are both copies of $V(G)$. Join $x in V_1$ to $y in V_2$ iff $x y in E(G)$.
-    - Explain why each perfect matching of $G_2$ gives a cover of $V(G)$ by isolated vertices, edges and cycles, and find an expression for the number of such perfect matchings that could give rise to it.
+    - Explain why each perfect matching of $G_2$ gives a cover of $V(G)$ by isolated vertices, edges and cycles, and find an expression for the number of such perfect matchings that give rise to it.
 ]
 #proof("(by Alon, Friedman)")[
     Let $M$ be the set of $1$-factors of $G$ and let $(M_1, M_2)$ be a uniformly random element of $M times M$. For each $M_1, M_2$, the union $M_1 union M_2$ is a collection of disjoint edges and even cycles that covers all the vertices of $G$.
@@ -486,7 +491,7 @@ Bregman's theorem concerns how large $per(A)$ can be if $A$ is a $0, 1$ matrix a
             }),
         )
     ]
-    Call such a union a *cover of $G$ by edges and even cycles*. If we are given such a cover, then the number of pairs $(M_1, M_2)$ that could give rise to it is $2^k$, where $k$ is the number of even cycles. Now let's build a bipartite graph $G_2$ out of $G$. $G_2$ has two vertex sets $V_1, V_2$, which are both copies of $V(G)$. Join $x in V_1$ to $y in V_2$ iff $x y in E(G)$.
+    Call such a union a *cover of $G$ by edges and even cycles*. If we are given such a cover, then the number of pairs $(M_1, M_2)$ that give rise to it is $2^k$, where $k$ is the number of even cycles. Now let's build a bipartite graph $G_2$ out of $G$. $G_2$ has two vertex sets $V_1, V_2$, which are both copies of $V(G)$. Join $x in V_1$ to $y in V_2$ iff $x y in E(G)$.
     #unmarked-fig[
         #figure(
             canvas({
@@ -545,7 +550,11 @@ Bregman's theorem concerns how large $per(A)$ can be if $A$ is a $0, 1$ matrix a
     As in @lem:shearer, $
         H(X_A) >= sum_(a in A) H(X_a | X_(< a)).
     $ So $
-        EE_A [H(X_A)] >= EE_A [sum_(a in A) H(X_a | X_(< a))] >= mu dot sum_(a = 1)^n H(X_a | X_(< a)) = mu dot H(X). // TODO: I don't get the last inequality here
+        EE_A [H(X_A)] & >= EE_A [sum_(a in A) H(X_a | X_(< a))] \
+        & = EE_A [sum_(k = 1)^n H(X_k | X_(< k)) indicator({k in A})] \
+        & = sum_(k = 1)^n H(X_k | X_(< k)) EE[indicator({k in A})] \
+        & = sum_(k = 1)^n H(X_k | X_(< k)) PP(k in A) \
+        & >= mu dot H(X). // TODO: I don't get the last inequality here
     $
 ]
 #definition[
@@ -593,8 +602,8 @@ Bregman's theorem concerns how large $per(A)$ can be if $A$ is a $0, 1$ matrix a
 ]
 #proofhints[
     - Let $cal(G)$ be a $Delta$-intersecting family. View $G in cal(G)$ as a characteristic function from $V^((2))$ to ${0, 1}$. Let $X = (X_e: e in V^((2)))$ be chosen uniformly at random from $cal(G)$.
-    - Let $G_R = K_R union K_(V \\ R)$, explain why $G_R$ is an intersecting family, use this to give upper bound on $abs(G_R)$.
-    - Give an expression for the probability that an edge $e$ is in a random $G_R$. By considering $X_(G_R)$ taking values in the above family, conclude.
+    - For each $R subset.eq V$, let $G_R = K_R union K_(V \\ R)$ and define $cal(G)_R = {G inter G_R: G in cal(G)}$. Explain why $cal(G)_R$ is an intersecting family, use this to give upper bound on $abs(cal(G)_R)$.
+    - What is the probability that an edge $e$ is in a random $G_R$? By considering $X_(G_R)$ taking values in the above family, conclude.
 ]
 #proof[
     Let $cal(G)$ be a $Delta$-intersecting family and let $X$ be chosen uniformly at random from $cal(G)$. We write $V^((2))$ for the set of (unordered) pairs of elements of $V$. We think of any $G in cal(G)$ as a characteristic function from $V^((2))$ to ${0, 1}$. So $X = (X_e: e in V^((2)))$, $X_e in {0, 1}$ (where we fix an ordering of $V^((2))$). For each $R subset.eq V$, let $G_R$ be the graph $K_R union K_(V \\ R)$. For each $R$, we shall look at the projection $X_(G_R)$, which we can think of as taking values in the set ${G inter G_R: G in cal(G)} =: cal(G)_R$.
@@ -604,7 +613,7 @@ Bregman's theorem concerns how large $per(A)$ can be if $A$ is a $0, 1$ matrix a
     $ since each $e$ belongs to $G_R$ with probability $1 \/ 2$ (and so $EE_R [abs(E(G_R))] = 1/2 binom(n, 2)$).
 ]
 #definition[
-    Let $G$ be a graph and let $A subset.eq V(G)$. The *edge-boundary* $partial A$ of $A$ is the set of edges $x y$ such that $x in A$, $y in.not A$. If $G = ZZ^n$ or ${0, 1}^n$ and $i in [n]$, the *$i$-th boundary* $partial_i A$ is the set of edges $x y in partial A$ such that $x - y = plus.minus e_i$, i.e. $partial_i A$ consists of edges in direction $i$.
+    Let $G$ be a graph and let $A subset.eq V(G)$. The *edge-boundary* $partial A$ of $A$ is the set of edges $x y$ such that $x in A$, $y in.not A$. If $G = ZZ^n$ or ${0, 1}^n$ and $i in [n]$, the *$i$-th boundary* $partial_i A$ is the set of edges $x y in partial A$ such that $x - y = plus.minus e_i$, i.e. $partial_i A$ consists of edges in the edge-boundary in direction $i$.
 ]<def:edge-boundary>
 #theorem([Edge-isoperimetric Inequality in $ZZ^n$])[
     Let $A subset.eq ZZ^n$ be a finite set. Then $
@@ -612,7 +621,7 @@ Bregman's theorem concerns how large $per(A)$ can be if $A$ is a $0, 1$ matrix a
     $
 ]<thm:edge-isoperimetic-inequality-in-integer-tuples>
 #proofhints[
-    Use @crl:discrete-loomis-whitney-theorem and a suitable lower bound on $abs(partial_i A)$.
+    Use @crl:discrete-loomis-whitney-theorem, the AM-GM inequality, and a suitable lower bound on $abs(partial_i A)$.
 ]
 #proof[
     By the @crl:discrete-loomis-whitney-theorem, $
@@ -660,7 +669,7 @@ Bregman's theorem concerns how large $per(A)$ can be if $A$ is a $0, 1$ matrix a
 ]<def:lower-shadow>
 #theorem("Kruskal-Katona")[
     If $abs(cal(A)) = binom(t, d) = (t (t - 1) cdots (t - d + 1))/d!$ for some real number $t$, then $
-        abs(partial_i cal(A)) >= binom(t, d - 1).
+        abs(partial cal(A)) >= binom(t, d - 1).
     $
 ]
 #proofhints[
@@ -672,8 +681,9 @@ Bregman's theorem concerns how large $per(A)$ can be if $A$ is a $0, 1$ matrix a
             X_k & "if" T = 1
         ).
     $
-    - Show that $H(X_k | X_(< k)) >= H(X^*, T | X_(<= k)) = h(p) + p H(X_(k + 1) | X_(<= k))$, and so that $H(X_k | X_(< k)) >= log(2^H(X_(k + 1) | X_(<= k)) + 1)$.
-    - Using the chain rule, show that $r + d - 1 <= t$, and use this to conclude the desired bound on $H(X_(< d))$.
+    - Use that $X_k$ and $X^*$ have the same distribution (why?) to show that $H(X_k | X_(< k)) >= H(X^*, T | X_(<= k)) = h(p) + p H(X_(k + 1) | X_(<= k))$.
+    - Find the maximum of the lower bound to show that $H(X_k | X_(< k)) >= log(2^H(X_(k + 1) | X_(<= k)) + 1)$.
+    - Using the chain rule and the fact that $log(d! binom(t, d))$ is an increasing function for $t >= d$, show that $r + d - 1 <= t$, and use this to conclude the desired bound on $H(X_(< d))$.
 ]
 #proof[
     Let $X = (X_1, ..., X_d)$ be a random ordering of the elements of a uniformly random $A in cal(A)$. Then $H(X) = log(d! abs(A)) = log(d! binom(t, d))$. Note that $(X_1, ..., X_(d - 1))$ is an ordering of the elements of some $B in partial_i A$, so $
@@ -1187,12 +1197,150 @@ We shall be interested in the following special case.
 #proof[
     The first equality is easy to see. For the second, apply @lem:fibring with $X = (X_1, X_2)$, $Y = (X_3, X_4)$ and $phi(x, y) = x + y$.
 ]
-We shall now set $W = X_1 + X_2 + X_3 + X_4$.
+#lemma[
+    Let $X_1, X_2, X_3, X_4$ be independent $FF_2^n$-valued RVs and $W = X_1 + X_2 + X_3 + X_4$. Then $
+        & 2 d(X_1; X_3) + 2 d(X_2; X_4) + d(X_1; X_4) + d(X_2; X_3) \
+        >= & 2 d(X_1 + X_2; X_3 + X_4) + d(X_1 + X_4; X_2 + X_3) \
+        & + med 2 d(X_1 | X_1 + X_2; X_3 | X_3 + X_4) + d(X_1 | X_1 + X_4; X_2 | X_2 + X_3) \
+        & + med 1/3 d(X_1 + X_2; X_1 + X_3 || X_2 + X_3, W) + 1/3 d(X_1 + X_2; X_1 + X_4 || X_2 + X_4, W) \
+        & + med 1/3 d(X_1 + X_4; X_1 + X_3 || X_3 + X_4, W)
+    $
+]<lem:big-inequality>
+#proofhints[
+    Use @crl:fibring-for-pairs and @lem:entropic-bsg-theorem on $(X_1, X_2, X_3, X_4)$, $(X_1, X_2, X_4, X_3)$ and $(X_1, X_4, X_3, X_2)$, making heavy use of the observation that if $i, j, k, l$ are some permutation of $1, 2, 3, 4$, then $H(X_i + X_j | W) = H(X_k + X_l | W)$.
+]
+#proof[
+    Recall that $d(X; Y || X + Y) <= 3 I(X: Y) + 2 H(X + Y) - H(X) - H(Y)$ by the @lem:entropic-bsg-theorem. Equivalently, $I(X: Y) >= 1/3 (d(X; Y || X + Y) + H(X) + H(Y) - 2 H(X + Y))$. Applying this to the mutual information term in @crl:fibring-for-pairs, we get that it is at least $
+        & 1/3 d(X_1 + X_3, X_2 + X_4; X_1 + X_2, X_3 + X_4 || X_2 + X_3, W) + 1/3 H(X_1 + X_3, X_2 + X_4 | W) \
+        & + 1/3 H(X_1 + X_2, X_3 + X_4 | W) - 2/3 H(X_2 + X_3, X_2 + X_3 | W).
+    $ which simplifies to $
+        & 1/3 d(X_1 + X_3, X_2 + X_4; X_1 + X_2, X_3 + X_4 || X_2 + X_3, W) \
+        & + med 1/3 H(X_1 + X_3 | W) + 1/3 H(X_1 + X_2 | W) - 2/3 H(X_2 + X_3 | W) \
+        = & 1/3 d(X_1 + X_2; X_1 + X_3 || X_2 + X_3, W) \
+        & + med 1/3 H(X_1 + X_3 | W) + 1/3 H(X_1 + X_2 | W) - 2/3 H(X_2 + X_3 | W)
+    $ Now apply this inequality and @crl:fibring-for-pairs to $(X_1, X_2, X_3, X_4)$, $(X_1, X_2, X_4, X_3)$ and $(X_1, X_4, X_3, X_2)$. We look at the first entropy terms in the above expression: we get $
+        & 2 H(X_1 + X_2 | W) + H(X_1 + X_4 | W) \
+        & + H(X_1 + X_3 | W) + H(X_1 + X_4 | W) + H(X_1 + X_2 | W) \
+        & - 2 H(X_2 + X_3 | W) - 2 H(X_2 + X_4 | W) - 2 H(X_1 + X_2 | W).
+    $ which is equal to $0$, where we have made heavy use of the observation that if $i, j, k, l$ are some permutation of $1, 2, 3, 4$, then $H(X_i + X_j | W) = H(X_k + X_l | W)$, which also allowed us e.g. to replace $
+        d(X_1 + X_3, X_2 + X_4; X_1 + X_2, X_3 + X_4 || X_2 + X_3, W)
+    $ by $
+        d(X_1 + X_2; X_1 + X_3 || X_2 + X_3, W).
+    $
+]
+#lemma[
+    Let $X_1, X_2$ be independent copies of $X$ and $Y_1, Y_2$ be independent copies of $Y$. Then $
+        6 d(X; Y) >= & 2 d(X_1 + X_2; Y_1 + Y_2) + d(X_1 + Y_2; X_2 + Y_1) \
+        & + med 2 d(X_1 | X_1 + X_2; Y_1 | Y_1 + Y_2) + d(X_1 | X_1 + Y_1; X_2 | X_2 + Y_2) \
+        & + med 2/3 d(X_1 + X_2; X_1 + Y_1 || X_2 + Y_1, X_1 + Y_2) \
+        & + med 1/3 d(X_1 + Y_1; X_1 + Y_2 || X_1 + X_2, Y_1 + Y_2).
+    $
+]<lem:another-big-inequality>
+#proofhints[
+    Straightforward.
+]
+#proof[
+    Apply @lem:big-inequality to $(X_1, X_2, Y_1, Y_2)$ (all independent). We can swap $Y_1$ and $Y_2$ in the third last term since they are independent copies.
+]
+Recall that we want $U, V$ such that $tau_(X, Y)(U, V) < d(X; Y)$. @lem:another-big-inequality gives us a collection of distances (some conditioned), at least one of which is at most $6 / 7 d(X; Y)$. So it will be enough to show that for all of them, we get $d(U; X) + d(V; Y) <= C d(X; Y)$ for some absolute constant $C$. Then we can take $eta < 1 \/ 7C$.
+#definition[
+    We say that $(U, V)$ is *$C$-relevant* to $(X, Y)$ if $d(U; X) + d(V; Y) <= C d(X; Y)$.
+]<def:c-relevant>
+#lemma[
+    $(Y, X)$ is $2$-relevant to $(X, Y)$.
+]<lem:swapping-is-two-relevant>
+#proofhints[
+    Straightforward.
+]
+#proof[
+    $d(Y; X) + d(X; Y) = 2 d(X; Y)$.
+]
+#lemma[
+    Let $U, V, X$ be independent $FF_2^n$-valued RVs. Then $
+        d(U + V; X) <= 1/2 (d(U; X) + d(V; X) + d(U; V)).
+    $
+]<lem:triangle-like-inequality-for-entropic-distance-of-sum>
+#proofhints[
+    Write $-1/2 H(U + V) = -1/2 H(U + V) - 1/2 H(U + V) + 1/2 H(U + V)$ and $H(U + V + X) = 1/2 H(U + V + X) + 1/2 H(U + V + X)$ and use @lem:submodularity-for-sums twice.
+]
+#proof[
+    We have $
+        d(U + V; X) & = H(U + V + X) - 1/2 H(U + V) - 1/2 H(X) \
+        & = H(U + V + X) - H(U + V) + 1/2 H(U + V) - 1/2 H(X) \
+        & <= 1/2 H(U + X) - 1/2 H(U) + 1/2 H(V + X) - 1/2 H(V) + 1/2 H(U + V) - 1/2 H(X) \
+        & = 1/2 (d(U; X) + d(V; X) + d(U; V))
+    $ by @lem:submodularity-for-sums.
+]
+#corollary[
+    If $(U, V)$ is $C$-relevant to $(X, Y)$ and $U_1, U_2, V_1, V_2$ are copies of $U, V$, then $(U_1 + U_2, V_1 + V_2)$ is $2C$-relevant to $(X, Y)$.
+]<crl:sums-of-copies-doubles-relevance>
+#proofhints[
+    Use @lem:triangle-like-inequality-for-entropic-distance-of-sum and @lem:ruzsa-triangle-inequality.
+]
+#proof[
+    $
+        d(U_1 + U_2; X) + d(V_1 + V_2; Y) & <= 1/2 (2d(U; X) + d(U; U) + 2d(V; Y) + d(V; V)) \
+        & <= 2 (d(U; X) + d(V; Y)) <= 2 C d(X; Y)
+    $ by @lem:triangle-like-inequality-for-entropic-distance-of-sum and the @lem:ruzsa-triangle-inequality.
+]
+#corollary[
+    Let $X_1, X_2, Y_1, Y_2$ be copies of $X, Y$. Then $(X_1 + X_2, Y_1 + Y_2)$ is $4$-relevant to $(Y, X)$.
+]
+#proofhints[
+    Straightforward.
+]
+#proof[
+    By @lem:swapping-is-two-relevant, $(X, Y)$ is $2$-relevant to $(Y, X)$ so by @crl:sums-of-copies-doubles-relevance, we are done.
+]
+#corollary[
+    If $(U, V)$ is $C$-relevant to $(X, Y)$, then $(U + V, U + V)$ is $(2C + 2)$-relevant to $(X, Y)$.
+]<crl:relevance-for-cross-summing>
+#proofhints[
+    Use @lem:triangle-like-inequality-for-entropic-distance-of-sum on $d(U + V; X)$, similarly for $d(U + V; Y)$.
+]
+#proof[
+    By @lem:triangle-like-inequality-for-entropic-distance-of-sum and the @lem:ruzsa-triangle-inequality, $
+        d(U + V; X) & <= 1/2 (d(U; X) + d(V; X) + d(U; V)) \
+        & <= 1/2 (d(U; X) + d(V; Y) + d(X; Y) + d(U; X) + d(X; Y) + d(V; Y)) \
+        & = d(U; X) + d(V; Y) + d(X; Y),
+    $ and similarly for $d(U + V; Y)$.
+    // $
+    //     d(U + V; X) + d(U + V; Y) & <= 1/2 (d(U; X) + d(V; X) + d(U; Y) + d(V; Y) + 2d(U; V)) \
+    //     & <= 1/2 (2d(U; X) + 4d(U; V) + 2d(V; Y)) \
+    //     & <= 1/2 (6 d(U; X) + 6 d(V; Y) + 4 d(X; Y))
+    // $
+]
+#lemma[
+    Let $U, V, X$ be independent $FF_2^n$-valued RVs. Then $
+        d(U | U + V; X) <= 1/2 (d(U; X) + d(V; X) + d(U; V))
+    $
+]<lem:triangle-like-inequality-for-conditioned-entropic-distance-of-sum>
+#proofhints[
+    - Show that $d(U | U + V; X) <= H(U + X) - 1/2 H(U) + 1/2 H(V) + 1/2 H(U + V) - 1/2 H(X)$.
+    - Show that $d(U | U + V; X) = d(V | U + V; X)$, and average the above inequality with a similar bound.
+]
+#proof[
+    We have $
+        d(U | U + V; X) & = H(U + X | U + V) - 1/2 H(U | U + V) - 1/2 H(X) \
+        & = H(U + X | U + V) - 1/2 H(U, U + V) + 1/2 H(U + V) - 1/2 H(X) \
+        & <= H(U + X) - 1/2 H(U) - 1/2 H(V) + 1/2 H(U + V) - 1/2 H(X).
+    $ But $d(U | U + V; X) = d(V | U + V; X)$ since $H(U + X, U + V) = H(X - V, U + V) = H(V + X, U + V)$, so also $
+        d(U | U + V; X) <= H(V + X) - 1/2 H(U) - 1/2 H(V) + 1/2 H(U + V) - 1/2 H(X).
+    $ Averaging the two inequalities gives the result (as earlier).
+]
+#corollary[
+    Let $U, V$ be independent RVs and suppose that $(U, V)$ is $C$-relevant to $(X, Y)$. Then
+    + $(U_1 | U_1 + U_2, V_1 | V_1 + V_2)$ is $2C$-relevant to $(X, Y)$.
+    + $(U_1 | U_1 + V_1, U_2 | U_2 + V_2)$ is $(2C + 2)$-relevant to $(X, Y)$.
+]
+#proof[
+    Use @lem:triangle-like-inequality-for-conditioned-entropic-distance-of-sum. Then as soon as it is used, we are in exactly the situation we were in when bounding the relevance of $(U_1 + U_2, V_1 + V_2)$ and $(U_1 + V_1, U_2 + V_2)$ (with @crl:sums-of-copies-doubles-relevance and @crl:relevance-for-cross-summing).
+]
+It remains to tackle the last two terms in @lem:another-big-inequality. For the fifth term, we need to bound $
+    d(X_1 + X_2 | X_2 + Y_1, X_1 + Y_2; X) + d(X_1 + Y_1 | X_2 + Y_1, X_1 + Y_2; Y).
+$ But the first term of this is at most (by @lem:triangle-like-inequality-for-entropic-distance-of-sum) $
+    & 1/2 d(X_1 | X_2 + Y_1, X_1 + Y_2; X) + 1/2 d(X_2 | X_2 + Y_1, X_1 + Y_2; X) + 1/2 d(X_1; X_2 || X_2 + Y_1, X_1 + Y_2) \
+    <= & d(X_1 | X_1 + Y_2; X) + d(X_2 | X_2 + Y_1; X) = 2d(X | X + Y; X)
+$ by the @lem:ruzsa-triangle-inequality and independence. Now we can use @lem:triangle-like-inequality-for-conditioned-entropic-distance-of-sum, and similarly for the other terms. In this way, we get that the fifth and sixth terms have relevances bounded above by $lambda C$ for an absolute constant $lambda$.
 
-Recall that $d(X; Y || X + Y) <= 3 I(X: Y) + 2 H(X + Y) - H(X) - H(Y)$. Equivalently, $I(X: Y) >= 1/3 (d(X; Y || X + Y) + H(X) + H(Y) - 2 H(X + Y))$. Applying this to the mutual information term in @crl:fibring-for-pairs, we get that it is at least $
-    & 1/3 d(X_1 + X_3, X_2 + X_4; X_1 + X_2, X_3 + X_4 || X_2 + X_3, W) + 1/3 H(X_1 + X_3, X_2 + X_4 | W) \
-    & + 1/3 H(X_1 + X_2, X_3 + X_4 | W) - 2/3 H(X_2 + X_3, X_2 + X_3 | W).
-$ which simplifies to $
-    & 1/3 d(X_1 + X_3, X_2 + X_4; X_1 + X_2, X_3 + X_4 || X_2 + X_3, W) \
-    & + 1/3 H(X_1 + X_3 | W) + 1/3 H(X_1 + X_2 | W) - 2/3 H(X_2 + X_3 | W)
-$
+// TODO: note for exams: if not much detail for proof given in lectures, then won't be asked to give much detail for that proof in the exam

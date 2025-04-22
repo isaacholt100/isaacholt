@@ -54,9 +54,14 @@ Principle: a smooth function of many independent random variables concentrates a
 ]<thm:conditional-expectation-commutes-with-function-of-rv>
 #theorem("Holder's Inequality")[
     Let $p >= 1$ and $1 \/ p + 1 \/ q = 1$. Then $
-        EE[X Y] <= EE[abs(X)^p]^(1 \/ p) dot EE[abs(X)^q]^(1 \/ q).
+        EE[abs(X Y)] <= EE[abs(X)^p]^(1 \/ p) dot EE[abs(X)^q]^(1 \/ q).
     $
 ]<thm:holders-inequality>
+#theorem("Cauchy-Schwarz")[
+    A special case of Holder's inequality: $
+        EE[abs(X Y)] <= EE[X^2]^(1 \/ 2) dot EE[Y^2]^(1 \/ 2).
+    $
+]
 #definition[
     The *conditional variance* of $Y$ given $X$ is the random variable $
         Var(Y | X) := EE[(Y - EE[Y | X])^2 | X].
@@ -129,6 +134,9 @@ Principle: a smooth function of many independent random variables concentrates a
         PP(Z >= t) <= e^(-psi_Z^* (t)).
     $
 ]<prop:chernoff-bound>
+#proofhints[
+    Use @crl:generalised-markovs-inequality.
+]
 #proof[
     By @crl:generalised-markovs-inequality, we have $
         PP(Z >= t) <= EE[e^(lambda Z)]/(e^(lambda t)) = e^(-(lambda t - psi_Z (lambda))).
@@ -138,7 +146,7 @@ Principle: a smooth function of many independent random variables concentrates a
     Our goal is to obtain an upper bound on $psi_Z (lambda)$, as this will give exponential concentration. The function $psi_(Z - EE[Z])(lambda)$ gives upper bounds on $PP(Z - EE[Z] >= t)$, the function $psi_(-Z + EE[Z])(lambda)$ gives upper bounds on $PP(Z - EE[Z] <= -t)$.
 ]
 #proposition[
-    + $psi_Z (lambda)$ is convex and infinitely differentiable on $(0, b)$, where $b = sup_(lambda > 0) {EE[e^(lambda Z)] < oo}$.
+    + $psi_Z (lambda)$ is convex and infinitely differentiable on $(0, b)$, where $b = sup{lambda > 0: psi_Z (lambda) < oo}$.
     + $psi_Z^* (t)$ is non-negative and convex.
     + If $t > EE[Z]$, then $psi_Z^* (t) = sup_(lambda in RR) {lambda t - psi_Z (lambda)}$, the *Fenchel-Legendre* dual.
 ]<prop:properties-of-log-mgf-and-cramer-transform>
@@ -173,7 +181,7 @@ Principle: a smooth function of many independent random variables concentrates a
     For any sub-Gaussian RV $X$,
     + If $X in cal(G)(nu)$, then $PP(X >= t), PP(X <= -t) <= e^(-t^2 \/ 2 nu)$ for all $t > 0$.
     + If $X_1, ..., X_n$ are independent with each $X_i in cal(G)(nu_i)$ then $sum_(i = 1)^n X_i in cal(G)(sum_(i = 1)^n nu_i)$.
-    + If $X in cal(G)(nu)$, then $Var(X) <= nu$.
+    + If $X in cal(G)(nu)$, then $Var(X) <= nu$. // *haven't proven this yet*
 ]<prop:properties-of-sub-gaussian-rv>
 #proof[
     Exercise.
@@ -193,7 +201,7 @@ Principle: a smooth function of many independent random variables concentrates a
 #proofhints[
     - $(1 => 2)$: straightforward.
     - $(2 => 3)$: Explain why we can assume $b = 1$. Use that $EE[Y] = integral_0^oo PP(Y > t) dif t$ for $Y >= 0$, and the $Gamma$ function.
-    - $(3 => 1)$: show that $EE[e^(lambda X)] <= EE[e^(lambda(X - X'))]$ where $X'$ is an IID copy of $X$. Show that $EE\[(X - X')^(2q)\] <= EE[X^(2q)]$. Expand $EE[e^(lambda(X - X'))]$ as a series. Conclude that $X in cal(G)(4c)$.
+    - $(3 => 1)$: show that $EE[e^(lambda X)] <= EE[e^(lambda(X - X'))]$ where $X'$ is an IID copy of $X$. Show that $EE\[(X - X')^(2q)\] <= 2^(2q) dot EE[X^(2q)]$. Expand $EE[e^(lambda(X - X'))]$ as a series. Conclude that $X in cal(G)(4c)$.
     - $(3 <=> 4)$: exercise.
 ]
 #proof[
@@ -227,6 +235,7 @@ Principle: a smooth function of many independent random variables concentrates a
 ]<lem:hoeffding>
 #proofhints[
     - Define a new distribution based on $lambda$, which should be obvious after expanding $psi'_Y (lambda)$.
+    - Show that $psi''_Y (lambda)$ is equal to the variance of this distribution, and obtain the upper bound on $psi''_Y (lambda)$ by using the shift-invariance of the variance.
     - To conclude the result, use a Taylor expansion at $0$ of $psi_Y (lambda)$.
 ]
 #proof[
@@ -263,7 +272,7 @@ Principle: a smooth function of many independent random variables concentrates a
     $ Hence, by @prop:properties-of-sub-gaussian-rv (part 1), we are done.
 ]
 #remark[
-    A drawback of @thm:hoeffdings-inequality is that the bound does not involve $Var(X_i)$ the variance could be much smaller than the upper bound of $(b_i - a_i)^2 \/ 4$. This is addressed by Bennett's inequality:
+    A drawback of @thm:hoeffdings-inequality is that the bound does not involve $Var(X_i)$, and the variances could be much smaller than the upper bound of $(b_i - a_i)^2 \/ 4$. This is addressed by Bennett's inequality:
 ]
 #theorem("Bennett's Inequality")[
     Let $X_1, ..., X_n$ be independent RVs with $EE[X_i] = 0$ and $abs(X_i) <= c$ for all $i$. Let $nu = Var(X_1) + dots.c + Var(X_n)$. Then for all $t >= 0$, $
@@ -271,9 +280,9 @@ Principle: a smooth function of many independent random variables concentrates a
     $ where $h_1 (x) = (1 + x) log(1 + x) - x$ for $x > 0$.
 ]<thm:bennetts-inequality>
 #proofhints[
-    - Show that $EE[e^(lambda X_i)] = 1 + Var(X_i)/c^2 (e^(lambda c) - lambda c - 1)$.
-    - Deduce that $psi_(sum_i X_i) <= nu_c^2 (e^(lambda c) - lambda c - 1)$.
-    - Find an upper lower for $psi_(sum_i X_i)^* (t)$.
+    - Show that $EE[e^(lambda X_i)] <= 1 + Var(X_i)/c^2 (e^(lambda c) - lambda c - 1)$.
+    - Deduce that $psi_(sum_i X_i) <= nu/c^2 (e^(lambda c) - lambda c - 1)$.
+    - Find a lower bound for $psi_(sum_i X_i)^* (t)$.
 ]
 #proof[
     Denote $sigma_i^2 = Var(X_i) = EE[X_i^2] - EE[X_i]^2 = EE[X_i]^2$. The MGF of $X_i$ is $
@@ -281,7 +290,7 @@ Principle: a smooth function of many independent random variables concentrates a
         & <= 1 + c^(k - 2) sum_(k = 2)^oo lambda^k/k! EE[X_i^2] = 1 + sigma_i^2 / c^2 sum_(k = 2)^oo (lambda^k c^k)/k! \
         & = 1 + sigma_i^2 / c^2 (sum_(k = 0)^oo (lambda^k c^k)/k! - lambda c - 1) \
         & = 1 + sigma_i^2 / c^2 (e^(lambda c) - lambda c - 1).
-    $ So $psi_(X_i)(lambda) = log(1 + sigma_i^2 / c^2 (e^(lambda c) - lambda c - 1)) <= sigma_i^2 / c^2 (e^(lambda c) - lambda c - 1)$. So by additivity of $psi$, we have $
+    $ (We can apply the inequality since $EE[X_i^k] >= EE[X_i]^k = 0$ by Jensen's inequality.) So $psi_(X_i)(lambda) = log(1 + sigma_i^2 / c^2 (e^(lambda c) - lambda c - 1)) <= sigma_i^2 / c^2 (e^(lambda c) - lambda c - 1)$. So by additivity of $psi$, we have $
         psi_(sum_(i = 1)^n X_i)(lambda) <= nu / c^2 e^(lambda c) - nu/c^2 lambda c - nu / c^2.
     $ So for $t >= 0 = EE[sum_i X_i]$, by @prop:properties-of-log-mgf-and-cramer-transform, $
         psi_(sum_i X_i)^* (t) >= sup_(lambda in RR) {lambda t - nu / c^2 e^(lambda c) + nu / c lambda + nu / c^2} =: sup_(lambda in RR) {g(lambda)}
@@ -311,7 +320,7 @@ Principle: a smooth function of many independent random variables concentrates a
 #notation[
     Denote $E_i Z = EE[Z | X_(1:i)]$, $E_0 Z = EE[Z]$, $E^((i)) = EE[Z | X^((i))]$, and $Var^((i))(Z) = Var(Z | X^((i)))$.
 ]
-We want to study the concentration of $Z = f(X_1, ..., X_n)$ for independent $X_i$. If $Z = sum_i X_i$, then $Var(sum_i X_i) = sum_i Var(X_i)$ if $EE[X_i X_j] = 0$ for all $i != j$, which holds if the $X_i$ are independent.
+We want to study the concentration of $Z = f(X_1, ..., X_n)$ for independent $X_i$. If $Z = sum_i X_i$, then $Var(sum_i X_i) = sum_i Var(X_i)$ if $EE[X_i X_j] = EE[X_i] EE[X_j]$ for all $i != j$, which holds if the $X_i$ are independent.
 #theorem("Efron-Stein Inequality")[
     Let $X_1, ..., X_n$ be independent and let $Z = f(X_1, ..., X_n)$. Then $
         Var(Z) <= sum_(i = 1)^n EE[(Z - E^((i)) Z)^2] = EE[sum_(i = 1)^n Var^((i))(Z)].
@@ -379,7 +388,7 @@ We want to study the concentration of $Z = f(X_1, ..., X_n)$ for independent $X_
     $ So changing one of the coordinates changes the value of the function at most by a constant.
 ]<def:bounded-differences-property>
 #corollary[
-    Let $X_1, ..., X_n$ be independent and $Z = f(X_(1:n))$ have bounded differences with constants $c_i$. Then $Var(f(Z)) <= 1/4 sum_(i = 1)^n c_i^2$.
+    Let $X_1, ..., X_n$ be independent and $Z = f(X_(1:n))$ have bounded differences with constants $c_i$. Then $Var(Z) <= 1/4 sum_(i = 1)^n c_i^2$.
 ]<crl:bound-on-variance-of-function-with-bounded-differences>
 #proofhints[
     Consider the random variable $
@@ -396,7 +405,7 @@ We want to study the concentration of $Z = f(X_1, ..., X_n)$ for independent $X_
 
     Suppose $X_1, ..., X_n$ be independent and let $Z = f(X_(1:n))$ be the minimum number of bins. Note that changing any one $x_i$ changes $f$ by at most $1$, so $f$ has bounded differences with constants $c_i = 1$. So by the @thm:efron-stein, $Var(Z) <= 1/4 n$.
 
-    Note that this bound is tight, e.g. when $X_i sim Bern(1 \/ 2)$, $Z sim B(n, 1 \/ 2)$, which has variance $1 \/ 4$.
+    Note that this bound is tight, e.g. when $X_i sim Bern(1 \/ 2)$, $Z sim B(n, 1 \/ 2)$, which has variance $n dot 1/2 dot 1/2$.
 ]
 #example("Longest common sub-sequence")[
     Let $X_(1:n)$ and $Y_(1:n)$ be independent sequences of coin flips. Let $
@@ -408,7 +417,7 @@ We want to study the concentration of $Z = f(X_1, ..., X_n)$ for independent $X_
         chi(G) = f({X_(i j)}_(1 <= i < j <= n)),
     $ for some (complicated) function $f$. Since adding or removing an edge changes $chi(G)$ by at most $1$, $f$ has bounded differences with constants $c_(i j) = 1$. By @thm:efron-stein, $Var(Z) <= binom(n, 2) \/ 4 = Theta(n^2)$. It is known that $EE[chi(G)] approx n \/ log n$, so the bound on the variance is not useful when applying @crl:chebyshevs-inequality. However:
 
-    Now for each $1 <= i <= n - 1$, let $Y^((i))$ be a random vector taking values in ${0, 1}^i$ where $Y_j^((i)) = bb(1)_{{i + 1, j} in E}$ for each $1 <= j <= i$. The $Y_i$ are independent. Also, note that ${Y_i}_(i = 1)^(n - 1)$ determines the graph. Hence, $chi(G) = g(Y_(1:(n - 1)))$ for some (complicated) function $g$. $g$ has bounded differences with constants $1$ (e.g. by considering giving vertex $i + 1$ a new colour). Then by @thm:efron-stein, $Var(chi(G)) <= (n - 1) \/ 4$, which is a tighter bound. This yields a useful application of @crl:chebyshevs-inequality, which shows that $chi(G)$ is close to its mean value.
+    Now for each $1 <= i <= n - 1$, let $Y^((i))$ be a random vector taking values in ${0, 1}^i$ where $Y_j^((i)) = bb(1)_{{i + 1, j} in E}$ for each $1 <= j <= i$. The $Y_i$ are independent. Also, note that ${Y^((i))}_(i = 1)^(n - 1)$ determines the graph. Hence, $chi(G) = g(Y^((1)), ..., Y^((n - 1)))$ for some (complicated) function $g$. $g$ has bounded differences with constants $1$ (e.g. by considering giving vertex $i + 1$ a new colour). Then by @thm:efron-stein, $Var(chi(G)) <= (n - 1) \/ 4$, which is a tighter bound. This yields a useful application of @crl:chebyshevs-inequality, which shows that $chi(G)$ is close to its mean value.
 ]
 
 
@@ -419,14 +428,14 @@ Let $X_1, ..., X_n$ be real-valued random variables, and let $Z = f(X_1, ..., X_
 #definition[
     Let $f: RR^d -> RR$ is *separately convex* if it is convex if all of its individual arguments.
 ]<def:separately-convex>
-#theorem("Convex Poincare Inequality")[
+#theorem("Convex Poincaré Inequality")[
     Let $X_(1:n)$ be independent RVs supported on $[0, 1]$ and $f: RR^n -> RR$ be separately convex with partial derivatives that exist. Let $Z = f(X_(1:n))$. Then $
         Var(Z) <= EE[norm(nabla f (X_(1:n)))^2],
     $ where $norm(dot) = norm(dot)_2$ is the Euclidean norm.
-]<thm:convex-poincare-inequality>
+]<thm:convex-Poincaré-inequality>
 #proofhints[
     - Let $Z_i = inf_(x'_i) f(X_(1:(i - 1)), x'_i, X_((i + 1):n))$. Let $X'_i$ be the value for which the infimum is achieved (why is it achieved?).
-    - Use that $abs(Z - Z_i)^2 <= abs(X_i - X'_i)^2 dot ((diff f) / (diff x_i) (X))^2$.
+    - Use that $abs(Z - Z_i)^2 <= abs(X_i - X'_i)^2 dot ((diff f) / (diff x_i) (X))^2$ (since $X'_i$ is a minimiser).
 ]
 #proof[
     Let $Z_i = inf_(x'_i) f(X_(1:(i - 1)), x'_i, X_((i + 1):n))$. Let $X'_i$ be the value for which the infimum is achieved (since $f$ is continuous and the domain $[0, 1]^n$ we consider is compact). Denote $overline(X)^((i)) = (X_(1:(i - 1)), X'_i, X_((i + 1):n))$. Note that since $f$ is separately convex and $X'_i$ is a minimiser  (so $f(X'_((i))) <= f(X)$), $
@@ -439,25 +448,25 @@ Let $X_1, ..., X_n$ be real-valued random variables, and let $Z = f(X_1, ..., X_
 ]
 #example[
     Let $X in RR^(n times d)$ be a random matrix with $X_(i, j) in [-1, 1]$ independent. The spectral norm (or $ell_2$-operator norm) of $X$ is its largest singular value: $
-        sigma_1 (X) = sup{norm(X u): u in RR^d, norm(u) = 1} = sup_(u in RR^n, norm(u) = 1) sup_(u in RR^d, norm(u) = 1) gen(u, X v).
-    $ $sigma_1$ is convex (and so separately convex) since it is a supremum of linear functions. Since it is a norm, we have $sigma_1 (A + B) <= sigma_1 (A) + sigma_1 (B)$ and $sigma_1 (A - B) >= abs(sigma_1 (A) - sigma_1 (B))$. Fix $A$. Since $f$ is convex, the supremum is achieved: let $u, v$ achieve the supremum. Then $
+        sigma_1 (X) = sup{norm(X u): u in RR^d, norm(u) = 1} = sup_(u in RR^n, norm(u) = 1) sup_(v in RR^d, norm(v) = 1) gen(u, X v).
+    $ $sigma_1$ is convex (and so separately convex) since it is a supremum of linear functions. Since it is a norm, we have $sigma_1 (A + B) <= sigma_1 (A) + sigma_1 (B)$ and $sigma_1 (A - B) >= abs(sigma_1 (A) - sigma_1 (B))$. Fix $A$. Since $X$ ranges over a compact set, the supremum is achieved: let $u, v$ achieve the supremum. Then $
         sigma_1 (A) = gen(v, X u) & <= norm(v) dot norm(X u) quad "by Cauchy-Schwarz" \
         & <= norm(v) dot norm(u) (sum_(i, j) X_(i, j)^2)^(1 \/ 2) = (sum_(i, j) X_(i, j)^2)^(1 \/ 2) = norm(X)_F.
-    $ Now if $X, X'$ are independent, $d(X, X') = norm(X - X')_F >= sigma_1 (X - X') >= abs(sigma_1 (X) - sigma_1 (X'))$ where $d$ is the Euclidean distance between vectorised $X$ and $X'$ (i.e. Frobenius norm). So $sigma_1$ is a $1$-Lipschitz function, and note that an $L$-lipchitz function satisfies $norm(nabla f) <= L$. So by the @thm:convex-poincare-inequality, $Var(sigma_1 (X)) <= 4$ (the RHS is $4$, not $1$, since $X_(i j)$ take values in $[-1, 1]$ instead of $[0, 1]$). Note that this is independent of the dimension of $X$!
+    $ Now if $X, X'$ are independent, $d(X, X') = norm(X - X')_F >= sigma_1 (X - X') >= abs(sigma_1 (X) - sigma_1 (X'))$ where $d$ is the Euclidean distance between vectorised $X$ and $X'$ (i.e. Frobenius norm). So $sigma_1$ is a $1$-Lipschitz function, and note that an $L$-lipchitz function satisfies $norm(nabla f) <= L$. So by the @thm:convex-Poincaré-inequality, $Var(sigma_1 (X)) <= 4$ (the RHS is $4$, not $1$, since $X_(i j)$ take values in $[-1, 1]$ instead of $[0, 1]$). Note that this is independent of the dimension of $X$!
 ]
-#theorem("Gaussian Poincare Inequality")[
+#theorem("Gaussian Poincaré Inequality")[
     Let $X_(1:n)$ be IID and standard Gaussian (i.e. each $X_i sim N(0, 1)$). Then for any continuously differentiable $f in C^1 (RR^n)$, $
         Var(f(X_(1:n))) <= EE[norm(nabla f(X_(1:n)))^2].
     $
-]<thm:gaussian-poincare-inequality>
+]<thm:gaussian-Poincaré-inequality>
 #proofhints[
     - Show, using the @thm:efron-stein-inequality, that it is sufficient to prove the result for $n = 1$.
     - You may assume that $f in C^2 (RR)$ ($f$ is twice continuously differentiable) and has compact support.
-    - Using the definition of conditional variance, show that $Var^((i))(Z) = 1/4 (f(S_n - epsilon_i / sqrt(n) + 1 / sqrt(n)) - f(S_n - epsilon_i / sqrt(n) - 1/sqrt(n)))^2$.
+    - Using the definition of conditional variance, show that $Var^((i))(f(S_n)) = 1/4 (f(S_n - epsilon_i / sqrt(n) + 1 / sqrt(n)) - f(S_n - epsilon_i / sqrt(n) - 1/sqrt(n)))^2$, where $S_n = 1/sqrt(n) sum_(i = 1)^n epsilon_i$ and $epsilon_i$ are IID Rademacher random variables (taking values in ${-1, 1}$ with equal probability).
     - Use Taylor's theorem to find an upper bound for $
         abs(f(S_n - epsilon_i / sqrt(n) + 1 / sqrt(n)) - f(S_n - epsilon_i / sqrt(n) - 1/sqrt(n)))
     $
-    - Use the central limit theorem to conclude the result.
+    - Use @thm:efron-stein for $f(S_n)$ and the central limit theorem to conclude the result.
 ]
 #proof[
     Assume the result holds for the $n = 1$ case, i.e. $Var(f(X)) <= EE[f'(X)^2]$ for $X sim N(0, 1)$. Then by the @thm:efron-stein and @thm:law-of-total-expectation, $
@@ -487,33 +496,33 @@ Let $X_1, ..., X_n$ be real-valued random variables, and let $Z = f(X_1, ..., X_
     $ can be thought of as an example of the tensorisation of variance.
 ]
 #remark[
-    If $f$ is $L$-Lipschitz, i.e. $abs(f(x) - f(y)) <= L dot norm(x - y)$, then $norm(nabla f) <= L$. The @thm:gaussian-poincare-inequality holds for $L$-Lipschitz functions (with $L^2$ on the RHS).
+    If $f$ is $L$-Lipschitz, i.e. $abs(f(x) - f(y)) <= L dot norm(x - y)$, then $norm(nabla f) <= L$. The @thm:gaussian-Poincaré-inequality holds for $L$-Lipschitz functions (with $L^2$ on the RHS).
 ]
 #example[
-    Recall from earlier that the operator norm $sigma_1$ is $1$-Lipschitz. If $X in RR^(n times d)$ with each $X_(i j) sim N(0, 1)$ IID, then by the @thm:gaussian-poincare-inequality, $Var(sigma_1 (X)) <= 1$, which is a good bound, given that it is known that $EE[sigma_1 (X)] = O(sqrt(n) + sqrt(d))$.
+    Recall from earlier that the operator norm $sigma_1$ is $1$-Lipschitz. If $X in RR^(n times d)$ with each $X_(i j) sim N(0, 1)$ IID, then by the @thm:gaussian-Poincaré-inequality, $Var(sigma_1 (X)) <= 1$, which is a good bound, given that it is known that $EE[sigma_1 (X)] = O(sqrt(n) + sqrt(d))$.
 ]
 #example[
-    Let $X_1, ..., X_n sim N(0, 1)$ be independent. Let $Z = f(X) = max_i X_i$. We have $nabla f = (0, ..., 1, ..., 0)$ where $1$ is at the index of the maximum. Hence, by the @thm:gaussian-poincare-inequality, $Var(Z) <= 1$, which is a good bound, given it is known that $EE[Z_n] approx log n$.
+    Let $X_1, ..., X_n sim N(0, 1)$ be independent. Let $Z = f(X) = max_i X_i$. We have $nabla f = (0, ..., 1, ..., 0)$ where $1$ is at the index of the maximum. Hence, by the @thm:gaussian-Poincaré-inequality, $Var(Z) <= 1$, which is a good bound, given it is known that $EE[Z_n] approx log n$.
 ]
 
-== Poincare constant
+== Poincaré constant
 
 #definition[
-    Let $X$ be an RV taking values in $RR^d$. We say $X$ satisfies the Poincare inequality with constant $C$ if $
+    Let $X$ be an RV taking values in $RR^d$. We say $X$ satisfies the Poincaré inequality with constant $C$ if $
         Var(f(X)) <= C dot EE[norm(nabla f(X))^2] quad forall f in C^1 (RR^d).
-    $ The smallest such constant $C_P (X)$ is the *Poincare constant* of $X$: $
+    $ The smallest such constant $C_P (X)$ is the *Poincaré constant* of $X$: $
         C_P (X) = sup_(f in C^1 (RR^d)) Var(f(X)) / EE[norm(nabla f(X))^2].
     $
-]<def:poincare-constant>
+]<def:Poincaré-constant>
 #proposition[
-    The Poincare constant satisfies the following properties:
+    The Poincaré constant satisfies the following properties:
     + $C_P (a X + b) = a^2 C_P (X)$ for constants $a in RR, b in RR^d$.
     + For any unit vector $theta in RR^d$, $Var(gen(X, theta)) <= C_P (X)$. In particular, $Var(X_i) <= C_P (X)$ for all $i$.
     + If $X_1, ..., X_n$ are independent, then $
         C_P (X_(1:n)) = max_i C_P (X_i).
     $
     + If $C_P (X) < oo$, then $X$ has connected support.
-]<prop:properties-of-poincare-constant>
+]<prop:properties-of-Poincaré-constant>
 #proof[
     Exercise.
 ]
@@ -531,9 +540,6 @@ Let $X_1, ..., X_n$ be real-valued random variables, and let $Z = f(X_1, ..., X_
     $ and its *discrete generator* is $Lambda := P - I$.
 ]<def:transition-matrix-and-discrete-generator>
 #definition[
-    A transition matrix $P in RR^(d times d)$ is said to be *reversible* if $P_(i j) = P_(j i)$ for all $1 <= i, j <= d$.
-]
-#definition[
     Let $P$ be the transition matrix of a Markov chain. A row vector $pi in RR^d$ (which represents a distribution on $[d]$) on state space $S$ is called *stationary* if $pi_j = sum_i pi_i P_(i j)$ for all $j$ (i.e. $pi P = pi$).
 ]<def:stationary-distribution>
 #definition[
@@ -542,10 +548,15 @@ Let $X_1, ..., X_n$ be real-valued random variables, and let $Z = f(X_1, ..., X_
     $ where $gen(x, y)_pi = sum_(i = 1)^d x_i y_i pi_i$.
 ]<def:dirichlet-form>
 #proposition[
-    Let $P in RR^(d times d)$ be a reversible transition matrix with stationary distribution $pi in RR^d$. Let $f in RR^d$. Then $
-        cal(E)(f, f) = 1/2 EE_pi [(f(X_(n + 1)) - f(X_n))^2],
+    Let $P in RR^(d times d)$ be a reversible transition matrix with stationary distribution $pi in RR^d$. Assume the *reversibility* condition: $
+        pi_i P_(i j) = pi_j P_(j i) quad forall i, j in [d].
+    $ Let $f in RR^d$. Then $
+        cal(E)(f, f) = 1/2 EE_(X_(n + 1), X_n sim pi) [(f(X_(n + 1)) - f(X_n))^2],
     $ which is the *discrete gradient* (we may view $f$ as a function $i |-> f_i$).
 ]<prop:dirichlet-form-of-f-and-f-is-discrete-gradient-for-reversible-transition-matrix>
+#proofhints[
+    Use that $sum_j P_(i j) = 1$ for all $i$ to split the sum $sum_i f_i^2 pi_i$ into two sums.
+]
 #proof[
     Since $sum_j P_(i j) = 1$ for all $i$, we have $
         cal(E)(f, f) & = gen(f, (I - P) f)_pi = sum_i f_i^2 pi_i - sum_i f_i pi_i sum_j P_(i j) f_j \
@@ -557,7 +568,7 @@ Let $X_1, ..., X_n$ be real-valued random variables, and let $Z = f(X_1, ..., X_
     $
 ]
 #remark[
-    If the transition matrix $P$ is reversible, then $Lambda = P - I$ is self-adjoint (with respect to $gen(dot, dot)_pi$), so has real eigenvalues $lambda_1 >= dots.c >= lambda_n$. By @prop:dirichlet-form-of-f-and-f-is-discrete-gradient-for-reversible-transition-matrix, we have $gen(f, -Lambda f)_pi >= 0$, so $-Lambda$ is positive semi-definite, and so all $lambda_i <= 0$. Since $sum_j Lambda_(i j) = 0$ for all $i$, we have $lambda_1 = 0$, corresponding to eigenvector $f_1 = (1, ..., 1)$.
+    If the transition matrix $P$ is reversible, then $Lambda = P - I$ is self-adjoint with respect to $gen(dot, dot)_pi$ (i.e. $gen(Lambda f, g)_pi = gen(f, Lambda g)_pi$), so has real eigenvalues $lambda_1 >= dots.c >= lambda_n$. By @prop:dirichlet-form-of-f-and-f-is-discrete-gradient-for-reversible-transition-matrix, we have $gen(f, -Lambda f)_pi >= 0$, so $-Lambda$ is positive semi-definite, and so all $lambda_i <= 0$. Since $sum_j Lambda_(i j) = 0$ for all $i$, we have $lambda_1 = 0$, corresponding to eigenvector $f_1 = (1, ..., 1)$.
 
     Now $lambda_2 = sup_(f: gen(f, f_1)_pi = 0) (gen(f, Lambda f)_pi)/(gen(f, f)_pi)$, so $
         cal(E)(f, f) = - gen(f, Lambda f)_pi >= -lambda_2 gen(f, f)_pi = -lambda_2 EE_pi [f(X_1)^2] = -lambda_2 Var_pi (f) = (lambda_1 - lambda_2) Var_pi (f)
@@ -613,12 +624,12 @@ In the following section, let $A$ be a discrete (countable) alphabet and let $X$
 #definition[
     The *conditional entropy* of $X$ given $Y$ is $
         H(X | Y) & = EE[-log P_(X | Y)(X | Y)] = -sum_(x, y) P(x, y) log P(x | y) \
-        & = EE_X [H(X | Y = y)]
+        & = sum_y PP(Y = y) H(X | Y = y)
     $
 ]<def:conditional-entropy>
 #theorem("Chain Rule for Entropy")[
     We have $
-        H(X_(1:n)) = EE[-log P(X_(1:n))] = sum_(i = 1)^n H(X_1 | X_(1:(i - 1))).
+        H(X_(1:n)) = EE[-log P(X_(1:n))] = sum_(i = 1)^n H(X_i | X_(1:(i - 1))).
     $
 ]<thm:entropy-chain-rule>
 #proofhints[
@@ -1028,7 +1039,7 @@ In the following section, let $A$ be a discrete (countable) alphabet and let $X$
 
 == Concentration of convex Lipschitz functions
 
-Let $f: [0, 1]^n -> RR$ be separately convex and $1$-Lipschitz. The @thm:convex-poincare-inequality says that $Var(f(X)) <= EE[norm(nabla f(X))^2] <= 1$.
+Let $f: [0, 1]^n -> RR$ be separately convex and $1$-Lipschitz. The @thm:convex-Poincaré-inequality says that $Var(f(X)) <= EE[norm(nabla f(X))^2] <= 1$.
 #theorem[
     Let $f: [0, 1]^n -> RR$ be separately convex and $1$-Lipschitz. Let $Z = f(X_1, ..., X_n)$ where $X_1, ..., X_n$ are independent and are supported on $[0, 1]$. Then for all $t > 0$, $
         PP(Z - EE[Z] >= t) <= e^(-t^2 \/ 2),
@@ -1314,70 +1325,85 @@ Let $f: [0, 1]^n -> RR$ be separately convex and $1$-Lipschitz. The @thm:convex-
 
 == Talagrand's inequality
 
+#definition[
+    *Marton's divergence* is $
+        d_2^2 (Q, P) = EE[(1 - Q(X)/P(X))_+^2] = sum_(omega: P(omega) > 0) (P(omega) - Q(omega))_+^2 / P(omega).
+    $
+]<def:martons-divergence>
 #lemma[
     Let $P$ and $Q$ be distributions on the same space $(Omega, cal(A))$. Then $
-        inf_(pi in Pi(P, Q)) sum_(i = 1)^n EE[PP(X_i != Y_i | X)^2] = d_2^2 (Q, P).
+        inf_(pi in Pi(P, Q)) sum_(i = 1)^n EE_pi [PP(X_i != Y_i | X)^2] = d_2^2 (Q, P).
     $
+]<lem:infimum-expression-for-marton-divergence>
+#proofhints[
+    - For $>=$, explain why $PP(X = Y | X = x) <= min{1, Q(x) \/ P(x)}$, then take expectation.
+    - Showing equality, by showing that the optimal total variation coupling minimises the LHS, is left as an exercise.
 ]
 #proof[
     We have $
         PP(X = Y | X = x) = PP(X = x, Y = x) / PP(X = x) <= min{1, Q(x)/P(x)}.
     $ So for any coupling $pi$, $
         EE_pi [PP(X != Y | X)^2] >= EE_P [(1 - min{1, Q(X)/P(X)})^2] = EE_P [(1 - Q(X)/P(X))_+^2] = d_2^2 (Q, P).
-    $
+    $ Showing equality is left as an exercise.
 ]
-#definition[
-    *Marton's divergence* is $
-        d_2^2 (Q, P) = EE[(1 - Q(X)/P(X))_+^2] = sum_(omega: P(omega) > 0) (P(omega) - Q(omega))_+^2 / P(omega).
-    $
-]<def:martons-divergence>
 #lemma("Pinsker's Inequality for Marton Divergence")[
     Let $P, Q$ be distributions on the same space $(Omega, A)$ with $Q << P$. Then $
         d_2^2 (Q, P) <= 2 D(Q || P).
     $
 ]<lem:pinskers-inequality-for-marton-divergence>
+#proofhints[
+    - Let $h(t) = (1 - t) log(1 - t) + t$ for $t <= 1$, expression $D(Q || P)$ using $h$ (as an expectation w.r.t $P$).
+    - Show that $h(t) >= 0$ and by considering derivatives, show that $h(t) >= t^2 \/ 2$ for all $t in [0, 1]$.
+]
 #proof[
-    Let $h(t) = (1 - t) log(1 - t) + t$ for $0 <= t <= 1$ and $q(X) = Q(X)/P(X)$. Then $
-        D(Q || P) = EE [h(1 - q(X))].
-    $ We have $h(t) = -(1 - t) log(1 + t/(1 - t)) + t >= -t + t >= 0$. $h(t) >= t^2 \/ 2$ for $t in [0, 1]$ since $log x <= x - 1$, and $h'(t) = -1 - log(1 - t) + 1 = -log(1 - t)$. Hence, $
+    Let $h(t) = (1 - t) log(1 - t) + t$ for $t <= 1$ and $q(X) = Q(X)/P(X)$. Then $
+        D(Q || P) = EE_(X sim P) [h(1 - q(X))].
+    $ We have $h(t) = -(1 - t) log(1 + t/(1 - t)) + t >= -t + t >= 0$ since $log x <= x - 1$. Also, $h(t) >= t^2 \/ 2$ for $t in [0, 1]$: indeed, $h(0) = 0^2 \/ 2$, and $h'(t) = -1 - log(1 - t) + 1 = -log(1 - t)$, thus $
         dif / (dif t) (h(t) - t^2 / 2) = -log(1 - t) - t >= (1 - t) + 1 - t = 0.
     $ So we have $
-        D(Q || P) = EE[h(1 - q(X))] >= EE[h((1 - q(X))_+)] >= EE[(1 - q(X))_+^2 / 2] = 1/2 d_2^2 (Q, P).
-    $ where first inequality is since $h >= 0$.
+        D(Q || P) & = EE[h(1 - q(X))] >= EE[h((1 - q(X))_+)] \
+        & >= EE[(1 - q(X))_+^2 / 2] = 1/2 d_2^2 (Q, P).
+    $ where first inequality is since $h >= 0$ and $h(0) = 0$.
 ]
 #theorem("Marton's Conditional Transport Cost Inequality")[
     Let $X = (X_1, ..., X_n)$, $X sim P = P_1 times.circle cdots times.circle P_n$, and let $Q << P$. Then $
         inf_(pi in Pi(P, Q)) sum_(i = 1)^n EE_pi [P(X_i != Y_i | X)^2] <= 2 D(Q || P).
     $
 ]<thm:martons-conditional-transport-cost-inequality>
-#proofhints[
-    Explain why $PP(X = Y | X = x) <= min{1, Q(x) \/ P(x)}$, then take expectation.
-]
 #proof[
-    The $n = 1$ case follows by the above two lemmas. Now we use induction on $n$. Assume that for every $n <= k$, there exists a $pi_k in Pi(P, Q)$ such that $sum_(i = 1)^n EE[PP(X_i != Y_i | X)^2] <= 2 D(Q || P)$. We will find a coupling $pi_(k + 1)$ such that $
-        sum_(i = 1)^k EE[PP(X_i != Y_i | X_(1:(k + 1)))^2] + EE[PP(X_(k + 1) != Y_(k + 1)) | X_(1:(k + 1))] & = sum_(i = 1)^(k + 1) EE[PP(X_i != Y_i | X_(1:(k + 1)))^2] \
+    We use induction on $n$. The $n = 1$ case follows by @lem:infimum-expression-for-marton-divergence and @lem:pinskers-inequality-for-marton-divergence. Now assume that for every $n <= k$, there exists a $pi_n in Pi(P, Q)$ such that $sum_(i = 1)^n EE_(pi_n)[PP(X_i != Y_i | X)^2] <= 2 D(Q_(X_(1:n)) || P_(X_(1:n)))$. We will find a coupling $pi_(k + 1)$ (extended from $pi_k$) such that $
+        sum_(i = 1)^k EE_(pi_(k + 1))[PP(X_i != Y_i | X_(1:(k + 1)))^2] + EE_(pi_(k + 1))[PP(X_(k + 1) != Y_(k + 1) | X_(1:(k + 1)))^2] & = sum_(i = 1)^(k + 1) EE_(pi_(k + 1))[PP(X_i != Y_i | X_(1:(k + 1)))^2] \
         & <= D(Q_(Y_(1:(k + 1))) || P_(X_(1:(k + 1))))
     $ For fixed $y_(1:k)$, let $pi_(y_(1:k))$ be the optimal total variation coupling of $X_(k + 1)$ and $Y_(k + 1) | Y_(1:k) = y_(1:k)$. Let $
-        pi_(k + 1)(x_(1:(k + 1)), y_(1:(k + 1))) = pi_k (x_(1:k), y_(1:k)) dot pi_(y_(1:k)) (x_(k + 1), y_(k + 1)).
-    $ This coupling has two properties:
-    - $X_(1:k) - Y_(1:k) - (X_(k + 1), Y_(k + 1))$ form a Markov chain.
-    - $X_(k + 1)$ is independent of $(X_(1:k), Y_(1:k))$. By the induction hypothesis, $
-        sum_(i = 1)^k EE_(pi_(k + 1)) [PP(X_i != Y_i | X_(1:(k + 1)))] & = sum_(i = 1)^k EE_(pi_(k + 1)) [PP(X_i != Y_i | X_(1:k))^2] "by second property" \
+        pi_(k + 1)(x_(1:(k + 1)), y_(1:(k + 1))) & = pi_k (x_(1:k), y_(1:k)) dot pi_(y_(1:k)) (x_(k + 1), y_(k + 1)) \
+        & = PP(X_(1:k) = x_(1:k), Y_(1:k) = y_(1:k)) dot PP(X_(k + 1) = x_(k + 1)) dot PP(Y_(k + 1) = y_(k + 1) | X_(k + 1) = x_(k + 1)),
+    $ where the probabilities in the last line are w.r.t. the new coupling $pi_(k + 1)$. This coupling has two properties:
+    - $X_(1:k) - Y_(1:k) - (X_(k + 1), Y_(k + 1))$ form a Markov chain, i.e. given $(X_(1:k), Y_(1:k))$, the distribution of $(X_(k + 1), Y_(k + 1))$ only depends on $Y_(1:k)$.
+    - $X_(k + 1)$ is independent of $(X_(1:k), Y_(1:k))$.
+    These properties imply that given $X_(1:k) = x_(1:k), Y_(1:k) = y_(1:k)$, we have $(X_(k + 1), Y_(k + 1)) sim pi_(y_(1:k))$.
+    By the induction hypothesis, $
+        sum_(i = 1)^k EE_(pi_(k + 1)) [PP(X_i != Y_i | X_(1:(k + 1)))^2] & = sum_(i = 1)^k EE_(pi_(k + 1)) [PP(X_i != Y_i | X_(1:k))^2] "by second property" \
+        & = sum_(i = 1)^k EE_(pi_k) [PP(X_i != Y_i | X_(1:k))^2] \
         & <= 2 D(Q_(Y_(1:k)) || P_(X_(1:k))).
     $ We want to show $
         EE[PP(X_(k + 1) != Y_(k + 1) | X_(1:(k + 1)))^2] <= 2 D(Q_(Y_(k + 1) | Y_(1:k)) || P_(X_(k + 1)) | Q_(Y_(1:k)))
-    $ From the $n = 1$ case, we know that $
+    $ From the $n = 1$ case (and since the optimal total variation coupling $pi_(y_(1:k))$ is a minimiser in @lem:infimum-expression-for-marton-divergence), we know that $
         EE_(pi_(y_(1:k))) [PP(X_(k + 1) != Y_(k + 1) | X_(k + 1), Y_(1:k) = y_(1:k))^2] <= 2 D(Q_(Y_(k + 1) | Y_(1:k) = y_(1:k)) || P_(X_(k + 1))).
     $ By the two properties of $pi_(k + 1)$, $
         PP(X_(k + 1) != Y_(k + 1) | X_(k + 1), Y_(1:k) = y_(1:k)) = PP(X_(k + 1) != Y_(k + 1) | X_(1:(k + 1)), Y_(1:k) = y_(1:k))
     $ Taking $EE_(Y_(1:k))(dot)$ in the above, we obtain $
-        EE PP(X_(k + 1) != Y_(k + 1) | X_(1:(k + 1)), Y_(1:k))^2 = EE PP(X_(k + 1) != Y_(k + 1) | X_(k + 1), Y_(k + 1))^2 <= 2 D(Q_(Y_(k + 1) | Y_(1:k)) || P_(X_(k + 1)) | Q_(Y_(1:k)))
+        EE [PP(X_(k + 1) != Y_(k + 1) | X_(1:(k + 1)), Y_(1:k))^2] & = EE [PP(X_(k + 1) != Y_(k + 1) | X_(k + 1), Y_(k + 1))^2] \
+        & <= 2 D(Q_(Y_(k + 1) | Y_(1:k)) || P_(X_(k + 1)) | Q_(Y_(1:k)))
     $ The LHS is equal to $
         & EE EE[EE[II_({X_(k + 1) != Y_(k + 1)}) | X_(1:(k + 1)), Y_(1:k)]^2 | X_(1:(k + 1))] \
         & >= EE EE[EE[II_({X_(k + 1) != Y_(k + 1)}) | X_(1:(k + 1)), Y_(1:k)] | X_(1:(k + 1))]^2 quad "by Jensen" \
         & = EE EE[II_({X_(k + 1) != Y_(k + 1)}) | X_(1:(k + 1))]^2 quad "by tower property" \
         & = EE PP(X_(k + 1) != Y_(k + 1) | X_(1:(k + 1)))^2
-    $ So $sum_(i = 1)^k EE PP(X_i != Y_i | X_(1:(k + 1)))^2 + EE PP(X_(k + 1) != Y_(k + 1) | X_(1:k))^2 <= 2 D(Q_(Y_(1:k)) || P_(X_(1:k))) + 2 D(Q_(Y_(k + 1) | Y_(1:k)) || P_(X_(k + 1)) | Q_(Y_(1:k))) = 2 D(Q || P)$ by the @prop:relative-entropy-chain-rule.
+    $ So $
+        & sum_(i = 1)^k EE PP(X_i != Y_i | X_(1:(k + 1)))^2 + EE PP(X_(k + 1) != Y_(k + 1) | X_(1:k))^2 \
+        <= & 2 D(Q_(Y_(1:k)) || P_(X_(1:k))) + 2 D(Q_(Y_(k + 1) | Y_(1:k)) || P_(X_(k + 1)) | Q_(Y_(1:k))) \
+        = & 2 D(Q || P)
+    $ by the @prop:relative-entropy-chain-rule.
 ]
 #definition[
     $f: A^n -> RR$ satisfies the *one-sided bounded differences* property if $
@@ -1408,7 +1434,7 @@ Let $f: [0, 1]^n -> RR$ be separately convex and $1$-Lipschitz. The @thm:convex-
         EE_Q [Z] - EE_P [Z] <= sum_(i = 1)^n EE_pi [c_i (X) PP(X_i != Y_i | X)],
     $ where $PP(X_i != Y_i | X) = EE_pi [II_({X_i != Y_i}) | X]$.
     - Apply Cauchy-Schwarz twice.
-    - Conclude using @thm:martons-argument.
+    - Conclude using @thm:martons-conditional-transport-cost-inequality and @thm:martons-argument.
 ]
 #proof[
     Let $Q << P$. Then for all $pi in Pi(P, Q)$, $
@@ -1418,13 +1444,153 @@ Let $f: [0, 1]^n -> RR$ be separately convex and $1$-Lipschitz. The @thm:convex-
         & = sum_(i = 1)^n EE_pi [c_i (X) PP(X_i != Y_i | X)] \
         & <= sum_(i = 1)^n (EE_pi [c_i (X)^2])^(1 \/ 2) (EE_pi [PP(X_i != Y_i | X)^2])^(1 \/ 2) quad "by Cauchy-Schwarz" \
         & <= (sum_(i = 1)^n EE_pi [c_i (X)^2])^(1 \/ 2) (sum_(i = 1)^n EE[PP(X_i != Y_i | X)^2])^(1 \/ 2) quad "by Cauchy-Schwarz"
-    $ where we write $PP(X_i != Y_i | X) = EE_pi [II_({X_i != Y_i}) | X]$. We claim that $
+    $ where we write $PP(X_i != Y_i | X) = EE_pi [II_({X_i != Y_i}) | X]$. By @thm:martons-conditional-transport-cost-inequality, $
         inf_(pi in Pi(P, Q)) sum_(i = 1)^n EE[PP(X_i != Y_i | X)^2] <= 2 D(Q || P).
-    $ This will imply that $
+    $ which implies that $
         EE_Q [Z] - EE_P [Z] <= sqrt(nu dot 2 dot D(Q || P)) 
     $ amd so by @thm:martons-argument, $psi_(Z - EE[Z])(lambda) <= (lambda^2 nu)/2$ for all $lambda > 0$, which gives the right tail bound by the @prop:chernoff-bound.
-
-    Now we prove the claim:
 ]
 
 = Log-concave random variables
+
+#definition[
+    A continuous random variable $X in RR^n$ with density function $rho$ is *log-concave* if $log rho$ is concave, i.e. if $
+        rho(lambda x + (1 - lambda) y) >= rho(x)^lambda rho(y)^(1 - lambda)
+    $ for all $x, y in RR^n$ and $lambda in [0, 1]$.
+]<def:log-concave-rv>
+#example[
+    $
+        1/((2pi)^n det(Sigma)^(1 \/ 2)) e^(-(x Sigma^(-1) x) \/ 2)
+    $ and $alpha e^(-norm(x))$ uniforms on convex, compact sets. Note support is convex.
+]
+#definition[
+    A *convex body* is a non-empty, convex, compact set. The *diameter* of a convex body $K$ is $"Diam"(K) = sup_(x, y in K) norm(x - y)_2$.
+]<def:convex-body>
+#theorem[
+    Let $X$ be log-concave, supported on a convex body $K subset.eq RR^n$. Then $X$ satisfies the Poincaré inequality with Poincaré constant $
+        C_P (X) <= "Diam"(K)^2 dot C_n,
+    $ for some absolute $C_n$ depending only on $n$; that is, $
+        Var(f(X)) <= "Diam"(K)^2 dot C_n dot EE [norm(nabla f(X))^2],
+    $ for all $f in C^1 (RR^n)$.
+]<thm:poincare-inequality-for-log-concave-rvs>
+#proof[
+    WLOG $EE[f(X)] = 0$. We have $
+        Var(f(X)) = 1/2 Var(f(X) - f(Y)) = 1/2 EE[(f(X) - f(Y))^2],
+    $ where $Y$ is an independent copy of $X$. Hence, $
+        Var(f(X)) & = 1/2 integral_(RR^n) integral_(RR^n) abs(f(y) - f(x))^2 rho(x) rho(y) dif x dif y \
+        & = 1/2 integral_(RR^n) integral_(RR^n) abs(integral_([0, 1]) nabla f(t y + (1 - t) x) dif t (y - x))^2 rho(x) rho(y) dif x dif y \
+        & <= "Diam"(K)^2 / 2 integral_(RR^n) integral_(RR^n) integral_([0, 1]) norm(nabla f(t y + (1 - t) x))^2 dif t rho(x) rho(y) dif x dif y quad "by Cauchy-Schwarz" \
+        & = "Diam"(K)^2 / 2 integral_([0, 1]) integral_(RR^n) integral_(RR^n) norm(nabla f(t y + (1 - t) x))^2 rho(x) rho(y) dif x dif y dif t
+    $ First consider the case when $t approx 1/2$. We use the bound $min{rho(x), rho(y)} <= rho(t y + (1 - t) x)$ (due to concavity), which implies $
+        rho(x) rho(y) & <= rho(t y + (1 - t) x) max{rho(x), rho(y)} \
+        & <= rho(t y + (1 - t) x) (rho(x) + rho(y)).
+    $ So $
+        & integral_(RR^n) integral_(RR^n) norm(nabla f(t y + (1 - t) x))^2 rho(x) rho(y) dif x dif y \
+        <= & integral_(RR^n) integral_(RR^n) norm(nabla f(t y + (1 - t) x))^2 rho(t y + (1 - t) x) (rho(x) + rho(y)) dif x dif y \
+        <= & integral_(RR^n) integral_(RR^n) norm(nabla f(u))^2 rho(u) rho(x) (dif u dif x)/t^n + integral_(RR^n) integral_(RR^n) norm(nabla f(u))^2 rho(u) rho(y) (dif u)/(1 - t)^n dif y \
+        = & (1/t^n + 1/(1 - t)^n) EE [norm(nabla f(X))^2].
+    $ using the substitutions $t y + (1 - t) x = u$ (so $t^n dif y = dif u$), $t y + (1 - t) x = v$ (so $(1 - t)^n dif x = dif v$).
+
+    In the case $t >> 1 \/ 2$ or $t << 1 \/ 2$, then $
+        rho(x) rho(y) <= rho(t y + (1 - t) x) dot rho((1 - t) y + t x)
+    $ hence $
+        & integral_(RR^n) integral_(RR^n) norm(nabla f(t y + (1 - t) x))^2 rho(x) rho(y) dif x dif y \
+        <= & integral_(RR^n) integral_(RR^n) norm(nabla f(t y + (1 - t) x))^2 rho(t y + (1 - t) x) rho((1 - t) y + t x) dif y dif x \
+        = & integral_(RR^n) integral_(RR^n) norm(nabla f(u))^2 rho(u) rho(v) (dif u dif v) / abs(t^2 - (1 - t)^2)^n \
+        = & 1/abs(t^2 - (1 - t)^2)^n EE[norm(nabla f(X))^2]
+    $ since the map $(x, y) |-> (t x + (1 - t) y, (1 - t) x + t y)$ is represented by the matrix $mat(t, 1 - t; 1 - t, t)$ which has determinant $abs(t^2 - (1 - t)^2)$. So $dif x dif y = (dif u dif y)/abs(t^2 - (1 - t)^2)^n$.
+
+    Combining these, we obtain $
+        Var(f(X)) & <= "Diam"(K)^2 / 2 EE[norm(nabla f(X))^2] integral_([0, 1]) min{1/(t^n) + 1/((1 - t)^n), 1/abs(t^2 - (1 - t)^2)^n} dif t \
+        & <= "Diam"(K)^2 / 2 C_n EE[norm(nabla f(X))^2].
+    $
+]
+#remark[
+    Let $X sim "Unif"(A)$, $A subset.eq RR^n$. The Poincaré constant $C_p (X)$ measures the *conductance* of $A$, which is large if $A$ has a bottleneck.
+]
+
+== One-dimensional log-concave random variables
+
+#definition[
+    Let $X$ be an RV on $RR$ with density function $f$. The *differential entropy* of $X$ is $
+        h(X) = -integral_(-oo)^oo f(x) log f(x) dif x = EE[-log f(X)].
+    $
+]<def:differential-entropy>
+#definition[
+    Let $X, Y$ be an RVs on $RR$ with density functions $f, g$. The *differential relative entropy* of $X$ and $Y$ is $
+        D(f || g) = D(X || Y) = integral_(-oo)^oo f(x) log f(x)/g(x) dif x = EE[log f(X)/g(X)] >= 0.
+    $
+]<def:differential-relative-entropy>
+#lemma[
+    Let $Y$ be an RV with density $f$ on $RR$ with variance $Var(Y) = sigma^2$. Let $Z sim N(EE[Y], sigma^2)$. Then $
+        h(Y) <= h(Z) = 1/2 log (2pi e sigma^2).
+    $ In other words, normally distributed random variables maximise differential entropy.
+]<lem:normal-rvs-maximised-differential-entropy>
+#proofhints[
+    - Explain why we can assume $EE[Y] = 0$ WLOG.
+    - Use non-negativity of differential relative entropy.
+]
+#proof[
+    WLOG, $EE[Y] = 0$ (since entropy is invariant under constant shifts). Let $phi_(sigma^2)(x) := 1/sqrt(2pi sigma^2) e^(-x^2 \/ 2 sigma^2)$. We have $
+        0 & <= D(f || phi_(sigma^2)) = integral_(-oo)^oo f(x) log f(x) dif x + 1/2 log(2pi sigma^2) + integral_(-oo)^oo x^2 / (2 sigma^2) f(x) dif x \
+        & = -h(Y) + 1/2 log(2pi sigma^2) + 1/(2 sigma^2) EE[Y^2] \
+        & = -h(Y) + 1/2 log(2pi sigma^2) + 1/2 = 1/2 log(2pi e sigma^2).
+    $ It is straightforward to show that $h(Z) = 1/2 log(2pi e sigma^2)$.
+]
+#definition[
+    A random variable $X$ is *isotropic* if $EE[X] = 0$ and $Var(X) = 1$.
+]<def:isotropic>
+#lemma[
+    Let $X$ be log-concave and isotropic, with density function $rho$ on $RR$. Then $
+        rho(0) >= 1/sqrt(2 pi e).
+    $
+]<lem:lower-bound-for-middle-density-of-log-concave-isotropic-rv>
+#proofhints[
+    Write $0 = integral_(-oo)^oo rho(x) x dif x$ and use log-concavity.
+]
+#proof[
+    We have $
+        rho(0) & = rho(integral_(-oo)^oo rho(x) x dif x) = e^(log rho(integral_(-oo)^oo rho(x) x dif x)) >= e^(integral_(-oo)^oo rho(x) log rho(x) dif x) \
+        & = e^(-h(rho)) >= 1/sqrt(2 pi e),
+    $ where the first inequality is by log-concavity (we use that $integral_(-oo)^oo rho(x) dif x = 1$), and the second is by @lem:normal-rvs-maximised-differential-entropy.
+]
+#remark[
+    It can be shown that $max_x rho(x) <= c$ for some absolute constant $c$. So the above lemma says that $rho(0)$ and $max_x rho(x)$ are comparable.
+]
+#proposition[
+    Let $X$ be log-concave, isotropic, with density function $rho$ on $RR$. Then for all $x >= 3 \/ rho(0)$, $
+        rho(x) <= rho(0) e^(-rho(0)/3 log(2) x) <= e^(-x log(2) \/ (3 sqrt(2pi e)))
+    $
+]<prop:right-tail-upper-bound-for-densities-of-log-concave-isotropic-rv>
+#proofhints[
+    - Let $x_m$ denote the mode of $X$ (why is this unique?). Let $x_0 = 2/rho(0) + x_m$. Why is $x_0 >= x_m$?
+    - By writing $1$ as an integral, show that $x_m <= 1 \/ rho(0)$ (justify using log-concavity).
+    - Use the same idea to show that $rho(x_0) <= rho(0) \/ 2$.
+    - For $x >= 3 \/ rho(0)$, write $x_0 = x_0 / x dot x + (1 - x_0 / x) dot 0$ (why is this a valid convex combination?). Use log-concavity and combine the above inequalities to obtain the result.
+]
+#proof[
+    Write $x_m$ for the mode of $X$ (this is unique since $X$ is log-concave). WLOG, $x_m > 0$. // TODO: why can we assume this?
+    Define $x_0 := 2/rho(0) + x_m$. We have $x_0 >= x_m$ by @lem:lower-bound-for-middle-density-of-log-concave-isotropic-rv. First note that $
+        1 = integral_(-oo)^oo rho(x) dif x >= integral_0^(x_m) rho(x) dif x >= x_m rho(0)
+    $ by log-concavity. Hence, $x_m <= 1 \/ rho(0)$. Also, $
+        1 = integral_(-oo)^oo rho(x) dif x >= integral_(x_m)^(x_0) rho(x) dif x >= rho(x_0)(x_0 - x_m) = rho(x_0) 2/rho(0)
+    $ where the last inequality is because $rho$ has one mode (unimodal). Hence, $rho(x_0) <= rho(0) \/ 2$. So we have $x >= 3/rho(0) >= 2/rho(0) + x_m = x_0$, so we write $x_0 = x_0/x dot x + (1 - x_0/x) dot 0$. By log-concavity, $
+        rho(x_0) >= rho(x)^(x_0 \/ x) dot rho(0)^(1 - x_0 \/ x).
+    $ Exponentiating both sides by $x \/ x_0$, we get $
+        rho(x) & <= rho(x_0)^(x \/ x_0) / rho(0)^(x \/ x_0 - 1) = rho(0) (rho(x_0)/rho(0))^(x \/ x_0) <= rho(0) (1/2)^(x \/ x_0) <= rho(0) 2^(-rho(0) x \/ 3) \
+        & = rho(0) e^(-rho(0) log(2) x \/ 3).
+    $ The final inequality is by @lem:lower-bound-for-middle-density-of-log-concave-isotropic-rv.
+]
+#remark[
+    If $rho$ is log-concave and isotropic then so is $-rho$, so we can obtain a left tail bound as well.
+]
+// TODO: exam comments:
+/*
+don't have to prove continuity of $psi_Z^* (lambda)$ or results on Taylor series of $EE[e^(lambda Z)]$, but may have to use these results
+
+similarly for other sections, not expected to prove analytic properties of $psi$ and $psi^*$, but may have to use
+
+otherwise, everything is examinable. (what we've proved is examinable, what we haven't is not)
+
+the part on Markov chains _is_ examinable - but there won't be question on Markov chains, it would relate to Poincaré inequalities
+|||?*/

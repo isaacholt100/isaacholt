@@ -1,5 +1,5 @@
 #import "@preview/fletcher:0.5.2" as fletcher: diagram, node, edge
-#import "@preview/cetz:0.3.3" as cetz: canvas, draw
+#import "@preview/cetz:0.3.4" as cetz: canvas, draw
 #import "../../diagram-style.typ": *
 #import "@preview/cetz-plot:0.1.0": plot
 #import "@preview/cetz-venn:0.1.2"
@@ -199,7 +199,7 @@
     - Let $G$ be bipartite subgraph of $Q_n$ spanned by $X^((r)) union X^((r + 1))$.
     - By considering an expression and upper bound for number of $S$-$Gamma(S)$ edges in $G$ for each $S subset.eq X^((r))$, show that there is a matching from $X^((r))$ to $X^((r + 1))$.
     - Reason that this induces a matching from $X^((r))$ to $X^((r - 1))$ for each $r > n/2$.
-    - Reason that joining these matchings together, together with length $1$ chains of subsets of $X^((floor(n\/2)))$ not included in a matching, result in a partition of $powset(X)$ into $binom(n, floor(n\/2))$ chains, and conclude result from here.
+    - Reason that joining these matchings together, (together with, if $n$ is even, length $1$ chains of subsets of $X^((floor(n\/2)))$ not included in a matching), result in a partition of $powset(X)$ into $binom(n, floor(n\/2))$ chains, and conclude result from here.
 ]
 #proof[
     We use the idea: from "a chain meets each layer in $<=1$ points, because a layer is an antichain", we try to decompose the cube into chains.
@@ -292,7 +292,7 @@
             caption: [Example of joining matchings in the 5 middle layers, for $n$ even.]
         )
     ]
-    If a subset $X^((floor(n\/2)))$ has a chain passing through it, then this chain is unique. The subsets with no chain passing through form their own one-element chain. By taking complements, it is enough to construct the matchings just for $r < n/2$ (since a matching from $X^((r))$ to $X^((r + 1))$ induces a matching from $X^((n - r - 1))$ to $X^((n - r))$: there is a correspondence between $X^((r))$ and $X^((n - r))$ by taking complements, and taking complements reverse inclusion, so edges in the induced matching are guaranteed to exist).
+    If a subset $X^((floor(n\/2)))$ has a chain passing through it, then this chain is unique. The subsets with no chain passing through form their own one-element chain (these only exist if $n$ is even, in which case they are the subsets of $X^((n \/ 2))$). By taking complements, it is enough to construct the matchings just for $r < n/2$ (since a matching from $X^((r))$ to $X^((r + 1))$ induces a matching from $X^((n - r - 1))$ to $X^((n - r))$: there is a correspondence between $X^((r))$ and $X^((n - r))$ by taking complements, and taking complements reverse inclusion, so edges in the induced matching are guaranteed to exist).
     
     Let $G$ be the (bipartite) subgraph of $Q_n$ spanned by $X^((r)) union X^((r + 1))$. For any $S subset.eq X^((r))$, the number of $S$-$Gamma(S)$ edges in $G$ is $|S|(n - r)$ (counting from below) since there are $n - r$ ways to add an element. This number is $<= |Gamma(S)| (r + 1)$ (counting from above), since $r + 1$ ways to remove an element.
     #fig-example[
@@ -381,7 +381,7 @@
 ]
 #proposition("Local LYM")[
     Let $cal(F) subset.eq X^((r))$, $1 <= r <= n$. Then $
-        (|cal(F)|)/binom(n, r) <= (|partial cal(F)|)/binom(n, r - 1).
+        abs(cal(F))/abs(X^((r))) <= abs(partial cal(F))/abs(X^((r - 1))), quad "i.e." quad (|cal(F)|)/binom(n, r) <= (|partial cal(F)|)/binom(n, r - 1).
     $ i.e. the proportion of the level occupied by $partial cal(F)$ is at least the proportion of the level occupied by $cal(F)$.
 ]<prop:local-lym>
 #proofhints[
@@ -400,7 +400,7 @@
 ]
 #theorem("LYM Inequality")[
     Let $cal(F) subset.eq powset(X)$ be an antichain. Then $
-        sum_(r = 0)^n (|cal(F) inter X^((r))|)/binom(n, r) <= 1,
+        sum_(r = 0)^n abs(cal(F) inter X^((r)))/abs(X^((r))) = sum_(r = 0)^n (|cal(F) inter X^((r))|)/binom(n, r) <= 1,
     $ i.e. the proportions of each layer occupied add to $<= 1$.
 ]<thm:lym-inequality>
 #fig-example[
@@ -417,7 +417,7 @@
     )
 ]
 #proofhints[
-    - Method 1: show the result for the sum $sum_(r = k)^n$ by induction, starting with $k = n$. Use local LYM, and that $partial cal(F)_n$ and $cal(F)_(n - 1)$ are disjoint (and analogous results for lower levels).
+    - Method 1: show the result for the sum $sum_(r = n - 1)^n$, by using @prop:local-lym, and the fact that $partial cal(F)_n$ and $cal(F)_(n - 1)$ are disjoint. Continue inductively.
     - Method 2: let $cal(C)$ be uniformly random maximal chain, find an expression for $Pr(cal(C) "meets" cal(F))$.
     - Method 3: determine number of maximal chains in $X$, determine number of maximal chains passing through a fixed $r$-set, deduce maximal number of chains passing through $cal(F)$.
 ]
@@ -461,7 +461,9 @@
     Let $A != B$ be $r$-sets, $A = a_1 ... a_r$, $B = b_1 ... b_r$ (where $a_1 < dots.c < a_n$, $b_1 < dots.c < b_n$). $A < B$ in the *lexicographic (lex)* ordering if for some $j$, we have $a_i = b_i$ for all $i < j$, and $a_j < b_j$. "use small elements".
 ]<def:lex-order>
 #example[
-    The elements of $[4]^((2))$ in lexicographic order are $12, 13, 14, 23, 24, 34$. The elements of $[6]^((3))$ in lexicographic order are $123, 124, 125, 126, 134, 135, 136, 145, 146, 156, 234, 235, 236, 245, 246, 256, 345, 346, 356, 456$.
+    The elements of $[4]^((2))$ in lexicographic order are $12, 13, 14, 23, 24, 34$. The elements of $[6]^((3))$ in lexicographic order are $
+        123, 124, 125, 126, 134, 135, 136, 145, 146, 156, 234, 235, 236, 245, 246, 256, 345, 346, 356, 456.
+    $
 ]
 #definition[
     Let $A != B$ be $r$-sets, $A = a_1 ... a_r$, $B = b_1 ... b_r$ (where $a_1 < dots.c < a_n$, $b_1 < dots.c < b_n$). $A < B$ in the *colexicographic (colex)* order if for some $j$, we have $a_i = b_i$ for all $i > j$, and $a_j < b_j$. "avoid large elements".
@@ -541,8 +543,8 @@
 #proofhints[
     - Let $cal(F)' = C_(i j)(cal(F))$, $B in partial cal(F)' - partial cal(F)$.
     - Show that $i in B$ and $j in.not B$.
-    - Reason that $B union j - i in partial cal(F)'$.
-    - Show that $B union j - i in.not partial cal(F)'$ by contradiction.
+    - Reason that $B union j - i in partial cal(F)$.
+    - Show that $B union j - i in.not partial cal(F)'$ by contradiction (helpful to see @def:compression).
     - Conclude the result.
 ]
 #proof[
@@ -571,7 +573,7 @@
     ]
     Note that $B union x in cal(F)'$ and $B union x in.not cal(F)$ (since $B in.not partial cal(F)$) for some $x$. So $i in B union x$, $j in.not B union x$, $(B union x union j) - i in cal(F)$. We can't have $x = i$, since otherwise $(B union x union j) - i = B union j$, which gives $B in partial cal(F)$, a contradiction. So $i in B$ and $j in.not B$. Also, $B union j - i in partial cal(F)$, since $B union x union j - i in cal(F)$.
     
-    Suppose $B union j - i in partial cal(F)'$: so $(B union j - i) union y in cal(F)'$ for some $y$. We cannot have $y = i$, since otherwise $B union j in cal(F)'$, so $B union j in cal(F)$ (as $j in B union j$), contradicting $B in.not partial cal(F)$. Hence $j in (B union j - i) union y$ and $i in.not (B union j - i) union y$. Thus, both $(B union j - i) union y$ and $B union y = C_(i j) ((B union j - i) union y)$ belong to $cal(F)$ (by definition of $cal(F)'$), contradicting $B in.not partial cal(F)$.
+    Suppose $B union j - i in partial cal(F)'$: so $(B union j - i) union y in cal(F)'$ for some $y$. We cannot have $y = i$, since otherwise $B union j in cal(F)'$, so $B union j in cal(F)$ (as $j in B union j$), contradicting $B in.not partial cal(F)$. Hence $j in (B union j - i) union y$ and $i in.not (B union j - i) union y$. Thus, both $(B union j - i) union y$ and $B union y = C_(i j) ((B union j - i) union y)$ belong to $cal(F)$ (by definition of $cal(F)'$ - both lie in the second set in the union in @def:compression), contradicting $B in.not partial cal(F)$.
 ]
 #remark[
     In the above proof, we actually showed that $partial C_(i j) (cal(F)) subset.eq C_(i j) (partial cal(F))$.
@@ -722,7 +724,7 @@
 == Intersecting families
 
 #definition[
-    A family $cal(F) in powset(X)$ is *intersecting* if for all $A, B in cal(F)$, $A inter B != emptyset$.
+    A family $cal(F) subset.eq powset(X)$ is *intersecting* if for all $A, B in cal(F)$, $A inter B != emptyset$.
 
     We are interested in finding intersecting families of maximum size.
 ]<def:family.intersecting>
@@ -736,7 +738,7 @@
     Given any $A subset.eq X$, at most one of $A$ and $A^c$ can belong to $cal(F)$.
 ]
 #example[
-    - $cal(F) = {A subset.eq X: 1 in A}$ is intersecting, and $abs(cal(F)) = 2^(k - 1)$.
+    - $cal(F) = {A subset.eq X: 1 in A}$ is intersecting, and $abs(cal(F)) = 2^(n - 1)$.
     - $cal(F) = {A subset.eq X: abs(A) > n/2}$ for $n$ odd.
 ]
 #example[
@@ -744,7 +746,7 @@
     - If $r > n/2$, then $cal(F) = X^((r))$ is intersecting.
     - If $r = n/2$, then choose one of $A$ and $A^c$ for all $A in X^((r))$. This gives $abs(cal(F)) = 1/2 binom(n, r)$.
     - If $r < n/2$, then $cal(F) = {A in X^((r)): 1 in A}$ has size $binom(n - 1, r - 1) = r/n binom(n, r)$ (since the probability of a random $r$-set containing $1$ is $r/n$). If $(n, r) = (8, 3)$, then $abs(cal(F)) = binom(7, 2) = 21$.
-    - Let $cal(F) = {A in X^((r)): abs(A inter {1, 2, 3}) >= 2}$. If $(n, r) = (8, 3)$, then $abs(cal(F)) = 1 + binom(3, 2) binom(5, 1) = 16 < 21$ (since $1$ set $A$ has $abs(B inter [3]) = 3$, $15$ sets $A$ have $abs(A inter [3]) = 2$).
+    - Let $cal(F) = {A in X^((r)): abs(A inter {1, 2, 3}) >= 2}$. If $(n, r) = (8, 3)$, then $abs(cal(F)) = 1 + binom(3, 2) binom(5, 1) = 16 < 21$ (since $1$ set $A$ has $abs(A inter [3]) = 3$, $15$ sets $A$ have $abs(A inter [3]) = 2$).
 ]
 #theorem("Erdos-Ko-Rado")[
     Let $cal(F) subset.eq X^((r))$ be an intersecting family, where $r < n/2$. Then $abs(cal(F)) <= binom(n - 1, r - 1)$.
@@ -834,6 +836,7 @@
 #remark[
     - The calculation at the end of proof method 1 had to give the correct answer, as the shadow calculations would all be exact if $cal(F) = {A in X^((r)): 1 in A}$ (in this case, $cal(F)$ and $partial^(n - 2r) overline(cal(F))$ partition $X^((r))$).
     - The calculations at the end of proof method 2 had to work out, given equality for the family $cal(F) = {A in X^((r)): 1 in A}$.
+    // TODO: why do both of these have to work out?
     - In method 2, equivalently, we are double-counting the edges in the bipartite graph, where the vertex classes (partition sets) are $cal(F)$ and all cyclic orderings, with $A$ joined to $c$ if $A$ is an interval under $c$. This method is called *averaging* or *Katona's method*.
     - Equality in Erdos-Ko-Rado holds iff $cal(F) = {A in X^((r)): i in A}$, for some $1 <= i <= n$. This can be obtained from proof 1 and equality in Kruskal-Katona, or from proof 2.
 ]
@@ -1114,7 +1117,7 @@ We want to show the initial segments of the simplicial ordering minimise the bou
     )
 ]
 #proofhints[
-    For $x in.not B$ and $y in B$, show by contradiction that any $i in [n]$ is in exactly one of $x$ and $y$ (it helps to visualise this), and deduce that no elements lie strictly between $x$ and $y$ in the simplicial ordering.
+    For $x in.not B$ and $y in B$, show by contradiction that any $i in [n]$ is in exactly one of $x$ and $y$ (it helps to visualise this), and reason that no elements lie strictly between $x$ and $y$ in the simplicial ordering.
 ]
 #proof[
     As $B$ is not an initial segment, there are $x < y$ in simplicial ordering with $x in.not B$ and $y in B$.
@@ -1161,8 +1164,9 @@ We want to show the initial segments of the simplicial ordering minimise the bou
     Let $A subset.eq V(Q_n)$ and let $C$ be the initial segment of the simplicial order on $powset(X) = V(Q_n)$, with $abs(C) = abs(A)$. Then $abs(N(A)) >= abs(N(C))$. So initial segments of the simplicial order minimise the boundary. In particular, if $abs(A) = sum_(i = 0)^r binom(n, i)$, then $abs(N(A)) >= sum_(i = 0)^(r + 1) binom(n, i)$.
 ]<thm:harper>
 #proofhints[
-    - Using induction, prove the claim that $abs(N(C_i (A))) <= abs(N(A))$:
-        - Find expressions for $N(A)_-$ as union of two sets, similarly for $N(A)_+$, same for $N(B)_-$ and $N(B)_+$.
+    - By induction on $n$.
+    - Prove the claim that $abs(N(C_i (A))) <= abs(N(A))$:
+        - Find expressions for $N(A)_-$ as union of two sets, similarly for $N(A)_+$, same for $N(B)_-$ and $N(B)_+$, where $B = C_i (A)$.
         - Explain why $N(B_-)$ and $B_+$ are nested, use this to show $abs(N(B_-) union B_+) <= abs(N(A_-) union A_+)$.
         - Do the same with the $+$ and $-$ switched.
     - Define a suitable sequence of families $A_0, A_1, ... in Q_n$.
@@ -1325,13 +1329,16 @@ We want to show the initial segments of the simplicial ordering minimise the bou
     $ So $
         abs(N^(epsilon n)(A)^c) & <= sum_(i = ceil(n\/2 + epsilon n))^n binom(n, i) \
         & = sum_(i = ceil(n\/2 + epsilon n))^n binom(n, n - i) \
-        & = sum_(i = 0)^ceil(n\/2 - epsilon n) binom(n, i) \
+        & = sum_(i = 0)^floor(n\/2 - epsilon n) binom(n, i) \
         & <= 1/epsilon e^(-epsilon^2 n\/2) dot 2^n.
     $ by @prop:upper-bound-on-less-than-half-first-binomial-coefficients.
 ]
 #remark[
     The same argument would give a result for "small" sets: if $abs(A) \/ 2^n >= 2/epsilon e^(-epsilon^2 n\/2)$, then $abs(N^(2epsilon n)(A))\/2^n >= 1 - 2/epsilon e^(-epsilon^2 n\/2)$.
 ]
+
+== Concentration of measure
+
 #definition[
     $f: Q_n -> RR$ is *Lipschitz* if for all adjacent $x, y in Q_n$, $abs(f(x) - f(y)) <= 1$.
 ]<def:lipschitz>
@@ -1366,7 +1373,7 @@ We want to show the initial segments of the simplicial ordering minimise the bou
 ]
 #proofhints[
     - Consider two subsets $A, B subset.eq Q_n$ of density at least $1\/2$, and apply @thm:sets-of-at-least-half-density-have-exponentially-dense-neighbourhoods on them.
-    - Use the fact that $f$ is Lipschitz to find upper bound for the image of the $epsilon n$-neighbourhood of one of $A$ and $B$, similarly find a lower bound for the image of the $epsilon n$-neighbourhood of the other.
+    - Use the fact that $f$ is Lipschitz to find upper bounds for the sizes of the $epsilon n$-neighbourhoods of $A$ and $B$.
 ]
 #proof[
     Let $A = {x in Q_n: f(x) <= M}$. Then by definition, $abs(A) \/ 2^n >= 1 \/ 2$, so by the above theorem, $
@@ -1393,7 +1400,7 @@ We want to show the initial segments of the simplicial ordering minimise the bou
     $ It is a *normal Levy family* if for all $epsilon > 0$, $alpha(G_n, epsilon)$ decays exponentially with $n$.
 ]<def:levy-family>
 #example[
-    By the above theorem, the sequence $(Q_n)$ is a normal Levy family (note that $Q_n$ has diameter $n + 1$). More generally, we have concentration of measure for any Levy family.
+    By @thm:sets-of-at-least-half-density-have-exponentially-dense-neighbourhoods, the sequence $(Q_n)$ is a normal Levy family (note that $Q_n$ has diameter $n + 1$). More generally, we have concentration of measure for any Levy family.
 ]
 #example[
     Many naturally-occurring families of graphs are Levy families, e.g. $\(S_n\)_(n in NN)$, where the permutation group $S_n$ is made into a graph by including an edge between $sigma$ and $tau$ if $tau sigma^(-1)$ is a transposition.
@@ -1446,8 +1453,6 @@ We want to show the initial segments of the simplicial ordering minimise the bou
         abs({x in G: d(x, A) > t}) / abs(G) = abs({x in G: x in.not N^(t)(A)}) / abs(G) <= alpha.
     $
 ]
-
-== Concentration of measure
 
 == Edge-isoperimetric inequalities
 
@@ -1559,7 +1564,7 @@ We want to show the initial segments of the simplicial ordering minimise the bou
 #definition[
     For $x, y in Q_n$, $x != y$, say $x < y$ in the *binary ordering* on $Q_n$ if $max (x Delta y) in y$. Equivalently, $
         x < y <==> sum_(i in x) 2^i < sum_(i in y) 2^i.
-    $ "Go up in subcubes". Effectively, we are counting the naturals up to $2^(n - 1)$ (where an $n$-bit binary string corresponds to a subset of $Q_n$ in the obvious way).
+    $ "Go up in subcubes". Effectively, we are counting the naturals up to $2^n - 1$ (where an $n$-bit binary string corresponds to a subset of $Q_n$ in the obvious way).
 ]<def:binary-order>
 #example[
     The elements of $Q_3$ in ascending binary order are $
@@ -1614,6 +1619,9 @@ We want to show the initial segments of the simplicial ordering minimise the bou
 #theorem([Edge-isoperimetric Inequality in $Q_n$])[
     Let $A subset.eq Q_n$ and let $C$ be the initial segment of binary on $Q_n$ with $abs(C) = abs(A)$. Then $abs(partial C) <= abs(partial A)$. In particular, if $abs(A) = 2^k$, then $abs(partial A) >= 2^k (n - k)$.
 ]<thm:edge-isoperimetric-inequality-in-cube>
+#remark[
+    This theorem is sometimes called the Theorem of Harper, Lindsey, Bernstein and Hart.
+]
 #proofhints[
     - By induction on $n$.
     - Prove for each $1 <= i <= n$, $abs(partial B_i (A)) <= abs(partial A)$, by expressing $partial A$ as a disjoint union of three sets (it helps to visualise this), and using that $B_+$ and $B_-$ are nested (why?).
@@ -1645,7 +1653,7 @@ We want to show the initial segments of the simplicial ordering minimise the bou
     We have $i(Q_n) = 1$.
 ]<crl:cube-has-isoperimetric-number-one>
 #proofhints[
-    Straightforward.
+    Show $<=$ and $>=$.
 ]
 #proof[
     Taking $A = powset(n - 1)$ shows that $i(Q_n) <= 1$. To show $i(Q_n) >= 1$, by the above theorem, we just need to show that if $C$ is an initial segment of binary with $abs(C) <= 2^(n - 1)$, then $abs(partial C) >= abs(C)$. But in this case, $C subset.eq powset(n - 1)$, so certainly $abs(partial C) >= abs(C)$.
@@ -1724,14 +1732,17 @@ We want to show the initial segments of the simplicial ordering minimise the bou
                 set-transform(matrix.transform-rotate-dir((1.2, -1, 1.2), (0, -0.5, -.3)))
                 // axes
                 let r = 4
-                line((0, 0, 0), (r, 0, 0), mark: (end: "straight"))
-                line((0, 0, 0), (0, r, 0), mark: (end: "straight"))
-                line((0, 0, 0), (0, 0, r), mark: (end: "straight"))
+                line((0, 0, 0), (r, 0, 0), mark: (end: "straight"), name: "axis-1")
+                line((0, 0, 0), (0, r, 0), mark: (end: "straight"), name: "axis-2")
+                line((0, 0, 0), (0, 0, r), mark: (end: "straight"), name: "axis-3")
+                content("axis-1.end", box(inset: (left: 0.2em))[$1$], anchor: "north-west")
+                content("axis-2.end", box(inset: (left: 0.2em))[$2$], anchor: "south-west")
+                content("axis-3.end", box(inset: (bottom: 0.2em))[$3$], anchor: "south")
                 polygon(((r/2, 0, 0), (0, r/2 + 1, 0), (0, 0, r/2)), fill: diagram-colors.light-red, stroke: diagram-colors.red, name: "simplex")
                 polygon(((r/2, 0, 0), (r/2 - 0.5, (r/2 + 1)/(r/2)*0.5, 0), (r/2 - 0.5, 0, 0.5)), fill: diagram-colors.red, stroke: none)
                 line((0.25, 0, r/2 - 0.25), (0.25, r/2 + 1 - (r/2 + 1)/(r/2)*0.25, 0), stroke: (paint: diagram-colors.red, dash: "dashed"), name: "large")
-                content("large.end", box(inset: (left: 0.5em))[$x_1$ large], anchor: "west")
-                content((r/2, 0, 0), box(inset: 0.2em)[$x_1$ small], anchor: "north-east")
+                content("large.end", box(inset: (left: 0.5em))[$x_1$ small], anchor: "west")
+                content((r/2, 0, 0), box(inset: 0.2em)[$x_1$ large], anchor: "north-east")
                 line((r/4 - 0.2, (r/2 + 1)/(r/2)*r/4 - 0.2, 0), (r/2, r/2, 0), name: "label-line")
                 content("label-line.end", box(inset: (left: 0.5em))[$abs(x) = sum_i x_i = r + 1$], anchor: "north-west")
             })
@@ -1886,9 +1897,9 @@ We want to show the initial segments of the simplicial ordering minimise the bou
                 content("B.centroid", $B$)
                 content((h/2, h), box(inset: (bottom: 0.5em))[$[k]^2$], anchor: "south")
                 rect((0, 0), (h, h))
-                circle((1, 2), ..point-style)
+                circle((1.1, 2.2), ..point-style)
                 circle((3.8, 0.5), ..point-style)
-                line((0, 3), (3, 0), stroke: (paint: diagram-colors.red, dash: "dashed"), name: "level-r")
+                line((0, 3.3), (3.3, 0), stroke: (paint: diagram-colors.red, dash: "dashed"), name: "level-r")
                 line((0.3, 4), (4, 0.3), stroke: (paint: diagram-colors.red, dash: "dashed"), name: "level-s")
                 content("level-r.end", box(inset: (top: 0.5em))[level $r$], anchor: "north")
                 content("level-s.end", box(inset: (left: 0.5em))[level $s$], anchor: "west")
@@ -1945,7 +1956,7 @@ We want to show the initial segments of the simplicial ordering minimise the bou
             caption: [Case when $r < s$]
         )
     ]
-    So there are $y, y'$ with $abs(y) = abs(y') = s$, $y in B$, $y' in.not B$, and $y' = y plus.minus (e_1 - e_2)$ (where $e_1 = (1, 0)$, $e_2 = (0, 1)$ are the standard basis vectors). Similarly, since ${x in [k]^n: abs(x) != s} subset.eq {x in [k]^n: abs(x) != r}$, we cannot have ${x in [k]^n: abs(x) = r} inter B = emptyset$, because then ${x in [k]^n: abs(x) = s} inter B = emptyset$ (since $B$ is a down-set): contradiction. So there are $x, x'$ with $abs(x) = abs(x') = r$, $x in.not B$, $x' in B$, and $x' = x plus.minus (e_1 - e_2)$. Now let $B' = B union {x} \\ {y}$. From $B$ we lost at least one point in the neighbourhood (namely the unique point $z$ which is joined to both $y$ and $y'$) and gained at most one point (the only point we might gain is the unique point $w$ which is joined to both $x$ and $x'$), so $abs(N(B')) <= abs(N(B))$, but this contradicts the minimality of $B$.
+    So there are $y, y'$ with $abs(y) = abs(y') = s$, $y in B$, $y' in.not B$, and $y' = y plus.minus (e_1 - e_2)$ (where $e_1 = (1, 0)$, $e_2 = (0, 1)$ are the standard basis vectors). Similarly, we cannot have ${x in [k]^n: abs(x) = r} inter B = emptyset$, because then ${x in [k]^n: abs(x) = s} inter B = emptyset$ (since $B$ is a down-set): contradiction. So there are $x, x'$ with $abs(x) = abs(x') = r$, $x in.not B$, $x' in B$, and $x' = x plus.minus (e_1 - e_2)$. Now let $B' = B union {x} \\ {y}$. From $B$ we lost at least one point in the neighbourhood (namely the unique point $z$ which is joined to both $y$ and $y'$) and gained at most one point (the only point we might gain is the unique point $w$ which is joined to both $x$ and $x'$), so $abs(N(B')) <= abs(N(B))$, but this contradicts the minimality of $B$.
     - Case $n >= 3$: for any $1 <= i <= n - 1$ and any $x in B$ with $x_n > 1$ and $x_i < k$, we have $x - e_n + e_i in B$, since $x - e_n + e_i < x$ in simplicial and $B$ is $j$-compressed for any $j != i, n$. So, considering the $n$-sections of $B$, we have $N\(B_j\) subset.eq B_(j - 1)$ for all $j = 2, ..., k$. Recall that $N(B)_j = N\(B_j\) union B_(j + 1) union B_(j - 1)$. So in fact, $N(B)_j = B_(j - 1)$ for all $j >= 2$. Thus $
         abs(N(B)) = underbrace(abs(B_(k - 1)), "level" k) + underbrace(abs(B_(k - 2)), "level" k - 1) + dots.c + underbrace(abs(B_1), "level" 2) + underbrace(abs(N(B_1)), "level" 1) = abs(B) - abs(B_k) + abs(N(B_1)).
     $ Similarly, $abs(N(C)) = abs(C) - abs(C_k) + abs(N(C_1))$. So to show $abs(N(C)) <= abs(N(B))$, it is enough to show that $abs(B_k) <= abs(C_k)$ and $abs(B_1) >= abs(C_1)$ (since $B_1$, $C_1$ and their neighbourhoods are initial segments of simplicial). \ $abs(B_k) <= abs(C_k)$: define a set $D subset.eq [k]^n$ by its $n$-sections as follows: let $D_k := B_k$, and for $j = k - 1, k - 2, ..., 1$, set $D_j := N\(D_(j + 1)\)$. Then $D subset.eq B$, so $abs(D) <= abs(B)$. Also, $D$ is an initial segment of simplicial, since $B_k$ is an initial segment of simplicial, and so all $n$-sections of $D$ are as well. So in fact, $D subset.eq C$, whence $abs(B_k) = abs(D_k) <= abs(C_k)$. \ $abs(B_1) >= abs(C_1)$: define a set $E subset.eq [k]^n$ as follows: set $E_1 = B_1$ and for $j = 2, 3, ..., k$, set $E_j = {x in [k]^(n - 1): N({x}) subset.eq E_(j - 1)}$, so $E_j$ is the biggest set whose neighbourhood is contained in $E_(j - 1)$. Then $B subset.eq E$, so $abs(E) >= abs(B)$. Also, $E$ is an initial segment of simplicial. So $C subset.eq E$, whence $abs(B_1) = abs(E_1) >= abs(C_1)$.
