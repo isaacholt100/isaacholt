@@ -362,7 +362,6 @@ We want to study the concentration of $Z = f(X_1, ..., X_n)$ for independent $X_
         Var(Z) <= EE[sum_(i = 1)^n (Z - E^((i)) Z)^2] =: nu.
     $ Moreover, if $X'_1, ..., X'_n$ are IID copies of $X_1, ..., X_n$, and $Z'_i = f(X_(1:(i - 1)), X'_i, X_((i + 1):n))$, then $
         nu = 1/2 EE[sum_(i = 1)^n (Z - Z'_i)^2] = EE[sum_(i = 1)^n (Z - Z'_i)_+^2] = EE[sum_(i = 1)^n (Z - Z'_i)_-^2],
-        // TODO: I don't know why the _+ and _- equalities hold: BECAUSE symmetric random variable
     $ where $X_+ = max{0, X}$ and $X_- = max{-X, 0}$. Moreover, $
         nu = sum_(i = 1)^n inf_(Z_i) EE[(Z - Z_i)^2],
     $ where the infimum is over all $X^((i))$-measurable and square-integrable RVs $Z_i$.
@@ -397,7 +396,7 @@ We want to study the concentration of $Z = f(X_1, ..., X_n)$ for independent $X_
 ]
 #proof[
     Define $
-        Z_i = 1/2 (sup_(x_i in A) f(X_(1:(i - 1)), x_i, X_((i + 1):n)) - inf_(x_i in A) f(X_(1:(i - 1)), x_i, X_((i + 1):n)))
+        Z_i = 1/2 (sup_(x_i in A) f(X_(1:(i - 1)), x_i, X_((i + 1):n)) + inf_(x_i in A) f(X_(1:(i - 1)), x_i, X_((i + 1):n)))
     $ $Z_i$ is a function of $X^((i))$. We have $abs(Z - Z_i) <= c_i \/ 2$. By the final part of the @thm:efron-stein, we have $Var(Z) <= sum_(i = 1)^n EE[(Z - Z_i)^2] <= 1/4 sum_(i = 1)^n c_i^2$.
 ]
 #example("Bin packing")[
@@ -656,6 +655,13 @@ In the following section, let $A$ be a discrete (countable) alphabet and let $X$
         & = EE[log (P(X | Y) P(Y))/(P(X) P(Y))] = D(P_(X, Y) || P_X P_Y) >= 0.
     $
 ]
+#definition[
+    Similarly to the definition of relative entropy, the *conditional relative entropy* of $X$ and $Y$ given $Z$ is $
+        D(X || Y | Z) = sum_z PP(Z = z) D(X | Z = z || Y | Z = z).
+    $ We also write e.g. $
+        D(Q_(Y | X) || P_Y | Q_(X)) = sum_x PP(X = x) D(Q_(Y | X = x) || P_Y).
+    $
+]<def:conditional-relative-entropy>
 #proposition("Chain Rule for Relative Entropy")[
     Let $P, Q$ be PMFs on $A^n$. Let $X_(1:n) sim P$. Then $
         D(Q_(X_(1:n)) || P_(X_(1:n))) & = sum_(i = 1)^n EE_(Q_(X_1:(i - 1))) [D(Q_(X_i | X_(1:(i - 1))) || P_(X_i | X_(1:(i - 1))))] \
@@ -718,6 +724,7 @@ In the following section, let $A$ be a discrete (countable) alphabet and let $X$
     Let $Q, P$ be PMFs on a discrete set $A times B times C$. Then $
         D(Q_(Y | X, Z) || P_Y | Q_(X, Z)) >= D(Q_(Y | X) || P_Y | Q_X)
     $
+    // TODO: I'm struggling to understand this a bit, what the D(. || . | .) means
 ]<lem:conditioning-on-first-argument-increases-relative-entropy>
 #proofhints[
     Use convexity of relative entropy.
@@ -747,7 +754,7 @@ In the following section, let $A$ be a discrete (countable) alphabet and let $X$
 #proof[
     By the @prop:relative-entropy-chain-rule and @lem:conditioning-on-first-argument-increases-relative-entropy, $
         D(Q || P) & = D(Q_(X^((i))) || P_(X^((i)))) + D(Q_(X_i | X^((i))) || P_(X_i | X^((i))) | Q_(X^((i)))) \
-        & = D(Q_(X^((i))) || P_(X^((i)))) + D(Q_(X_i | X^((i))) || P_(X_i) | Q_(X^((i)))) \ // TODO: I don't get why this equality holds
+        & = D(Q_(X^((i))) || P_(X^((i)))) + D(Q_(X_i | X^((i))) || P_(X_i) | Q_(X^((i)))) quad "since" P "is a product distribution" \
         & >= D(Q_(X^((i))) || P_(X^((i)))) + D(Q_(X_i | X_(1:(i - 1))) || P_(X_i) | Q_(X_(1:(i - 1))))
     $ Summing over $i$, we obtain $n D(Q || P) >= sum_(i = 1)^n D(Q_(X^((i))) || P_(X^((i)))) + D(Q || P)$ by the @prop:relative-entropy-chain-rule, hence $
         D(Q || P) & >= 1/(n - 1) sum_(i = 1)^n D(Q_(X^((i))) || P_(X^((i)))) \
@@ -789,11 +796,9 @@ In the following section, let $A$ be a discrete (countable) alphabet and let $X$
     @thm:tensorisation-of-entropy is analogous to the @thm:efron-stein-inequality.
 ]
 #proofhints[
+    - Let $X sim P = P_1 times.circle cdots times.circle P_n$. Let $Q(x) = f(x) P(x)$.
     - Show that $Ent(a Z) = a Ent(Z)$, and so can assume WLOG that $EE[Z] = 1$, so $Q$ is PMF.
-    - Show that $
-        Q_(X_i | X^((i)))(x_i | x^((i))) = (P(x_i) f(x))/(EE[f(X) | X^((i)) = x^((i))]).
-    $
-    - Show that $Q^((i))(x^((i))) = P^((i))(x^((i))) EE[f(X) | X^((i)) = x^((i))]$, and so that $EE[D(Q_(X_i | X^((i))) || P_(X_i) | Q_(X^((i))))] = EE_P [Ent^((i))(f(X))]$.
+    - Use @thm:hans-inequality-for-relative-entropy on $Q$ and $P$.
 ]
 #proof[
     Let $X sim P = P_1 times.circle cdots times.circle P_n$. Let $Q(x) = f(x) P(x)$. Since $
@@ -818,7 +823,9 @@ In the following section, let $A$ be a discrete (countable) alphabet and let $X$
 == Herbst's argument
 
 #theorem("Herbst's Argument")[
-    Suppose $Z$ is a real-valued RV and $EE[e^(lambda Z)] < oo$ for all $lambda > 0$. If there exists $nu > 0$ such that for all $lambda > 0$, $Ent(e^(lambda Z)) <= lambda^2 nu / 2 EE[e^(lambda Z)]$, then $
+    Let $Z$ be a real-valued RV such that $EE[e^(lambda Z)] < oo$ for all $lambda > 0$. Suppose there exists $nu > 0$ such that for all $lambda > 0$, $
+        Ent(e^(lambda Z))/EE[e^(lambda Z)] <= lambda^2 nu / 2.
+    $ Then $
         psi_(ZZ - EE[Z])(lambda) = log EE[e^(lambda(Z - EE[Z]))] <= lambda^2 nu / 2 quad forall lambda > 0.
     $
 ]<thm:herbsts-argument>
@@ -848,7 +855,7 @@ In the following section, let $A$ be a discrete (countable) alphabet and let $X$
     $ where $nu = 1/4 sum_(i = 1)^n c_i^2$.
 ]<thm:bounded-differences-inequality>
 #proofhints[
-    - Use @lem:hoeffding and an equality from the proof of @thm:herbsts-argument to show that $(Ent^((i)) (e^(lambda Z)))/EE[e^(lambda Z) | X^((i))] <= 1/8 lambda^2 c_i^2$ (you should use an integral somewhere).
+    - Use @lem:hoeffding and an equality from the proof of @thm:herbsts-argument to show that $(Ent^((i)) (e^(lambda Z)))/EE[e^(lambda Z) | X^((i))] = lambda psi'_(Z - EE[Z])(lambda) - psi_(Z - EE[Z])(lambda) <= 1/8 lambda^2 c_i^2$ (you should use an integral somewhere), where $psi_i (lambda) = log EE[e^(lambda(Z - EE[Z])) | X^((i))]$.
     - Use @thm:tensorisation-of-entropy and @thm:herbsts-argument to show that $Z - EE[Z]$ has sub-Gaussian right tail with parameter $nu$.
     - Why does the result also hold for $-f$?
 ]
@@ -917,7 +924,7 @@ In the following section, let $A$ be a discrete (countable) alphabet and let $X$
 #definition[
     $f: RR^n -> RR$ is *$L$-Lipschitz* if $
         abs(f(x) - f(y)) <= L dot norm(x - y) quad forall x, y in RR^n.
-    $
+    $ An $L$-Lipschitz function $f$ satisfies $norm(nabla f(x)) <= L$ for all $x in RR^n$.
 ]<def:lipschitz-function>
 #theorem("Gaussian Concentration Inequality")[
     Let $X = (X_1, ..., X_n)$ be a vector of $n$ independent RVs with each $X_i sim N(0, 1)$. Let $f: RR^n -> RR$ be $L$-Lipschitz and $Z = f(X)$. Then $Z - EE[Z] in cal(G)(L^2)$, i.e. for all $lambda in RR$, $
@@ -928,7 +935,7 @@ In the following section, let $A$ be a discrete (countable) alphabet and let $X$
 ]<thm:gaussian-concentration-inequality>
 #proofhints[
     - Explain why we can assume $f$ is continuously differentiable (think sequences).
-    - Use the @thm:gaussian-log-sobolev-inequality on $e^(lambda f \/ 2)$ to obtain an upper bound that is a suitable assumption for @thm:herbsts-argument.
+    - Use that $norm(nabla f(X)) <= L$ and the @thm:gaussian-log-sobolev-inequality on $e^(lambda f \/ 2)$ to obtain an upper bound that is a suitable assumption for @thm:herbsts-argument.
 ]
 #proof[
     WLOG, we can assume $f$ is continuously differentiable (otherwise, we can approximate $f$ with a sequence of contiuously differentiable functions which converge to $f$). Note that $norm(nabla f(X)) <= L$. By the @thm:gaussian-log-sobolev-inequality for $e^(lambda f \/ 2)$, we have $
@@ -942,7 +949,7 @@ In the following section, let $A$ be a discrete (countable) alphabet and let $X$
 ]
 #theorem("Concentration on the Hypercube")[
     Let $f: {-1, 1}^n -> RR$ and let $X = (X_1, ..., X_n)$ be uniform on ${-1, 1}^n$. Let $Z = f(X)$ and assume $
-        max_(x in {-1, 1}^n) sum_(i = 1)^n (f(x) - f(overline(x)^((i))))_+^2 > 0 <= nu
+        max_(x in {-1, 1}^n) sum_(i = 1)^n (f(x) - f(overline(x)^((i))))_+^2 <= nu
     $ for some $nu > 0$. Then for all $t > 0$, $
         PP(Z - EE[Z] >= t) <= e^(-t^2 \/ nu),
     $ i.e. $Z$ has a sub-Gaussian right tail with variance parameter $nu \/ 2$.
@@ -979,7 +986,7 @@ In the following section, let $A$ be a discrete (countable) alphabet and let $X$
     $ and the infimum is achieved at $u = EE[Y]$.
 ]<lem:variational-principle-for-entropy>
 #proofhints[
-    Use the inequality $log x <= x - 1$.
+    Use the inequality $log x <= x - 1$ and show that the difference is non-positive for all $u > 0$.
 ]
 #proof[
     We have $
@@ -1004,7 +1011,7 @@ In the following section, let $A$ be a discrete (countable) alphabet and let $X$
     $
 ]<thm:mlsi>
 #proofhints[
-    Use @thm:tensorisation-of-entropy and the @lem:variational-principle-for-entropy, with $u = Y_i$ (conditional on $X^((i))$).
+    Use @thm:tensorisation-of-entropy and the @lem:variational-principle-for-entropy, with $u = Y_i = e^(lambda Z_i)$ (conditional on $X^((i))$).
 ]
 #proof[
     Let $Y = e^(lambda Z)$ and $Y_i = e^(lambda Z_i)$. By @thm:tensorisation-of-entropy, $
@@ -1026,7 +1033,7 @@ In the following section, let $A$ be a discrete (countable) alphabet and let $X$
     $
 ]<thm:relaxed-bounded-differences>
 #proofhints[
-    Straightforward.
+    By the @thm:mlsi.
 ]
 #proof[
     By the @thm:mlsi, $
@@ -1034,7 +1041,7 @@ In the following section, let $A$ be a discrete (countable) alphabet and let $X$
     $ The result follows by @thm:herbsts-argument and the @prop:chernoff-bound.
 ]
 #remark[
-    If $Z_i = sup_(x'_i) f(X_(1:(i - 1)), x'_i, X_((i + 1):n))$ and $sum_(i = 1)^n (Z - Z_i)^2 <= nu$, then we also obtain a left tail bound. If this condition holds for the supremum and the infimum, then $Z in cal(G)(nu)$.
+    If $Z_i = sup_(x'_i) f(X_(1:(i - 1)), x'_i, X_((i + 1):n))$ and $sum_(i = 1)^n (Z - Z_i)^2 <= nu$, then we also obtain a left tail bound. If this condition holds for the supremum and the infimum, then $Z - EE[Z] in cal(G)(nu)$.
 ]
 
 == Concentration of convex Lipschitz functions
@@ -1075,7 +1082,7 @@ Let $f: [0, 1]^n -> RR$ be separately convex and $1$-Lipschitz. The @thm:convex-
 #definition[
     A *real-valued RV* $Z$ is a map $Omega -> RR$.
     We define $
-        PP(Z in A) = sum_(omega in Omega: X(omega) in A) P(omega)
+        PP(Z in A) = sum_(omega in Omega: Z(omega) in A) P(omega)
     $ for $A subset.eq RR$. We define $EE[Z] = sum_(omega in Omega) P(omega) Z(omega)$. If $Q << P$, write $EE_Q [Z] = sum_(omega in Omega) Q(omega) Z(omega)$.
 ]<def:real-valued-rv>
 #theorem("Variational Representation for log-MGF and Relative Entropy")[
@@ -1088,9 +1095,10 @@ Let $f: [0, 1]^n -> RR$ be separately convex and $1$-Lipschitz. The @thm:convex-
     $ where the supremum is over all RVs $Z$ such that $EE_P [abs(Z)], EE_Q [abs(Z)] < oo$.
 ]<thm:variational-formulae-for-log-mgf-and-relative-entropy>
 #proofhints[
-    Define $
+    - For first statement, define $
         Q^* (omega) = (e^(Z(omega)) P(omega))/(EE_P [e^Z])
-    $ and show that $0 <= D(Q || P) + log EE_P [e^Z] - EE_Q [Z]$. When is equality achieved?
+    $ and show that $D(Q || P) + log EE_P [e^Z] - EE_Q [Z] = D(Q || Q^*)$.
+    - For second statement, show that $D(Q || P) >= EE_Q [Z] - log EE[e^Z]$ for any $Q << P$ and $Z$, with equality if $Z(omega) = log Q(omega)/P(omega)$.
 ]
 #proof[
     // Assume first that $EE[abs(Z) e^Z] < oo$. // TODO: why assume EE[abs(Z) e^Z] < oo and not EE[e^Z] < oo?
@@ -1112,7 +1120,7 @@ Let $f: [0, 1]^n -> RR$ be separately convex and $1$-Lipschitz. The @thm:convex-
     //     Z_n (omega) = min{(log Q(omega)/P(omega))_+, n},
     // $ and take $n -> oo$.
     // 
-    Note it can be shown that the result holds when $D(Q || P) < oo$ and when $EE_P [e^Z] = oo$.
+    Note it can be shown that the result holds when $D(Q || P) = oo$ and when $EE_P [e^Z] = oo$.
 ]
 #corollary[
     For all $lambda in RR$, we have $
@@ -1123,8 +1131,8 @@ Let $f: [0, 1]^n -> RR$ be separately convex and $1$-Lipschitz. The @thm:convex-
     Let $P$ be a PMF and $Z sim P$. If there exists $nu > 0$ such that $
         EE_Q [Z] - EE_P [Z] <= sqrt(2 nu D(Q || P))
     $ for all PMFs $Q$ such that $Q << P$, then $
-        log EE_P [e^(lambda(Z - EE_P [Z]))] <= (lambda^2 nu)/2 quad forall lambda > 0,
-    $ (and so also $PP(Z - EE[Z] >= t) <= e^(-t^2 \/ 2nu)$ by the @prop:chernoff-bound). Conversely, if there exists $nu > 0$ such that $log EE_P [e^(lambda(Z - EE_P [Z]))] <= (lambda^2 nu)/2$ for all $lambda > 0$, then $
+        psi_(Z - EE[Z])(lambda) = log EE_P [e^(lambda(Z - EE_P [Z]))] <= (lambda^2 nu)/2 quad forall lambda > 0,
+    $ (and so also $PP(Z - EE[Z] >= t) <= e^(-t^2 \/ 2nu)$ by the @prop:chernoff-bound). Conversely, if there exists $nu > 0$ such that $psi_(Z - EE[Z])(lambda) =  log EE_P [e^(lambda(Z - EE_P [Z]))] <= (lambda^2 nu)/2$ for all $lambda > 0$, then $
         EE_Q [Z] - EE_P [Z] <= sqrt(2 nu D(Q || P))
     $ for all $Q << P$.
 ]<thm:martons-argument>
@@ -1327,12 +1335,12 @@ Let $f: [0, 1]^n -> RR$ be separately convex and $1$-Lipschitz. The @thm:convex-
 
 #definition[
     *Marton's divergence* is $
-        d_2^2 (Q, P) = EE[(1 - Q(X)/P(X))_+^2] = sum_(omega: P(omega) > 0) (P(omega) - Q(omega))_+^2 / P(omega).
+        d_2^2 (Q, P) = EE_(X sim P) [(1 - Q(X)/P(X))_+^2] = sum_(omega: P(omega) > 0) (P(omega) - Q(omega))_+^2 / P(omega).
     $
 ]<def:martons-divergence>
 #lemma[
     Let $P$ and $Q$ be distributions on the same space $(Omega, cal(A))$. Then $
-        inf_(pi in Pi(P, Q)) sum_(i = 1)^n EE_pi [PP(X_i != Y_i | X)^2] = d_2^2 (Q, P).
+        inf_(pi in Pi(P, Q)) EE_((X, Y) sim pi) [PP(X != Y | X)^2] = d_2^2 (Q, P).
     $
 ]<lem:infimum-expression-for-marton-divergence>
 #proofhints[
@@ -1367,7 +1375,7 @@ Let $f: [0, 1]^n -> RR$ be separately convex and $1$-Lipschitz. The @thm:convex-
 ]
 #theorem("Marton's Conditional Transport Cost Inequality")[
     Let $X = (X_1, ..., X_n)$, $X sim P = P_1 times.circle cdots times.circle P_n$, and let $Q << P$. Then $
-        inf_(pi in Pi(P, Q)) sum_(i = 1)^n EE_pi [P(X_i != Y_i | X)^2] <= 2 D(Q || P).
+        inf_(pi in Pi(P, Q)) sum_(i = 1)^n EE_pi [PP(X_i != Y_i | X)^2] <= 2 D(Q || P).
     $
 ]<thm:martons-conditional-transport-cost-inequality>
 #proof[
@@ -1458,15 +1466,15 @@ Let $f: [0, 1]^n -> RR$ be separately convex and $1$-Lipschitz. The @thm:convex-
         rho(lambda x + (1 - lambda) y) >= rho(x)^lambda rho(y)^(1 - lambda)
     $ for all $x, y in RR^n$ and $lambda in [0, 1]$.
 ]<def:log-concave-rv>
-#example[
-    $
-        1/((2pi)^n det(Sigma)^(1 \/ 2)) e^(-(x Sigma^(-1) x) \/ 2)
-    $ and $alpha e^(-norm(x))$ uniforms on convex, compact sets. Note support is convex.
-]
 #definition[
     A *convex body* is a non-empty, convex, compact set. The *diameter* of a convex body $K$ is $"Diam"(K) = sup_(x, y in K) norm(x - y)_2$.
 ]<def:convex-body>
-#theorem[
+#example[
+    The Gaussian $
+        1/((2pi)^n det(Sigma)^(1 \/ 2)) e^(-(x Sigma^(-1) x) \/ 2),
+    $ the exponential $alpha e^(-norm(x))$ and the uniform distribution on convex bodies are log-concave distributions.
+]
+#theorem("Log-concave Poincare inequality")[
     Let $X$ be log-concave, supported on a convex body $K subset.eq RR^n$. Then $X$ satisfies the Poincaré inequality with Poincaré constant $
         C_P (X) <= "Diam"(K)^2 dot C_n,
     $ for some absolute $C_n$ depending only on $n$; that is, $
@@ -1478,7 +1486,7 @@ Let $f: [0, 1]^n -> RR$ be separately convex and $1$-Lipschitz. The @thm:convex-
         Var(f(X)) = 1/2 Var(f(X) - f(Y)) = 1/2 EE[(f(X) - f(Y))^2],
     $ where $Y$ is an independent copy of $X$. Hence, $
         Var(f(X)) & = 1/2 integral_(RR^n) integral_(RR^n) abs(f(y) - f(x))^2 rho(x) rho(y) dif x dif y \
-        & = 1/2 integral_(RR^n) integral_(RR^n) abs(integral_([0, 1]) nabla f(t y + (1 - t) x) dif t (y - x))^2 rho(x) rho(y) dif x dif y \
+        & = 1/2 integral_(RR^n) integral_(RR^n) abs(integral_([0, 1]) nabla f(t y + (1 - t) x) dot (y - x) dif t)^2 rho(x) rho(y) dif x dif y \
         & <= "Diam"(K)^2 / 2 integral_(RR^n) integral_(RR^n) integral_([0, 1]) norm(nabla f(t y + (1 - t) x))^2 dif t rho(x) rho(y) dif x dif y quad "by Cauchy-Schwarz" \
         & = "Diam"(K)^2 / 2 integral_([0, 1]) integral_(RR^n) integral_(RR^n) norm(nabla f(t y + (1 - t) x))^2 rho(x) rho(y) dif x dif y dif t
     $ First consider the case when $t approx 1/2$. We use the bound $min{rho(x), rho(y)} <= rho(t y + (1 - t) x)$ (due to concavity), which implies $
@@ -1546,7 +1554,7 @@ Let $f: [0, 1]^n -> RR$ be separately convex and $1$-Lipschitz. The @thm:convex-
     $
 ]<lem:lower-bound-for-middle-density-of-log-concave-isotropic-rv>
 #proofhints[
-    Write $0 = integral_(-oo)^oo rho(x) x dif x$ and use log-concavity.
+    Write $rho(0) = e^(log(rho(integral_(-oo)^oo rho(x) x dif x))$ and use log-concavity.
 ]
 #proof[
     We have $
@@ -1555,7 +1563,7 @@ Let $f: [0, 1]^n -> RR$ be separately convex and $1$-Lipschitz. The @thm:convex-
     $ where the first inequality is by log-concavity (we use that $integral_(-oo)^oo rho(x) dif x = 1$), and the second is by @lem:normal-rvs-maximised-differential-entropy.
 ]
 #remark[
-    It can be shown that $max_x rho(x) <= c$ for some absolute constant $c$. So the above lemma says that $rho(0)$ and $max_x rho(x)$ are comparable.
+    It can be shown that for log-concave $rho$, $max_x rho(x) <= c$ for some absolute constant $c$. So the above lemma says that $rho(0)$ and $max_x rho(x)$ are comparable.
 ]
 #proposition[
     Let $X$ be log-concave, isotropic, with density function $rho$ on $RR$. Then for all $x >= 3 \/ rho(0)$, $

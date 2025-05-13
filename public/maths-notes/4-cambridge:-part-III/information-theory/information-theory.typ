@@ -1,7 +1,7 @@
 #import "@preview/fletcher:0.5.2" as fletcher: diagram, node, edge
 #import "../../template.typ": *
 #import "../../diagram-style.typ": *
-#import "@preview/cetz:0.3.3" as cetz: canvas
+#import "@preview/cetz:0.3.4" as cetz: canvas
 
 // Everything in the official lecture notes is examinable, except the proofs of Theorems 7.6, 8.1, 12.3, 12.4 and 12.6.
 
@@ -22,10 +22,6 @@
 #let Bern = math.op("Bern")
 #let Pois = math.op("Pois")
 #let Bin = math.op("Bin")
-
-= Probability basics
-
-TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov's inequality, ... probably others.
 
 = Entropy
 
@@ -625,7 +621,7 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
 ]
 #theorem[
     Let $X_1, ..., X_n$ be (not necessarily independent) RVs with each $X_i sim Bern(p_i)$. Let $S_n = sum_(i = 1)^n X_i$ and $lambda = sum_(i = 1)^n p_i = EE[S_n]$. Then $
-        D_e (P_(S_n) || Pois(lambda)) <= sum_(i = 1)^n p_i^2 + (sum_(i = 1)^n H_e (X_i) - H_e (X_1^n)).
+        D_e (P_(S_n) || Pois(lambda)) <= sum_(i = 1)^n p_i^2 + sum_(i = 1)^n H_e (X_i) - H_e (X_1^n).
     $
 ]<thm:relative-entropy-between-sum-of-bernoullis-and-poisson-is-bounded>
 #proofhints[
@@ -655,8 +651,11 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
 #corollary[
     @thm:binomial-converges-to-poisson follows directly from @thm:relative-entropy-between-sum-of-bernoullis-and-poisson-is-bounded.
 ]
+#proofhints[
+    Use @thm:pinskers-inequality.
+]
 #proof[
-    Let $P_lambda$ be the PMF of the $Pois(lambda)$ distribution. Then by Pinsker's inequality, $
+    Let $P_lambda$ be the PMF of the $Pois(lambda)$ distribution. Then by @thm:pinskers-inequality, $
         norm(P_(S_n) - P_lambda)_"TV"^2 <= 2 D_e (P_(S_n) || Pois(lambda)) <= 2 sum_(i = 1)^n lambda^2 / n^2 = 2 lambda^2 / n.
     $ So for each $k in NN$, $abs(P_(S_n)(k) - P_lambda (k)) <= norm(P_(S_n) - P_lambda)_"TV" <= sqrt(2/n) lambda -> 0$ as $n -> oo$.
 ]
@@ -681,7 +680,7 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
     We have $
         & H_e (Pois(lambda)) \
         = & sup{H_e (S_n): S_n = sum_(i = 1)^n X_i, X_i sim Bern(p_i) "independent" and sum_(i = 1)^n p_i = lambda, n >= 1} \
-        = & sup_(n in NN) sup{H_e(P): P in B_n (lambda)}.
+        = & sup_(n in NN) sup{H_e (P): P in B_n (lambda)}.
     $
 ]<thm:poisson-maximum-entropy>
 #proof[
@@ -870,7 +869,7 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
     $ If $f(b, y) = f(b', y')$, then $a_(y') - b' = a_y - b$ and $b' - c_(y') = b - c_y$. So $a_y - a_(y') = b - b' = c_y - c_(y')$. So $y = a_y - c_y = a_(y') - c_(y') = y'$. Hence $a_y = a_(y')$, and so $b = b'$. So $f$ is injective, so $abs(B times (A - C)) <= abs((A - B) times (B - C))$.
 ]
 #remark[
-    If $X_1^n$ is a large collection of IID RVs with common PMF $P$ on alphabet $A$, then the AEP tells us that we can concentrate on the $2^(n H)$ typical strings. $2^(n H) = \(2^H\)^n$ is typically much smaller than all $abs(A)^n = (2^(log abs(A)))^n$ strings. We can think of $\(2^H\)^n$ as the effective support size of $P^n$, and can of $2^H$ as the effective support size of a single RV with entropy $H$.
+    If $X_1^n$ is a large collection of IID RVs with common PMF $P$ on alphabet $A$, then the @cor:aep tells us that we can concentrate on the $2^(n H)$ typical strings. $2^(n H) = \(2^H\)^n$ is typically much smaller than all $abs(A)^n = (2^(log abs(A)))^n$ strings. We can think of $\(2^H\)^n$ as the effective support size of $P^n$, and can of $2^H$ as the effective support size of a single RV with entropy $H$.
 ]
 #remark[
     We can use the above interpretation to obtain useful conjectures about bounds for the entropy of discrete RVs, from corresponding results on bounds on sumsets. We start with a sumset bound, then replace subsets of $ZZ$ by independent RVs on $ZZ$, and replace $log abs(A)$ of each set $A$ by the entropy of the corresponding RV.
@@ -899,7 +898,7 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
     $
 ]
 #proofhints[
-    - Show that $I(X; X - Z) <= I(X; (X - Y, Y - Z))$.
+    - Show that $I(X; X - Z) <= I(X; (X - Y, Y - Z))$ using the @prop:mutual-information-chain-rule for mutual information.
     - Rewrite both sides of the above inequality in terms of entropies, using @prop:entropy-data-processing.
 ]
 #proof[
@@ -956,7 +955,7 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
     Let $X, Y, Z$ be independent RVs on alphabet $ZZ$. Then $
         H(X + Y + Z) + H(Y) <= H(X + Y) + H(Y + Z).
     $
-]
+]<lem:triple-sum-reduces-entropy>
 #proofhints[
     - Show that $I(X; X + Y + Z) <= I(X + Y; X)$.
     - Rewrite both sides in terms of entropies.
@@ -980,10 +979,10 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
     Let $X_1$ and $X_2$ be IID RVs on $ZZ$. Then $
         1/2 <= Delta^+ / Delta^- <= 2.
     $
-]
+]<thm:doubling-difference-inequality>
 #proofhints[
     - For lower bound, use @thm:entropy-ruzsa-triangle-inequality for appropriate RVs.
-    - For upper bound, 
+    - For upper bound, use @lem:triple-sum-reduces-entropy and @prop:sum-entropy-bounds.
 ]
 #proof[
     For the lower bound, let $X, -Y, Z$ be IID with the same distribution as $X_1$. Then by the @thm:entropy-ruzsa-triangle-inequality, $
@@ -1029,13 +1028,20 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
 #remark[
     If $vd(X) = {X_n: n in NN}$ is one-sided stationary process, then by Kolmogorov's extension theorem, $vd(X)$ admits a unique two-sided extension to $vd(X) = {X_n: n in ZZ}$.
 ]
+#lemma("Cesàro")[
+    Let $(a_n)$ be a sequence. The *$n$-th Cesaro mean* is defined as $
+        sigma_n = 1/n sum_(k = 1)^n a_k.
+    $ If $(a_n)$ has limit $L$, then $
+        lim_(n -> oo) sigma_n = lim_(n -> oo) a_n = L.
+    $
+]<lem:cesaro>
 #theorem[
     If $vd(X) = {X_n: n in NN}$ is a stationary process on finite alphabet $A$, then its entropy rate exists and is equal to $
         H(vd(X)) = lim_(n -> oo) H(X_n | X_1^(n - 1)).
     $
 ]<thm:entropy-rate-of-stationary-source>
 #proofhints[
-    Show that the sequence $\{H(X_n) | X_1^(n - 1): n in NN\}$ is non-increasing and use the Cèsaro Lemma.
+    Show that the sequence $\{H(X_n) | X_1^(n - 1): n in NN\}$ is non-increasing and use the Cesàro Lemma.
 ]
 #proof[
     The sequence $\{H(X_n) | X_1^(n - 1): n in NN\}$ is non-negative by non-negativity of conditional entropy, and is non-increasing, since $
@@ -1049,7 +1055,7 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
 ]
 #theorem[
     For a stationary process $vd(X) = {X_n: n in ZZ}$ on a finite alphabet $A$, $
-        H(vd(X)) = H(X_0 | X_(-n)^(-1)) =H(X_0 | X_(-oo)^(-1)).
+        H(vd(X)) = lim_(n -> oo) H(X_0 | X_(-n)^(-1)) =H(X_0 | X_(-oo)^(-1)).
     $
 ]<thm:entropy-rate-is-conditional-entropy-given-infinite-past>
 #proofhints[
@@ -1290,7 +1296,7 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
         EE[e^(lambda n S_n)] = EE[e^(lambda sum_(i = 1)^n f(X_i))] = EE[product_(i = 1)^n e^(lambda f(X_i))] = product_(i = 1)^n EE[e^(lambda f(X_i))] = e^(n Lambda(lambda)).
     $ Hence, $
         PP(S_n >= mu + epsilon) <= e^(-n lambda(mu + epsilon)) e^(n Lambda(lambda)) = e^(-n (lambda(mu + epsilon) - Lambda(lambda))),
-    $ and this holds for all $lambda > 0$, so taking the supremum over $lambda$ gives the result.
+    $ and this holds for all $lambda > 0$, so taking the infimum over $lambda$ gives the result.
 ]
 #example[
     Let $X_1^n$ be IID with common PMF $Q$ on finite alphabet $A$, let $f: A -> RR$ with mean $mu = EE_(X sim Q) [f(X)]$. Denote the empirical averages by $S_n := 1/n sum_(i = 1)^n f(X_i)$. Let $epsilon > 0$. By WLLN, $PP(S_n >= mu + epsilon) -> 0$ as $n -> oo$. We want to estimate how small this probability is as a function of $n$. Typically, the way we bound $PP(S_n >= mu + epsilon)$ is by the @prop:chernoff-bound. Alternatively, we have $
@@ -1300,7 +1306,7 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
 #proposition[
     Let $X_1^n$ be IID RVs with common PMF $Q$ on alphabet $A$ and $f: A -> RR$ have mean $mu = EE[f(X_1)]$. Let $P^*$ be the minimiser in @thm:sanov for the event $E = {P in cal(P): EE_(X sim P) [f(X)] >= mu + epsilon}$. Then $
         forall epsilon > 0, quad Lambda^* (mu + epsilon) = D_e (P^* || Q),
-    $ where $Lambda$ is the log-moment generating function of the $X_i$.
+    $ where $Lambda$ is the log-moment generating function of the $f(X_i)$.
 ]
 #proofhints[
     - $<=$: show that $S_n = EE_(X sim hat(P)_n) [f(X)]$, then use the @prop:chernoff-bound and @thm:sanov.
@@ -1308,7 +1314,7 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
         P_lambda (a) = (e^(lambda f(a)))/(EE[e^(lambda f(X_1))]) Q(a).
     $
     - Show that $Lambda'(lambda) = EE_(Y sim P_lambda) [f(Y)]$ and $Lambda''(lambda) >= 0$.
-    - Deduce that there exists $lambda^* > 0$ such that $Lambda'(lambda^*) = mu + epsilon$, then use the definition of $P^*$ to conclude the result.
+    - Deduce that there exists $lambda^* > 0$ such that $Lambda'(lambda^*) = mu + epsilon$, then use the definition of $P^*$ and expressing a relative entropy as an appropriate expectation to conclude the result.
 ]
 #proof[
     ($<=$): Let $epsilon > 0$. We have $
@@ -1350,7 +1356,7 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
 ]<thm:pythagorean-identity>
 #proofhints[
     - For $P in E$, define $overline(P)_lambda = lambda P + (1 - lambda) P^*$ for $lambda in [0, 1]$. Show that $D\(overline(P)_lambda || Q\) >= D\(overline(P)_0 || Q\)$ for all $lambda in [0, 1]$.
-    - Use the derivative of $D_e \(overline(P)_lambda || Q\)$ at $lambda = 0$ to obtain the result.
+    - Show the derivative of $D_e \(overline(P)_lambda || Q\)$ at $lambda = 0$ is $D_e (P || Q) - D_e (P || P^*) - D_e (P^* || Q)$.
 ]
 #proof[
     Let $P in E$. Define the mixture $overline(P)_lambda = lambda P + (1 - lambda) P^*$ for $0 <= lambda <= 1$. Since $E$ is convex, $overline(P)_lambda in E$ for all $lambda in [0, 1]$, and by definition of $P^*$, $D\(overline(P)_lambda || Q\) >= D(P^* || Q) = D\(overline(P)_0 || Q\)$ for all $lambda in [0, 1]$. So we have $
@@ -1387,11 +1393,11 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
     Let $X_1^n$ be IID with common PMF $Q$ which has full support on $A$. Let $hat(P)_n$ be the empirical distribution of $X_1^n$. If $E subset.eq cal(P)$ is closed, convex, has non-empty interior, and $Q in.not E$, then $
         forall a in A, quad EE\[hat(P)_n (a) | hat(P)_n in E\] = PP\(X_1 = a | hat(P)_n in E\) -> P^* (a) quad "as" quad n -> oo.
     $
-]
+]<thm:gibbs-conditioning-principle>
 #proofhints[
     - Showing the equality is straightforward.
     - Define $B(Q, delta) := {P in cal(P): D(P || Q) <= D(P^* || Q) + delta}$, $C = B(Q, 2 delta) inter E$ and $D = E \\ C$.
-    - Show that $PP\(hat(P)_n in D | hat(P)_n in E\) <= (n + 1)^(2m) 2^(-n delta)$.
+    - Show that $PP\(hat(P)_n in D | hat(P)_n in E\) <= (n + 1)^(2m) 2^(-n delta)$ by using the density of ${cal(P)_n: n in NN}$ in $cal(P)$ to reason that some $P_n in B(Q, delta) inter E inter cal(P)_n$ eventually exists.
     - Use the @thm:pythagorean-identity and @thm:pinskers-inequality to show that $PP\(abs(hat(P)_n (a) - P^* (a)) > epsilon | hat(P)_n in E\) -> 0$.
 ]
 #proof[
@@ -1414,7 +1420,7 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
         PP\(hat(P)_n in D | hat(P)_n in E\) = (PP\(hat(P)_n in D\))/(PP\(hat(P)_n in E\)).
     $ By @thm:sanov, $
         PP\(hat(P)_n in D\) <= (n + 1)^m 2^(-n inf{D(P || Q): P in D}) <= (n + 1)^m 2^(-n(D(P^* || Q) + 2 delta))
-    $ and for the denominator, since ${cal(P)_n: n in NN}$ is dense in $cal(P)$, $cal(P)_n$ eventually intersects every open set in $cal(P)$, so eventually $B(Q, delta) inter E inter cal(P)_n$ is non-empty (since $E$ has non-empty interior). So we can eventually find $P_n in cal(P)_n inter E inter B(Q, delta)$. By @prop:bounds-on-size-of-type-class, $
+    $ and for the denominator, since ${cal(P)_n: n in NN}$ is dense in $cal(P)$, $cal(P)_n$ eventually intersects every open set in $cal(P)$, so eventually $B(Q, delta) inter E inter cal(P)_n$ is non-empty (since $E$ has non-empty interior). So we can eventually find $P_n in cal(P)_n inter E inter B(Q, delta)$. By @crl:bounds-on-probability-of-type-class, $
         PP\(hat(P)_n in E\) & >= PP\(hat(P)_n in B(Q, delta) inter E\) \
         & >= PP\(hat(P)_n = P_n\) = Q^n (T(P_n)) \
         & >= (n + 1)^(-m) 2^(-n D(P_n || Q)) \
@@ -1436,7 +1442,7 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
         P^* (a) = e^(lambda^* a) / (sum_(k = 1)^6 e^(lambda^* k)), quad forall a in A,
     $ where $lambda^* > 0$ is such that $EE_(Y sim P_(lambda^*))[Y] = 5$. We can directly compute $lambda^* approx 0.63$ and so $
         P^* approx (0.021, 0.039, 0.14, 0.25, 0.48)
-    $ So we expect that about $48%$ of the rolls were $6$.
+    $ So by the @thm:gibbs-conditioning-principle, we expect that about $48%$ of the rolls were $6$.
 ]
 
 == Error probability in fixed-rate data compression
@@ -1552,13 +1558,13 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
     An advantage of prefix-free codes is that once a full codeword is received, it is guaranteed to be that codeword and not the start of another.
 ]
 #theorem("Kraft's Inequality")[
-    - $(==>)$: for any length function $L_n: A^n -> NN$ satisfying *Kraft's inequality*: $
+    - $(==>)$: for any function $L_n: A^n -> NN$ satisfying *Kraft's inequality*: $
         sum_(x_1^n in A^n) 2^(-L_n (x_1^n)) <= 1,
     $ there is a prefix-free code $C_n$ on $A^n$ with length function $L_n$.
     - $(<==)$: the length function of any prefix-free code satisfies Kraft's inequality.
 ]<thm:krafts-inequality>
 #proofhints[
-    For both directions, consider the complete binary tree of depth $max{L_n (x_1^n): x_1^n in A^n}$.
+    For both directions, consider the complete binary tree of depth $max{L_n (x_1^n): x_1^n in A^n}$. For $<==$, consider the number of descendants of each codeword in terms of its depth.
 ]
 #proof[
     $<==$: let $C_n$ be a prefix-free code with length function $L_n$. Let $L^* = max{L_n (x_1^n): x_1^n in A^n}$ and consider the complete binary tree of depth $L^*$/*TODO: insert diagram*/. If we mark all the codewords on the tree, then the prefix-free property implies that no codeword is a descendant of any other codeword. Each codeword $C_n (x_1^n)$ has $2^(L^* - L_n (x_1^n))$ descendants (possibly including itself) at depth $L^*$. The prefix-free property also implies that these descendants are disjoint for different codewords. Since the total number of leaves at depth $L^*$ is $2^(L^*)$, we have $
@@ -1673,12 +1679,12 @@ TODO: weak and strong laws of large numbers, Markov chains, Cesaro lemma, Markov
 In this chapter, assume that we want to compress a message $x_1^n in {0, 1}^n$ where each $x_i$ is produced by an unknown distribution $P = P_(theta^*)$ which belongs to the parametric family ${P_theta sim Bern(theta): theta in (0, 1)}$. We also assume codelengths can be non-integral for simplicity, since the actual codelength differs by at most one bit.
 
 Note that in this case, $theta_"MLE" = k \/ n$ where $k$ is the number of $1$s in $x_1^n$. So the maximum likelihood distribution for $x_1^n$ amsong all $P_theta$ is its type $hat(P)_n$, and by @prop:prob-under-prod-dist-of-string-of-type, for all $theta in Theta$, $
-    -log P_(theta_"MLE")(x_1^n) = n H(hat(P)_n) <= -log P_theta^n (x_1^n).
+    -log P_(theta_"MLE")^n (x_1^n) = n H(hat(P)_n) <= -log P_theta^n (x_1^n).
 $
 
 
 #definition[
-    The *MLE code* first describes $hat(theta)_"MLE"$ to the decoder, then describes $x_1^n$ using the Shannon code for $P_(hat(theta)_"MLE")$.
+    The *MLE code* first describes $hat(theta)_"MLE"$ to the decoder, then describes $x_1^n$ using the Shannon code for $P_(hat(theta)_"MLE")^n$.
 ]<def:mle-code>
 #proposition[
     The description length of the MLE code is $
@@ -1721,7 +1727,7 @@ $
     Trivial.
 ]
 #definition[
-    Given a parametric family of distributions ${P_theta: theta in Theta}$, the *uniform mixture* of ${P_theta^n: theta in Theta}$ is the PMF $Q_n$ on $A^n$ defined by $
+    Given a parametric family of distributions ${P_theta: theta in [0, 1]}$, the *uniform mixture* of ${P_theta^n: theta in [0, 1]}$ is the PMF $Q_n$ on $A^n$ defined by $
         Q_n (x_1^n) = integral_0^1 P_theta^n (x_1^n) dif theta.
     $
 ]<def:uniform-mixture>
@@ -1804,7 +1810,7 @@ $
     Partitioning the interval $[0, 1]$ into $sqrt(n)$ intervals of length $1 \/ sqrt(n)$, let $theta_"MDL"$ denote the index of the interval that $theta_"MLE"$ belongs to.
 ]<ntn:mdl-estimator>
 #definition[
-    The *MDL code* first describes $theta_"MDL"$ to the decoder, then describes $x_1^n$ using the Shannon code for $P_(theta_"MDL")$.
+    The *MDL (minimum description length) code* first describes $theta_"MDL"$ to the decoder, then describes $x_1^n$ using the Shannon code for $P_(theta_"MDL")$.
 ]<def:mdl-code>
 #remark[
     Note that we can write the MLE as $
@@ -1819,14 +1825,14 @@ $
     $ In particular, the price of universality of the MDL code is $1/2 log n$ bits.
 ]<prop:mdl-code-description-length>
 #proofhints[
-    Use that $D(P_(theta_"MLE") || P_(theta_"MDL")) = O((theta_"MLE" - theta_"MLE")^2)$ (since $D(P || Q)$ is locally quadratic in $(P - Q)$).
+    Use that $D(P_(theta_"MLE") || P_(theta_"MDL")) = O((theta_"MLE" - theta_"MDL")^2)$ (since $D(P || Q)$ is locally quadratic in $(P - Q)$).
 ]
 #proof[
     By @prop:prob-under-prod-dist-of-string-of-type, we have $
         -log P_(theta_"MDL")^n (x_1^n) = n D(P_(theta_"MLE") || P_(theta_"MDL")) + n H(hat(P)_n).
     $ Since $D(P || Q)$ is locally quadratic in $(P - Q)$, the Taylor expansion gives $
         D(P_(theta_"MLE") || P_(theta_"MDL")) = O((theta_"MLE" - theta_"MLE")^2).
-    $ Now by definition, $abs(theta_"MLE" - theta_"MDL") = O(1 \/ sqrt(n))$. Thus, $
+    $ Now by construction, $abs(theta_"MLE" - theta_"MDL") = O(1 \/ sqrt(n))$. Thus, $
         n D(P_(theta_"MLE") || P_(theta_"MDL")) = O(1),
     $ which concludes the result.
 ]
@@ -1840,7 +1846,7 @@ $
     Suppose $x_1^n in A^n$ is generated by a memoryless source with PMF $P$ on a finite alphabet $A$, with $abs(A) = m$. The *redundancy* on $x_1^n$ of a code with length function $L_n$ is the difference between $L_n (x_1^n)$ and the target compression of $-log P^n (x_1^n)$ bits (the ideal Shannon codelength with respect to $P^n$), so is given by $
         L_n (x_1^n) - (-log P^n (x_1^n)).
     $ If we use the Shannon code with respect to an arbitrary PMF $Q_n$ on $A^n$, the redundancy is $
-        rho_n (x_1^n; P, Q_n) = -log Q_n (x_1^n) - (-log P^n (x_1^n)) = log (P^n (x_1^n))/(Q^n (x_1^n)).
+        rho_n (x_1^n; P, Q_n) = -log Q_n (x_1^n) - (-log P^n (x_1^n)) = log (P^n (x_1^n))/(Q_n (x_1^n)).
     $
 ]<def:redundancy>
 #remark[
@@ -1887,15 +1893,15 @@ $
         & = max_(x in B) log (sup_(theta in Theta) P_theta (x))/(Q^* (x)) = max_(x in B) log Z = log Z.
     $ For the lower bound, note that for every $Q$, $Q(x) <= Q^* (x)$ for at least one $x$, say $x^*$. Therefore, $
         sup_(theta in Theta) max_(x in B) log (P_theta (x))/Q(x) >= sup_(theta in Theta) log (P_theta (x^*))/(Q(x^*)) >= sup_(theta in Theta) log (P_theta (x^*))/(Q^* (x^*)) = log (sup_(theta in Theta) P_theta (x^*))/(Q^* (x^*)) = log Z.
-    $ Taking the minimum over all $Q$ gives that $rho^* (Theta) >= log Z$ which concludes the result.
+    $ Taking the infimum over all $Q$ gives that $rho^* (Theta) >= log Z$ which concludes the result.
 ]
 #definition[
     The *Gamma function* is defined as $
         Gamma(z) := integral_0^oo x^(z - 1) e^(-x) dif x.
-    $ Note that for all $n in NN$, $Gamma(n + 1) = n!$.
+    $ Note that for all $n in NN_0$, $Gamma(n + 1) = n!$.
 ]<def:gamma-function>
 #theorem("Shtarkov")[
-    The minimax maximal redundancy over the class of all memoryless sources on $A$ satisfies, for all $n in NN$, $
+    The minimax maximal redundancy over the class of all memoryless sources on $A$ with $abs(A) = m$ satisfies, for all $n in NN$, $
         rho_n^* <= (m - 1)/2 log (n / 2) + log Gamma(1 \/ 2)/Gamma(m \/ 2) + C' / sqrt(n)
     $ for a constant $C$ depending only on $m$.
 ]<thm:shtarkov>
@@ -1923,8 +1929,8 @@ $
     $ where the supremum is over all jointly distribution RVs $(X, Y)$, where $X$ has an arbitrary distribution and the distribution of $Y$ given $X$ is $PP(Y = y | X = x) = W(y | x)$.
 ]<def:channel-capacity>
 #theorem("Redundancy-capacity Theorem")[
-    Let $cal(P) = {P_theta: theta in Theta}$ be a "nice" parametric family of distributions on a finite alphabet $B$. Denote the minimax average redundancy over ${P_theta: theta in Theta}$ by $
-        overline(rho)(Theta) := min_Q max_(theta in Theta) D(P_theta || Q).
+    Let ${P_theta: theta in Theta}$ be a "nice" parametric family of distributions on a finite alphabet $B$. Denote the minimax average redundancy over ${P_theta: theta in Theta}$ by $
+        overline(rho)(Theta) := inf_Q sup_(theta in Theta) D(P_theta || Q).
     $ Then $overline(rho)(Theta)$ is equal to the capacity of the channel with input $theta$ and output $X sim P_theta$: $
         overline(rho)(Theta) = max_pi I(T; X),
     $ where the maximum is over all probability distributions $pi$ on $Theta$, $T sim pi$ and $X | T = theta sim P_theta$ (so the pair of RVs $(T, X)$ has joint distribution $pi(theta) P_theta (x)$).
@@ -1941,7 +1947,7 @@ $
     $
 ]
 #theorem("Rissanen")[
-    Let ${Q_n: n in NN}$ be an arbitrary sequence of distributions on $A^n$, where $abs(A) = m$. Then for all $epsilon > 0$, there exists a constant $C$ and a subset $Theta_0 subset.eq Theta$ of volume less than $epsilon$ such that for all $theta in.not Theta_0$, $
+    Let $Theta$ parametrise the set of PMFs on $A$, where $abs(A) = m$. Let ${Q_n: n in NN}$ be an arbitrary sequence of distributions on $A^n$. Then for all $epsilon > 0$, there exists a constant $C$ and a subset $Theta_0 subset.eq Theta$ of volume less than $epsilon$ such that for all $theta in.not Theta_0$, $
         D(P_theta^n || Q_n) >= (m - 1)/2 log n - C quad "eventually".
     $ In particular, $overline(rho)_n >= (m - 1)/2 log n - C'$ eventually for some constant $C'$.
 ]

@@ -836,7 +836,7 @@
 #remark[
     - The calculation at the end of proof method 1 had to give the correct answer, as the shadow calculations would all be exact if $cal(F) = {A in X^((r)): 1 in A}$ (in this case, $cal(F)$ and $partial^(n - 2r) overline(cal(F))$ partition $X^((r))$).
     - The calculations at the end of proof method 2 had to work out, given equality for the family $cal(F) = {A in X^((r)): 1 in A}$.
-    // TODO: why do both of these have to work out?
+    // TODO: I don't get the reasoning of why both of these have to work out?
     - In method 2, equivalently, we are double-counting the edges in the bipartite graph, where the vertex classes (partition sets) are $cal(F)$ and all cyclic orderings, with $A$ joined to $c$ if $A$ is an interval under $c$. This method is called *averaging* or *Katona's method*.
     - Equality in Erdos-Ko-Rado holds iff $cal(F) = {A in X^((r)): i in A}$, for some $1 <= i <= n$. This can be obtained from proof 1 and equality in Kruskal-Katona, or from proof 2.
 ]
@@ -1854,7 +1854,6 @@ We want to show the initial segments of the simplicial ordering minimise the bou
     - Case $n >= 3$:
         - For $1 <= i <= n - 1$ and $x in B$ with $x_n > 1$ and $x_i < k$ explain why $x - e_n + e_i in B$.
         - Considering the $n$-sections of $B$, explain why $N(B)_j subset.eq B_(j - 1)$ and hence that $N(B)_j = B_(j - 1)$.
-        - TODO: add in a few more details maybe.
         - Use this to show that $abs(N(B)) = abs(B) - abs(B_k) + abs(N(B_1))$, and similarly for $C$.
         - Show that $abs(B_k) <= abs(C_k)$, by defining a set $D subset.eq [k]^n$ by its $n$-sections: $D_k := B_k$, and $D_(j - 1) = N(D_j)$ for all $j$, and showing that $D subset.eq C$.
         - Show that $abs(B_1) >= abs(C_1)$, by defining a set $E subset.eq [k]^n$ by its $i$-sections: $E_1 := B_1$, $E_j = {x in [k]^(n - 1): N({x}) subset.eq E_(j - 1)}$, and showing that $C subset.eq E$.
@@ -2123,7 +2122,7 @@ We want to show the initial segments of the simplicial ordering minimise the bou
 #theorem([Katona's $t$-intersecting Theorem])[
     Let $A subset.eq powset(X)$ be $t$-intersecting, where $n equiv t mod 2$. Then $
         abs(A) <= abs(X^((>= (n + t)\/2))).
-    $
+    $ (The condition $n equiv t mod 2$ is not necessary but simplifies the proof.)
 ]<thm:katona-t-intersecting>
 #proofhints[
     - Show that $N^(t - 1)(A)$ is disjoint from $overline(A) := {y^c: y in A}$.
@@ -2370,7 +2369,7 @@ This $mod 2$ behaviour generalises: namely, allowing $s$ values for $abs(x inter
 ]
 #remark[
     - The bound in @thm:frankl-wilson is a _polynomial_ in $n$, even as $r$ varies!
-    - The bound is essentially the best possible: we can achieve $abs(A) = binom(n, n - r + s) approx binom(n, s)$ for large $n$, as shown in the diagram below.
+    - The bound is essentially the best possible: we can achieve $abs(A) = binom(n - r + s, s) approx binom(n, s)$ for large $n$, as shown in the diagram below. // TODO: I changed this from |A| = binom(n, n - r + s), I think this is correct
     #unmarked-fig(
         figure(
             canvas({
@@ -2487,9 +2486,9 @@ However, in general, @cnj:borsuk is massively false:
 #proofhints[
     - Prove for all $n$ of the form, $binom(4p, 2)$ for $p$ prime.
     - For $x, y in [n]^((r))$, find an expression for $norm(x - y)^2$ in terms of $abs(x inter y)$.
-    - Identify $[n]$ with the edge set of an appropriate graph, and for each $x in [4p]^((2p))$, let $G_x$ be the complete bipartite graph with vertex classes $x$ and $x^c$.
+    - Identify $[n]$ with the edge set of an appropriate graph, and for each $x in [4p]^((2p))$, let $G_x$ be the complete bipartite subgraph with vertex classes $x$ and $x^c$.
     - Show that the number of edges in $G_x inter G_y$ is $abs(G_x inter G_y) = abs(x inter y)^2 + (2p - abs(x inter y))^2$ and give the value of $abs(x inter y)$ which minimises this.
-    - Let $S$ be an appropriate set of size $abs(S) = 1/2 binom(4p, 2p)$. Using @crl:there-are-few-2p-size-sets-with-non-half-intersection, show that any subset $S' subset.eq S$ of smaller diameter than $S$ has size at most $2 binom(4p, p - 1)$.
+    - Let $S subset.eq [n]^(4p^2)$ be an appropriate set of size $abs(S) = 1/2 binom(4p, 2p)$. Using @crl:there-are-few-2p-size-sets-with-non-half-intersection, show that any subset $S' subset.eq S$ of smaller diameter than $S$ has size at most $2 binom(4p, p - 1)$.
     - Use @prop:upper-bound-on-less-than-half-first-binomial-coefficients and the fact that $binom(n, n \/ 2) approx c dot 2^n \/ sqrt(n)$ to conclude the result. #qedhere
 ]
 #proof[

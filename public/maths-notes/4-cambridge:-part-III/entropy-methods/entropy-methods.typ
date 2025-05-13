@@ -1,5 +1,5 @@
 #import "../../template.typ": *
-#import "@preview/cetz:0.3.3" as cetz: canvas, draw
+#import "@preview/cetz:0.3.4" as cetz: canvas, draw
 #import "../../diagram-style.typ": *
 
 #show: doc => template(doc, hidden: (), slides: false)
@@ -135,6 +135,7 @@ Note all random variables we deal with will be discrete, unless otherwise stated
 #proofhints[
     - Explain why it is enough to prove for when the $p_a$ are rational.
     - Pick $n in NN$ such that $p_a = m_a / n$, $m_a in NN_0$. Let $Z$ be uniform on $[n]$. Let ${E_a: a in A}$ be a partition of $[n]$ such that $X = a <=> Z in E_a$.
+    - Consider $H(Z | X)$.
 ]
 #proof[
     First we do the case where all $p_a in QQ$. Pick $n in NN$ such that $p_a = m_a / n$, $m_a in NN_0$. Let $Z$ be uniform on $[n]$. Let ${E_a: a in A}$ be a partition of $[n]$ into sets with $abs(E_a) = m_a$. By @axm:invariance, we may assume that $X = a <=> Z in E_a$. Then $
@@ -214,8 +215,7 @@ Note all random variables we deal with will be discrete, unless otherwise stated
     Use that $H(X | Y, Z = z) <= H(X | Z = z)$ (why?).
 ]
 #proof[
-    $H(X | Y, Z) = sum_z PP(Z = z) H(X | Y, Z = z) <= sum_z PP(Z = z) H(X | Z = z) = H(X | Z)$.
-    // TODO: how can we justify the first equality here? it doesn't just come straight from the definition of conditional entropy
+    $H(X | Y, Z) = sum_z PP(Z = z) H(X | Y, Z = z) <= sum_z PP(Z = z) H(X | Z = z) = H(X | Z)$ by @prop:subadditivity.
 ]
 #remark[
     @prop:submodularity can be expressed in several equivalent ways. Expanding using @axm:additivity gives $
@@ -328,7 +328,6 @@ Note all random variables we deal with will be discrete, unless otherwise stated
     + Pick a vertex $x$ with probability proportional to its degree $deg(x)$, and then a random neighbour $Y$ of $x$.
     + Same as above with $x$ and $y$ exchanged.
     By the equivalence, it follows that $Y_1 = y$ with probability $deg(y) \/ abs(E(G))$, so $X_2 Y_1$ is uniform in $E(G)$, so $X_2 = x'$ with probability $d(x') \/ abs(E(G))$, so $X_2 Y_2$ is uniform in $E(G)$.
-    // TODO: why are X_1, X_2 and Y_1, Y_2 independent? as if we know X_1, then we know X_2 must lie at most two edges away from X_1
 
     Let $U_A$ be the uniform distribution on $A$. Therefore, by the @lem:chain-rule, $
         H(X_1, Y_1, X_2, Y_2) & = H(X_1) + H(Y_1 | X_1) + H(X_2 | X_1, Y_1) + H(Y_2 | X_1, Y_1, X_2) \
@@ -554,7 +553,7 @@ Bregman's theorem concerns how large $per(A)$ can be if $A$ is a $0, 1$ matrix a
         & = EE_A [sum_(k = 1)^n H(X_k | X_(< k)) indicator({k in A})] \
         & = sum_(k = 1)^n H(X_k | X_(< k)) EE[indicator({k in A})] \
         & = sum_(k = 1)^n H(X_k | X_(< k)) PP(k in A) \
-        & >= mu dot H(X). // TODO: I don't get the last inequality here
+        & >= mu dot H(X).
     $
 ]
 #definition[
@@ -736,7 +735,7 @@ Bregman's theorem concerns how large $per(A)$ can be if $A$ is a $0, 1$ matrix a
 If we want to prove @thm:gilmer, it is natural to let $A, B$ be independent uniformly random elements of $cal(A)$ and to consider $H(A union B)$. Since $cal(A)$ is union-closed, $A union B in cal(A)$, so $H(A union B) <= log abs(cal(A))$. Now we would like to get a lower bound for $H(A union B)$ assuming that no $x$ belongs to more than $p abs(cal(A))$ sets in $cal(A)$.
 
 #lemma[
-    Suppose $c > 0$ is such that $h(x y) >= c (x h(y) + y h(x))$ for every $x, y in [0, 1]$. Let $cal(A)$ be a family of sets such that every element of $union cal(A)$ belongs to fewer than $p abs(cal(A))$ members of $cal(A)$. Let $A, B$ be independent uniformly members of $cal(A)$. Then $
+    Suppose $c > 0$ is such that $h(x y) >= c (x h(y) + y h(x))$ for every $x, y in [0, 1]$. Let $cal(A)$ be a family of sets such that every element (of $union cal(A)$) belongs to fewer than $p abs(cal(A))$ members of $cal(A)$. Let $A, B$ be independent uniformly random members of $cal(A)$. Then $
         H(A union B) > c(1 - p) (H(A) + H(B)).
     $
 ]<lem:converse-of-gilmer-lemma>
@@ -895,7 +894,7 @@ We shall need two "simple" results from additive combinatorics due to Imre Ruzsa
     Let $G$ be an abelian group and let $A, B subset.eq G$ be finite. Then $A$ can be covered by at most $abs(A + B) \/ abs(B)$ translates of $B - B$.
 ]<lem:ruzsa-covering-lemma>
 #proofhints[
-    Consider a maximal subset ${x_1, ..., x_k} subset.eq A$ such that the $x_i + B$ are disjoint.
+    Consider a maximal subset ${x_1, ..., x_k} subset.eq A$ such that the $x_i + B$ are disjoint, show $k <= abs(A + B) \/ abs(B)$.
 ]
 #proof[
     Let ${x_1, ..., x_k}$ be a maximal subset of $A$ such that the sets $x_i + B$ are disjoint. Then for all, $a in A$, there exists $i$ such that $(a + B) inter (x_i + B) != emptyset$, i.e. $a in (x_i + (B - B))$. So $A$ can be covered by $k$ translates of $B - B$. But since the $x_i + B$ are disjoint, $
@@ -957,7 +956,8 @@ $ where $p(x) = p_x$, $q(y) = q_y$. So sums of independent random variables corr
 #proofhints[
     - $<==$: straightforward.
     - $==>$: assume WLOG that $X$ and $Y$ are independent. By considering entropy, explain why $X - Y$ and $Y$ are independent.
-    - Deduce that for $X$ supported on $A$ and $Y$ supported on $B$, for all $z in A - B$ and $y_1, y_2 in B$, $PP(X = y_1 + z) = PP(X = y_2 + z)$, and show that this implies that $z + B subset.eq A$.
+    - Deduce that for $X$ supported on $A$ and $Y$ supported on $B$, for all $z in A - B$ and $y_1, y_2 in B$, $PP(X = y_1 + z) = PP(X = y_2 + z)$.
+    - Show by contradiction that thus $PP(X = x)$ is non-zero on $z + B$, and so that $z + B subset.eq A$.
     - Deduce that $A = B + z$ for all $z in A - B$, and so that $A - x$ is constant over $x in A$.
     - Deduce that $A - A$ is a subgroup.
 ]
@@ -1003,7 +1003,7 @@ $ where $p(x) = p_x$, $q(y) = q_y$. So sums of independent random variables corr
     Let $G$ be an abelian group and let $X$ be a $G$-valued random variable. Then $d(X; -X) <= 2 d(X; X)$.
 ]<lem:negation-of-rv-at-most-doubles-self-entropic-distance>
 #proofhints[
-    Consider independent copies $X_1, X_2, X_3$ of $X$, use @lem:lower-bound-for-entropy-of-difference-of-rvs.
+    Consider independent copies $X_1, X_2, X_3$ of $X$, use @lem:lower-bound-for-entropy-of-difference-of-rvs and @lem:submodularity-for-sums.
 ]
 #proof[
     Let $X_1, X_2, X_3$ be independent copies of $X$. Then by @lem:lower-bound-for-entropy-of-difference-of-rvs, $
@@ -1068,7 +1068,7 @@ $ where $p(x) = p_x$, $q(y) = q_y$. So sums of independent random variables corr
         H(A_1 - B_2, A_1) = H(A_1, B_2) <= H(A_1) + H(B_2) = H(A) + H(B)
     $ and since $A_1 + B_1 = A_2 + B_2$, $
         H(A_1 - B_2, B_1) = H(A_2 - B_1, B_1) = H(A_2, B_1) <= H(A) + H(B).
-    $ Finally, since $A_1 + B_1 = A_2 + B_2$, $ // TODO: why do we have this?
+    $ Finally, since $A_1 + B_1 = A_2 + B_2 = A + B$, $
         H(A_1 - B_2, A_1, B_1) & = H(A_1, B_1, A_2, B_2) \
         & = H(A_1, B_1, A_2, B_2 | A + B) + H(A + B) \
         & = 2 H(A, B | A + B) + H(A + B) \
@@ -1081,9 +1081,12 @@ $ where $p(x) = p_x$, $q(y) = q_y$. So sums of independent random variables corr
 = A proof of Marton's conjecture in $FF_2^n$
 
 We shall prove the following theorem.
-#theorem("Green, Manners, Tao, Gowers")[
+#theorem("Polynomial Freiman-Ruzsa")[
     There is a polynomial $p$ with the following property: if $n in NN$ and $A subset.eq FF_2^n$ is such that $abs(A + A) <= C abs(A)$, then there is a subspace $H subset.eq FF_2^n$ of size at most $abs(A)$ such that $A$ is contained in the union of at most $p(C)$ translates of $H$. Equivalently, there exists $K subset.eq FF_2$, $abs(K) <= p(C)$, such that $A subset.eq K + H$.
 ]<thm:green-manners-tao-gowers>
+#remark[
+    @thm:green-manners-tao-gowers is also known as the *Green-Manners-Tao-Gowers theorem*.
+]
 In fact, we shall prove the following statement:
 #theorem("EPFR")[
     Let $G = FF_2^n$. There is an absolute constant $alpha$ with the following property:
@@ -1092,6 +1095,9 @@ In fact, we shall prove the following statement:
         d(X; U_H) + d(U_H; Y) <= alpha d(X; Y),
     $ where $U_H$ is a random variable distributed uniformly on $H$.
 ]<thm:epfr>
+#remark[
+    "EPFR" stands for entropic polynomial Freiman-Ruzsa.
+]
 #lemma[
     Let $X$ be a discrete random variable and write $p_x = PP(X = x)$. Then there exists $x$ such that $p_x >= 2^(-H(X))$.
 ]<lem:rv-has-some-mass-greater-than-negative-exponential-of-entropy>
@@ -1124,7 +1130,7 @@ In fact, we shall prove the following statement:
         & = 1/2 log abs(A) + 1/2 log abs(H) + 1/2 alpha log C.
     $ Therefore by @lem:rv-has-some-mass-greater-than-negative-exponential-of-entropy, there exists $z$ such that $
         PP(X + U_H = z) >= abs(A)^(-1 \/ 2) abs(H)^(-1 \/ 2) C^(-alpha \/ 2).
-    $ But $PP(X + U_H = z) = (A inter (z - H))/(abs(A) abs(H)) = (A inter (z + H))/(abs(A) abs(H))$. So there exists $z in G$ such that $
+    $ But $PP(X + U_H = z) = abs(A inter (z - H))/(abs(A) abs(H)) = abs(A inter (z + H))/(abs(A) abs(H))$. So there exists $z in G$ such that $
         abs(A inter (z + H)) >= C^(-alpha \/ 2) abs(A)^(-1 \/ 2) abs(H)^(-1 \/ 2).
     $ Let $B = A inter (z + H)$. Let $B = A inter (z + H)$. By @lem:ruzsa-covering-lemma, we can cover $A$ by at most $abs(A + B)/abs(B)$ translates of $B - B = B + B$. But $B subset.eq z + H$ so $B + B subset.eq 2z + H + H = H$. So $A$ can be covered by at most $abs(A + B)/abs(B)$ translates of $H$. But since $B subset.eq A$, $abs(A + B) <= abs(A + A) <= C abs(A)$. So $
         abs(A + B)/abs(B) <= (C abs(A))/(C^(-alpha \/ 2) abs(A)^(1 \/ 2) abs(H)^(1 \/ 2)) = C^(alpha \/ 2 + 1) abs(A)^(1 \/ 2) / abs(H)^(1 \/ 2).
@@ -1157,7 +1163,7 @@ Now we reduce further. We shall prove the following statement.
     $ since $d(dot; dot)$ is invariant under constant shifts of either of its arguments. This gives @thm:epfr with constant $1 \/ eta$.
 ]
 #notation[
-    Write $tau_(X, Y)(U | Z; V | W)$ for $sum_(z, w) PP(Z = z) PP(W = w) tau_(X, Y)(U | Z = z; V | W = w)$ and $tau_(X, Y) (U; V || Z)$ for $sum_z PP(Z = z) tau_(X, Y) (U | Z = z; V = Z = z)$.
+    Write $tau_(X, Y)(U | Z; V | W)$ for $sum_(z, w) PP(Z = z) PP(W = w) tau_(X, Y)(U | Z = z; V | W = w)$ and $tau_(X, Y) (U; V || Z)$ for $sum_z PP(Z = z) tau_(X, Y) (U | Z = z; V | Z = z)$.
 ]
 #remark[
     If we can prove @thm:epfr-dash for conditioned random variables, then by averaging, we get it for some pair of random variables (e.g. of the form $U | Z = z$ and $V | W = w$).
@@ -1261,7 +1267,7 @@ Recall that we want $U, V$ such that $tau_(X, Y)(U, V) < d(X; Y)$. @lem:another-
     $
 ]<lem:triangle-like-inequality-for-entropic-distance-of-sum>
 #proofhints[
-    Write $-1/2 H(U + V) = -1/2 H(U + V) - 1/2 H(U + V) + 1/2 H(U + V)$ and $H(U + V + X) = 1/2 H(U + V + X) + 1/2 H(U + V + X)$ and use @lem:submodularity-for-sums twice.
+    Write $-1/2 H(U + V) = -H(U + V) + 1/2 H(U + V)$ and $H(U + V + X) = 1/2 H(U + V + X) + 1/2 H(U + V + X)$ and use @lem:submodularity-for-sums twice.
 ]
 #proof[
     We have $
@@ -1275,7 +1281,7 @@ Recall that we want $U, V$ such that $tau_(X, Y)(U, V) < d(X; Y)$. @lem:another-
     If $(U, V)$ is $C$-relevant to $(X, Y)$ and $U_1, U_2, V_1, V_2$ are copies of $U, V$, then $(U_1 + U_2, V_1 + V_2)$ is $2C$-relevant to $(X, Y)$.
 ]<crl:sums-of-copies-doubles-relevance>
 #proofhints[
-    Use @lem:triangle-like-inequality-for-entropic-distance-of-sum and @lem:ruzsa-triangle-inequality.
+    Use @lem:triangle-like-inequality-for-entropic-distance-of-sum and @lem:entropic-ruzsa-triangle-inequality.
 ]
 #proof[
     $
@@ -1316,7 +1322,7 @@ Recall that we want $U, V$ such that $tau_(X, Y)(U, V) < d(X; Y)$. @lem:another-
     $
 ]<lem:triangle-like-inequality-for-conditioned-entropic-distance-of-sum>
 #proofhints[
-    - Show that $d(U | U + V; X) <= H(U + X) - 1/2 H(U) + 1/2 H(V) + 1/2 H(U + V) - 1/2 H(X)$.
+    - Show that $d(U | U + V; X) <= H(U + X) - 1/2 H(U) - 1/2 H(V) + 1/2 H(U + V) - 1/2 H(X)$.
     - Show that $d(U | U + V; X) = d(V | U + V; X)$, and average the above inequality with a similar bound.
 ]
 #proof[
@@ -1329,7 +1335,7 @@ Recall that we want $U, V$ such that $tau_(X, Y)(U, V) < d(X; Y)$. @lem:another-
     $ Averaging the two inequalities gives the result (as earlier).
 ]
 #corollary[
-    Let $U, V$ be independent RVs and suppose that $(U, V)$ is $C$-relevant to $(X, Y)$. Then
+    Let $U, V$ be independent RVs and suppose that $(U, V)$ is $C$-relevant to $(X, Y)$. Let $U_1, U_2, V_1, V_2$ be independent copies of $U, V$. Then
     + $(U_1 | U_1 + U_2, V_1 | V_1 + V_2)$ is $2C$-relevant to $(X, Y)$.
     + $(U_1 | U_1 + V_1, U_2 | U_2 + V_2)$ is $(2C + 2)$-relevant to $(X, Y)$.
 ]

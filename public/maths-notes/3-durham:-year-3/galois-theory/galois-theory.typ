@@ -794,7 +794,7 @@
     - When $n = 3$, $x_1^2 x_2 + x_1 x_2^2 + x_2^2 x_3 + x_2 x_3^2 + x_3^2 x_1 + x_3 x_1^2 = e_1 e_2 - 3e_3$.
 ]
 #definition[
-    *Lexicographic ordering of monomials*, $gtlex$ (or $scripts(gt.curly)_L$), is $ x_1^(a_1) dots.h.c x_n^(a_n) gtlex x_1^(b_1) dots.h.c x_n^(b_n) $ iff $exists 0 <= j <= n - 1$ such that $a_1 = b_1, ..., a_j = b_j$ and $a_(j + 1) > b_(j + 1)$.
+    *Lexicographic ordering of monomials*, $gtlex$ (or $scripts(prec)_L$), is $ x_1^(a_1) dots.h.c x_n^(a_n) gtlex x_1^(b_1) dots.h.c x_n^(b_n) $ iff $exists 0 <= j <= n - 1$ such that $a_1 = b_1, ..., a_j = b_j$ and $a_(j + 1) > b_(j + 1)$.
 ]
 #example[
     $x_1^2 x_2^3 x_3 gtlex x_1^2 x_2^2 x_3^4$.

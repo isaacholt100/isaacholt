@@ -1,7 +1,7 @@
 #import "@preview/quill:0.2.0": *
 #import "../../template.typ": *
 #import "../../diagram-style.typ": *
-#import "@preview/cetz:0.3.3" as cetz: canvas, draw
+#import "@preview/cetz:0.3.4" as cetz: canvas, draw
 #let name-abbrvs = (:)
 #show: doc => template(doc, hidden: (), slides: false, name-abbrvs: name-abbrvs)
 #set document(
@@ -148,6 +148,8 @@ for exam:
 exam questions will be very simple. it's important that you get the ideas and able to reproduce toy examples (e.g. AKLT), reproducing FT of MPS. these notes are based on exam questions
 */
 
+NOTE: might be helpful to go through some parts of (particularly first two chapters of) QIT notes before exam as well
+
 = Entanglement theory
 
 #theorem("Schmidt Decomposition")[
@@ -155,7 +157,7 @@ exam questions will be very simple. it's important that you get the ideas and ab
         ket(psi) = sum_(i = 1)^(N_A) lambda_i ket(e_i) tp ket(f_i),
     $ where $lambda_i >= 0$ and $sum_i lambda_i^2 = 1$.
     
-    The $lambda_i$ are unique up to re-ordering. The $lambda_i$ are called the *entanglement spectrum*, *Schmidt coefficients*, *Schmidt weights* or *Schmidt numbers* of $ket(psi)$ and the number of $lambda_i > 0$ is the *Schmidt rank* of the state.
+    The $lambda_i$ are unique up to re-ordering. The $lambda_i$ are called the *entanglement spectrum*, *Schmidt coefficients*, *Schmidt weights* or *Schmidt numbers* of $ket(psi)$ and the number of $lambda_i > 0$ is the *Schmidt rank* or *entanglement rank* of the state.
 ]<thm:schmidt-decomposition>
 #proofhints[
     Use the singular value decomposition of the matrix of amplitudes of $ket(psi)$.
@@ -186,7 +188,9 @@ exam questions will be very simple. it's important that you get the ideas and ab
     More specifically, an *entanglement monotone* $mu$ is a function from the set $S(HH_A tp HH_B)$ of quantum states in $HH_A tp HH_B$ to $RR$ which satisfies:
     - *Non-negativity*: $mu(rho) >= 0$ for all $rho in S(HH_A tp HH_B)$.
     - $mu(rho) = 0$ if $rho$ is separable.
-    - *Monotonicity under LOCC*: TODO.
+    - *Monotonicity under LOCC*: $mu$ does not increase on average under LOCC operations. More precisely, if ${(p_i, rho_i)}$ is an ensemble arising from applying an LOCC operation to $rho$ (i.e. $rho = sum_i p_i rho_i$), then $
+        mu(rho) = mu(sum_i p_i rho_i) >= sum_i p_i mu(rho_i).
+    $
 
     Entanglement monotones quantify the amount of entanglement in a quantum state.
 ]<def:entanglement-monotone>
@@ -221,6 +225,11 @@ exam questions will be very simple. it's important that you get the ideas and ab
     If $A$ has Kraus decomposition $T(rho) = sum_k A_k rho A_k^dagger$, then the Kraus operators satisfy $sum_k A_k^dagger A_k = II$.
 ]<def:cptp-map>
 #definition[
+    The *transfer matrix* of a quantum channel with Kraus operators ${A_k}$ is $
+        E = sum_k A_k overline(A_k),
+    $ where $overline(A_k)$ is the entry-wise complex conjugate of $A_k$.
+]
+#definition[
     A matrix $U in CC^(m times n)$ is called an *isometry* if $U^dagger U = II_n$.
 ]<def:isometry>
 #remark[
@@ -241,7 +250,22 @@ exam questions will be very simple. it's important that you get the ideas and ab
     Physically, evolution according to the Lindblad equation corresponds to when we the system of interest to an ancilla through an infinitesimal interaction / evolution with a Hamiltonian which couple both systems, then take the trace over the ancilla. This only makes sense when the ancillary system cannot interact with the system of interest anymore at later times.
 ]
 #remark[
-    CPTP maps and the Lindblad equation are the two ways of describing the evolution of a quantum system: the Lindblad equation is the continuous version of a CPTP map.
+    CPTP maps and the Lindblad equation are the two ways of describing the evolution of a quantum system: the Lindblad equation is the continuous version of a CPTP map. They are the most general evolution of a many-body quantum system coupled to a part (the environment) which we take the trace over.
+]
+#definition[
+    A quantum channel $T$ is called *ergodic* if for all $rho in S(HH)$, ${T^n (rho): n >= 0}$ spans $S(HH)$.
+]
+#proposition[
+    Quantum channels (or more generally CP maps) always have at least one fixed point (i.e. eigenstate with eigenvalue $1$). If the quantum channel is ergodic, then the fixed point $rho_0$ is unique (all other eigenvalues have modulus $< 1$).
+
+    If the quantum channel is ergodic, then the system evolves to the steady state $rho_0$.
+]
+#example[
+    Let $T(rho) = sum_i A_i rho A_i^dagger$ be a quantum channel with Kraus operators $A_i$. Say we start with an initial state $rho_0 = ket(psi_0) bra(psi_0)$. Then a purification of the channel applied $N$ times to $rho_0$, $T^N (rho_0)$ is $
+        ket(psi_N) = sum_(i_1, ..., i_N) A_(i_1) cdots A_(i_N) ket(psi_0) tp ket(i_1 ... i_N).
+    $ The channel acts as $ket(psi_0) |-> sum_i A_i ket(psi_0) tp ket(i)_E$ followed by taking the partial trace over the environment $E$ (this is easy to check). $ket(psi_N)$ is the resulting state if we apply the channel $N$ times without taking the trace.
+    
+    Note that $ket(psi_N)$ has the form of a matrix product state (MPS). This is called an *unravelling/purification* of the channel $T$. The physical interpretation of unravelling is: consider an atom in a cavity coupled (interacting with) to an electromagnetic field. Every time a Kraus operator $A_i$ is applied, a photon (light mode) in the state $ket(i)$ escapes the cavity.
 ]
 
 
@@ -303,14 +327,175 @@ exam questions will be very simple. it's important that you get the ideas and ab
 #remark[
     The rank of a tensor given in a tensor network diagram is the number of unmatched legs in the diagram. The value of the tensor is independent of the order in which the constituent tensors are contracted.
 ]
+#definition[
+    Let $ket(psi) = sum_(i_1, ..., i_N = 0)^(d - 1) psi_(i_1, ..., i_N) ket(i_1 ... i_N)$ be a general pure $N$-qudit state. $ket(psi)$ is completely determined by the rank-$N$ tensor $psi$. By splitting the first index from the rest and performing an SVD, we obtain $
+        ket(psi) = sum_(i_1 = 0)^(d - 1) lambda_(i_1) ket(L_(i_1)) tp ket(R_(i_1)).
+    $ Iterating this process, we obtain $
+        ket(psi) = sum_(i_1, ..., i_N = 0)^(d - 1) lambda_(i_1, ..., i_(N - 1)) ket(L_(i_1)) tp ket(L_(i_2)) tp cdots tp ket(L_(i_N)),
+    $ For example, in TNN,
+    #figure(
+        image("mps-1.png")
+    ) or more simply,
+    #figure(
+        image("mps-2.png")
+    ) This is called a *matrix product state (MPS)*. We often write this as $
+        ket(psi(A^((1)), ..., A^((N)))) = sum_(i_1, ..., i_N = 0)^(d - 1) tr(A^((1))_(i_1) A^((2))_(i_2) ... A^((N))_(i_N)) ket(i_1 ... i_N).
+    $ If $ket(psi)$ is translation-invariant (meaning that the coefficient of $ket(i_1 ... i_N)$ is invariant under cyclic shifts of $i_1, ..., i_N$), we write $
+        ket(psi(A)) = sum_(i_1, ..., i_N = 0)^(d - 1) tr(A_(i_1) cdots A_(i_N)) ket(i_1 ... i_N).
+    $ This can be represented in TNN as
+    #figure(
+        image("mps-3.png")
+    )
+]<def:matrix-product-state>
+#remark[
+    Note that most tensors involved in an MPS are not matrices, but have rank $3$. The uncountrated index is called the *physical index*, the other two are called the *virtual/bond/matrix* indices.
+]
+#definition[
+    The *bond dimension* of an MPS is the dimension of any of the virtual indices. The bond dimension controls the precision of the low-rank approximation of the MPS to the original state: by increasing the bond dimension, we can approximate any state to arbitrary precision.
+]
+#definition[
+    A *1D projected entangled pair state (PEPS)* is given by laying out entangled pair state $ket(psi)$ (e.g. $ket(phi) = ket(00) + ket(11)$) on a (here, 1D) lattice, then applying some projector $cal(P)$ _between_ the pairs:
+    #figure(
+        image("1d-peps.png")
+    )
+    where
+    #figure(
+        image("peps-pair-state.png", width: 20%)
+    )
+    Note that generally, $cal(P)$ is not a unitary, so a PEPS construction does not give a practical way of preparing the state: the fact $cal(P)$ is a projector means that generally post-selected measurements are required to construct the state this way.
+]
 
+== Examples of MPS states
 
+#example[
+    Let $A_0 = mat(0)$ and $A_1 = mat(1)$. Then the MPS is $
+        ket(psi(A)) = sum_(i_1, ..., i_N = 0)^1 tr(A_(i_1) ... A_(i_N)) ket(i_1 ... i_N) = ket(0)^(tp N).
+    $ We can also express $ket(0)^(tp N)$ as the MPS $ket(psi(A))$ with $
+        A_0 = mat(1, 0; 0, 0), quad A_1 = mat(0, 0; 0, 0).
+    $
+]
+#example[
+    Let $
+        A_0 = mat(1, 0; 0, 1), quad A_1 = mat(0, 1; 0, 0).
+    $ Choose the boundary conditions of the MPS to be
+    #figure(
+        image("mps-4.png")
+    )
+    Since $A_0 A_0 = A_0$, $A_0 A_1 = A_1 A_0 = A_1$, $A_1 A_1 = 0$, $tr(A_1 X) = 1$, and $tr(A_0 X) = 0$, we have $
+        ket(psi(A)) = sum_(i_1, ..., i_N = 0)^1 tr(A_(i_1) ... A_(i_N)) ket(i_1 ... i_N) = sum_(j = 1)^N ket(0)_1 cdots ket(0)_(j - 1) ket(1)_j ket(0)_(j + 1) cdots ket(0)_N,
+    $ which is the *$W$-state* $ket(W)$.
+]
+#example[
+    Let $
+        A_0 = mat(1, 0; 0, 0), quad A_1 = mat(0, 0; 0, 1).
+    $ Then the MPS is the *Greenberger-Horne-Zeilinger (GHZ) state* $
+        ket("GHZ") = ket(0)^(tp N) + ket(1)^(tp N).
+    $ Equivalently, we can construct the GHZ state as a PEPS with $ket(phi) = ket(00) + ket(11)$ and $cal(P) = ket(0) bra(00) + ket(1) bra(11)$, so that $cal(P) ket(00) = ket(0)$, $cal(P) ket(01) = cal(P) ket(1) = 0$, $cal(P) ket(11) = ket(1)$.
+]
+#example[
+    The *cluster state* is the MPS $ket(psi(A))$, where $
+        A_00 = mat(1, 0; 1, 0), quad A_01 = mat(0, 1; 0, 1), quad A_10 = mat(1, 0; -1, 0), quad A_11 = mat(0, -1; 0, 1).
+    $ Alternatively, we can construct the cluster state as a PEPS with $ket(phi) = ket(00) + ket(11)$ and $
+        cal(P) = mat(1, 0, 1, 0; 0, 1, 0, 1; 1, 0, -1, 0; 0, -1, 0, 1)
+    $ $cal(P)$ can be implemented as the quantum circuit
+    #figure(
+        image("cluster-state-circuit.png", width: 15%)
+    ) Note that the initial state constructed from entangled pairs $product_j ket(phi)_(2j, 2j + 1)$ is the unique ground state of the Hamiltonian $
+        H' = -sum_j (X_(2j) X_(2j + 1) + Z_(2j) Z_(2j + 1))
+    $ Applying the circuit between each qubit pair (with first qubit odd and second even) transforms this Hamiltonian the *cluster state Hamiltonian* $
+        H & = -sum_j (Z_(2j - 1) X_(2j) Z_(2j + 1) + Z_(2j) X_(2j + 1) Z_(2j + 2)) \
+        & = -sum_k Z_(k - 1) X_k Z_(k + 1)
+    $
+]
+#example[
+    The *AKLT state* is the 1D PEPS with entangled pair state $ket(phi) = ket(01) - ket(10)$ and projector $cal(P): CC^(2 times 2) -> CC^3$ given by $
+        cal(P) = ket(tilde(1)) bra(00) + ket(tilde(0)) 1/sqrt(2) (bra(01) + bra(10)) + ket(-tilde(1)) bra(11)
+    $ The AKLT state is $"SO"(3)$ symmetric: the spin vector on the spin-1 particle $(S_X, S_Y, S_Z)$ is given by $
+        S_X & = 1/sqrt(2) (ket(tilde(0)) (bra(tilde(1)) + bra(-tilde(1))) + (ket(tilde(1)) + ket(-tilde(1))) bra(tilde(0))) = 1/sqrt(2) mat(0, 1, 0; 1, 0, 1; 0, 1, 0) \
+        S_Y & = 1/sqrt(2) i (ket(tilde(0)) (bra(tilde(1)) - bra(-tilde(1))) + (ket(tilde(1)) - ket(-tilde(1))) bra(tilde(0))) = 1/sqrt(2) mat(0, -i, 0; i, 0, -i; 0, i, 0) \
+        S_Z & = ket(tilde(1)) bra(tilde(1)) - ket(-tilde(1)) bra(-tilde(1)) = mat(1, 0, 0; 0, 0, 0; 0, 0, -1)
+    $ Then it is straightforward to show that $
+        S_Z cal(P) & = cal(P) 1/2 (Z_1 + Z_2) \
+        S_X cal(P) & = cal(P) 1/2 (X_1 + X_2) \
+        S_Y cal(P) & = cal(P) 1/2 (Y_1 + Y_2)
+    $ TODO: finish this
 
+    The AKLT state can also be written as the MPS $ket(psi(A))$, where $A_i = sigma_i$ for each $i in [3]$ (and $sigma_i$ are the Pauli matrices).
+]
+
+TODO: 2D PEPS
+
+The bond dimension $D$ of a PEPS is the dimension of either of the subsystems in which one of the qubits of the entangled pair lives.
+
+== Properties of MPS
+
+#definition[
+    Given an MPS $ket(psi(A))$ and an observable $cal(O)$, the *$cal(O)$-transfer matrix* is defined as $
+        EE_cal(O) = sum_(i, j = 0)^(d - 1) cal(O)_(i j) A_i tp overline(A_j).
+    $ In TNN, $EE_cal(O)$ is represented as
+    #figure(
+        image("o-transfer-matrix.png", width: 8%)
+    )
+]
+#definition[
+    Given an MPS $ket(psi(A))$, the *transfer matrix* $EE$ is the transfer matrix $EE_II$ of the identity operator: $
+        EE = sum_(i = 0)^(d - 1) A_i tp overline(A_i).
+    $
+]
 #definition[
     An MPS $ket(psi(A))$ is in *left-canonical form* if $
         sum_(j = 0)^(d - 1) A_j^dagger A_j = II_D
-    $
+    $ In TNN, this is written as
+    #figure(
+        image("left-canonical-tnn.png", width: 20%)
+    )
 ]<def:mps.left-canonical-form>
 #definition[
-    Let $ket(psi(A))$ be an MPS in left-canonical form. $ket(psi(A))$ is *injective* if ....
+    Let $ket(psi(A))$ be an MPS in left-canonical form. $ket(psi(A))$ is *injective* if the identity matrix is the left eigenstate of the transfer matrix with eigenvalue $1$. Equivalently, the leading (largest in absolute value) eigenvalue of the transfer matrix is $1$, and all other eigenvalues have modulus $< 1$.
+]
+#definition[
+    A *gauge transformation* is a transformtion on the tensors of an MPS that leaves the state invariant. They are given by basis changes on the virtual indices.
+]
+#theorem("Fundamental Theorem of MPS")[
+    Any two translationally invariant MPS represent the same quantum state iff their tensors are related by a gauge transformation.
+    Let $ket(psi(A))$ and $ket(psi(B))$ be two MPS with the same bond dimension. Then for all system sizes $N$, $ket(psi(A)) = ket(psi(B))$ iff there exists a phase $phi$ and an invertible matrix $X$ such that for each virtual index $i$, $
+        B^i = e^(i phi) X A^i X^(-1).
+    $ Note that $X$ need only have a left inverse, so may be rectangular and enlarge the bond dimension.
+]
+
+// TODO: questions to ask:
+// explain unravellings of quantum channels/Lindblad equation leading to MPS/continuous MPS
+// 
+
+= Monogamy of entanglement
+
+#definition[
+    *Monogamy of entanglement* is the property that if two qubits are maximally entangled, then they cannot be entangled with another qubit. Conversely, if three qubits are pairwise entangled, then none of them are maximally entangled. This leads to *frustration* effects: certain local interactions cannot be satisfied simultaneously.
+]
+#example[
+    The *Heisenberg Hamiltonian* is given by $
+        H = sum_i X_i X_(i + 1) + Y_i Y_(i + 1) + Z_i Z_(i + 1).
+    $ If the system size is two qubits, then the ground state is $1/sqrt(2) (ket(0) ket(1) - ket(1) ket(0))$. This is maximally entangled since its reduced density matrix is maximally mixed. Here, there is frustration in the system due to the fact that the Hamiltonian is a sum of local terms, some of which do not commute.
+]
+#remark[
+    Monogamy of entanglement means that the manifold (called the *Kaihler manifold*) of phyiscal states, within the full Hilbert space of possible states, is low dimensional. In a gapped phase of matter (meaning there is gap between leading and sub-leading eigenvalues in the limit as system size $-> oo$), we have an area law for entanglement: entanglement entropy of qubits in a region scales with the size of the boundary of the region.
+
+    Tensor network states (e.g. MPS, PEPS) parametrise this manifold.
+]
+
+= Lieb-Robinson bounds
+
+#remark[
+    Lieb-Robinson bounds show that there is a finite speed at which correlations can propagate in a quantum system. This gives a notion of locality in a quantum system: a local effect takes time to affect points far away from it.
+
+    Locality means an effect affects far away spins noticeably after a time related to the speed of the correlation propagation.
+]
+#remark[
+    Lieb-Robinson bounds allow us to prove that in a gapped phase, all ground states satisfy an area law of entanglement.
+]
+#example[
+    In a one-dimensional spin chain (just a one-dimensional lattice of qudits), if $A$ is a region of the one-dimensional lattice, the Lieb-Robinson bounds give the area law: $S(rho_A) <= r abs(partial A)$, where $rho_A$ is the density matrix of the qudits in $A$, $r$ is a constant and $partial A$ is the boundary of the region $A$. In 1D, $abs(partial A)$ is bounded by a constant independent of $A$.
+]
+#remark[
+    Lieb-Robinson bounds show that in 1D, the Kaihler manifold of physical states is spanned by the set of matrix product states; hence, we can completely characterise 1D quantum spin systems by MPS.
 ]
