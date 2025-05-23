@@ -50,7 +50,35 @@
     return lower(name)
 }
 
-#let template(doc, hidden: ("proof", ), slides: false, name-abbrvs: (:)) = {
+#let title-case(string) = {
+  return string.replace(
+    regex("[A-Za-z]+('[A-Za-z]+)?"),
+    word => upper(word.text.first()) + lower(word.text.slice(1)),
+  )
+}
+
+#let parse-ref-hint-name(label-name) = {
+    let replaced = label-name
+        .replace("-", " ")
+        .replace("crl:", "Corollary:")
+        .replace("thm:", "Theorem:")
+        .replace("def:", "Definition:")
+        .replace("exa:", "Example:")
+        .replace("lem:", "Lemma:")
+        .replace("prop:", "Proposition:")
+        .replace("rmk:", "Remark:")
+        .replace("alg:", "Algorithm:")
+        .replace("cnj:", "Conjecture:")
+        .replace("ntn:", "Notation:")
+        .replace("pst:", "Postulate:")
+        .replace("axm:", "Axiom:")
+        .replace("prb:", "Problem:")
+        .replace(":", ": ");
+
+    return title-case(replaced)
+}
+
+#let template(doc, hidden: ("proof", ), slides: false, name-abbrvs: (:), slides-ref-hints: false) = {
 	set text(
         font: "New Computer Modern",
 		size: if slides { 24pt } else { 12pt },
@@ -78,6 +106,11 @@
         } else {
             if slides {
                 [
+                    #if it.has("label") and slides-ref-hints [
+                        #colbreak(weak: true)
+                        #set align(center + horizon)
+                        #parse-ref-hint-name(str(it.label))
+                    ]
                     #colbreak(weak: true)
                     #it
                     #colbreak(weak: true)
@@ -92,10 +125,10 @@
     show heading: it => {
         if slides {
             [
-                #pagebreak(weak: true)
+                #colbreak(weak: true)
                 #set align(center + horizon)
                 #it
-                #pagebreak(weak: true)
+                #colbreak(weak: true)
             ]
         } else {
             it
@@ -169,10 +202,29 @@
 
     set figure(numbering: none)
 
+
     if not slides {
         outline()
         pagebreak()
     }
+
+    if slides [
+        #context {
+            show ref: it => {
+                link(it.target, parse-ref-hint-name(str(it.element.label)))
+            }
+            table(
+                columns: (1fr, 1fr),
+                ..(query(figure)
+                    .filter(it => it.at("label", default: none) != none)
+                    .enumerate()
+                    .map(a => [
+                        #(a.at(0) + 1). #ref(a.at(1).label)
+                    ])
+                )
+            )
+        }
+    ]
 
 	doc
 }

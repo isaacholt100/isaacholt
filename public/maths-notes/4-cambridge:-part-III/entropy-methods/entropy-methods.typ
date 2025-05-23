@@ -2,7 +2,7 @@
 #import "@preview/cetz:0.3.4" as cetz: canvas, draw
 #import "../../diagram-style.typ": *
 
-#show: doc => template(doc, hidden: (), slides: false)
+#show: doc => template(doc, hidden: (), slides: true, slides-ref-hints: true)
 #set document(
     title: "Entropy Methods in Combinatorics Notes",
     author: "Isaac Holt",
@@ -188,7 +188,7 @@ Note all random variables we deal with will be discrete, unless otherwise stated
 ]
 #corollary[
     $H(X) >= 0$ for any $X$.
-]
+]<crl:entropy-is-non-negative>
 #proofhints[
     (Without using the formula) straightforward.
 ]
@@ -228,7 +228,7 @@ Note all random variables we deal with will be discrete, unless otherwise stated
 ]
 #lemma[
     Let $X, Y, Z$ be RVs with $Z = f(Y)$. Then $H(X | Y) <= H(X | Z)$.
-]<lmm:conditional-data-processing>
+]<lem:conditional-data-processing>
 #proofhints[
     Straightforward.
 ]
@@ -242,7 +242,7 @@ Note all random variables we deal with will be discrete, unless otherwise stated
     Let $X, Y, Z$ be RVs with $Z = f(X) = g(Y)$. Then $
         H(X, Y) + H(Z) <= H(X) + H(Y).
     $
-]<lmm:subadditivity-with-additional-difference>
+]<lem:subadditivity-with-additional-difference>
 #proofhints[
     Straightforward.
 ]
@@ -251,7 +251,7 @@ Note all random variables we deal with will be discrete, unless otherwise stated
 ]
 #lemma[
     Let $X$ be an RV taking values in a finite set $A$ and let $Y$ be uniform on $A$. If $H(X) = H(Y)$, then $X$ is uniform.
-]<lmm:entropy-is-maximal-only-if-x-is-uniform>
+]<lem:entropy-is-maximal-only-if-x-is-uniform>
 #proofhints[
     Use Jensen's inequality.
 ]
@@ -271,7 +271,7 @@ Note all random variables we deal with will be discrete, unless otherwise stated
 #proof[
     We go through the proof of subadditivity and check when equality holds. Suppose that $X$ is uniform on $A$. Then $
         H(X | Y) = sum_y PP(Y = y) H(X | Y = y) <= H(X),
-    $ with equality iff $X | Y = y$ is uniform on $A$ for all $y$ (by @lmm:entropy-is-maximal-only-if-x-is-uniform), which implies that $X$ and $Y$ are independent.
+    $ with equality iff $X | Y = y$ is uniform on $A$ for all $y$ (by @lem:entropy-is-maximal-only-if-x-is-uniform), which implies that $X$ and $Y$ are independent.
 
     At the last stage of the proof, we said $H(X | Y) = H(X | Y, W) = H(X | W) <= H(X)$, where $W$ was uniform, i.e. $H(W | X) <= H(W)$. So equality holds only if $X$ and $W$ are independent, which implies (since $Y$ depends on $W$), that $X$ and $Y$ are independent.
 ]
@@ -422,7 +422,7 @@ Bregman's theorem concerns how large $per(A)$ can be if $A$ is a $0, 1$ matrix a
     Let $G$ be a bipartite graph with vertex sets $X, Y$ of size $n$. Then the number of perfect matchings in $G$ is at most $
         product_(x in X) (deg(x)!)^(1 \/ deg(x)).
     $
-]<thm:brigman>
+]<thm:bregman>
 #proofhints[
     - For an enumeration $x_1, ..., x_n$ of $X$ and random matching (a bijection) $sigma$, show that $H(sigma) <= log deg (x_1) + EE_sigma log deg_(x_1)^sigma (x_2) + dots.c + EE_sigma log deg_(x_1, ..., x_(n - 1))^sigma (x_n)$ (find a suitable expression for $deg_(x_1, ..., x_(i - 1))^sigma (x_i)$).
     - Explain why $
@@ -510,7 +510,7 @@ Bregman's theorem concerns how large $per(A)$ can be if $A$ is a $0, 1$ matrix a
             caption: [$G_2$ if $G$ is the triangle graph],
         )
     ]
-    By @thm:brigman, the number of perfect matchings in $G_2$ is at most $product_(x in V(G)) (d(x)!)^(1 \/ d(x))$. Each matching gives a permutation $sigma$ of $V(G)$ such that $x sigma(x) in E(G)$ for all $x in V(G)$. Each such $sigma$ has a cycle decomposition, and each cycle gives a cycle in $G$. So $sigma$ gives a cover of $V(G)$ by isolated vertices, edges and cycles (not necessarily all even). Given such a cover with $k$ cycles, each cycle can be directed in two ways, so the number of $sigma$ that give rise to it is $= 2^k$. So there is an injection from $M times M$ to the set of matchings of $G_2$, since every cover by edges and and even cycles is a cover by vertices, edges and cycles. So $abs(M)^2 <= product_(x in V(G)) (d(x)!)^(1 \/ d(x))$.
+    By @thm:bregman, the number of perfect matchings in $G_2$ is at most $product_(x in V(G)) (d(x)!)^(1 \/ d(x))$. Each matching gives a permutation $sigma$ of $V(G)$ such that $x sigma(x) in E(G)$ for all $x in V(G)$. Each such $sigma$ has a cycle decomposition, and each cycle gives a cycle in $G$. So $sigma$ gives a cover of $V(G)$ by isolated vertices, edges and cycles (not necessarily all even). Given such a cover with $k$ cycles, each cycle can be directed in two ways, so the number of $sigma$ that give rise to it is $= 2^k$. So there is an injection from $M times M$ to the set of matchings of $G_2$, since every cover by edges and and even cycles is a cover by vertices, edges and cycles. So $abs(M)^2 <= product_(x in V(G)) (d(x)!)^(1 \/ d(x))$.
 ]
 
 
@@ -563,7 +563,7 @@ Bregman's theorem concerns how large $per(A)$ can be if $A$ is a $0, 1$ matrix a
     Let $E subset.eq ZZ^n$ and let $cal(A)$ be a family of subsets of $[n]$ such that every $i in [n]$ is contained in at least $r$ sets in $cal(A)$. Then $
         abs(E) <= product_(A in cal(A)) abs(P_A E)^(1 \/ r).
     $
-]
+]<crl:generalised-discrete-loomis-whitney>
 #proofhints[
     Straightforward.
 ]
@@ -598,7 +598,7 @@ Bregman's theorem concerns how large $per(A)$ can be if $A$ is a $0, 1$ matrix a
 ]<def:triangle-intersecting>
 #theorem[
     If $abs(V) = n$, then a $Delta$-intersecting family of graphs with vertex set $V$ has size at most $2^(binom(n, 2) - 2)$.
-]
+]<thm:upper-bound-on-size-of-triangle-intersecting-family-of-graphs>
 #proofhints[
     - Let $cal(G)$ be a $Delta$-intersecting family. View $G in cal(G)$ as a characteristic function from $V^((2))$ to ${0, 1}$. Let $X = (X_e: e in V^((2)))$ be chosen uniformly at random from $cal(G)$.
     - For each $R subset.eq V$, let $G_R = K_R union K_(V \\ R)$ and define $cal(G)_R = {G inter G_R: G in cal(G)}$. Explain why $cal(G)_R$ is an intersecting family, use this to give upper bound on $abs(cal(G)_R)$.
@@ -670,7 +670,7 @@ Bregman's theorem concerns how large $per(A)$ can be if $A$ is a $0, 1$ matrix a
     If $abs(cal(A)) = binom(t, d) = (t (t - 1) cdots (t - d + 1))/d!$ for some real number $t$, then $
         abs(partial cal(A)) >= binom(t, d - 1).
     $
-]
+]<thm:kruskal-katona>
 #proofhints[
     - Let $X = (X_1, ..., X_d)$ be a random ordering of the elements of a uniformly random $A in cal(A)$. Give an expression for $H(X)$.
     - Explain why it is enough to show $H(X_1, ..., X_(d - 1)) >= log((d - 1)! binom(t, d - 1))$.
@@ -682,7 +682,7 @@ Bregman's theorem concerns how large $per(A)$ can be if $A$ is a $0, 1$ matrix a
     $
     - Use that $X_k$ and $X^*$ have the same distribution (why?) to show that $H(X_k | X_(< k)) >= H(X^*, T | X_(<= k)) = h(p) + p H(X_(k + 1) | X_(<= k))$.
     - Find the maximum of the lower bound to show that $H(X_k | X_(< k)) >= log(2^H(X_(k + 1) | X_(<= k)) + 1)$.
-    - Using the chain rule and the fact that $log(d! binom(t, d))$ is an increasing function for $t >= d$, show that $r + d - 1 <= t$, and use this to conclude the desired bound on $H(X_(< d))$.
+    - Using the chain rule and the fact that $log(d! binom(t, d))$ is an increasing function in $t$ for $t >= d$, show that $r + d - 1 <= t$ where $r = 2^H(X_d | X_(< d))$, and use this to conclude the desired bound on $H(X_(< d))$.
 ]
 #proof[
     Let $X = (X_1, ..., X_d)$ be a random ordering of the elements of a uniformly random $A in cal(A)$. Then $H(X) = log(d! abs(A)) = log(d! binom(t, d))$. Note that $(X_1, ..., X_(d - 1))$ is an ordering of the elements of some $B in partial_i A$, so $
@@ -738,7 +738,7 @@ If we want to prove @thm:gilmer, it is natural to let $A, B$ be independent unif
     Suppose $c > 0$ is such that $h(x y) >= c (x h(y) + y h(x))$ for every $x, y in [0, 1]$. Let $cal(A)$ be a family of sets such that every element (of $union cal(A)$) belongs to fewer than $p abs(cal(A))$ members of $cal(A)$. Let $A, B$ be independent uniformly random members of $cal(A)$. Then $
         H(A union B) > c(1 - p) (H(A) + H(B)).
     $
-]<lem:converse-of-gilmer-lemma>
+]<lem:contrapositive-of-gilmer-lemma>
 #proofhints[
     - Think of $A, B$ as characteristic functions. Write $A_(< k)$ for $(A_1, ..., A_(k - 1))$.
     - Explain why it is enough to prove that $H((A union B)_k | A_(< k), B_(< k)) > c(1 - p)(H(A_k | A_(< k)) + H(B_k | H_(B_(< k))))$ for all $k$.
@@ -748,7 +748,7 @@ If we want to prove @thm:gilmer, it is natural to let $A, B$ be independent unif
 #proof[
     Think of $A, B$ as characteristic functions. Write $A_(< k)$ for $(A_1, ..., A_(k - 1))$. By the @lem:chain-rule, it is enough to prove for every $k$ that $
         H((A union B)_k | (A union B)_(< k)) > c(1 - p)(H(A_k | A_(< k)) + H(B_k | H_(B_(< k)))).
-    $ By @lmm:conditional-data-processing, $
+    $ By @lem:conditional-data-processing, $
         H((A union B)_k | (A union B)_(< k)) >= H((A union B)_k | A_(< k), B_(< k))
     $ For each $u, v in {0, 1}^(k - 1)$, write $p(u) = PP(A_k = 0 | A_(< k) = u)$ and $q(v) = PP(B_k = 0 | B_(< k) = v)$. Then, since $A$ and $B$ are independent, $
         & H((A union B)_k | A_(< k) = u, B_(< k) = v) \
@@ -769,13 +769,13 @@ If we want to prove @thm:gilmer, it is natural to let $A, B$ be independent unif
     $ as required.
 ]
 #corollary[
-    Let $cal(A)$, $p$ and $c$ be as in @lem:converse-of-gilmer-lemma. If $cal(A)$ is union-closed, then we must have $p >= 1 - 1 \/ 2c$.
+    Let $cal(A)$, $p$ and $c$ be as in @lem:contrapositive-of-gilmer-lemma. If $cal(A)$ is union-closed, then we must have $p >= 1 - 1 \/ 2c$.
 ]<crl:converse-of-gilmer-corollary>
 #proofhints[
     Straightforward.
 ]
 #proof[
-    Let $A$ and $B$ be independent uniformly random elements of $cal(A)$. Since $cal(A)$ is union-closed, $A union B in cal(A)$, so $H(A union B) <= log abs(cal(A))$. Also, $H(A) = H(B) = log abs(cal(A))$. Hence, by @lem:converse-of-gilmer-lemma, $2 c (1 - p) <= 1$.
+    Let $A$ and $B$ be independent uniformly random elements of $cal(A)$. Since $cal(A)$ is union-closed, $A union B in cal(A)$, so $H(A union B) <= log abs(cal(A))$. Also, $H(A) = H(B) = log abs(cal(A))$. Hence, by @lem:contrapositive-of-gilmer-lemma, $2 c (1 - p) <= 1$.
 ]
 @crl:converse-of-gilmer-corollary gives a non-trivial bound as long as $c > 1 \/ 2$. We shall obtain $1 \/ (sqrt(5) - 1)$.
 
@@ -976,13 +976,13 @@ $ where $p(x) = p_x$, $q(y) = q_y$. So sums of independent random variables corr
     Let $X, Y, Z$ be $G$-valued random variables. Then $d(X; Z) <= d(X; Y) + d(Y; Z)$.
 ]<lem:entropic-ruzsa-triangle-inequality>
 #proofhints[
-    Simplify the desired inequality and use @lmm:subadditivity-with-additional-difference (where $X - Z$ depends on two different (pairs of) random variables).
+    Simplify the desired inequality and use @lem:subadditivity-with-additional-difference (where $X - Z$ depends on two different (pairs of) random variables).
 ]
 #proof[
     We must show (assuming WLOG that $X, Y, Z$ are independent) that $
         & H(X - Z) - 1/2 H(X) - 1/2 H(Z) \
         <= & H(X - Y) - 1/2 H(X) - 1/2 H(Y) + H(Y - Z) - 1/2 H(Y) - 1/2 H(Z),
-    $ i.e. that $H(X - Z) + H(Y) <= H(X - Y) + H(Y - Z)$. Since $X - Z$ depends on $(X - Y, Y - Z)$ and on $(X, Z)$, by @lmm:subadditivity-with-additional-difference, $
+    $ i.e. that $H(X - Z) + H(Y) <= H(X - Y) + H(Y - Z)$. Since $X - Z$ depends on $(X - Y, Y - Z)$ and on $(X, Z)$, by @lem:subadditivity-with-additional-difference, $
         H(X - Y, Y - Z, X, Z) + H(X - Z) <= H(X - Y, Y - Z) + H(X, Z)
     $ i.e. $H(X, Y, Z) + H(X - Z) <= H(X, Z) + H(X - Y, Y - Z)$. By independence and @prop:subadditivity, we get $H(X - Z) + H(Y) <= H(X - Y) + H(Y - Z)$.
 ]
@@ -992,10 +992,10 @@ $ where $p(x) = p_x$, $q(y) = q_y$. So sums of independent random variables corr
     $
 ]<lem:submodularity-for-sums>
 #proofhints[
-    Use @lmm:subadditivity-with-additional-difference.
+    Use @lem:subadditivity-with-additional-difference.
 ]
 #proof[
-    $X + Y + Z$ is a function of $(X + Z, Y)$ and of $(X, Y + Z)$. Therefore, by @lmm:subadditivity-with-additional-difference, $
+    $X + Y + Z$ is a function of $(X + Z, Y)$ and of $(X, Y + Z)$. Therefore, by @lem:subadditivity-with-additional-difference, $
         H(X + Z, Y, X, Y + Z) + H(X + Y + Z) <= H(X + Z, Y) + H(X, Y + Z),
     $ thus $H(X, Y, Z) + H(X + Y + Z) <= H(X + Z) + H(Y) + H(X) + H(Y + Z)$. By independence and cancelling equal terms, we get the desired inequality.
 ]
@@ -1015,7 +1015,7 @@ $ where $p(x) = p_x$, $q(y) = q_y$. So sums of independent random variables corr
 ]
 #corollary[
     Let $X$ and $Y$ be $G$-valued random variables. Then $d(X; -Y) <= 5 d(X; Y)$.
-]
+]<crl:entropic-ruzsa-distance-increase-from-negation-of-one-rv>
 #proofhints[
     Straightforward.
 ]
@@ -1291,7 +1291,7 @@ Recall that we want $U, V$ such that $tau_(X, Y)(U, V) < d(X; Y)$. @lem:another-
 ]
 #corollary[
     Let $X_1, X_2, Y_1, Y_2$ be copies of $X, Y$. Then $(X_1 + X_2, Y_1 + Y_2)$ is $4$-relevant to $(Y, X)$.
-]
+]<crl:relevance-of-swapping-and-sum-of-copies>
 #proofhints[
     Straightforward.
 ]

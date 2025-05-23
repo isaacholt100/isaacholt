@@ -319,7 +319,7 @@ We will inductively define a provability relation by enforcing rules that implem
 ]
 #corollary("Uniqueness of normal form")[
     If a simply-typed $lambda$-term admits a $beta$-NF, then this form is unique.
-]<cor:uniqueness-of-beta-normal-form>
+]<crl:uniqueness-of-beta-normal-form>
 #proposition("Uniqueness of types")[
     + If $Gamma forces M: sigma$ and $Gamma forces M: tau$, then $sigma = tau$.
     + If $Gamma forces M: sigma$, $Gamma forces N: tau$, and $M equiv_beta N$, then $sigma = tau$.

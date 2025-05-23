@@ -331,7 +331,7 @@ $
 ]
 #corollary[
     Hales-Jewett implies Van der Waerden's theorem. 
-]<cor:hales-jewett-implies-van-der-waerden>
+]<crl:hales-jewett-implies-van-der-waerden>
 #proofhints[
     For a colouring $c: NN -> [k]$, consider the induced colouring $c'(x_1, ..., x_n) = c(x_1 + dots.c + x_n)$ of $[m]^n$.
 ]

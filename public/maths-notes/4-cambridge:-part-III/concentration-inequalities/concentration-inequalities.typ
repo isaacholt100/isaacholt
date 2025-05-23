@@ -1,6 +1,6 @@
 #import "../../template.typ": *
 #let name-abbrvs = (:)
-#show: doc => template(doc, hidden: (), slides: false, name-abbrvs: name-abbrvs)
+#show: doc => template(doc, hidden: (), slides: true, name-abbrvs: name-abbrvs, slides-ref-hints: true)
 #set document(
     title: "Concentration Inequalities Notes",
     author: "Isaac Holt",
@@ -24,12 +24,12 @@ By WLLN, $PP(X in [5000 - n epsilon, 5000 + n epsilon]) approx 1$.
     Let $X_1, ..., X_n$ be IID RVs with mean $EE[X_1] = mu$. Let $Var(X_1) = sigma^2 < oo$. Then $1/(sigma sqrt(n)) sum_(i = 1)^n (X_i - mu) ->_D N(0, 1)$, i.e. $
         PP(1/(sigma sqrt(n)) sum_(i = 1)^n (X_i - mu) in A) -> integral_A 1/sqrt(2n) e^(-x^2 \/ 2) dif x
     $ for all $A$.
-]
+]<thm:clt>
 So $PP(X in [n/2 - sqrt(n)/2 Q^(-1) (delta), n/2 + sqrt(n)/2 Q^(-1) (delta)]) >= 1 - delta$, for $n$ large enough, where $Q(delta) = integral_delta^oo 1/sqrt(2n) e^(-x^2 \/ 2d) dif x$. We have $Q^(-1) (x) prop sqrt(log 1/x)$. So interval has length $prop sqrt(n) sqrt(log 1/delta)$.
 
 #theorem("Chebyshev's Inequality")[
     $PP(abs(X - mu) >= epsilon) <= Var(X) / epsilon^2$ for all $epsilon > 0$.
-]
+]<thm:chebyshevs-inequality>
 #corollary[
     $PP(abs(sum_(i = 1)^n (X_i) - n/2) >= t) <= Var(sum_(i = 1)^n X_i)/t^2 = n sigma^2 / t^2 <= delta$ where $t = sqrt(n) sigma \/ sqrt(delta)$.
 ]
@@ -61,12 +61,12 @@ Principle: a smooth function of many independent random variables concentrates a
     A special case of Holder's inequality: $
         EE[abs(X Y)] <= EE[X^2]^(1 \/ 2) dot EE[Y^2]^(1 \/ 2).
     $
-]
+]<thm:cauchy-schwarz>
 #definition[
     The *conditional variance* of $Y$ given $X$ is the random variable $
         Var(Y | X) := EE[(Y - EE[Y | X])^2 | X].
     $
-]
+]<def:conditional-variance>
 
 = The Chernoff-Cramer method
 
@@ -190,7 +190,7 @@ Principle: a smooth function of many independent random variables concentrates a
     The *Gamma function* is defined as $
         Gamma(z) := integral_0^oo t^(z - 1) e^(-t) dif t.
     $
-]
+]<def:gamma-function>
 #theorem[
     Let $EE[X] = 0$. TFAE for suitable choices of $nu, b, c, d$:
     + $X in cal(G)(nu)$.
@@ -605,7 +605,7 @@ In the following section, let $A$ be a discrete (countable) alphabet and let $X$
 ]
 #definition[
     For PMFs $Q, P$ on $A$, $Q$ is *absolutely continuous* with respect to $P$, written $Q << P$, if $P(x) = 0 => Q(x) = 0$ for all $x in A$.
-]
+]<def:absolutely-continuous-pmf>
 #definition[
     Let $Q, P$ be PMFs on $A$ such that $Q << P$ (which means if $P(x) = 0$, then $Q(x) = 0$). The *relative entropy* between $Q$ and $P$ is $
         D(Q || P) = EE_Q [log Q(X)/P(X)] = sum_(x in A) Q(x) log Q(x)/P(x)
@@ -663,7 +663,7 @@ In the following section, let $A$ be a discrete (countable) alphabet and let $X$
     $
 ]<def:conditional-relative-entropy>
 #proposition("Chain Rule for Relative Entropy")[
-    Let $P, Q$ be PMFs on $A^n$. Let $X_(1:n) sim P$. Then $
+    Let $P, Q$ be PMFs on $A^n$. Let $X_(1:n) sim Q$. Then $
         D(Q_(X_(1:n)) || P_(X_(1:n))) & = sum_(i = 1)^n EE_(Q_(X_1:(i - 1))) [D(Q_(X_i | X_(1:(i - 1))) || P_(X_i | X_(1:(i - 1))))] \
         & =: sum_(i = 1)^n D(Q_(X_i | X_(1:(i - 1))) || P_(X_i | X_(1:(i - 1))) | Q_(X_(1:(i - 1))))
     $
@@ -686,7 +686,7 @@ In the following section, let $A$ be a discrete (countable) alphabet and let $X$
 ]
 #lemma("Conditioning Reduces Conditional Entropy")[
     $H(X | Y, Z) <= H(Y)$.
-]
+]<lem:conditioning-reduces-conditional-entropy>
 #proofhints[
     Straightforward.
 ]
@@ -711,7 +711,7 @@ In the following section, let $A$ be a discrete (countable) alphabet and let $X$
     The Loomis-Whitney inequality states that for finite $A subset.eq ZZ^n$, $
         abs(A) <= product_(i = 1)^n abs(A^((i)))^(1 \/ (n - 1))
     $
-]
+]<crl:loomis-whitney-inequality>
 #proofhints[
     Straightforward.
 ]
@@ -771,7 +771,7 @@ In the following section, let $A$ be a discrete (countable) alphabet and let $X$
     Let $X sim P$, where $Q << P$ are PMFs on a countable alphabet $A$. Let $Z = Q(X)/P(X)$. Then $
         Ent(Z) = D(Q || P).
     $
-]
+]<prop:expression-for-relative-entropy-in-terms-of-entropy>
 #proofhints[
     Straightforward.
 ]
@@ -799,6 +799,10 @@ In the following section, let $A$ be a discrete (countable) alphabet and let $X$
     - Let $X sim P = P_1 times.circle cdots times.circle P_n$. Let $Q(x) = f(x) P(x)$.
     - Show that $Ent(a Z) = a Ent(Z)$, and so can assume WLOG that $EE[Z] = 1$, so $Q$ is PMF.
     - Use @thm:hans-inequality-for-relative-entropy on $Q$ and $P$.
+    - Show that $
+        Q_(X_i | X^((i)))(x_i | x^((i))) = (P(x_i) f(x))/(EE[f(X) | X^((i)) = x^((i))]).
+    $
+    - Show that $Q^((i))(x^((i))) = P^((i))(x^((i))) EE[f(X) | X^((i)) = x^((i))]$, and so that $EE[D(Q_(X_i | X^((i))) || P_(X_i) | Q_(X^((i))))] = EE_P [Ent^((i))(f(X))]$.
 ]
 #proof[
     Let $X sim P = P_1 times.circle cdots times.circle P_n$. Let $Q(x) = f(x) P(x)$. Since $
@@ -831,7 +835,7 @@ In the following section, let $A$ be a discrete (countable) alphabet and let $X$
 ]<thm:herbsts-argument>
 #proofhints[
     - Show that $Ent(e^(lambda Z))/EE[e^(lambda Z)] = lambda^2 G'(lambda)$, where $G(lambda) = 1/lambda psi_(Z - EE[Z])(lambda)$.
-    - Given an upper bound for $integral_0^lambda G'(t) dif t$ (explain using a Taylor expansion why this integral is valid).
+    - Given an upper bound for $integral_0^lambda G'(t) dif t$ (explain using a Taylor expansion of $psi_(Z - EE[Z])$ why this integral is valid).
 ]
 #proof[
     Write $psi = psi_(Z - EE[Z])$. We have $
@@ -855,7 +859,7 @@ In the following section, let $A$ be a discrete (countable) alphabet and let $X$
     $ where $nu = 1/4 sum_(i = 1)^n c_i^2$.
 ]<thm:bounded-differences-inequality>
 #proofhints[
-    - Use @lem:hoeffding and an equality from the proof of @thm:herbsts-argument to show that $(Ent^((i)) (e^(lambda Z)))/EE[e^(lambda Z) | X^((i))] = lambda psi'_(Z - EE[Z])(lambda) - psi_(Z - EE[Z])(lambda) <= 1/8 lambda^2 c_i^2$ (you should use an integral somewhere), where $psi_i (lambda) = log EE[e^(lambda(Z - EE[Z])) | X^((i))]$.
+    - Use @lem:hoeffding and an equality from the proof of @thm:herbsts-argument to show that $(Ent^((i)) (e^(lambda Z)))/EE[e^(lambda Z) | X^((i))] = lambda psi'_i (lambda) - psi_i (lambda) <= 1/8 lambda^2 c_i^2$ (you should use an integral somewhere), where $psi_i (lambda) = log EE[e^(lambda(Z - EE[Z])) | X^((i))]$.
     - Use @thm:tensorisation-of-entropy and @thm:herbsts-argument to show that $Z - EE[Z]$ has sub-Gaussian right tail with parameter $nu$.
     - Why does the result also hold for $-f$?
 ]
@@ -904,7 +908,7 @@ In the following section, let $A$ be a discrete (countable) alphabet and let $X$
         1/2 a^2 log (a^2) + 1/2 b^2 log(b^2) - 1/2 (a^2 + b^2) log((a^2 + b^2)/2) <= 1/2 (b - a)^2.
     $ We may assume $a, b >= 0$, since $(b - a)^2 / 2 >= (abs(b) - abs(a))^2 / 2$. Also, by symmetry, WLOG we assume $a >= b$. For fixed $b >= 0$, define $
         h(a) = 1/2 a^2 log (a^2) + 1/2 b^2 log(b^2) - 1/2 (a^2 + b^2) log((a^2 + b^2)/2) - 1/2 (b - a)^2.
-    $ Since $h(b) = 0$, it is enough to show that $h'(b) = 0$ and $h''(a) <= 0$ (so $h$ is convex). We have $
+    $ Since $h(b) = 0$, it is enough to show that $h'(b) = 0$ and $h''(a) <= 0$ (so $h$ is concave). We have $
         h'(a) = a log (2a^2)/(a^2 + b^2) - (a - b)
     $ Hence, $h'(b) = 0$. Also, $
         h''(a) = 1 + log (2a^2) / (a^2 + b^2) - (2a^2)/(a^2 + b^2) <= 0,
@@ -1051,7 +1055,7 @@ Let $f: [0, 1]^n -> RR$ be separately convex and $1$-Lipschitz. The @thm:convex-
     Let $f: [0, 1]^n -> RR$ be separately convex and $1$-Lipschitz. Let $Z = f(X_1, ..., X_n)$ where $X_1, ..., X_n$ are independent and are supported on $[0, 1]$. Then for all $t > 0$, $
         PP(Z - EE[Z] >= t) <= e^(-t^2 \/ 2),
     $ so $Z - EE[Z]$ has a sub-Gaussian right tail.
-]
+]<thm:convex-concentration-inequality>
 #proofhints[
     - You may assume the partial derivatives of $f$ exist.
     - Find an appropriate upper bound for $sum_(i = 1)^n (f(X) - f(X'_((i))))^2$, where $X'_((i)) = (X_(1:(i - 1)), X'_i, X_((i + 1):n))$ and $X'_i$ is the value for which the infimum is achieved (why is the infimum achieved?).
@@ -1126,7 +1130,7 @@ Let $f: [0, 1]^n -> RR$ be separately convex and $1$-Lipschitz. The @thm:convex-
     For all $lambda in RR$, we have $
         log EE_P [e^(lambda (Z - EE_P [Z]))] = sup_(Q << P) (lambda(EE_Q Z - EE_P Z) - D(Q || P))
     $
-]
+]<crl:variational-formulae-for-log-mgf>
 #theorem("Marton's Argument")[
     Let $P$ be a PMF and $Z sim P$. If there exists $nu > 0$ such that $
         EE_Q [Z] - EE_P [Z] <= sqrt(2 nu D(Q || P))
@@ -1229,7 +1233,7 @@ Let $f: [0, 1]^n -> RR$ be separately convex and $1$-Lipschitz. The @thm:convex-
     $
 ]<lem:expression-for-total-variation-distance-in-terms-of-couplings>
 #proofhints[
-    Show that LHS $>=$ RHS by taking a supremum and infimum, then consider $
+    Show that LHS $>=$ RHS by taking a supremum and infimum and using that $abs(indicator({x in A}) - indicator({Y in A})) <= indicator({X != Y})$, then consider $
         pi(omega_1, omega_2) = cases(
             min{P(omega), Q(omega)} quad & "if" omega_1 = omega_2 = omega,
             1/(d_"TV" (P, Q)) (P(omega_1) - Q(omega_1)) (Q(omega_2) - P(omega_2)) quad & "if" (omega_1, omega_2) in A^* times (A^*)^c,
@@ -1571,13 +1575,13 @@ Let $f: [0, 1]^n -> RR$ be separately convex and $1$-Lipschitz. The @thm:convex-
     $
 ]<prop:right-tail-upper-bound-for-densities-of-log-concave-isotropic-rv>
 #proofhints[
-    - Let $x_m$ denote the mode of $X$ (why is this unique?). Let $x_0 = 2/rho(0) + x_m$. Why is $x_0 >= x_m$?
+    - Let $x_m$ denote the mode of $X$ (why is this unique?). Can assume WLOG that $x_m > 0$. WLOG, $x_m > 0$. Let $x_0 = 2/rho(0) + x_m$. Why is $x_0 >= x_m$?
     - By writing $1$ as an integral, show that $x_m <= 1 \/ rho(0)$ (justify using log-concavity).
     - Use the same idea to show that $rho(x_0) <= rho(0) \/ 2$.
     - For $x >= 3 \/ rho(0)$, write $x_0 = x_0 / x dot x + (1 - x_0 / x) dot 0$ (why is this a valid convex combination?). Use log-concavity and combine the above inequalities to obtain the result.
 ]
 #proof[
-    Write $x_m$ for the mode of $X$ (this is unique since $X$ is log-concave). WLOG, $x_m > 0$. // TODO: why can we assume this?
+    Write $x_m$ for the mode of $X$ (this is unique since $X$ is log-concave). WLOG, $x_m > 0$ (the proof is similar if $x_m < 0$).
     Define $x_0 := 2/rho(0) + x_m$. We have $x_0 >= x_m$ by @lem:lower-bound-for-middle-density-of-log-concave-isotropic-rv. First note that $
         1 = integral_(-oo)^oo rho(x) dif x >= integral_0^(x_m) rho(x) dif x >= x_m rho(0)
     $ by log-concavity. Hence, $x_m <= 1 \/ rho(0)$. Also, $
@@ -1590,7 +1594,7 @@ Let $f: [0, 1]^n -> RR$ be separately convex and $1$-Lipschitz. The @thm:convex-
     $ The final inequality is by @lem:lower-bound-for-middle-density-of-log-concave-isotropic-rv.
 ]
 #remark[
-    If $rho$ is log-concave and isotropic then so is $-rho$, so we can obtain a left tail bound as well.
+    If $rho$ is log-concave and isotropic then so is $x |-> rho(-x)$, so we can obtain a left tail bound as well.
 ]
 // TODO: exam comments:
 /*

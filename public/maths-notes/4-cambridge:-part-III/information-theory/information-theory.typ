@@ -11,7 +11,7 @@
     "Chain Rule for Mutual Information": "Chain Rule",
     "Ruzsa Triangle Inequality for Entropy": "Ruzsa Triangle Inequality"
 )
-#show: doc => template(doc, hidden: (), slides: false, name-abbrvs: name-abbrvs)
+#show: doc => template(doc, hidden: (), slides: true, name-abbrvs: name-abbrvs, slides-ref-hints: true)
 #set document(
     title: "Information Theory Notes",
     author: "Isaac Holt",
@@ -40,7 +40,7 @@
             0 & "with probability" 1 - p
         ),
     $ i.e. the probability mass function (PMF) of $X$ is $P: {0, 1} -> RR$, $P(0) = 1 - p$, $P(1) = p$.
-]
+]<def:bernoulli-distribution>
 #notation[
     Throughout, we take $log$ to be the base-$2$ logarithm, $log_2$.
 ]
@@ -129,7 +129,7 @@
         abs(B_n) & >= (1 - epsilon) 2^(n(H - epsilon)) quad "eventually" \
         "i.e." exists N in NN: forall n >= N, quad abs(B_n) & >= (1 - epsilon) 2^(n(H - epsilon)).
     $
-]<cor:aep>
+]<crl:aep>
 #proofhints[
     - $(==>)$: straightforward.
     - $(<==)$: show that $P^n (B_n inter B_n^* (epsilon)) -> 1$ as $n -> oo$.
@@ -190,7 +190,7 @@
 ]
 #proof[
     - $(==>)$:
-        - Let $B_n^* (epsilon)$ be the sets of typical strings defined in AEP (@cor:aep). Then $P_e^((n)) = 1 - PP(X_1^n in B_n^*) -> 0$ as $n -> oo$ by AEP.
+        - Let $B_n^* (epsilon)$ be the sets of typical strings defined in AEP (@crl:aep). Then $P_e^((n)) = 1 - PP(X_1^n in B_n^*) -> 0$ as $n -> oo$ by AEP.
         - Also by AEP, $R_n = 1/n (1 + ceil(log abs(B_n^*))) <= 1/n log abs(B_n^*) + 2/n <= H + epsilon + 2/n$.
     - $(<==)$:
         - WLOG let $0 < epsilon < 1\/2$. By AEP, $
@@ -275,7 +275,7 @@
     For a hypothesis test between $P$ and $Q$ based on $n$ data samples, the *likelihood ratio decision regions* $
         B_"NP" = {x_1^n in A^n: (P^n (x_1^n))/(Q^n (x_1^n)) >= T}, quad "for some threshold" T > 0,
     $ are optimal in that, for any decision region $B_n subset.eq A^n$, if $e_1^((n)) (B_n) <= e_1^((n)) (B_"NP")$, then $e_2^((n)) (B_n) >= e_2^((n)) (B_"NP")$, and vice versa.
-]
+]<thm:neyman-pearson-lemma>
 #proofhints[
     Consider the inequality $
         (P^n (x_1^n) - T Q^n (x_1^n)) (indicator(B_"NP") (x_1^n) - indicator(B_n) (x_1^n)) >= 0
@@ -303,7 +303,7 @@
     The Neyman-Pearson decision region $B_"NP"$ can be expressed in information-theoretic form as $
         B_"NP" = {x_1^n in A^n: D(hat(P)_n || Q) >= D(hat(P)_n || P) + T'}
     $ where $T' = 1/n log T$.
-]
+]<prop:informatation-theoretic-form-of-neyman-pearson-decision-region>
 #proofhints[
     Rewrite the expression $1/n log (P^n (x_1^n))/(Q^n (x_1^n))$.
 ]
@@ -329,7 +329,7 @@
     Let $a_1, ..., a_n$, $b_1, ..., b_n$ be non-negative constants. Then $
         sum_(i = 1)^n a_i log a_i / b_i >= (sum_(i = 1)^n a_i) log (sum_(i = 1)^n a_i)/(sum_(i = 1)^n b_i)
     $ with equality iff $a_i / b_i = c$ for all $i$, for some constant $c$. We use the convention that $0 log 0 = 0 log 0/0 = 0$.
-]
+]<thm:log-sum-inequality>
 #remark[
     This also holds for countably many $a_i$ and $b_i$.
 ]
@@ -355,7 +355,7 @@
     + If $X sim P$ on a finite alphabet $A$, then $
         0<= H(X) <= log abs(A)
     $ with equality to $0$ iff $X$ is a constant, and equality to $log abs(A)$ iff $X$ is uniformly distributed on $A$.
-]
+]<prop:bounds-on-entropy-and-relative-entropy>
 #remark[
     This also holds for countably infinite $A$.
 ]
@@ -471,7 +471,7 @@
 ]<note:x-y-and-function-of-y-form-markov-chain>
 #corollary[
     $H(X_1^n) <= sum_(i = 1)^n H(X_i)$ with equality iff all $X_1^n$ are independent.
-]
+]<crl:subadditivity-of-entropy>
 #proof[
     Straightforward.
 ]
@@ -501,13 +501,13 @@
     - Chain rule: $H(X, Z | Y) = H(X | Y) + H(Z | X, Y)$.
     - Subadditivity: $H(X, Z | Y) <= H(X | Y) + H(Z | Y)$ with equality iff $X$ and $Z$ are conditionally independent given $Y$.
     - Conditioning reduces entropy: $H(X | Y, Z) <= H(X | Y)$ with equality iff $X$ and $Z$ are conditionally independent given $Y$.
-]
+]<prop:properties-of-conditional-entropy>
 #proof[
     Exercise.
 ]
 #theorem("Fano's Inequality")[
     Let $X$ and $Y$ be RVs on respective alphabets $A$ and $B$. Suppose we are interested in the RV $X$ but only are allowed to observe the possibly correlated RV $Y$. Consider the estimate $hat(X) = f(Y)$, with probability of error $P_e := PP\(hat(X) != X\)$. Then $ H(X | Y) <= h(P_e) + P_e log (abs(A) - 1), $ where $h$ is the binary entropy function.
-]
+]<thm:fano-inequality>
 #proofhints[
     Consider an "error" Bernoulli RV $E$ which depends on $X$ and $Y$. Use the chain rule in two directions on $H(X, E | Y)$. Merge these and split up into the cases when $E = 0$ and $E = 1$ (using )
 ]
@@ -598,7 +598,7 @@
 ]
 #corollary("Concavity of Entropy")[
     The entropy of $H(P)$ is a concave function on all PMFs $P$ on a finite alphabet.
-]<cor:entropy-is-concave>
+]<crl:entropy-is-concave>
 #proofhints[
     Use convexity of relative entropy of $P$ and a suitable distribution.
 ]
@@ -647,10 +647,10 @@
     Let $X_1, ..., X_n$ be independent, with each $X_i sim Bern(p_i)$. Then $
         D_e (P_(S_n) || Pois(lambda)) <= sum_(i = 1)^n p_i^2
     $
-]
+]<crl:relative-entropy-between-sum-of-independent-bernoullis-and-poisson-is-bounded>
 #corollary[
     @thm:binomial-converges-to-poisson follows directly from @thm:relative-entropy-between-sum-of-bernoullis-and-poisson-is-bounded.
-]
+]<crl:binomial-convergence-to-poisson-follows-from-relative-entropy-bound>
 #proofhints[
     Use @thm:pinskers-inequality.
 ]
@@ -730,7 +730,7 @@
 #proposition[
     - $0 <= I(X; Y) <= H(X)$ with equality to $0$ iff $X$ and $Y$ are independent.
     - Similarly, $I(X; Z | Y) >= 0$ with equality iff $X - Y - Z$, i.e. $X$ and $Z$ are conditionally independent given $Y$.
-]
+]<prop:bounds-on-mutual-information-and-conditional-mutual-information>
 #proof[
     First is by @prop:expressions-for-mutual-information and non-negativity of conditional entropy, second is an exercise.
 ]
@@ -789,7 +789,7 @@
     Let RVs $Y_1, Y_2$ be conditionally independent given $X$, each with distribution $P_(Y | X)$, and RVs $Z_1, Z_2$ be distributed according to $Q_(Z | Y)(dot | Y_1)$, $Q_(Z | Y)(dot | Y_2)$ respectively. Let RV $Y$ have distribution $P_(Y | X)$, and $W_1, W_2$ be conditionally independent given $Y$, distributed according to $Q_(Z | Y)(dot | Y)$.
 
     If $S(X; W_1, W_2) > 0$, then $I(X; W_1, W_2) > I(X; Z_1, Z_2)$, for independent $Z_1$ and $Z_2$, i.e. correlated observations are better than independent ones.
-]
+]<thm:condition-for-correlated-observations-giving-more-information-than-independent-ones>
 #proofhints[
     Use data processing for mutual information.
 ]
@@ -869,7 +869,7 @@
     $ If $f(b, y) = f(b', y')$, then $a_(y') - b' = a_y - b$ and $b' - c_(y') = b - c_y$. So $a_y - a_(y') = b - b' = c_y - c_(y')$. So $y = a_y - c_y = a_(y') - c_(y') = y'$. Hence $a_y = a_(y')$, and so $b = b'$. So $f$ is injective, so $abs(B times (A - C)) <= abs((A - B) times (B - C))$.
 ]
 #remark[
-    If $X_1^n$ is a large collection of IID RVs with common PMF $P$ on alphabet $A$, then the @cor:aep tells us that we can concentrate on the $2^(n H)$ typical strings. $2^(n H) = \(2^H\)^n$ is typically much smaller than all $abs(A)^n = (2^(log abs(A)))^n$ strings. We can think of $\(2^H\)^n$ as the effective support size of $P^n$, and can of $2^H$ as the effective support size of a single RV with entropy $H$.
+    If $X_1^n$ is a large collection of IID RVs with common PMF $P$ on alphabet $A$, then the @crl:aep tells us that we can concentrate on the $2^(n H)$ typical strings. $2^(n H) = \(2^H\)^n$ is typically much smaller than all $abs(A)^n = (2^(log abs(A)))^n$ strings. We can think of $\(2^H\)^n$ as the effective support size of $P^n$, and can of $2^H$ as the effective support size of a single RV with entropy $H$.
 ]
 #remark[
     We can use the above interpretation to obtain useful conjectures about bounds for the entropy of discrete RVs, from corresponding results on bounds on sumsets. We start with a sumset bound, then replace subsets of $ZZ$ by independent RVs on $ZZ$, and replace $log abs(A)$ of each set $A$ by the entropy of the corresponding RV.
@@ -896,7 +896,7 @@
     Let $X, Y, Z$ be independent RVs on alphabet $ZZ$. Then $
         H(X - Z) + H(Y) <= H(X - Y, Y - Z).
     $
-]
+]<lem:entropy-ruzsa-triangle-inequality-lemma>
 #proofhints[
     - Show that $I(X; X - Z) <= I(X; (X - Y, Y - Z))$ using the @prop:mutual-information-chain-rule for mutual information.
     - Rewrite both sides of the above inequality in terms of entropies, using @prop:entropy-data-processing.
@@ -940,7 +940,7 @@
         Delta^+ & = I(X_1 + X_2; X_2), \
         Delta^- & = I(X_1 - X_2; X_2).
     $
-]
+]<prop:mutual-information-expression-for-entropy-increase>
 #proofhints[
     Straightforward.
 ]
@@ -1147,7 +1147,7 @@
     Let $A$ be a finite alphabet and $x_1^n in A^n$. The *type* of $x_1^n$ is its empirical distribution $hat(P)_n = hat(P)_(x_1^n)$: $
         hat(P)_n (a) = hat(P)_(x_1^n)(a) = 1/n sum_(i = 1)^n bb(1)_{x_i = a}.
     $
-]
+]<def:type>
 #notation[
     For a finite alphabet $A = {a_1, ..., a_m}$, let $cal(P)$ denote the set of all PMFs on $A$: $
         cal(P) = {P in [0, 1]^m: sum_(a in A) P(a) = 1}.
@@ -1157,7 +1157,7 @@
     We write $cal(P)_n$ for the set of all *$n$-types*: $
         cal(P)_n = {P in cal(P): n P(a) in ZZ thick forall a in A}.
     $ Note that $cal(P)_n$ is finite.
-]
+]<def:n-types>
 #proposition[
     We have $abs(cal(P)_n) <= (n + 1)^m$.
 ]<prop:upper-bound-on-number-of-n-types>
@@ -1193,7 +1193,7 @@
     $T(P)$ consists of all possible arrangements of $n P(a_1)$ $a_1$'s, ..., $n P(a_m)$ $a_m$'s, so $
         abs(T(P)) = (n!)/(product_(j = 1)^m (n P(a_j))!).
     $
-]
+]<def:type-class>
 #lemma[
     Let $P in cal(P)_n$. Then $
         P^n (T(P)) = max{P^n (T(Q)): Q in cal(P)_n}.
@@ -1277,7 +1277,7 @@
     For a random variable $Y$, the *log-moment generating function* of $Y$ is $Lambda: RR -> RR$ defined by $
         Lambda(lambda) := ln EE[e^(lambda Y)].
     $
-]
+]<def:log-mgf>
 #notation[
     Write $Lambda^* (x) = sup{lambda x - Lambda(lambda): lambda > 0}$.
 ]
@@ -1376,7 +1376,7 @@
 
 #lemma[
     Let ${Z_n: n in NN}$ be a bounded sequence of RVs which converges to $z in RR$ in probability. Then $
-        EE[Z_n] -> c quad "as" n -> oo.
+        EE[Z_n] -> z quad "as" n -> oo.
     $
 ]<lem:expectation-of-bounded-rvs-converges-to-limit-of-convergence-in-probability>
 #proofhints[
@@ -1391,8 +1391,8 @@
 ]
 #theorem("Gibbs' Conditioning Principle")[
     Let $X_1^n$ be IID with common PMF $Q$ which has full support on $A$. Let $hat(P)_n$ be the empirical distribution of $X_1^n$. If $E subset.eq cal(P)$ is closed, convex, has non-empty interior, and $Q in.not E$, then $
-        forall a in A, quad EE\[hat(P)_n (a) | hat(P)_n in E\] = PP\(X_1 = a | hat(P)_n in E\) -> P^* (a) quad "as" quad n -> oo.
-    $
+        forall a in A, quad EE\[hat(P)_n (a) | hat(P)_n in E\] = PP\(X_1 = a | hat(P)_n in E\) -> P^* (a) quad "as" quad n -> oo,
+    $ where $P^*$ is the unique minimiser in @thm:sanov for the event $E$.
 ]<thm:gibbs-conditioning-principle>
 #proofhints[
     - Showing the equality is straightforward.
@@ -1463,7 +1463,7 @@
     $
 ]<thm:error-exponents-for-fixed-rate-compression>
 #proofhints[
-    - $==>$: let $B_n^*$ be the codebook which is a union over an appropriate set of type classes.
+    - $==>$: let $B_n^*$ be the codebook which is a union over the set of type classes $T(P)$ such that $H(P) < R$.
     - $<==$: explain why there is $delta > 0$ such that $inf{D(P || Q): H(P) >= R + delta} <= D^* + epsilon$.
     - Explain why, for all $n$ large enough, there is $P_n in cal(P)_n$ such that $H(P_n) >= R + delta \/ 2$ and $D(P_n || Q) <= D^* + 2 epsilon$.
     - Show that $abs(B_n) \/ abs(T(P_n)) -> 0$ as $n -> oo$, and hence that $P_e^((n)) >= 1/2 (n + 1)^(-m) 2^(-n (D^* + 2 epsilon))$ eventually.
@@ -1632,7 +1632,7 @@
     Let $vd(X) = {X_n: n in NN}$ be a stationary source with entropy rate $H = H(vd(X))$. Then $H$ is the best asymptotically achievable compression rate among all variable-rate prefix-free codes: $
         lim_(n -> oo) inf_((C_n, L_n) "prefix-free") 1/n EE[L_n (X_1^n)] = H.
     $
-]
+]<crl:entropy-rate-of-source-is-best-asymptotic-prefix-free-compression-rate>
 #proofhints[
     Straightforward.
 ]
@@ -1871,7 +1871,7 @@ $
     The *minimax average redundancy* over the class of all IID source distributions on $A^n$ is the shortest possible worst-case average redundancy $
         overline(rho)_n = inf_(Q_n) sup_(P in cal(P)) D(P^n || Q_n).
     $
-]
+]<def:minimax-average-redundancy>
 
 == Shtarkov's upper bound
 
@@ -1934,7 +1934,7 @@ $
     $ Then $overline(rho)(Theta)$ is equal to the capacity of the channel with input $theta$ and output $X sim P_theta$: $
         overline(rho)(Theta) = max_pi I(T; X),
     $ where the maximum is over all probability distributions $pi$ on $Theta$, $T sim pi$ and $X | T = theta sim P_theta$ (so the pair of RVs $(T, X)$ has joint distribution $pi(theta) P_theta (x)$).
-]
+]<thm:redundancy-capacity-theorem>
 #proof[
     Omitted (non-examinable).
 ]
@@ -1945,12 +1945,12 @@ $
             1 - sum_(j = 1)^(m - 1) theta_j quad & "if" i = m
         ).
     $
-]
+]<def:standard-parameterisation-of-pmfs-on-alphabet>
 #theorem("Rissanen")[
     Let $Theta$ parametrise the set of PMFs on $A$, where $abs(A) = m$. Let ${Q_n: n in NN}$ be an arbitrary sequence of distributions on $A^n$. Then for all $epsilon > 0$, there exists a constant $C$ and a subset $Theta_0 subset.eq Theta$ of volume less than $epsilon$ such that for all $theta in.not Theta_0$, $
         D(P_theta^n || Q_n) >= (m - 1)/2 log n - C quad "eventually".
     $ In particular, $overline(rho)_n >= (m - 1)/2 log n - C'$ eventually for some constant $C'$.
-]
+]<thm:rissanen>
 #proof[
     Non-examinable.
 ]
@@ -1958,7 +1958,7 @@ $
     We have (eventually) $
         (m - 1)/2 log n - C' <= overline(rho)_n <= rho_n^* <= (m - 1)/2 log n + C
     $ for some constants $C, C'$.
-]
+]<crl:bounds-on-minimax-maximal-and-average-redundancies>
 #remark[
     The above bound has a probabilistic interpretation: there exists a sequence of distributions ${Q_n: n in NN}$ which are "uniformly close" to all product distributions: $
         -log Q_n (x_1^n) approx -log P^n (x_1^n) + (m - 1)/2 log n,

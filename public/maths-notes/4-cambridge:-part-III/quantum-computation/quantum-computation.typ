@@ -8,7 +8,7 @@
     "Amplitude Amplification Theorem/2D-subspace Lemma": "Amplitude Amplification Theorem",
     "Lie-Trotter Product Formula": "Lie-Trotter"
 )
-#show: doc => template(doc, hidden: (), slides: false, name-abbrvs: name-abbrvs)
+#show: doc => template(doc, hidden: (), slides: true, name-abbrvs: name-abbrvs, slides-ref-hints: true)
 #set document(
     title: "Quantum Computation Notes",
     author: "Isaac Holt",
@@ -89,7 +89,7 @@
             k & "if" alpha = 1 "i.e." M divides y
         ).
     $
-]
+]<lem:sum-of-geometric-series-of-phases>
 #proofhints[
     Trivial.
 ]
@@ -100,7 +100,7 @@
     If a process succeeds with probability $p$ on one trial, then $
         Pr("at least one success in" t "trials") = 1 - (1 - p)^t > 1 - delta
     $ for $t = O(log(1\/d)/p)$.
-]
+]<lem:boosting-success-probability>
 #proofhints[
     Trivial.
 ]
@@ -109,7 +109,7 @@
 ]
 #theorem("Co-primality Theorem")[
     The number of integers less than $r$ that are coprime to $r$ is $O(r\/log log r)$.
-]
+]<thm:coprimality-theorem>
 #algorithm("Quantum Period Finding")[
     The algorithm solves the @prb:periodicity-determination:
     Let $f: ZZ\/M -> ZZ\/N$ be periodic with period $r < M$ and one-to-one in each period. Let $A = M/r$ be the number of periods. We work over the state space $H_M tp H_N$.
@@ -119,10 +119,10 @@
     + Measure the input state, yielding outcome $c$.
     + Compute the denominator $r_0$ of the simplified fraction $c/M$.
     + Repeat the previous steps $O(log log r) = O(log log M) = O(log m)$ times, halting if at any iteration, $f(0) = f(r_0)$.
-]
+]<alg:quantum-period-finding>
 #theorem("Correctness of Quantum Period Finding Algorithm")[
     When repeated, $O(log log r) = O(log log M)$ times, the quantum period finding algorithm obtains the correct value of $r$ with high probability.
-]
+]<thm:correctness-of-period-finding-algorithm>
 #proofhints[
     Straightforward.
 ]
@@ -146,7 +146,7 @@
         U(x_0): H_M & -> H_M, \
         ket(k) & |-> ket(x_0 + k).
     $
-]
+]<def:period-finding-shift-operator>
 #definition[
     Note that since $(ZZ\/M, +)$ is abelian, all $U(x_i)$ commute: $U(x_1) U(x_2) = U(x_1 + x_2) = U(x_2) U(x_1)$. Hence, they have a simultaneous basis of eigenvectors ${ket(chi_k): k in ZZ\/M}$, i.e. for all $k, x_0 in ZZ\/M$, $U(x_0) ket(chi_k) = w(x_0, k) ket(chi_k)$, where $abs(w(x_0, k)) = 1$. The $ket(chi_k)$ are called *shift-invariant states* and form an orthonormal basis for $H_M$. The $ket(chi_k)$ are given explicitly by $
         ket(chi_k) = 1/sqrt(M) sum_(ell = 0)^(M - 1) e^(-2pi i k ell\/M) ket(ell).
@@ -154,7 +154,7 @@
 ]<def:quantum-fourier-characters>
 #proposition[
     The explicit definition of the $ket(chi_k)$ indeed satisfies the property $forall k, x_0 in ZZ\/M$, $U(x_0) ket(chi_k) = w(x_0, k) ket(chi_k)$, and we have $w(x_0, k) = omega^(k x_0)$, where $omega = e^(2pi i\/M)$.
-]
+]<def:fourier-basis-state-are-shift-invariant>
 #proofhints[
     Straightforward.
 ]
@@ -213,7 +213,7 @@
     / Promise: There is a subgroup $K < G$ such that:
         + $f$ is constant on the (left) cosets of $K$ in $G$.
         + $f$ takes a different value on each coset.
-    / Task: Determine $K$.
+    / Task: Determine (a set of generators of) $K$.
 ]<prb:hsp>
 #remark[
     - To find $K$, we either find a generating set for $K$, or sample uniformly random elements from $K$.
@@ -231,7 +231,7 @@
 #theorem[
     - Let $chi: G -> CC^times$ be an irrep. For all $g in G$, $chi(g)$ is a $abs(G)$-th root of unity.
     - There are always exactly $abs(G)$ distinct irreps. In particular, we can label each irrep uniquely by some $g in G$.
-]
+]<thm:basic-properties-of-irreps>
 #theorem("Schur's Lemma")[
     Let $chi_i$ and $chi_j$ be irreps of $G$. Then $
         1/abs(G) sum_(g in G) chi_i (g) overline(chi_j (g)) = delta_(i j).
@@ -250,12 +250,12 @@
     $ Note that since $G$ is abelian, the $U(k)$ commute: $
         U(k) U(l) = U(k + l) = U(l) U(k) quad forall k, l in G.
     $ Hence, they have simultaneous eigenstates, which gives an orthonormal basis for $H_abs(G)$.
-]
+]<def:shift-operator>
 #proposition[
     For each $k in G$, consider the state $
         ket(chi_k) = 1/sqrt(abs(G)) sum_(g in G) overline(chi_k (g)) ket(g).
     $ The $ket(chi_k)$ are shift-invariant (invariant up to a phase under the action of all $U(g)$, $g in G$).
-]
+]<prop:shift-invariant-states>
 #proofhints[
     Straightforward.
 ]
@@ -273,7 +273,7 @@
     Note that $QFT^(-1) ket(g) = ket(chi_g)$. So $(QFT^(-1))_(k g) = braket(k, chi_g) = 1/sqrt(abs(G)) overline(chi_g (k))$, so $QFT_(k g) = 1/sqrt(abs(G)) chi_k (g)$. So the explicit form is $
         QFT ket(g) = 1/sqrt(abs(G)) sum_(k in G) chi_k (g) ket(k).
     $
-]
+]<def:quantum-fourier-transform-abelian>
 #example[
     - For $G = ZZ\/M$, we can check that $chi_a (b) = e^(2pi i a b\/M)$ are irreps. So the irreps of $ZZ\/M$ are naturally labelled by $a in ZZ\/M$ and this gives the usual $QFT mod M$ as defined earlier.
     - Similarly, for $G = ZZ\/(M_1) times dots.c times ZZ\/(M_r)$, $chi_g (h) = e^(2pi i (g_1 h_1 \/M_1 + dots.c + g_r h_r \/M_r))$ are the irreps.
@@ -285,10 +285,10 @@
     + Measure the output register, then discard this register.
     + Apply QFT $mod thick abs(G)$ to the input register, then measure this register.
     + Repeat the above steps $O(log abs(G))$ times.
-]
+]<alg:quantum-hsp-solver>
 #theorem("Correctness of Quantum HSP Solver")[
     The quantum HSP solver algorithm solves the @prb:hsp for finite abelian groups with high probability.
-]
+]<thm:correctness-of-quantum-hsp-solver>
 #proofhints[
     Use that irreps of $G$ restricted to $K$ are irreps of $K$, and that if $O(log abs(G))$ measurements are made, then with probability at least $2\/3$, we have enough equations to determine the generators of $K$.
 ]
@@ -349,7 +349,7 @@
     The *Fourier basis* for a group $G$ consists of $
         ket(chi_(i, j k)) = sqrt(d_i / abs(G)) sum_(g in G) overline(chi_(i, j k)(g)) ket(g)
     $ for each $i in [n]$ and $j, k in [d_i]$. Note that by Schur orthogonality, this is an orthonormal basis.
-]
+]<def:fourier-basis>
 #remark[
     Note that these states are not shift invariant for every $U(g_0): ket(g) |-> ket(g_0 g)$. So measurement of the coset state $ket(g_0 K)$ yields an output distribution that is not independent of $g_0$.
 ]
@@ -357,7 +357,7 @@
     The *Quantum Fourier transform* over $H_abs(G)$ is the unitary mapping the Fourier basis to the computational basis: $
         QFT ket(chi_(i, j k)) = ket(i\, j k).
     $ $ket(i\, j k)$ is a relabelling of the states $ket(g)$ for $g in G$ (note this is valid by @thm:squares-of-dimensions-of-complete-set-of-irreps-sum-to-size-of-group).
-]
+]<def:qft-non-abelian>
 #remark[
     - Measuring $QFT ket(g_0 K)$ does *not* give $g_0$-independent outcomes. A complete measurement in the computational basis gives an outcome $i, j, k$.
     - However, there is an incomplete measurement which projects into the $d_i^2$-dimensional subspaces $
@@ -376,7 +376,7 @@ Quantum phase estimation is a unifying algorithmic primitive, e.g. there is an a
     / Input: Unitary $U in U(d)$ acting on $CC^d$; state $ket(v_phi) in CC^d$; level of precision $n in NN$.
     / Promise: $ket(v_phi)$ is an eigenstate of $U$ with *phase* (eigenvalue) $e^(2pi i phi)$, $phi in [0, 1)$ (i.e. $U ket(v_phi) = e^(2pi i phi) ket(v_phi)$).
     / Task: Output an estimate $tilde(phi)$ of $phi$, accurate to $n$ binary bits of precision.
-]
+]<prb:qpe>
 #remark[
     If $U$ is given as a circuit, we can implement the controlled-$U$ operation, $Ctrl(U)$, by controlling each elementary gate in the circuit of $U$.
 
@@ -535,7 +535,7 @@ Amplitude amplification is an extension of the key insights in Grover's algorith
     Let $ket(alpha) in H_d$. For any unitary $U in U(d)$, we have $
         U I_ket(alpha) U^dagger = I_(U ket(alpha)).
     $
-]
+]<prop:expression-for-conjugation-of-reflection-operator>
 #proofhints[
     Trivial.
 ]
@@ -554,13 +554,13 @@ Amplitude amplification is an extension of the key insights in Grover's algorith
     For fixed $ket(x_0) in H_2^(tp n)$, the *Grover iteration operator* $Q$ is defined as $
         Q := -H^(tp n) I_ket(0) H^(tp n) I_ket(x_0) = -I_(H^(tp n) ket(0)) I_ket(x_0).
     $
-]
+]<def:grover-iteration-operator>
 #remark[
     Note that for a function $f: {0, 1}^n -> {0, 1}$ fulfilling the promise of the @prb:unstructured-search, we can implement $I_ket(x_0)$ without knowing $x_0$: we have $U_f ket(x) 1/sqrt(2) (ket(0) - ket(1)) = (-1)^f(x) ket(x) 1/sqrt(2) (ket(0) - ket(1)) = I_ket(x_0) ket(x) 1/sqrt(2) (ket(0) - ket(1))$. Hence, implementing $Q$ requires only one query to $f$.
 ]
 #theorem("Grover")[
     In the $2$-dimensional subspace spanned by $ket(psi) = H^(tp n) ket(0)$ and $ket(x_0)$, the action of $Q$ is a rotation by angle $2 alpha$, where $sin(alpha) = 1/sqrt(2^n) = braket(x_0, psi)$.
-]
+]<thm:grover>
 #algorithm("Grover's Algorithm")[
     Work in the state space $H_2^(tp n)$.
     + Prepare $ket(psi) = H^(tp n) ket(0)$.
@@ -589,7 +589,7 @@ Amplitude amplification is an extension of the key insights in Grover's algorith
 ]
 #corollary[
     We have $Q^m ket(psi) = cos((2m + 1) theta) ket(b) + sin((2m + 1) theta) ket(g)$.
-]
+]<crl:action-of-iterated-rotation-operator>
 #proofhints[
     Trivial.
 ]
@@ -760,7 +760,7 @@ We want to use a quantum system to simulate the evolution/dynamics of another qu
     Let $U, tilde(U): H -> H$ be operators. $tilde(U)$ *$epsilon$-approximates* $U$ if $
     norm(U - tilde(U)) <= epsilon,
 $ i.e. for all normalised states $ket(psi)$, $norm(U ket(psi) - tilde(U) ket(psi)) <= epsilon$.
-]<def:epsilon-approximation>
+]<def:operator-approximation>
 #lemma[
     Let $U_1, ..., U_m, tilde(U)_1, ..., tilde(U)_m$ be unitaries. Suppose $tilde(U)_i$ $epsilon$-approximates $U_i$ for each $1 <= i <= m$. Then $
         norm(U_m med dots.c med U_1 - tilde(U)_m med dots.c med tilde(U)_1) <= m epsilon.
@@ -783,7 +783,7 @@ $ i.e. for all normalised states $ket(psi)$, $norm(U ket(psi) - tilde(U) ket(psi
     $ where each $H_j$ acts non-trivially on at most $k$ qubits, in which case we write $H_j = tilde(H)_j tp I$ (note these qubits need not be adjacent).
 
     Note that $m <= binom(n, k) = O(n^k)$, and we usually take $k$ to be a constant.
-]
+]<def:k-local-hamiltonian>
 #notation[
     Write $U_((i))$ for the unitary $
         I tp dots.c tp I tp U tp I tp dots.c tp I
@@ -918,7 +918,7 @@ $ i.e. for all normalised states $ket(psi)$, $norm(U ket(psi) - tilde(U) ket(psi
 #problem("Linear System Solution Problem")[
     / Input: matrix $A in CC^(N times N)$, vector $b in CC^N$.
     / Task: find a vector $x in CC^N$ such that $A x = b$.
-]
+]<prb:linear-system-solution>
 #remark[
     The best known classical algorithms for solving linear systems require $O(poly(N) dot log(1 \/ epsilon))$ time. Note that even just reading the inputs $A$ and $b$, or writing the solution $x$ requires $O(poly(N))$ time.
     
@@ -1000,14 +1000,14 @@ $ i.e. for all normalised states $ket(psi)$, $norm(U ket(psi) - tilde(U) ket(psi
     We say an $s$-sparse matrix $A$ is *row-computable* if the entries of $A$ can be efficiently computed in the following sense: there is a (classical) $O(s)$-time algorithm $C$ which, given a row index $1 <= i <= N$ and an integer $k$, outputs the $k$-th non-zero entry  $A_(i j)$ of row $i$ and its column index $j$: $
         C(i, k) = (j, A_(i j)).
     $
-]
+]<def:matrix.row-computable>
 #theorem[
     Under the following assumptions, for row $s$-sparse $A$, HHL runs in time $O((log N) kappa^2 s^2 dot 1/epsilon)$:
     - There is an efficient Hamiltonian simulation algorithm for $A$.
     - $norm(b)_2$ is $1$ (or is efficiently computable), and the state $ket(b)$ can be prepared exactly and efficiently.
     - The unitary $Ctrl(Rot)$ can be implemented exactly and efficiently.
     - Measurements in the $M$ basis can be performed efficiently.
-]
+]<thm:conditions-for-hhl-polynomial-time-complexity>
 #proof[
     Non-examinable.
 ]
@@ -1053,13 +1053,13 @@ To formalise this comparison of quantum vs classical computing, we will define a
     / Task: By (randomised) classical means only, perform in $poly(n)$ time one of the following:
         - *Weak simulation*: sample a bit from the output distribution of $C ket(alpha_1) ... ket(alpha_n)$ with the output qubit measured in the computational basis.
         - *Strong simulation*: calculate the output probabilities $Pr("output is" 0) = p$. 
-]
+]<prb:classical-simulation>
 #remark[
     Note that the ability to perform strong simulation implies the ability to perform weak simulation.
 ]
 #definition[
     If $C$ is classical simulable (in $poly(n)$ time), then we say there is no *quantum advantage* (up to polynomial overheads).
-]
+]<def:no-quantum-advantage>
 #remark[
     - Any quantum process performs a weak simulation of itself, i.e. the final measurement gives a sample from the output distribution.
     - Strong simulability is a much stronger property.
@@ -1067,7 +1067,7 @@ To formalise this comparison of quantum vs classical computing, we will define a
 ]
 #theorem[
     If the state (including the input state) at each stage of a $poly(n)$-sized circuit $C$ is a product of (single-qubit) states, then direct strong simulation can be efficiently performed for $C$ with that input state.
-]
+]<thm:circuits-where-each-stage-is-product-state-are-efficiently-strongly-simulable>
 #proofhints[
     Assume that the gate acting on a state in a given stage acts non-trivially on the first two qubits (why can we assume this?).
 ]
@@ -1104,7 +1104,7 @@ To formalise this comparison of quantum vs classical computing, we will define a
     A *Clifford operation* on $n$-qubits is a unitary $C in U(2^n)$ which preserves the Pauli group under conjugation, i.e. $
         forall P in cal(P)_n, quad C P C^(-1) in cal(P)_n.
     $ The *Clifford group* is the set of all Clifford operations - it is the normaliser of the subgroup $cal(P)_n$ in $U(2^n)$.
-]
+]<def:clifford-group>
 #remark[
     Clifford groups are important in applications:
     - Quantum error correction (e.g. stabiliser codes) and fault-tolerance.

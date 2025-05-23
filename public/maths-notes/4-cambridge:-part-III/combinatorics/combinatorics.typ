@@ -10,7 +10,7 @@
 
 // #show: university-theme
 
-#show: doc => template(doc, hidden: (), slides: false)
+#show: doc => template(doc, hidden: (), slides: true, slides-ref-hints: true)
 #set document(
     title: "Combinatorics Notes",
     author: "Isaac Holt",
@@ -175,7 +175,7 @@
 ]
 #proposition[
     A chain and an antichain can meet at most once.
-]
+]<prop:chain-and-antichain-meet-at-most-once>
 #proofhints[
     Trivial.
 ]
@@ -184,7 +184,7 @@
 ]
 #proposition[
     A chain $cal(F) subset.eq powset([n])$ can have at most $n + 1$ elements.
-]
+]<prop:upper-bound-on-chain-size>
 #proofhints[
     Trivial.
 ]
@@ -507,7 +507,7 @@
     - For $cal(F) subset.eq X^((r))$, $C_(i j)(cal(F)) = {C_(i j) (A): A in cal(F)} union {A in cal(F): C_(i j) (A) in cal(F)}$.
     "replace $j$ by $i$ where possible". This definition is inspired by "colex prefers $i < j$ to $j$".
     Note that $C_(i j) (cal(F)) subset.eq X^((r))$ and $abs(C_(i j)(cal(F))) = abs(cal(F))$.
-]<def:compression>
+]<def:ij-compression>
 #fig-example[
     #figure(
         canvas({
@@ -533,18 +533,18 @@
 ]
 #definition[
     $cal(F)$ is *$i j$-compressed* if $C_(i j) (cal(F)) = cal(F)$.
-]<def:compressed>
+]<def:ij-compressed>
 #example[
     Let $cal(F) = {123, 134, 234, 235, 146, 567}$, then $C_(1 2) (cal(F)) = {123, 134, 234, 135, 146, 567}$.
 ]
 #lemma[
     Let $cal(F) subset.eq X^((r))$, $1 <= i < j <= n$. Then $abs(partial C_(i j) (cal(F))) <= abs(partial cal(F))$.
-]
+]<lem:ij-compression-decreases-size-of-shadow>
 #proofhints[
     - Let $cal(F)' = C_(i j)(cal(F))$, $B in partial cal(F)' - partial cal(F)$.
     - Show that $i in B$ and $j in.not B$.
     - Reason that $B union j - i in partial cal(F)$.
-    - Show that $B union j - i in.not partial cal(F)'$ by contradiction (helpful to see @def:compression).
+    - Show that $B union j - i in.not partial cal(F)'$ by contradiction (helpful to see @def:ij-compression).
     - Conclude the result.
 ]
 #proof[
@@ -573,7 +573,7 @@
     ]
     Note that $B union x in cal(F)'$ and $B union x in.not cal(F)$ (since $B in.not partial cal(F)$) for some $x$. So $i in B union x$, $j in.not B union x$, $(B union x union j) - i in cal(F)$. We can't have $x = i$, since otherwise $(B union x union j) - i = B union j$, which gives $B in partial cal(F)$, a contradiction. So $i in B$ and $j in.not B$. Also, $B union j - i in partial cal(F)$, since $B union x union j - i in cal(F)$.
     
-    Suppose $B union j - i in partial cal(F)'$: so $(B union j - i) union y in cal(F)'$ for some $y$. We cannot have $y = i$, since otherwise $B union j in cal(F)'$, so $B union j in cal(F)$ (as $j in B union j$), contradicting $B in.not partial cal(F)$. Hence $j in (B union j - i) union y$ and $i in.not (B union j - i) union y$. Thus, both $(B union j - i) union y$ and $B union y = C_(i j) ((B union j - i) union y)$ belong to $cal(F)$ (by definition of $cal(F)'$ - both lie in the second set in the union in @def:compression), contradicting $B in.not partial cal(F)$.
+    Suppose $B union j - i in partial cal(F)'$: so $(B union j - i) union y in cal(F)'$ for some $y$. We cannot have $y = i$, since otherwise $B union j in cal(F)'$, so $B union j in cal(F)$ (as $j in B union j$), contradicting $B in.not partial cal(F)$. Hence $j in (B union j - i) union y$ and $i in.not (B union j - i) union y$. Thus, both $(B union j - i) union y$ and $B union y = C_(i j) ((B union j - i) union y)$ belong to $cal(F)$ (by definition of $cal(F)'$ - both lie in the second set in the union in @def:ij-compression), contradicting $B in.not partial cal(F)$.
 ]
 #remark[
     In the above proof, we actually showed that $partial C_(i j) (cal(F)) subset.eq C_(i j) (partial cal(F))$.
@@ -583,7 +583,7 @@
 ]<def:left-compressed>
 #corollary[
     Let $cal(F) subset.eq X^((r))$. Then there exists a left-compressed $cal(B) subset.eq X^((r))$ with $abs(cal(B)) = abs(cal(F))$ and $abs(partial cal(B)) <= abs(partial cal(F))$.
-]
+]<crl:there-is-left-compressed-family-with-smaller-shadow>
 #proofhints[
     Define a sequence $cal(F)_0, cal(F)_1, ...$ of subsets of $X^((r))$ with $sum_(A in cal(F)_k) sum_(i in A) i$ strictly decreasing.
 ]
@@ -610,10 +610,10 @@
     $
     We have $C_(U V)(cal(F)) subset.eq X^((r))$ and $abs(C_(U V)(cal(F))) = abs(cal(F))$.
     This definition is inspired by "colex prefers $23$ to $14$".
-]
+]<def:uv-compression>
 #definition[
     $cal(F)$ is *$U V$-compressed* if $C_(U V)(cal(F)) = cal(F)$.
-]
+]<def:uv-compressed>
 #example[
     Let $cal(F) = {123, 124, 147, 237, 238, 149}$, then $C_(23, 14) (cal(F)) = {123, 124, 147, 237, 238, 239}$.
 ]
@@ -623,7 +623,7 @@
 ]
 #lemma[
     Let $cal(F) subset.eq X^((r))$ be $U V$-compressed for all $U, V subset.eq X$ with $abs(U) = abs(V)$, $U inter V = emptyset$ and $max U < max V$. Then $cal(F)$ is an initial segment of colex.
-]
+]<lem:fully-uv-compressed-families-are-initial-segments-of-colex>
 #proofhints[
     Suppose not, consider a compression for appropriate $U$ and $V$.
 ]
@@ -634,7 +634,7 @@
     Let $U, V subset.eq X$, $abs(U) = abs(V)$, $U inter V = emptyset$, $max U < max V$. For $cal(F) subset.eq X^((r))$, suppose that $
         forall u in U, exists v in V: quad cal(F) "is" #[$(U - u, V - v)$-compressed].
     $ Then $abs(partial C_(U V)(cal(F))) <= abs(partial cal(F))$.
-]
+]<lem:condition-for-uv-compression-reducing-size-of-shadow>
 #proofhints[
     - Let $cal(F)' = C_(U V)(cal(F))$, $B in partial cal(F)' - partial cal(F)$.
     - Show that $U subset.eq B$ and $V inter B = emptyset$.
@@ -698,7 +698,7 @@
 ]<def:upper-shadow>
 #corollary[
     Let $cal(F) subset.eq X^((r))$, $0 <= r <= n - 1$, let $cal(C)$ be the initial segment of lex on $X^((r))$ with $abs(cal(C)) = abs(cal(F))$. Then $abs(partial^+ cal(C)) <= abs(partial^+ cal(F))$.
-]
+]<crl:kruskal-katona-for-upper-shadow>
 #proofhints[
     By Kruskal-Katona.
 ]
@@ -710,7 +710,7 @@
 ]
 #corollary[
     Let $cal(F) subset.eq X^((r))$, $1 <= r <= n$, $cal(C)$ be the initial segment of colex on $X^((r))$ with $abs(cal(C)) = abs(cal(F))$. Then $abs(partial^t cal(C)) <= abs(partial^t cal(F))$ for all $1 <= t <= r$ (where $partial^t$ is shadow applied $t$ times).
-]
+]<crl:iterated-kruskal-katona>
 #proofhints[
     Straightforward.
 ]
@@ -1083,7 +1083,7 @@ We want to show the initial segments of the simplicial ordering minimise the bou
     - or $n$ is even (say $n = 2k$), and $
         B = X^((< k)) union {x in X^((k)): 1 in x} \\ underbrace({1, k + 2, k + 3, ..., 2k}, #[last $k$-set with $1$]) union underbrace({2, 3, ..., k + 1}, #[first $k$-set without $1$]).
     $
-]
+]<lem:fully-i-compressed-sets-but-not-initial-segment-of-simplicial>
 #fig-example[
     #figure(
         grid(
@@ -1178,9 +1178,9 @@ We want to show the initial segments of the simplicial ordering minimise the bou
     #proof("of claim")[
         Write $B = C_i (A)$. We have $N(A)_- = N(A_-) union A_+$, and $N(A)_+ = N(A_+) union A_-$. Similarly, $N(B)_- = N(B_-) union B_+$, and $N(B)_+ = N(B_+) union B_-$.
         
-        Now $abs(B_+) = abs(A_+)$ by definition of $B$, and by the inductive hypothesis, $abs(N(B_-)) <= abs(N(A_-))$ (since $C_i (A_-) = B_-$). But $B_+$ is an initial segment of the simplicial ordering, and $N(B_-)$ is as well (since the neighbourhood of an initial segment of the simplicial ordering is also an initial segment). So $B_+$ and $N(B_-)$ are nested (one is contained in the other). Hence, $abs(N(B_-) union B_+) <= abs(N(A_-) union A_+)$.
+        Now $abs(B_+) = abs(A_+)$ by definition of $B$, and by the inductive hypothesis, $abs(N(B_-)) <= abs(N(A_-))$ (since $B_-$ is an initial segment of simplicial of the same size as $A_-$). But $B_+$ is an initial segment of the simplicial ordering, and $N(B_-)$ is as well (since the neighbourhood of an initial segment of the simplicial ordering is also an initial segment). So $B_+$ and $N(B_-)$ are nested (one is contained in the other). Hence, $abs(N(B_-) union B_+) <= abs(N(A_-) union A_+)$.
         
-        Similarly, $abs(B_-) = abs(A_-)$ by definition of $B$. Since $B_+$ and $C_i (A_+)$ are both initial segments of size $abs(B_+) = abs(A_+)$, we have $B_+ = C_i (A_+)$, hence by the inductive hypothesis, $abs(N(B_+)) <= abs(N(A_+))$. $B_-$ and $N(B_+)$ are initial segments, so are nested. Hence $abs(N(B_+) union B_-) <= abs(N(A_+) union A_-)$.
+        Similarly, $abs(B_-) = abs(A_-)$ by definition of $B$. Again, by the inductive hypothesis, $abs(N(B_+)) <= abs(N(A_+))$. $B_-$ and $N(B_+)$ are initial segments, so are nested. Hence $abs(N(B_+) union B_-) <= abs(N(A_+) union A_-)$.
         
         This gives $abs(N(B)) = abs(N(B)_-) + abs(N(B)_+) <= abs(N(A)_-) + abs(N(A)_+) = abs(N(A))$, which proves the claim.
 
@@ -1244,7 +1244,7 @@ We want to show the initial segments of the simplicial ordering minimise the bou
     Let $A subset.eq Q_n$ with $abs(A) >= sum_(i = 0)^r binom(n, i)$. Then $
         forall t <= n - r, quad abs(N^t (A)) >= sum_(i = 0)^(r + t) binom(n, i).
     $
-]<cor:iterated-harper>
+]<crl:iterated-harper>
 #proofhints[
     By Harper's theorem.
 ]
@@ -1324,7 +1324,7 @@ We want to show the initial segments of the simplicial ordering minimise the bou
     - Give an upper bound on $abs(N^(epsilon n)(A)^c)$ using the above proposition.
 ]
 #proof[
-    It is enough to show that if $epsilon n in NN$, then $abs(N^(epsilon n)(A))\/2^n >= 1 - 1/epsilon e^(-epsilon^2 n\/2)$. We have $abs(A) >= sum_(i = 0)^ceil(n\/2 - 1) binom(n, i)$, so by @cor:iterated-harper, $
+    It is enough to show that if $epsilon n in NN$, then $abs(N^(epsilon n)(A))\/2^n >= 1 - 1/epsilon e^(-epsilon^2 n\/2)$. We have $abs(A) >= sum_(i = 0)^ceil(n\/2 - 1) binom(n, i)$, so by @crl:iterated-harper, $
         abs(N^(epsilon n)(A)) >= sum_(i = 0)^ceil(n\/2 - 1 + epsilon n) binom(n, i).
     $ So $
         abs(N^(epsilon n)(A)^c) & <= sum_(i = ceil(n\/2 + epsilon n))^n binom(n, i) \
@@ -1373,7 +1373,7 @@ We want to show the initial segments of the simplicial ordering minimise the bou
 ]
 #proofhints[
     - Consider two subsets $A, B subset.eq Q_n$ of density at least $1\/2$, and apply @thm:sets-of-at-least-half-density-have-exponentially-dense-neighbourhoods on them.
-    - Use the fact that $f$ is Lipschitz to find upper bounds for the sizes of the $epsilon n$-neighbourhoods of $A$ and $B$.
+    - Use the fact that $f$ is Lipschitz to find a set that contains $N^(epsilon n) (A)$ (and similarly for $B$).
 ]
 #proof[
     Let $A = {x in Q_n: f(x) <= M}$. Then by definition, $abs(A) \/ 2^n >= 1 \/ 2$, so by the above theorem, $
@@ -1393,7 +1393,7 @@ We want to show the initial segments of the simplicial ordering minimise the bou
     Let $G$ be a graph of diameter $D$. Write $
         alpha(G, epsilon) = max{1 - abs(N^(epsilon D)(A))/abs(G): A subset.eq G, abs(A) / abs(G) >= 1/2}.
     $ So if $alpha(G, epsilon)$ is small, then sets of at least half density have large $epsilon D$-neighbourhoods.
-]
+]<def:levy-family-quantity>
 #definition[
     A sequence of graphs $\(G_n\)_(n in NN)$ is a *Levy family* if $
         forall epsilon > 0, quad alpha(G_n, epsilon) -> 0 "as" n -> oo.
@@ -1444,7 +1444,7 @@ We want to show the initial segments of the simplicial ordering minimise the bou
     $ for some given $t, alpha >= 0$. Then for all $A subset.eq G$ with $abs(A) \/ abs(G) >= 1\/2$, we have $
         abs(N^(t)(A)) / abs(G) >= 1 - alpha.
     $
-]
+]<prop:isoperimetric-inequality-from-concentration-of-measure>
 #proofhints[
     Consider an appropriate Lipschitz function with Levy mean $0$.
 ]
@@ -1962,7 +1962,7 @@ We want to show the initial segments of the simplicial ordering minimise the bou
 ]
 #corollary[
     Let $A subset.eq [k]^n$ and $abs(A) >= abs({x in [k]^n: abs(x) <= r})$. Then $abs(N^j (A)) >= abs({x in [k]^n: abs(x) <= r + j})$ for all $j$.
-]
+]<crl:iterated-vertex-isoperimetric-inequality-in-the-grid>
 #proofhints[
     Trivial by above.
 ]
@@ -2307,7 +2307,7 @@ We want to show the initial segments of the simplicial ordering minimise the bou
 It seems to be that banning $abs(x inter y) = r (mod 2)$ forces the family to be very small (polynomial in $n$; in fact, a linear polynomial). Remarkably, we cannot beat linear.
 #proposition[
     Let $r$ be odd and $A subset.eq X^((r))$. If $abs(x inter y)$ is even for all $x != y in A$, then $abs(A) <= n$.
-]
+]<prop:upper-bound-for-size-of-odd-level-even-intersecting-family>
 #proofhints[
     Identify each $x in powset(X)$ with a point $overline(x)$ in an appropriate vector space, and by considering dot products, show that ${overline(x): x in A}$ is linearly independent.
 ]
@@ -2318,7 +2318,7 @@ It seems to be that banning $abs(x inter y) = r (mod 2)$ forces the family to be
 ]
 #corollary[
     Hence also, if $A subset.eq X^((r))$ with $r$ even with $abs(x inter y)$ odd for all $x != y in A$, then $abs(A) <= n + 1$.
-]
+]<crl:upper-bound-for-size-of-even-level-odd-intersecting-family>
 #proofhints[
     Use the above proposition.
 ]
@@ -2479,7 +2479,7 @@ The example of a regular $n$-simplex in $RR^n$ ($n + 1$ points, all at distance 
 However, in general, @cnj:borsuk is massively false:
 #theorem("Kahn, Kalai")[
     For all $n in NN$, there exists a bounded $S subset.eq RR^n$ such that to break $S$ into pieces of smaller diameter, we need at least $C^sqrt(n)$ pieces for some constant $C > 1$.
-]
+]<thm:kahn-kalai>
 #remark[
     Our proof will show Borsuk is false for $n >= 2000$.
 ]
@@ -2488,7 +2488,7 @@ However, in general, @cnj:borsuk is massively false:
     - For $x, y in [n]^((r))$, find an expression for $norm(x - y)^2$ in terms of $abs(x inter y)$.
     - Identify $[n]$ with the edge set of an appropriate graph, and for each $x in [4p]^((2p))$, let $G_x$ be the complete bipartite subgraph with vertex classes $x$ and $x^c$.
     - Show that the number of edges in $G_x inter G_y$ is $abs(G_x inter G_y) = abs(x inter y)^2 + (2p - abs(x inter y))^2$ and give the value of $abs(x inter y)$ which minimises this.
-    - Let $S subset.eq [n]^(4p^2)$ be an appropriate set of size $abs(S) = 1/2 binom(4p, 2p)$. Using @crl:there-are-few-2p-size-sets-with-non-half-intersection, show that any subset $S' subset.eq S$ of smaller diameter than $S$ has size at most $2 binom(4p, p - 1)$.
+    - Let $S subset.eq [n]^((4p^2))$ be an appropriate set of size $abs(S) = 1/2 binom(4p, 2p)$. Using @crl:there-are-few-2p-size-sets-with-non-half-intersection, show that any subset $S' subset.eq S$ of smaller diameter than $S$ has size at most $2 binom(4p, p - 1)$.
     - Use @prop:upper-bound-on-less-than-half-first-binomial-coefficients and the fact that $binom(n, n \/ 2) approx c dot 2^n \/ sqrt(n)$ to conclude the result. #qedhere
 ]
 #proof[
