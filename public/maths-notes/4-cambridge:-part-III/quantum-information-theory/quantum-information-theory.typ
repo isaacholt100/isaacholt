@@ -767,7 +767,7 @@ $ Note that $cal(P)(M) + cal(E)(M) = 1$.
 #theorem("Quantum Neyman-Pearson")[
     We have $
         cal(E)(M) >= 1/2 (1 - norm(p rho_1 - (1 - p) rho_2)_1)
-    $ with equality iff $P$ is a projection onto $(p_1 rho_1 - (1 - p) rho_2)_+$, the positive eigensubspace of $p rho_1 - (1 - p) rho_2$.
+    $ with equality iff $P = (p_1 rho_1 - (1 - p) rho_2)_+$ is a projection onto $(p_1 rho_1 - (1 - p) rho_2)_+$, the positive eigensubspace of $p rho_1 - (1 - p) rho_2$.
 ]<thm:quantum-neyman-pearson>
 #proofhints[
     - Let $A = p rho_1 - (1 - p) rho_2$. By considering the positive and negative parts $A_+$ and $A^-$ of $A$, show that $tr(A_+) = 1/2 (norm(A)_1 + tr(A))$.

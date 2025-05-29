@@ -2,7 +2,7 @@
 #import "@preview/cetz:0.3.4" as cetz: canvas, draw
 #import "../../diagram-style.typ": *
 
-#show: doc => template(doc, hidden: (), slides: true, slides-ref-hints: true)
+#show: doc => template(doc, hidden: (), slides: false, slides-ref-hints: true)
 #set document(
     title: "Entropy Methods in Combinatorics Notes",
     author: "Isaac Holt",
@@ -440,12 +440,15 @@ Bregman's theorem concerns how large $per(A)$ can be if $A$ is a $0, 1$ matrix a
         H(sigma(x_i) | sigma(x_1), ..., sigma(x_(i - 1))) <= EE_sigma log deg_(x_1, ..., x_(i - 1))^sigma (x_i),
     $ where $deg_(x_1, ..., x_(i - 1))^sigma (x_i) = abs(N(x_i) \\ {sigma(x_1), ..., sigma(x_(i - 1))})$.
 
-    Key idea: we now regard $x_1, ..., x_n$ as a _random_ enumeration of $X$ and take the average. For each $x in X$, define the *contribution* of $x$ to be $log(d_(x_1, ..., x_(i - 1))^sigma (x_i))$, where $x_i = x$. We shall now fix $sigma$ and $x in X$. Let the neighbours of $x$ be $y_1, ..., y_k$. Then one of the $y_j$ will be $sigma(x)$, say $y_h$. Then $d_(x_1, ..., x_(i - 1))^sigma (x_i)$ (given that $x_i = x$) is $
+    So $H(sigma) <= EE_sigma [log d(x_1) + log d_(x_1)^sigma (x_2) + ... + log d_(x_1, ..., x_(n - 1))^sigma (x_n)]$ and so $
+        H(sigma) & <= EE_"orderings" EE_sigma [log d(x_1) + log d_(x_1)^sigma (x_2) + ... + log d_(x_1, ..., x_(n - 1))^sigma (x_n)] \
+        & = EE_sigma EE_"orderings" [log d(x_1) + log d_(x_1)^sigma (x_2) + ... + log d_(x_1, ..., x_(n - 1))^sigma (x_n)]
+    $ Key idea: we now regard $x_1, ..., x_n$ as a _random_ enumeration of $X$ and take the average. For each $x in X$, define the *contribution* of $x$ to be $log(d_(x_1, ..., x_(i - 1))^sigma (x_i))$, where $x_i = x$. We shall now fix $sigma$ and $x in X$. Let the neighbours of $x$ be $y_1, ..., y_k$. Then one of the $y_j$ will be $sigma(x)$, say $y_h$. Then $d_(x_1, ..., x_(i - 1))^sigma (x_i)$ (given that $x_i = x$) is $
         d(x) - abs({j: sigma^(-1)(y_j) "comes earlier than" x = sigma^(-1)(y_h)}).
     $ All positions of $sigma^(-1)(y_h)$ are equally likely, so the average contribution of $x$ is $ // TODO: what do we take this average over?
     // TODO: how are they equally likely? sigma^(-1) (y_h) = x is fixed
-        & 1/d(x) (log d(x) + log (d(x) - 1) + dots.c + log(1)) \
-        = & 1/d(x) log d(x)!.
+        EE_"orderings" log d_(x_1, ..., x_(i - 1))^sigma (x_i) & = 1/d(x) (log d(x) + log (d(x) - 1) + dots.c + log(1)) \
+        & = 1/d(x) log d(x)!.
     $ By linearity of expectation, $
         H(sigma) <= sum_(x in X) 1/d(x) log(d(x)!)
     $ So the number of matchings is at most $product_(x in X) (d(x)!)^(1 \/ d(x))$.

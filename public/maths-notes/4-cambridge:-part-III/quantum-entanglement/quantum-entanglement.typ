@@ -107,12 +107,6 @@ exam questions will be very simple. it's important that you get the ideas and ab
 
 = Entanglement theory
 
-#theorem("Quantum Steering")[
-    Let $ket(psi)$ be a pure state in $HH = HH_A tp HH_B$ and let $rho_B = tr_A (ket(psi) bra(psi))$. A POVM measurement on system $A$ can produce the ensemble ${(p_i, rho_i): i in [M]}$ at system $B$ iff $rho_B = sum_(i = 1)^M p_i rho_i$.
-]<thm:quantum-steering>
-#remark[
-    The @thm:quantum-steering theorem is also known as the Hughston, Jozsa, Wootters theorem.
-]
 #theorem("Schmidt Decomposition")[
     Let $ket(psi)$ be a pure state in a bipartite system $HH_(A B) = HH_A tp HH_B$, where $HH_A$ has dimension $N_A$ and $HH_B$ has dimension $N_B >= N_A$. Then there exist orthonormal states ${ket(e_i): i in [N_A]} subset.eq HH_A$ and ${ket(f_i): i in [N_A]} subset.eq HH_B$ such that $
         ket(psi) = sum_(i = 1)^(N_A) lambda_i ket(e_i) tp ket(f_i),
@@ -155,9 +149,6 @@ exam questions will be very simple. it's important that you get the ideas and ab
 
     Entanglement monotones quantify the amount of entanglement in a quantum state.
 ]<def:entanglement-monotone>
-#theorem("Vidal")[
-    A function of a bipartite pure state is an entanglement monotone iff it is a concave unitarily invariant function of its local density matrix.
-]<thm:vidal>
 #example[
     Let $HH = HH_A tp HH_B$ with $n = min{dim HH_A, dim HH_B}$. A family of entanglement monotones on $HH$ is given by $
         mu_m (ket(psi)) = -sum_(i = 1)^m lambda_i,
@@ -648,3 +639,4 @@ exam questions will be very simple. it's important that you get the ideas and ab
 #remark[
     Lieb-Robinson bounds show that in 1D, the Kaihler manifold of physical states is spanned by the set of matrix product states; hence, we can completely characterise 1D quantum spin systems by MPS.
 ]
+

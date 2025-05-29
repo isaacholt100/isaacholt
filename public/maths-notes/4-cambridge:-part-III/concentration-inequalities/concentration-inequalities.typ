@@ -1,6 +1,6 @@
 #import "../../template.typ": *
 #let name-abbrvs = (:)
-#show: doc => template(doc, hidden: (), slides: true, name-abbrvs: name-abbrvs, slides-ref-hints: true)
+#show: doc => template(doc, hidden: (), slides: false, name-abbrvs: name-abbrvs, slides-ref-hints: true)
 #set document(
     title: "Concentration Inequalities Notes",
     author: "Isaac Holt",
