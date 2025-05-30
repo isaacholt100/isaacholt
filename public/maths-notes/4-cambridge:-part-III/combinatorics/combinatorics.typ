@@ -10,7 +10,7 @@
 
 // #show: university-theme
 
-#show: doc => template(doc, hidden: (), slides: true, slides-ref-hints: true)
+#show: doc => template(doc, hidden: (), slides: false, slides-ref-hints: true)
 #set document(
     title: "Combinatorics Notes",
     author: "Isaac Holt",

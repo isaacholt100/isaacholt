@@ -502,7 +502,7 @@ exam questions will be very simple. it's important that you get the ideas and ab
 #definition[
     The *Landau paradigm* says that given a many-body system for which the Hamiltonian has a certain global symmetry (given by a group $G$), the different phases of matter are characterised by the ways in which this symmetry can be broken. There is a subgroup $H$ of $G$ which characterises the unbroken symmetries.
 
-    In particular, for 1D quantum spin systems, phases are completey characterised by subgroups and co-cycles of the subgroups.
+    In particular, for 1D quantum spin systems, phases are completely characterised by subgroups and co-cycles of the subgroups.
 
     The Landau paradigm implies all information of system (and about which phase state is in) is encoded in entanglement features of the tensor network state describing that system.
 ]<def:landau-paradigm>
@@ -529,8 +529,6 @@ exam questions will be very simple. it's important that you get the ideas and ab
     Continuing from above, we can also construct an order parameter which has non-zero expectation value in the symmetric phase, but zero expectation value in the symmetry-broken phase: explicitly, such an order parameter is the *disorder operator*: $
         A = sum_i A_i,
     $ where $A_i = sum_(k = i - L)^i X_k$ is the *string operator*. $A$ has non-zero expectation value in the paramagnetic phase (including in the limit $L -> oo$), and in the limit $L -> oo$, $A$ has zero expectation value in the symmetry-broken phase. 
-
-    
 ]
 #definition[
     The above is an example of a *duality transformation*: for every symmetric phase, it is possible to associate to it a "dual" Hamiltonian with the same spectrum (same eigenvalues), but with different degeneracies (i.e. different eigenspaces) which is fully symmetry broken (meaning it has none of the symmetries of the group $G$ which characterised the symmetries of the symmetric phase).
@@ -551,9 +549,9 @@ exam questions will be very simple. it's important that you get the ideas and ab
     This tensor network involves GHZ tensor in the $X$ and $Z$ basis: $
         ket("GHZ"_Z) & = ket(000) + ket(111), \
         ket("GHZ"_X) & = (H tp H tp H) ket("GHZ"_Z) = ket(+++) + ket(---).
-    $ Explicitly, the dual of the 1D Ising Hamiltonian is $
-        H_2 = -sum_i Z_(i + 1 \/ 2) + lambda X_(i - 1 \/ 2) X_(i + 1 \/ 2)
-    $ The reason for the $plus.minus 1 \/ 2$ here is that the operators live on the dual lattice (so e.g. $X_(i + 1 \/ 2)$ lives between sites $i$ and $i + 1$).
+    $ Explicitly, the dual of the 1D Ising Hamiltonian under the Kramers-Wannier transformation is $
+        H_2 = -sum_i Z_(i + 1 \/ 2) + lambda X_(i - 1 \/ 2) X_(i + 1 \/ 2),
+    $ which also has a $ZZ_2$ (realised by a different representation of $ZZ_2$)., The reason for the $plus.minus 1 \/ 2$ here is that the operators live on the dual lattice (so e.g. $X_(i + 1 \/ 2)$ lives between sites $i$ and $i + 1$).
 ]
 #example[
     The Kramers-Wannier transformation can be generalised to two dimensions. Now, the Hamiltonian is $
