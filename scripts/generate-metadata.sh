@@ -1,0 +1,1 @@
+pnpm exec tsx src/lib/generate-metadata.ts

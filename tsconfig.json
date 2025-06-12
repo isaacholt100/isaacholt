@@ -30,7 +30,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts"
-, "src/app/blog/page.mdx"  ],
+, "src/app/blog/page.mdx", "generate-metadata.mjs", "generate-metadata.js", "src/lib/runMetadataGeneration.js"  ],
   "exclude": [
     "node_modules"
   ]
