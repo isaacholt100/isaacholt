@@ -15,14 +15,7 @@ const discordSvgPath = "M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0
 
 const LINKEDIN_URL = "https://www.linkedin.com/in/isaacholt100/";
 
-const EMAIL = "isaacholt100@icloud.com";
-
 const PROFILES: Profile[] = [
-	{
-		name: "Email",
-		url: "mailto:" + EMAIL,
-		icon: mdiEmail,
-	},
 	{
 		name: "LinkedIn",
 		url: LINKEDIN_URL,

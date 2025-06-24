@@ -1,8 +1,5 @@
 import Link from "next/link";
 import styles from "../styles/Home.module.scss";
-import Icon from "@mdi/react";
-import { mdiFile } from "@mdi/js";
-// import "@primer/css/index.scss";
 
 interface MainLink {
     name: string;

@@ -128,12 +128,6 @@
     #it
 ]
 
-= Isaac Holt
-
-#link("tel:+447393098225")[+447393098225] |
-#link("mailto:isaac_holt@icloud.com")[isaac_holt\@icloud.com] |
-#link("https://www.linkedin.com/in/isaacholt100/")[linkedin.com/in/isaacholt100]
-
 == Summary
 
 - Highly capable mathematician, with the joint-highest grade in my undergraduate cohort.
