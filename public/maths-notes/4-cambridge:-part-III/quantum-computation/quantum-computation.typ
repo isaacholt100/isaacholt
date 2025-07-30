@@ -8,7 +8,7 @@
     "Amplitude Amplification Theorem/2D-subspace Lemma": "Amplitude Amplification Theorem",
     "Lie-Trotter Product Formula": "Lie-Trotter"
 )
-#show: doc => template(doc, hidden: (), slides: true, name-abbrvs: name-abbrvs, slides-ref-hints: true)
+#show: doc => template(doc, hidden: (), slides: false, name-abbrvs: name-abbrvs, slides-ref-hints: true)
 #set document(
     title: "Quantum Computation Notes",
     author: "Isaac Holt",

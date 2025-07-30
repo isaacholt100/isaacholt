@@ -11,7 +11,7 @@
     "Chain Rule for Mutual Information": "Chain Rule",
     "Ruzsa Triangle Inequality for Entropy": "Ruzsa Triangle Inequality"
 )
-#show: doc => template(doc, hidden: (), slides: true, name-abbrvs: name-abbrvs, slides-ref-hints: true)
+#show: doc => template(doc, hidden: (), slides: false, name-abbrvs: name-abbrvs, slides-ref-hints: true)
 #set document(
     title: "Information Theory Notes",
     author: "Isaac Holt",

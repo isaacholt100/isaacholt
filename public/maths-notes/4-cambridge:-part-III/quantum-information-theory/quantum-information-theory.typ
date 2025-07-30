@@ -6,7 +6,7 @@
 
 #let line-style(color) = (fill: color, stroke: color, mark: (end: ">"))
 
-#show: doc => template(doc, hidden: (), slides: true, name-abbrvs: (:), slides-ref-hints: true)
+#show: doc => template(doc, hidden: (), slides: false, name-abbrvs: (:), slides-ref-hints: true)
 #set document(
     title: "Quantum Information Theory Notes",
     author: "Isaac Holt",
