@@ -30,7 +30,7 @@
     "rehype-katex": "^7.0.1",
     "remark-gfm": "^4.0.1",
     "remark-math": "^6.0.0",
-    "sharp": "^0.32.6"
+    "sharp": "^0.35.0"
   },
   "devDependencies": {
     "@types/node": "17.0.35",
